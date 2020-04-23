@@ -1,0 +1,119 @@
+<form name="signIn" novalidate>
+    <script type="text/javascript">
+        var _kmq = _kmq || [],
+            _kmk = _kmk || 'af830c29cb56dff3c9257d9404877607cc1febe1',
+            KM_COOKIE_DOMAIN = document.location.hostname;
+        function _kms(u) {
+            setTimeout(function () {
+                var d = document, f = d.getElementsByTagName('script')[0],
+                    s = d.createElement('script');
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = u;
+                f.parentNode.insertBefore(s, f);
+            }, 1);
+        }
+        _kms('//i.kissmetrics.com/i.js');
+        _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+    </script>
+    <div class="settings-card">
+        <header>
+            <h2 translate>sign_in_title</h2>
+        </header>
+
+        <div class="settings-body">
+
+            <div ng-show="minimalistProPlugin()">
+                <p translate>sign_in_minimalist_intro</p>
+                <p translate>sign_in_minimalist_note</p>
+            </div>
+
+            <p ng-hide="minimalistProPlugin()" translate>
+                sign_in_registration_optional
+            </p>
+
+            <h3 translate>
+                sign_in_sign_in_below
+            </h3>
+
+            <div class="registration-field-area">
+                <div
+                    soft-alert
+                    level="'danger'"
+                    ng-show="signInFailed"
+                >
+                    <!-- do not translate signInErrorMessage. may come directly from darkseid -->
+                    {{signInErrorMessage}}
+                </div>
+
+                <div
+                    setting-title-and-description
+                    label="{{'email_address_input_label'|translate}}"
+                    name="registrationEmail"
+                >
+                </div>
+
+                <input
+                    type="email"
+                    id="registrationEmail"
+                    placeholder="{{'email_address_input_placeholder'|translate}}"
+                    ng-model="registrationFormModel.email"
+                    ng-trim
+                    required
+                />
+
+                <div
+                    setting-title-and-description
+                    label="{{'client_string_password'|translate}}"
+                    name="registrationPassword"
+                >
+                </div>
+
+                <input
+                    type="password"
+                    id="registrationPassword"
+                    placeholder="{{'password_input_placeholder'|translate}}"
+                    ng-model="registrationFormModel.password"
+                    required
+                />
+
+                <p>
+                    <a href="http://www.addthis.com/forgot-password" target="_blank" translate>
+                        forgot_password_link
+                    </a>
+                </p>
+            </div>
+
+            <button
+                type="submit"
+                class="addthis-btn addthis-btn-clear"
+                ng-class="{ 'addthis-btn-disabled': signIn.$invalid }"
+                ng-click="signInSubmit(signIn.$valid)"
+                translate
+            >
+                client_string_sign_in
+            </button>
+
+            <h3 translate>
+                sign_in_do_not_have_account
+            </h3>
+
+            <button
+                type="submit"
+                class="addthis-btn addthis-btn-blue"
+                ng-click="createAccountShow()"
+                translate
+            >
+                create_account_button
+            </button>
+
+            <p>
+                <a ng-click="editManually()" translate>
+                    manual_registration_link
+                </a>
+            </p>
+
+
+        </div>
+    </div>
+</form>

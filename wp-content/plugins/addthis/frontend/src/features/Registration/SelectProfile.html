@@ -1,0 +1,105 @@
+<form name="selectprofile" novalidate>
+    <div class="settings-card">
+        <header>
+            <h2 translate>select_profile_title</h2>
+        </header>
+
+        <div class="settings-body">
+
+            <p ng-show="profileIdFoundOnAccount" translate>
+              select_profile_description
+            </p>
+
+            <p ng-hide="globalOptions.addthis_profile" translate>
+                select_profile_select_directions
+            </p>
+
+            <div class="registration-field-area">
+                <div
+                    setting-title-and-description
+                    label="{{'select_profile_select_label'|translate}}"
+                    name="profileId"
+                >
+                </div>
+
+                <select
+                    name="profileId"
+                    ng-model="registrationFormModel.profile"
+                    ng-options="option.pubId as option.name for option in profiles"
+                    validate-add-this-profile-id
+                >
+                </select>
+
+                <div
+                    soft-alert
+                    level="'warning'"
+                    ng-show="warnOfProfileNotFoundOnAccount"
+                >
+                    <span
+                        translate
+                        translate-values="{'profile_id': globalOptions.addthis_profile}"
+                    >
+                        error_message_profile_not_on_account
+                    </span>
+                    <a ng-click="startOver()" translate>
+                        start_registration_over_link
+                    </a>
+                </div>
+            </div>
+
+            <div
+                soft-alert
+                level="'warning'"
+                ng-show="globalOptions.addthis_plugin_controls === 'WordPress'"
+            >
+                <span translate>
+                    warning_message_changing_from_wordpress_mode
+                </span>
+            </div>
+
+            <div
+                soft-alert
+                level="'warning'"
+                ng-show="!selectprofile.profileId.$pending && selectprofile.profileId.$error.wpProfile && registrationFormModel.profile"
+            >
+                <span translate>
+                    select_profile_warning_wrong_profile_type
+                </span>
+            </div>
+
+            <div
+                soft-alert
+                level="'warning'"
+                ng-show="createApiKeyAndSaveStatus.failed"
+            >
+                <strong>
+                    {{createApiKeyAndSaveStatus.title|translate}}
+                </strong>
+                <br />
+                <!-- do not translate createApiKeyAndSaveStatus.message. may come directly from darkseid -->
+                {{createApiKeyAndSaveStatus.message}}
+            </div>
+
+
+
+            <button
+                type="submit"
+                class="addthis-btn addthis-btn-blue"
+                ng-click="selectProfileSubmit()"
+                ng-hide="selectprofile.$pending"
+                translate
+            >
+                confirm_button
+            </button>
+            <button
+                type="submit"
+                class="addthis-btn addthis-btn-disabled"
+                ng-show="selectprofile.$pending"
+                translate
+            >
+                progress_message_checking_input
+            </button>
+
+        </div>
+    </div>
+</form>

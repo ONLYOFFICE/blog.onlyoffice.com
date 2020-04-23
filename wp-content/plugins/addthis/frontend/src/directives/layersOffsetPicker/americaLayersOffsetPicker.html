@@ -1,0 +1,12 @@
+<div class="actions tool-positions">
+    <label ><strong translate> layers_offset_header</strong></label>
+    <select class="alignleft" ng-model="ngModel.location"
+            ng-options="option.value as (option.display|translate) for option in positionOptions"
+    >
+    </select>
+    <input class="alignleft select-sm" type="number" ng-model="ngModel.amount">
+    <select class="alignleft" ng-model="ngModel.unit"
+            ng-options="option.value as option.value for option in unitOptions"
+    >
+    </select>
+</div>

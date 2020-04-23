@@ -1,0 +1,119 @@
+/**
+ * +--------------------------------------------------------------------------+
+ * | Copyright (c) 2008-2017 AddThis, LLC                                     |
+ * +--------------------------------------------------------------------------+
+ * | This program is free software; you can redistribute it and/or modify     |
+ * | it under the terms of the GNU General Public License as published by     |
+ * | the Free Software Foundation; either version 2 of the License, or        |
+ * | (at your option) any later version.                                      |
+ * |                                                                          |
+ * | This program is distributed in the hope that it will be useful,          |
+ * | but WITHOUT ANY WARRANTY; without even the implied warranty of           |
+ * | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            |
+ * | GNU General Public License for more details.                             |
+ * |                                                                          |
+ * | You should have received a copy of the GNU General Public License        |
+ * | along with this program; if not, write to the Free Software              |
+ * | Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA |
+ * +--------------------------------------------------------------------------+
+ */
+
+.addthis-settings-page div.tool-gallery-settings-page {
+  max-width: 640px;
+}
+
+.addthis-settings-page .tool-gallery-settings-page-inner-container{
+  padding: 24px 50px;
+}
+
+.addthis-settings-page .tool-gallery-settings-page-footer {
+  padding: 20px;
+  margin: auto;
+  background-color: #EEEEEE;
+  border-top: solid 1px #DDDDDD;
+  height: 120px;
+}
+
+.addthis-settings-page .tool-gallery-settings-page h2{
+  text-align: center;
+}
+
+.addthis-settings-page .tool-gallery-settings-page p.tool-gallery-subtitle{
+  text-align: center;
+}
+
+.addthis-settings-page .tool-gallery-settings-page ol{
+  margin; 10px;
+}
+
+.addthis-settings-page .tool-gallery-settings-page pre{
+  margin: 0;
+  width: 100%;
+}
+
+.addthis-settings-page .tool-gallery-settings-page .shape-radio-button-image-wrapper {
+   height: 100px;
+   width: 140px;
+   display: inline-block;
+   margin-right: 20px;
+   border: 1px solid #CCCCCC;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+}
+
+.addthis-settings-page .tool-gallery-settings-page .shape-radio-button-image-wrapper:hover,
+.addthis-settings-page .tool-gallery-settings-page .shape-radio-button-image-wrapper:focus {
+  border-color: #0d99fc;
+}
+
+.addthis-settings-page .tool-gallery-settings-page .selected-image {
+  border: solid 3px #0D99FB;
+}
+
+.addthis-settings-page .tool-gallery-settings-page .shape-radio-button-image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  vertical-align: middle;
+}
+
+.addthis-settings-page .tool-gallery-settings-page .shape-radio-button-image-rounded {
+  padding-top: 26px;
+}
+
+.addthis-settings-page .custom-color-demo {
+  height: 30px;
+  width: 30px;
+  border: 1px solid #ccc;
+  padding: 3px;
+  margin-right: 0;
+  display: block;
+  float: left;
+}
+
+.addthis-settings-page .custom-color-demo + select {
+  float: left;
+  margin: 5px 5px 5px 15px;
+}
+
+.addthis-settings-page .custom-hex-color-wrapper,
+.addthis-settings-page .custom-color-select-wrapper {
+  clear: both;
+}
+
+.addthis-settings-page .custom-color-select-wrapper {
+  min-height: 38px;
+}
+
+.addthis-settings-page .custom-hex-color-wrapper input,
+.addthis-settings-page .custom-hex-color-wrapper label {
+  display: inline-block;
+}
+
+.addthis-settings-page .custom-hex-color-wrapper input{
+  margin: 5px;
+}
+
+.addthis-settings-page .custom-hex-color-wrapper label {
+  margin: 5px 0 0 0;
+}

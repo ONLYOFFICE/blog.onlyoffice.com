@@ -1,0 +1,30 @@
+{
+    "name": "wp-media/heartbeat-control",
+    "description": "WordPress plugin to control the WordPress heartbeat.",
+    "keywords": [
+		"wordpress",
+		"heartbeat"
+	],
+	"homepage": "https://github.com/wp-media/heartbeat-control",
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+			"name": "WP Media",
+			"email": "contact@wp-media.me",
+			"homepage": "https://wp-media.me"
+        }
+    ],
+    "type": "wordpress-plugin",
+    "support": {
+		"issues": "https://github.com/wp-media/heartbeat-control/issues",
+		"source": "https://github.com/wp-media/heartbeat-control"
+	},
+    "require": {
+        "cmb2/cmb2": "^2.6"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "Heartbeat_Control\\" : ""
+        }
+    }
+}

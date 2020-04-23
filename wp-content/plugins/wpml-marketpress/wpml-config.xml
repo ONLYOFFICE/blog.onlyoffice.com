@@ -1,0 +1,25 @@
+<wpml-config>
+    <custom-fields>
+        <custom-field action="0">mp_sku</custom-field>
+        <custom-field action="0">mp_price</custom-field>
+        <custom-field action="0">mp_is_sale</custom-field>
+        <custom-field action="0">mp_track_inventory</custom-field>
+        <custom-field action="0">mp_sales_count</custom-field>
+        <custom-field action="0">mp_shipping</custom-field>
+        <custom-field action="0">mp_var_name</custom-field>
+        <custom-field action="0">mp_sale_price</custom-field>
+        <custom-field action="0">mp_inventory</custom-field>
+        <custom-field action="0">mp_product_link</custom-field>
+        <custom-field action="0">mp_file</custom-field>
+		<custom-field action="0">mp_price_sort</custom-field>
+		<custom-field action="0">mp_is_special_tax</custom-field>
+		<custom-field action="0">mp_special_tax</custom-field>
+    </custom-fields>
+    <custom-types>
+        <custom-type translate="1">product</custom-type>
+    </custom-types>
+    <taxonomies>
+        <taxonomy translate="1">product_category</taxonomy>
+        <taxonomy translate="1">product_tag</taxonomy>
+    </taxonomies>
+</wpml-config>

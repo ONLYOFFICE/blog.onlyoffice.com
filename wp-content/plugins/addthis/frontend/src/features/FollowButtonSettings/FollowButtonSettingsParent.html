@@ -1,0 +1,98 @@
+<div ng-controller="FollowButtonSettingsCtrl">
+    <div class="header-container">
+        <div ng-include class="header-background" src="'/images/logo-pattern.svg'"></div>
+        <div ng-include class="header-logo" src="'/images/addthis-logo.svg'"></div>
+    </div>
+
+    <div
+      class="navigate-back"
+      ng-hide="showToolCards()"
+      ng-click="goBack()"
+    >
+        <span translate>registered_intro_header_follow_tools</span>
+    </div>
+
+    <form
+        name="form"
+        class="css-form form-horizontal"
+        novalidate
+        can-edit-tools-check
+        debug-hot-keys
+    >
+        <section
+            alt="{{'cross_plugin_warnings_section_alt'|translate}}"
+            ng-show="showToolCards()"
+            ng-include
+            src="'/features/CrossPluginWarnings/CrossPluginWarnings.html'"
+        >
+        </section>
+
+        <!-- Follow Header -->
+        <section
+            alt="{{'tool_listing_smlfw_alt'|translate}}"
+            ng-show="showToolCards()"
+            ng-include
+            src="'/features/FollowButtonSettings/smlfwCard.html'"
+        >
+        </section>
+        <section
+            alt="{{'tool_settings_smlfw_alt'|translate}}"
+            ng-include
+            src="'/features/FollowButtonSettings/smlfwSettings.html'"
+        >
+        </section>
+
+        <!-- Horizontal Follow Buttons -->
+        <section
+            alt="{{'tool_listing_flwh_alt'|translate}}"
+            ng-show="showToolCards()"
+            ng-include
+            src="'/features/FollowButtonSettings/flwhCard.html'"
+        >
+        </section>
+        <section
+            alt="{{'tool_settings_flwh_alt'|translate}}"
+            ng-include
+            src="'/features/FollowButtonSettings/flwhSettings.html'"
+        >
+        </section>
+
+        <!-- Vertical Follow Buttons -->
+        <section
+            alt="{{'tool_listing_flwv_alt'|translate}}"
+            ng-show="showToolCards()"
+            ng-include
+            src="'/features/FollowButtonSettings/flwvCard.html'"
+        >
+        </section>
+        <section
+            alt="{{'tool_settings_flwv_alt'|translate}}"
+            ng-include
+            src="'/features/FollowButtonSettings/flwvSettings.html'"
+        >
+        </section>
+
+        <!-- Custom Follow Buttons -->
+        <section
+            alt="{{'tool_listing_cflwh_alt'|translate}}"
+            ng-show="(showToolCards()) && (globalOptions.addthis_plugin_controls === 'AddThis')"
+            ng-include
+            src="'/features/FollowButtonSettings/cflwhCard.html'"
+        >
+        </section>
+        <section
+            alt="{{'tool_settings_cflwh_alt'|translate}}"
+            ng-include
+            src="'/features/FollowButtonSettings/cflwhSettings.html'"
+        >
+        </section>
+
+        <div
+            ng-show="showToolCards()"
+            class="tool-gallery-card review-nag"
+            review-nag
+        >
+        </div>
+    </form>
+
+</div>

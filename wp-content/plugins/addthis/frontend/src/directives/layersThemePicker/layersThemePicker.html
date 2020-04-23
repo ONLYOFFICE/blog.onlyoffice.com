@@ -1,0 +1,20 @@
+<label
+    for="addthis-{{toolPco}}-{{fieldName}}"
+    class="strong"
+    translate
+>
+    layers_theme_picker_title
+</label>
+
+<select
+    name="addthis-{{toolPco}}-{{fieldName}}"
+    id="addthis-{{toolPco}}-{{fieldName}}"
+    ng-model="ngModel"
+>
+    <option
+        ng-repeat="theme in themeOptions"
+        value="{{theme.value}}"
+    >
+        {{theme.display|translate}}
+    </option>
+</select>

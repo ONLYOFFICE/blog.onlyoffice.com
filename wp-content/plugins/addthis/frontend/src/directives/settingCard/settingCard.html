@@ -1,0 +1,7 @@
+<div ng-class="expended? 'postbox': 'postbox closed'" name="{{name}}" id="{{name}}">
+    <button type="button" class="handlediv button-link" ng-click="expended = !expended">
+        <span class="toggle-indicator" aria-hidden="false"></span>
+    </button>
+    <span ng-transclude>
+    </span>
+</div>

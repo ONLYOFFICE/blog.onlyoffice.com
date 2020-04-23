@@ -1,0 +1,73 @@
+<div class="follow-service-picker">
+    <h3 translate>service_picker_title</h3>
+    <p translate>follow_service_picker_description<p>
+    <div class="follow-service-add">
+        <div
+            ng-repeat="(index, service) in serviceOptions"
+            ng-click="addService(service.userTypes)"
+            class="follow-service-add-icon"
+            alt="{{'service_add_alt'|translate:{'service': (service.displayName|translate)} }}"
+        >
+            <a
+                tabindex="-1"
+                class="pull-left follow-service-icon addthis_button_{{service.icon}}"
+            >
+            </a>
+            <div
+                ng-include
+                src="'/images/cross.svg'"
+                class="add add-service"
+            >
+            </div>
+        </div>
+    </div>
+
+    <p ng-show="ngModel" translate>follow_service_picker_add_urls</p>
+
+    <div
+        class="follow-service-edit"
+        ng-repeat="(fieldName, username) in ngModel"
+    >
+
+        <label
+            class="follow-service-edit-icon"
+            for="addthis-{{toolPco}}-service-{{getServiceCode(fieldName)}}-{{getUserType(fieldName)}}"
+            alt="{{'service_icon_alt'|translate:{'service': (serviceOptions[getServiceCode(fieldName)].userTypes[getUserType(fieldName)].displayName|translate)} }}"
+        >
+            <a
+                tabindex="-1"
+                class="pull-left addthis_button_{{serviceOptions[getServiceCode(fieldName)].icon}}"
+            >
+            </a>
+            <div class="follow-service-edit-icon-pointer-event-cover-hack"></div>
+        </label>
+
+        <div class="follow-service-edit-input">
+            <label
+                for="addthis-{{toolPco}}-service-{{getServiceCode(fieldName)}}-{{getUserType(fieldName)}}"
+                alt="{{'follow_service_label_alt'|translate:{'profile': (serviceOptions[getServiceCode(fieldName)].userTypes[getUserType(fieldName)].displayName|translate)} }}"
+            >
+                {{serviceOptions[getServiceCode(fieldName)].userTypes[getUserType(fieldName)].preInputUrl}}
+            </label>
+            <input
+                type="text"
+                ng-model="ngModel[fieldName]"
+                id="addthis-{{toolPco}}-service-{{getServiceCode(fieldName)}}-{{getUserType(fieldName)}}"
+                name="addthis-{{toolPco}}-service-{{getServiceCode(fieldName)}}-{{getUserType(fieldName)}}"
+                alt="{{'follow_service_input_alt'|translate:{'profile': (serviceOptions[getServiceCode(fieldName)].userTypes[getUserType(fieldName)].displayName|translate)} }}"
+            />
+            <label for="{{userType.formFieldName}}">
+                {{serviceOptions[getServiceCode(fieldName)].userTypes[getUserType(fieldName)].postInputUrl}}
+            </label>
+        </div>
+
+        <div
+            ng-click="deleteServiceField(fieldName)"
+            alt="{{'follow_service_delete_alt'|translate:{'profile': (serviceOptions[getServiceCode(fieldName)].userTypes[getUserType(fieldName)].displayName|translate)} }}"
+            ng-include
+            src="'/images/cross.svg'"
+            class="follow-service-delete-icon delete"
+        >
+        </div>
+    </div>
+</div>

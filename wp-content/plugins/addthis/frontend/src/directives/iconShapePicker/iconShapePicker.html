@@ -1,0 +1,23 @@
+<div>
+
+    <label
+        for="addthis-{{toolPco}}-{{fieldName}}"
+        class="strong"
+        translate
+    >
+        icon_shape_picker_title
+    </label>
+
+    <div
+        class="shape-radio-button-image-wrapper"
+        ng-repeat="shape in shapeOptions"
+        ng-class="{ 'selected-image' : ngModel == shape.value }"
+        ng-click="changeShape(shape.value)"
+        alt="{{shape.alt|translate}}"
+    >
+        <img
+            ng-src="{{templateBaseUrl+'src/images/'+shape.image}}"
+            class="shape-radio-button-image shape-radio-button-image-{{shape.value}}"
+        />
+    </div>
+</div>

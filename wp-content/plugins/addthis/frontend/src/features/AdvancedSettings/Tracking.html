@@ -1,0 +1,94 @@
+<div class="settings-card">
+    <header>
+        <h2 translate>advanced_settings_tracking_header</h2>
+    </header>
+
+    <div class="settings-body">
+
+        <section
+            basic-checkbox
+            ng-model="globalOptions.addthis_append_data"
+            label="{{'advanced_settings_clickbacks_label'|translate}}"
+            for="clickbacks"
+            recommend="true"
+            warning-text="{{'warning_message_advanced_settings_clickbacks'|translate}}"
+        >
+            <span
+                translate
+                translate-values="{'link': '<a href=\'http://addthis.com\'>addthis.com</a>'}"
+            >
+                advanced_settings_clickbacks_description
+            </span>
+            <a href="http://www.addthis.com/academy/addthis-click-tracking/" translate>
+                advanced_settings_clickbacks_more_info_link
+            </a>
+        </section>
+
+        <section
+            basic-checkbox
+            ng-model="globalOptions.addthis_addressbar"
+            for="addressbar-shares"
+            label="{{'advanced_settings_address_bar_shares_label'|translate}}"
+        >
+            <span translate>
+                advanced_settings_address_bar_shares_description
+            </span>
+            <a href="http://www.addthis.com/academy/what-is-address-bar-sharing-analytics/" translate>
+                advanced_settings_address_bar_shares_more_info_link
+            </a>
+        </section>
+
+        <section
+            basic-checkbox
+            ng-model="globalOptions.addthis_bitly"
+            for="bitly"
+            label="{{'advanced_settings_bitly_label'|translate}}"
+        >
+            <span
+                translate
+                translate-values="{'link': '<a href=\'http://addthis.com\'>addthis.com</a>'}"
+            >
+                advanced_settings_bitly_description
+            </span>
+        </section>
+
+        <section>
+            <div
+                setting-title-and-description
+                label="{{'advanced_settings_google_analytics_label'|translate}}"
+                for="google-analytics"
+            >
+                <span translate>
+                    advanced_settings_google_analytics_description
+                </span>
+                <a href="http://www.addthis.com/academy/integrating-with-google-analytics/" translate>
+                    advanced_settings_google_analytics_more_info_link
+                </a>
+            </div>
+
+            <input
+                type="text"
+                ng-model="globalOptions.data_ga_property"
+                id="google-analytics"
+                name="google-analytics"
+            />
+        </section>
+
+        <section>
+            <div setting-title-and-description
+                label="{{'advanced_settings_twitter_via_label'|translate}}"
+                for="twitter-via"
+            >
+                {{'advanced_settings_twitter_via_description'|translate}}
+            </div>
+
+            <span class="prepend-on-input">@</span><input
+                type="text"
+                class="form-control"
+                ng-model="globalOptions.addthis_twitter_template"
+                id="twitter-via"
+                name="twitter-via"
+            />
+        </section>
+    </div>
+</div>

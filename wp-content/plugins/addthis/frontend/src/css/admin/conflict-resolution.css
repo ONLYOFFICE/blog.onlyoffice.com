@@ -1,0 +1,77 @@
+/**
+ * +--------------------------------------------------------------------------+
+ * | Copyright (c) 2008-2017 AddThis, LLC                                     |
+ * +--------------------------------------------------------------------------+
+ * | This program is free software; you can redistribute it and/or modify     |
+ * | it under the terms of the GNU General Public License as published by     |
+ * | the Free Software Foundation; either version 2 of the License, or        |
+ * | (at your option) any later version.                                      |
+ * |                                                                          |
+ * | This program is distributed in the hope that it will be useful,          |
+ * | but WITHOUT ANY WARRANTY; without even the implied warranty of           |
+ * | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            |
+ * | GNU General Public License for more details.                             |
+ * |                                                                          |
+ * | You should have received a copy of the GNU General Public License        |
+ * | along with this program; if not, write to the Free Software              |
+ * | Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA |
+ * +--------------------------------------------------------------------------+
+ */
+
+.addthis-settings-page .conflict-resolution {
+  max-width: 750px;
+  text-align: center;
+  margin: auto;
+}
+
+.addthis-settings-page .conflict-resolution .addthis-btn {
+  height: 36px;
+  line-height: 36px;
+  padding: 0 20px;
+  margin: 40px 10px 0 10px;
+  border-radius: 3px;
+}
+
+.addthis-settings-page .conflict-resolution a.follow-service-icon {
+  display: inline-block;
+}
+
+.addthis-settings-page .conflict-resolution a.follow-service-icon .at-icon-wrapper,
+.addthis-settings-page .conflict-resolution a.follow-service-icon {
+  border-radius: 50%;
+}
+
+.addthis-settings-page .conflict-resolution a.follow-service-icon .at-icon-wrapper,
+.addthis-settings-page .conflict-resolution a.follow-service-icon svg{
+  width: 24px!important;
+  height: 24px!important;
+}
+
+.addthis-settings-page .conflict-resolution a.follow-service-icon {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  background-size: 24px!important;
+}
+
+.addthis-settings-page .conflict-resolution h3{
+  margin: 40px 0 0 0;
+  letter-spacing: .5px;
+}
+
+.addthis-settings-page .conflict-resolution h3 span.service-name {
+  height: 24px;
+  line-height: 24px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+  position: relative;
+  top: -5px;
+}
+
+.addthis-settings-page .conflict-resolution .follow-service-icon-pointer-event-cover-hack {
+  width: 30px!important;
+  height: 27px!important;
+  position: absolute;
+  margin-left: -30px;
+}

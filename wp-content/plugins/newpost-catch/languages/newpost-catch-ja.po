@@ -1,0 +1,129 @@
+# Copyright 2012-2013 Newpost Catch
+msgid ""
+msgstr ""
+"Project-Id-Version: Newpost Catch\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-11 +900\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+
+msgid "LatestPost(s)"
+msgstr "最近の投稿"
+
+msgid "Title"
+msgstr "タイトル"
+
+msgid "Thumbnail Size"
+msgstr "サムネイルの設定"
+
+msgid "Width"
+msgstr "幅"
+
+msgid "Height"
+msgstr "高さ"
+
+msgid "Show post(s)"
+msgstr "投稿件数"
+
+msgid "Post(s)"
+msgstr "件"
+
+msgid "Display date"
+msgstr "投稿日（チェックすると表示）"
+
+msgid "Display sticky post"
+msgstr "先頭に固定表示している投稿（チェックすると表示）"
+
+msgid "Use default css"
+msgstr "プラグインフォルダ内のデフォルトCSS（チェックすると適用）"
+
+msgid "Post types"
+msgstr "投稿タイプ"
+
+msgid "Display category(ies)"
+msgstr ""
+"特定のカテゴリを指定して表示(ID指定、カンマで複数指定、IDにマイナス値の付与で"
+"除外 例:1,-2,17 などお好みで)"
+
+msgid "Check the category ID"
+msgstr "カテゴリのIDを確認"
+
+msgid "Use shortcode"
+msgstr "【新機能】ショートコードが使えるようになりました。"
+
+msgid "Can use the shortcode in a textwidget and theme files."
+msgstr "テーマファイル,投稿本文中など 様々な箇所に表示できます。"
+
+msgid "Contact/Follow"
+msgstr ""
+"【専用アカウント作りました】プラグインに関する新機能追加や最新情報などのお知"
+"らせを配信します。是非ともフォローください。"
+
+msgid "completed."
+msgstr "設定完了しました。"
+
+msgid "Setting Thumbnails"
+msgstr "サムネイル設定"
+
+msgid "Eyecatch image batch setting"
+msgstr "アイキャッチ画像を一括で設定できます。"
+
+msgid ""
+"I can set the eyecatch image, [the first image] found in the body of the "
+"post. (※ image does not exist, invalid image of (dead link) can not be set "
+"the URL."
+msgstr ""
+"投稿の本文内に見つかった「最初の画像」をアイキャッチ画像に設定できます。（※画"
+"像が存在しない、URLが無効（リンク切れ）の画像は設定できません。）"
+
+msgid "Search the post."
+msgstr "投稿を検索"
+
+msgid "Search"
+msgstr "検索"
+
+msgid "Search Result"
+msgstr "検索結果"
+
+msgid ""
+"Can be edited post in the [Edit] button. Please confirm the image displayed "
+"in the text and, whether or not broken links."
+msgstr ""
+"「編集」ボタンで投稿の編集可能です。本文中に画像があるのに「検索結果に表示さ"
+"れない！」という場合は「画像がリンク切れになっていないか」など、ご確認くださ"
+"い。"
+
+msgid "Edit"
+msgstr "編集"
+
+msgid "Image"
+msgstr "画像"
+
+msgid "Image URL"
+msgstr "画像URL"
+
+msgid "Not found."
+msgstr "みつかりませんでした。"
+
+msgid "Image(s) found."
+msgstr "件みつかりました。"
+
+msgid "Setting start in the [Generate] button"
+msgstr "「作成」ボタンを押すと一括設定開始します。"
+
+msgid "Generate"
+msgstr "作成"
+
+msgid "Thumbnail"
+msgstr "サムネイルのサイズ"
+
+msgid "Configuration"
+msgstr "サムネイルのサイズ変更"
+
+msgid "Media Settings"
+msgstr "メディア設定"

@@ -1,0 +1,51 @@
+<label
+    for="{{formFieldName}}"
+    ng-class="{'bad-choice': form[formFieldName].$error.json}"
+    class="strong"
+>
+    {{label}}
+</label>
+
+<div ng-if="helpText.example">
+    {{'advanced_settings_developer_config_example_label'|translate}}
+    <em>{{ helpText.example | json }}</em>
+</div>
+
+<div
+    ng-if="helpText.linkText && helpText.url"
+    translate
+    translate-values="{'link': '<a href=\'{{helpText.url}}\' target=\'_blank\'>{{helpText.linkText}}</a>'}"
+>
+    advanced_settings_developer_config_more_info
+</div>
+
+<div ng-class="{
+    'bad-choice': form[formFieldName].$error.json,
+    'good-choice': ngModel && !form[formFieldName].$error.json
+}">
+    <textarea
+        rows="4"
+        ng-model="ngModel"
+        id="{{formFieldName}}"
+        name="{{formFieldName}}"
+        ng-trim="true"
+        ng-model-options="{ debounce: 500 }"
+        validate-json
+    >
+    </textarea>
+
+    <div
+        ng-show="form[formFieldName].$error.json"
+        class="input-feedback"
+    >
+        <span custom-icon level="danger"></span>
+        Invalid JSON
+    </div>
+    <div
+        ng-show="ngModel && !form[formFieldName].$error.json"
+        class="input-feedback"
+    >
+        <span custom-icon level="success"></span>
+        Valid JSON :)
+    </div>
+</div>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+    viewBox="0 0 13 13"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+>
+    <defs></defs>
+    <g fill-rule="evenodd">
+        <path
+            d="M6.5,13 C10.0898509,13 13,10.0898509 13,6.5 C13,2.91014913 10.0898509,0 6.5,0 C2.91014913,0 0,2.91014913 0,6.5 C0,10.0898509 2.91014913,13 6.5,13 Z"
+            class="background"
+        >
+        </path>
+        <path
+            d="M4.27608731,4.27608731 L8.72202292,8.72202292"
+            stroke-linecap="square"
+            class="symbol"
+        >
+        </path>
+        <path
+            d="M4.27400014,8.72599996 L8.72389321,4.2761069"
+            stroke-linecap="square"
+            class="symbol"
+        >
+        </path>
+    </g>
+</svg>

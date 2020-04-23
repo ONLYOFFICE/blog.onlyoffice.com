@@ -1,0 +1,161 @@
+/**
+ * +--------------------------------------------------------------------------+
+ * | Copyright (c) 2008-2017 AddThis, LLC                                     |
+ * +--------------------------------------------------------------------------+
+ * | This program is free software; you can redistribute it and/or modify     |
+ * | it under the terms of the GNU General Public License as published by     |
+ * | the Free Software Foundation; either version 2 of the License, or        |
+ * | (at your option) any later version.                                      |
+ * |                                                                          |
+ * | This program is distributed in the hope that it will be useful,          |
+ * | but WITHOUT ANY WARRANTY; without even the implied warranty of           |
+ * | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            |
+ * | GNU General Public License for more details.                             |
+ * |                                                                          |
+ * | You should have received a copy of the GNU General Public License        |
+ * | along with this program; if not, write to the Free Software              |
+ * | Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA |
+ * +--------------------------------------------------------------------------+
+ */
+
+#wpcontent.registration-page{
+  text-align: center;
+}
+
+.addthis-settings-page .registration-field-area label{
+  font-weight: 200;
+  font-size: 20px;
+}
+
+.addthis-settings-page .registration-field-area{
+  padding-top: 0;
+  text-align: left;
+  max-width: 300px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.addthis-settings-page .registration-field-area input[type=text],
+.addthis-settings-page .registration-field-area input[type=password],
+.addthis-settings-page .registration-field-area input[type=email],
+.addthis-settings-page .registration-field-area select,
+.addthis-settings-page .registration-field-area textarea{
+  width: 300px;
+}
+
+.registration-page .addthis-settings-page .settings-card{
+  max-width: 570px;
+  margin-right: auto;
+  margin-left: auto;
+  border: none;
+  background-color: #F1F1F1;
+}
+
+.registration-page .addthis-settings-page .settings-card header{
+  border: none;
+}
+
+.registration-page .addthis-settings-page .image-card{
+  width: 242px;
+  height: 370px;
+  margin: 20px;
+  background: #FFFFFF;
+  border: 1px solid #DFDFDF;
+  border-radius: 3px;
+  text-align: left;
+  display: inline-block;
+  overflow: auto;
+  vertical-align: top;
+  color: #444444;
+}
+
+.registration-page .addthis-settings-page .image-card img{
+  width: 242px;
+  border-bottom: 1px solid #F1F1F0;
+}
+
+.registration-page .addthis-settings-page .image-card h3,
+.registration-page .addthis-settings-page .image-card p{
+  padding: 10px;
+  margin: 0;
+}
+
+.registration-page .addthis-settings-page .image-card h3{
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.registration-page .addthis-settings-page .pointy-alert{
+  display: block;
+  border-style: solid;
+  border-width: 2px 2px 3px 2px;
+  border-radius: 4px 0 4px 4px;
+  border-color: #178BED;
+  max-width: 800px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+  background-color: #FFFFFF;
+}
+
+.registration-page .addthis-settings-page .pointy-alert p,
+.registration-page .addthis-settings-page .pointy-alert h3{
+  padding: 0;
+  margin: 10px;
+  color: #178BED;
+}
+
+.registration-page .addthis-settings-page .pointy-alert a{
+  text-decoration: underline;
+}
+
+.registration-page .addthis-settings-page .pointy-alert h3{
+  font-weight: bold;
+}
+
+.registration-page .addthis-settings-page .pointy-alert-corner{
+  width: 0;
+  height: 0;
+  float: right;
+  border-top: 55px solid #178BED;
+  border-left: 55px solid transparent;
+  margin: 0;
+}
+
+.registration-page .addthis-settings-page .pointy-alert-icon{
+  width: 40px;
+  height: 40px;
+  float: right;
+  margin-right: -50px;
+  margin-top: 5px;
+}
+
+.registration-page .addthis-settings-page .pointy-alert-icon .icon{
+  float: right;
+}
+
+.registration-page .addthis-settings-page .pointy-alert-icon .icon svg{
+  fill: #FFFFFF;
+}
+
+.registration-page .addthis-settings-page div.soft-alert{
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 800px;
+}
+
+.registration-page .addthis-settings-page input[type=checkbox] {
+  margin-top: 8px;
+  float: left;
+}
+
+.registration-page .addthis-settings-page div[name=emailSubscription] {
+  padding-top: 20px;
+}
+
+.registration-page .addthis-settings-page label.addthis-plugin-mode {
+  margin-top: 0;
+}

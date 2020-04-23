@@ -1,0 +1,63 @@
+<h3>
+    <span class="service-name" translate>
+        icon_size_picker_title
+    </span>
+</h3>
+
+<span ng-repeat="size in conflicts.size">
+    <span
+        class="btn selectable-2"
+        ng-hide="size === ngModel.size"
+        ng-click="ngModel.size = size"
+    >
+        {{'icon_size_picker_select_'+size|translate}}
+    </span>
+    <span
+        class="btn selectable-2 active"
+        ng-show="size === ngModel.size"
+        ng-click="ngModel.size = size"
+    >
+        {{'icon_size_picker_select_'+size|translate}}
+    </span>
+</span>
+
+<div ng-repeat="service in followServices">
+    <div
+        ng-repeat="(userType, username) in service.endpoints"
+        ng-show="conflicts.services[service.code + '_' + userType]"
+        class="follow-service-conflicts"
+    >
+        <h3>
+            <a
+                tabindex="-1"
+                class="follow-service-icon addthis_button_{{service.iconCode}}"
+            >
+            </a>
+            <span class="follow-service-icon-pointer-event-cover-hack"></span>
+
+            <span class="service-name" translate>
+                {{headerName(service, userType)}}
+            </span>
+        </h3>
+
+        <span
+            ng-repeat="username in conflicts.services[service.code + '_' + userType]"
+        >
+            <span
+                class="btn selectable-2"
+                ng-hide="username === ngModel.services[service.code + '_' + userType]"
+                ng-click="ngModel.services[service.code + '_' + userType] = username"
+            >
+                {{username}}
+            </span>
+            <span
+                class="btn selectable-2 active"
+                ng-show="username === ngModel.services[service.code + '_' + userType]"
+                ng-click="ngModel.services[service.code + '_' + userType] = ''"
+            >
+                {{username}}
+            </span>
+        </span>
+    </div>
+</div>
+

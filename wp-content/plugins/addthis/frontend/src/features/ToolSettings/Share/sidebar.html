@@ -1,0 +1,263 @@
+<div class="tool-left">
+
+    <div
+        setting-frame
+        for="sidebar-setting-frame"
+        title="toolSettings.toolName"
+        title-placeholder-msgid="titlePlaceholder"
+    >
+        <pre ng-show="globalOptions.debug_enable">{{toolSettings|json}}</pre>
+        <div id="advanced-sortables" class="meta-box-sortables ui-sortable">
+
+            <!-- General Settings -->
+            <div
+                setting-card
+                for="setting-card-general-settings"
+                expended="generalCardExpended"
+            >
+                <h2 class="hndle ui-sortable-handle">
+                    <span translate>share_tool_edit_general_label</span>
+                </h2>
+                <div class="inside inside-grey" ng-show="generalCardExpended">
+                    <h3 translate>layers_position_header</h3>
+                    <div
+                        position-picker
+                        ng-model="toolSettings.desktopPosition"
+                        field-name="desktopPosition.fieldName"
+                        title="desktopPosition.title"
+                        position-options="desktopPosition.positionOptions"
+                    >
+                    </div>
+
+                    <div
+                        position-picker
+                        ng-model="toolSettings.mobilePosition"
+                        field-name="mobilePosition.fieldName"
+                        title="mobilePosition.title"
+                        position-options="mobilePosition.positionOptions"
+                    >
+                    </div>
+
+                    <div class="clear"></div>
+
+                    <h3 translate>share_tool_counter_label</h3>
+                    <div
+                        count-type-picker
+                        ng-model="toolSettings.counts"
+                        field-name="sidebarCounts.fieldName"
+                        title="sidebarCounts.title"
+                        type-options="sidebarCounts.countTypeOptions"
+                    >
+                    </div>
+
+                    <div class="clear"></div>
+
+                    <div
+                        share-service-picker
+                        services="toolSettings.services"
+                        auto-personalization="toolSettings.auto_personalization"
+                        number-of-services="toolSettings.numPreferredServices"
+                        min="1"
+                        max="10"
+                        widget-id="{{toolSettings.widgetId}}-floating"
+                    >
+                    </div>
+
+                    <div class="clear"></div>
+
+                    <div class="actions tool-positions">
+                        <h3 translate>tool_settings_title_label</h3>
+                        <input
+                            type="text"
+                            name="share_label"
+                            spellcheck="true"
+                            autocomplete="off"
+                            ng-model="toolSettings.title"
+                        >
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design Settings -->
+            <div
+                setting-card
+                for="setting-card-design-settings"
+                expended="designCardExpended"
+            >
+                <h2 class="hndle ui-sortable-handle">
+                    <span translate>share_tool_edit_design_label</span>
+                </h2>
+                <div class="inside inside-grey" ng-show="designCardExpended">
+                    <h3 translate>share_tool_style_label</h3>
+                    <div
+                        style-picker=""
+                        ng-model="toolSettings.style"
+                        field-name="sidebarStyle.fieldName"
+                        title="sidebarStyle.title"
+                        style-options="sidebarStyle.styleOptions"
+                    >
+                    </div>
+
+                    <div class="clear"></div>
+
+                    <h3 translate>share_tool_buttons_label</h3>
+                    <div
+                        america-icon-size-picker=""
+                        ng-model="toolSettings.mobileButtonSize"
+                        field-name="mobileButtonSize.fieldName"
+                        title="mobileButtonSize.title"
+                        size-options="mobileButtonSize.sizeOptions"
+                    >
+                    </div>
+
+                    <div class="clear"></div>
+
+                    <div
+                        america-layers-theme-picker
+                        ng-show="toolSettings.style === 'modern'"
+                        ng-model="toolSettings.theme"
+                        field-name="sidebarTheme.fieldName"
+                        title="sidebarTheme.title"
+                        theme-options="sidebarTheme.themeOptions"
+                    >
+                    </div>
+
+                    <div class="clear"></div>
+                </div>
+            </div>
+
+            <!-- Templates -->
+            <div ng-show="globalOptions.addthis_plugin_controls == 'WordPress' && !globalOptions.enqueue_local_settings">
+                <div
+                    setting-card
+                    for="setting-card-design-settings"
+                    expended="templateCardExpended"
+                >
+                    <h2 class="hndle ui-sortable-handle">
+                        <span translate>share_tool_wordpress_template_label</span>
+                    </h2>
+                    <div class="inside inside-grey" ng-show="templateCardExpended">
+                        <div
+                            template-checklist
+                            ng-model="toolSettings.templates"
+                            field-name="buttonBarTemplate.fieldName"
+                            template-options="buttonBarTemplate.templateOptions"
+                        >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Settings -->
+            <div
+                setting-card
+                for="setting-card-advanced-settings"
+                expended="advancedCardExpended"
+                ng-show="globalOptions.addthis_plugin_controls == 'AddThis'"
+            >
+                <h2 class="hndle ui-sortable-handle">
+                    <span translate>share_tool_edit_advanced_label</span>
+                </h2>
+                <div class="inside inside-grey" ng-show="advancedCardExpended">
+                    <div
+                        hide-on-pages
+                        ng-model="toolSettings"
+                        ng-show="globalOptions.addthis_plugin_controls == 'AddThis'"
+                    >
+                    </div>
+                    <h3 translate>share_tool_extra_appearance_settings_label</h3>
+                    <div
+                        share-count-threshold-picker
+                        ng-model="toolSettings.shareCountThreshold"
+                        ng-show="globalOptions.addthis_plugin_controls == 'AddThis'"
+                    >
+                    </div>
+                    <div
+                        responsive-picker
+                        ng-model="toolSettings.responsive"
+                        ng-show="globalOptions.addthis_plugin_controls == 'AddThis'"
+                    >
+                    </div>
+                    <div class="clear"></div>
+                    <div
+                        america-layers-offset-picker
+                        ng-model="toolSettings.offset"
+                        positions="top,bottom"
+                        tool-pco="{{toolPco}}"
+                        ng-show="globalOptions.addthis_plugin_controls == 'AddThis'"
+                    >
+                    </div>
+
+                    <div class="clear"></div>
+
+                    <h3 translate>share_tool_follow_up_message_label</h3>
+                    <div class="actions tool-positions sidebar-bg">
+                        <input type="checkbox" ng-model="toolSettings.thankyou">
+                        <strong class="label-bg" translate>
+                            share_tool_show_message_label
+                    </strong>
+                    </div>
+                    <div ng-show="toolSettings.thankyou">
+                        <div class="actions tool-positions">
+                            <label>
+                                <strong translate>
+                                    share_tool_thank_you_message_label
+                                </strong>
+                            </label>
+                            <input
+                                type="text"
+                                name="share_label"
+                                spellcheck="true"
+                                autocomplete="off"
+                                ng-model="toolSettings.postShareTitle"
+                            >
+                        </div>
+                        <div class="actions tool-positions">
+                            <label>
+                                <strong translate>
+                                    tool_settings_post_share_follow_message_label
+                                </strong>
+                            </label>
+                            <input
+                                type="text"
+                                name="share_label"
+                                spellcheck="true"
+                                autocomplete="off"
+                                ng-model="toolSettings.postShareFollowMsg"
+                            >
+                        </div>
+                        <div class="actions tool-positions">
+                            <label>
+                                <strong translate>
+                                    share_tool_related_post_message_label
+                                </strong>
+                            </label>
+                            <input
+                                type="text"
+                                name="share_label"
+                                spellcheck="true"
+                                autocomplete="off"
+                                ng-model="toolSettings.postShareRecommendedMsg"
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="tool-right">
+    <div ng-include src="'/features/ToolSettings/submit.html'"></div>
+    <div ng-include src="'/features/Ads/HelpAd.html'"></div>
+</div>
+
+
+
+
+
+
+

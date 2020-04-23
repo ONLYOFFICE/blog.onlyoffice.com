@@ -1,0 +1,876 @@
+# Translation of the WordPress theme Twenty Ten 1.0 by the WordPress team.
+# Copyright (C) 2010 the WordPress team
+# This file is distributed under the same license as the Twenty Ten package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Twenty Ten 1.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/twentyten\n"
+"POT-Creation-Date: 2019-11-20 15:21+0300\n"
+"PO-Revision-Date: 2019-11-21 11:55+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Poedit 2.2.4\n"
+
+#: 404.php:22
+msgid "Not Found"
+msgstr ""
+
+#: 404.php:24
+msgid ""
+"Apologies, but the page you requested could not be found. Perhaps searching "
+"will help."
+msgstr ""
+
+#: archive.php:31
+#, php-format
+msgid "Daily Archives: <span>%s</span>"
+msgstr ""
+
+#: archive.php:33
+#, php-format
+msgid "Monthly Archives: <span>%s</span>"
+msgstr ""
+
+#: archive.php:35
+#, php-format
+msgid "Yearly Archives: <span>%s</span>"
+msgstr ""
+
+#: archive.php:37
+msgid "Blog Archives"
+msgstr ""
+
+#: attachment.php:17
+#, php-format
+msgid "Return to %s"
+msgstr ""
+
+#: attachment.php:19
+#, php-format
+msgid "<span class=\"meta-nav\">&larr;</span> %s"
+msgstr ""
+
+#: attachment.php:27
+#, php-format
+msgid "<span class=\"%1$s\">By</span> %2$s"
+msgstr ""
+
+#: attachment.php:38
+#, php-format
+msgid "<span class=\"%1$s\">Published</span> %2$s"
+msgstr ""
+
+#: attachment.php:48
+#, php-format
+msgid "Full size is %s pixels"
+msgstr ""
+
+#: attachment.php:51
+msgid "Link to full-size image"
+msgstr ""
+
+#: attachment.php:58 attachment.php:105 functions.php:396 loop.php:103
+#: loop.php:126 loop.php:168 onecolumn-page.php:25 single.php:63
+msgid "Edit"
+msgstr ""
+
+#: attachment.php:98 loop.php:118 loop.php:161
+msgid "<span class=\"meta-nav\">&rarr;</span>"
+msgstr ""
+
+#: attachment.php:99 loop.php:162 onecolumn-page.php:24 page.php:26
+#: single.php:42
+msgid "Pages:"
+msgstr ""
+
+#: author.php:31
+#, php-format
+msgid "Author Archives: %s"
+msgstr ""
+
+#: author.php:41
+#, php-format
+msgid "About %s"
+msgstr ""
+
+#: category.php:21
+#, php-format
+msgid "Category Archives: %s"
+msgstr ""
+
+#: comments.php:17
+msgid ""
+"This post is password protected. Enter the password to view any comments."
+msgstr ""
+
+#: comments.php:33 comments.php:53
+msgid "<span class=\"meta-nav\">&larr;</span> Older Comments"
+msgstr ""
+
+#: comments.php:34 comments.php:54
+msgid "Newer Comments <span class=\"meta-nav\">&rarr;</span>"
+msgstr ""
+
+#: comments.php:38 loop.php:154 loop.php:169 single.php:38
+msgid "1 comment"
+msgstr ""
+
+#: comments.php:38
+msgid "Comments (%)"
+msgstr ""
+
+#: comments.php:64
+msgid "Comments are closed."
+msgstr ""
+
+#: comments.php:70 loop.php:102 loop.php:125 loop.php:154 loop.php:169
+#: single.php:38
+msgid "Add a comment"
+msgstr ""
+
+#: comments.php:70
+#, php-format
+msgid "Add a comment to %s"
+msgstr ""
+
+#: comments.php:76
+#, php-format
+msgid "You must be <a href=\"%s\">logged in</a> to post a comment."
+msgstr ""
+
+#: comments.php:80
+#, php-format
+msgid "Logged in as <a class=\"account-name\" href=\"%1$s\">%2$s</a>"
+msgstr ""
+
+#: comments.php:80
+msgid "Log out of this account"
+msgstr ""
+
+#: comments.php:80
+msgid "Log out &raquo;"
+msgstr ""
+
+#: comments.php:83
+msgid "Name:"
+msgstr ""
+
+#: comments.php:83 comments.php:87
+msgid "<span class=\"important\">*</span>"
+msgstr ""
+
+#: comments.php:87
+msgid "E-mail (will not be published):"
+msgstr ""
+
+#: comments.php:91
+msgid "Website:"
+msgstr ""
+
+#: comments.php:96
+msgid "Message:"
+msgstr ""
+
+#: comments.php:101
+msgid "Add comment"
+msgstr ""
+
+#: footer-page.php:17 footer.php:98
+msgid "All rights reserved"
+msgstr ""
+
+#: footer.php:25
+#, fuzzy
+#| msgid "For Developers"
+msgid "Developers"
+msgstr "Pro vývojáře"
+
+#: footer.php:26 header.php:161 header.php:233 header.php:243
+msgid "Developer Edition"
+msgstr "Developer Edition"
+
+#: footer.php:27 header.php:169 header.php:245
+msgid "Document Builder"
+msgstr "Document Builder"
+
+#: footer.php:28 header.php:168
+msgid "API"
+msgstr "API"
+
+#: footer.php:31
+msgid "Offers"
+msgstr "Nabídky"
+
+#: footer.php:32
+msgid "Education"
+msgstr "Vzdělání"
+
+#: footer.php:33
+msgid "Personal Use"
+msgstr "Osobní použití"
+
+#: footer.php:34
+msgid "Nonprofits"
+msgstr "Neziskový sektor"
+
+#: footer.php:37
+msgid "Contact Us"
+msgstr "Kontaktujte nás"
+
+#: footer.php:39
+msgid "Sales Questions"
+msgstr "Prodejní dotazy"
+
+#: footer.php:43
+msgid "Partner Inquiries"
+msgstr "Partnerské dotazy na"
+
+#: footer.php:47
+#, fuzzy
+#| msgid "Partner Inquiries"
+msgid "Press Inquiries"
+msgstr "Partnerské dotazy na"
+
+#: footer.php:50
+msgid "Request a Call"
+msgstr "Zažádat o hovor"
+
+#: footer.php:53
+msgid "Support"
+msgstr "Podpora"
+
+#: footer.php:54
+msgid "SaaS Forum"
+msgstr "SaaS fórum"
+
+#: footer.php:55
+msgid "Server Forum"
+msgstr "Server fórum"
+
+#: footer.php:56
+msgid "Support Contact Form"
+msgstr "Formulář pro kontakt podpory"
+
+#: footer.php:57
+msgid "Order demo"
+msgstr "Demo objednávky"
+
+#: footer.php:60
+msgid "Get Info"
+msgstr "Získat info"
+
+#: footer.php:61
+msgid "FAQ"
+msgstr "FAQ"
+
+#: footer.php:62
+msgid "Getting Started"
+msgstr "Začínáme"
+
+#: footer.php:63
+msgid "Video Guides"
+msgstr "Videoprůvodce"
+
+#: footer.php:64
+msgid "Legal Notice"
+msgstr "Právní oznámení"
+
+#: footer.php:65
+msgid "GDPR Compliance"
+msgstr "GDPR Compliance"
+
+#: footer.php:70
+msgid "Follow us on:"
+msgstr "Sledujte nás na:"
+
+#: footer.php:98
+msgid "Ascensio System SIA"
+msgstr ""
+
+#: functions.php:88
+msgid "Primary Navigation"
+msgstr ""
+
+#: functions.php:116
+msgid "Berries"
+msgstr ""
+
+#: functions.php:122
+msgid "Cherry Blossoms"
+msgstr ""
+
+#: functions.php:128
+msgid "Concave"
+msgstr ""
+
+#: functions.php:134
+msgid "Fern"
+msgstr ""
+
+#: functions.php:140
+msgid "Forest Floor"
+msgstr ""
+
+#: functions.php:146
+msgid "Inkwell"
+msgstr ""
+
+#: functions.php:152
+msgid "Path"
+msgstr ""
+
+#: functions.php:158
+msgid "Sunset"
+msgstr ""
+
+#: functions.php:273
+#, php-format
+msgid "Search results for %s"
+msgstr ""
+
+#: functions.php:276 functions.php:290
+#, php-format
+msgid "Page %s"
+msgstr ""
+
+#: functions.php:328
+msgid "<span class=\"meta-nav nav-more\">Read more</span>"
+msgstr ""
+
+#: functions.php:392
+#, php-format
+msgid "%s"
+msgstr ""
+
+#: functions.php:396
+#, php-format
+msgid "%1$s at %2$s"
+msgstr ""
+
+#: functions.php:399
+msgid "Your comment is awaiting moderation."
+msgstr ""
+
+#: functions.php:410
+msgid "Pingback:"
+msgstr ""
+
+#: functions.php:410
+msgid "(Edit)"
+msgstr ""
+
+#: functions.php:428
+msgid "Primary Widget Area"
+msgstr ""
+
+#: functions.php:430
+msgid "The primary widget area"
+msgstr ""
+
+#: functions.php:438
+msgid "Secondary Widget Area"
+msgstr ""
+
+#: functions.php:440
+msgid "The secondary widget area"
+msgstr ""
+
+#: functions.php:448
+msgid "First Footer Widget Area"
+msgstr ""
+
+#: functions.php:450
+msgid "The first footer widget area"
+msgstr ""
+
+#: functions.php:458
+msgid "Second Footer Widget Area"
+msgstr ""
+
+#: functions.php:460
+msgid "The second footer widget area"
+msgstr ""
+
+#: functions.php:468
+msgid "Third Footer Widget Area"
+msgstr ""
+
+#: functions.php:470
+msgid "The third footer widget area"
+msgstr ""
+
+#: functions.php:478
+msgid "Fourth Footer Widget Area"
+msgstr ""
+
+#: functions.php:480
+msgid "The fourth footer widget area"
+msgstr ""
+
+#: functions.php:510
+#, php-format
+msgid ""
+"<span class=\"%2$s\">By %3$s</span><span style=\"display:inline-block; "
+"margin-left: 21px;\" class=\"%1$s\">Posted in: %4$s</span>"
+msgstr ""
+
+#: functions.php:530
+#, php-format
+msgid "<span class=\"%1$s\">%2$s</span>"
+msgstr ""
+
+#: functions.php:548
+#, php-format
+msgid ""
+"This entry was posted in %1$s and tagged %2$s. Bookmark the <a href=\"%3$s\" "
+"title=\"Permalink to %4$s\" rel=\"bookmark\">permalink</a>."
+msgstr ""
+
+#: functions.php:550
+#, php-format
+msgid ""
+"This entry was posted in %1$s. Bookmark the <a href=\"%3$s\" title="
+"\"Permalink to %4$s\" rel=\"bookmark\">permalink</a>."
+msgstr ""
+
+#: functions.php:552
+#, php-format
+msgid ""
+"Bookmark the <a href=\"%3$s\" title=\"Permalink to %4$s\" rel=\"bookmark"
+"\">permalink</a>."
+msgstr ""
+
+#: header.php:108
+msgid "Products"
+msgstr "Produkty"
+
+#: header.php:112 header.php:234
+msgid "Cloud Service"
+msgstr "Cloud služba"
+
+#: header.php:114
+msgid ""
+"Online documents editors and productivity business tools provided as a SaaS"
+msgstr ""
+"Online dokumentové editory a nástroje pro zvýšení produktivity poskytovány "
+"jako SaaS"
+
+#: header.php:116 header.php:131 header.php:146 header.php:165 header.php:215
+msgid "Overview"
+msgstr "Popis"
+
+#: header.php:117
+msgid "No installation required. Get started for "
+msgstr "Bez potřebné instalace.  Začněte ihned a "
+
+#: header.php:117 header.php:132 header.php:166
+msgid "FREE"
+msgstr "ZDARMA"
+
+#: header.php:118 header.php:133
+msgid "Complete set of business tools"
+msgstr "Kompletní sada obchodních nástrojů"
+
+#: header.php:119
+msgid "Secure and reliable hosting"
+msgstr "Bezpečný a spolehlivý hosting"
+
+#: header.php:120
+msgid "Cloud for non-profits"
+msgstr "Cloud pro neziskové organizace"
+
+#: header.php:121
+msgid "Cloud for personal use"
+msgstr "Cloud pro osobní využití"
+
+#: header.php:122
+msgid "Sign in"
+msgstr "Zapsat se"
+
+#: header.php:127 header.php:231 header.php:241
+msgid "Enterprise Edition"
+msgstr "Enterprise Edition"
+
+#: header.php:129
+msgid ""
+"Online document editors and productivity business tools at private network"
+msgstr ""
+"Online dokumentové editory a nástroje pro zvýšení produktivity v soukromé "
+"síti"
+
+#: header.php:132 header.php:166
+msgid "Self-hosted. Try for"
+msgstr "Vlastní hosting. Vyzkoušejte"
+
+#: header.php:134
+msgid "Enhanced security measures"
+msgstr "Zvýšená bezpečnostní opatření"
+
+#: header.php:135
+msgid "Various installation options"
+msgstr "Různé možnosti instalace"
+
+#: header.php:136 header.php:154
+msgid "Professional support"
+msgstr "Profesionální podpora"
+
+#: header.php:137
+msgid "Community Edition vs Enterprise Edition"
+msgstr "Community Edition vesrsus Enterprise Edition"
+
+#: header.php:142 header.php:232 header.php:242
+msgid "Integration Edition"
+msgstr "Integration Edition"
+
+#: header.php:144
+msgid "Online document editors and connectors for popular web services"
+msgstr "Online dokumentové editory a konektory pro oblíbené webové služby"
+
+#: header.php:147
+msgid "Self-hosted. Get started"
+msgstr "Vlastní hosting. Vyzkoušejte"
+
+#: header.php:147
+msgid "NOW"
+msgstr "IHNED"
+
+#: header.php:148
+msgid "For Nextcloud"
+msgstr "Pro Nextcloud"
+
+#: header.php:149
+msgid "For ownCloud"
+msgstr "Pro ownCloud"
+
+#: header.php:150
+msgid "For Alfresco"
+msgstr "Pro Alfresco"
+
+#: header.php:151
+msgid "For Confluence"
+msgstr "Pro Confluence"
+
+#: header.php:152
+msgid "For SharePoint"
+msgstr "Pro SharePoint"
+
+#: header.php:153
+msgid "Third-party connectors"
+msgstr "Konektory tretích strán"
+
+#: header.php:155
+msgid "Community Edition vs Integration Edition"
+msgstr "Community Edition vesrsus Integration Edition"
+
+#: header.php:163
+msgid "Online document editors to integrate with a service you are building"
+msgstr "Do služby, kterou vytváříte, integrujte online editory"
+
+#: header.php:167
+msgid "Dual licensing"
+msgstr "Dvojitá licence"
+
+#: header.php:175
+msgid "Latest Releases"
+msgstr "Poslední verze"
+
+#: header.php:179
+msgid "Apps"
+msgstr "Aplikace"
+
+#: header.php:183
+msgid "Online Editors"
+msgstr "Online editory"
+
+#: header.php:186
+msgid "Documents"
+msgstr "Dokumenty"
+
+#: header.php:187
+msgid "Spreadsheets"
+msgstr "Tabulky"
+
+#: header.php:188
+msgid "Presentations"
+msgstr "Prezentace"
+
+#: header.php:193 header.php:244
+msgid "Desktop Editors"
+msgstr "Stolní editory"
+
+#: header.php:194
+msgid "Office for iOS"
+msgstr "Office pro iOS"
+
+#: header.php:195
+msgid "Office for Android"
+msgstr "Office pro Android"
+
+#: header.php:196
+msgid "Mobile Projects"
+msgstr "Mobilní Projekty"
+
+#: header.php:199
+msgid "Collaboration Platform"
+msgstr "Platforma pro spolupráci"
+
+#: header.php:202
+msgid "Document Management"
+msgstr "Správa dokumentů"
+
+#: header.php:203
+msgid "Mail"
+msgstr "Mail"
+
+#: header.php:204
+msgid "CRM"
+msgstr "CRM"
+
+#: header.php:205
+msgid "Projects"
+msgstr "Projekty"
+
+#: header.php:206
+msgid "Calendar"
+msgstr "Kalendář"
+
+#: header.php:207
+msgid "Community"
+msgstr "Komunita"
+
+#: header.php:212
+msgid "ONLYOFFICE alternatives"
+msgstr "ONLYOFFICE alternatives"
+
+#: header.php:216
+msgid "ONLYOFFICE vs MS Office Online"
+msgstr ""
+
+#: header.php:217
+msgid "ONLYOFFICE vs Google Docs"
+msgstr ""
+
+#: header.php:218
+msgid "ONLYOFFICE vs Zoho Docs"
+msgstr ""
+
+#: header.php:219
+msgid "ONLYOFFICE vs Collabora Online"
+msgstr ""
+
+#: header.php:220
+msgid "ONLYOFFICE vs LibreOffice"
+msgstr ""
+
+#: header.php:221
+msgid "ONLYOFFICE vs Office 365 vs G Suite"
+msgstr ""
+
+#: header.php:228
+msgid "Pricing"
+msgstr "Ceny"
+
+#: header.php:238
+msgid "Download"
+msgstr "Stáhnout"
+
+#: header.php:249
+msgid "Partnership"
+msgstr "Partneři"
+
+#: header.php:252
+msgid "For Resellers"
+msgstr "Pro prodejce"
+
+#: header.php:253
+msgid "For Affiliates"
+msgstr "Pro pobočky"
+
+#: header.php:254
+msgid "For Developers"
+msgstr "Pro vývojáře"
+
+#: header.php:255
+msgid "Find partners"
+msgstr "Najít partnery"
+
+#: header.php:256
+msgid "Submit request"
+msgstr "Podat žádost"
+
+#: header.php:260
+msgid "About"
+msgstr "O nás"
+
+#: header.php:263
+msgid "About ONLYOFFICE"
+msgstr "O ONLYOFFICE"
+
+#: header.php:264
+msgid "Blog"
+msgstr "Blog"
+
+#: header.php:265
+msgid "Contribute"
+msgstr "Přispět"
+
+#: header.php:266
+msgid "Success stories"
+msgstr "Příběhy úspěchu"
+
+#: header.php:267
+msgid "Case studies"
+msgstr "Případové studie"
+
+#: header.php:268
+msgid "Customers"
+msgstr "Zákazníci"
+
+#: header.php:269
+msgid "Awards"
+msgstr "Ocenění"
+
+#: header.php:270
+msgid "Events"
+msgstr "Události"
+
+#: header.php:271
+msgid "Webinars"
+msgstr "Webináře"
+
+#: header.php:272
+msgid "Press downloads"
+msgstr "Ke stažení pro tisk"
+
+#: header.php:273
+msgid "Contacts"
+msgstr "Kontakty"
+
+#: header.php:279
+msgid "Get onlyoffice"
+msgstr "Získejte onlyoffice"
+
+#: loop.php:26
+msgid "<span class=\"meta-nav\">&larr;</span> Older posts"
+msgstr ""
+
+#: loop.php:27
+msgid "Newer posts <span class=\"meta-nav\">&rarr;</span>"
+msgstr ""
+
+#: loop.php:38
+msgid "Not Foun d"
+msgstr ""
+
+#: loop.php:40
+msgid ""
+"Apologies, but no results were found for the requested archive. Perhaps "
+"searching will help find a related post."
+msgstr ""
+
+#: loop.php:89
+#, php-format
+msgid "This gallery contains <a %1$s>%2$s photos</a>."
+msgstr ""
+
+#: loop.php:100
+msgid "More Galleries"
+msgstr ""
+
+#: loop.php:102 loop.php:125
+msgid "1 Comment"
+msgstr ""
+
+#: loop.php:102 loop.php:125
+msgid "% Comments"
+msgstr ""
+
+#: loop.php:151 single.php:35
+#, php-format
+msgid "%1$s"
+msgstr ""
+
+#: loop.php:154 loop.php:169 single.php:38
+#, fuzzy, php-format
+#| msgid "Documents"
+msgid "% comments"
+msgstr "Dokumenty"
+
+#: loop.php:198
+msgid "<span class=\"meta-nav\">Older Entries &gt;</span>"
+msgstr ""
+
+#: loop.php:199
+msgid "<span class=\"meta-nav\">&lt; Newer Entries</span>"
+msgstr ""
+
+#: search.php:16
+#, php-format
+msgid "Search Results for: %s"
+msgstr ""
+
+#: search.php:26
+msgid "Nothing Found"
+msgstr ""
+
+#: search.php:28
+msgid ""
+"Sorry, but nothing matched your search criteria. Please try again with some "
+"different keywords."
+msgstr ""
+
+#: searchform.php:2
+msgid "Search"
+msgstr ""
+
+#: sidebar.php:25
+msgid "Archives"
+msgstr ""
+
+#: sidebar.php:32
+msgid "Meta"
+msgstr ""
+
+#: single.php:54
+#, php-format
+msgid "View all posts by %s <span class=\"meta-nav\">&rarr;</span>"
+msgstr ""
+
+#: tag.php:21
+#, php-format
+msgid "Tag Archives: %s"
+msgstr ""
+
+#~ msgid "http://wordpress.org/"
+#~ msgstr "http://wordpress.org/"
+
+#~ msgid "Mobile Editors"
+#~ msgstr "Mobilní editory"
+
+#~ msgid "Compare office suites"
+#~ msgstr "Porovnejte kancelářské sady"
+
+#~ msgid "Blockchain"
+#~ msgstr "Blockchain"
+
+#~ msgid "About us"
+#~ msgstr "O nás"
+
+#~ msgid "Ascensio System SIA 2018. All rights reserved"
+#~ msgstr "Ascensio System SIA 2018. Všechna práva vyhrazena"
+
+#~ msgid "Affiliate Program"
+#~ msgstr "Pro pobočky"
+
+#~ msgid "Prices"
+#~ msgstr "Ceny"
+
+#~ msgid "Open Source"
+#~ msgstr "Open Source"

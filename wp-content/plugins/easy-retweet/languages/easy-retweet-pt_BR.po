@@ -1,0 +1,262 @@
+# Translation of the WordPress plugin Easy Retweet 2.0 by Sudar.
+# Copyright (C) 2010 Sudar
+# This file is distributed under the same license as the Easy Retweet package.
+# Sudar <sudar@sudarmuthu.com>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Retweet 2.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/easy-retweet\n"
+"POT-Creation-Date: 2010-12-01 16:41+0000\n"
+"PO-Revision-Date: 2011-01-23 14:33-0300\n"
+"Last-Translator: Marcelo <contato@techload.com.br>\n"
+"Language-Team: pt-br <contato@techload.com.br>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: BRAZIL\n"
+
+#. #-#-#-#-#  easy-retweet.pot (Easy Retweet 2.0)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: easy-retweet.php:94
+msgid "Easy Retweet"
+msgstr "Easy Retweet"
+
+#: easy-retweet.php:142
+#: easy-retweet.php:144
+msgid "Easy Retweet Button"
+msgstr "Botão Easy Retweet"
+
+#: easy-retweet.php:170
+msgid "Enabled"
+msgstr "Habilitado"
+
+#: easy-retweet.php:171
+msgid "Disabled"
+msgstr "Desabilitado"
+
+#: easy-retweet.php:174
+msgid "Custom Retweet Text:"
+msgstr "Texto personalizado do Retweet:"
+
+#: easy-retweet.php:177
+msgid "If left blank, the post title will be used."
+msgstr "Se deixar em branco, o título do post será usado."
+
+#: easy-retweet.php:225
+msgid "Settings"
+msgstr "Configurações"
+
+#: easy-retweet.php:235
+msgid "plugin"
+msgstr "plugin"
+
+#: easy-retweet.php:235
+msgid "Version"
+msgstr "Versão"
+
+#: easy-retweet.php:235
+msgid "by"
+msgstr "por"
+
+#: easy-retweet.php:245
+msgid "Easy Retweet Settings"
+msgstr "Configurações do Easy Retweet"
+
+#: easy-retweet.php:259
+msgid "General Settings"
+msgstr "Configurações Gerais"
+
+#: easy-retweet.php:262
+msgid "Display"
+msgstr "Mostrar"
+
+#: easy-retweet.php:264
+msgid "Display the button on pages"
+msgstr "Mostrar o botão nas páginas"
+
+#: easy-retweet.php:265
+msgid "Display the button on archive pages"
+msgstr "Mostrar o botão nas páginas de arquivo"
+
+#: easy-retweet.php:266
+msgid "Display the button in home page"
+msgstr "Mostrar o botão na página inicial (home)"
+
+#: easy-retweet.php:271
+msgid "Position"
+msgstr "Posição"
+
+#: easy-retweet.php:273
+msgid "Before the content of your post"
+msgstr "Antes do conteúdo do post"
+
+#: easy-retweet.php:274
+msgid "After the content of your post"
+msgstr "Após o conteúdo do post"
+
+#: easy-retweet.php:275
+msgid "Before AND After the content of your post"
+msgstr "Antes E depois do conteúdo do post"
+
+#: easy-retweet.php:276
+msgid "Manually call the retweet button"
+msgstr "Invocar manualmente o botão de retweet"
+
+#: easy-retweet.php:277
+msgid "You can manually call the <code>easy_retweet_button</code> function. E.g. <code>if (function_exists('easy_retweet_button')) echo easy_retweet_button();."
+msgstr "Você pode invocar manualmente a função <code>easy_retweet_button</code>. Por exemplo: <code>if (function_exists('easy_retweet_button')) echo easy_retweet_button();."
+
+#: easy-retweet.php:282
+msgid "Button type"
+msgstr "Tipo de botão"
+
+#: easy-retweet.php:284
+msgid "Bit.ly hit count button"
+msgstr "Botão de contagem de hits do Bit.ly"
+
+#: easy-retweet.php:285
+msgid "Official Twitter button"
+msgstr "Botão oficial do Twitter"
+
+#: easy-retweet.php:292
+msgid "Bit.ly Button"
+msgstr "Botão do Bit.ly"
+
+#: easy-retweet.php:296
+msgid "Bit.ly Username"
+msgstr "Nome de usuário do Bit.ly"
+
+#: easy-retweet.php:299
+msgid "A default account will be used if left blank."
+msgstr "Se deixado em branco, uma conta padrão será usada."
+
+#: easy-retweet.php:304
+msgid "Bit.ly API Key"
+msgstr "Chave da API do Bit.ly"
+
+#: easy-retweet.php:307
+msgid "You can get it from <a href = 'http://bit.ly/account/' target = '_blank'>http://bit.ly/account/</a>."
+msgstr "Sua chave pode ser obtida aqui: <a href = 'http://bit.ly/account/' target = '_blank'>http://bit.ly/account/</a>."
+
+#: easy-retweet.php:312
+msgid "Button style"
+msgstr "Estilo do botão"
+
+#: easy-retweet.php:314
+msgid "Vertical button"
+msgstr "Botão vertical"
+
+#: easy-retweet.php:315
+msgid "Horizontal button"
+msgstr "Botão horizontal"
+
+#: easy-retweet.php:320
+msgid "Text"
+msgstr "Texto"
+
+#: easy-retweet.php:323
+msgid "The text that you enter here will be displayed in the button."
+msgstr "O texto que você digitar aqui será exibido no botão."
+
+#: easy-retweet.php:328
+msgid "Message Prefix"
+msgstr "Prefixo da mensagem"
+
+#: easy-retweet.php:331
+msgid "The text that you want to be added in front of each twitter message. eg: <code>RT: @sudarmuthu</code>"
+msgstr "Texto que deseja ser acrescentado no início de cada mensagem do twitter. Por exemplo: <code>RT: @sudarmuthu</code>"
+
+#: easy-retweet.php:336
+msgid "Link Attributes"
+msgstr "Atributos de link"
+
+#: easy-retweet.php:339
+msgid "eg: <code>rel='nofollow'</code> or <code>target = '_blank'</code>"
+msgstr "Por exemplo: <code>rel='nofollow'</code> or <code>target = '_blank'</code>"
+
+#: easy-retweet.php:347
+msgid "Twitter Button"
+msgstr "Botão do Twitter"
+
+#: easy-retweet.php:352
+msgid "Button Style"
+msgstr "Estilo do botão"
+
+#: easy-retweet.php:354
+msgid "Vertical count"
+msgstr "Contagem vertical"
+
+#: easy-retweet.php:355
+msgid "Horizontal count"
+msgstr "Contagem horizontal"
+
+#: easy-retweet.php:356
+msgid "No count"
+msgstr "Sem contagem"
+
+#: easy-retweet.php:361
+msgid "Recommended Twitter account"
+msgstr "Conta recomendada do Twitter"
+
+#: easy-retweet.php:364
+msgid "Twitter account for users to follow after they share content from your website. This account could include your own, or that of a contributor or a partner."
+msgstr "Conta do Twitter que os usuários seguirão depois de compartilhar conteúdo de seu site. Esta conta pode ser a sua ou a de um contribuidor ou parceiro."
+
+#: easy-retweet.php:369
+msgid "Additional styles"
+msgstr "Estilos adicionais"
+
+#: easy-retweet.php:372
+msgid "eg: <code>float: left; margin-right: 10px;</code>."
+msgstr "Por exemplo: <code>float: left; margin-right: 10px;</code>."
+
+#: easy-retweet.php:377
+msgid "Language"
+msgstr "Idioma"
+
+#: easy-retweet.php:380
+msgid "English"
+msgstr "Inglês"
+
+#: easy-retweet.php:381
+msgid "French"
+msgstr "Francês"
+
+#: easy-retweet.php:382
+msgid "German"
+msgstr "Alemão"
+
+#: easy-retweet.php:383
+msgid "Spanish"
+msgstr "Espanhol"
+
+#: easy-retweet.php:384
+msgid "Japanese"
+msgstr "Japonês"
+
+#: easy-retweet.php:386
+msgid "This is the language that the button will render in on your website."
+msgstr "Este é o idioma no qual o botão será exibido em seu site."
+
+#: easy-retweet.php:394
+msgid "Save Changes"
+msgstr "Salvar as Alterações"
+
+#. Plugin URI of the plugin/theme
+msgid "http://sudarmuthu.com/wordpress/easy-retweet"
+msgstr "http://sudarmuthu.com/wordpress/easy-retweet"
+
+#. Description of the plugin/theme
+msgid "Adds a Retweet button to your WordPress posts."
+msgstr "Adiciona um botão de Retweet em seus posts do WordPress."
+
+#. Author of the plugin/theme
+msgid "Sudar"
+msgstr "Sudar"
+
+#. Author URI of the plugin/theme
+msgid "http://sudarmuthu.com/"
+msgstr "http://sudarmuthu.com/"
+

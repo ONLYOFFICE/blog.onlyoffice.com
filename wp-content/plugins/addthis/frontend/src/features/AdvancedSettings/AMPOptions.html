@@ -1,0 +1,53 @@
+<div class="settings-card">
+    <header>
+        <h2 translate>advanced_settings_amp_options_header</h2>
+    </header>
+
+    <div class="settings-body">
+        <p translate>advanced_settings_amp_options_description</p>
+
+        <section>
+            <div setting-title-and-description
+                label="{{'advanced_settings_amp_inline_width_label'|translate}}"
+                for="inline-share-width"
+            >
+            {{'advanced_settings_amp_inline_width_description'|translate}}
+            </div>
+
+            <input
+                type="number"
+                ng-model="globalOptions.amp_inline_share_width"
+                id="inline-share-width"
+                name="inline-share-width"
+            />
+        </section>
+
+        <section>
+            <div setting-title-and-description
+                label="{{'advanced_settings_amp_inline_height_label'|translate}}"
+                for="inline-share-height"
+            >
+            {{'advanced_settings_amp_inline_height_description'|translate}}
+            </div>
+
+            <input
+                type="number"
+                ng-model="globalOptions.amp_inline_share_height"
+                id="inline-share-height"
+                name="inline-share-height"
+            />
+        </section>
+
+        <section
+            basic-checkbox
+            ng-model="globalOptions.amp_disable"
+            for="amp-disable"
+            label="{{'advanced_settings_amp_disable_label'|translate}}"
+        >
+            <span translate>
+                advanced_settings_amp_disable_description
+            </span>
+        </section>
+
+    </div>
+</div>

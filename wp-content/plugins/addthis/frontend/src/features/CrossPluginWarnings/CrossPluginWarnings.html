@@ -1,0 +1,281 @@
+<div ng-controller="CrossPluginWarningsCtrl" ng-show="otherPlugins">
+
+    <div
+        soft-alert
+        level="'success'"
+        ng-show="showSuccess"
+    >
+        <span
+            translate
+            translate-values="{
+                'old_share_plugin_name': '<strong>AddThis Sharing Buttons</strong>'
+            }"
+        >
+            warning_message_cross_plugin_mode_fixed
+        </span>
+    </div>
+
+    <div
+        soft-alert
+        level="'warning'"
+        ng-show="globalOptions.addthis_plugin_controls == 'WordPress' && otherPlugins.sb && minimalistProPlugin()"
+    >
+        <span
+            translate
+            translate-values="{
+                'old_share_plugin_name': '<strong>AddThis Sharing Buttons</strong>'
+            }"
+        >
+            warning_message_cross_plugin_wordpress_mode
+        </span>
+        <a ng-click="changeMode()" translate>
+            warning_message_cross_plugin_change_mode_action_link
+        </a>
+    </div>
+
+    <div
+        soft-alert
+        level="'danger'"
+        ng-show="globalOptions.addthis_plugin_controls == 'WordPress' && !otherPlugins.sb && minimalistProPlugin()"
+    >
+        <span translate>
+            warning_message_minimal_plugin_wordpress_mode
+        </span>
+        <a ng-click="changeMode()" translate>
+            warning_message_cross_plugin_change_mode_action_link
+        </a>
+    </div>
+
+    <div
+        soft-alert
+        level="'info'"
+        ng-show="globalOptions.addthis_plugin_controls == 'AddThis' && otherPlugins.sb"
+    >
+        <span
+            translate
+            translate-values="{
+                'old_share_plugin_name': '<strong>'+otherPlugins.sb.name+'</strong>'
+            }"
+        >
+            warning_message_cross_plugin_share_button_buggy
+        </span>
+    </div>
+
+    <div ng-show="!globalOptions.addthis_plugin_controls || globalOptions.addthis_plugin_controls != 'WordPress'">
+        <div
+            soft-alert
+            level="'warning'"
+            ng-hide="
+                globalOptions.addthis_profile == ''
+                || !globalOptions.addthis_profile
+                || globalOptions.addthis_profile == otherPlugins.fb.profileId
+                || globalOptions.addthis_profile == otherPlugins.wb.profileId
+                || (!otherPlugins.fb && !otherPlugins.wb)
+            "
+        >
+            <span ng-show="otherPlugins.fb && otherPlugins.wb">
+                <span
+                    ng-hide="otherPlugins.fb.profileId == '' || globalOptions.addthis_profile == otherPlugins.fb.profileId"
+                    translate
+                    translate-values="{
+                        'old_follow_plugin_name': '<strong>'+otherPlugins.fb.name+'</strong>',
+                        'old_welcome_bar_plugin_name': '<strong>'+otherPlugins.wb.name+'</strong>',
+                        'profile_id': otherPlugins.fb.profileId
+                    }"
+                >
+                    warning_message_cross_plugin_fb_and_wb_mismatched_profile_id
+                </span>
+                <span
+                    ng-show="otherPlugins.fb.profileId == ''"
+                    translate
+                    translate-values="{
+                        'old_follow_plugin_name': '<strong>'+otherPlugins.fb.name+'</strong>',
+                        'old_welcome_bar_plugin_name': '<strong>'+otherPlugins.wb.name+'</strong>',
+                    }"
+                >
+                    warning_message_cross_plugin_fb_and_wb_no_profile_id
+                </span>
+                <a
+                    ng-click="updateProfileId(otherPlugins.fb.source)"
+                    translate
+                    translate-values="{
+                        'old_welcome_bar_plugin_name': '<strong>'+otherPlugins.wb.name+'</strong>',
+                        'profile_id': globalOptions.addthis_profile
+                    }"
+                >
+                    warning_message_cross_plugin_copy_profile_id_into_plugins_link
+                </a>
+
+            </span>
+            <span ng-show="otherPlugins.fb && !otherPlugins.wb">
+                <span
+                    ng-hide="otherPlugins.fb.profileId == '' || globalOptions.addthis_profile == otherPlugins.fb.profileId"
+                    translate
+                    translate-values="{
+                        'old_plugin_name': '<strong>'+otherPlugins.fb.name+'</strong>',
+                        'profile_id': otherPlugins.fb.profileId
+                    }"
+                >
+                    warning_message_cross_plugin_mismatched_profile_id
+                </span>
+                <span
+                    ng-show="otherPlugins.fb.profileId == ''"
+                    translate
+                    translate-values="{
+                        'old_plugin_name': '<strong>'+otherPlugins.fb.name+'</strong>',
+                    }"
+                >
+                    warning_message_cross_plugin_no_profile_id
+                </span>
+                <a
+                    ng-click="updateProfileId(otherPlugins.fb.source)"
+                    translate
+                    translate-values="{
+                        'old_plugin_name': '<strong>'+otherPlugins.fb.name+'</strong>',
+                        'profile_id': globalOptions.addthis_profile
+                    }"
+                >
+                    warning_message_cross_plugin_copy_profile_id_into_plugin_link
+                </a>
+            </span>
+            <span ng-show="!otherPlugins.fb && otherPlugins.wb">
+                <span
+                    ng-hide="otherPlugins.wb.profileId == '' || globalOptions.addthis_profile == otherPlugins.wb.profileId"
+                    translate
+                    translate-values="{
+                        'old_plugin_name': '<strong>'+otherPlugins.wb.name+'</strong>',
+                        'profile_id': otherPlugins.wb.profileId
+                    }"
+                >
+                    warning_message_cross_plugin_mismatched_profile_id
+                </span>
+                <span
+                    ng-show="otherPlugins.wb.profileId == ''"
+                    translate
+                    translate-values="{
+                        'old_plugin_name': '<strong>'+otherPlugins.wb.name+'</strong>',
+                    }"
+                >
+                    warning_message_cross_plugin_no_profile_id
+                </span>
+                <a
+                    ng-click="updateProfileId(otherPlugins.wb.source)"
+                    translate
+                    translate-values="{
+                        'old_plugin_name': '<strong>'+otherPlugins.wb.name+'</strong>',
+                        'profile_id': globalOptions.addthis_profile
+                    }"
+                >
+                    warning_message_cross_plugin_copy_profile_id_into_plugin_with_warning_link
+                </a>
+            </span>
+        </div>
+
+        <div
+            soft-alert
+            level="'warning'"
+            ng-show="globalOptions.addthis_profile && globalOptions.addthis_profile != '' && globalOptions.addthis_profile != otherPlugins.sl.profileId && otherPlugins.sl"
+        >
+            <span
+                ng-hide="otherPlugins.sl.profileId == '' || globalOptions.addthis_profile == otherPlugins.sl.profileId"
+                translate
+                translate-values="{
+                    'old_plugin_name': '<strong>'+otherPlugins.sl.name+'</strong>',
+                    'profile_id': otherPlugins.sl.profileId
+                }"
+            >
+                warning_message_cross_plugin_mismatched_profile_id
+            </span>
+            <span
+                ng-show="otherPlugins.sl.profileId == ''"
+                translate
+                translate-values="{
+                    'old_plugin_name': '<strong>'+otherPlugins.sl.name+'</strong>',
+                }"
+            >
+                warning_message_cross_plugin_no_profile_id
+            </span>
+            <a
+                ng-click="updateProfileId(otherPlugins.wb.source)"
+                translate
+                translate-values="{
+                    'old_plugin_name': '<strong>'+otherPlugins.sl.name+'</strong>',
+                    'profile_id': globalOptions.addthis_profile
+                }"
+            >
+                warning_message_cross_plugin_copy_profile_id_into_plugin_with_warning_link
+            </a>
+        </div>
+
+        <div
+            soft-alert
+            level="'info'"
+            ng-show="globalOptions.addthis_profile == otherPlugins.fb.profileId"
+        >
+            <span
+                translate
+                translate-values="{
+                    'old_plugin_name': '<strong>'+otherPlugins.fb.name+'</strong>',
+                }"
+            >
+                warning_message_cross_plugin_other_plugin_buggy_follow_button
+            </span>
+        </div>
+
+        <div
+            soft-alert
+            level="'info'"
+            ng-show="globalOptions.addthis_profile == otherPlugins.wb.profileId"
+        >
+            <span
+                translate
+                translate-values="{
+                    'old_plugin_name': '<strong>'+otherPlugins.wb.name+'</strong>',
+                }"
+            >
+                warning_message_cross_plugin_other_plugin_buggy
+            </span>
+        </div>
+
+        <div
+            soft-alert
+            level="'info'"
+            ng-show="globalOptions.addthis_profile == otherPlugins.sl.profileId"
+        >
+            <span
+                translate
+                translate-values="{
+                    'old_plugin_name': '<strong>'+otherPlugins.sl.name+'</strong>',
+                }"
+            >
+                warning_message_cross_plugin_other_plugin_buggy
+            </span>
+        </div>
+    </div>
+
+    <!-- This RelatedPostCheck is temporarily comment out for ticket ATTOOLS-478 -->
+    <!-- <div ng-hide="globalOptions.addthis_profile == '' || !globalOptions.addthis_profile">
+        <div
+            ng-include
+            src="'/features/RelatedPostCheck/RelatedPostCheck.html'"
+        >
+        </div>
+    </div> -->
+
+    <div
+        soft-alert
+        level="'warning'"
+        ng-show="globalOptions.smart_layers_bad_json && globalOptions.addthis_plugin_controls != 'AddThis'"
+    >
+        <span
+            translate
+            translate-values="{'advanced_settings_link': '<a ui-sref=\'advanced\'>'+('menu_item_advanced_settings'|translate)+'</a>', developer_configuration: ('advanced_settings_developer_config_header'|translate) }"
+        >
+            warning_message_smart_layers_custom_api_config_failed
+        </span>
+    </div>
+
+    <div ng-show="globalOptions.debug_enable">
+        <pre>otherPlugins = {{otherPlugins|json}}</pre>
+    </div>
+</div>

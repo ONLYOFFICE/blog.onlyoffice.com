@@ -1,0 +1,12 @@
+<div class="alignleft actions tool-positions">
+    <label for="{{fieldName}}"><strong>{{title|translate}}</strong></label>
+    <select name="{{fieldName}}" id="{{fieldName}}" ng-model="ngModel">
+        <option
+                ng-repeat="position in positionOptions"
+                value="{{position.value}}"
+        >
+            {{position.display|translate}}
+        </option>
+    </select>
+</div>
+

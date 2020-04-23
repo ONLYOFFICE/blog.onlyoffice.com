@@ -1,0 +1,416 @@
+<div
+    can-edit-tools-check
+    debug-hot-keys
+    ng-controller="ToolListCtrl"
+>
+
+    <section
+        alt="{{'cross_plugin_warnings_section_alt'|translate}}"
+        ng-include
+        src="'/features/CrossPluginWarnings/CrossPluginWarnings.html'"
+    >
+    </section>
+
+    <div class="wrap at-tool-new">
+        <h1 class="wp-heading-inline" translate>tool_listing_title</h1>
+        <a
+            ui-sref="newShareTool"
+            class="page-title-action"
+            translate
+        >
+            tool_listing_add_new_button
+        </a>
+        <hr class="wp-header-end">
+
+        <div
+            wordpress-alert
+            ng-repeat="(key, messageInfo) in completedBulkActions track by key"
+            ng-show="messageInfo"
+            close="messageInfo.close"
+        >
+            <span
+                translate
+                translate-values="{'toolName': messageInfo.displayName }"
+                ng-hide="messageInfo.enabled"
+            >
+                share_tool_deactivated
+            </span>
+            <span
+                translate
+                translate-values="{'toolName': messageInfo.displayName }"
+                ng-show="messageInfo.enabled"
+            >
+                share_tool_activated
+            </span>
+        </div>
+
+        <div class="tool-left">
+            <div class="filter-active-inactive">
+                <a
+                    ng-click="filterBy('enabled')"
+                    ng-class="{ 'active': filterParam.enabled === undefined }"
+                    translate
+                >
+                    tool_filter_all
+                </a> ({{toolListArray().length}}) |
+                <a
+                    ng-click="filterBy('enabled', true)"
+                    ng-class="{ 'active': filterParam.enabled === true }"
+                    translate
+                >
+                    tool_status_active
+                </a> ({{(toolListArray()|filter:{'enabled': true}).length}}) |
+                <a
+                    ng-click="filterBy('enabled', false)"
+                    ng-class="{ 'active': filterParam.enabled === false }"
+                    translate
+                >
+                    tool_status_inactive
+                </a> ({{(toolListArray()|filter:{'enabled': false}).length}})
+            </div>
+            <div class="tablenav top">
+                <div class="alignleft actions bulkactions">
+                    <label
+                        for="bulk-action-selector-top"
+                        class="screen-reader-text"
+                    >
+                        Select bulk action
+                    </label>
+                    <select
+                        name="action"
+                        id="bulk-action-selector-top"
+                        ng-model="bulkAction"
+                    >
+                        <option value="" translate>
+                            tool_bulk_actions_default
+                        </option>
+                        <option value="activate" translate>
+                            activate_button
+                        </option>
+                        <option value="deactivate" translate>
+                            deactivate_button
+                        </option>
+                    </select>
+                    <input
+                        type="submit"
+                        class="button action"
+                        ng-class="{ 'button-disabled': saving }"
+                        value="{{'tool_bulk_actions_apply'|translate}}"
+                        ng-click="doBulkAction()"
+                    />
+                    <span
+                        ng-show="saving"
+                        class="spinner"
+                        style="visibility: visible;"
+                    >
+                    </span>
+                </div>
+                <br class="clear">
+            </div>
+
+            <table class="wp-list-table widefat fixed striped pages">
+                <thead>
+                    <tr>
+                        <td class="manage-column column-cb check-column">
+                            <label
+                                class="screen-reader-text"
+                                for="bulk-action-select-all"
+                            >
+                                Select All
+                            </label>
+                            <input
+                                id="bulk-action-select-all"
+                                type="checkbox"
+                                ng-checked="bulkActionIsChecked()"
+                                ng-click="toggleCheckAll()"
+                            >
+                        </td>
+                        <th
+                            scope="col"
+                            class="manage-column column-primary sortable"
+                            ng-class="{
+                                'asc': !sort.reverse,
+                                'desc': sort.reverse,
+                                'sorted': (sort.property === 'displayName')
+                            }"
+                        >
+                            <a ng-click="sortBy('displayName')">
+                                <span translate>
+                                    tool_listings_tool_name_header
+                                </span>
+                                <span class="sorting-indicator"></span>
+                            </a>
+                        </th>
+                        <th
+                            style="width: 35%;"
+                            scope="col"
+                            class="manage-column"
+                            translate
+                        >
+                            gtc_shortcode_title
+                        </th>
+                        <th
+                            style="width: 15%;"
+                            scope="col"
+                            class="manage-column sortable"
+                            ng-class="{
+                                'asc': !sort.reverse,
+                                'desc': sort.reverse,
+                                'sorted': (sort.property === 'toolType')
+                            }"
+                        >
+                            <a ng-click="sortBy('toolType')">
+                                <span translate>
+                                    tool_listings_tool_type_header
+                                </span>
+                                <span class="sorting-indicator"></span>
+                            </a>
+                        </th>
+                        <th
+                            style="width: 15%;"
+                            scope="col"
+                            class="manage-column sortable"
+                            ng-class="{
+                                'asc': !sort.reverse,
+                                'desc': sort.reverse,
+                                'sorted': (sort.property === 'enabled')
+                            }"
+                        >
+                            <a ng-click="sortBy('enabled')">
+                                <span translate>
+                                    tool_listings_enabled_header
+                                </span>
+                                <span class="sorting-indicator"></span>
+                            </a>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr
+                        ng-repeat="toolSettings in (toolListArray() | filter:filterParam | orderBy:sort.property:sort.reverse) track by toolSettings.widgetId"
+                    >
+                        <th scope="row" class="check-column">
+                            <label
+                                class="screen-reader-text"
+                                for="bulk-action-select-{{toolSettings.id}}"
+                            >
+                                Select {{toolSettings.displayName}}
+                            </label>
+                            <input
+                                id="bulk-action-select-{{toolSettings.id}}"
+                                type="checkbox"
+                                name="{{toolSettings.id}}"
+                                value="{{toolSettings.id}}"
+                                ng-checked="isChecked(toolSettings.widgetId)"
+                                ng-click="toggleCheck(toolSettings.widgetId)"
+                            >
+                        </th>
+
+                        <td>
+                            <div class="tool-image">
+                                <img
+                                    ng-src="{{templateBaseUrl+'src/images/tool-list-thumb-'+toolSettings.id+'.png'}}"
+                                />
+                            </div>
+                            <strong>
+                                <a
+                                    class="row-title"
+                                    ui-sref="configurator({
+                                        toolPco: toolSettings.widgetId
+                                    })"
+                                    aria-label="“Sample Page” (Edit)"
+                                >
+                                    {{toolSettings.displayName}}
+                                </a>
+                            </strong>
+
+                            <div class="row-actions">
+                                <span class="edit">
+                                    <a
+                                        ui-sref="configurator({
+                                            toolPco: toolSettings.widgetId
+                                        })"
+                                        aria-label="Edit Tool"
+                                        translate
+                                    >
+                                        tool_listing_edit_link
+                                    </a>
+                                    |
+                                </span>
+                                <span class="trash">
+                                    <a
+                                        ui-sref="configurator({
+                                            toolPco: 'new',
+                                            settings: toolSettings
+                                        })"
+                                        aria-label="Duplicate Tool"
+                                        translate
+                                    >
+                                        tool_listing_duplicate_link
+                                    </a>
+                                </span>
+                            </div>
+                            <button
+                                type="button"
+                                class="toggle-row"
+                                ng-click="toggleCheck(toolSettings.widgetId)"
+                            >
+                                <span class="screen-reader-text">
+                                    Show more details
+                                </span>
+                            </button>
+                        </td>
+                        <td>
+                            <span ng-show="toolSettings.shortCode">
+                                {{toolSettings.shortCode}}
+                            </span>
+                            <span ng-hide="toolSettings.shortCode" translate>
+                                tool_listing_no_shortcode_available
+                            </span>
+                        </td>
+
+                        <td translate>
+                            {{toolSettings.toolType}}
+                        </td>
+
+                        <td>
+                            <span ng-show="toolSettings.enabled" translate>
+                                tool_status_active
+                            </span>
+                            <span ng-hide="toolSettings.enabled" translate>
+                                tool_status_inactive
+                            </span>
+                        </td>
+
+
+                    </tr>
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <td class="manage-column column-cb check-column">
+                            <label
+                                class="screen-reader-text"
+                                for="bulk-action-select-all"
+                            >
+                                Select All
+                            </label>
+                            <input
+                                id="bulk-action-select-all"
+                                type="checkbox"
+                                ng-checked="bulkActionIsChecked()"
+                                ng-click="toggleCheckAll()"
+                            >
+                        </td>
+                        <th
+                            scope="col"
+                            class="manage-column column-primary sortable"
+                            ng-class="{
+                                'asc': !sort.reverse,
+                                'desc': sort.reverse,
+                                'sorted': (sort.property === 'displayName')
+                            }"
+                        >
+                            <a ng-click="sortBy('displayName')">
+                                <span translate>
+                                    tool_listings_tool_name_header
+                                </span>
+                                <span class="sorting-indicator"></span>
+                            </a>
+                        </th>
+                        <th
+                            style="width: 35%;"
+                            scope="col"
+                            class="manage-column"
+                            translate
+                        >
+                            gtc_shortcode_title
+                        </th>
+                        <th
+                            style="width: 15%;"
+                            scope="col"
+                            class="manage-column sortable"
+                            ng-class="{
+                                'asc': !sort.reverse,
+                                'desc': sort.reverse,
+                                'sorted': (sort.property === 'toolType')
+                            }"
+                        >
+                            <a ng-click="sortBy('toolType')">
+                                <span translate>
+                                    tool_listings_tool_type_header
+                                </span>
+                                <span class="sorting-indicator"></span>
+                            </a>
+                        </th>
+                        <th
+                            style="width: 15%;"
+                            scope="col"
+                            class="manage-column sortable"
+                            ng-class="{
+                                'asc': !sort.reverse,
+                                'desc': sort.reverse,
+                                'sorted': (sort.property === 'enabled')
+                            }"
+                        >
+                            <a ng-click="sortBy('enabled')">
+                                <span translate>
+                                    tool_listings_enabled_header
+                                </span>
+                                <span class="sorting-indicator"></span>
+                            </a>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="tablenav bottom">
+                <div class="alignleft actions bulkactions">
+                    <label
+                        for="bulk-action-selector-bottom"
+                        class="screen-reader-text"
+                    >
+                        Select bulk action
+                    </label>
+                    <select
+                        name="action"
+                        id="bulk-action-selector-bottom"
+                        ng-model="bulkAction"
+                    >
+                        <option value="" translate>
+                            tool_bulk_actions_default
+                        </option>
+                        <option value="activate" translate>
+                            activate_button
+                        </option>
+                        <option value="deactivate" translate>
+                            deactivate_button
+                        </option>
+                    </select>
+                    <input
+                        type="submit"
+                        class="button action"
+                        ng-class="{ 'button-disabled': saving }"
+                        value="{{'tool_bulk_actions_apply'|translate}}"
+                        ng-click="doBulkAction()"
+                    />
+                    <span
+                        ng-show="saving"
+                        class="spinner"
+                        style="visibility: visible;"
+                    >
+                    </span>
+
+                </div>
+                <br class="clear">
+            </div>
+        </div>
+        <div class="tool-right">
+            <div ng-include src="'/features/Ads/AnalyticsAd.html'"></div>
+            <div ng-include src="'/features/Ads/HelpAd.html'"></div>
+            <div review-nag-ad></div>
+        </div>
+    </div>
+
+</div>

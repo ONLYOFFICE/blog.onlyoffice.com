@@ -1,0 +1,30 @@
+<div class="tool-gallery-card">
+    <div
+        class="tool-gallery-example"
+    >
+        <img
+            ng-src="{{templateBaseUrl}}src/images/{{image}}"
+            alt="{{imageAltMsgid|translate}}"
+        />
+    </div>
+    <div class="description">
+        <h2 translate>{{toolNameMsgid}}</h2>
+        <p translate>{{toolDescriptionMsgid}}</p>
+    </div>
+    <div class="actions">
+        <div
+            toggle-slider
+            ng-model="toolEnabled"
+            event-callback="toggleEvent"
+            event-param="toolPco"
+        >
+        </div>
+        <div
+            class="btn-at btn-at-ghost"
+            ng-click="changeState(toolPco)"
+            translate
+        >
+            tool_settings_link
+        </div>
+    </div>
+</div>

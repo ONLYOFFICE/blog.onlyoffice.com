@@ -1,0 +1,177 @@
+<form
+    ng-controller="AdvancedSettingsCtrl"
+    name="form"
+    novalidate
+>
+    <div class="settings-card">
+        <header>
+            <h2 translate>manual_registration_title</h2>
+        <header>
+
+        <div class="settings-body">
+
+            <div class="registration-field-area">
+
+                <div
+                    setting-title-and-description
+                    label="{{'manual_registration_profile_id_label'|translate}}"
+                    name="profileId"
+                    ng-class="{'bad-choice': (form.profileId.$error.validProfile || form.profileId.$error.wpProfile) && !form.profileId.$pending}"
+                >
+                </div>
+                <div
+                    ng-class="{
+                        'bad-choice': (form.profileId.$error.validProfile || form.profileId.$error.wpProfile) && !form.profileId.$pending,
+                        'good-choice': (globalOptions.addthis_profile && !form.profileId.$error.validProfile && !form.profileId.$error.wpProfile && !form.profileId.$pending)
+                    }"
+                >
+                    <input
+                        type="text"
+                        ng-model="globalOptions.addthis_profile"
+                        name="profileId"
+                        ng-model-options="{ debounce: 500 }"
+                        validate-add-this-profile-id
+                    />
+
+                    <div ng-hide="form.profileId.$pending">
+                        <div
+                            class="input-feedback"
+                            ng-show="form.profileId.$error.validProfile"
+                        >
+                            <span custom-icon level="danger"></span>
+                            <span translate>manual_registration_unknown_profile_id</span>
+                        </div>
+
+                        <div
+                            class="input-feedback"
+                            ng-show="form.profileId.$error.wpProfile && !form.profileId.$error.validProfile"
+                        >
+                            <span custom-icon level="danger"></span>
+                            <span translate>error_message_profile_wrong_type</span>
+                        </div>
+                        <div
+                            class="input-feedback"
+                            ng-hide="form.profileId.$error.wpProfile || form.profileId.$error.validProfile || !globalOptions.addthis_profile"
+                        >
+                            <span custom-icon level="success"></span>
+                            <span translate>manual_registration_valid_profile_id</span>
+                        </div>
+                    </div>
+                    <div
+                        ng-show="form.profileId.$pending"
+                        class="input-feedback"
+                    >
+                        <span custom-icon level="info"></span>
+                        <span translate>progress_message_checking_input</span>
+                    </div>
+
+                </div>
+
+                <div
+                    setting-title-and-description
+                    label="{{'manual_registration_api_key_label'|translate}}"
+                    name="apiKey"
+                    ng-class="{'bad-choice': form.apiKey.$error.addThisApiKey}"
+                >
+                </div>
+
+                <div
+                    ng-class="{
+                        'bad-choice': form.apiKey.$error.addThisApiKey && !form.apiKey.$pending,
+                        'good-choice': globalOptions.api_key && !form.apiKey.$error.addThisApiKey && !form.apiKey.$pending
+                    }"
+                >
+                    <input
+                        type="text"
+                        ng-model="globalOptions.api_key"
+                        name="apiKey"
+                        validate-add-this-api-key="globalOptions.addthis_profile"
+                        profile-id-error="form.profileId.$error.validProfile"
+                    />
+
+                    <div ng-hide="form.apiKey.$pending">
+                        <div
+                            class="input-feedback"
+                            ng-show="form.apiKey.$error.addThisApiKey"
+                        >
+                            <span custom-icon level="danger"></span>
+                            <span translate>error_message_invalid_api_key</span>
+                        </div>
+                        <div
+                            class="input-feedback"
+                            ng-hide="form.apiKey.$error.addThisApiKey || !globalOptions.api_key"
+                        >
+                            <span custom-icon level="success"></span>
+                            <span translate>manual_registration_valid_api_key</span>
+                        </div>
+                    </div>
+                    <div
+                        ng-show="form.apiKey.$pending && !form.profileId.$error.validProfile"
+                        class="input-feedback"
+                    >
+                        <span custom-icon level="info"></span>
+                        <span translate>progress_message_checking_input</span>
+                    </div>
+                </div>
+
+                <div
+                    setting-title-and-description
+                    label="{{'advanced_settings_mode_label'|translate}}"
+                    name="addthis-plugin-mode"
+                    ng-class="{'bad-choice': (globalOptions.addthis_plugin_controls === 'WordPress') && !minimalistProPlugin()}"
+                >
+                </div>
+                <label class="addthis-plugin-mode">
+                    <input
+                        type="radio"
+                        ng-model="globalOptions.addthis_plugin_controls"
+                        name="addthis-plugin-mode"
+                        ng-value="'AddThis'"
+                        ng-selected="{{isEnabled()}}"
+                    />
+                    {{'manual_registration_radio_button_label_for_addthis_mode'|translate}} {{'option_recommended'|translate}}
+                </label>
+                <label class="addthis-plugin-mode">
+                    <input
+                        type="radio"
+                        ng-model="globalOptions.addthis_plugin_controls"
+                        name="addthis-plugin-mode"
+                        ng-value="'WordPress'"
+                        ng-selected="{{!isEnabled()}}"
+                    />
+                    {{'manual_registration_radio_button_label_for_wordpress_mode'|translate}}
+                </label>
+
+                <div
+                    class="input-feedback bad-choice"
+                    ng-show="(globalOptions.addthis_plugin_controls === 'WordPress') && minimalistProPlugin()"
+                >
+                    <span custom-icon level="danger"></span>
+                    <span translate>manual_registration_wordpress_mode_incompatible</span>
+                </div>
+                <div
+                    class="input-feedback bad-choice"
+                    ng-show="(globalOptions.addthis_plugin_controls === 'WordPress') && !minimalistProPlugin()"
+                >
+                    <span custom-icon level="warning"></span>
+                    <span translate>manual_registration_wordpress_mode_warning_limited_tools</span>
+                </div>
+
+            </div>
+
+            <section
+                ng-include
+                src="'/features/SaveChangesButton/SaveChangesButton.html'"
+            >
+            </section>
+
+            <p>
+                <a ng-click="cancel()" translate>
+                    client_string_cancel
+                </a>
+            </p>
+
+        </div>
+    </div>
+
+</form>

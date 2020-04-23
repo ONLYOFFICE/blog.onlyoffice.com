@@ -1,0 +1,180 @@
+/**
+ * +--------------------------------------------------------------------------+
+ * | Copyright (c) 2008-2017 AddThis, LLC                                     |
+ * +--------------------------------------------------------------------------+
+ * | This program is free software; you can redistribute it and/or modify     |
+ * | it under the terms of the GNU General Public License as published by     |
+ * | the Free Software Foundation; either version 2 of the License, or        |
+ * | (at your option) any later version.                                      |
+ * |                                                                          |
+ * | This program is distributed in the hope that it will be useful,          |
+ * | but WITHOUT ANY WARRANTY; without even the implied warranty of           |
+ * | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            |
+ * | GNU General Public License for more details.                             |
+ * |                                                                          |
+ * | You should have received a copy of the GNU General Public License        |
+ * | along with this program; if not, write to the Free Software              |
+ * | Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA |
+ * +--------------------------------------------------------------------------+
+ */
+.addthis-settings-page a.addthis-btn,
+.addthis-settings-page a.addthis-btn:link,
+.addthis-settings-page a.addthis-btn:visited,
+.addthis-settings-page .addthis-btn{
+  margin: 10px;
+  display: inline-block;
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: top;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  border-color: #0d99fc;
+  padding: 5px 30px;
+  font-size: 13px;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.addthis-settings-page a.addthis-btn-blue,
+.addthis-settings-page a.addthis-btn-blue:link,
+.addthis-settings-page a.addthis-btn-blue:visited,
+.addthis-settings-page a.addthis-btn-blue,
+.addthis-settings-page .addthis-btn-blue{
+  background: #0088F7;
+  color: #FFFFFF;
+}
+
+.addthis-settings-page a.addthis-btn-clear,
+.addthis-settings-page a.addthis-btn-clear:link,
+.addthis-settings-page a.addthis-btn-clear:visited,
+.addthis-settings-page .addthis-btn-clear{
+  background: #FFFFFF;
+  color: #3E3F3F;
+  border-color: #DDDDDD;
+}
+
+.addthis-settings-page a.addthis-btn-disabled,
+.addthis-settings-page a.addthis-btn-disabled:link,
+.addthis-settings-page a.addthis-btn-disabled:visited,
+.addthis-settings-page .addthis-btn-disabled{
+  background: #D7D7D7;
+  border: none;
+  color: #FFFFFF;
+  cursor: default;
+}
+
+.addthis-settings-page a.btn-at,
+.addthis-settings-page a.btn-at:link,
+.addthis-settings-page a.btn-at:visited,
+.addthis-settings-page .btn-at{
+  height: 36px;
+  line-height: 36px;
+  padding: 0 20px;
+  margin: 0;
+  border-radius: 3px;
+  outline: 0;
+  font-weight: 300;
+  font-size: 13px;
+  letter-spacing: .5px;
+  display: inline-block;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition-duration: 0.2s
+}
+
+.addthis-settings-page a.btn-at-ghost,
+.addthis-settings-page a.btn-at-ghost:link,
+.addthis-settings-page a.btn-at-ghost:visited,
+.addthis-settings-page .btn-at-ghost{
+  border: 1px solid #999;
+  background: none;
+  color: #000;
+}
+
+.addthis-settings-page a.btn-inverse,
+.addthis-settings-page a.btn-inverse:link,
+.addthis-settings-page a.btn-inverse:visited,
+.addthis-settings-page .btn-inverse{
+  border: 1px solid #fff;
+  background: none;
+  color: #fff;
+}
+
+.addthis-settings-page a.btn-at-ghost:focus,
+.addthis-settings-page a.btn-at-ghost:hover,
+.addthis-settings-page .btn-at-ghost:focus,
+.addthis-settings-page .btn-at-ghost:hover,
+.addthis-settings-page a.btn-inverse:focus,
+.addthis-settings-page a.btn-inverse:hover,
+.addthis-settings-page .btn-inverse:focus,
+.addthis-settings-page .btn-inverse:hover{
+  background: #0295FF;
+  border-color: #0295FF;
+  color: #fff;
+}
+
+.addthis-settings-page a.btn-inverse.btn-textonly,
+.addthis-settings-page a.btn-inverse.btn-textonly:link,
+.addthis-settings-page a.btn-inverse.btn-textonly:visited,
+.addthis-settings-page .btn-inverse.btn-textonly{
+  border: none;
+  background: none;
+  color: #ccc;
+}
+
+.addthis-settings-page a.btn-inverse.btn-textonly:hover,
+.addthis-settings-page a.btn-inverse.btn-textonly:focus,
+.addthis-settings-page .btn-inverse.btn-textonly:hover,
+.addthis-settings-page .btn-inverse.btn-textonly:focus{
+  color: #fff;
+  border: 0 solid #424244;
+  background-color: #424244;
+}
+
+/* new buttons styles, because why not! */
+
+.addthis-settings-page .btn{
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-transition: 0.15s;
+  transition: 0.15s;
+  outline: 0;
+}
+
+.selectable-2 {
+  background: #ffffff;
+  border-color: #dddddd;
+  margin-left: 15px;
+}
+
+.selectable-2.active {
+  border-color: #0088f7;
+  box-shadow: 0 0 0 2px #0088f7;
+}
+
+.selectable-2:hover,
+.selectable-2:focus {
+  border-color: #0088f7;
+  background: #eeeeee;
+}

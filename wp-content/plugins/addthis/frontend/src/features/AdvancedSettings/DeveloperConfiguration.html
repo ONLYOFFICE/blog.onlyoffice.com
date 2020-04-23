@@ -1,0 +1,59 @@
+<div class="settings-card">
+    <header>
+        <h2 translate>advanced_settings_developer_config_header</h2>
+    </header>
+
+    <div class="settings-body">
+        <p
+            translate
+            translate-values="{'link': '<a href=\'https://www.addthis.com/academy/sharing-button-api-overview/\' target=\'_blank\'>{{'advanced_settings_developer_config_description_link'|translate}}</a>'}"
+        >
+            advanced_settings_developer_config_description
+        </p>
+
+        <section
+            json-text-area
+            ng-model="globalOptions.addthis_config_json"
+            label="addthis_config"
+            for="addThisConfigsJson"
+            help-text="addthis_config_help"
+            form-validation="form"
+        >
+        </section>
+
+        <section
+            json-text-area
+            ng-model="globalOptions.addthis_share_json"
+            label="addthis_share"
+            for="addThisShareJson"
+            help-text="addthis_share_help"
+            form-validation="form"
+        >
+        </section>
+
+        <section
+            json-text-area
+            ng-show="globalOptions.addthis_plugin_controls != 'AddThis'"
+            ng-model="globalOptions.addthis_layers_json"
+            label="addthis.layers()"
+            for="addThisLayersJson"
+            help-text="addthis_layers_help"
+            form-validation="form"
+        >
+        </section>
+
+        <section ng-show="globalOptions.smart_layers_bad_json && globalOptions.addthis_plugin_controls != 'AddThis'">
+            <h3 translate>smart_layers_custom_api_config_failed_label</h3>
+            <p translate>smart_layers_custom_api_config_failed_explanation</p>
+            <p>
+                <a
+                    ng-click="globalOptions.smart_layers_bad_json = 0"
+                    translate
+                >
+                    clear_button
+                </a>
+            </p>
+            <pre>{{globalOptions.smart_layers_bad_json}}</pre>
+        </section>
+    </div>
+</div>

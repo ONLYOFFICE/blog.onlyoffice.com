@@ -1,0 +1,506 @@
+msgid ""
+msgstr "MIME-Version: 1.0\n"
+
+#. Name.
+msgid "Simple Twitter Tweets"
+msgstr ""
+
+#. Short description.
+msgid "Simple Twitter Tweets - Display your Tweets on your Wordpress site using the new Twitter OAuth API v1.1. (even when you can&#039;t connect) Because th"
+msgstr ""
+
+#. Screenshot description.
+msgid "Go to https://apps.twitter.com and Sign In"
+msgstr ""
+
+#. Screenshot description.
+msgid "Create a new Application"
+msgstr ""
+
+#. Screenshot description.
+msgid "Fill a name for your App, a description (this is for you) and your website address (URL)"
+msgstr ""
+
+#. Screenshot description.
+msgid "Click \"Create my access token\""
+msgstr ""
+
+#. Screenshot description.
+msgid "If you've already installed in the \"Simple Twitter Tweets\" plugin go to Appearance-&gt;Widgets (otherwise install it first then go here)"
+msgstr ""
+
+#. Screenshot description.
+msgid "Drag the \"Simple Twitter Tweets\" widget your widget area of choice"
+msgstr ""
+
+#. Screenshot description.
+msgid "Fill in the widget options and correlating Twitter Application OAuth requirements, just copy and paste"
+msgstr ""
+
+#. Screenshot description.
+msgid "New options for \"Twitter Follow Button\" and what elements to display"
+msgstr ""
+
+#. Screenshot description.
+msgid "Style how you like, \"Your Tweets your way\""
+msgstr ""
+
+#. Found in description header.
+msgid "Features"
+msgstr ""
+
+#. Found in description list item.
+msgid "Simple setup"
+msgstr ""
+
+#. Found in description list item.
+msgid "Twitter API v1.1 compliant (OAuth Ready)"
+msgstr ""
+
+#. Found in description list item.
+msgid "No passwords required or used"
+msgstr ""
+
+#. Found in description list item.
+msgid "Works even when Twitters down, over capacity or not connecting"
+msgstr ""
+
+#. Found in description list item.
+msgid "Tweets stored in the database with each call, so if your call to the Twitter API fails for whatever reason there won't be a blank space or Oops message on your site, you'll just see the last set of Tweets the system stored - sweet huh."
+msgstr ""
+
+#. Found in description list item.
+msgid "Tweeted when? - In Human Time using minutes, hours and days (i.e. 5 hours ago) or using Twitter time display (i.e. 5h)"
+msgstr ""
+
+#. Found in description list item.
+msgid "Twitter intents - increase social interaction with users ability to Reply, Retweet and Favourite your tweets right from you page"
+msgstr ""
+
+#. Found in description list item.
+msgid "Twitter intents using bespoke (only three characters) icon font (tiny) and colour the icons right in the widget"
+msgstr ""
+
+#. Found in description list item.
+msgid "Did we say it was simple and works..."
+msgstr ""
+
+#. Found in description paragraph.
+msgid "A Simple Twitter Tweets display widget, using Twitter OAth and API v1.1 and backup up so it always displays your Tweets."
+msgstr ""
+
+#. Found in description paragraph.
+msgid "<strong>Why?</strong>"
+msgstr ""
+
+#. Found in description paragraph.
+msgid "Our clients, especially on shared hosting were having issues with the Twitter API not displaying their tweets, too many connections from the same source (host). We solved that issue, then lo and behold Twitter changed their API so displaying your own Tweets required OAuth authentication and finally we buckled and decided to roll our own so it would be simple for them, for us and for you."
+msgstr ""
+
+#. Found in description paragraph.
+msgid "Twitter changed their API again. Removing version 1.0 of the API altogether and by forcing version 1.1 of the API and use of the OAuth authentication requirement. We wrote this plugin so everyone could have it at a click of a button."
+msgstr ""
+
+#. Found in description paragraph.
+msgid "There are a few Twitter plugins out their, but we couldn't find one simple enough, or that worked (to be honest) and so the Simple Twitter Tweets plugin was born."
+msgstr ""
+
+#. Found in description paragraph.
+msgid "Twitter users who want to display their Tweets on their website (or within an application) have to create a Twitter Application to get access to the required \"Keys\" and \"Tokens\" Twitter provides for Authentication. The instructions for this are provided below so you can be up and running with Tweets on your site in less time than it takes to make a cup of Tea."
+msgstr ""
+
+#. Found in installation header.
+msgid "Creating a Twitter Application"
+msgstr ""
+
+#. Found in installation header.
+msgid "The Widget Options"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Upload 'simple-twitter-tweets' to the '/wp-content/plugins/' directory"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Activate the plugin through the 'Plugins' menu in WordPress"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Add the Widget to your page (e.g. Sidebar) and update the required details"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Click Save"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Note: You will need to create a Twitter Application - See below. Oh, it's really easy."
+msgstr ""
+
+#. Found in installation list item.
+msgid "You can select the Title of the Widget as you like."
+msgstr ""
+
+#. Found in installation list item.
+msgid "Enter your Twitter username (without the @) just the name."
+msgstr ""
+
+#. Found in installation list item.
+msgid "How many Tweets to display"
+msgstr ""
+
+#. Found in installation list item.
+msgid "The time in minutes between updates (per the API requirement) this should be 5 but if the API changes you can alter it here."
+msgstr ""
+
+#. Found in installation list item.
+msgid "Consumer Key: Under the <em>OAuth settings</em> heading"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Consumer Secret: Under the <em>OAuth settings</em> heading"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Access Token: Under the <em>Your access token</em> heading"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Access Token Secret: Under the <em>Your access token</em> heading"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Choose if you want the @replies included or not"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Avatar: Your image or logo as displayed on Twitter – show on/off"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Avatar: Round the corners to your image (5px on modern browsers)"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Avatar: Set the size - defaults to the Twitter default of 48px"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Time Display: Default is WP human time (i.e. 5 hours ago)"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Time Display: New option – if set, Twitter time (i.e. 5h)"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Time Display: Choose to display the 'ago' or not"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Twitter Intents: Show Twitter intents for 'Reply', 'Retweet' and 'Favourite'"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Twitter Intents: Option to hide the Text and just use icons"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Twitter Intents: Colourise the icons to your display"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Twitter Follow: Choose to Show the Twitter Follow button"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Twitter Follow: Choose to show your Twitter name"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Twitter Follow: Choose to show your follower count"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Twitter Follow: Enforce your language (defaults to en [English])"
+msgstr ""
+
+#. Found in installation paragraph.
+msgid "Installation is as simple as 1,2,3 or maybe 4 because of Twitter :)"
+msgstr ""
+
+#. Found in installation paragraph.
+msgid "The Twitter Widget will never ask for your password, as it gets all your required data from the Open Authentication keys and secrets you will get by creating your application at Twitter. It also means that if you change your password, you won’t need to update any of the details of your Widget."
+msgstr ""
+
+#. Found in installation paragraph.
+msgid "To find these details, go to https://apps.twitter.com/ and sign in."
+msgstr ""
+
+#. Found in installation paragraph.
+msgid "Center of the screen click \"Create a New Application.\""
+msgstr ""
+
+#. Found in installation paragraph.
+msgid "Enter a unique name (anything you want), a description (again this is just for you), and your site's URL. You can leave the Callback URL empty as it is not used for this implementation."
+msgstr ""
+
+#. Found in installation paragraph.
+msgid "Yay, success - OK! You will be taken to a new screen, there's one more step then you can copy all the details into correct fields of the Widget and be on your way."
+msgstr ""
+
+#. Found in installation paragraph.
+msgid "OK, click the \"Create my Access Token\" button. This is a shortcut to authenticate your own account with your application (so you never need use your password)."
+msgstr ""
+
+#. Found in installation paragraph.
+msgid "Good. Now click the Details Tab as all the information you need is presented hereso you can just copy the required information into the exact corresponding inputs fields of the Widget."
+msgstr ""
+
+#. Found in installation paragraph.
+msgid "Full details and screenshots of this process can seen on the <a href=\"http://www.planet-interactive.co.uk/simple-twitter-tweets\" title=\"Simple Twitter Tweets page by Planet Interactive\">Simple Twitter Tweets page</a>"
+msgstr ""
+
+#. Found in installation paragraph.
+msgid "Fill in your details, copy and past the Twitter Application details (as described below)."
+msgstr ""
+
+#. Found in installation paragraph.
+msgid "Enjoy!"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Updated] All 4.1 updates and version number updated"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Enhanced] Widget Admin Javascript - Enhanced user experience while completing settings and options"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Updated] Optimised widget admin javascript and cleaned"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Added] Div for follow button alignment control - Props Brian Henry"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Added] Permalink screen name, prevent issues with spaces - thx to Brian"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Added] Link widget title to Twitter account.Widget admin option added for control - thx to Brian"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Added] Span to mimic line break and emphasis using CSS, cleaner - thx again Brian"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Added] Multiple Widget ready - you can now use multiple versions in widget ready areas as requested"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Added] Internationalisation (i18n) - Ready for impending WP [theme and plugin] Language packs. All interface text marked up ready for translations"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Fixed] Redeclared Function Error Fixed"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Fixed] PHP deprecated functions (notice) added PHP 5 construction references"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Added] SSL reference for avatar (profile pic) images for secure pages"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Added] Check for data retrieval, handles foreach warning (bullet proof old bug)"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Added] Defined 'ago' so when not used handles warning"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Added] Clean inputs no whitespace issue"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Updated] URL for Twitter apps creation updated (as it was moved)"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Fixed] Serialization error fixed - changed base_64 fix for 4-byte emoji strip"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Fixed] Class conflict error - check for use before including"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Fixed] Emoji error (presented as for each error) 4-byte emoji issue"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Fixed] Word break (letter break on certain browsers) - moved so break on links only to ensure long URLs don't break display"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Updated] Intents was on by default before selected (but not saved) - now off on initialisation and user selection to turn on required"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Fixed] Show Avatar was maintaining indent of tweets when turned off after having been set. Now checks for Avatar on flag not just size change."
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Added] Twitter Avatar, display, controls, presentation, styling and more"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Added] Time display formating and options"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Added] Twitter Intents, plus display styling and options"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Updated] Time reference i18n (localisation) compliance"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Updated] Widget UI, cleaner and more compartmentalized"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Fixed] Twitter API Copy/Paste (copy and past can introduce whitespace error - fixed)"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Fixed] Widget UI Javascript fix"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Fixed] URLs no longer truncated in retweets!"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "[Added] cURL error notification: this is a required PHP extension for connection to the Twitter API"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Fixed Exclude Replies variable notice and tweet calculation"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Added @ symbol for Twitter name links in Tweets"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Hash Tag linking and ReTweet @names linking"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Name reference added to hover state attribute for date link Screen Names - better than username reference"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Updated depricated functions to ensure future compatibility"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Rewrote link creation for URLs in tweets"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Fixed screen name reference for Twitter date links"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Added Twitter name reference enabling database backup for multiple account use"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Added Twitter Follow Button and configuration options"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Updated screenshots and instructions for new functionality and option settings"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Readme, descriptions and screenshot updates"
+msgstr ""
+
+#. Found in changelog list item.
+msgid "Initial release"
+msgstr ""
+
+#. Found in changelog paragraph.
+msgid "Added"
+msgstr ""
+
+#. Found in changelog paragraph.
+msgid "Updated"
+msgstr ""
+
+#. Found in changelog paragraph.
+msgid "Fixed"
+msgstr ""
+
+#. Found in faq header.
+msgid "Can I change the look and feel of the Tweets"
+msgstr ""
+
+#. Found in faq header.
+msgid "Where can I get help"
+msgstr ""
+
+#. Found in faq header.
+msgid "More FAQs"
+msgstr ""
+
+#. Found in faq list item.
+msgid "To make styling easier the &lt;ul&gt; has a class of Tweets - &lt;ul class=\"tweets\"&gt;"
+msgstr ""
+
+#. Found in faq list item.
+msgid "Each Tweet is a list item &lt;li&gt;"
+msgstr ""
+
+#. Found in faq list item.
+msgid "Each Time reference is an emphasised link &lt;em&gt;&lt;a&gt;"
+msgstr ""
+
+#. Found in faq list item.
+msgid "Inside the &lt;li&gt; we now have (if you choose to diplay it) the avatar image"
+msgstr ""
+
+#. Found in faq list item.
+msgid "Inside the &lt;li&gt; we also have (if you choose to diplay them) the Twitter intents. These are are in a DIV with a class of 'intent-meta' – in case you want to control its placement or spacing further. Each Intent is a link containing a 'span' for icon (using icon fonts for speed and styling flexibility) and another span for the text"
+msgstr ""
+
+#. Found in faq list item.
+msgid "Done."
+msgstr ""
+
+#. Found in faq paragraph.
+msgid "Of course you can. It's really simple too."
+msgstr ""
+
+#. Found in faq paragraph.
+msgid "The Tweets are in a widget as with all widgets, and are a simple unordered list."
+msgstr ""
+
+#. Found in faq paragraph.
+msgid "If you're really stuck use the Wordpress Support Forum or check out the <a href=\"http://planetinteractive.freshdesk.com/support/login\" title=\"Support by Planet Interactive\">support portal</a>"
+msgstr ""
+
+#. Found in faq paragraph.
+msgid "We've tested it and as far as we know it works great! Phew, but if you have an issue or you want to propose some functionality then submit you ideas at the <a href=\"http://planetinteractive.freshdesk.com/support/login\" title=\"Support by Planet Interactive\">support portal</a> and we'll update these FAQs and get onto it when we can."
+msgstr ""

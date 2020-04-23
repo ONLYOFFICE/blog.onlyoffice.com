@@ -1,0 +1,101 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Wordpress Video Plugin v0.757\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2013-01-04 21:20:11+0000\n"
+"Last-Translator: oliver <webmaster@daburna.de>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: \n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#. translators: plugin header field 'Description'
+#: videos.php:0
+#@ ow_wvp
+msgid "The Wordpress Video Plugin adds a filter for WordPress that allows easy video embedding of 65 supported video sites. Enter [videosite id] at a post and you will see a video. For using the plugin, read the <a href=\"http://www.daburna.de/dokuwiki/doku.php/instruction\" title=\"wordpress video plugin instruction\">instruction page</a> or readme file!"
+msgstr "Das Wordpress Video Plugin fügt einen Filter zu deinem WordPress Blog hinzu, der dir das einfache Einbinden von Videos aus über 65 unterstützten Seiten ermöglicht. Schreibe [videoseite id] in deinen Artikel und das Video erscheint. Bitte lese die <a href=\"http://www.daburna.de/dokuwiki/doku.php/instruction\" title=\"wordpress video plugin instruction\">Anleitung</a> oder die readme Datei!"
+
+#. translators: plugin header field 'Name'
+#: videos.php:0
+#@ ow_wvp
+msgid "Wordpress Video Plugin"
+msgstr ""
+
+#. translators: plugin header field 'PluginURI'
+#: videos.php:0
+#@ ow_wvp
+msgid "http://www.daburna.de/blog/2006/12/13/wordpress-video-plugin/"
+msgstr ""
+
+#. translators: plugin header field 'Author'
+#: videos.php:0
+#@ ow_wvp
+msgid "Oliver Wunder"
+msgstr ""
+
+#. translators: plugin header field 'AuthorURI'
+#: videos.php:0
+#@ ow_wvp
+msgid "http://www.daburna.de/"
+msgstr ""
+
+#. translators: plugin header field 'Version'
+#: videos.php:0
+#@ ow_wvp
+msgid "0.757"
+msgstr ""
+
+#: videos.php:2190
+#@ ow_wvp
+msgid "Wordpress Video Plugin Options"
+msgstr "Wordpress Video Plugin Optionen"
+
+#: videos.php:2192
+#@ ow_wvp
+msgid "Thank you for using Wordpress Video Plugin!"
+msgstr "Danke, dass du das Wordpress Video Plugin benutzt!"
+
+#: videos.php:2194
+#@ ow_wvp
+msgid ""
+"This is a first implementation of an option page to configurate the Wordpress Video Plugin. Until now you can not configure anything from here. But in the future\n"
+"    it is planed to configure size and other features."
+msgstr ""
+"Dies ist eine vorläufige Version der Optionsseite für das Wordperss Video Plugin. Aktuell kannst du hier leider noch nichts konfigurieren. Aber zukünftig\n"
+"    ist geplant, dass du hier z.B. die Größe des Players einstellen kannst."
+
+#: videos.php:2196
+#@ ow_wvp
+msgid "Usage"
+msgstr "Benutzung"
+
+#: videos.php:2197
+#@ ow_wvp
+msgid "Every occurence of the expression [site id] (case unsensitive) will start as an embedded flash player. Replace 'site' with the name of the videosite and 'id' with the video id. Visit this page for supported video sites: <a href=\"http://daburna.de/dokuwiki/doku.php/instruction\">Instructions</a>"
+msgstr "Jedes Vorkommen von [Seite id] in deinem Blog wird einen externen Videoplayer einbinden. Ersetze 'Seite' mit dem Namen der Videoseite, die du einbinden willst, und 'id' mit der Video-ID. Besuche diese Seite, um eine genauere Anleitung zu erhalten: <a href=\"http://daburna.de/dokuwiki/doku.php/instruction\">Anleitung</a>"
+
+#: videos.php:2199
+#@ ow_wvp
+msgid "Donate"
+msgstr "Spenden"
+
+#: videos.php:2200
+#@ ow_wvp
+msgid "If you like Wordpress Video Plugin, you can support its development by a donation:"
+msgstr "Wenn du magst, spende gerne für die Weiterentwicklung des Plugins. Folgende Wege sind dazu möglich:"
+
+#: videos.php:2216
+#@ ow_wvp
+msgid "My Amazon.de wishlist (German)"
+msgstr "Meine Amazon-Wunschliste"
+

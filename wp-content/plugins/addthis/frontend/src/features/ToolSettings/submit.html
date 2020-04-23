@@ -1,0 +1,30 @@
+<div id="submitdiv" class="postbox ">
+    <h2 class="hndle"><span translate>publish</span></h2>
+    <div class="inside">
+        <div class="submitbox" id="submitpost">
+            <div id="major-publishing-actions">
+                <div id="delete-action">
+                </div>
+
+                <div id="publishing-action">
+                    <span
+                        ng-show="saving"
+                        class="spinner"
+                        style="visibility: visible;"
+                    >
+                    </span>
+                    <input
+                        name="save"
+                        type="submit"
+                        class="button button-primary button-large"
+                        value="{{'publish'|translate}}"
+                        ng-click="save()"
+                        ng-class="{'button-disabled': saving}"
+                    >
+                </div>
+                <div class="clear"></div>
+            </div>
+
+        </div>
+    </div>
+</div>

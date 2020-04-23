@@ -1,0 +1,25 @@
+<h3 translate>layers_offset_header</h3>
+
+<select
+    name="{{name}}"
+    id="{{name}}"
+    ng-model="ngModel.location"
+    ng-options="option.value as (option.display|translate) for option in positionOptions"
+>
+</select>
+
+<input
+    type="number"
+    min="0"
+    ng-model="ngModel.amount"
+    name="addthis-{{toolPco}}-offset-amount"
+    id="addthis-{{toolPco}}-offset-amount"
+/>
+
+<select
+    name="addthis-{{toolPco}}-offset-unit"
+    id="addthis-{{toolPco}}-offset-unit"
+    ng-model="ngModel.unit"
+    ng-options="option.value as option.value for option in unitOptions"
+>
+</select>

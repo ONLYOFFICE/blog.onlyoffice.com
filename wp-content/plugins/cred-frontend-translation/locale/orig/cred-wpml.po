@@ -1,0 +1,105 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: CRED - WPML\n"
+"POT-Creation-Date: 2013-04-29 10:00+0200\n"
+"PO-Revision-Date: 2013-04-29 10:00+0200\n"
+"Last-Translator: Alex A. <alex.a@icanlocalize.com>\n"
+"Language-Team: ICanLocalize <icanlocalize.com>\n"
+"Language: EN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: d:\\xampp\\htdocs\\wpml\\wp-content\\plugins\\cred-wpml-"
+"glue-plugin\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: cred-wpml-glue.php:76
+msgid "CRED / WPML Glue"
+msgstr ""
+
+#: cred-wpml-glue.php:125
+msgid "Translate this content"
+msgstr ""
+
+#: cred-wpml-glue.php:128
+msgid "Translate"
+msgstr ""
+
+#: cred-wpml-glue.php:149
+msgid "Translations"
+msgstr ""
+
+#: cred-wpml-glue.php:232
+msgid "Original content:"
+msgstr ""
+
+#: cred-wpml-glue.php:248
+msgid "Form for translating content"
+msgstr ""
+
+#: cred-wpml-glue.php:255
+msgid "Show the original content for translation"
+msgstr ""
+
+#: cred-wpml-glue.php:262
+msgid "Original content fields"
+msgstr ""
+
+#: cred-wpml-glue.php:265
+msgid "Original content Fields (click to insert)"
+msgstr ""
+
+#: cred-wpml-glue.php:266
+msgid "Close"
+msgstr ""
+
+#: cred-wpml-glue.php:286
+msgid "Frontend translation controls"
+msgstr ""
+
+#: cred-wpml-glue.php:287
+msgid "Frontend translation controls"
+msgstr ""
+
+#: cred-wpml-glue.php:655
+msgid "Translation form for "
+msgstr ""
+
+#: plugin.php:41
+#, php-format
+msgid ""
+"The CRED / WPML Glue Plugin is only effective when <a href=\"%s\">WPML 2.8</"
+"a> (or higher) and <a href=\"%s\">CRED 1.1.4</a> (or higher) are installed "
+"and active."
+msgstr ""
+
+#: menu/settings.php:1
+msgid "Frontend translation settings"
+msgstr ""
+
+#: menu/settings.php:19
+msgid "Display CRED / WPML Glue controls bottom of \"the content\""
+msgstr ""
+
+#: menu/settings.php:21
+msgid "Save settings"
+msgstr ""
+
+#: menu/settings.php:25
+msgid "Frontend translation forms"
+msgstr ""
+
+#: menu/settings.php:30 menu/settings.php:36
+msgid "Content type"
+msgstr ""
+
+#: menu/settings.php:31 menu/settings.php:37
+msgid "Translation form"
+msgstr ""
+
+#: menu/settings.php:49
+msgid "Create form"
+msgstr ""

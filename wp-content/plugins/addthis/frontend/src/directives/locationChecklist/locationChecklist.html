@@ -1,0 +1,10 @@
+<div ng-repeat="location in locations">
+    <h3 translate>{{location.title}}</h3>
+    <div ng-repeat="option in location.options">
+        <input type="checkbox"
+               ng-checked="ngModel.indexOf(option.value) > -1"
+               ng-click="toggleSelection(option.value)"
+        >
+        <span class="addthis-checkbox-label"><strong translate>{{option.display}}</strong></span>
+    </div>
+</div>

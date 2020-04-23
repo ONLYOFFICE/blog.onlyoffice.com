@@ -1,0 +1,2 @@
+!function($){$(document).ready(function(){$(".is-dismissible").on("click",".notice-dismiss",function(e){var parent=$(this).parent(),key=parent.data("atnoticekey"),nonce=null,nonceField=parent.find("input[name=_wpnonce]");nonceField.length&&(nonce=nonceField.first().val()),$.post(ajaxurl,{action:"addthis_admin_notice_dismiss",url:ajaxurl,noticekey:key,nonce:nonce})})})}(jQuery);
+//# sourceMappingURL=../build/addthis_wordpress_admin.min.js.map

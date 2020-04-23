@@ -1,0 +1,64 @@
+<form name="createprofile" novalidate>
+    <div class="settings-card">
+        <header>
+            <h2 translate>create_profile_title</h2>
+        </header>
+
+        <div class="settings-body">
+
+            <p translate>
+                create_profile_description
+            </p>
+
+            <div class="registration-field-area">
+                <label for="registrationEmail" translate>
+                    create_profile_label
+                </label>
+                <input
+                    type="text"
+                    class="form-control"
+                    name="profileName"
+                    ng-model="registrationFormModel.profileName"
+                    validate-add-this-profile-name
+                    ng-maxlength=255
+                    required
+                >
+
+                <div
+                    soft-alert
+                    level="'danger'"
+                    ng-show="createprofile.profileName.$error.maxlength"
+                >
+                    <span translate>error_message_profile_name_too_long</span>
+                </div>
+
+                <div
+                    soft-alert
+                    level="'danger'"
+                    ng-show="createprofile.profileName.$error.addThisProfileName"
+                >
+                    <span translate>error_message_profile_bad_characters</span>
+                </div>
+
+                <div
+                    soft-alert
+                    level="'danger'"
+                    ng-show="createProfileFailed"
+                >
+                    <span translate>error_message_failed_unknown_reason</span>
+                </div>
+            </div>
+
+            <button
+                type="submit"
+                class="addthis-btn addthis-btn-blue"
+                ng-class="{ 'addthis-btn-disabled': createprofile.$invalid }"
+                ng-click="createProfileSubmit(createprofile.$valid)"
+                translate
+            >
+                confirm_button
+            </button>
+        </div>
+    </div>
+
+</form>

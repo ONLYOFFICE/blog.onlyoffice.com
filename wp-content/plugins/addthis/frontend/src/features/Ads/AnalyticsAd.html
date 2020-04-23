@@ -1,0 +1,29 @@
+<div
+    ng-controller="AnalyticsAdCtrl"
+    class="sidebar-callout"
+    ng-hide="state === 'loading'"
+>
+
+    <h2 translate>registration_ad_header</h2>
+    <a
+        ng-show="state === 'register'"
+        ui-sref="registration.state({ registrationState: 'createAccount' })"
+        translate
+    >
+        create_account_button
+    </a>
+    <a
+        ng-show="state === 'register'"
+        ui-sref="registration.state({ registrationState: 'signIn' })"
+        translate
+    >
+        client_string_sign_in
+    </a>
+    <a
+        ng-show="state === 'viewanalytics'"
+        ng-href="https://www.addthis.com/dashboard#dashboard-analytics?pub={{profileId}}"
+        translate
+    >
+        registration_ad_view_analytics
+    </a>
+</div>

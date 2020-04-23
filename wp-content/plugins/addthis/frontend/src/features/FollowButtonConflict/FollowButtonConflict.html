@@ -1,0 +1,54 @@
+<div ng-controller="FollowButtonConflictCtrl">
+    <div class="header-container">
+        <div ng-include class="header-background" src="'/images/logo-pattern.svg'"></div>
+        <div ng-include class="header-logo" src="'/images/addthis-logo.svg'"></div>
+    </div>
+
+    <div
+        class="conflict-resolution"
+        debug-hot-keys
+    >
+        <h1 translate>settings_conflict_follow_header</h2>
+        <p translate>settings_conflict_follow_description</p>
+
+        <div ng-show="showTool('flwh')">
+            <h2 translate>tool_flwh_name</h3>
+            <div
+                follow-button-deconflict-form
+                ng-model="withoutConflicts.flwh"
+                conflicts="withConflicts.flwh"
+            >
+            </div>
+
+            <button
+                type="submit"
+                ng-click="save('flwh')"
+                class="addthis-btn addthis-btn-blue"
+            >
+                <span ng-show="conflicts.flwv" translate>next_button</span>
+                <span ng-hide="conflicts.flwv" translate>submit_button</span>
+            </button>
+        </div>
+
+        <div ng-show="showTool('flwv')">
+            <h2 translate>tool_flwv_name</h3>
+
+            <div
+                follow-button-deconflict-form
+                ng-model="withoutConflicts.flwv"
+                conflicts="withConflicts.flwv"
+            >
+            </div>
+
+            <button
+                type="submit"
+                ng-click="save('flwv')"
+                class="addthis-btn addthis-btn-blue"
+            >
+                <span ng-show="conflicts.flwh" translate>next_button</span>
+                <span ng-hide="conflicts.flwh" translate>submit_button</span>
+            </button>
+
+        </div>
+    </div>
+</div>

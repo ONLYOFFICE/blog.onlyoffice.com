@@ -1,0 +1,121 @@
+<div class="share-service-picker">
+    <h3 translate>share_tool_social_networks_header</h3>
+
+    <div ng-hide="thirdParty">
+
+        <label for="addthis-{{widgetId}}-service-auto-personalization-off">
+            <input
+                type="radio"
+                id="addthis-{{widgetId}}-service-auto-personalization-on"
+                name="addthis-{{widgetId}}-service-auto-personalization-on"
+                ng-value="true"
+                ng-model="autoPersonalization"
+            />
+            <span class="addthis-checkbox-label">
+                <strong>
+                    {{'advanced_settings_language_automatic_option'|translate}}
+                    {{'option_recommended'|translate}}
+                </strong>
+            </span>
+        </label>
+
+        <div ng-show="autoPersonalization && !thirdParty">
+            <div class="settings-subsetting">
+                <span class="addthis-checkbox-label"><strong translate>number_of_preferred_service_label</strong></span>
+
+                <div
+                    integer-select
+                    ng-model="numberOfServices"
+                    for="addthis-{{widgetId}}-number-of-services"
+                    min="min"
+                    max="max"
+                >
+                </div>
+            </div>
+        </div>
+
+        <label for="addthis-{{widgetId}}-service-auto-personalization-off">
+            <input
+                type="radio"
+                id="addthis-{{widgetId}}-service-auto-personalization-off"
+                name="addthis-{{widgetId}}-service-auto-personalization-off"
+                ng-model="autoPersonalization"
+                ng-value="false"
+            />
+            <span class="addthis-checkbox-label">
+                <strong>
+                    {{'share_service_picker_enabled_label'|translate}}
+                </strong>
+            </span>
+        </label>
+
+    </div>
+
+    <div ng-hide="autoPersonalization && !thirdParty" class="share-service-picker-container">
+        <div class="share-service-add-header">
+            <p translate>service_picker_available_choices_label</p>
+        </div>
+        <div class="share-service-delete-header">
+            <p translate>service_picker_selected_choices_label</p>
+        </div>
+
+        <input
+            type="text"
+            class="share-service-add-search"
+            id="query"
+            ng-model="searchString"
+            placeholder="{{'search_input_placeholder'|translate}}"
+        />
+
+        <ol class="share-service-list share-service-add">
+            <li
+                ng-click="addService(service)"
+                ng-repeat="service in serviceOptions | orderBy:'name'"
+                ng-show="!serviceAdded(service) && serviceSearch(service)"
+                alt="{{'service_add_alt'|translate:{'service': (service.displayName|translate)} }}"
+            >
+                <a
+                    tabindex="-1"
+                    class="pull-left share-service-icon addthis_button_{{service.icon}}"
+                >
+                </a>
+                <div class="share-service-edit-icon-pointer-event-cover-hack"></div>
+                <span class="share-service-name">
+                    {{service.name}}
+                </span>
+                <div
+                    ng-include
+                    src="'/images/cross.svg'"
+                    class="share-service-add-icon add"
+                >
+                </div>
+            </li>
+        </ol>
+
+        <ol class="share-service-list share-service-delete">
+            <li
+                ng-click="deleteService(service)"
+                ng-repeat="service in serviceOptions | orderBy:'rank'"
+                ng-show="serviceAdded(service)"
+                alt="{{'service_add_alt'|translate:{'service': (service.displayName|translate)} }}"
+            >
+                <a
+                    tabindex="-1"
+                    class="pull-left share-service-icon addthis_button_{{service.icon}}"
+                >
+                </a>
+                <div class="share-service-edit-icon-pointer-event-cover-hack"></div>
+                <span class="share-service-name">
+                    {{service.name}}
+                </span>
+                <div
+                    ng-include
+                    src="'/images/cross.svg'"
+                    class="share-service-delete-icon delete"
+                >
+                </div>
+            </li>
+        </ol>
+    </div>
+
+</div>

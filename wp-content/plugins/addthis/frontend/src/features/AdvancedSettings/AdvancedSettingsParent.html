@@ -1,0 +1,86 @@
+<div ng-controller="AdvancedSettingsCtrl">
+    <div class="header-container">
+        <div ng-include class="header-background" src="'/images/logo-pattern.svg'"></div>
+        <div ng-include class="header-logo" src="'/images/addthis-logo.svg'"></div>
+    </div>
+
+    <h1 translate>menu_item_advanced_settings</h1>
+
+    <div
+        ng-show="loadStatus == 'loading'"
+    >
+        <div
+            soft-alert
+            level="'info'"
+        >
+            {{'progress_message_loading'|translate}}
+        </div>
+    </div>
+
+    <section
+        ng-include
+        src="'/features/CrossPluginWarnings/CrossPluginWarnings.html'"
+    >
+    </section>
+
+    <form
+        name="form"
+        ng-show="loadStatus == 'loaded'"
+        novalidate
+        debug-hot-keys
+    >
+        <section
+            ng-include
+            src="'/features/AdvancedSettings/Tracking.html'"
+        >
+        </section>
+
+        <section
+            ng-include
+            src="'/features/AdvancedSettings/LoadingOptions.html'"
+        >
+        </section>
+
+        <section
+            ng-include
+            src="'/features/AdvancedSettings/AMPOptions.html'"
+        >
+        </section>
+
+        <section
+            ng-include
+            src="'/features/AdvancedSettings/DeveloperConfiguration.html'"
+        >
+        </section>
+
+        <section
+            class="advanced-settings review-nag"
+            review-nag
+        >
+        </section>
+
+        <section
+            ng-include
+            src="'/features/AdvancedSettings/DebugAdvancedSettings.html'"
+        >
+        </section>
+
+        <section
+            ng-include
+            src="'/features/SaveChangesButton/SaveChangesButton.html'"
+        >
+        </section>
+    </form>
+
+    <div
+        ng-show="loadStatus == 'failed'"
+    >
+        <div
+            soft-alert
+            level="'danger'"
+        >
+            {{'error_message_unable_to_load_settings'|translate}}
+        </div>
+    </div>
+
+</div>

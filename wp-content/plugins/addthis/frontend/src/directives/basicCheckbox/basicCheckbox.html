@@ -1,0 +1,45 @@
+<div
+    for="{{formFieldName}}"
+    class="checkbox-field"
+>
+
+    <input
+        type="checkbox"
+        ng-model="ngModel"
+        id="{{formFieldName}}"
+        name="{{formFieldName}}"
+        ng-selected="{{ngModel !== false}}"
+    />
+
+    <div
+        class="checkbox-details-container"
+    >
+        <label
+            for="{{formFieldName}}"
+            class="strong"
+        >
+            {{label}}
+            <span ng-if="recommended" translate>option_recommended</span>
+            <span ng-if="notRecommended" translate>option_not_recommended</span>
+        </label>
+
+        <div class="transclude-here transclude-here-basic-checkbox">
+        </div>
+    </div>
+
+    <div
+        soft-alert
+        level="'warning'"
+        ng-show="warning()"
+    >
+        <span ng-show="warningText">
+            {{warningText}}
+        </span>
+        <span ng-hide="warningText" translate>
+            warning_message_not_recommended
+        </span>
+    </div>
+
+</div>
+
+

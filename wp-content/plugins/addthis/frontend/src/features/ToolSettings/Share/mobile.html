@@ -1,0 +1,142 @@
+<div class="tool-left">
+
+    <div
+        setting-frame
+        for="sidebar-setting-frame"
+        title="toolSettings.toolName"
+        title-placeholder-msgid="titlePlaceholder"
+    >
+        <pre ng-show="globalOptions.debug_enable">{{toolSettings|json}}</pre>
+
+        <div id="advanced-sortables" class="meta-box-sortables ui-sortable">
+
+            <!-- General Settings -->
+            <div
+                setting-card
+                for="setting-card-general-settings"
+                expended="generalCardExpended"
+            >
+                <h2 class="hndle ui-sortable-handle">
+                    <span translate>share_tool_edit_general_label</span>
+                </h2>
+                <div class="inside inside-grey" ng-show="generalCardExpended">
+                    <h3 translate>layers_position_header</h3>
+                    <div
+                        position-picker
+                        ng-model="toolSettings.buttonBarPosition"
+                        field-name="buttonBarPosition.fieldName"
+                        title="buttonBarPosition.title"
+                        position-options="buttonBarPosition.positionOptions"
+                    >
+                    </div>
+
+                    <div class="clear"></div>
+
+                    <h3 translate>layers_theme_picker_title</h3>
+                    <div
+                        america-layers-theme-picker
+                        ng-model="toolSettings.buttonBarTheme"
+                        field-name="buttonBarTheme.fieldName"
+                        title="buttonBarTheme.title"
+                        theme-options="buttonBarTheme.themeOptions"
+                    >
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design Settings -->
+            <div setting-card
+                 for="setting-card-design-settings"
+                 expended="designCardExpended"
+            >
+                <h2 class="hndle ui-sortable-handle">
+                    <span translate>share_tool_edit_design_label</span>
+                </h2>
+                <div class="inside inside-grey" ng-show="designCardExpended">
+                    <div
+                        america-on-off-select
+                        ng-model="toolSettings.follow"
+                        field-name="followOnOffSelect.fieldName"
+                        title="followOnOffSelect.title"
+                    >
+                    </div>
+
+                    <div class="clear"></div>
+
+                    <div
+                        ng-show="toolSettings.follow === 'on'"
+                        follow-service-picker
+                        ng-model="toolSettings.followServices"
+                        tool-pco="{{toolSettings.widgetId}}"
+                    >
+                    </div>
+                </div>
+            </div>
+
+            <!-- Templates -->
+            <div ng-show="globalOptions.addthis_plugin_controls == 'WordPress' && !globalOptions.enqueue_local_settings">
+                <div
+                    setting-card
+                    for="setting-card-design-settings"
+                    expended="templateCardExpended"
+                >
+                    <h2 class="hndle ui-sortable-handle">
+                        <span translate>share_tool_wordpress_template_label</span>
+                    </h2>
+                    <div class="inside inside-grey" ng-show="templateCardExpended">
+                        <div
+                            template-checklist
+                            ng-model="toolSettings.templates"
+                            field-name="buttonBarTemplate.fieldName"
+                            template-options="buttonBarTemplate.templateOptions"
+                        >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Settings -->
+            <div
+                setting-card
+                for="setting-card-advanced-settings"
+                expended="advancedCardExpended"
+                ng-show="globalOptions.addthis_plugin_controls == 'AddThis'"
+            >
+                <h2 class="hndle ui-sortable-handle">
+                    <span translate>share_tool_edit_advanced_label</span>
+                </h2>
+                <div class="inside inside-grey" ng-show="advancedCardExpended">
+                    <div
+                        hide-on-pages
+                        ng-model="toolSettings"
+                    >
+                    </div>
+                    <h3 translate>
+                        share_tool_extra_appearance_settings_label
+                    </h3>
+                    <div
+                        responsive-picker
+                        ng-model="toolSettings.responsive"
+                    >
+                    </div>
+                    <div class="clear"></div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="tool-right">
+    <div ng-include src="'/features/ToolSettings/submit.html'"></div>
+    <div ng-include src="'/features/Ads/HelpAd.html'"></div>
+</div>
+
+
+
+
+
+
+

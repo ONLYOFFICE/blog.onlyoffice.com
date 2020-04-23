@@ -1,0 +1,24 @@
+<div>
+
+    <label
+        for="addthis-{{toolPco}}-{{fieldName}}"
+        class="strong"
+        translate
+    >
+        icon_size_picker_title
+    </label>
+
+    <select
+        name="addthis-{{toolPco}}-{{fieldName}}"
+        id="addthis-{{toolPco}}-{{fieldName}}"
+        ng-model="ngModel"
+    >
+        <option
+            ng-repeat="size in sizeOptions"
+            value="{{size.value}}"
+        >
+            {{size.display|translate}}
+        </option>
+    </select>
+
+</div>

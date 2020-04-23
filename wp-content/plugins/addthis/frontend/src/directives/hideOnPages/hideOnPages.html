@@ -1,0 +1,20 @@
+<h3 translate>layers_hide_on_these_pages_title</h3>
+<div class="actions tool-positions sidebar-bg">
+    <input type="checkbox"
+           ng-selected="{{ngModel.__hideOnHomepage !== false}}"
+           ng-model="ngModel.__hideOnHomepage"
+    >
+    <strong class="label-bg" translate>layers_hide_on_homepage_title</strong>
+    <label>
+        <strong translate>layers_hide_on_these_pages_title</strong>
+    </label>
+    <textarea
+            rows="4"
+            cols="20"
+            placeholder="addthis.com/blog/*"
+            ng-trim="true"
+            ng-model="ngModel.__hideOnUrls"
+    ></textarea>
+
+    <small translate>layers_hide_on_these_pages_description</small>
+</div>

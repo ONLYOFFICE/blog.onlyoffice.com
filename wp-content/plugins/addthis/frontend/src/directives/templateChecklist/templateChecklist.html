@@ -1,0 +1,11 @@
+<div class="alignleft actions tool-templates">
+    <label for="{{fieldName}}"><strong>{{title|translate}}</strong></label>
+    <div ng-repeat="option in templateOptions" name="{{fieldName}}" id="{{fieldName}}" >
+        <input type="checkbox"
+               ng-checked="ngModel.indexOf(option.value) > -1"
+               ng-click="toggleSelection(option.value)"
+        >
+        <span class="addthis-checkbox-label"><strong translate>{{option.display}}</strong></span>
+    </div>
+</div>
+

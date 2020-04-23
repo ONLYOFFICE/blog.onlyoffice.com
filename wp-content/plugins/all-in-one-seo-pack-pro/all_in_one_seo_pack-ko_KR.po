@@ -1,0 +1,647 @@
+# Translation of the WordPress plugin   by .
+# Copyright (C) 2010
+# This file is distributed under the same license as the  package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/all-in-one-seo-pack\n"
+"POT-Creation-Date: 2010-07-21 00:26+0000\n"
+"PO-Revision-Date: 2012-11-03 18:07+0900\n"
+"Last-Translator: Venusian <martian36@naver.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: aioseop.class.php:994
+#, php-format
+msgid "Could not download distribution (%s)"
+msgstr "배포판을 내려받을 수 없습니다 (%s)"
+
+#: aioseop.class.php:997
+#, php-format
+msgid "Could not download distribution (%s): %s"
+msgstr "배포판을 내려받을 수 없습니다 (%s): %s"
+
+#: aioseop.class.php:1004
+#, php-format
+msgid "Could not open %s for writing"
+msgstr "쓰기 위해서 %s를 열 수 없습니다"
+
+#: aioseop.class.php:1006
+#, php-format
+msgid "Please make sure %s is writable"
+msgstr "%s가 쓰기 가능한지 확인하세요"
+
+#: aioseop.class.php:1012
+#, php-format
+msgid "Could not write to %s"
+msgstr "%s에 쓰기를 할 수 없습니다."
+
+#: aioseop.class.php:1180 aioseop.class.php:1220 aioseop.class.php:1227
+#: all_in_one_seo_pack.php:733 all_in_one_seo_pack.php:737
+#: all_in_one_seo_pack.php:738
+msgid "All in One SEO Pack"
+msgstr "All in One SEO Pack"
+
+#: aioseop.class.php:1184 aioseop.class.php:1241 all_in_one_seo_pack.php:776
+msgid "Title:"
+msgstr "제목:"
+
+#: aioseop.class.php:1188 aioseop.class.php:1253 all_in_one_seo_pack.php:794
+msgid "Keywords (comma separated):"
+msgstr "키워드 (콤마 분리):"
+
+#: aioseop.class.php:1233 all_in_one_seo_pack.php:768
+msgid "Click here for Support"
+msgstr "지원을 받으려면 여기를 클릭하세요"
+
+#: aioseop.class.php:1245 all_in_one_seo_pack.php:784
+msgid "Description:"
+msgstr "설명:"
+
+#: aioseop.class.php:1249 all_in_one_seo_pack.php:789
+msgid ""
+" characters. Most search engines use a maximum of 160 chars for the "
+"description."
+msgstr ""
+"글자. 대부분의 검색 엔진은 설명에 대해서 160개의 글자를 최대로 사용합니다."
+
+#: aioseop.class.php:1260 all_in_one_seo_pack.php:811
+msgid "Disable on this page/post:"
+msgstr "이 페이지/글에서 비활성화:"
+
+#: aioseop.class.php:1268 all_in_one_seo_pack.php:800
+msgid "Title Attribute:"
+msgstr "제목 속성:"
+
+#: aioseop.class.php:1272 all_in_one_seo_pack.php:805
+msgid "Menu Label:"
+msgstr "메뉴 레이블:"
+
+#: aioseop.class.php:1299
+msgid "All in One SEO"
+msgstr "All in One SEO"
+
+#: aioseop.class.php:1341
+msgid "All in One SEO Options Reset."
+msgstr "All in One SEO 옵션 리셋."
+
+#: aioseop.class.php:1384
+msgid "All in One SEO Options Updated."
+msgstr "All in One SEO 옵션 업데이트됨."
+
+#: aioseop.class.php:1443
+msgid "All in One SEO Plugin Options"
+msgstr "All in One SEO 플러그인 옵션"
+
+#: aioseop.class.php:1447
+msgid "All in One SEO Plugin Release History"
+msgstr "All in One SEO 플러그인 릴리즈 역사"
+
+#: aioseop.class.php:1448
+msgid "Changelog"
+msgstr "개정 기록"
+
+#: aioseop.class.php:1450 aioseop.class.php:1451
+msgid "FAQ"
+msgstr "FAQ"
+
+#: aioseop.class.php:1452
+msgid "All in One SEO Plugin Support Forum"
+msgstr "All in One SEO 플러그인 지원 포럼"
+
+#: aioseop.class.php:1453
+msgid "Support"
+msgstr "지원"
+
+#: aioseop.class.php:1454
+msgid "All in One SEO Plugin Translations"
+msgstr "All in One SEO 플러그인 번역"
+
+#: aioseop.class.php:1455
+msgid "Translations"
+msgstr "번역"
+
+#: aioseop.class.php:1456
+msgid "Pro Version"
+msgstr "프로 버전"
+
+#: aioseop.class.php:1457
+msgid "UPGRADE TO PRO VERSION"
+msgstr "프로 버전으로 업그레이드 하기"
+
+#: aioseop.class.php:1481
+msgid "Donate with Paypal"
+msgstr "페이팔로 기부하기"
+
+#: aioseop.class.php:1483
+msgid "My Amazon Wish List"
+msgstr "나의 아마존 위시 리스트"
+
+#: aioseop.class.php:1484
+msgid "Follow us on Twitter"
+msgstr "트위터에서 팔로우하기"
+
+#: aioseop.class.php:1485
+msgid "Follow Us on Twitter"
+msgstr "트위터에서 팔로우하기"
+
+#: aioseop.class.php:1493
+msgid "iBlogPro theme"
+msgstr "iBlogPro 테마"
+
+#: aioseop.class.php:1494
+msgid "Pagelines Themes"
+msgstr "Pagelines 테마"
+
+#: aioseop.class.php:1495
+msgid "WhiteHouse theme"
+msgstr "WhiteHouse 테마"
+
+#: aioseop.class.php:1532
+msgid "Click on option titles to get help!"
+msgstr "아래에서 옵션 제목을 클릭하면 도움말이 나타납니다!"
+
+#: aioseop.class.php:1690 aioseop.class.php:1707 aioseop.class.php:1724
+#: aioseop.class.php:1740 aioseop.class.php:1756 aioseop.class.php:1772
+#: aioseop.class.php:1788 aioseop.class.php:1804 aioseop.class.php:1831
+#: aioseop.class.php:1856 aioseop.class.php:1878 aioseop.class.php:1899
+#: aioseop.class.php:1920 aioseop.class.php:1941 aioseop.class.php:1963
+#: aioseop.class.php:1986 aioseop.class.php:2006 aioseop.class.php:2022
+#: aioseop.class.php:2037 aioseop.class.php:2055 aioseop.class.php:2070
+#: aioseop.class.php:2086 aioseop.class.php:2102 aioseop.class.php:2118
+#: aioseop.class.php:2134 aioseop.class.php:2151 aioseop.class.php:2168
+#: aioseop.class.php:2184 aioseop.class.php:2200 aioseop.class.php:2216
+#: aioseop.class.php:2233
+msgid "Click for Help!"
+msgstr "도움을 위해 클릭하세요!"
+
+#: aioseop.class.php:1691
+msgid "I enjoy this plugin and have made a donation:"
+msgstr "이 플러그인이 좋아서 기부했습니다:"
+
+#: aioseop.class.php:1698 aioseop.class.php:2241
+msgid "All donations support continued development of this free software."
+msgstr "모든 기부는 이 무료 플러그인 소프트웨어의 지속적인 개발을 지원합니다."
+
+#: aioseop.class.php:1708
+msgid "Plugin Status:"
+msgstr "플러그인 상태:"
+
+#: aioseop.class.php:1716
+msgid "All in One SEO Pack must be enabled for use."
+msgstr "All in One SEO Pack은 사용하려면 활성화해야 합니다."
+
+#: aioseop.class.php:1725
+msgid "Home Title:"
+msgstr "홈 제목:"
+
+#: aioseop.class.php:1732
+msgid ""
+"As the name implies, this will be the title of your homepage. This is "
+"independent of any other option. If not set, the default blog title will get "
+"used."
+msgstr ""
+"제목에서 알 수 있듯이, 이것은 홈페이지의 제목이 됩니다. 이것은 다른 옵션과는 "
+"개별적입니다. 설정을 하지 않으면 기본 블로그 제목이 사용됩니다."
+
+#: aioseop.class.php:1741
+msgid "Home Description:"
+msgstr "홈 설명:"
+
+#: aioseop.class.php:1748
+msgid ""
+"The META description for your homepage. Independent of any other options, "
+"the default is no META description at all if this is not set."
+msgstr ""
+"홈페이지의 메타 설명. 다른 옵션과는 개별적이며 설정되지 않으면 기본은 메타 설"
+"명이 없는 것입니다."
+
+#: aioseop.class.php:1757
+msgid "Home Keywords (comma separated):"
+msgstr "홈 키워드 (콤마 분리):"
+
+#: aioseop.class.php:1764
+msgid ""
+"A comma separated list of your most important keywords for your site that "
+"will be written as META keywords on your homepage. Don't stuff everything in "
+"here."
+msgstr ""
+"사이트의 가장 중요한 콤마로 분리된 키워드 목록은 홈페이지에서 메타 키워드로 "
+"삽입됩니다. 여기에 모든 것을 넣지는 마세요."
+
+#: aioseop.class.php:1773
+msgid "Canonical URLs:"
+msgstr "캐노니컬 URLs:"
+
+#: aioseop.class.php:1780
+msgid ""
+"This option will automatically generate Canonical URLS for your entire "
+"WordPress installation.  This will help to prevent duplicate content "
+"penalties by <a href='http://googlewebmastercentral.blogspot.com/2009/02/"
+"specify-your-canonical.html' target='_blank'>Google</a>."
+msgstr ""
+"이 옵션은 전체 워드프레스 설치에 대해서 캐노니컬 URL을 자동으로 생성합니다. "
+"이것은 <a href='http://googlewebmastercentral.blogspot.com/2009/02/specify-"
+"your-canonical.html' target='_blank'>구글</a>로부터 이중 컨텐트로 인한 벌점"
+"을 방지합니다."
+
+#: aioseop.class.php:1789
+msgid "Rewrite Titles:"
+msgstr "제목 다시 쓰기:"
+
+#: aioseop.class.php:1796
+msgid ""
+"Note that this is all about the title tag. This is what you see in your "
+"browser's window title bar. This is NOT visible on a page, only in the "
+"window title bar and of course in the source. If set, all page, post, "
+"category, search and archive page titles get rewritten. You can specify the "
+"format for most of them. For example: The default templates puts the title "
+"tag of posts like this: ‚ÄúBlog Archive >> Blog Name >> Post Title‚Äù (maybe "
+"I've overdone slightly). This is far from optimal. With the default post "
+"title format, Rewrite Title rewrites this to ‚ÄúPost Title | Blog Name‚Äù. "
+"If you have manually defined a title (in one of the text fields for All in "
+"One SEO Plugin input) this will become the title of your post in the format "
+"string."
+msgstr ""
+"이것은 제목 태그에 관한 모든 것임을 기억하세요. 이것은 웹브라우저 윈도우 타이"
+"틀 바에서 볼 수 있는 것입니다. 페이지에서는 보이지 않고 윈도우 타이틀 바와 소"
+"스 코드에서만 보입니다. 설정을 하면 모든 페이지, 글, 카테고리, 검색, 글보관"
+"함 페이지 타이틀이 다시 쓰기 됩니다. 이들 대부분의 형식을 특정화 할 수 있습니"
+"다. 예를들면: 기본 템플릿은 글의 타이틀 태그를 다음과 같이 설정합니다: ‚Äú블"
+"로그 글보관함 >> 블로그 이름 >> 글 제목‚Äù. 이것은 최적화와는 거리가 멉니다. "
+"기본 글 제목 형식에 대해서 제목 다시 쓰기는 ‚Äú글 제목 | 블로그 이름‚Äù 과 같"
+"이 다시 작성합니다. 수동으로 제목을 정의했다면(All in One SEO 플러그인 input"
+"의 텍스트 필드에서), 형식 스트링에서 글의 제목이 될 것입니다."
+
+#: aioseop.class.php:1805
+msgid "Post Title Format:"
+msgstr "글 제목 형식:"
+
+#: aioseop.class.php:1812 aioseop.class.php:1839 aioseop.class.php:1864
+#: aioseop.class.php:1886 aioseop.class.php:1907 aioseop.class.php:1928
+#: aioseop.class.php:1949 aioseop.class.php:1971 aioseop.class.php:1995
+msgid "The following macros are supported:"
+msgstr "다음의 매크로가 지원됩니다:"
+
+#: aioseop.class.php:1814 aioseop.class.php:1841 aioseop.class.php:1866
+#: aioseop.class.php:1888 aioseop.class.php:1909 aioseop.class.php:1930
+#: aioseop.class.php:1951 aioseop.class.php:1973
+msgid "%blog_title% - Your blog title"
+msgstr "%blog_title% - 블로그 제목"
+
+#: aioseop.class.php:1815 aioseop.class.php:1842 aioseop.class.php:1867
+#: aioseop.class.php:1889 aioseop.class.php:1910 aioseop.class.php:1931
+#: aioseop.class.php:1952 aioseop.class.php:1974
+msgid "%blog_description% - Your blog description"
+msgstr "%blog_description% - 블로그 설명"
+
+#: aioseop.class.php:1816
+msgid "%post_title% - The original title of the post"
+msgstr "%post_title% - 글의 원래 제목"
+
+#: aioseop.class.php:1817
+msgid "%category_title% - The (main) category of the post"
+msgstr "%category_title% - 글의 (메인) 카테고리"
+
+#: aioseop.class.php:1818
+msgid "%category% - Alias for %category_title%"
+msgstr "%category% - %category_title%의 별칭"
+
+#: aioseop.class.php:1819
+msgid "%post_author_login% - This post's author' login"
+msgstr "%post_author_login% - 이 글의 지은이 로그인"
+
+#: aioseop.class.php:1820
+msgid "%post_author_nicename% - This post's author' nicename"
+msgstr "%post_author_nicename% - 이 글의 지은이의 nicename"
+
+#: aioseop.class.php:1821
+msgid "%post_author_firstname% - This post's author' first name (capitalized)"
+msgstr "%post_author_firstname% - 이 글의 지은이의 이름 (대문자)"
+
+#: aioseop.class.php:1822
+msgid "%post_author_lastname% - This post's author' last name (capitalized)"
+msgstr "%post_author_lastname% - 이 글의 지은이의 성 (대문자)"
+
+#: aioseop.class.php:1832
+msgid "Page Title Format:"
+msgstr "페이지 제목 형식:"
+
+#: aioseop.class.php:1843
+msgid "%page_title% - The original title of the page"
+msgstr "%page_title% - 페이지 원래 제목"
+
+#: aioseop.class.php:1844
+msgid "%page_author_login% - This page's author' login"
+msgstr "%page_author_login% - 이 페이지의 지은이 로그인"
+
+#: aioseop.class.php:1845
+msgid "%page_author_nicename% - This page's author' nicename"
+msgstr "%page_author_nicename% - 이 페이지의 지은이 nicename"
+
+#: aioseop.class.php:1846
+msgid "%page_author_firstname% - This page's author' first name (capitalized)"
+msgstr "%page_author_firstname% - 이 페이지의 지은이 이름 (대문자)"
+
+#: aioseop.class.php:1847
+msgid "%page_author_lastname% - This page's author' last name (capitalized)"
+msgstr "%page_author_lastname% - 이 페이지의 지은이 성 (대문자)"
+
+#: aioseop.class.php:1857
+msgid "Category Title Format:"
+msgstr "카테고리 제목 형식:"
+
+#: aioseop.class.php:1868
+msgid "%category_title% - The original title of the category"
+msgstr "%category_title% - 카테고리의 원래 제목"
+
+#: aioseop.class.php:1869
+msgid "%category_description% - The description of the category"
+msgstr "%category_description% - 카테고리 설명"
+
+#: aioseop.class.php:1879
+msgid "Archive Title Format:"
+msgstr "글 보관함 제목 형식:"
+
+#: aioseop.class.php:1890
+msgid ""
+"%date% - The original archive title given by wordpress, e.g. \"2007\" or "
+"\"2007 August\""
+msgstr ""
+"%date% - 워드프레스에 의해 부여된 원래의 글 보관함 제목, 예를들면 \"2007\" "
+"or \"2007 August\""
+
+#: aioseop.class.php:1900
+msgid "Tag Title Format:"
+msgstr "태그 제목 형식:"
+
+#: aioseop.class.php:1911
+msgid "%tag% - The name of the tag"
+msgstr "%tag% - 태그의 이름"
+
+#: aioseop.class.php:1921
+msgid "Search Title Format:"
+msgstr "검색 제목 형식:"
+
+#: aioseop.class.php:1932
+msgid "%search% - What was searched for"
+msgstr "%search% - 검색 대상"
+
+#: aioseop.class.php:1942
+msgid "Description Format:"
+msgstr "설명 형식:"
+
+#: aioseop.class.php:1953
+msgid ""
+"%description% - The original description as determined by the plugin, e.g. "
+"the excerpt if one is set or an auto-generated one if that option is set"
+msgstr ""
+"%description% - 플러그인에 의해 결정된 원래의 설명, 예를들면 설정된 경우의 요"
+"약 또는 옵션이 설정된 경우의 자동 생성된 것"
+
+#: aioseop.class.php:1954
+msgid "%wp_title% - The original wordpress title, e.g. post_title for posts"
+msgstr "%wp_title% - 원래의 워드프레스 제목, 예를들면 글의 post_title"
+
+#: aioseop.class.php:1964
+msgid "404 Title Format:"
+msgstr "404 제목 형식:"
+
+#: aioseop.class.php:1975
+msgid ""
+"%request_url% - The original URL path, like \"/url-that-does-not-exist/\""
+msgstr ""
+"%request_url% - 원래의 URL 경로, 예를 들면 \"/url-that-does-not-exist/\""
+
+#: aioseop.class.php:1976
+msgid ""
+"%request_words% - The URL path in human readable form, like \"Url That Does "
+"Not Exist\""
+msgstr ""
+"%request_words% - 인간이 읽을 수 있는 형태의 URL 경로, 예를 들면 \"Url That "
+"Does Not Exist\""
+
+#: aioseop.class.php:1977
+msgid "%404_title% - Additional 404 title input\""
+msgstr "%404_title% - 추가 404 제목 input\""
+
+#: aioseop.class.php:1987
+msgid "Paged Format:"
+msgstr "페이지 형식:"
+
+#: aioseop.class.php:1994
+msgid ""
+"This string gets appended/prepended to titles when they are for paged index "
+"pages (like home or archive pages)."
+msgstr ""
+"이 스트링은 제목이 페이지가 있는 인덱스 페이지일 경우(홈이나 글보관함 페이지"
+"처럼) 제목의 앞이나 뒤에 추가됩니다."
+
+#: aioseop.class.php:1997
+msgid "%page% - The page number"
+msgstr "%page% - 페이지 번호"
+
+#: aioseop.class.php:2007
+msgid "SEO for Custom Post Types:"
+msgstr "사용자 정의 글 형식 SEO:"
+
+#: aioseop.class.php:2013
+msgid ""
+"Check this if you want your enable AIOSEOP support for Custom Post Types on "
+"this site."
+msgstr ""
+"사이트에서 사용자 정의 글 형식을 위해 AIOSEOP를 활성화하기를 원하면 여기에 체"
+"크하세요."
+
+#: aioseop.class.php:2023
+msgid "Use Categories for META keywords:"
+msgstr "메타 키워드에 대해 카테고리를 사용하기:"
+
+#: aioseop.class.php:2029
+msgid ""
+"Check this if you want your categories for a given post used as the META "
+"keywords for this post (in addition to any keywords and tags you specify on "
+"the post edit page)."
+msgstr ""
+"주어진 글의 카테고리가 이 글의 메타 키워드로 사용되기를 원하면(글 편집 페이지"
+"에서 지정한 키워드와 태그에 추가해서), 여기에 체크하세요. "
+
+#: aioseop.class.php:2038
+msgid "Use Tags for META keywords:"
+msgstr "메타 키워드에 태그 사용하기:"
+
+#: aioseop.class.php:2044
+msgid ""
+"Check this if you want your tags for a given post used as the META keywords "
+"for this post (in addition to any keywords you specify on the post edit "
+"page)."
+msgstr ""
+"주어진 글의 태그가 이 글의 메타 키워드로 사용되기를 원하면(글 편집 페이지에"
+"서 지정한 키워드에 추가해서), 여기에 체크하세요."
+
+#: aioseop.class.php:2056
+msgid "Dynamically Generate Keywords for Posts Page:"
+msgstr "글 페이지의 동적으로 생성된 키워드:"
+
+#: aioseop.class.php:2062
+msgid ""
+"Check this if you want your keywords on a custom posts page (set it in "
+"options->reading) to be dynamically generated from the keywords of the posts "
+"showing on that page.  If unchecked, it will use the keywords set in the "
+"edit page screen for the posts page."
+msgstr ""
+"사용자 정의 글 페이지의 키워드(설정->읽기에서 설정)가 해당 페이지에 나타나는 "
+"글의 키워드로부터 동적으로 생성되기를 원하면 여기에 체크하세요. 체크되지 않으"
+"면 편집 화면에서 설정된 키워드를 사용하게 됩니다."
+
+#: aioseop.class.php:2071
+msgid "Use noindex for Categories:"
+msgstr "카테고리 noindex 사용하기:"
+
+#: aioseop.class.php:2078
+msgid ""
+"Check this for excluding category pages from being crawled. Useful for "
+"avoiding duplicate content."
+msgstr ""
+"카테고리를 검색엔진이 크롤하는 것을 방지하려면 여기에 체크하세요. 이중 컨텐트"
+"를 피하는데 유용합니다."
+
+#: aioseop.class.php:2087
+msgid "Use noindex for Archives:"
+msgstr "글 보관함에 noindex 사용하기:"
+
+#: aioseop.class.php:2094
+msgid ""
+"Check this for excluding archive pages from being crawled. Useful for "
+"avoiding duplicate content."
+msgstr ""
+"글 보관함 페이지가 크롤되지 않도록 하려면 여기에 체크하세요. 이중 컨텐트를 피"
+"하는데 유용합니다."
+
+#: aioseop.class.php:2103
+msgid "Use noindex for Tag Archives:"
+msgstr "태그 글보관함에 noindex 사용하기:"
+
+#: aioseop.class.php:2110
+msgid ""
+"Check this for excluding tag pages from being crawled. Useful for avoiding "
+"duplicate content."
+msgstr ""
+"태그 페이지가 크롤되지 않게 하려면 여기에 체크하세요. 이중 컨텐트를 피하는데 "
+"유용합니다."
+
+#: aioseop.class.php:2119
+msgid "Autogenerate Descriptions:"
+msgstr "설명 자동 생성하기:"
+
+#: aioseop.class.php:2126
+msgid ""
+"Check this and your META descriptions will get autogenerated if there's no "
+"excerpt."
+msgstr "여기에 체크하면 요약이 없을 경우 메타 설명이 자동으로 생성됩니다."
+
+#: aioseop.class.php:2135
+msgid "Capitalize Category Titles:"
+msgstr "카테고리 제목을 대문자화 하기:"
+
+#: aioseop.class.php:2142
+msgid ""
+"Check this and Category Titles will have the first letter of each word "
+"capitalized."
+msgstr "여기에 체크하면 카테고리 제목의 각 단어의 첫 글자가 대문자로 됩니다."
+
+#: aioseop.class.php:2152
+msgid "Exclude Pages:"
+msgstr "제외 페이지:"
+
+#: aioseop.class.php:2159
+msgid ""
+"Enter any comma separated pages here to be excluded by All in One SEO Pack.  "
+"This is helpful when using plugins which generate their own non-WordPress "
+"dynamic pages.  Ex: <em>/forum/,/contact/</em>  For instance, if you want to "
+"exclude the virtual pages generated by a forum plugin, all you have to do is "
+"give forum or /forum or /forum/ or and any URL with the word \"forum\" in "
+"it, such as http://mysite.com/forum or http://mysite.com/forum/someforumpage "
+"will be excluded from All in One SEO Pack."
+msgstr ""
+"콤마로 분리된 페이지를 여기에 입력하면 All in One SEO 팩에 의해 제외됩니다. "
+"워드프레스에 의해서가 아닌 플러그인이 동적인 페이지를 생성하는 경우 유용합니"
+"다. 예: <em>/forum/,/contact/</em>. 예를들면, 포럼 플러그인에 의해 생성된 가"
+"상 페이지를 제외하려면, forum,  /forum,  /forum/ 처럼 어떤 URL이든 그 안에 "
+"\"forum\"을 포함시키면 됩니다. http://mysite.com/forum 또는 http://mysite."
+"com/forum/someforumpage 처럼 하면 All in One SEO 팩에서 제외됩니다."
+
+#: aioseop.class.php:2169
+msgid "Additional Post Headers:"
+msgstr "추가 글 헤더:"
+
+#: aioseop.class.php:2176
+msgid ""
+"What you enter here will be copied verbatim to your header on post pages. "
+"You can enter whatever additional headers you want here, even references to "
+"stylesheets."
+msgstr ""
+"여기에 입력하는 것은 글 페이지의 헤더에 축약되어 복사됩니다. 이곳에 원하는 무"
+"엇이든 추가 헤더를 입력할 수 있습니다. 스타일시트 참조까지도 가능합니다."
+
+#: aioseop.class.php:2185
+msgid "Additional Page Headers:"
+msgstr "추가 페이지 해더:"
+
+#: aioseop.class.php:2192
+msgid ""
+"What you enter here will be copied verbatim to your header on pages. You can "
+"enter whatever additional headers you want here, even references to "
+"stylesheets."
+msgstr ""
+"이곳에 입력하는 것은 페이지의 헤더에 축약되어 복사됩니다. 이곳에 원하는 무엇"
+"이든 추가 헤더를 입력할 수 있습니다. 스타일시트 참조까지도 가능합니다."
+
+#: aioseop.class.php:2201
+msgid "Additional Home Headers:"
+msgstr "추가 홈 헤더:"
+
+#: aioseop.class.php:2208
+msgid ""
+"What you enter here will be copied verbatim to your header on the home page. "
+"You can enter whatever additional headers you want here, even references to "
+"stylesheets."
+msgstr ""
+"여기에 입력하는 것은 홈 페이지의 헤더에 축약되어 복사됩니다. 이곳에 원하는 무"
+"엇이든 추가 헤더를 입력할 수 있습니다. 스타일시트 참조까지도 가능합니다."
+
+#: aioseop.class.php:2217
+msgid "Log important events:"
+msgstr "중요 이벤트 로그:"
+
+#: aioseop.class.php:2224
+msgid ""
+"Check this and SEO pack will create a log of important events "
+"(all_in_one_seo_pack.log) in its plugin directory which might help debugging "
+"it. Make sure this directory is writable."
+msgstr ""
+"여기에 체크하면 SEO 팩이 중요 이벤트 로그를 플러그인 디렉토리에 생성"
+"(all_in_one_seo_pack.log) 하며 디버그에 도움이 됩니다. 이 디렉토리가 쓰기 가"
+"능한지 확인하세요."
+
+#: aioseop.class.php:2234
+msgid "Thank you for your donation:"
+msgstr "기부에 감사드립니다:"
+
+#: aioseop.class.php:2255
+msgid "Update Options"
+msgstr "옵션 업데이트"
+
+#: aioseop.class.php:2256
+msgid "Reset Settings to Defaults"
+msgstr "설정을 기본으로 리셋"
+
+#: all_in_one_seo_pack.php:779
+msgid ""
+" characters. Most search engines use a maximum of 60 chars for the title."
+msgstr "글자. 대부분의 검색엔진은 제목에 대해서 60글자를 최대로 사용합니다."

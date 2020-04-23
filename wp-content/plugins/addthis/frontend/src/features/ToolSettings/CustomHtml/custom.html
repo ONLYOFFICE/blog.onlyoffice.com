@@ -1,0 +1,70 @@
+<div class="tool-left">
+
+    <div
+        setting-frame
+        for="custom-html-setting-frame"
+        title="toolSettings.toolName"
+        title-placeholder-msgid="titlePlaceholder"
+    >
+        <!-- General Settings -->
+        <pre ng-show="globalOptions.debug_enable">{{toolSettings|json}}</pre>
+
+        <div
+            setting-card
+            for="setting-card-general-settings"
+            expended="generalCardExpended"
+        >
+            <h2 class="hndle ui-sortable-handle">
+                <span translate>share_tool_edit_general_label</span>
+            </h2>
+            <div class="inside inside-grey" ng-show="generalCardExpended">
+                <h3 translate>share_tool_custom_html_label</h3>
+                <div class="alignleft actions tool-positions">
+                    <p translate>share_tool_custom_html_description</p>
+                    <textarea
+                        rows="15"
+                        cols="20"
+                        ng-model="toolSettings.html"
+                        style="width: 100%;"
+                    >
+                    </textarea>
+                    <p ng-hide="permissions.unfiltered_html" translate>
+                        not_allowed_to_do_unfiltered_html
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Position Settings -->
+        <div
+            setting-card
+            for="setting-card-position-settings"
+            expended="positionCardExpended"
+        >
+            <h2 class="hndle ui-sortable-handle">
+                <span translate>layers_position_header</span>
+            </h2>
+            <div class="inside inside-grey" ng-show="positionCardExpended">
+                <div
+                    location-checklist
+                    ng-model="toolSettings.elements",
+                    locations="customLocations"
+                >
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="tool-right">
+    <div ng-include src="'/features/ToolSettings/submit.html'"></div>
+    <div ng-include src="'/features/Ads/HelpAd.html'"></div>
+</div>
+
+
+
+
+
+
+

@@ -1,0 +1,86 @@
+<div class="header-container">
+    <div ng-include class="header-background" src="'/images/logo-pattern.svg'"></div>
+    <div ng-include class="header-logo" src="'/images/addthis-logo.svg'"></div>
+</div>
+
+<div
+    class="navigate-back"
+    ng-click="goBack()"
+>
+   &lt; <span translate>registered_intro_header_recommended_content</span>
+</div>
+
+<form
+  name="form"
+  novalidate
+  can-edit-tools-check
+  debug-hot-keys
+>
+    <!-- What's Next -->
+    <section
+        alt="{{'tool_settings_smlwn_alt'|translate}}"
+        ng-include
+        src="'/features/RelatedPostSettings/smlwnSettings.html'"
+    >
+    </section>
+
+    <!-- What's Next Mobile -->
+    <section
+        alt="{{'tool_settings_wnm_alt'|translate}}"
+        ng-include
+        src="'/features/RelatedPostSettings/wnmSettings.html'"
+    >
+    </section>
+
+    <!-- Related Post Footer -->
+    <section
+        alt="{{'tool_settings_smlre_alt'|translate}}"
+        ng-include
+        src="'/features/RelatedPostSettings/smlreSettings.html'"
+    >
+    </section>
+
+    <!-- Horizontal Related Posts -->
+    <section
+        alt="{{'tool_settings_smlrebh_alt'|translate}}"
+        ng-include
+        src="'/features/RelatedPostSettings/smlrebhSettings.html'"
+    >
+    </section>
+
+    <!-- Vertical Related Posts -->
+    <section
+        alt="{{'tool_settings_smlrebv_alt'|translate}}"
+        ng-include
+        src="'/features/RelatedPostSettings/smlrebvSettings.html'"
+    >
+    </section>
+
+    <!-- Related Posts Drawer -->
+    <section
+        alt="{{'tool_listing_cod_alt'|translate}}"
+        ng-include
+        src="'/features/RelatedPostSettings/codSettings.html'"
+    >
+    </section>
+
+    <!-- Related Posts Toaster -->
+    <section
+        alt="{{'tool_settings_tst_alt'|translate}}"
+        ng-include
+        src="'/features/RelatedPostSettings/tstSettings.html'"
+    >
+    </section>
+
+    <!-- Jumbo Related Posts Footer -->
+    <section
+        alt="{{'tool_settings_jrcf_alt'|translate}}"
+        ng-include
+        src="'/features/RelatedPostSettings/jrcfSettings.html'"
+    >
+    </section>
+
+    <div ng-show="globalOptions.debug_enable">
+        <pre>toolSettings = {{toolSettings | json}}</pre>
+    </div>
+</form>

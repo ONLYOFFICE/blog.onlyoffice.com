@@ -1,0 +1,20 @@
+<label>
+    <input
+        type="radio"
+        ng-model="ngModel"
+        name="addthis-{{toolPco}}-enable"
+        ng-value="true"
+        ng-selected="{{isEnabled()}}"
+    />
+    Enabled
+</label>
+<label>
+    <input
+        type="radio"
+        ng-model="ngModel"
+        name="addthis-{{toolPco}}-enable"
+        ng-value="false"
+        ng-selected="{{!isEnabled()}}"
+    />
+    Disabled
+</label>

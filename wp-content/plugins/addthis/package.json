@@ -1,0 +1,42 @@
+{
+  "name": "addthis-wordpress-plugin",
+  "version": "2.0.0",
+  "description": "AddThis WordPress plugins base",
+  "scripts": {
+    "test": "mocha test",
+    "gulp": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://git.clearspring.local/addthis-wordpress-plugin.git"
+  },
+  "author": "AddThis <plugins@addthis.com>",
+  "license": "GPLv2",
+  "devDependencies": {
+    "angular": "1.5.9",
+    "angular-aria": "1.5.9",
+    "angular-hotkeys": "^1.7.0",
+    "angular-translate": "^2.9.2",
+    "angular-translate-loader-static-files": "^2.9.2",
+    "angular-ui-router": "^0.2.18",
+    "chai": "^3.5.0",
+    "express": "^4.13.3",
+    "gettext-parser": "^1.1.2",
+    "gulp": "^3.9.0",
+    "gulp-angular-templatecache": "^1.8.0",
+    "gulp-clean": "^0.3.1",
+    "gulp-clean-css": "^2.0.2",
+    "gulp-concat": "^2.6.0",
+    "gulp-foreach": "^0.1.0",
+    "gulp-htmlclean": "^2.7.6",
+    "gulp-jshint": "^1.11.2",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^1.4.0",
+    "jshint-stylish": "^2.0.1",
+    "mocha": "^2.5.3",
+    "po2json": "^0.4.1",
+    "sort-object": "^3.0.2",
+    "supertest": "^1.2.0",
+    "uglify-save-license": "^0.4.1"
+  }
+}

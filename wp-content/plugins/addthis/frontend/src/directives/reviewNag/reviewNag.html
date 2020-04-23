@@ -1,0 +1,113 @@
+<div ng-show="show()" class="review-nag-directive-container">
+    <h2 ng-hide="state === 'dislike'" translate>review_nag_do_you_like_us</h2>
+    <h2 ng-show="state === 'dislike'">Having issues?</h2>
+
+    <div ng-show="state === ''">
+        <button
+            type="submit"
+            class="btn-at btn-inverse"
+            id="addthis_like_confirm"
+            ng-click="changeState('like')"
+            translate
+        >
+            review_nag_i_like_you
+        </button>
+
+        <button
+            type="submit"
+            class="btn-at btn-inverse btn-textonly"
+            id="addthis_dislike_confirm"
+            ng-click="changeState('dislike')"
+            translate
+        >
+            review_nag_i_do_not_like_you
+        </button>
+    </div>
+
+    <div ng-show="state === 'like'">
+        <p translate>review_nag_rate_us_please</p>
+
+        <a
+            class="btn-at btn-inverse"
+            id="addthis_rating"
+            ng-click="changeState('rated')"
+            ng-href="https://wordpress.org/support/view/plugin-reviews/{{slug}}#postform"
+            target="_blank"
+        >
+            {{'review_nag_i_will_rate_you'|translate}}
+        </a>
+
+        <button
+            type="submit"
+            class="btn-at btn-inverse btn-textonly"
+            id="addthis_not_rating"
+            ng-click="changeState('will not rate')"
+            translate
+        >
+            review_nag_i_do_not_want_to_rate_you
+        </button>
+
+    </div>
+    <div ng-show="state === 'dislike'">
+
+        <p
+            translate
+            translate-values="{
+                'button_text': '{{buttonName|translate}}',
+                'emailAddressLink': '
+                    <a
+                        href=\'mailto:{{helpEmailAddress}}\'
+                    >
+                        {{helpEmailAddress}}
+                    </a>'
+            }"
+        >
+            review_nag_let_us_know_how_to_improve
+        </p>
+
+        <a
+            class="btn-at btn-inverse"
+            ng-href="https://wordpress.org/support/plugin/{{slug}}"
+            target="_blank"
+        >
+            {{'review_nag_support_forum_button'|translate}}
+        </a>
+
+        <a
+            class="btn-at btn-inverse"
+            ng-href="mailto:{{helpEmailAddress}}"
+        >
+            {{'client_string_email'|translate}}
+        </a>
+    </div>
+
+    <div ng-show="(state === 'rated') && newlyRated">
+        <p translate>review_nag_rate_us_please</p>
+
+        <p>
+            <strong id="addthis_rating_thank_you" translate>
+                review_nag_thanks
+            </strong>
+        </p>
+    </div>
+
+</div>
+
+<div ng-show="debug()" class="review-nag-directive-container">
+    <h2>Debug Rating Nag</h2>
+    <p>state: {{state}}</p>
+    <button
+        type="submit"
+        class="btn-at btn-inverse"
+        ng-click="debugStartOver()"
+    >
+        Reset rating state
+    </button>
+    <button
+        type="submit"
+        class="btn-at btn-inverse"
+        ng-click="debugExpireLastInteraction()"
+    >
+        Expire last interation timestamp
+    </button>
+</div>

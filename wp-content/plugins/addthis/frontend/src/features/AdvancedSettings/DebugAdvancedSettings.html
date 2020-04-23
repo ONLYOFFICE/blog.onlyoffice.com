@@ -1,0 +1,63 @@
+
+<div ng-controller="DebugAdvancedSettingsCtrl" class="settings-card" ng-show="globalOptions.debug_enable">
+    <header>
+        <h2>Debug</h2>
+    </header>
+
+    <div class="settings-body">
+        <section
+            enable-toggle
+            ng-model="globalOptions.debug_enable"
+            tool-pco="global-options"
+        >
+        </section>
+
+        <section
+            basic-select
+            ng-model="globalOptions.addthis_plugin_controls"
+            for="addthis-plugin-mode"
+            label="{{'advanced_settings_mode_label'|translate}}"
+            options="modeOptions"
+        >
+            {{'advanced_settings_mode_description'|translate}}
+        </section>
+
+        <section
+            basic-select
+            ng-model="globalOptions.addthis_environment"
+            for="client-environment"
+            label="Client Environment"
+            options="enviromentOptions"
+        >
+            This environmnet from which the AddThis widget script (addthis_widget.js, aka client) should be included. Test and Local are not available outside of the AddThis offices. Local onlys works if you're serving the AddThis client on your local machine at the default URL.
+        </section>
+
+        <section
+            basic-select
+            ng-model="globalOptions.darkseid_environment"
+            for="darkseid-environment"
+            label="Darkseid Environment"
+            options="enviromentOptions"
+        >
+            The environment to AddThis API calls should be sent. Test and Local are not available outside of the AddThis offices. Local onlys works if you're running the AddThis API on your local machine at the default URL.
+        </section>
+
+        <section>
+            <div setting-title-and-description
+                label="UI Base URL"
+                for="ui-base-url"
+            >
+                The base URL from which to load the UI. Useful for local development. If you enter this incorrectly, you will have to fix this setting directly through the database, and UI setting edits for this plugin will break. If blank, it will use the UI included with the plugin.
+            </div>
+
+            <input
+                type="url"
+                ng-model="globalOptions.settings_ui_base_url"
+                id="ui-base-url"
+                name="ui-base-url"
+            />
+        </section>
+
+        <pre>global options = {{globalOptions | json}}</pre>
+    </div>
+</div>

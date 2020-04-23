@@ -1,0 +1,28 @@
+
+<h3 translate>gtc_title</h3>
+
+<h4 translate>gtc_widget_area_title</h4>
+<ol>
+    <li
+        translate
+        translate-values="{'link': '<a href=\'{{widgetConfigUrl}}\'>{{'gtc_go_to_widgets_page_link'|translate}}</a>'}"
+    >
+        gtc_go_to_widgets_page
+    </li>
+    <li
+        translate
+        translate-values="{'name': '<strong>{{'widget_name_by_dom_class'|translate}}</strong>'}"
+    >
+        gtc_drag_the_widget
+    </li>
+</ol>
+
+<div ng-show="toolClass">
+    <h4 translate>gtc_shortcode_title</h4>
+    <p translate>gtc_copy_in_the_shortcode</p>
+
+    <pre
+        tabindex="0"
+        alt="{{'gtc_pre_tag_alt'|translate}}"
+    >[addthis tool={{toolClass}}]</pre>
+</div>

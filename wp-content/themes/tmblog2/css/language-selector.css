@@ -1,0 +1,186 @@
+/*
+    Copyright (c) Ascensio System SIA 2017. All rights reserved.
+    http://www.teamlab.com
+*/
+
+/*******************************************************************************
+   For planshet overflow: scroll
+*******************************************************************************/
+/* text styles */
+.headerH2Style {
+  font-size: 36px;
+  font-weight: 400;
+  color: #333333;
+  line-height: 1.2em;
+  text-align: left;
+  font-family: "Open Sans", sans-serif, Arial;
+}
+/*----------------Custom select (Language select)------------------------*/
+
+div.custom-select {
+  background: none;
+  font-family: "Open Sans", sans-serif, "Arial";
+  font-size: 12px;
+  font-weight: 400;
+  position: relative;
+  cursor: default;
+  color: #666666;
+  z-index: 150;
+}
+div.custom-select div.selector {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  display: block;
+  right: -20px;
+  top: 0;
+  z-index: 0;
+  cursor: pointer;
+}
+div.custom-select div.selector:after {
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 3px solid #999999;
+  content: "";
+  height: 0;
+  margin: 0;
+  position: absolute;
+  right: 11px;
+  top: 9px;
+  width: 0;
+}
+div.custom-select div.title {
+  height: 16px;
+  line-height: 18px;
+  white-space: nowrap;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  background: transparent none 2px center no-repeat;
+  padding-left: 25px;
+}
+div.custom-select ul.options {
+  list-style: none;
+  background: white;
+  width: 100%;
+  margin: 0;
+  padding: 6px 6px 6px 12px;
+  position: absolute;
+  left: -11px;
+  top: 25px;
+  z-index: 1000;
+  display: none;
+  /*border: 1px solid #858585;*/
+
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+div.custom-select.open {
+  z-index: 1000;
+}
+div.custom-select.open ul.options {
+  z-index: 10000;
+  display: block !important;
+}
+div.custom-select ul.options li.option {
+  background-image: none;
+  cursor: default;
+  border-width: 0 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  float: none;
+  line-height: 1.2em;
+  white-space: nowrap;
+}
+div.custom-select ul.options li.option a {
+  background: none 0 center no-repeat;
+  color: #666666;
+  display: block;
+  height: 16px;
+  line-height: 15px;
+  margin: 2px 0 8px;
+  text-decoration: none;
+  text-transform: none;
+  padding: 1px 1px 1px 25px;
+}
+div.custom-select ul.options li.option a:hover {
+  text-decoration: underline;
+}
+div.custom-select div.title.en-US,
+div.custom-select ul.options li.option.en-US a {
+  background-image: url("../images/flags/flags_1x.png");
+  background-position-y: -27px;
+}
+div.custom-select div.title.en-GB,
+div.custom-select ul.options li.option.en-GB a {
+  background-image: url("../images/flags/flags_1x.png");
+  background-position-y: -315px;
+}
+div.custom-select div.title.es-ES,
+div.custom-select ul.options li.option.es-ES a {
+  background-image: url("../images/flags/flags_1x.png");
+  background-position-y: -51px;
+}
+div.custom-select div.title.de-DE,
+div.custom-select ul.options li.option.de-DE a {
+  background-image: url("../images/flags/flags_1x.png");
+  background-position-y: -3px;
+}
+div.custom-select div.title.fr-FR,
+div.custom-select ul.options li.option.fr-FR a {
+  background-image: url("../images/flags/flags_1x.png");
+  background-position-y: -75px;
+}
+div.custom-select div.title.ru-RU,
+div.custom-select ul.options li.option.ru-RU a {
+  background-image: url("../images/flags/flags_1x.png");
+  background-position-y: -147px;
+}
+div.custom-select div.title.cs-CZ,
+div.custom-select ul.options li.option.cs-CZ a {
+  background-image: url("../images/flags/flags_1x.png");
+  background-position-y: -267px;
+}
+div.custom-select div.title.lv-LV,
+div.custom-select ul.options li.option.lv-LV a {
+  background-image: url("../images/flags/flags_1x.png");
+  background-position-y: -78px;
+}
+div.custom-select div.title.it-IT,
+div.custom-select ul.options li.option.it-IT a {
+  background-image: url("../images/flags/flags_1x.png");
+  background-position-y: -99px;
+}
+div.custom-select div.title.pt-BR,
+div.custom-select ul.options li.option.pt-BR a {
+  background-image: url("../images/flags/flags_1x.png");
+  background-position-y: -195px;
+}
+div.custom-select div.title.tr-TR,
+div.custom-select ul.options li.option.tr-TR a {
+  background-image: url("../images/flags/flags_1x.png");
+  background-position-y: -219px;
+}
+div.custom-select div.title.id-ID,
+div.custom-select ul.options li.option.id-ID a {
+  background-image: url("../images/flags/flags_1x.png");
+  background-position: left -158px;
+}
+div.custom-select div.title.zh-CN,
+div.custom-select ul.options li.option.zh-CN a {
+  background-image: url("../images/flags/flags_1x.png");
+  background-position-y: -110px;
+}
+div.custom-select ul.options li.option.uk-UA {
+  display: none;
+}
+.comboBox {
+  border: solid 1px #c7c7c7;
+}
+#LanguageSelector {
+  width: 25px;
+  float: right;
+  text-align: left;
+}

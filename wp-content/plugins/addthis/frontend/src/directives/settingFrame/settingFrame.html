@@ -1,0 +1,48 @@
+<div id="{{name}}" class="postarea wp-editor-expand">
+    <div editable-title
+         title="title"
+         placeholder-msgid="{{titlePlaceholderMsgid}}"
+    >
+    </div>
+    <div
+        id="wp-content-wrap"
+        class="wp-core-ui wp-editor-wrap has-dfw tmce-active"
+    >
+        <div id="wp-content-editor-tools" class="wp-editor-tools hide-if-no-js">
+            <div class="wp-editor-tabs">
+                <button
+                    type="button"
+                    id="content-tmce"
+                    class="wp-switch-editor switch-tmce"
+                    data-wp-editor-id="content"
+                    translate
+                >
+                    client_string_settings
+                </button>
+            </div>
+        </div>
+        <div id="wp-content-editor-container" class="wp-editor-container">
+            <div
+                id="mceu_26"
+                class="mce-toolbar-grp mce-container mce-panel mce-stack-layout-item mce-first"
+                hidefocus="1"
+                tabindex="-1"
+                role="group"
+            >
+                <div
+                    id="advanced-sortables"
+                    class="
+                    meta-box-sortables
+                    ui-sortable"
+                    ng-transclude
+                >
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div
+    eula
+    button-name="{{'publish'|translate}}"
+>
+</div>

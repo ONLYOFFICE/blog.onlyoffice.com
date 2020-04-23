@@ -1,0 +1,83 @@
+<div ng-controller="RegistrationCtrl">
+    <div class="header-container">
+        <div ng-include class="header-background" src="'/images/logo-pattern.svg'"></div>
+        <div ng-include class="header-logo" src="'/images/addthis-logo.svg'"></div>
+    </div>
+
+    <div
+        soft-alert
+        ng-show="loadingStatus"
+        level="'info'"
+    >
+        {{loadingMessage|translate}}
+    </div>
+
+    <div
+        ng-hide="loadingStatus"
+        debug-hot-keys
+        can-edit-tools-check
+    >
+        <div ng-show="registrationState() === 'signIn'">
+            <section
+                ng-include
+                src="'/features/Registration/SignIn.html'"
+            >
+            </section>
+        </div>
+
+        <div ng-show="registrationState() === 'createAccount'">
+            <section
+                ng-include
+                src="'/features/Registration/CreateAccount.html'"
+            >
+            </section>
+        </div>
+
+        <div ng-show="registrationState() === 'selectProfile'">
+            <section
+                ng-include
+                src="'/features/Registration/SelectProfile.html'"
+            >
+            </section>
+        </div>
+
+        <div ng-show="registrationState() === 'createProfile'">
+            <section
+                ng-include
+                src="'/features/Registration/CreateProfile.html'"
+            >
+            </section>
+        </div>
+
+        <div ng-show="registrationState() === 'registered'">
+            <section
+                ng-include
+                src="'/features/CrossPluginWarnings/CrossPluginWarnings.html'"
+            >
+            </section>
+
+            <section
+                ng-include
+                src="'/features/Registration/Registered.html'"
+            >
+            </section>
+        </div>
+
+        <div ng-show="registrationState() === 'manual'">
+            <section
+                ng-include
+                src="'/features/Registration/ManualSetup.html'"
+            >
+            </section>
+        </div>
+
+        <div ng-show="globalOptions.debug_enable">
+            <section
+                ng-include
+                src="'/features/Registration/DebugRegistration.html'"
+            >
+            </section>
+        </div>
+    </div>
+
+</div>

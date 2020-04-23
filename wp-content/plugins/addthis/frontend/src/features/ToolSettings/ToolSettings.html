@@ -1,0 +1,32 @@
+<div
+    can-edit-tools-check
+    debug-hot-keys
+    class="wrap at-tool-new"
+>
+    <h1 class="wp-heading-inline" translate>add_new_share_button_header</h1>
+    <hr class="wp-header-end">
+    <div
+            ng-include
+            src="'/features/ToolSettings/Share/sidebar.html'"
+            ng-show="toolSettings.id ==='shfs'"
+    >
+    </div>
+    <div
+            ng-include
+            src="'/features/ToolSettings/Share/inline.html'"
+            ng-show="toolSettings.id ==='shin'"
+    >
+    </div>
+    <div
+            ng-include
+            src="'/features/ToolSettings/CustomHtml/custom.html'"
+            ng-show="toolSettings.id ==='html'"
+    >
+    </div>
+    <div
+            ng-include
+            src="'/features/ToolSettings/Share/mobile.html'"
+            ng-show="toolSettings.id ==='smlmo'"
+    >
+    </div>
+</div>

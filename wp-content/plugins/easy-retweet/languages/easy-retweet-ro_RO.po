@@ -1,0 +1,286 @@
+# This file is distributed under the same license as the Easy Retweet package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Retweet 2.2\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/easy-retweet\n"
+"POT-Creation-Date: 2011-01-23 05:15:31+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2012-03-07 13:27+0200\n"
+"X-Poedit-Language: Romanian\n"
+"X-Poedit-Country: Romania\n"
+"Language-Team: Web Geeks\n"
+"Last-Translator: \n"
+
+#. #-#-#-#-#  easy-retweet.pot (Easy Retweet 2.2)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: easy-retweet.php:96
+msgid "Easy Retweet"
+msgstr "Retweet uşor"
+
+#: easy-retweet.php:144
+#: easy-retweet.php:146
+msgid "Easy Retweet Button"
+msgstr "Uşor butonul Retweet"
+
+#: easy-retweet.php:172
+msgid "Enabled"
+msgstr "Activat"
+
+#: easy-retweet.php:173
+msgid "Disabled"
+msgstr "Cu handicap"
+
+#: easy-retweet.php:176
+msgid "Custom Retweet Text:"
+msgstr "Custom Retweet Text:"
+
+#: easy-retweet.php:179
+msgid "If left blank, the post title will be used."
+msgstr "Dacă necompletat, va fi utilizat post titlu."
+
+#: easy-retweet.php:227
+msgid "Settings"
+msgstr "Setări"
+
+#: easy-retweet.php:237
+msgid "plugin"
+msgstr "plugin-ul"
+
+#: easy-retweet.php:237
+msgid "Version"
+msgstr "Versiunea"
+
+#: easy-retweet.php:237
+msgid "by"
+msgstr "de"
+
+#: easy-retweet.php:247
+msgid "Easy Retweet Settings"
+msgstr "Uşor Retweet setările"
+
+#: easy-retweet.php:260
+msgid "General Settings"
+msgstr "Setări generale"
+
+#: easy-retweet.php:263
+msgid "Display"
+msgstr "Afişare"
+
+#: easy-retweet.php:265
+msgid "Display the button on pages"
+msgstr "Afişează butonul paginile"
+
+#: easy-retweet.php:266
+msgid "Display the button on archive pages"
+msgstr "Afişează butonul pe pagini de Arhiva"
+
+#: easy-retweet.php:267
+msgid "Display the button in home page"
+msgstr "Afişează butonul în pagina de pornire"
+
+#: easy-retweet.php:272
+msgid "Position"
+msgstr "Poziţia"
+
+#: easy-retweet.php:274
+msgid "Before the content of your post"
+msgstr "Înainte de conţinut de post dumneavoastră"
+
+#: easy-retweet.php:275
+msgid "After the content of your post"
+msgstr "După conţinutul de al tău post"
+
+#: easy-retweet.php:276
+msgid "Before AND After the content of your post"
+msgstr "Înainte şi după conţinutul de al tău post"
+
+#: easy-retweet.php:277
+msgid "Manually call the retweet button"
+msgstr "Manual apel butonul retweet"
+
+#: easy-retweet.php:278
+msgid "You can manually call the <code>easy_retweet_button</code> function. E.g. <code>if (function_exists('easy_retweet_button')) echo easy_retweet_button();."
+msgstr "Puteţi apela manual easy_retweet_button <code> </code> funcţie. De exemplu, <code> dacă (function_exists (\"easy_retweet_button\")) echo easy_retweet_button();."
+
+#: easy-retweet.php:283
+msgid "Button type"
+msgstr "Buton tip"
+
+#: easy-retweet.php:285
+msgid "Bit.ly hit count button"
+msgstr "Bit.ly apăsaţi butonul count"
+
+#: easy-retweet.php:286
+msgid "Official Twitter button"
+msgstr "Butonul de stare de nervozitate oficial"
+
+#: easy-retweet.php:293
+msgid "Bit.ly Button"
+msgstr "Bit.ly butonul"
+
+#: easy-retweet.php:297
+msgid "Bit.ly Username"
+msgstr "Bit.ly Username"
+
+#: easy-retweet.php:300
+msgid "A default account will be used if left blank."
+msgstr "Un cont implicit va fi utilizat în cazul în care rămâne necompletat."
+
+#: easy-retweet.php:305
+msgid "Bit.ly API Key"
+msgstr "Bit.ly API-cheie"
+
+#: easy-retweet.php:308
+msgid "You can get it from <a href = 'http://bit.ly/account/' target = '_blank'>http://bit.ly/account/</a>."
+msgstr "Puteţi să-l de la <a href = target ='http://bit.ly/account/''_blank'> http://bit.ly/account/ </a>."
+
+#: easy-retweet.php:313
+msgid "Button style"
+msgstr "Butonul stil"
+
+#: easy-retweet.php:315
+msgid "Vertical button"
+msgstr "Butonul verticală"
+
+#: easy-retweet.php:316
+msgid "Horizontal button"
+msgstr "Butonul orizontală"
+
+#: easy-retweet.php:321
+msgid "Text"
+msgstr "Text"
+
+#: easy-retweet.php:324
+msgid "The text that you enter here will be displayed in the button."
+msgstr "Textul introdus aici va fi afişat în butonul."
+
+#: easy-retweet.php:329
+msgid "Message Prefix"
+msgstr "Prefix mesaj"
+
+#: easy-retweet.php:332
+msgid "The text that you want to be added in front of each twitter message. eg: <code>RT: @sudarmuthu</code>"
+msgstr "Textul pe care doriţi să fie adăugat în faţa fiecare mesaj stare de nervozitate. de exemplu: <code> RT: @sudarmuthu </code>"
+
+#: easy-retweet.php:337
+msgid "Link Attributes"
+msgstr "Link-ul de atribute"
+
+#: easy-retweet.php:340
+msgid "eg: <code>rel='nofollow'</code> or <code>target = '_blank'</code>"
+msgstr "exemplu: <code>rel = \"nofollow\"</code> sau <code>target = '_blank'</code>"
+
+#: easy-retweet.php:348
+msgid "Twitter Button"
+msgstr "Butonul de stare de nervozitate"
+
+#: easy-retweet.php:353
+msgid "Button Style"
+msgstr "Butonul stil"
+
+#: easy-retweet.php:355
+msgid "Vertical count"
+msgstr "Contele verticală"
+
+#: easy-retweet.php:356
+msgid "Horizontal count"
+msgstr "Numărul de orizontale"
+
+#: easy-retweet.php:357
+msgid "No count"
+msgstr "Nu conta"
+
+#: easy-retweet.php:362
+msgid "Recommended Twitter account"
+msgstr "Cont de Twitter recomandate"
+
+#: easy-retweet.php:365
+msgid "Twitter account for users to follow after they share content from your website. This account could include your own, or that of a contributor or a partner."
+msgstr "Cont de Twitter pentru ca utilizatorii să urmeze după ce au în comun de conţinut de la site-ul dumneavoastră. Acest cont ar putea include propriul dvs., sau cea a unui contribuabil sau de un partener."
+
+#: easy-retweet.php:370
+msgid "Additional styles"
+msgstr "Stiluri suplimentare"
+
+#: easy-retweet.php:373
+msgid "eg: <code>float: left; margin-right: 10px;</code>."
+msgstr "exemplu: <code>float: stânga; marja-right: 10px;</code>."
+
+#: easy-retweet.php:378
+msgid "Language"
+msgstr "Limba"
+
+#: easy-retweet.php:381
+msgid "English"
+msgstr "Engleză"
+
+#: easy-retweet.php:382
+msgid "French"
+msgstr "Franceză"
+
+#: easy-retweet.php:383
+msgid "German"
+msgstr "Germană"
+
+#: easy-retweet.php:384
+msgid "Spanish"
+msgstr "Spaniolă"
+
+#: easy-retweet.php:385
+msgid "Japanese"
+msgstr "Japoneză"
+
+#: easy-retweet.php:387
+msgid "This is the language that the button will render in on your website."
+msgstr "Acest lucru este limba care butonul va face în pe site-ul dumneavoastră."
+
+#: easy-retweet.php:395
+msgid "Save Changes"
+msgstr "Salvaţi modificările"
+
+#: easy-retweet.php:399
+msgid "Support"
+msgstr "Suport"
+
+#: easy-retweet.php:400
+msgid "If you have any questions/comments/feedback about the Plugin then post a comment in the <a target=\"_blank\" href = \"http://sudarmuthu.com/wordpress/easy-retweet\">Plugins homepage</a>."
+msgstr "Dacă aveţi întrebări/comentarii/feedback despre Plugin posta un comentariu, apoi, în <a target=\"_blank\" href=\"http://sudarmuthu.com/wordpress/easy-retweet\"> Plugin-uri pagina de start </a>."
+
+#: easy-retweet.php:401
+msgid "If you like the Plugin, then consider doing one of the following."
+msgstr "Dacă vă place plugin-ul, apoi ia în considerare efectuând una dintre următoarele."
+
+#: easy-retweet.php:403
+msgid "Write a blog post about the Plugin."
+msgstr "Scrie un blog post despre plugin-ul."
+
+#: easy-retweet.php:404
+msgid " about it."
+msgstr " despre asta."
+
+#: easy-retweet.php:405
+msgid "Give a <a href = \"http://wordpress.org/extend/plugins/easy-retweet/\" target=\"_blank\">good rating</a>."
+msgstr "Oferă un <a href=\"http://wordpress.org/extend/plugins/easy-retweet/\" target=\"_blank\"> rating bun </a>."
+
+#: easy-retweet.php:406
+msgid "Say <a href = \"http://sudarmuthu.com/if-you-wanna-thank-me\" target=\"_blank\">thank you</a>."
+msgstr "Spune <a href=\"http://sudarmuthu.com/if-you-wanna-thank-me\" target=\"_blank\"> vă mulţumesc </a>."
+
+#. Plugin URI of the plugin/theme
+msgid "http://sudarmuthu.com/wordpress/easy-retweet"
+msgstr "http://sudarmuthu.com/Wordpress/Easy-retweet"
+
+#. Description of the plugin/theme
+msgid "Adds a Retweet button to your WordPress posts."
+msgstr "Adaugă un buton Retweet mesajele dumneavoastră WordPress."
+
+#. Author of the plugin/theme
+msgid "Sudar"
+msgstr "Sudar"
+
+#. Author URI of the plugin/theme
+msgid "http://sudarmuthu.com/"
+msgstr "http://sudarmuthu.com/"
+

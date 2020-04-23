@@ -1,0 +1,105 @@
+<!-- Related Posts Drawer -->
+<div
+    tool-gallery-settings-page
+    save="save"
+    go-back="goBack"
+    feature-settings="toolSettings"
+    tool-pco="cod"
+    pro
+    tool-name-msgid="tool_cod_name"
+    tool-description-msgid="tool_cod_long_description"
+>
+    <label
+        for="addthis-{{toolPco}}-title"
+        class="strong"
+        translate
+    >
+        tool_settings_title_label
+    </label>
+    <input
+        type="text"
+        ng-model="settings.title"
+        name="addthis-{{toolPco}}-title"
+        id="addthis-{{toolPco}}-title"
+    />
+
+    <h3 translate>layers_position_header</h3>
+    <label for="addthis-{{toolPco}}-position-left">
+        <input
+            type="radio"
+            ng-model="settings.position"
+            value="left"
+            name="addthis-{{toolPco}}-position-left"
+            id="addthis-{{toolPco}}-position-left"
+        />
+        <span translate>layers_offset_location_left_label</span>
+    </label>
+    <label for="addthis-{{toolPco}}-position-right">
+        <input
+            type="radio"
+            ng-model="settings.position"
+            value="right"
+            name="addthis-{{toolPco}}-position-right"
+            id="addthis-{{toolPco}}-position-right"
+        />
+        <span translate>layers_offset_location_right_label</span>
+    </label>
+
+    <div
+        layers-theme-picker
+        ng-model="settings.theme"
+        tool-pco="{{toolPco}}"
+    >
+    </div>
+
+    <h3 translate>layers_animation_header</h3>
+    <label for="addthis-{{toolPco}}-animation-push">
+        <input
+            type="radio"
+            ng-model="settings.animationType"
+            value="push"
+            name="addthis-{{toolPco}}-animation-push"
+            id="addthis-{{toolPco}}-animation-push"
+        />
+        <span translate>layers_animation_push_label</span>
+    </label>
+    <label for="addthis-{{toolPco}}-animation-overlay">
+        <input
+            type="radio"
+            ng-model="settings.animationType"
+            value="overlay"
+            name="addthis-{{toolPco}}-animation-overlay"
+            id="addthis-{{toolPco}}-animation-overlay"
+        />
+        <span translate>layers_animation_overlay_label</span>
+    </label>
+
+    <label
+        for="addthis-{{toolPco}}-hideonhomepage"
+        class="strong"
+        translate
+    >
+        layers_hide_on_homepage_title
+    </label>
+    <p translate>layers_hide_on_homepage_description</p>
+    <div
+        tool-drop-down-yes-no
+        ng-model="settings.__hideOnHomepage"
+        tool-pco="{{toolPco}}"
+        field-name="hideonhomepage"
+    >
+    </div>
+
+    <div
+        layers-hide-on-urls
+        ng-model="settings.__hideOnUrls"
+        tool-pco="{{toolPco}}"
+    >
+    </div>
+
+    <div
+        ng-include
+        src="'/features/RelatedPostSettings/PromotedUrlField.html'"
+    >
+    </div>
+</div>

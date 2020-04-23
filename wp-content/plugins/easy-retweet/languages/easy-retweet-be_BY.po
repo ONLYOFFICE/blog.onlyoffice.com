@@ -1,0 +1,158 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Sudar
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Retweet\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/easy-retweet\n"
+"POT-Creation-Date: 2009-08-02 09:32+0000\n"
+"PO-Revision-Date: 2009-11-23 01:28+0200\n"
+"Last-Translator: Fat Cow <zhr@tut.by>\n"
+"Language-Team: FatCow <zhr@tut.by>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Belarusian\n"
+"X-Poedit-Country: BELARUS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#. #-#-#-#-#  easy-retweet.pot (Easy Retweet 1.0)  #-#-#-#-#
+#. Plugin Name of an extension
+#: easy-retweet.php:60
+msgid "Easy Retweet"
+msgstr "Easy Retweet"
+
+#: easy-retweet.php:86
+msgid "Settings"
+msgstr "Настройки"
+
+#: easy-retweet.php:96
+msgid "plugin"
+msgstr "плагин"
+
+#: easy-retweet.php:96
+msgid "Version"
+msgstr "Версия"
+
+#: easy-retweet.php:96
+msgid "by"
+msgstr "от"
+
+#: easy-retweet.php:106
+msgid "Easy Retweet Settings"
+msgstr "Настройки Easy Retweet "
+
+#: easy-retweet.php:118
+msgid "Bit.ly Username"
+msgstr "Bit.ly имя пользователя"
+
+#: easy-retweet.php:121
+msgid "A default account will be used if left blank."
+msgstr "Учетной записи по умолчанию будет использоваться, если оставить пустым."
+
+#: easy-retweet.php:126
+msgid "Bit.ly API Key"
+msgstr "Bit.ly API ключ"
+
+#: easy-retweet.php:129
+msgid "You can get it from <a href = 'http://bit.ly/account/' target = '_blank'>http://bit.ly/account/</a>."
+msgstr "Вы можете получить его на <a href = 'http://bit.ly/account/' target = '_blank'>http://bit.ly/account/</a>."
+
+#: easy-retweet.php:134
+msgid "Display"
+msgstr "Отображение"
+
+#: easy-retweet.php:136
+msgid "Display the button on pages"
+msgstr "Показать кнопку на страницах"
+
+#: easy-retweet.php:137
+msgid "Display the button on archive pages"
+msgstr "Показать кнопку на страницах архива"
+
+#: easy-retweet.php:138
+msgid "Display the button in home page"
+msgstr "Показать кнопку на домашней странице"
+
+#: easy-retweet.php:143
+msgid "Position"
+msgstr "Позиция"
+
+#: easy-retweet.php:145
+msgid "Before the content of your post"
+msgstr "До содержания в посте"
+
+#: easy-retweet.php:146
+msgid "After the content of your post"
+msgstr "После содержания в посте"
+
+#: easy-retweet.php:147
+msgid "Before AND After the content of your post"
+msgstr "До и после содержания вашего поста"
+
+#: easy-retweet.php:148
+msgid "Manually call the retweet button"
+msgstr "Ручной вызов retweet кнопки"
+
+#: easy-retweet.php:149
+msgid "You can manually call the <code>easy_retweet_button</code> function. E.g. <code>if (function_exists('easy_retweet_button')) echo easy_retweet_button();."
+msgstr "Вы можете самостоятельно вызвать <code>easy_retweet_button</code> function. E.g. <code>if (function_exists('easy_retweet_button')) echo easy_retweet_button();."
+
+#: easy-retweet.php:154
+msgid "Type"
+msgstr "Тип"
+
+#: easy-retweet.php:156
+msgid "Vertical button"
+msgstr "Вертикальная кнопка"
+
+#: easy-retweet.php:157
+msgid "Horizontal button"
+msgstr "Горизонтальная кнопка"
+
+#: easy-retweet.php:162
+msgid "Text"
+msgstr "Текст"
+
+#: easy-retweet.php:165
+msgid "The text that you enter here will be displayed in the button."
+msgstr "Текст, который вы вводите здесь, будет отображаться на кнопке."
+
+#: easy-retweet.php:170
+msgid "Message Prefix"
+msgstr "Префикс сообщения"
+
+#: easy-retweet.php:173
+msgid "The text that you want to be added in front of each twitter message. eg: <code>RT: @sudarmuthu</code>"
+msgstr "Текст, который будет добавлен перед каждым Twitter сообщением. например:<code>RT: @sudarmuthu</code>"
+
+#: easy-retweet.php:178
+msgid "Link Attributes"
+msgstr "Аттрибуты ссылки"
+
+#: easy-retweet.php:181
+msgid "eg: <code>rel='nofollow'</code> or <code>target = '_blank'</code>"
+msgstr "eg: <code>rel='nofollow'</code> or <code>target = '_blank'</code>"
+
+#: easy-retweet.php:188
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#. Plugin URI of an extension
+msgid "http://sudarmuthu.com/wordpress/easy-retweet"
+msgstr "http://sudarmuthu.com/wordpress/easy-retweet"
+
+#. Description of an extension
+msgid "Adds a Retweet button to your WordPress posts."
+msgstr "Добавляет Retweet кнопку в WordPress посты."
+
+#. Author of an extension
+msgid "Sudar"
+msgstr "Sudar"
+
+#. Author URI of an extension
+msgid "http://sudarmuthu.com/"
+msgstr "http://sudarmuthu.com/"
+

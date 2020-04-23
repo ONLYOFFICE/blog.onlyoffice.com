@@ -1,0 +1,47 @@
+<div>
+    <label
+        for="{{selectFormFieldName}}"
+        class="strong"
+        translate
+    >
+        icon_color_picker_theme_label
+    </label>
+
+    <div class="custom-color-select-wrapper">
+        <div
+            class="custom-color-demo"
+            ng-style="{ 'background-color': ngModel }"
+        >
+        </div>
+        <select
+            name="{{selectFormFieldName}}"
+            id="{{selectFormFieldName}}"
+            ng-model="selectValue"
+            ng-change="selectTouched()"
+        >
+            <option
+                ng-repeat="theme in themeOptions"
+                ng-selected="selectedOption(theme.value)"
+                value="{{theme.value}}"
+            >
+                {{theme.display|translate}}
+            </option>
+        </select>
+    </div>
+
+    <div class="custom-hex-color-wrapper" ng-show="customColor">
+        <label
+            for="{{inputFormFieldName}}"
+            translate
+        >
+            icon_color_picker_hex_label
+        </label>
+        <input
+            type="text"
+            ng-model="ngModel"
+            name="{{inputFormFieldName}}"
+            id="{{inputFormFieldName}}"
+            alt="{{'icon_color_picker_custom_input_alt'|translate}}"
+        />
+    </div>
+</div>

@@ -1,0 +1,77 @@
+/**
+ * +--------------------------------------------------------------------------+
+ * | Copyright (c) 2008-2017 AddThis, LLC                                     |
+ * +--------------------------------------------------------------------------+
+ * | This program is free software; you can redistribute it and/or modify     |
+ * | it under the terms of the GNU General Public License as published by     |
+ * | the Free Software Foundation; either version 2 of the License, or        |
+ * | (at your option) any later version.                                      |
+ * |                                                                          |
+ * | This program is distributed in the hope that it will be useful,          |
+ * | but WITHOUT ANY WARRANTY; without even the implied warranty of           |
+ * | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            |
+ * | GNU General Public License for more details.                             |
+ * |                                                                          |
+ * | You should have received a copy of the GNU General Public License        |
+ * | along with this program; if not, write to the Free Software              |
+ * | Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA |
+ * +--------------------------------------------------------------------------+
+ */
+
+.addthis-settings-page .tool-gallery-card,
+.addthis-settings-page .tool-gallery-settings-page{
+  background: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+  padding: auto;
+}
+
+.addthis-settings-page .tool-gallery-card{
+  margin-right: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #E2E5E8
+}
+
+.addthis-settings-page .tool-gallery-settings-page{
+  margin: auto;
+}
+
+@media screen and (max-width: 782px) {
+  .addthis-settings-page .tool-gallery-card,
+  .addthis-settings-page .tool-gallery-settings-page{
+    margin-right: 10px;
+  }
+}
+
+.addthis-settings-page .follow-service-picker p,
+.addthis-settings-page .follow-service-picker label.strong,
+.addthis-settings-page .follow-service-edit,
+.addthis-settings-page .follow-service-add,
+.addthis-settings-page .layers-theme-settings{
+  display: inline-block;
+  width: 100%;
+  clear: both;
+  margin: auto;
+}
+
+.addthis-settings-page .follow-service-picker h3 {
+  display: inline-block;
+  width: 100%;
+  clear: both;
+}
+
+.addthis-settings-page .navigate-back{
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.addthis-settings-page .navigate-back:focus{
+  box-shadow: 0 0 2px rgba(30,140,190,.8);
+}
+
+.tool-gallery-card.review-nag {
+  background: #2C2C2D;
+  border: none;
+}

@@ -1,0 +1,64 @@
+ <!-- Horizontal Related Posts -->
+<div
+    tool-gallery-settings-page
+    save="save"
+    go-back="goBack"
+    feature-settings="toolSettings"
+    tool-pco="smlrebh"
+    tool-name-msgid="tool_smlrebh_name"
+    tool-description-msgid="tool_smlrebh_long_description"
+>
+    <label
+        for="addthis-{{toolPco}}-title"
+        class="strong"
+        translate
+    >
+        tool_settings_title_label
+    </label>
+    <input
+        type="text"
+        ng-model="settings.title"
+        name="addthis-{{toolPco}}-title"
+        id="addthis-{{toolPco}}-title"
+    />
+
+    <div
+        layers-theme-picker
+        ng-model="settings.theme"
+        tool-pco="{{toolPco}}"
+        themes="transparent,dark"
+    >
+    </div>
+
+    <div
+        integer-select
+        ng-model="settings.numrows"
+        for="addthis-{{toolPco}}-number-of-rows"
+        label="{{'select_number_of_rows_label'|translate}}"
+        min="1"
+        max="4"
+    >
+    </div>
+
+    <div
+        integer-select
+        ng-model="settings.maxitems"
+        for="addthis-{{toolPco}}-max-items"
+        label="{{'select_number_of_items_per_row_label'|translate}}"
+        min="1"
+        max="8"
+    >
+    </div>
+
+    <div
+        ng-include
+        src="'/features/RelatedPostSettings/PromotedUrlField.html'"
+    >
+    </div>
+
+    <div
+        get-the-code
+        tool-classes="settings.elements"
+    >
+    </div>
+</div>

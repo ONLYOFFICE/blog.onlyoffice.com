@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<ruleset name="AddThisWordPressPlugins">
+
+    <description>
+        A custom coding standard used by AddThis on WordPress plugins.
+    </description>
+
+    <exclude-pattern>export/*</exclude-pattern>
+    <exclude-pattern>frontend/*</exclude-pattern>
+    <exclude-pattern>node_modules/*</exclude-pattern>
+    <exclude-pattern>*.js</exclude-pattern>
+
+    <rule ref="PSR2"/>
+    <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
+        <severity>0</severity>
+    </rule>
+    <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
+        <severity>0</severity>
+    </rule>
+    <rule ref="PSR2.Files.EndFileNewline.NoneFound">
+        <severity>0</severity>
+    </rule>
+
+    <rule ref="Generic.Commenting.DocComment"/>
+    <rule ref="Generic.Commenting.Todo"/>
+    <rule ref="Generic.CodeAnalysis.EmptyStatement"/>
+    <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
+    <rule ref="Generic.Classes.DuplicateClassName"/>
+    <rule ref="Generic.PHP.DisallowShortOpenTag"/>
+    <rule ref="Generic.PHP.DeprecatedFunctions"/>
+    <rule ref="Generic.PHP.CharacterBeforePHPOpeningTag"/>
+    <rule ref="Generic.PHP.DeprecatedFunctions"/>
+    <rule ref="Generic.PHP.Syntax"/>
+    <rule ref="Generic.PHP.DisallowShortOpenTag.EchoFound">
+        <severity>5</severity>
+    </rule>
+    <rule ref="Generic.Files.EndFileNoNewline"/>
+    <rule ref="Generic.Files.InlineHTML"/>
+    <rule ref="Generic.Files.OneClassPerFile"/>
+    <!-- Lines can be 80 chars long, but never show errors -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="120"/>
+            <property name="absoluteLineLimit" value="0"/>
+        </properties>
+    </rule>
+    <rule ref="Generic.NamingConventions.CamelCapsFunctionName">
+        <exclude-pattern>functions.php</exclude-pattern>
+    </rule>
+
+    <rule ref="Zend.Files.ClosingTag"/>
+
+    <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
+    <rule ref="Squiz.WhiteSpace.OperatorSpacing"/>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace.StartFile">
+        <severity>5</severity>
+    </rule>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace.EndFile">
+        <severity>5</severity>
+    </rule>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines">
+        <severity>5</severity>
+    </rule>
+    <rule ref="Squiz.Strings.DoubleQuoteUsage"/>
+    <rule ref="Squiz.Strings.EchoedStrings"/>
+    <rule ref="Squiz.PHP.Eval"/>
+    <rule ref="Squiz.PHP.LowercasePHPFunctions"/>
+    <rule ref="Squiz.PHP.NonExecutableCode"/>
+    <rule ref="Squiz.Operators.ValidLogicalOperators"/>
+    <rule ref="Squiz.Functions.FunctionDuplicateArgument"/>
+    <rule ref="Squiz.Commenting.DocCommentAlignment"/>
+    <rule ref="Squiz.Classes.ClassFileName"/>
+    <rule ref="Squiz.Classes.SelfMemberReference"/>
+
+    <rule ref="PEAR.Files.IncludingFile"/>
+    <rule ref="PEAR.Commenting.ClassComment"/>
+    <rule ref="PEAR.Commenting.FunctionComment"/>
+    <rule ref="PEAR.Commenting.InlineComment"/>
+
+</ruleset>

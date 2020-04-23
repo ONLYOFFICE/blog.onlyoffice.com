@@ -1,0 +1,44 @@
+<!-- Vertical Follow Buttons -->
+<div
+    tool-gallery-settings-page
+    save="save"
+    go-back="goBack"
+    feature-settings="followButtons"
+    tool-pco="flwv"
+    tool-name-msgid="tool_flwv_name"
+    tool-description-msgid="tool_flwv_long_description"
+>
+    <label
+        for="addthis-{{toolPco}}-title"
+        class="strong"
+        translate
+    >
+        tool_settings_title_label
+    </label>
+    <input
+        type="text"
+        ng-model="settings.title"
+        name="addthis-{{toolPco}}-title"
+        id="addthis-{{toolPco}}-title"
+    />
+
+    <div
+        icon-size-picker
+        ng-model="settings.size"
+        tool-pco="{{toolPco}}"
+    >
+    </div>
+
+    <div
+        follow-service-picker
+        ng-model="settings.services"
+        tool-pco="{{toolPco}}"
+    >
+    </div>
+
+    <div
+        get-the-code
+        tool-classes="settings.elements"
+    >
+    </div>
+</div>

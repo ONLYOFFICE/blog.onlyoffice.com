@@ -1,0 +1,3385 @@
+msgid ""
+msgstr ""
+"Report-Msgid-Bugs-To: help@addthis.com\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+"Language-Team: help@addthis.com\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Last-Translator: \n"
+"Language: en_US\n"
+
+#. the description on an input field where the user should enter their email address, explaining that they will use this to sign into their new account
+#, include in addthis-wordpress-plugin domain
+msgid "account_create_email_address_description"
+msgstr "You will use this to sign in."
+
+#. the label on a checkbox field where the user can opt -in to a monthly email newsletter
+#, include in addthis-wordpress-plugin domain
+msgid "account_create_newsletter_opt_in"
+msgstr "Email me a monthly newsletter"
+
+#. the description on an input field where the user should enter their password, explaining that the password must be at least 4 characters long
+#, include in addthis-wordpress-plugin domain
+msgid "account_create_password_description"
+msgstr "Minimum length 4 characters"
+
+#. the label on an input field where the user should reenter their password, to make sure it matches their previous password input
+#, include in addthis-wordpress-plugin domain
+msgid "account_create_retype_password_label"
+msgstr "Re-type Password"
+
+#. the placeholder text on an input field where the user should reenter their password, to make sure it matches their previous password input
+#, include in addthis-wordpress-plugin domain
+msgid "account_create_retype_password_placeholder"
+msgstr "Confirm password"
+
+#. The header on a settings page for creating an AddThis account
+#, include in addthis-wordpress-plugin domain
+msgid "account_create_title"
+msgstr "Create an Account"
+
+#. used on buttons for saving their settings on a particular tool when that tool is currently disabled (enables on click) - if the tool is already enabled, msgid save_button is used instead
+#. used in a drop down of actions (activate/deactivate) of bulk actions that can be done on tools
+#, include in addthis-wordpress-plugin domain
+msgid "activate_button"
+msgstr "Activate"
+
+#. used on buttons for saving their settings on a particular tool when that tool is currently disabled (enables on click) - if the tool is already enabled, msgid save_button is used instead
+#. used in a drop down of actions (activate/deactivate) of bulk actions that can be done on tools
+#, include in addthis-wordpress-plugin domain
+msgid "deactivate_button"
+msgstr "Deactivate"
+
+#. used in a status picker/filter for choosing whether to list all, active or inactive tools
+#. used in table list of tools, described whether that tool is active (live, functional) or inactive (turned off)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_status_active"
+msgstr "Active"
+
+#. used in a status picker/filter for choosing whether to list all, active or inactive tools
+#. used in table list of tools, described whether that tool is active (live, functional) or inactive (turned off)
+msgid "tool_status_inactive"
+msgstr "Inactive"
+
+#. used in a filter selector for choosing to list all items / clear the filter
+msgid "tool_filter_all"
+msgstr "All"
+
+#. The description below on the Advanced Settings >> Tracking >> Enhanced Accessibility settings field
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_508_description"
+msgstr ""
+"Also known as 508 Compliance. With this feature enabled, clicking an "
+"AddThis sharing button will open a new window to a page that is keyboard "
+"navigable for people with disabilities."
+
+#. The label on the Advanced Settings >> Tracking >> Enhanced Accessibility settings field (this label appears to the right of the checkbox)
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_508_label"
+msgstr "Enhanced Accessibility"
+
+#. The description below on the Advanced Settings >> Tracking >> Address Bar Shares settings field
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_address_bar_shares_description"
+msgstr ""
+"With this feature enabled, AddThis will append a code to your site’s URLs "
+"(except for the homepage) to track when a visitor comes to your site from a "
+"link someone copied out of their browser's address bar"
+
+#. The label on the Advanced Settings >> Tracking >> Address Bar Shares settings field (this label appears to the right of the checkbox)
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_address_bar_shares_label"
+msgstr "Address Bar Shares"
+
+#. The text in a link for more information about the Advanced Settings >> Tracking >> Address Bar Shares settings field
+#. This immidiately follows the text in msgid advanced_settings_address_bar_shares_description
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_address_bar_shares_more_info_link"
+msgstr "More on address bar shares."
+
+#. The description below on the Advanced Settings >> Tracking >> AJAX Support settings field
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_ajax_support_description"
+msgstr ""
+"Are AddThis tools not loading on your site? Is your theme adding in "
+"content, excerpts or widgets asynchronously? Is your theme a single page app "
+"for WordPress? Try this. We'll add some extra code to detect when new "
+"social tools should be added onto the page."
+
+#. The label on the Advanced Settings >> Tracking >> AJAX Support settings field (this label appears to the right of the checkbox)
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_ajax_support_label"
+msgstr "AJAX Support"
+
+#. The description below on the Advanced Settings >> Tracking >> Asynchronous Loading settings field
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_async_description"
+msgstr ""
+"With this feature is enabled, your site will load before AddThis sharing "
+"buttons are added. If unchecked, your site will not load until AddThis "
+"buttons (and AddThis JavaScript) have been loaded by your vistors."
+
+#. The label on the Advanced Settings >> Tracking >> Asynchronous Loading settings field (this label appears to the right of the checkbox)
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_async_label"
+msgstr "Asynchronous Loading"
+
+#. The description below on the Advanced Settings >> Tracking >> Bitly URL Shortening for Twitter settings field
+#. {{link}} is a placeholder to a link to addthis.com, this link always readys "addthis.com" in every language
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_bitly_description"
+msgstr ""
+"When this feature is enabled, the Twitter sharing buttons will "
+"automatically use Bitly to shorten the URL tweeted. To track Bitly "
+"clickthrough with your own Bitly account, your Bitly login and key will "
+"need to be setup with your profile on {{link}}"
+
+#. The label on the Advanced Settings >> Tracking >> Bitly URL Shortening for Twitter settings field (this label appears to the right of the checkbox)
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_bitly_label"
+msgstr "Bitly URL Shortening for Twitter"
+
+#. The description below on the Advanced Settings >> Tracking >> Clickbacks settings field
+#. {{link}} is a placeholder to a link to addthis.com, this link always readys "addthis.com" in every language
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_clickbacks_description"
+msgstr ""
+"When this feature is enabled, data will be available at {{link}} to track "
+"how many people come back to your content via links shared with AddThis "
+"buttons."
+
+#. The label on the Advanced Settings >> Tracking >> Clickbacks settings field (this label appears to the right of the checkbox)
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_clickbacks_label"
+msgstr "Clickbacks"
+
+#. The text in a link for more information about the Advanced Settings >> Tracking >> Clickbacks settings field
+#. This immidiately follows the text in msgid advanced_settings_clickbacks_description
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_clickbacks_more_info_link"
+msgstr "More on clickbacks."
+
+#. A description on a section (card) for developer configuration settings
+#. {{link}} is a placeholder to a link to documentionat of customization documentation from AddThis
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_developer_config_description"
+msgstr ""
+"In this section, you can add custom JSON code to further customize your "
+"AddThis tools. For additional information on the following options, see our "
+"{{link}}."
+
+#. A link to AddThis customization docuemntation, used in msgid advanced_settings_developer_config_description
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_developer_config_description_link"
+msgstr "customization documentation"
+
+#. A label prepended in front of example JSON (JavaScript Object Notation) for a specific developer configuration variable
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_developer_config_example_label"
+msgstr "Example:"
+
+#. A header on a section (card) of developer configuration settings
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_developer_config_header"
+msgstr "Developer Configuration"
+
+#. A paragraph directing the user to where they can find documentation on a specific variable
+#. {{link}} is a placeholder for a link where the text is a variable name. this is never translated. this might be addthis_config, addthis_share or addthis.layers()
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_developer_config_more_info"
+msgstr ""
+"For more information, please see the AddThis documentation on the {{link}} "
+"variable."
+
+#. The description below on the Advanced Settings >> Loading Options >> Excerpt Filters settings field
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_excerpt_filters_description"
+msgstr ""
+"Some themes create page or post excerpts in ways that break standard "
+"WordPress filters, so we hook into multiple filters to include AddThis "
+"tools on excerpts. Depending on what other plugins and your theme are "
+"doing, this may cause some problems with how our tools show up on excerpts."
+
+#. The description below on the Advanced Settings >> Loading Options >> Excerpt Filters settings field
+#. {{link}} is a placeholder to a link to email the AddThis support team. See msgid advanced_settings_excerpt_filters_help_link for the text of this link
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_excerpt_filters_help"
+msgstr ""
+"If you are seeing issues, try disabling one or more of the filters below. "
+"If you continue to see issues, plase {{link}}."
+
+#. The text in a link for more information about the Advanced Settings >> Loading Options >> Excerpt Filters settings field
+#. This immidiately follows the text in msgid advanced_settings_clickbacks_description
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_excerpt_filters_help_link"
+msgstr "contact our support team"
+
+#. The header on the Advanced Settings >> Loading Options >> Excerpt Filters settings group - this section contain 3 checkboxes that are not translated (they're WordPress filter names from the WordPress source code)
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_excerpt_filters_label"
+msgstr "Excerpt Filters"
+
+#. The description below on the Advanced Settings >> Tracking >> Google Analytics Property ID settings field
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_google_analytics_description"
+msgstr ""
+"By specifying your Google Analytics Property ID, AddThis can share data "
+"into your existing Google Analytics reports, and lets you view AddThis "
+"shares as custom events in your Google Analytics dashboard."
+
+#. The label on the Advanced Settings >> Tracking >> Google Analytics Property ID settings text field
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_google_analytics_label"
+msgstr "Google Analytics Property ID"
+
+#. The text in a link for more information about the Advanced Settings >> Tracking >> Google Analytics Property ID settings field
+#. This immidiately follows the text in msgid advanced_settings_clickbacks_description
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_google_analytics_more_info_link"
+msgstr "More on AddThis' Google Analytics integration."
+
+#. The first item in the select drop down at the Advanced Settings >> Loading Options >> Language - An "Automatic" option. This is the default for the drop down.
+#. This field is used to specify what language the user wants our tools to use on the public side of their website
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_language_automatic_option"
+msgstr "Automatic"
+
+#. The label on the Advanced Settings >> Loading Options >> Language settings select field (this label appears above the select drop down)
+#. This field is used to specify what language the user wants our tools to use on the public side of their website
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_language_label"
+msgstr "Language"
+
+#. A header on a section (card) of loading options settings
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_loading_options_header"
+msgstr "Loading Options"
+
+#. The description on the Advanced Settings >> Debug >> Mode settings field. This is a description for a drop down select field. AddThis and WordPress are the two options. Choosing AddThis will use tool configuration from addthis.com. Choosing WordPress will use configurations from within the users WordPress instance.
+#. {{link}} is a placeholder to a link to addthis.com, this link always readys "addthis.com" in every language
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_mode_description"
+msgstr "The system from which AddThis tool configurations should be retrieved."
+
+#. The label on the Advanced Settings >> Debug >> Mode settings field. This is a label for a drop down select field. AddThis and WordPress are the two options. Choosing AddThis will use tool configuration from addthis.com. Choosing WordPress will use configurations from within the users WordPress instance.
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_mode_label"
+msgstr "Mode"
+
+#. The description below on the Advanced Settings >> Tracking >> Allow Turning Off of Sharing Tools by Post settings field
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_per_post_option_description"
+msgstr ""
+"With this feature is enabled, you will be able to turn off sharing buttons "
+"for specific posts on the edit page for that post."
+
+#. The label on the Advanced Settings >> Tracking >> Allow Turning Off of Sharing Tools by Post settings field (this label appears to the right of the checkbox)
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_per_post_option_label"
+msgstr "Allow Turning Off of Sharing Tools by Post"
+
+#. The description below on the Advanced Settings >> Loading Options >> Script Location settings field
+#. {{link}} is a placeholder to a link to addthis.com, this link always readys "addthis.com" in every language
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_script_location_description"
+msgstr "Sets the location of the AddThis Javascript within your page's HTML."
+
+#. The label on the Advanced Settings >> Loading Options >> Script Location >> Footer radio button settings field
+#. Unlike msgid advanced_settings_script_location_header_label, this is not a technical term. It simply means we'll add our code towards the buttom of their page
+#. This text will be immidiately followed by msgid option_recommended
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_script_location_footer_label"
+msgstr "Footer"
+
+#. The label on the Advanced Settings >> Loading Options >> Script Location >> Header radio button settings field
+#. This is a technical term for the <head></head> tag of an HTML page
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_script_location_header_label"
+msgstr "Header"
+
+#. The header on the Advanced Settings >> Loading Options >> Script Location settings field radio button group
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_script_location_label"
+msgstr "Script Location"
+
+#. A header on a section (card) of tracking settings
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_tracking_header"
+msgstr "Tracking"
+
+#. The description below on the Advanced Settings >> Tracking >> Twitter Handle for Twitter Via settings field
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_twitter_via_description"
+msgstr ""
+"Enter your Twitter handle below and when a visitor uses an AddThis button "
+"to send a tweet about your page, your Twitter handle will be added to the "
+"end of their tweet as \"via @(Your_Username)\"."
+
+#. The label on the Advanced Settings >> Tracking >> Twitter Handle for Twitter Via settings text field
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_twitter_via_label"
+msgstr "Twitter Handle for Twitter Via"
+
+#. The description below on the Advanced Settings >> Tracking >> Add XML Namespaces for valid XHTML settings field
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_xml_namespace_description"
+msgstr ""
+"When checked, this feature will add XML namespace attributes for AddThis "
+"and Facebook onto your pages. These attributes are required for valid XHTML."
+
+#. The label on the Advanced Settings >> Tracking >> Add XML Namespaces for valid XHTML settings field (this label appears to the right of the checkbox)
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_xml_namespace_label"
+msgstr "Add XML Namespaces for valid XHTML"
+
+#. A button that takes the user to addthis.com for their site's analytics and more
+#, include in addthis-wordpress-plugin domain
+msgid "analytics_at_addthis_button"
+msgstr "Analytics and More at AddThis.com"
+
+#. used on buttons or links that clear the value of a field
+#, include in addthis-wordpress-plugin domain
+msgid "clear_button"
+msgstr "Clear"
+
+#. default title on widgets
+#. verb, declarative, default text put before a set of share buttons (share this article/page/url on twitter, on facebook, etc)
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "client_string_91"
+msgstr "Share"
+
+#. default title on widgets
+#. default text put before recommended content for a user to read next
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "client_string_99"
+msgstr "Recommended for you"
+
+#. A link to cancel the current action
+#, include in addthis-wordpress-plugin domain
+msgid "client_string_cancel"
+msgstr "Cancel"
+
+#. Part of the interface where we ask users if they like our plugin, and then either ask them for a review or point them to our support team
+#. This is a button shown below the text in msgid review_nag_let_us_know_how_to_improve. clicking on the button will open an email to AddThis' support team
+#. This text is shown in a button
+#, include in addthis-wordpress-plugin domain
+msgid "client_string_email"
+msgstr "Email"
+
+#. the label on an input field where the user should enter their password, used both when signing in and creating an account
+#, include in addthis-wordpress-plugin domain
+msgid "client_string_password"
+msgstr "Password"
+
+#. Used as the text for a link to a settings page. This should be generic. It is used in a link which may take user an Advanced Settings setting page, or it page of settings specific one of our tools types (Follow Buttons, Share Buttons, Recommended Content) depending on which plugin it is being used in).
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "client_string_settings"
+msgstr "Settings"
+
+#. The text in a button for the user to click to sign in, after entering username and password
+#, include in addthis-wordpress-plugin domain
+msgid "client_string_sign_in"
+msgstr "Sign In"
+
+#. The text in a link, on a registration page, to skip rgistration and sign in with an exisiting account
+#, include in addthis-wordpress-plugin domain
+msgid "sign_in_existing_account"
+msgstr "Sign In with an Existing Account"
+
+#. A button on the settings page for a particular tool, for closing the tools settings, abandoning settings changes, and going back to a listing of all the tools of that type
+#, include in addthis-wordpress-plugin domain
+msgid "close_button"
+msgstr "Close"
+
+#. A button that takes the user to addthis.com to configure their tools
+#, include in addthis-wordpress-plugin domain
+msgid "configure_at_addthis_button"
+msgstr "Configure Tools at AddThis.com"
+
+#. A button to create a new profile on their addthis account
+#, include in addthis-wordpress-plugin domain
+msgid "confirm_button"
+msgstr "Confirm"
+
+#. The text in a button. when clicked, takes the user to a page where they can create an account
+#, include in addthis-wordpress-plugin domain
+msgid "create_account_button"
+msgstr "Create an Account"
+
+#. An explaination of what an AddThis profile is, and a prompt to name the profile below
+#, include in addthis-wordpress-plugin domain
+msgid "create_profile_description"
+msgstr ""
+"You can create multiple profiles for your tool configuration for different "
+"sites. Please enter a name for your new profile:"
+
+#. the label on an input field where the user should enter a name for their new profile (it will be prepopulated with their site's name)
+#, include in addthis-wordpress-plugin domain
+msgid "create_profile_label"
+msgstr "Profile Name"
+
+#. The header on a settings page for creating a new AddThis profile (and account can have multiple profiles)
+#, include in addthis-wordpress-plugin domain
+msgid "create_profile_title"
+msgstr "Create a Profile"
+
+#. used as alt text (for blind users) on a section with plugin incompatability warnings
+#, include in addthis-wordpress-plugin domain
+msgid "cross_plugin_warnings_section_alt"
+msgstr "Warnings"
+
+#. the text in a link that takes the user to a page where they can change their registration information - specifally the AddThis account and which profile on that account they are using
+#, include in addthis-wordpress-plugin domain
+msgid "edit_registration_link"
+msgstr "Edit Registration"
+
+#. the label on an input field where the user should enter their email address, used both when signing in and creating an account
+#, include in addthis-wordpress-plugin domain
+msgid "email_address_input_label"
+msgstr "Email Address"
+
+#. the placeholder text on an input field where the user should enter their email address, used both when signing in and creating an account
+#, include in addthis-wordpress-plugin domain
+msgid "email_address_input_placeholder"
+msgstr "Email"
+
+#. An error message shown if the user enters something that isn't an email address into the form
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_email_address_invalid"
+msgstr "Invalid Email Address"
+
+#. An error message shown if the user doesn't enter an email address into the form
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_email_address_required"
+msgstr "Email Address Required"
+
+#. A generic title for an error message box
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_error_occured"
+msgstr "An Error Occured"
+
+#. A title for an error message box about issues with changing something on a profile
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_failed_to_change_profile_type"
+msgstr "Failed to change profile type"
+
+#. A title for an error message box about issues with creating an API key
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_failed_to_create_api_key"
+msgstr "Failed to create API key"
+
+#. A title for an error message box about issues with creating a new profile
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_failed_to_create_profile"
+msgstr "Failed to create profile"
+
+#. An error message shown if something unexpected went wrong with an action or when retrieving info. Generic.
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_failed_unknown_reason"
+msgstr "Failed. Reason unknown."
+
+# The text in an error message
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_invalid_api_key"
+msgstr "The API Key is invalid. Please update your registration in the home section."
+
+# The text in an error message
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_darkseid_ping_failed"
+msgstr "We can't communicate to AddThis from your browser. This is required for this plugin to function. These requests may be blocked by privacy or ad-blocking extensions; we recommend whitelisting the addthis.com domain or disabling these extensions to help ensure functionality."
+
+#. A message displayed when the form has an invalid input. Shown below the save button (save button grayed out)
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_invalid_input_can_not_save"
+msgstr ""
+"Your changes cannot be saved until the fields that have errors have been "
+"changed."
+
+# The text in an error message
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_invalid_profile"
+msgstr ""
+"The profile ID provided is invalid. Please update your registration in the "
+"home section."
+
+#. An error message shown if the two passwords the user entered don't match
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_password_mismatch"
+msgstr "Passwords don't match."
+
+#. An error message shown if the user enters an email address that isn't at least 4 characters long
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_password_too_short"
+msgstr "Password too short."
+
+#. An error message shown if the user enters unsupported characters for the name of a new profile (A-Z, a-z, 0-9, -, _ and () are all that's supported)
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_profile_bad_characters"
+msgstr ""
+"Profile name may contain only letters, numbers, spaces, dashes, "
+"underscores, and parentheses."
+
+#. An error message shown if the user enters too many characters for the name of a new profile (limit 255 characters)
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_profile_name_too_long"
+msgstr "Profile name must be less than 255 characters."
+
+#. A warning to the user that the profile they are currently using on the site isn't associated with the account they logged in with. They either need to pick a different profile, create a new profile, or log in with the correct account.
+#. {{profile_id}} is a placeholder for the profile id currently being used by the site, this will usually look something like ra-12asd34asgs
+#. this is immidiately followed by a link with the text in msgid start_registration_over_link
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_profile_not_on_account"
+msgstr ""
+"Your current profile ({{profile_id}}) is not associated with this account. "
+"You may select a profile from the dropdown, create a new one, or start over "
+"and log in with a different AddThis account."
+
+#. A message displayed when the input profile ID is valid but not of the correct type. This plugin uses a profile with the type WordPress.
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_profile_wrong_type"
+msgstr "Not a WordPress Profile"
+
+#. A detailed message about too many requests for API keys on this profile. Only 1 allowed per second.
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_too_many_api_key_requests"
+msgstr "Only one API key may be made per second. You may try again."
+
+# The text in an error message communicating to the user that there was an issue getting infromation back from WordPress
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_tool_check_generic"
+msgstr ""
+"Could not retrieve settings from WordPress. Your WordPress session may have "
+"expired. Try refreshing the page. If that doesn't work, you may need to "
+"update this plugin."
+
+#. A message shown when we're unable to load in a users settings (needed to display a settings page). This is often because a user's session in their WordPress admin area has expired.
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_unable_to_load_settings"
+msgstr "Unable to load settings. Has your session expired?"
+
+#. A generic message about an unknown error occuring
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_unknown_error"
+msgstr "Unknown error"
+
+# The text in an error message
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_unsupported_plugin"
+msgstr ""
+"This version of the plugin can no longer update the settings associated "
+"with your AddThis profile. It is too old. Your AddThis tools will still "
+"function and you can update them at addthis.com or after updating this "
+"plugin."
+
+# The text in an error message
+#, include in addthis-wordpress-plugin domain
+msgid "error_message_wrong_profile_type"
+msgstr ""
+"The profile ID provided is the wrong type. Please update your registration "
+"in the home section."
+
+#. End user license agreement
+#. {{button_text}} is a placeholder for the text in a button also displayed on the screen. clicking of that indicates the user agree to the linked documents
+#. msgids often used for {{button_text}}: save_button, register_button
+#. {{terms_of_service_link}} is a placeholder for a link to our terms and conditions (see msgid terms_of_service_link for the text of this link)
+#. {{privacy_policy_link}} is a placeholder for a link to our privacy policy (see msgid privacy_policy_link for the text of this link)
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "eula_template"
+msgstr ""
+"By clicking \"{{button_text}}\" you certify that you are at least 13 years "
+"old, and agree to the AddThis {{privacy_policy_link}} and "
+"{{terms_of_service_link}}."
+
+#. The name for a social account/profile on Behance (behance.com)
+#. Example url for this type of account: https://www.behance.net/trk
+msgid "follow_profile_behance_id"
+msgstr "Behance profile"
+
+#. The name for a social account/profile on Disqus (disqus.com)
+#. Example url for this type of account: https://disqus.com/jgrodel
+msgid "follow_profile_disqus_id"
+msgstr "Disqus profile"
+
+#. The name for a shop account on Etsy (etsy.com)
+#. Example url for this type of account: https://www.etsy.com/shop/limeyts
+msgid "follow_profile_etsy_id"
+msgstr "Etsy"
+
+#. The name for a social account/profile on Facebook (facebook.com)
+#. Example url for this type of account: http://www.facebook.com/MyThrivePilates
+msgid "follow_profile_facebook_id"
+msgstr "Facebook id"
+
+#. The name for a social account/profile on Facebook (facebook.com)
+#. Example url for this type of account: http://www.facebook.com/MyThrivePilates
+msgid "follow_profile_facebook_username"
+msgstr "Facebook username"
+
+#. The name for a social account/profile on Flickr (flickr.com)
+#. Example url for this type of account: http://www.flickr.com/photos/elsekramer
+msgid "follow_profile_flickr_id"
+msgstr "Flickr profile"
+
+#. The name for a business/organization profile on Foursquare (foursquare.com)
+#. Example url for this type of account: http://foursquare.com/thrivepilatesdc
+msgid "follow_profile_foursquare_id"
+msgstr "Foursquare profile"
+
+#. The name a social account/profile on Google+ (https://plus.google.com)
+#. Example url for this type of account: https://plus.google.com/106246542770794759708
+msgid "follow_profile_google_follow_id"
+msgstr "Google+ profile"
+
+#. The name for a social account/profile on Instagram (instagram.com)
+#. Example url for this type of account: http://instagram.com/julka_loves_pink
+msgid "follow_profile_instagram_id"
+msgstr "Instagram profile"
+
+#. The name for a company social account/profile on LinkedIn (linkedin.com)
+#. Example url for this type of account: http://www.linkedin.com/company/addthis
+msgid "follow_profile_linkedin_company"
+msgstr "LinkedIn company profile"
+
+#. The name for an educational institution's social account/profile on LinkedIn (linkedin.com)
+#. Example url for this type of account: http://www.linkedin.com/company/addthis
+msgid "follow_profile_linkedin_edu"
+msgstr "LinkedIn Edu page"
+
+#. The name for a group social account/profile on LinkedIn (linkedin.com)
+#. Example url for this type of account: http://www.linkedin.com/company/addthis
+msgid "follow_profile_linkedin_group"
+msgstr "LinkedIn group page"
+
+#. The name for a personal social account/profile on LinkedIn (linkedin.com)
+#. Example url for this type of account: http://www.linkedin.com/in/jgrodel
+msgid "follow_profile_linkedin_id"
+msgstr "LinkedIn person profile"
+
+#. The name for a social account/profile on Pinterest (pinterest.com)
+#. Example url for this type of account: http://www.pinterest.com/mythrivepilates
+msgid "follow_profile_pinterest_id"
+msgstr "Pinterest profile"
+
+#. The name for a blog on Tumblr (tumblr.com)
+#. Example url for this type of account: http://julka-at-addthis.tumblr.com
+msgid "follow_profile_tumblr_id"
+msgstr "Tumblr blog"
+
+#. The name for a social account/profile on Twitter (twitter.com)
+#. Example url for this type of account: https://twitter.com/jgrodel
+msgid "follow_profile_twitter_id"
+msgstr "Twitter handle"
+
+#. The name for a social account/profile on Vimeo (vimeo.com)
+#. Example url for this type of account: http://www.vimeo.com/user45397038
+msgid "follow_profile_vimeo_id"
+msgstr "Vimeo profile"
+
+#. The name for a social account/profile on YouTube (youtube.com)
+#. Example url for this type of account: https://www.youtube.com/channel/UCRapT2BbIsPV8G_5HrZiCqw
+msgid "follow_profile_youtube_channel"
+msgstr "YouTube channel"
+
+#. The name for a social account/profile on YouTube (youtube.com)
+#. Example url for this type of account: https://www.youtube.com/channel/UCRapT2BbIsPV8G_5HrZiCqw
+msgid "follow_profile_youtube_custom"
+msgstr "YouTube custom URL"
+
+#. The name for a social account/profile on YouTube (youtube.com)
+#. Example url for this type of account: https://www.youtube.com/user/jgrodel
+msgid "follow_profile_youtube_id"
+msgstr "YouTube user profile"
+
+#. used as alt text (for blind users) to indicate that they can click in the selected location to delete their entry for this profile and remove it from the displayed list of inputs
+#. {{profile}} is a placeholder for the name of a profile/account on a particular services (like Facebook, LinkedIn, Twitter, etc). See msgids like follow_profile_* (for example, follow_profile_disqus) for the text this represents
+#, include in addthis-wordpress-plugin domain
+msgid "follow_service_delete_alt"
+msgstr "Delete {{profile}}"
+
+#. used as alt text (for blind users) to indicate that they can enter their profile into this field
+#. {{profile}} is a placeholder for the name of a profile/account on a particular services (like Facebook, LinkedIn, Twitter, etc). See msgids like follow_profile_* (for example, follow_profile_disqus) for the text this represents
+#, include in addthis-wordpress-plugin domain
+msgid "follow_service_input_alt"
+msgstr "Input for {{profile}}"
+
+#. used as alt text (for blind users) to indicate that they can click in the selected location to be taken to the input for this profile type
+#. {{profile}} is a placeholder for the name of a profile/account on a particular services (like Facebook, LinkedIn, Twitter, etc). See msgids like follow_profile_* (for example, follow_profile_disqus) for the text this represents
+#, include in addthis-wordpress-plugin domain
+msgid "follow_service_label_alt"
+msgstr "Label for {{profile}}"
+
+#. Prompts users to insert the infromation for different social accounts below.
+#, include in addthis-wordpress-plugin domain
+msgid "follow_service_picker_add_urls"
+msgstr "Insert URLs for your pages:"
+
+#. The description before a selection UI. Prompts users to select a service by its icon, and enter their information for that service.
+#, include in addthis-wordpress-plugin domain
+msgid "follow_service_picker_description"
+msgstr ""
+"Click on any of the icons below, then enter your information into the entry "
+"field."
+
+#. The text in a link that takes them to a page where they can reset their AddThis account's password
+#, include in addthis-wordpress-plugin domain
+msgid "forgot_password_link"
+msgstr "Forgot Password?"
+
+#. A short explinations of how to use WordPress shortcodes
+#, include in addthis-wordpress-plugin domain
+msgid "gtc_copy_in_the_shortcode"
+msgstr ""
+"Use this shortcode to insert your follow buttons inline in your WordPress "
+"posts and pages."
+
+#. step 2 for adding a widget - pick the widget and drag it into an area
+#. {{name}} is a placeholder for the widget name as it will appear on the widget page, in bold. See msgid like widget_name_*, such as widget_name_cflwh, for examples of this text
+#, include in addthis-wordpress-plugin domain
+msgid "gtc_drag_the_widget"
+msgstr ""
+"Drag the {{name}} widget into the desired location in your theme's "
+"available widget areas, and select this tool from the dropdown menu in the "
+"widget."
+
+#. step 1 for adding a widget - go to the widgets page. It's in the Widget page, which is listed in the Appearance area
+#. {{link}} is a placeholder for a link to the page on which a used can edit their widgets. See msgid gtc_go_to_widgets_page_link for the text of the link
+#, include in addthis-wordpress-plugin domain
+msgid "gtc_go_to_widgets_page"
+msgstr "In your WordPress Dashboard, go to Appearance > Widgets, or {{link}}"
+
+#. Used as the text in a link to the page on which the user can edit their widgets. See msgid gtc_go_to_widgets_page
+#, include in addthis-wordpress-plugin domain
+msgid "gtc_go_to_widgets_page_link"
+msgstr "click here"
+
+#. used as alt text (for blind users) explaining the content of pre tags which have the shortcode for a tool
+#, include in addthis-wordpress-plugin domain
+msgid "gtc_pre_tag_alt"
+msgstr "This tool's shortcode"
+
+#. The title on the Shortcode section, which explains to the user how to add the tool into their site in parts of their pages and posts using shortcodes
+#, include in addthis-wordpress-plugin domain
+msgid "gtc_shortcode_title"
+msgstr "Shortcode"
+
+#. The title on the Get the Code section, which explains to the user how to add the tool into their site in custom areas
+#, include in addthis-wordpress-plugin domain
+msgid "gtc_title"
+msgstr "Get the Code"
+
+#. The title on the Widget Area section, which explains to the user how to add the tool into their site in custom areas using WordPress widgets and widget areas
+#, include in addthis-wordpress-plugin domain
+msgid "gtc_widget_area_title"
+msgstr "Widget Area"
+
+#. used as alt text (for blind users) on a text input field where the user can enter a hexadecimal value defining a color for their buttons
+#, include in addthis-wordpress-plugin domain
+msgid "icon_color_picker_custom_input_alt"
+msgstr "Enter a custom HEX color prepended by #"
+
+#. A label for a text input where the user can enter a hexadecimal value defining a color for their buttons
+#, include in addthis-wordpress-plugin domain
+msgid "icon_color_picker_hex_label"
+msgstr "Hex Color"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick a color for their buttons. Blue.
+#, include in addthis-wordpress-plugin domain
+msgid "icon_color_picker_select_blue"
+msgstr "Blue"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick a color for their buttons. This option should indicate that they can select a custom color not already listed in the dropdown.
+#, include in addthis-wordpress-plugin domain
+msgid "icon_color_picker_select_custom"
+msgstr "Custom Color"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick a color for their buttons. Gray.
+#, include in addthis-wordpress-plugin domain
+msgid "icon_color_picker_select_gray"
+msgstr "Gray"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick a color for their buttons. Green.
+#, include in addthis-wordpress-plugin domain
+msgid "icon_color_picker_select_green"
+msgstr "Green"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick a color for their buttons. Orange.
+#, include in addthis-wordpress-plugin domain
+msgid "icon_color_picker_select_orange"
+msgstr "Orange"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick a color for their buttons. Pink.
+#, include in addthis-wordpress-plugin domain
+msgid "icon_color_picker_select_pink"
+msgstr "Pink"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick a color for their buttons. Purple.
+#, include in addthis-wordpress-plugin domain
+msgid "icon_color_picker_select_purple"
+msgstr "Purple"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick a color for their buttons. Red.
+#, include in addthis-wordpress-plugin domain
+msgid "icon_color_picker_select_red"
+msgstr "Red"
+
+#. An button for a select a new share button to create.
+#, include in addthis-wordpress-plugin domain
+msgid "add_new_share_tool_select"
+msgstr "Select"
+
+#. An input label for a select dropdown where the user can select the position to show on a desktop for their custom buttons.
+#, include in addthis-wordpress-plugin domain
+msgid "desktop_position_picker_label"
+msgstr "Desktop"
+
+#. An input label for a select dropdown where the user can select the position to show on a mobile for their custom buttons.
+#, include in addthis-wordpress-plugin domain
+msgid "mobile_position_picker_label"
+msgstr "Mobile"
+
+#. An input label for a select dropdown where the user can select the number of service for their custom buttons.
+#, include in addthis-wordpress-plugin domain
+msgid "number_of_preferred_service_label"
+msgstr "Number of Buttons"
+
+#. A header before a social network radio button group. The user can select use recommend social buttons or select their own.
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_social_networks_header"
+msgstr "Social Networks"
+
+#. A label for a card where the user can customize general settings for share tools.
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_edit_general_label"
+msgstr "General"
+
+#. A label for a card where the user can customize design settings for share tools.
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_edit_design_label"
+msgstr "Design"
+
+#. A header before a group of dropdown buttons where user can customize the setting for the share buttons.
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_buttons_label"
+msgstr "Buttons"
+
+#. A header before a group of dropdown buttons where user can customize extra appearance settings.
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_extra_appearance_settings_label"
+msgstr "Extra Appearance Settings"
+
+#. A header before a group of text input where user can customize follow up messages.
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_follow_up_message_label"
+msgstr "Follow Up Message"
+
+#. A label for a checkbox where user can select whether to show follow up message or not
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_show_message_label"
+msgstr "Show Message"
+
+#. A label for a text box where user can customize thank you message
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_thank_you_message_label"
+msgstr "Thank You Message"
+
+#. A label for a text box where user can customize related posts message
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_related_post_message_label"
+msgstr "Related Post Message"
+
+#. A header before a group of dropdown buttons where user can customize the setting for the counters of share buttons.
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_counter_label"
+msgstr "Share Counter"
+
+#. An input label for a card where the user can customize advanced settings for share tools.
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_edit_advanced_label"
+msgstr "Advanced Settings"
+
+#. An input label for a select dropdown where the user can select the theme (color) for their custom buttons (this is used both for custom follow buttons and for custom share buttons)
+#, include in addthis-wordpress-plugin domain
+msgid "icon_color_picker_theme_label"
+msgstr "Theme"
+
+#. The label for a rounded shape option on custom buttons  (used for both follow and share buttons
+#, include in addthis-wordpress-plugin domain
+msgid "icon_shape_picker_round_option"
+msgstr "Round"
+
+#. used as alt text (for blind users) explaining that by clicking on this option, they will be selecting a round shape for their buttons (used for both follow and share buttons)
+#, include in addthis-wordpress-plugin domain
+msgid "icon_shape_picker_round_option_alt"
+msgstr "Click here to select a round shape for your buttons"
+
+#. The label for a rounded corners shape option on custom buttons (used for both follow and share buttons
+#, include in addthis-wordpress-plugin domain
+msgid "icon_shape_picker_rounded_option"
+msgstr "Rounded"
+
+#. used as alt text (for blind users) explaining that by clicking on this option, they will be selecting a rounded corners shape for their buttons (used for both follow and share buttons)
+#, include in addthis-wordpress-plugin domain
+msgid "icon_shape_picker_rounded_option_alt"
+msgstr "Click here to select a rounded corners shape for your buttons"
+
+#. The label for a square shape option on custom buttons  (used for both follow and share buttons
+#, include in addthis-wordpress-plugin domain
+msgid "icon_shape_picker_square_option"
+msgstr "Square"
+
+#. used as alt text (for blind users) explaining that by clicking on this option, they will be selecting a square shape for their buttons (used for both follow and share buttons)
+#, include in addthis-wordpress-plugin domain
+msgid "icon_shape_picker_square_option_alt"
+msgstr "Click here to select a square shape for your buttons"
+
+#. An input label for a radio button where the user can select the shape for their custom buttons (this is used both for custom follow buttons and for custom share buttons).
+#, include in addthis-wordpress-plugin domain
+msgid "icon_shape_picker_title"
+msgstr "Shape"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick the size for their buttons. Large (32px by 32px).
+#, include in addthis-wordpress-plugin domain
+msgid "icon_size_picker_select_large"
+msgstr "Large"
+
+#. A description of the size of large follow or share buttons (32px by 32px)
+#, include in addthis-wordpress-plugin domain
+msgid "icon_size_picker_select_large_description"
+msgstr "32px by 32px"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick the size for their buttons. Medium (20px by 20px).
+#, include in addthis-wordpress-plugin domain
+msgid "icon_size_picker_select_medium"
+msgstr "Medium"
+
+#. A description of the size of medium follow or share buttons (20px by 20px)
+#, include in addthis-wordpress-plugin domain
+msgid "icon_size_picker_select_medium_description"
+msgstr "20px by 20px"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick the size for their buttons. Small (16px by 16px).
+#, include in addthis-wordpress-plugin domain
+msgid "icon_size_picker_select_small"
+msgstr "Small"
+
+#. A description of the size of small follow or share buttons (16px by 16px)
+#, include in addthis-wordpress-plugin domain
+msgid "icon_size_picker_select_small_description"
+msgstr "16px by 16px"
+
+#. An input label for a select dropdown where the user can select the size of their buttons (this is used both for follow buttons and for share buttons).
+#, include in addthis-wordpress-plugin domain
+msgid "icon_size_picker_title"
+msgstr "Size"
+
+#. An input label for a select dropdown where the user can select the size of their inline share buttons.
+#, include in addthis-wordpress-plugin domain
+msgid "button_size_picker_title"
+msgstr "Button Size"
+
+#. An input label for a select dropdown where the user can select the size of their sidebar share buttons in mobile view.
+#, include in addthis-wordpress-plugin domain
+msgid "mobile_button_size_picker_title"
+msgstr "Mobile Button Size"
+
+
+#. A header before an animation radio button group for a tool have has an absolute location on the screen. The user can select to have the tool on the left or the right.
+#, include in addthis-wordpress-plugin domain
+msgid "layers_animation_header"
+msgstr "Animation"
+
+#. A label for a radio button indicating that a tool should over content when it animates onto the page
+#, include in addthis-wordpress-plugin domain
+msgid "layers_animation_overlay_label"
+msgstr "Overlay"
+
+#. A label for a radio button indicating that a tool should push other content to the side when in animates onto the page
+#, include in addthis-wordpress-plugin domain
+msgid "layers_animation_push_label"
+msgstr "Push"
+
+#. The descriptions for a radio button (yes/no) on whether to hide this tool on the homepage with example URLs
+#, include in addthis-wordpress-plugin domain
+msgid "layers_hide_on_homepage_description"
+msgstr ""
+"This will only hide the tool on a top-level homepage like www.addthis.com, "
+"not on homepages like www.addthis.com/blog"
+
+#. The header for a group of radio button (yes/no) on whether to hide this tool on the homepage
+#, include in addthis-wordpress-plugin domain
+msgid "layers_hide_on_homepage_title"
+msgstr "Hide on Homepage"
+
+#. The descriptions for a text area where the user can enter URLs where this tool should be hidden
+#, include in addthis-wordpress-plugin domain
+msgid "layers_hide_on_these_pages_description"
+msgstr ""
+"Hint: Use an asterisk (*) to hide on multiple pages (e.g., *.addthis.com, "
+"www.addthis.com/blog*)"
+
+#. The header for a text area where the user can enter URLs where this tool should be hidden
+#, include in addthis-wordpress-plugin domain
+msgid "layers_hide_on_these_pages_title"
+msgstr "Hide on These Pages"
+
+
+#. A radio button label, indicating the user would not like to disable a feature/setting
+#, include in addthis-wordpress-plugin domain
+msgid "layers_no"
+msgstr "No"
+
+#. A header before some offset fields for a tool have has an absolute location on the screen. The user can offset the tool from the bottom or the top of the page, and specify by how much
+#, include in addthis-wordpress-plugin domain
+msgid "layers_offset_header"
+msgstr "Offset"
+
+#. A label for a radio button indicating that a tool should be offset from the bottom of the screen
+#, include in addthis-wordpress-plugin domain
+msgid "layers_offset_location_bottom_label"
+msgstr "Bottom"
+
+#. A label for a radio button indicating that a tool should appear on the left of the screen
+#, include in addthis-wordpress-plugin domain
+msgid "layers_offset_location_left_label"
+msgstr "Left"
+
+#. A label for a radio button indicating that a tool should appear on the right of the screen
+#, include in addthis-wordpress-plugin domain
+msgid "layers_offset_location_right_label"
+msgstr "Right"
+
+#. A label for a radio button indicating that a tool should be offset from the top of the screen
+#, include in addthis-wordpress-plugin domain
+msgid "layers_offset_location_top_label"
+msgstr "Top"
+
+#. A label for a radio button indicating that a tool should be hidden
+#, include in addthis-wordpress-plugin domain
+msgid "layers_offset_location_none_label"
+msgstr "None"
+
+#. A header before a position radio button group for a tool have has an absolute location on the screen. The user can select to have the tool on the left or the right.
+#, include in addthis-wordpress-plugin domain
+msgid "layers_position_header"
+msgstr "Position"
+
+#. Label for an input field where the user can define at how many pixel screen width tools should react to being on a small screen. After the field, there will be an untranslated string of 'px' (for pixels)
+#, include in addthis-wordpress-plugin domain
+msgid "layers_responsive_width"
+msgstr "Responsive Width"
+
+#. The header for a group of radio button (yes/no) on whether to show users a thank you message after they click a follow or share button
+#, include in addthis-wordpress-plugin domain
+msgid "layers_thank_you"
+msgstr "Show Thank You"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user can select the theme for a floating tool (background and contrasting color). Dark.
+#, include in addthis-wordpress-plugin domain
+msgid "layers_theme_picker_select_dark"
+msgstr "Dark"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user can select the theme for a floating tool (background and contrasting color). Gray.
+#, include in addthis-wordpress-plugin domain
+msgid "layers_theme_picker_select_grey"
+msgstr "Gray"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user can select the theme for a floating tool (background and contrasting color). Light.
+#, include in addthis-wordpress-plugin domain
+msgid "layers_theme_picker_select_light"
+msgstr "Light"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user can select the theme for a floating tool (background and contrasting color). Transparent.
+#, include in addthis-wordpress-plugin domain
+msgid "layers_theme_picker_select_transparent"
+msgstr "Transparent"
+
+#. An input label for a select dropdown where the user can select the theme for a floating tool (background and contrasting color).
+#, include in addthis-wordpress-plugin domain
+msgid "layers_theme_picker_title"
+msgstr "Theme"
+
+#. A radio button label, indicating the user would like to enable a feature/setting
+#, include in addthis-wordpress-plugin domain
+msgid "layers_yes"
+msgstr "Yes"
+
+#. the label on an input field where the user should enter their API key
+#, include in addthis-wordpress-plugin domain
+msgid "manual_registration_api_key_label"
+msgstr "AddThis API Key"
+
+#. The text in a link. when clicked, take the user to a page where they can manually enter their registration information without signing in
+#, include in addthis-wordpress-plugin domain
+msgid "manual_registration_link"
+msgstr "Link your AddThis account to WordPress manually"
+
+#. the label on an input field where the user should enter their profile ID
+#, include in addthis-wordpress-plugin domain
+msgid "manual_registration_profile_id_label"
+msgstr "AddThis Profile ID"
+
+#. The radio button label for using the profile id's settings from AddThis.com
+#, include in addthis-wordpress-plugin domain
+msgid "manual_registration_radio_button_label_for_addthis_mode"
+msgstr "Use the tool configurations associated with this profile"
+
+#. The radio button label for using settings from WordPress and ignoring any from AddThis.com
+#, include in addthis-wordpress-plugin domain
+msgid "manual_registration_radio_button_label_for_wordpress_mode"
+msgstr "Ignore the tool configurations in this profile"
+
+#. The header on a settings page for manually editing profile registration
+#, include in addthis-wordpress-plugin domain
+msgid "manual_registration_title"
+msgstr "Manual Setup / Registration Edit"
+
+#. A message displayed when the input profile ID not valid.
+#, include in addthis-wordpress-plugin domain
+msgid "manual_registration_unknown_profile_id"
+msgstr "Unknown Profile ID"
+
+#. A message displayed when the input API key is valid for the profile entered. The emoticon is optional in translations.
+#, include in addthis-wordpress-plugin domain
+msgid "manual_registration_valid_api_key"
+msgstr "Valid API key :)"
+
+#. A message displayed when the input profile ID is valid and of the correct type. The emoticon is optional in translations.
+#, include in addthis-wordpress-plugin domain
+msgid "manual_registration_valid_profile_id"
+msgstr "Valid Profile ID :)"
+
+#. Warning for minimal plugin that WordPress mode isn't compatible with it
+#, include in addthis-wordpress-plugin domain
+msgid "manual_registration_wordpress_mode_incompatible"
+msgstr "This mode is not compatible with this plugin."
+
+#. Warning for non-minimal plugins that WordPress mode will have fewer tools available
+#, include in addthis-wordpress-plugin domain
+msgid "manual_registration_wordpress_mode_warning_limited_tools"
+msgstr ""
+"A limited set of tools will be available to you in this mode. For more "
+"tools, select the other mode."
+
+#. Used as the text for a menu item that when clicked takes the user to a settings page for advanced settings / global options
+#. Used as the header on the settings page with advanced settings
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "menu_item_advanced_settings"
+msgstr "Advanced Settings"
+
+#. Used as the text for a menu item that when clicked takes the user to a settings page for configuring follow buttons
+#. Used in the list of tools as the tool type
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "menu_item_follow_button_settings"
+msgstr "Follow Buttons"
+
+#. Used as the text for a menu item that when clicked takes the user to a settings page for recommended content tools
+#. Used in the list of tools as the tool type
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "menu_item_recommended_content_settings"
+msgstr "Related Posts"
+
+#. Used as the text for a menu item that when clicked takes the user to the sharing buttons settings page
+#. Used in the list of tools as the tool type
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "menu_item_sharing_settings"
+msgstr "Share Buttons"
+
+#. A radio button label for our meta box on page/post edit pages. This box allows users to enable/disable the auto adding of AddThis tools above and below their content. This label is attached to a radio button that disables that.
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "meta_box_tools_disabled"
+msgstr "Off"
+
+#. A radio button label for our meta box on page/post edit pages. This box allows users to enable/disable the auto adding of AddThis tools above and below their content. This label is attached to a radio button that enables that. This is a default value.
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "meta_box_tools_enabled"
+msgstr "On"
+
+#. the name of the author of the plugin
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "name_of_plugin_creation_team"
+msgstr "The AddThis Team"
+
+#. used on buttons to go on to next page
+#, include in addthis-wordpress-plugin domain
+msgid "next_button"
+msgstr "Next"
+
+#. This text is included after (to the right of) input field labels to indicate that this option is experimental
+#, include in addthis-wordpress-plugin domain
+msgid "option_experimental"
+msgstr "(Experimental)"
+
+#. This text is included after (to the right of) input field labels to indicate that this option is not recommended
+#, include in addthis-wordpress-plugin domain
+msgid "option_not_recommended"
+msgstr "(Not Recommended)"
+
+#. This text is included after (to the right of) input field labels to indicate that this option is recommended
+#, include in addthis-wordpress-plugin domain
+msgid "option_recommended"
+msgstr "(Recommended)"
+
+#. the placeholder text on an input field where the user should enter their password, used both when signing in and creating an account
+#, include in addthis-wordpress-plugin domain
+msgid "password_input_placeholder"
+msgstr "Password"
+
+#. the description of the follow buttons plugin on a page listing all installed plugins. Should mention setting up tools from within WordPress.
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "plugin_description_follow_buttons"
+msgstr ""
+"Generate followers for your social networks and track what pages are "
+"generating the most followers. Set up follow tools from AddThis right in "
+"WordPress. With AddThis you can see how your users are engaging with your "
+"content, provide a personalized experience for each user and encourage them "
+"to share your content in their social networks. Sharing tools, recommended "
+"content, conversion tools and social analytics available to registered "
+"accounts at addthis.com."
+
+#. the description of the maximum buttons plugin on a page listing all installed plugins. Should mention setting up tools from within WordPress.
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "plugin_description_maximum"
+msgstr ""
+"Set up sharing, follow and recommended content tools from AddThis right in "
+"WordPress. With AddThis you can see how your users are engaging with your "
+"content, provide a personalized experience for each user and encourage them "
+"to share, subscribe or follow. Conversion tools and social analytics "
+"available to registered accounts at addthis.com."
+
+#. the description of the minimal (pro) buttons plugin on a page listing all installed plugins. Should mention controlling tools throught the AddThis website (not in WordPress).
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "plugin_description_minimum"
+msgstr ""
+"Easily link your WordPress site to access all AddThis tools, and control "
+"and edit easily through the AddThis dashboard."
+
+#. the description of the share buttons plugin on a page listing all installed plugins. Should mention setting up tools from within WordPress.
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "plugin_description_share_buttons"
+msgstr ""
+"Set up sharing tools from AddThis right in WordPress. With AddThis you can "
+"see how your users are engaging with your content, provide a personalized "
+"experience for each user and encourage them to share your content in their "
+"social networks. Follow tools, recommended content, conversion tools and "
+"social analytics available to registered accounts at addthis.com."
+
+#. Used as the text for a link to the main plugin settings page that sets up registration and links users AddThis.com accounts to the plugin.
+#. Used as the text for a menu item that when clicked takes the user to the main plugin settings page that sets up registration and links users AddThis.com accounts to the plugin.
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "plugin_listing_home_link"
+msgstr "Home"
+
+#. Used as the text web page's title, which is used by the browser for the window or tab, for the follow buttons settings page
+#. the name of our follow buttons plugin
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "plugin_name_follow_buttons"
+msgstr "Follow Buttons by AddThis"
+
+#. the name of our maximum plugin with everything enabled (in English: AddThis Smart Layers)
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "plugin_name_maximum"
+msgstr "AddThis Smart Layers"
+
+#. the name of our minimal plugin (in English: Website Tools by AddThis)
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "plugin_name_minimum"
+msgstr "Website Tools by AddThis"
+
+#. the name of our sharing buttons plugin (in English: Share Buttons by AddThis)
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "plugin_name_share_buttons"
+msgstr "Share Buttons by AddThis"
+
+#. used in a sentence directing people to edit the plugin's settings to change a tool's configuration
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "plugin_settings_link"
+msgstr "the plugin's settings"
+
+#. used as text in links to our privacy policy
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "privacy_policy_link"
+msgstr "Privacy Policy"
+
+#. A message displayed after a user selected a profile that is not of the right type (not a WordPress profile), indicating that we're changing the type on the profile
+#, include in addthis-wordpress-plugin domain
+msgid "progress_message_changing_profile_type"
+msgstr "Changing profile type..."
+
+#. A message displayed after a user submits a form to create a new account
+#, include in addthis-wordpress-plugin domain
+msgid "progress_message_checking_account"
+msgstr "Creating account..."
+
+#. A message displayed when the values of an input field on a form are being checked. This message may appear directly below the relevant field, near the save button for the form, or may appear in a grayed out button
+#, include in addthis-wordpress-plugin domain
+msgid "progress_message_checking_input"
+msgstr "Checking..."
+
+#. A message displayed while checking if the user's login is valid
+#, include in addthis-wordpress-plugin domain
+msgid "progress_message_checking_login"
+msgstr "Checking login..."
+
+#. A message displayed when checking is a user's registration for the plugin is valid
+#, include in addthis-wordpress-plugin domain
+msgid "progress_message_checking_registration"
+msgstr "Checking registration..."
+
+#. A message displayed after a user selected a profile, while creating an API key for the profile
+#, include in addthis-wordpress-plugin domain
+msgid "progress_message_creating_api_key"
+msgstr "Creating API Key..."
+
+#. A message displayed when creating a new profile on an account (after the user selected create new profile, and then named their profile)
+#, include in addthis-wordpress-plugin domain
+msgid "progress_message_creating_profile"
+msgstr "Creating profile..."
+
+#. A message displayed when content is still loading
+#, include in addthis-wordpress-plugin domain
+msgid "progress_message_loading"
+msgstr "Loading..."
+
+#. A message displayed when retireving the one automatically created profile on a brand new user account
+#, include in addthis-wordpress-plugin domain
+msgid "progress_message_retrieving_profile"
+msgstr "Retrieving profile..."
+
+#. A message displayed when retrieving the profiles off a user's account
+#, include in addthis-wordpress-plugin domain
+msgid "progress_message_retrieving_profiles"
+msgstr "Retrieving profiles..."
+
+#. Button text for a save button, while saving, and button is grayed out
+#, include in addthis-wordpress-plugin domain
+msgid "progress_message_saving"
+msgstr "Saving..."
+
+#. A message displayed after all checks have been done, and registration is being saved
+#, include in addthis-wordpress-plugin domain
+msgid "progress_message_saving_registration"
+msgstr "Saving registration..."
+
+#. the label on an input field where the user can enter the URL of a specific page to promote in a recommended content tool
+#, include in addthis-wordpress-plugin domain
+msgid "promoted_url_input_label"
+msgstr "Promote a Specific Page into the First Slot"
+
+#. A notice to users that their site has not yet been crawled by AddThis, and thus does not yet have any recommended content. It sets the expecation that they should have recommended content in 24 hour, and can contact support if they still do not see recommended content on their site (not on the page with the warning) after 24 hours.
+#. {{support_site_link}} is a placeholder for a link that displays the domain for the company's support forum. At the moment, this is support.addthis.com
+#. {{support_email_address_link}} is a placeholder for a link that displays the support email address. At the moment, this is help@addthis.com
+#, include in addthis-wordpress-plugin domain
+msgid "recommended_content_check_message"
+msgstr ""
+"AddThis has not yet crawled your site to gather content recommendations. "
+"Any related post tools you add to your site will show up once we have "
+"something to recommend. It can take us up to 24 hours to crawl your site. "
+"If you still see this message after 24 hours, you can reach our to the "
+"AddThis Support team at {{support_site_link}} or "
+"{{support_email_address_link}}"
+
+#. A button to create a new account and register this plugin with it
+#, include in addthis-wordpress-plugin domain
+msgid "register_button"
+msgstr "Register"
+
+#. A sentence reminding users that they configure all their tools in the AddThis Dashboard with the Website Tools by AddThis plugin
+#. Website Tools by AddThis is the name of the plugin in English. See msgid plugin_name_minimum for the name of the plugin in any particular language
+#, include in addthis-wordpress-plugin domain
+msgid "registered_configure_at_addthis"
+msgstr ""
+"With Website Tools by AddThis, you configure all of your tools using the "
+"AddThis Dashboard."
+
+#. a description of what audience targeting is and why you'd want to use it
+#, include in addthis-wordpress-plugin domain
+msgid "registered_intro_description_custom_messages"
+msgstr ""
+"Increase subscriptions, signups and registration with Audience Targeting "
+"rules"
+
+#. a description of what follow tools are and why you'd want to use them
+#, include in addthis-wordpress-plugin domain
+msgid "registered_intro_description_follow_tools"
+msgstr "Drive more followers and likes with bold, beautiful social follow buttons."
+
+#. a description of what recommended content tools are and why you'd want to use them
+#, include in addthis-wordpress-plugin domain
+msgid "registered_intro_description_recommended_content"
+msgstr "Keep visitors engaged by showing them top trending content on your site."
+
+#. a description of what share tools are and why you'd want to use them
+#, include in addthis-wordpress-plugin domain
+msgid "registered_intro_description_share_tools"
+msgstr ""
+"Increase traffic on your site by offering simple ways for visitors to share "
+"your content."
+
+#. the title below an image showing an example of an AddThis custom message used to target a specific audience
+#, include in addthis-wordpress-plugin domain
+msgid "registered_intro_header_custom_messages"
+msgstr "Audience Targeting"
+
+#. the title below an image showing an example of an AddThis follow tool
+#, include in addthis-wordpress-plugin domain
+msgid "registered_intro_header_follow_tools"
+msgstr "Follow Tools"
+
+#. the title below an image showing an example of an AddThis recommended content tool
+#, include in addthis-wordpress-plugin domain
+msgid "registered_intro_header_recommended_content"
+msgstr "Related Posts"
+
+#. the title below an image showing an example of an AddThis sharing tool
+#, include in addthis-wordpress-plugin domain
+msgid "registered_intro_header_share_tools"
+msgstr "Share Tools"
+
+#. A generic name for an account's first profile. This must be in basic latin letters. Profile names may contain only letters, numbers, spaces, dashes, underscores, and parentheses. A-Z, a-z, 0-9, - _ () and spaces are all that's supported here.
+#, include in addthis-wordpress-plugin domain
+msgid "registration_first_profile_name_fallback"
+msgstr "My First Profile"
+
+#. The first item in a select (dropdown field) of profiles on an account, to be selected if the user wants to create a new profile instead of using an existing one
+#, include in addthis-wordpress-plugin domain
+msgid "registration_select_create_new_profile"
+msgstr "Create a new profile"
+
+#. Part of the interface where we ask users if they like our plugin, and then either ask them for a review or point them to our support team
+#. Asks the user if they like our plugin
+#. Responses to this question can be found in msgid review_nag_i_do_not_like_you and review_nag_i_like_you
+#, include in addthis-wordpress-plugin domain
+msgid "review_nag_do_you_like_us"
+msgstr "Did you find this plugin useful?"
+
+#. Part of the interface where we ask users if they like our plugin, and then either ask them for a review or point them to our support team
+#. This is a response to the question in msgid review_nag_do_you_like_us, which tells us that they do not like us. boo. :-(
+#. This text is down in a button
+#, include in addthis-wordpress-plugin domain
+msgid "review_nag_i_do_not_like_you"
+msgstr "Not Really"
+
+#, include in addthis-wordpress-plugin domain
+msgid "review_nag_i_do_not_want_to_rate_you"
+msgstr "No, thanks"
+
+#. Part of the interface where we ask users if they like our plugin, and then either ask them for a review or point them to our support team
+#. This is a response to the question in msgid review_nag_do_you_like_us, which tells us that they like us. yay!! :-)
+#. This text is down in a button
+#, include in addthis-wordpress-plugin domain
+msgid "review_nag_i_like_you"
+msgstr "Yes!"
+
+#. Part of the interface where we ask users if they like our plugin, and then either ask them for a review or point them to our support team
+#. This is a repsonse to the question in msgid "review_nag_rate_us_please", which tells us that they want to rate us. if they click on this button, a new window opens with a rating screen and we hide the review nag show the message in msgid review_nag_thanks
+#. This text is down in a button
+#, include in addthis-wordpress-plugin domain
+msgid "review_nag_i_will_rate_you"
+msgstr "Yes, rate the plugin"
+
+#. Part of the interface where we ask users if they like our plugin, and then either ask them for a review or point them to our support team
+#. If the user responds to msgid review_nag_do_you_like_us with review_nag_i_do_not_like_you (indicating that they do not like our plugin), we direct them to our support channels
+#. {{emailAddressLink}} is a placeholder for a link to email the AddThis support team. The text in the link will be the email address.
+#, include in addthis-wordpress-plugin domain
+msgid "review_nag_let_us_know_how_to_improve"
+msgstr ""
+"Let us know how we can improve our plugin through our support forum "
+"or by emailing {{emailAddressLink}}."
+
+#. Part of the interface where we ask users if they like our plugin, and then either ask them for a review or point them to our support team
+#. If the user responds to msgid review_nag_do_you_like_us with review_nag_i_like_you (indicating that they like our plugin), We ask them for a review. This should be asked very gently.
+#. Responses to this question can be found in msgid review_nag_i_do_not_want_to_rate_you and review_nag_i_will_rate_you
+#, include in addthis-wordpress-plugin domain
+msgid "review_nag_rate_us_please"
+msgstr "How about rating us?"
+
+#. Part of the interface where we ask users if they like our plugin, and then either ask them for a review or point them to our support team
+#. This is a button shown below the text in msgid review_nag_let_us_know_how_to_improve. clicking on the button will take the user to AddThis' support forum on WordPress.org.
+#. Also a link in an information sub listing, this links to the plugin's support forum
+#. This text is down in a button
+#, include in addthis-wordpress-plugin domain
+msgid "review_nag_support_forum_button"
+msgstr "Support Forum"
+
+#. Part of the interface where we ask users if they like our plugin, and then either ask them for a review or point them to our support team
+#. this is used as text in a link to our support forum (used in msgid review_nag_let_us_know_how_to_improve)
+#, include in addthis-wordpress-plugin domain
+msgid "review_nag_support_forum_link"
+msgstr "support forum"
+
+#. Part of the interface where we ask users if they like our plugin, and then either ask them for a review or point them to our support team
+#. This is a repsonse to a user clicking on a button with the message in msgid review_nag_i_will_rate_you, thanking them for their review
+#, include in addthis-wordpress-plugin domain
+msgid "review_nag_thanks"
+msgstr "Thank you!"
+
+#. used on buttons for saving their settings
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "save_button"
+msgstr "Save"
+
+#. The gray text down in a search input area when no text has been entered
+#, include in addthis-wordpress-plugin domain
+msgid "search_input_placeholder"
+msgstr "Search"
+
+#. the label on a select (dropdown) field where the user can select the number of items in a row
+#, include in addthis-wordpress-plugin domain
+msgid "select_number_of_items_per_row_label"
+msgstr "Number of Items per Row"
+
+#. the label on a select (dropdown) field where the user can select the number of rows
+#, include in addthis-wordpress-plugin domain
+msgid "select_number_of_rows_label"
+msgstr "Number of Rows"
+
+#. Explination for the user that we've automatically selected their current profile from the select dropdown below. They may change it, but that may change the tools appearing on their site.
+#, include in addthis-wordpress-plugin domain
+msgid "select_profile_description"
+msgstr ""
+"We've pre-selected the profile you're already using. You may change it "
+"below, if desired. Changing to a different profile may change your settings "
+"for AddThis tools on this site."
+
+#. Direction for the user to select a profile from a drowndown menu, or select the option to create a new profile from the dropdown menu
+#, include in addthis-wordpress-plugin domain
+msgid "select_profile_select_directions"
+msgstr ""
+"You may select one of your existing AddThis profiles or create a new one to "
+"associate with this site."
+
+#. the label on a select (dropdown) field where the user can select a profile
+#, include in addthis-wordpress-plugin domain
+msgid "select_profile_select_label"
+msgstr "Select a profile"
+
+#. The header on a settings page for selecting a profile to use for registration
+#, include in addthis-wordpress-plugin domain
+msgid "select_profile_title"
+msgstr "Select a Profile"
+
+#. A warning to the user that the profile they selected from a dropdown is not of the correct type. If they continue, the type on the profile will be corrected and the settings reset.
+#, include in addthis-wordpress-plugin domain
+msgid "select_profile_warning_wrong_profile_type"
+msgstr ""
+"The selected profile is not a WordPress profile type. If you use this "
+"profile, the profile type will be updated and the settings will be reset."
+
+#: {{service}} is a placeholder for the name of a social services (like Facebook, LinkedIn, Twitter, etc). See msgids like social_service_* (for example, social_service_tumblr) for the text this represents
+#. used as alt text (for blind users) to indicate that they can click in the selected location to add a field or fields for a specific social service
+#, include in addthis-wordpress-plugin domain
+msgid "service_add_alt"
+msgstr "Add {{service}}"
+
+#: {{service}} is a placeholder for the name of a social services (like Facebook, LinkedIn, Twitter, etc). See msgids like social_service_* (for example, social_service_tumblr) for the text this represents
+#. used as alt text (for blind users) to indicate that they can know the icon displayed is for a particular social service
+#, include in addthis-wordpress-plugin domain
+msgid "service_icon_alt"
+msgstr "Icon for {{service}}"
+
+#. The description for a radio button on hand selecting share services
+#, include in addthis-wordpress-plugin domain
+msgid "service_picker_available_choices_description"
+msgstr "Select your own Services and customize the order."
+
+#. The header above a list of services available to be picked
+#, include in addthis-wordpress-plugin domain
+msgid "service_picker_available_choices_label"
+msgstr "Available Services"
+
+#. The header above a list of services already picked
+#, include in addthis-wordpress-plugin domain
+msgid "service_picker_selected_choices_label"
+msgstr "Selected Services"
+
+#. The header before a selection UI for social services (like Facebook, LinkedIn, Twitter, etc)
+#, include in addthis-wordpress-plugin domain
+msgid "service_picker_title"
+msgstr "Services"
+
+#. In the simple settings conflict UI, text in between msgids settings_conflict_use_from_plugin and settings_conflict_pick_and_choose to indicate that the user may pick one or the other
+#, include in addthis-wordpress-plugin domain
+msgid "settings_conflict_action_seperator"
+msgstr "Or"
+
+#. In the follow buttons settings conflict UI, the description on the page
+#, include in addthis-wordpress-plugin domain
+msgid "settings_conflict_follow_description"
+msgstr ""
+"We noticed you're using multiple accounts for the same follow service on "
+"the same tool. Please choose one account per service for each tool."
+
+#. In the follow buttons settings conflict UI, the title on the page
+#, include in addthis-wordpress-plugin domain
+msgid "settings_conflict_follow_header"
+msgstr "Confirm Your Follow Buttons"
+
+#. In the full settings conflict UI, the description on the complicated, full page for picking and choosing settings from different conflicting AddThis plugins
+#, include in addthis-wordpress-plugin domain
+msgid "settings_conflict_full_description"
+msgstr ""
+"The new advanced settings you select below will replace the settings for "
+"all AddThis plugins."
+
+#. In the simple settings conflict UI, text used in place of the link with msgid settings_conflict_use_from_plugin when the user opens the conflict resolution page on a smaller screen, such as a phone.
+#, include in addthis-wordpress-plugin domain
+msgid "settings_conflict_mobile_message"
+msgstr ""
+"To pick and choose settings from each plugin, please open this page in a "
+"larger browser"
+
+#. In the full settings conflict UI, the header above the advanced settings selected for saving
+#, include in addthis-wordpress-plugin domain
+msgid "settings_conflict_new_advanced_settings_header"
+msgstr "New Advanced Settings"
+
+#: {{plugin_name}} is a placeholder for the name of a plugin, and may or may not be translated
+#. In the simple settings conflict UI, used on toggle/radio button options that looks like buttons. the user will see multiple of these with different plugin names. Not all names will be translated, as not all plugins all internationalized.
+#, include in addthis-wordpress-plugin domain
+msgid "settings_conflict_plugin_choice"
+msgstr "\"{{plugin_name}}\" Plugin Settings"
+
+#: {{plugin_name}} is a placeholder for the name of a plugin, and may or may not be translated
+#. In the full settings conflict UI, the header above the settings for each conflicting plugin
+#, include in addthis-wordpress-plugin domain
+msgid "settings_conflict_plugin_header"
+msgstr "Current {{plugin_name}} Plugin's Settings"
+
+#. In the simple settings conflict UI, the description on the initial, simple page for resolving conflicts between different AddThis plugins
+#, include in addthis-wordpress-plugin domain
+msgid "settings_conflict_simple_description"
+msgstr ""
+"It looks like your AddThis WordPress plugins have conflicting settings. "
+"Select which plugin's settings you would like to use across all of your "
+"AddThis plugins."
+
+#. In the settings conflict UI, the heading for a page for resolving conflicts between different AddThis plugins
+#, include in addthis-wordpress-plugin domain
+msgid "settings_conflict_title"
+msgstr "Choose Your Advanced AddThis Settings"
+
+#. In the full settings conflict UI, text used on a button for confirming selections
+#, include in addthis-wordpress-plugin domain
+msgid "settings_conflict_update_settings"
+msgstr "Update Settings"
+
+#. In the simple settings conflict UI, text that looks like a link, for the user to click if they want to pick and choose particular settings from different plugins (clicking takes them to the full settings conflict UI)
+#, include in addthis-wordpress-plugin domain
+msgid "settings_conflict_use_from_plugin"
+msgstr "Pick and choose settings from each plugin"
+
+#. In the full settings conflict UI, text in a link displayed under the header for settings from a particular plugin, to switch all settings over to match that plugin.
+#, include in addthis-wordpress-plugin domain
+msgid "settings_conflict_use_these"
+msgstr "Use these settings"
+
+#. Used as the text web page's title, which is used by the browser for the window or tab, for the recommended content settings page
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "settings_page_browser_title_recommended_content"
+msgstr "AddThis Related Posts"
+
+#. The description for a radio button on selecting auto personalization for share services
+#, include in addthis-wordpress-plugin domain
+msgid "share_service_picker_disabled_description"
+msgstr ""
+"Sharing buttons are automatically personalized for each visitor to help "
+"increase sharing."
+
+#. The radio button label for hand selecting share services
+#, include in addthis-wordpress-plugin domain
+msgid "share_service_picker_enabled_label"
+msgstr "Select Your Own"
+
+#. The text above a button that a user can click on to create an account if they don't already have one
+#, include in addthis-wordpress-plugin domain
+msgid "sign_in_do_not_have_account"
+msgstr "Don't have an account? Create one below."
+
+#. A paragraph informing the user about what they'll be able to do after registration
+#. Website Tools by AddThis is the name of the plugin in English. See msgid plugin_name_minimum for the name of the plugin in any particular language
+#, include in addthis-wordpress-plugin domain
+msgid "sign_in_minimalist_intro"
+msgstr ""
+"With the Website Tools by AddThis Plugin, you'll have the ability to access "
+"the entire suite of AddThis website marketing tools, including sharing and "
+"Audience Targeting rules. Using the AddThis dashboard, activate your tools, "
+"monitor their performance and make changes in seconds all in one place."
+
+#. A note (paragraph) to the user reminding them that the Website Tools by AddThis plugin requires registration
+#. Website Tools by AddThis is the name of the plugin in English. See msgid plugin_name_minimum for the name of the plugin in any particular language
+#, include in addthis-wordpress-plugin domain
+msgid "sign_in_minimalist_note"
+msgstr ""
+"NOTE: You will need an AddThis account to use the Website Tools by AddThis "
+"plugin."
+
+#. A paragraph to the user letting them know registration is optional and unlocks additional features
+#, include in addthis-wordpress-plugin domain
+msgid "sign_in_registration_optional"
+msgstr "Registration is optional and unlocks additional features."
+
+#. A header prompting users to sign in with their account, if they already have one
+#, include in addthis-wordpress-plugin domain
+msgid "sign_in_sign_in_below"
+msgstr "Already have an account? Sign in below"
+
+#. The header on a settings page for signing into their AddThis account for registration. This is the first page a new user sees.
+#. Website Tools by AddThis is the name of the plugin in English. See msgid plugin_name_minimum for the name of the plugin in any particular language
+#, include in addthis-wordpress-plugin domain
+msgid "sign_in_title"
+msgstr "Welcome to Website Tools by AddThis"
+
+#. Used as a description before showing JavaScript from their old Custom API Configuration in a code block
+#. See msgid clear_button for the text in quotes
+#, include in addthis-wordpress-plugin domain
+msgid "smart_layers_custom_api_config_failed_explanation"
+msgstr ""
+"We really, really tried, but were unable to upgrade your Custom API "
+"Configurations. You can review your old custom settings below and add them "
+"back in manually. Once you've moved them over, click "
+
+#. Used as a title before msgid smart_layers_custom_api_config_failed_explanation to indicate that they can get their old Custom API Configuration from before the upgrade here.
+#, include in addthis-wordpress-plugin domain
+msgid "smart_layers_custom_api_config_failed_label"
+msgstr "Previous Custom API Configuration"
+
+#. The name for the social website Behance (behance.com)
+msgid "social_service_behance"
+msgstr "Behance"
+
+#. The name for the social website Disqus (disqus.com)
+msgid "social_service_disqus"
+msgstr "Disqus"
+
+#. The name for the social website Etsy (etsy.com)
+msgid "social_service_etsy"
+msgstr "Etsy"
+
+#. The name for the social website Facebook (facebook.com)
+msgid "social_service_facebook"
+msgstr "Facebook"
+
+#. The name for the social website Flickr (flickr.com)
+msgid "social_service_flickr"
+msgstr "Flickr"
+
+#. The name for the social website Foursquare (foursquare.com)
+msgid "social_service_foursquare"
+msgstr "Foursquare"
+
+#. The name for the social website Google+ (https://plus.google.com)
+msgid "social_service_google_follow"
+msgstr "Google+"
+
+#. The name for the social website Instagram (instagram.com)
+msgid "social_service_instagram"
+msgstr "Instagram"
+
+#. The name for the social website LinkedIn (linkedin.com)
+msgid "social_service_linkedin"
+msgstr "LinkedIn"
+
+#. The name for the social website Pinterest (pinterest.com)
+msgid "social_service_pinterest"
+msgstr "Pinterest"
+
+#. The name for a Rich Site Summary, aka RDF Site Summary aka Really Simple Syndication feed. This is an XML feed users can add to their RSS reader to be notified of new content on a site.
+msgid "social_service_rss"
+msgstr "RSS"
+
+#. The name for the social website Tumblr (tumblr.com)
+msgid "social_service_tumblr"
+msgstr "Tumblr"
+
+#. The name for the social website Twitter (twitter.com)
+msgid "social_service_twitter"
+msgstr "Twitter"
+
+#. The name for the social website Vimeo (vimeo.com)
+msgid "social_service_vimeo"
+msgstr "Vimeo"
+
+#. The name for the social website YouTube (youtube.com)
+msgid "social_service_youtube"
+msgstr "YouTube"
+
+#. A link that allows the user to start the registration process over to sign into a different account
+#, include in addthis-wordpress-plugin domain
+msgid "start_registration_over_link"
+msgstr "Start over."
+
+#. used on buttons for submiting changes to settings
+#, include in addthis-wordpress-plugin domain
+msgid "submit_button"
+msgstr "Submit"
+
+#. The success message after a user sets up / registers the plugin with their AddThis account and an AddThis site profile
+#, include in addthis-wordpress-plugin domain
+msgid "success_message_registered"
+msgstr "Registration successful!"
+
+#. A message displayed only momentarily after settings are successfully saved (after user clicked on save button). Shown below the save button.
+#, include in addthis-wordpress-plugin domain
+msgid "success_message_saved"
+msgstr "Your changes have been saved."
+
+#. used as text in links to our terms of service
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "terms_of_service_link"
+msgstr "Terms of Service"
+
+#. Alt text (for blind users) describing an image with an an example of custom follow buttons. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#. custom follow buttons allow users select the color and shape of their follow buttons
+#, include in addthis-wordpress-plugin domain
+msgid "tool_cflwh_example_image_alt"
+msgstr ""
+"An example image of custom follow buttons. The buttons are in the right "
+"part of the image, to the side of grayed out images and text. It has 4 "
+"round icons lined up horizontally, with the text \"Follow:\" directly above "
+"them. In this example, from left to right, the follow buttons are logos for "
+"Facebook, Twitter, Pinterest and LinkedIn. Each logo is white on a solid "
+"gray background color."
+
+#: Used as a description for the tool on the tool's settings page
+#. custom follow buttons allow users select the color and shape of their follow buttons
+#, include in addthis-wordpress-plugin domain
+msgid "tool_cflwh_long_description"
+msgstr ""
+"Don't sacrifice design with these custom sharing buttons. You can choose to "
+"match the look and feel of your site by choosing your own colors, shape of "
+"the button and whether or not to display the share counter."
+
+#. Used as a header in a card, on a page of cards about tools, and as the header on a page with settings just for this particular tool.
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#. custom follow buttons allow users select the color and shape of their follow buttons
+#, include in addthis-wordpress-plugin domain
+msgid "tool_cflwh_name"
+msgstr "Custom Follow Buttons"
+
+#. Used as a description for the tool on a card, on a page of cards about tools
+#. custom follow buttons allow users select the color and shape of their follow buttons
+#, include in addthis-wordpress-plugin domain
+msgid "tool_cflwh_short_description"
+msgstr ""
+"These custom follow buttons allow you to match the look and feel of your "
+"website."
+
+#. Alt text (for blind users) describing an image with an example of horizontal recommended content tool. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#. recommended content drawer slides out from the left or right of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_cod_example_image_alt"
+msgstr ""
+"An example image of a Recommended Content Drawer. This tool is on the right "
+"of the screen, with grayed out text and image on the left. It lists 3 "
+"article vertically with large images, text imposed on the bottom of the "
+"images."
+
+#: Used as a description for the tool on the tool's settings page
+#. recommended content drawer slides out from the left or right of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_cod_long_description"
+msgstr ""
+"Help keep visitors on your site and discover new content with the "
+"Recommended Content Drawer. The drawer shows up on the side of your page "
+"and displays content that is related and currently trending."
+
+#. Used as a header in a card, on a page of cards about tools, and as the header on a page with settings just for this particular tool.
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#. recommended content drawer slides out from the left or right of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_cod_name"
+msgstr "Recommended Content Drawer"
+
+#: Used as a description for the tool on a card, on a page of cards about tools
+#. recommended content drawer slides out from the left or right of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_cod_short_description"
+msgstr ""
+"Keep visitors on your site and help them discover content based on what's "
+"trending and related."
+
+#. Alt text (for blind users) describing an image with an an example of horizontal follow buttons. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#. horizontal follow buttons link to a users social account with square buttons lined up horizontally
+#, include in addthis-wordpress-plugin domain
+msgid "tool_flwh_example_image_alt"
+msgstr ""
+"An example image of horiztonal follow buttons. The buttons are in the right "
+"part of the image, to the side of grayed out images and text. It has 4 "
+"square icons lined up horizontally, with the text \"Follow:\" directly "
+"above them. In this example, from left to right, the follow buttons are "
+"logos for Facebook, Twitter, Pinterest and LinkedIn. Each logo is white on "
+"a solid background color that matches each social service's brand"
+
+#: Used as a description for the tool on the tool's settings page
+#. horizontal follow buttons link to a users social account with square buttons lined up horizontally
+#, include in addthis-wordpress-plugin domain
+msgid "tool_flwh_long_description"
+msgstr ""
+"Get more followers by adding there Horizontal Follow buttons in the footer "
+"or sidebar of your site."
+
+#. horizontal follow buttons link to a users social account with square buttons lined up horizontally
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "tool_flwh_name"
+msgstr "Horizontal Follow Buttons"
+
+#: Used as a description for the tool on a card, on a page of cards about tools
+#. horizontal follow buttons link to a users social account with square buttons lined up horizontally
+#, include in addthis-wordpress-plugin domain
+msgid "tool_flwh_short_description"
+msgstr ""
+"Get more followers by adding there Horizontal Follow buttons in the footer "
+"or sidebar of your site."
+
+#. Alt text (for blind users) describing an image with an an example of vertical follow buttons. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#. vertical follow buttons link to a users social account with square buttons stacked vertically
+#, include in addthis-wordpress-plugin domain
+msgid "tool_flwv_example_image_alt"
+msgstr ""
+"An example image of vertical follow buttons. The buttons are in the right "
+"part of the image, to the side of grayed out images and text. It has 4 "
+"square icons stacked vertically, with the text \"Follow:\" directly above "
+"them. Directly to the right of each icon is the name of the service in "
+"blue. In this example, from top to bottom, the follow buttons are logos for "
+"Facebook, Twitter, Instragram and Pinterest. Each logo is white on a solid "
+"background color that matches each social service's brand"
+
+#: Used as a description for the tool on the tool's settings page
+#. vertical follow buttons link to a users social account with square buttons stacked vertically
+#, include in addthis-wordpress-plugin domain
+msgid "tool_flwv_long_description"
+msgstr ""
+"Increase your followers by adding these buttons in the footer or sidebar of "
+"your site."
+
+#. Used as a header in a card, on a page of cards about tools, and as the header on a page with settings just for this particular tool.
+#. Used in the widget drop down for this tool
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#. vertical follow buttons link to a users social account with square buttons stacked vertically
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "tool_flwv_name"
+msgstr "Vertical Follow Buttons"
+
+#: Used as a description for the tool on a card, on a page of cards about tools
+#. vertical follow buttons link to a users social account with square buttons stacked vertically
+#, include in addthis-wordpress-plugin domain
+msgid "tool_flwv_short_description"
+msgstr ""
+"Increase your followers by adding these buttons in the footer or sidebar of "
+"your site."
+
+#. default title on widgets
+#. verb, declarative, default text put before a set of follow buttons (follow me on twitter, follow me on facebook, etc)
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "tool_follow_default_title"
+msgstr "Follow Me"
+
+#. Alt text (for blind users) describing an image with an example of jumbo recommended content footer. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#. jumbo recommended content footer shows up on the bottom of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_jrcf_example_image_alt"
+msgstr ""
+"An example image of Jumbo Recommended Content Footer. This tool is on the "
+"bottom the screen, with grayed out text above it. It lists the title of 1 "
+"article white letters on top of a dimmed image of a rocky beach."
+
+#: Used as a description for the tool on the tool's settings page
+#. jumbo recommended content footer shows up on the bottom of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_jrcf_long_description"
+msgstr ""
+"This tool highlights recommended content by showcasing it through the use "
+"of jumbo images at the bottom of your site. The Jumbo Recommended Content "
+"Footer shows content that is trending and related."
+
+#. Used as a header in a card, on a page of cards about tools, and as the header on a page with settings just for this particular tool.
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#. jumbo recommended content footer shows up on the bottom of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_jrcf_name"
+msgstr "Jumbo Recommended Content Footer"
+
+#: Used as a description for the tool on a card, on a page of cards about tools
+#. jumbo recommended content footer shows up on the bottom of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_jrcf_short_description"
+msgstr ""
+"Highlight recommended trending or related content by showcasing it at the "
+"bottom of your site."
+
+#. used as alt text (for blind users) on a section listing the custom follow tool
+#. custom follow buttons allow users select the color and shape of their follow buttons
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_cflwh_alt"
+msgstr "Custom Follow Tool Listing"
+
+#. used as alt text (for blind users) on a section listing the horizontal recommended content tool
+#. recommended content drawer slides out from the left or right of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_cod_alt"
+msgstr "Recommended Content Drawer Tool Listing"
+
+#. Alt text (for blind users) describing an image with an an example of audience targeting messages. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_custom_message_example_image_alt"
+msgstr ""
+"An example image of a custom message used to target an audience. The "
+"message pops up above the content on the page, and grays out the "
+"background. There are a couple lines of text at the top of the pop up, and "
+"then two buttons at the bottom. The left buttons is blue, the right buttons "
+"is gray."
+
+#. used as alt text (for blind users) on a section listing the horizontal follow tool
+#. horizontal follow buttons link to a users social account with square buttons lined up horizontally
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_flwh_alt"
+msgstr "Horizontal Follow Tool Listing"
+
+#. used as alt text (for blind users) on a section listing the vertical follow tool
+#. vertical follow buttons link to a users social account with square buttons stacked vertically
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_flwv_alt"
+msgstr "Vertical Follow Tool Listing"
+
+#. used as alt text (for blind users) on a section listing the jumbo recommended content footer
+#. jumbo recommended content footer shows up on the bottom of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_jrcf_alt"
+msgstr "Jumbo Recommended Content Footer Tool Listing"
+
+#: the mobile sharing toolbar is a set of rectangular share buttons that float at the top or bottom of the page on mobile devices (or really small screens)
+#. used as alt text (for blind users) on a section listing the mobile sharing toolbar tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_msd_alt"
+msgstr "Mobile Sharing Toolbar Tool Listing"
+
+#. used as alt text (for blind users) on a section listing the original sharing buttons tool
+#. original share buttons show pill shaped buttons for social networks stylized by those social networks (not a unified look and feel)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_scopl_alt"
+msgstr "Original Sharing Buttons Tool Listing"
+
+#: the follow header tool is a set of round follow buttons that float at the top of the page
+#. used as alt text (for blind users) on a section listing the follow header tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_smlfw_alt"
+msgstr "Follow Header Tool Listing"
+
+#: the mobile toolbar is a floating gray bar at the top or bottom of the page that only shows up on mobile devices (or really small screens). It can have the text share and/or follow, and helps users share to social networks or follow the sites social networking accounts
+#. used as alt text (for blind users) on a section listing the mobile toolbar tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_smlmo_alt"
+msgstr "Mobile Toolbar Tool Listing"
+
+#. used as alt text (for blind users) on a section listing the recommended content footer
+#. recommended content footer show at the bottom of the screen, and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_smlre_alt"
+msgstr "Recommended Content Footer Tool Listing"
+
+#. used as alt text (for blind users) on a section listing the horizontal recommended content tool
+#. recommended content footer show at the bottom of the screen, and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_smlrebh_alt"
+msgstr "Horizontal Recommended Content Tool Listing"
+
+#. used as alt text (for blind users) on a section listing the vertical recommended content tool
+#. vertical recommended content tools link to other pages on the site based off similar topics or known user interests. the list of these recommended items is oriented vertically
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_smlrebv_alt"
+msgstr "Vertical Recommended Content Listing"
+
+#: the sharing sidebar tool is a set of square stacked share buttons that float on the left or right of the page
+#. used as alt text (for blind users) on a section listing the sharing sidebar tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_smlsh_alt"
+msgstr "Sharing Sidebar Listing"
+
+#. used as alt text (for blind users) on a section listing the what's next recommended content tool
+#. what's next recommended content tools hover over the content at the bottom right of the screen and link to another page on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_smlwn_alt"
+msgstr "What's Next Tool Listing"
+
+#: the inline sharing buttons are square horzontally aligned buttons for sharing content where each ones color matches a social sites brand
+#. used as alt text (for blind users) on a section listing the inline basic sharing buttons tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_tbx_alt"
+msgstr "Sharing Buttons Listing"
+
+#. used as alt text (for blind users) to indicating the clicking on the disabled toggle will enable a tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_toggle_disabled_alt"
+msgstr "This tool is disabled. Click to enable."
+
+#. used as alt text (for blind users) to indicating the clicking on the enabled toggle will disable a tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_toggle_enabled_alt"
+msgstr "This tool is enabled. Click to disable."
+
+#. text placed to the left of a disable/enable toggle when the toggle is enabled
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_toggle_label"
+msgstr "Active"
+
+#. used as alt text (for blind users) on a section listing the recommended content toaster tool
+#. recommended content toaster shows up on the bottom right of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_tst_alt"
+msgstr "Recommended Content Toaster Tool Listing"
+
+#. used as alt text (for blind users) on a section listing the what's next mobile recommended content tool
+#. what's next mobile recommended content tools show at the bottom of the screen on a smart phone or small screen, and links to another page on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_wnm_alt"
+msgstr "What's Next Mobile Tool Listing"
+
+#: the mobile sharing toolbar is a set of rectangular share buttons that float at the top or bottom of the page on mobile devices (or really small screens)
+#. Alt text (for blind users) describing an image with an an example of share tools. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_msd_example_image_alt"
+msgstr ""
+"An example image of a mobile sharing toolbar looks like on a smart phone's "
+"screen. The tools is in the bottom of the phone's screen, below grayed out "
+"text. It has four icons aligned horizontally on the screen. The four icons "
+"are Facebook, Twitter, Send Email, and a plus for more. Each icon is white "
+"on a solid background color that matches each social service's brand."
+
+#: Used as a description for the tool on the tool's settings page
+#: the mobile sharing toolbar is a set of rectangular share buttons that float at the top or bottom of the page on mobile devices (or really small screens)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_msd_long_description"
+msgstr ""
+"This sharing toolbar is made for mobile responsiveness and floats above "
+"your site, truncating or expanding for optimal mobile user experience."
+
+#. Used as a header in a card, on a page of cards about tools, and as the header on a page with settings just for this particular tool.
+#. the mobile sharing toolbar is a set of rectangular share buttons that float at the top or bottom of the page on mobile devices (or really small screens)
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_msd_name"
+msgstr "Mobile Sharing Toolbar"
+
+#: Used as a description for the tool on a card, on a page of cards about tools
+#: the mobile sharing toolbar is a set of rectangular share buttons that float at the top or bottom of the page on mobile devices (or really small screens)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_msd_short_description"
+msgstr "Get more likes and shares from mobile visitors."
+
+#. Alt text (for blind users) describing an image with an an example of share tools. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#. original share buttons show pill shaped buttons for social networks stylized by those social networks (not a unified look and feel)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_scopl_example_image_alt"
+msgstr ""
+"An example image of original sharing buttons. The buttons are in the left "
+"part of the image, above and to the left of grayed out text, and below a "
+"grayed out image. The tool has 4 icons of different styles lined up "
+"horizontally, with a bubble with the text 847 to the right. In this "
+"example, from left to right, the share buttons are a Facebook like button, "
+"Twitter Tweet button, Pinterest PinIt button, and an AddThis share buttons "
+"(which is a plus sign followed by the test Share, to indicate more services "
+"available upon click)."
+
+#: Used as a description for the tool on the tool's settings page
+#. original share buttons show pill shaped buttons for social networks stylized by those social networks (not a unified look and feel)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_scopl_long_description"
+msgstr ""
+"Use the original AddThis sharing buttons that visitors know and love that "
+"encourages users to share directly to their social networks that visitors "
+"know and love."
+
+#. Used as a header in a card, on a page of cards about tools, and as the header on a page with settings just for this particular tool.
+#. Used in the widget drop down for this tool
+#. original share buttons show pill shaped buttons for social networks stylized by those social networks (not a unified look and feel)
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "tool_scopl_name"
+msgstr "Original Sharing Buttons"
+
+#: Used as a description for the tool on a card, on a page of cards about tools
+#. original share buttons show pill shaped buttons for social networks stylized by those social networks (not a unified look and feel)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_scopl_short_description"
+msgstr ""
+"The original share buttons encourage users to share directly to their "
+"social networks."
+
+#. used as alt text (for blind users) on a section with the settings for the horizontal follow tool
+#. recommended content drawer slides out from the left or right of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_cod_alt"
+msgstr "Recommended Content Drawer Tool Settings"
+
+#. used as alt text (for blind users) on a section with the settings for the horizontal follow tool
+#. horizontal follow buttons link to a users social account with square buttons lined up horizontally
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_flwh_alt"
+msgstr "Horizontal Follow Tool Settings"
+
+#. used as alt text (for blind users) on a section with the settings for the vertical follow tool
+#. vertical follow buttons link to a users social account with square buttons stacked vertically
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_flwv_alt"
+msgstr "Vertical Follow Tools Settings"
+
+#. used as alt text (for blind users) on a section with the settings for the custom follow tool
+#. custom follow buttons allow users select the color and shape of their follow buttons
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_follow_custom_alt"
+msgstr "Custom Follow Tool Settings"
+
+#. used as alt text (for blind users) on a section with the settings for the jumbo recommended content footer
+#. jumbo recommended content footer shows up on the bottom of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_jrcf_alt"
+msgstr "Jumbo Recommended Content Footer Tool Settings"
+
+#. Text used in a link that brings up the settings of one particular tool
+#. Design wanted this in all caps. Feel free to disregard that if it's not appropriate for the language to which you're translating.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_link"
+msgstr "SETTINGS"
+
+#: the mobile sharing toolbar is a set of rectangular share buttons that float at the top or bottom of the page on mobile devices (or really small screens)
+#. used as alt text (for blind users) on a section with the settings for the mobile sharing toolbar tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_msd_alt"
+msgstr "Mobile Sharing Toolbar Settings"
+
+# A label to turn off a feature (could be in a dropdown or radio button label)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_off_label"
+msgstr "Off"
+
+# A label to turn on a feature (could be in a dropdown or radio button label)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_on_label"
+msgstr "On"
+
+#: Used as label for an input field on the settings for a particular tool, for a title to appear above follow buttons, after tool_settings_post_share_title_label
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_post_share_follow_message_label"
+msgstr "Follow Message"
+
+#: Used as label for an input field on the settings for a particular tool, for a title to appear above recommended content, after tool_settings_post_share_title_label
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_post_share_recommended_message_label"
+msgstr "Recommended Content Message"
+
+#: Used as label for an input field on the settings for a particular tool, for a title to appear after a user shares content
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_post_share_title_label"
+msgstr "Thank You Title"
+
+#. used as alt text (for blind users) on a section with the settings for the original sharing buttons tool
+#. original share buttons show pill shaped buttons for social networks stylized by those social networks (not a unified look and feel)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_scopl_alt"
+msgstr "Original Sharing Buttons Settings"
+
+#: Used as description for a dropdown field on the settings for a particular sharing tool, about when to show the number of shares an page has had
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_share_count_threshold_description"
+msgstr "This controls when your share counts start to show on your button"
+
+#: Used as label for a dropdown field on the settings for a particular sharing tool, about when to show the number of shares an page has had
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_share_count_threshold_label"
+msgstr "Share Count Threshold"
+
+#. A description of the individual type of the counts for the share buttons, show individual count for each button
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_count_type_each"
+msgstr "Individual"
+
+#. A description of the individual type of the counts for the share buttons, show total count for all buttons
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_count_type_one"
+msgstr "Total"
+
+#. A description of the individual type of the counts for the share buttons, show both individual and total counts
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_count_type_both"
+msgstr "Individual & Total"
+
+#. A description of the individual type of the counts for the share buttons, show both individual and total counts
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_count_type_jumbo"
+msgstr "Jumbo"
+
+#. An input label for a select dropdown where the user can select the count type of their buttons.
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_count_type_picker_title"
+msgstr "Share Count Type"
+
+# A label above a select input with on & off options, for whether to use the follow feature of a tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_share_follow_toolbar_follow_label"
+msgstr "Follow"
+
+# A label for a checkbox for turning on an inline tool above the content of a blog post
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_share_locations_above_blog_post_label"
+msgstr "Above Blog Post"
+
+# A label for a checkbox for turning on an inline tool above an excerpt of content
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_share_locations_above_excerpt_label"
+msgstr "Above Excerpt"
+
+# A label for a checkbox for turning on an inline tool above the content of a page
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_share_locations_above_page_label"
+msgstr "Above Page"
+
+#. A title above a section of checkboxes, for selecting the position of inline tools on the site's archive pages (the options are above and below excerpts, see msgids tool_settings_share_locations_above_excerpt_label and tool_settings_share_locations_below_excerpt_label for the text in the labels on those checkboxes)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_share_locations_archive_title"
+msgstr "Position on Archive Page"
+
+# A label for a checkbox for turning on an inline tool below the content of a blog post
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_share_locations_below_blog_post_label"
+msgstr "Below Blog Post"
+
+# A label for a checkbox for turning on an inline tool below an excerpt of content
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_share_locations_below_excerpt_label"
+msgstr "Below Excerpt"
+
+# A label for a checkbox for turning on an inline tool below the content of a page
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_share_locations_below_page_label"
+msgstr "Below Page"
+
+#. A title above a section of checkboxes, for selecting the position of inline tools on the site's category pages (the options are above and below excerpts, see msgids tool_settings_share_locations_above_excerpt_label and tool_settings_share_locations_below_excerpt_label for the text in the labels on those checkboxes)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_share_locations_category_title"
+msgstr "Position on Category Page"
+
+#. A title above a section of checkboxes, for selecting the position of inline tools on the site's homepage (the options are above and below excerpts, see msgids tool_settings_share_locations_above_excerpt_label and tool_settings_share_locations_below_excerpt_label for the text in the labels on those checkboxes)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_share_locations_homepage_title"
+msgstr "Position on Homepage"
+
+#. A title above a section of checkboxes, for selecting the position of inline tools on the site's pages (the options are above and below excerpts, see msgids tool_settings_share_locations_above_page_label and tool_settings_share_locations_below_page_label for the text in the labels on those checkboxes)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_share_locations_page_title"
+msgstr "Position on Page"
+
+#. A title above a section of checkboxes, for selecting the position of inline tools on the site's blog posts (the options are above and below excerpts, see msgids tool_settings_share_locations_above_blog_post_label and tool_settings_share_locations_below_blog_post_label for the text in the labels on those checkboxes)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_share_locations_post_title"
+msgstr "Position on Blog Post"
+
+#: Used as a description for the tool on the tool's settings page
+#: the sharing sidebar tool is a set of square stacked share buttons that float on the left or right of the page
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_share_show_counts"
+msgstr "Show Share Counts"
+
+#: the follow header tool is a set of round follow buttons that float at the top of the page
+#. used as alt text (for blind users) on a section with the settings for the follow header tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_smlfw_alt"
+msgstr "Follow Header Tool Settings"
+
+#: the mobile toolbar is a floating gray bar at the top or bottom of the page that only shows up on mobile devices (or really small screens). It can have the text share and/or follow, and helps users share to social networks or follow the sites social networking accounts
+#. used as alt text (for blind users) on a section with the settings for the mobile toolbar tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_smlmo_alt"
+msgstr "Mobile Toolbar Settings"
+
+#. used as alt text (for blind users) on a section with the settings for the recommended content footer
+#. recommended content footer show at the bottom of the screen, and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_smlre_alt"
+msgstr "Recommended Content Footer Settings"
+
+#. used as alt text (for blind users) on a section with the settings for the horizontal aring toolbar tool
+#. recommended content footer show at the bottom of the screen, and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_smlrebh_alt"
+msgstr "Horizontal Recommended Content Settings"
+
+#. used as alt text (for blind users) on a section with the settings for the vertical recommended content tool
+#. vertical recommended content tools link to other pages on the site based off similar topics or known user interests. the list of these recommended items is oriented vertically
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_smlrebv_alt"
+msgstr "Vertical Recommended Content Tool Settings"
+
+#: the sharing sidebar tool is a set of square stacked share buttons that float on the left or right of the page
+#. used as alt text (for blind users) on a section with the settings for the sharing sidebar tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_smlsh_alt"
+msgstr "Sharing Sidebar Settings"
+
+#. used as alt text (for blind users) on a section with the settings for the what's next recommended content tool
+#. what's next recommended content tools hover over the content at the bottom right of the screen and link to another page on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_smlwn_alt"
+msgstr "What's Next Settings"
+
+#: the inline sharing buttons are square horzontally aligned buttons for sharing content where each ones color matches a social sites brand
+#. used as alt text (for blind users) on a section with the settings for the inline basic sharing buttons tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_tbx_alt"
+msgstr "Sharing Buttons Settings"
+
+#: Used as label for an input field on the settings for a particular tool, for a title to appear before (above, or to the left) the tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_title_label"
+msgstr "Title"
+
+#. used as alt text (for blind users) on a section with the settings for the recommended content toaster tool
+#. recommended content toaster shows up on the bottom right of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_tst_alt"
+msgstr "Recommended Content Toaster Tool Settings"
+
+#. used as alt text (for blind users) on a section with the settings for the what's next mobile recommended content tool
+#. what's next mobile recommended content tools show at the bottom of the screen on a smart phone or small screen, and links to another page on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_settings_wnm_alt"
+msgstr "What's Next Mobile Settings"
+
+#. Alt text (for blind users) describing an image with an an example of follow tools. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlfw_example_image_alt"
+msgstr ""
+"An example image of a follow header. The header is in the upper right hand "
+"corner, floating over grayed out images and text in the background. It has "
+"4 circular icons lined up horizontally, prepended by the word "
+
+#: Used as a description for the tool on the tool's settings page
+#: the follow header tool is a set of round follow buttons that float at the top of the page
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlfw_long_description"
+msgstr ""
+"Grow your social audience with floating follow buttons to help get more "
+"followers."
+
+#. Used as a header in a card, on a page of cards about tools, and as the header on a page with settings just for this particular tool.
+#. the follow header tool is a set of round follow buttons that float at the top of the page
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlfw_name"
+msgstr "Follow Header"
+
+#: Used as a description for the tool on a card, on a page of cards about tools
+#: the follow header tool is a set of round follow buttons that float at the top of the page
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlfw_short_description"
+msgstr ""
+"Grow your social audience with floating follow buttons to help get more "
+"followers."
+
+#: the mobile toolbar is a floating gray bar at the top or bottom of the page that only shows up on mobile devices (or really small screens). It can have the text share and/or follow, and helps users share to social networks or follow the sites social networking accounts
+#. Alt text (for blind users) describing an image with an an example of share tools. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlmo_example_image_alt"
+msgstr ""
+"An example image of a mobile toolbar looks like on a smart phone's screen. "
+"The tool is in the bottom of the phone's screen, below grayed out text. It "
+"has a light gray background and black text. On the left is reads \"Follow\" "
+"and on the right it reads \"Share.\" There is light gray bar seperating the "
+"two words."
+
+#: Used as a description for the tool on the tool's settings page
+#: the mobile toolbar is a floating gray bar at the top or bottom of the page that only shows up on mobile devices (or really small screens). It can have the text share and/or follow, and helps users share to social networks or follow the sites social networking accounts
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlmo_long_description"
+msgstr ""
+"Made specifically for optimal mobile user experience, the Mobile Toolbar "
+"helps to increase sharing and following from mobile visitors by floating at "
+"the top or the bottom of the screen."
+
+#. Used as a header in a card, on a page of cards about tools, and as the header on a page with settings just for this particular tool.
+#. the mobile toolbar is a floating gray bar at the top or bottom of the page that only shows up on mobile devices (or really small screens). It can have the text share and/or follow, and helps users share to social networks or follow the sites social networking accounts
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlmo_name"
+msgstr "Mobile Toolbar"
+
+#: Used as a description for the tool on a card, on a page of cards about tools
+#: the mobile toolbar is a floating gray bar at the top or bottom of the page that only shows up on mobile devices (or really small screens). It can have the text share and/or follow, and helps users share to social networks or follow the sites social networking accounts
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlmo_short_description"
+msgstr ""
+"This tool floats above your site, truncating or expaning for optimal mobile "
+"user experience."
+
+#. Alt text (for blind users) describing an image with an example of horizontal recommended content tool. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#. recommended content footer show at the bottom of the screen, and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlre_example_image_alt"
+msgstr ""
+"An example image of a Recommended Content Footer tool. The tools is in the "
+"bottom of the screen, below grayed out text. It lists 4 article aligned "
+"horizontally with an image above some text for each article."
+
+#: Used as a description for the tool on the tool's settings page
+#. recommended content footer show at the bottom of the screen, and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlre_long_description"
+msgstr ""
+"Help keep visitors on your site and discover new content with the "
+"Recommended Content Footer. The recommendations shows up on the bottom of "
+"your page and displays content that is related and currently trending."
+
+#. Used as a header in a card, on a page of cards about tools, and as the header on a page with settings just for this particular tool.
+#. recommended content footer show at the bottom of the screen, and links to other pages on the site based off similar topics or known user interests.
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlre_name"
+msgstr "Recommended Content Footer"
+
+#: Used as a description for the tool on a card, on a page of cards about tools
+#. recommended content footer show at the bottom of the screen, and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlre_short_description"
+msgstr ""
+"Keep visitors on your site and discover new content based on what's "
+"trending and related."
+
+#. Alt text (for blind users) describing an image with an example of horizontal recommended content tool. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#. horizontal recommended content tools link to other pages on the site based off similar topics or known user interests. the list of these recommended items is oriented horizontally
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlrebh_example_image_alt"
+msgstr ""
+"An example image of a horizontal recommended content tool. The tools is in "
+"the bottom left part of the image, below and to the side of grayed out "
+"images and text. It lists 4 articles aligned horizontally, each with an "
+"image above some text."
+
+#: Used as a description for the tool on the tool's settings page
+#. horizontal recommended content tools link to other pages on the site based off similar topics or known user interests. the list of these recommended items is oriented horizontally
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlrebh_long_description"
+msgstr ""
+"Use this tool to showcase related posts and images below your articles or "
+"on your homepage to keep visitors engaged and on your site. Recommendations "
+"are based on related content and what is currently trending."
+
+#. Used as a header in a card, on a page of cards about tools, and as the header on a page with settings just for this particular tool.
+#. horizontal recommended content tools link to other pages on the site based off similar topics or known user interests. the list of these recommended items is oriented horizontally
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlrebh_name"
+msgstr "Horizontal Recommended Content"
+
+#: Used as a description for the tool on a card, on a page of cards about tools
+#. horizontal recommended content tools link to other pages on the site based off similar topics or known user interests. the list of these recommended items is oriented horizontally
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlrebh_short_description"
+msgstr ""
+"Showcase content recommendations and images to keep visitors engaged and on "
+"your site."
+
+#. Alt text (for blind users) describing an image with an an example of vertical recommended content tool. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#. vertical recommended content tools link to other pages on the site based off similar topics or known user interests. the list of these recommended items is oriented vertically
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlrebv_example_image_alt"
+msgstr ""
+"An example image of a Vertical Recommended Content tool. The tools right "
+"part of the image, with grayed out images and text on the left. It lists 4 "
+"articles aligned vertically, each with an image to the left of some text."
+
+#: Used as a description for the tool on the tool's settings page
+#. vertical recommended content tools link to other pages on the site based off similar topics or known user interests. the list of these recommended items is oriented vertically
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlrebv_long_description"
+msgstr ""
+"Use this tool to showcase recommended content and images below your "
+"articles or on your homepage to keep visitors engaged and on your site. "
+"Recommendations are based on related content and what is currently trending."
+
+#. Used as a header in a card, on a page of cards about tools, and as the header on a page with settings just for this particular tool.
+#. vertical recommended content tools link to other pages on the site based off similar topics or known user interests. the list of these recommended items is oriented vertically
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlrebv_name"
+msgstr "Vertical Recommended Content"
+
+#: Used as a description for the tool on a card, on a page of cards about tools
+#. vertical recommended content tools link to other pages on the site based off similar topics or known user interests. the list of these recommended items is oriented vertically
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlrebv_short_description"
+msgstr ""
+"Showcase content recommendations and images to keep visitors engaged and on "
+"your site."
+
+#: the sharing sidebar tool is a set of square stacked share buttons that float on the left or right of the page
+#. Alt text (for blind users) describing an image with an an example of share tools. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlsh_example_image_alt"
+msgstr ""
+"An example image of a sharing toolbar. The toolbar is on the left edge of "
+"the image, floating over grayed out images and text in the background. In "
+"this example, from top to bottom, the sharing buttons are logos for "
+"Facebook, Twitter, Pinterest, LinkedIn and a big plus for more. The first "
+"four sharing buttons include a share count below each logo. Each logo is "
+"white on a solid background color that matches each social service's brand."
+
+#: Used as a description for the tool on the tool's settings page
+#: the sharing sidebar tool is a set of square stacked share buttons that float on the left or right of the page
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlsh_long_description"
+msgstr ""
+"This simple tool is the easiest way to increase sharing upt o 2x over our "
+"traditional sharing buttons. It floats on the side of your page and "
+"showcases how many other visitors have shared your content across their "
+"social networks."
+
+#. Used as a header in a card, on a page of cards about tools, and as the header on a page with settings just for this particular tool.
+#. the sharing sidebar tool is a set of square stacked share buttons that float on the left or right of the page
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlsh_name"
+msgstr "Sidebar"
+
+#: Used as a description for the tool on a card, on a page of cards about tools
+#: the sharing sidebar tool is a set of square stacked share buttons that float on the left or right of the page
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlsh_short_description"
+msgstr "The easiest way to increase sharing up to 2x over regular sharing buttons."
+
+#. Alt text (for blind users) describing an image with an example of what's next recommended content tool. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#. what's next recommended content tools hover over the content at the bottom right of the screen and link to another page on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlwn_example_image_alt"
+msgstr ""
+"An example image of a What's Next recommended content tool. The tools is in "
+"the bottom right part of the image, below and to the side of grayed out "
+"images and text. It lists 1 article with an image to the left of some text."
+
+#: Used as a description for the tool on the tool's settings page
+#. what's next recommended content tools hover over the content at the bottom right of the screen and link to another page on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlwn_long_description"
+msgstr ""
+"Keep visitors on your site with automatic related posts as they scroll "
+"down. Recommendations are based on what is related and currently trending."
+
+#. Used as a header in a card, on a page of cards about tools, and as the header on a page with settings just for this particular tool.
+#. what's next recommended content tools hover over the content at the bottom right of the screen and link to another page on the site based off similar topics or known user interests.
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlwn_name"
+msgstr "What's Next"
+
+#: Used as a description for the tool on a card, on a page of cards about tools
+#. what's next recommended content tools hover over the content at the bottom right of the screen and link to another page on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_smlwn_short_description"
+msgstr ""
+"Keep visitors on your site with automatic content recommendations as they "
+"scroll down."
+
+#. Alt text (for blind users) describing an image with an an example of share tools. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_tbx_example_image_alt"
+msgstr ""
+"An example image of sharing buttons. The buttons are in the left part of "
+"the image, above and to the left of grayed out text, and below a grayed out "
+"image. The tool has 5 square icons lined up horizontally, with a bubble "
+"with the text 2.2M to the right. In this example, from left to right, the "
+"sharing buttons are logos for Facebook, Twitter, Pinterest, LinkedIn and "
+"AddThis (which is a plus sign, to indicate more services available upon "
+"click). Each logo is white on a solid background color that matches each "
+"social service's brand"
+
+#: Used as a description for the tool on the tool's settings page
+#: the inline sharing buttons are square horzontally aligned buttons for sharing content where each ones color matches a social sites brand
+#, include in addthis-wordpress-plugin domain
+msgid "tool_tbx_long_description"
+msgstr ""
+"Use these share buttons to grab visitors attention and increase sharing "
+"across devices. These buttons will automatically show visitors the correct "
+"sharing buttons for them based on their social preferences."
+
+#. Used as a header in a card, on a page of cards about tools, and as the header on a page with settings just for this particular tool.
+#. Used in the widget drop down for this tool
+#. the inline sharing buttons are square horzontally aligned buttons for sharing content where each ones color matches a social sites brand
+#. widget name
+#. in the widget context, these sharing buttons are simple, clean squares with the logo of a social network and that network's brand's color
+#. it's important to note that this will often be truncated for smaller screens, and so please put the most differentiating parts first
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "tool_tbx_name"
+msgstr "Sharing Buttons"
+
+#: Used as a description for the tool on a card, on a page of cards about tools
+#: the inline sharing buttons are square horzontally aligned buttons for sharing content where each ones color matches a social sites brand
+#, include in addthis-wordpress-plugin domain
+msgid "tool_tbx_short_description"
+msgstr ""
+"Use these share buttons to grab visitors attention and increase sharing "
+"across devices."
+
+#. Alt text (for blind users) describing an image with an example of recommended content toaster tool. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#. recommended content toaster shows up on the bottom right of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_tst_example_image_alt"
+msgstr ""
+"An example image of a Recommended Content Toaster. This tool is on the "
+"bottom right of the screen, with grayed out text and image around it. It "
+"lists 2 article horizontally with large images and text below the images."
+
+#: Used as a description for the tool on the tool's settings page
+#. recommended content toaster shows up on the bottom right of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_tst_long_description"
+msgstr "This tool shows recommendations that are trending and related content."
+
+#. Used as a header in a card, on a page of cards about tools, and as the header on a page with settings just for this particular tool.
+#. recommended content toaster shows up on the bottom right of the page and links to other pages on the site based off similar topics or known user interests.
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_tst_name"
+msgstr "Recommended Content Toaster"
+
+#: Used as a description for the tool on a card, on a page of cards about tools
+#. recommended content toaster shows up on the bottom right of the page and links to other pages on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_tst_short_description"
+msgstr ""
+"Help users discover new content based on what's trending and related as "
+"they scroll down the page."
+
+#. Alt text (for blind users) describing an image with an example of what's next mobile recommended content tool. No need to translate exactly, just do your best to make it useful for someone who can't see.
+#. what's next mobile recommended content tools show at the bottom of the screen on a smart phone or small screen, and links to another page on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_wnm_example_image_alt"
+msgstr ""
+"An example image of a What's Next Mobile recommended content tool on a "
+"smart phone's screen. The tools is in the bottom of the phone's screen, "
+"below grayed out text. It lists 1 article with an image to the left of some "
+"text on a black background."
+
+#: Used as a description for the tool on the tool's settings page
+#. what's next mobile recommended content tools show at the bottom of the screen on a smart phone or small screen, and links to another page on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_wnm_long_description"
+msgstr ""
+"The What's Next tool shows your visitors recommended content as they scroll "
+"down to help keep them engaged and on your site. Recommendations are based "
+"on what is related and currently trending."
+
+#. Used as a header in a card, on a page of cards about tools, and as the header on a page with settings just for this particular tool.
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#. what's next mobile recommended content tools show at the bottom of the screen on a smart phone or small screen, and links to another page on the site based off similar topics or known user interests.
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_wnm_name"
+msgstr "What's Next Mobile"
+
+#: Used as a description for the tool on a card, on a page of cards about tools
+#. what's next mobile recommended content tools show at the bottom of the screen on a smart phone or small screen, and links to another page on the site based off similar topics or known user interests.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_wnm_short_description"
+msgstr ""
+"This mobile friendly tool recommends related and trending content as they "
+"scroll down your site."
+
+#. Warning text shown below the field if the user choose an option that isn't recommended for the Advanced Settings >> Tracking >> Asynchronous Loading settings field
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_advanced_settings_async"
+msgstr ""
+"When the AddThis JavaScript is loaded in asynchronously, AddThis buttons "
+"may not always load."
+
+#. Warning text shown below the field if the user choose an option that isn't recommended for the Advanced Settings >> Tracking >> Clickbacks settings field
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_advanced_settings_clickbacks"
+msgstr ""
+"Without clickbacks enabled, AddThis will not be able to provide you with "
+"analytics about how much traffic social shares are driving to your site."
+
+#. Warning text shown below the field if the user choose an option that isn't recommended for the Advanced Settings >> Loading Options >> Excerpt Filters settings field
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_advanced_settings_excerpt_filters"
+msgstr ""
+"If no excerpt filters are enabled, AddThis tools will not be automatically "
+"added onto any excerpts. Excerpts are often used on homepages, archive "
+"pages, and category pages."
+
+#. Warning text shown below the field if the user choose an option that isn't recommended for the Advanced Settings >> Loading Options >> Script Location settings field
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_advanced_settings_script_location"
+msgstr ""
+"If added into the header, the AddThis JavaScript may delay when the content "
+"of your page is loaded. Adding our scripts into the footer helps this, by "
+"loading AddThis JavaScript only after the majority of your page has loaded."
+
+#. A warning message for users in WordPress mode that they will be changed to AddThis mode if they continue registrations. AddThis mode is when they control their AddThis tools from AddThis.com, not within WordPress (WordPress mode is the reverse).
+#. This message is immidiately followed by msgid warning_message_cross_plugin_change_mode_action_link
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_changing_from_wordpress_mode"
+msgstr ""
+"Continuing with the registration process will switch you over to AddThis "
+"mode and this plugin will use your tool configurations associated with your "
+"AddThis profile. If you do not want to be in AddThis mode, you can change "
+"the mode back over on the manual registration page."
+
+#. A link that when clicked, change's the users mode to AddThis. Appears immidiately after msgid warning_message_cross_plugin_wordpress_mode
+#. AddThis mode is when they control their AddThis tools from AddThis.com, not within WordPress (WordPress mode is the reverse)
+#. Immediately follows msgid warning_message_cross_plugin_wordpress_mode
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_cross_plugin_change_mode_action_link"
+msgstr "Click here to change modes."
+
+#. linked text that on click, copies the profile id in this plugin in into the old plugin
+#. This link is proceeded by msgid warning_message_cross_plugin_mismatched_profile_id or warning_message_cross_plugin_no_profile_id
+#. {{old_plugin_name}} is a placeholder for the name of one of our old plugins (untranslated - they're not internationalized, so it makes sense to leave the name as it appears within WordPress), in bold
+#. {{profile_id}} is a placeholder for the profile id being used by this plugin, this will usually look something like ra-12asd34asgs
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_cross_plugin_copy_profile_id_into_plugin_link"
+msgstr ""
+"Click here to copy your profile from this plugin ({{profile_id}}) into "
+"{{old_plugin_name}}."
+
+#. linked text that on click, copies the profile id in this plugin in into the welcome bar plugin
+#. {{old_plugin_name}} is a placeholder for the name of one of our old plugins (untranslated - they're not internationalized, so it makes sense to leave the name as it appears within WordPress), in bold
+#. {{profile_id}} is a placeholder for the profile id being used by this plugin, this will usually look something like ra-12asd34asgs
+#. Often immidiately follows msgid warning_message_cross_plugin_fb_and_wb_mismatched_profile_id or warning_message_cross_plugin_fb_and_wb_no_profile_id
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_cross_plugin_copy_profile_id_into_plugin_with_warning_link"
+msgstr ""
+"Click here to copy your profile from this plugin ({{profile_id}}) into "
+"{{old_plugin_name}}. This may override some of your settings in the "
+"{{old_plugin_name}}."
+
+#. linked text that on click, copies the profile id in this plugin in into the follow button and welcome bar plugins
+#. {{old_welcome_bar_plugin_name}} is a placeholder for the name of our old welcome bar plugin (untranslated - it's not internationalized, so it makes sense to leave the name as it appears within WordPress), in bold
+#. {{profile_id}} is a placeholder for the profile id being used by this plugin, this will usually look something like ra-12asd34asgs
+#. Often immidiately follows msgid warning_message_cross_plugin_fb_and_wb_mismatched_profile_id or warning_message_cross_plugin_fb_and_wb_no_profile_id
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_cross_plugin_copy_profile_id_into_plugins_link"
+msgstr ""
+"Click here to copy your profile from this plugin ({{profile_id}}) into "
+"both. This may override some of your settings in the "
+"{{old_welcome_bar_plugin_name}}."
+
+#. A warning message for users who seem to have our older follow button and our old welcome bar plugins installed along with this plugin, and using a different profile id
+#. This will be immediately followed by a link with the text in msgid warning_message_cross_plugin_copy_profile_id_into_plugins_link
+#. {{old_follow_plugin_name}} is a placeholder for the name of our old follow buttons plugin (untranslated - it's not internationalized, so it makes sense to leave the name as it appears within WordPress), in bold
+#. {{old_welcome_bar_plugin_name}} is a placeholder for the name of our old welcome bar plugin (untranslated - it's not internationalized, so it makes sense to leave the name as it appears within WordPress), in bold
+#. {{profile_id}} is a placeholder for the profile id being used by the other two plugins, this will usually look something like ra-12asd34asgs
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_cross_plugin_fb_and_wb_mismatched_profile_id"
+msgstr ""
+"Do you have the {{old_follow_plugin_name}} or the "
+"{{old_welcome_bar_plugin_name}} plugin activated? They are using a "
+"different AddThis profile ({{profile_id}}). This can cause issues."
+
+#. A warning message for users who seem to have our older follow button and our old welcome bar plugins installed along with this plugin, but without a profile id
+#. This will be immediately followed by a link with the text in msgid warning_message_cross_plugin_copy_profile_id_into_plugins_link
+#. {{old_follow_plugin_name}} is a placeholder for the name of our old follow buttons plugin (untranslated - it's not internationalized, so it makes sense to leave the name as it appears within WordPress), in bold
+#. {{old_welcome_bar_plugin_name}} is a placeholder for the name of our old welcome bar plugin (untranslated - it's not internationalized, so it makes sense to leave the name as it appears within WordPress), in bold
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_cross_plugin_fb_and_wb_no_profile_id"
+msgstr ""
+"Do you have the {{old_follow_plugin_name}} or the "
+"{{old_welcome_bar_plugin_name}} plugin activated? They are not set up with "
+"AddThis profiles. This can cause issues."
+
+#. A warning message for a user who seem to have an old one of our plugins installed, and using a different profile id
+#. This message is immidiately followed by a link with msgid warning_message_cross_plugin_copy_profile_id_into_plugin_link or warning_message_cross_plugin_copy_profile_id_into_plugin_with_warning_link
+#. {{old_plugin_name}} is a placeholder for the name of one of our old plugins (untranslated - they're not internationalized, so it makes sense to leave the name as it appears within WordPress), in bold
+#. {{profile_id}} is a placeholder for the profile id being used by the other plugin, this will usually look something like ra-12asd34asgs
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_cross_plugin_mismatched_profile_id"
+msgstr ""
+"Do you have the {{old_plugin_name}} plugin activated? It is using a "
+"different AddThis profile ({{profile_id}}). This can cause issues."
+
+#: A success mesage for users shown after they choose to change their plugin into AddThis mode. AddThis mode is when they control their AddThis tools from AddThis.com, not within WordPress (WordPress mode is the reverse)
+#. {{old_share_plugin_name}} is a placeholder for the name of our old sharing buttons plugin (untranslated - it's not internationalized, so it makes sense to leave the name as it appears within WordPress), in bold
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_cross_plugin_mode_fixed"
+msgstr "Your {{old_share_plugin_name}} plugin is now in AddThis mode."
+
+#. A warning message for a user who seem to have an old one of our plugins installed, and not configured with a profile id
+#. This message is immidiately followed by a link with msgid warning_message_cross_plugin_copy_profile_id_into_plugin_link
+#. {{old_plugin_name}} is a placeholder for the name of one of our old plugins (untranslated - they're not internationalized, so it makes sense to leave the name as it appears within WordPress), in bold
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_cross_plugin_no_profile_id"
+msgstr ""
+"Do you have the {{old_plugin_name}} plugin activated? It is not set up with "
+"an AddThis profile. This can cause issues."
+
+#. A warning message for users who have another one of our old button plugins installed along with this plugin
+#. {{old_plugin_name}} is a placeholder for the name of one of our old plugins (untranslated - they're not internationalized, so it makes sense to leave the name as it appears within WordPress), in bold
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_cross_plugin_other_plugin_buggy"
+msgstr ""
+"Do you have the {{old_plugin_name}} plugin activated? This plugin may not "
+"play nicely with it. Specifically, your options in one plugin or the other "
+"may be ignored."
+
+#. A warning message for users who might have the old (1.3.1 or older) version of our follow button plugin installed
+#. {{old_plugin_name}} is a placeholder for the name of one of our old plugins (untranslated - they're not internationalized, so it makes sense to leave the name as it appears within WordPress), in bold
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_cross_plugin_other_plugin_buggy_follow_button"
+msgstr ""
+"Do you have the old {{old_plugin_name}} plugin activated (version 1.3.1 or "
+"older)? This plugin may not play nicely with it. Specifically, your options "
+"in one plugin or the other may be ignored."
+
+#. A warning message for users who have our old sharing button plugin installed along with this plugin
+#. {{old_share_plugin_name}} is a placeholder for the name of our old sharing buttons plugin (untranslated - it's not internationalized, so it makes sense to leave the name as it appears within WordPress), in bold
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_cross_plugin_share_button_buggy"
+msgstr ""
+"Do you have an old version of the {{old_share_plugin_name}} plugin activated? "
+"This plugin may not play nicely with it. Specifically, you may end up with "
+"sharing buttons and related posts showing up twice. If you run into issues, "
+"please deactivate either the out of date {{old_share_plugin_name}} plugin or "
+"this one."
+
+#. A warning message for users who have another plugin installed in an incompatable mode. AddThis mode is when they control their AddThis tools from AddThis.com, not within WordPress (WordPress mode is the reverse)
+#. {{old_share_plugin_name}} is a placeholder for the name of our old sharing buttons plugin (untranslated - it's not internationalized, so it makes sense to leave the name as it appears within WordPress), in bold
+#. This message is immidiately followed by msgid warning_message_cross_plugin_change_mode_action_link
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_cross_plugin_wordpress_mode"
+msgstr ""
+"Do you have the {{old_share_plugin_name}} plugin activated? Your "
+"configurations from AddThis.com won't show up on your site until the "
+"{{old_share_plugin_name}} plugin is in AddThis mode."
+
+#. An error message for users who do not have another plugin installed and are in an incompatable mode. AddThis mode is when they control their AddThis tools from AddThis.com, not within WordPress (WordPress mode is the reverse).
+#. This message is immidiately followed by msgid warning_message_cross_plugin_change_mode_action_link
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_minimal_plugin_wordpress_mode"
+msgstr ""
+"This plugin isn't compatible with WordPress mode. This plugin only "
+"functions when using the tool configurations associated with an AddThis "
+"profile."
+
+#. A generic warning text shown below the field if the user chooses to enable an option that is not recommended
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_not_recommended"
+msgstr "Warning: Not recommended."
+
+#. message shown to users when they may want to edit their plugin's configuration because we couldn't upgrade their old Custom API Configuration settings automatically
+#. addthis.layers() should not be translated
+#. {{advanced_settings_link}} will be replaced with a link using the text in msgid menu_item_advanced_settings
+#. {{developer_configuration}} will be replaced with the text in msgid advanced_settings_developer_config_header
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_smart_layers_custom_api_config_failed"
+msgstr ""
+"We really, really tried, but were unable to upgrade your Custom API "
+"Configurations. You can review your old custom settings and add them back "
+"in manually in {{advanced_settings_link}} >> {{developer_configuration}} >> "
+"addthis.layers(). A copy of your old settings will be available there for "
+"your reference.\n"
+
+#. message shown to users when they need to edit their plugin's configuration because we couldn't automatically upgrade their widgets settings
+#. {{link}} will be replaced with a link to the plugin's settings (see msgid plugin_settings_link for the text in a specific language)
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "warning_message_widget_conflict"
+msgstr ""
+"Uh oh! We couldn't automatically upgrade this widget. This widget still "
+"works, but if you would like to change its configuration please delete it, "
+"go to %1$s, update your tool settings, then come back here to add an a new "
+"AddThis Tool widget."
+
+#. widget description
+#. The widget for adding any inline AddThis tool onto page. This widget will have a dropdown menu from which the user can select the specific tool they want.
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "widget_description_by_dom_class"
+msgstr "AddThis Share, Follow and Related Post Tools"
+
+#. A message in the widget for adding any inline AddThis tool onto page. This message displays when the user has no tools active yet.
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "widget_description_by_dom_class_activate"
+msgstr "No active tools yet. Go activate some!'"
+
+#. An error message in the widget for adding any inline AddThis tool onto page. This error message displays when the tools selected by the user no longer exists or is no longer enabled on their account.
+#. {{class}} is a placeholder for the CSS class for the tool selected
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "widget_description_by_dom_class_bad_class"
+msgstr ""
+"Error! The tool with id {{class}} does not exist in your settings. Please "
+"select another tool."
+
+#. widget description
+#. Gives users another way to add our script onto their pages, if their theme isn't following WordPress conventions. The text 'addthis_widget.js' should not be translated. It is the literal name of the script added.
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "widget_description_script"
+msgstr ""
+"If your theme is not adding the AddThis script (addthis_widget.js) onto "
+"your pages, try adding this widget."
+
+#. {{link}} is a placeholder for a link to either the plugin's settings (see msgid plugin_settings_link for the text in a specific language) or addthis.com (which always reads addthis.com). Which link is used depends nn the plugin's (depending on mode).
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "widget_edit_link"
+msgstr "To edit the options for your AddThis tools, please go to {{link}}"
+
+#. {{plugin_settings}} is a placeholder for a link to the plugin's settings (see msgid plugin_settings_link for the text in a specific language)
+#. {{addthis_website}} is a placeholder for a link to addthis.com that always reads addthis.com
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "widget_edit_links"
+msgstr ""
+"To edit the options for your AddThis tools, please go to "
+"{{plugin_settings}} or {{addthis_website}}"
+
+#. widget name
+#. it's important to note that this will often be truncated for smaller screens, and so please put the most differentiating parts first
+#. The widget for adding any inline AddThis tool onto page. This widget will have a dropdown menu from which the user can select the specific tool they want.
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "widget_name_by_dom_class"
+msgstr "AddThis Tool"
+
+#. widget name
+#. it's important to note that this will often be truncated for smaller screens, and so please put the most differentiating parts first
+#. Gives users another way to add our script onto their pages, if their theme isn't following WordPress conventions
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "widget_name_script"
+msgstr "AddThis Script"
+
+#. the label on a form input when asking user for a title of their widget
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "widget_title_input_label"
+msgstr "Title:"
+
+#. the label on a form select dropdown when asking user for which tool they want to use for their widget
+#, include in addthis-wordpress-plugin domain
+#, include in addthis-wordpress-plugin-backend domain
+msgid "widget_tool_select_label"
+msgstr "Tool:"
+
+#. Used as the text if a tool has no shortcode available (floating tools)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_no_shortcode_available"
+msgstr "none"
+
+#. Used as the text of a button to create a new tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_add_new_button"
+msgstr "Add New"
+
+#. header text on a page that lists the users configured AddThis tools
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_title"
+msgstr "AddThis Tools"
+
+#. verb. text in a link. by clicking on it, the user can edit the item.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_edit_link"
+msgstr "Edit"
+
+#. verb. text in a link. by clicking on it, the user can duplicate the item (create a new identical item).
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_duplicate_link"
+msgstr "Duplicate"
+
+#. a link in an help sub listing, this link points to our support team's web form
+#, include in addthis-wordpress-plugin domain
+msgid "support_contact_form"
+msgstr "Support Contact Form"
+
+#. a link in an help sub listing, this link will open an email addressed to our support team
+#, include in addthis-wordpress-plugin domain
+msgid "support_email"
+msgstr "Email Support"
+
+#. a link in an help sub listing, this link points to an FAQs list (frequently asked questions)
+#, include in addthis-wordpress-plugin domain
+msgid "help_faqs"
+msgstr "FAQs"
+
+#. a link in an help sub listing, this link points to AddThis' Academy site
+#, include in addthis-wordpress-plugin domain
+msgid "help_academy"
+msgstr "AddThis Academy"
+
+#. a heading for a section of links that point the user at more information and help them reach out to our support team
+#, include in addthis-wordpress-plugin domain
+msgid "help_ad_heading"
+msgstr "Help"
+
+#. The header/footer row of a table for a column that displays an image & name of the tools listed, and includes edit/duplicate links
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listings_tool_name_header"
+msgstr "Tool"
+
+#. The header on an ad that either prompts the user to create an account/sign in, or links them to their analytics at AddThis.com
+#, include in addthis-wordpress-plugin domain
+msgid "registration_ad_header"
+msgstr "Analytics on AddThis.com"
+
+#. The link in an ad about AddThis analytics. This link would take a user to their analytics at AddThis.com
+#, include in addthis-wordpress-plugin domain
+msgid "registration_ad_view_analytics"
+msgstr "View Analytics"
+
+#. header text on a page that allow user to add new share tools
+#, include in addthis-wordpress-plugin domain
+msgid "add_new_share_button_header"
+msgstr "Add New Share Button"
+
+#. Used in the list of tools as the tool type
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listing_type_unknown"
+msgstr "Unknown"
+
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_ist_name"
+msgstr "Image Sharing"
+
+#. Used as a default name on tools, in the too listing as well as settings for a particular tool.
+#, include in addthis-wordpress-plugin domain
+msgid "tool_esb_name"
+msgstr "Expanding Share Buttons"
+
+#. used as the default (first) value in a select dropdown. it's no a valid choice for the drop down, but a description for the rest of the content in the dropdown
+#. used in a drop down of actions (activate/deactivate) of bulk actions that can be done on tools
+#, include in addthis-wordpress-plugin domain
+msgid "tool_bulk_actions_default"
+msgstr "Bulk Actions"
+
+#. A button to apply the selected values/changes to a tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_bulk_actions_apply"
+msgstr "Apply"
+
+#. The header/footer row of a table for a column that displays the type of the tools listed (Share Buttons, Follow Buttons, Related Posts, Custom HTML)
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listings_tool_type_header"
+msgstr "Tool Type"
+
+#. A button to apply #. The header/footer row of a table for a column that displays the status for the tools listed (Activated/Deactivated)
+ selected values/changes to a tool
+#, include in addthis-wordpress-plugin domain
+msgid "tool_listings_enabled_header"
+msgstr "Active Status"
+
+. A label for a dropdown where user can customize the style for inline share tool
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_style_label"
+msgstr "Style"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick the style for inline buttons. Modern Responsive Style
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_modern_responsive_style"
+msgstr "Modern Responsive"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick the style for inline buttons. Modern Fixed-Width Style
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_modern_fixed_style"
+msgstr "Modern Fixed-Width"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick the style for sidebar buttons. Modern Style
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_modern_style"
+msgstr "Modern"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick the style for sidebar buttons. Modern Bordered Style
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_modern_bordered_style"
+msgstr "Modern (bordered)"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick the style for inline buttons. Origin Style
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_modern_origin_style"
+msgstr "Original"
+
+#. A label for a text box where user can enter any addthis markup
+#. The text on a tool type when create a new tool
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_custom_html_label"
+msgstr "Custom HTML"
+
+#. The descriptions for a text area where the user can enter any addthis markup
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_custom_html_description"
+msgstr "This text box allows you to enter any AddThis markup that you wish. To see examples of what you can do, visit AddThis.com Sharing Tools and select any sharing tool. You can also check out our API. For any help you may need, please visit AddThis Support."
+
+#. A label for a select dropdown where the user can select the wordpress templates
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_wordpress_template_label"
+msgstr "Templates"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick a wordpress template. Homepage.
+#, include in addthis-wordpress-plugin domain
+msgid "template_picker_select_homepage"
+msgstr "Homepage"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick a wordpress template. Posts.
+#, include in addthis-wordpress-plugin domain
+msgid "template_picker_select_posts"
+msgstr "Posts"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick a wordpress template. Pages.
+#, include in addthis-wordpress-plugin domain
+msgid "template_picker_select_page"
+msgstr "Pages"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick a wordpress template. Archives.
+#, include in addthis-wordpress-plugin domain
+msgid "template_picker_select_archives"
+msgstr "Archives"
+
+#. The displayed text of an option in a select dropdown menu, allowing the user to pick a wordpress template. Categories.
+#, include in addthis-wordpress-plugin domain
+msgid "template_picker_select_categories"
+msgstr "Categories"
+
+#. A message nofitying them that the tool they selected was successfully deacticated
+#. {{toolName}} is a placeholder for the name of the tool
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_deactivated"
+msgstr "{{toolName}} Deactivated"
+
+#. A message nofitying them that the tool they selected was successfully deacticated
+#. {{toolName}} is a placeholder for the name of the tool
+#, include in addthis-wordpress-plugin domain
+msgid "share_tool_activated"
+msgstr "{{toolName}} Activated"
+
+#, Red notice text underneath a disabled text area explaining to the user why it is disabled.
+#, include in addthis-wordpress-plugin domain
+msgid "not_allowed_to_do_unfiltered_html"
+msgstr "You don't have permission to enter unfiltered HTML. Please contact your WordPress administrator if you need this permission."
+
+#. The header on abox with a button for saving settings, and the text in a button for saving settings.
+#, include in addthis-wordpress-plugin domain
+msgid "publish"
+msgstr "Publish"
+
+#. The text on a tool type when create a new tool
+#, include in addthis-wordpress-plugin domain
+msgid "sidebar_tool"
+msgstr "Sidebar"
+
+#. The text on a tool type when create a new tool
+#, include in addthis-wordpress-plugin domain
+msgid "inline_tool"
+msgstr "Inline"
+
+#. The header on the Advanced Settings >> Loading Options >> Actions Hooks for Scripts settings field radio button group
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_enqueue_client_label"
+msgstr "Action Hooks for Scripts"
+
+#. The description on the Advanced Settings >> Loading Options >> Actions Hooks for Scripts settings field radio button group specifically for how client (addthis_widget.js) is added onto page
+#. addthis_widget.js is a filename and should not be translated.
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_enqueue_client_description"
+msgstr "How should addthis_widget.js (the script that creates AddThis tools) be added onto your site?"
+
+#. The label on the Advanced Settings >> Loading Options >> Actions Hooks for Scripts >> wp_enqueue_scripts radio button settings field
+#. wp_enqueue_scripts is the name of a function and should not be changed. Additional text may be added.
+#. This text may be immidiately followed by msgid option_recommended
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_enqueue_true_label"
+msgstr "wp_enqueue_scripts"
+
+#. The label on the Advanced Settings >> Loading Options >> Actions Hooks for Scripts >> wp_footer/wp_head radio button settings field
+#. wp_footer & wp_head are the names functions and should not be changed. The seperator may be changed for different langauges, and additional text may be added.
+#. This text may be immidiately followed by msgid option_recommended
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_enqueue_false_label"
+msgstr "wp_footer/wp_head"
+
+#. Warning text shown below the field if the user choose an option that has consquences for other settings
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_advanced_settings_enqueue_client"
+msgstr "If wp_enqueue_scripts is selected, then asynchronous loading of this script will not be available."
+
+#. Warning text shown below the field if the user choose an option that has consquences for other settings
+#, include in addthis-wordpress-plugin domain
+msgid "warning_message_advanced_settings_enqueue_local_settings"
+msgstr "If wp_enqueue_scripts is selected, then (a) asynchronous loading of this script will not be available, (b) control over which floating tools appear on which templates will not be available."
+
+#. The description on the Advanced Settings >> Loading Options >> Actions Hooks for Scripts settings field radio button group specifically for how local settings are added onto page
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_enqueue_local_settings_description"
+msgstr "How should the script with your local AddThis settings be added onto your site?"
+
+#. Advanced Settings >> AMP Options header
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_amp_options_header"
+msgstr "AMP Options"
+
+#. Advanced Settings >> AMP Options section description
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_amp_options_description"
+msgstr "In this section, you can override some options for AMP tools."
+
+#. Advanced Settings >> AMP Options disable AMP features label
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_amp_disable_label"
+msgstr "Disable AddThis Plugin AMP Features"
+
+#. Advanced Settings >> AMP Options disable AMP features description
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_amp_disable_description"
+msgstr "Disable automatic insertion of amp-addthis tags. Use this option if there are issues with installed AMP features, such as a plugin that is not compatible with AddThis plugins."
+
+#. Advanced Settings >> AMP Options inline width label
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_amp_inline_width_label"
+msgstr "Inline Width"
+
+#. Advanced Settings >> AMP Options inline width description
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_amp_inline_width_description"
+msgstr "Override the width of Inline Sharing Tools on AMP"
+
+#. Advanced Settings >> AMP Options inline height label
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_amp_inline_height_label"
+msgstr "Inline Height"
+
+#. Advanced Settings >> AMP Options inline height description
+#, include in addthis-wordpress-plugin domain
+msgid "advanced_settings_amp_inline_height_description"
+msgstr "Override the height of Inline Sharing Tools on AMP"

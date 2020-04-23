@@ -1,0 +1,16 @@
+<div class="tool-container">
+    <img ng-src="{{templateBaseUrl}}src/images/{{ngModel.image}}" />
+    <div class="tool-title">
+        <span translate>{{ngModel.toolTypeMsgid}}</span>
+        <a
+            class="button action"
+            ui-sref="configurator({
+                toolPco: 'new',
+                settings: ngModel.defaultSettings
+            })"
+            translate
+        >
+            add_new_share_tool_select
+        </a>
+    </div>
+</div>

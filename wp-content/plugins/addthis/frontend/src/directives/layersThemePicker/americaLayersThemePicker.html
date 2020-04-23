@@ -1,0 +1,11 @@
+<div class="alignleft actions tool-themes">
+    <label for="{{fieldName}}"><strong>{{title|translate}}</strong></label>
+    <select name="{{fieldName}}" id="{{fieldName}}" ng-model="ngModel">
+        <option
+                ng-repeat="theme in themeOptions"
+                value="{{theme.value}}"
+        >
+            {{theme.display|translate}}
+        </option>
+    </select>
+</div>

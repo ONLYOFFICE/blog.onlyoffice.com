@@ -1,0 +1,38 @@
+<!-- Custom Follow Buttons -->
+<div
+    tool-gallery-settings-page
+    save="save"
+    go-back="goBack"
+    feature-settings="followButtons"
+    tool-pco="cflwh"
+    pro
+    tool-name-msgid="tool_cflwh_name"
+    tool-description-msgid="tool_cflwh_long_description"
+>
+    <div
+        icon-shape-picker
+        ng-model="settings.shape"
+        tool-pco="{{toolPco}}"
+    >
+    </div>
+
+    <div
+        icon-color-picker
+        ng-model="settings.background"
+        tool-pco="{{toolPco}}"
+    >
+    </div>
+
+    <div
+        follow-service-picker
+        ng-model="settings.services"
+        tool-pco="{{toolPco}}"
+    >
+    </div>
+
+    <div
+        get-the-code
+        tool-classes="settings.elements"
+    >
+    </div>
+</div>

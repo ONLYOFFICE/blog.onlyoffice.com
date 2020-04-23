@@ -1,0 +1,11 @@
+<div class="alignleft actions tool-sizes">
+    <label for="{{fieldName}}"><strong>{{title|translate}}</strong></label>
+    <select name="{{fieldName}}" id="{{fieldName}}" ng-model="ngModel">
+        <option
+                ng-repeat="size in sizeOptions"
+                value="{{size.value}}"
+        >
+            {{size.display|translate}}
+        </option>
+    </select>
+</div>

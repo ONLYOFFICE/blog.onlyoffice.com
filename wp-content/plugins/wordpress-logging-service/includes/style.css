@@ -1,0 +1,30 @@
+
+/*.wp-list-table .column-cb { width: 5%; }*/
+.wp-list-table .column-id { width: 5%; }
+.wp-list-table .column-category { width: 8%; }
+.wp-list-table .column-time { width: 10%; }
+.wp-list-table .column-blog { width: 10%; }
+.wp-list-table .column-severity { width: 7%; }
+.wp-list-table .column-message { width: 60%; }
+
+.severity-2 td {
+	color:green;
+}
+
+.severity-3 td {
+	color:orange;
+	font-weight:bold;
+}
+
+
+.severity-4 td {
+	color:red;
+	font-weight:bold;
+}
+
+
+.severity-5 td {
+	font-weight:bold; 
+	color:white; 
+	background-color:red;
+}

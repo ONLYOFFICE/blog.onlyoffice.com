@@ -1,0 +1,113 @@
+/**
+ * +--------------------------------------------------------------------------+
+ * | Copyright (c) 2008-2017 AddThis, LLC                                     |
+ * +--------------------------------------------------------------------------+
+ * | This program is free software; you can redistribute it and/or modify     |
+ * | it under the terms of the GNU General Public License as published by     |
+ * | the Free Software Foundation; either version 2 of the License, or        |
+ * | (at your option) any later version.                                      |
+ * |                                                                          |
+ * | This program is distributed in the hope that it will be useful,          |
+ * | but WITHOUT ANY WARRANTY; without even the implied warranty of           |
+ * | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            |
+ * | GNU General Public License for more details.                             |
+ * |                                                                          |
+ * | You should have received a copy of the GNU General Public License        |
+ * | along with this program; if not, write to the Free Software              |
+ * | Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA |
+ * +--------------------------------------------------------------------------+
+ */
+
+.addthis-settings-page .bad-choice,
+.addthis-settings-page label.bad-choice,
+.addthis-settings-page .bad-choice label{
+  color: #CC1B05;
+}
+
+.addthis-settings-page .bad-choice > input[type=text],
+.addthis-settings-page .bad-choice > textarea{
+  border-color: #CC1B05;
+}
+
+.addthis-settings-page .good-choice{
+  color: #3c763d;
+}
+
+.addthis-settings-page .good-choice > input[type=text],
+.addthis-settings-page .good-choice > textarea{
+  border-color: #2b542c;
+}
+
+.addthis-settings-page div.soft-alert{
+  display: block;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 3px;
+  margin: 10px 20px 10px 0;
+  padding: 5px;
+}
+
+@media screen and (max-width: 782px) {
+  .addthis-settings-page div.soft-alert{
+    margin-right: 10px;
+  }
+}
+
+.addthis-settings-page div.alert-warning{
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+  color: #8a6d3b;
+}
+
+.addthis-settings-page div.alert-success{
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;
+}
+
+.addthis-settings-page div.alert-info{
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #31708f;
+}
+
+.addthis-settings-page div.alert-danger{
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+
+.addthis-settings-page div.icon{
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.addthis-settings-page .bad-choice .icon svg{
+  fill: #CC1B05;
+}
+
+.addthis-settings-page .good-choice .icon svg{
+  fill: #3c763d;
+}
+
+.addthis-settings-page .alert-warning .icon svg{
+  fill: #8a6d3b;
+}
+
+.addthis-settings-page .alert-info .icon svg{
+  fill: #31708f;
+}
+
+.addthis-settings-page .alert-success .icon svg{
+  fill: #3c763d;
+}
+
+.addthis-settings-page .alert-danger .icon svg{
+  fill: #a94442;
+}
+
+.addthis-settings-page label.input-feedback {
+  margin-top: 10px;
+}

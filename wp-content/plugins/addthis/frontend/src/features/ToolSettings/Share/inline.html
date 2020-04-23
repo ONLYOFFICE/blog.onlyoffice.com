@@ -1,0 +1,142 @@
+<div class="tool-left">
+
+    <div
+        setting-frame
+        for="inline-setting-frame"
+        title="toolSettings.toolName"
+        title-placeholder-msgid="titlePlaceholder"
+    >
+
+        <pre ng-show="globalOptions.debug_enable">{{toolSettings|json}}</pre>
+        <!-- General Settings -->
+        <div
+            setting-card
+            for="setting-card-general-settings"
+            expended="generalCardExpended"
+        >
+            <h2 class="hndle ui-sortable-handle">
+                <span translate>share_tool_edit_general_label</span>
+            </h2>
+
+            <div class="inside inside-grey" ng-show="generalCardExpended">
+                <h3 translate>
+                    share_tool_counter_label
+                </h3>
+                <div
+                    count-type-picker
+                    ng-model="toolSettings.counts"
+                    field-name="inlineCounts.fieldName"
+                    title="inlineCounts.title"
+                    type-options="inlineCounts.countTypeOptions"
+                >
+                </div>
+                <div class="clear"></div>
+
+                <div
+                    share-service-picker
+                    third-party="toolSettings.style === 'original'"
+                    services="toolSettings.services"
+                    third-party-services="toolSettings.originalServices"
+                    auto-personalization="toolSettings.auto_personalization"
+                    number-of-services="toolSettings.numPreferredServices"
+                    min="1"
+                    max="10"
+                    widget-id="{{toolSettings.widgetId}}-inline"
+                >
+                </div>
+            </div>
+        </div>
+
+        <!-- Position Settings -->
+        <div
+            setting-card
+            for="setting-card-position-settings"
+            expended="positionCardExpended"
+        >
+            <h2 class="hndle ui-sortable-handle">
+                <span translate>layers_position_header</span>
+            </h2>
+            <div class="inside inside-grey" ng-show="positionCardExpended">
+                <div
+                    location-checklist
+                    ng-model="toolSettings.elements",
+                    locations="inlineLocations"
+                >
+                </div>
+            </div>
+        </div>
+
+        <!-- Design Settings -->
+        <div
+            setting-card
+            for="setting-card-design-settings"
+            expended="designCardExpended"
+        >
+            <h2 class="hndle ui-sortable-handle">
+                <span translate>share_tool_edit_design_label</span>
+            </h2>
+            <div class="inside inside-grey" ng-show="designCardExpended">
+                <h3 translate>share_tool_style_label</h3>
+                <div
+                    style-picker=""
+                    ng-model="toolSettings.style"
+                    field-name="inlineStyle.fieldName"
+                    title="inlineStyle.title"
+                    style-options="inlineStyle.styleOptions"
+                >
+                </div>
+                <div class="clear"></div>
+
+                <div ng-show="toolSettings.style !== 'original'">
+                    <h3 translate>share_tool_buttons_label</h3>
+                    <div
+                        america-icon-size-picker=""
+                        ng-model="toolSettings.size"
+                        field-name="desktopButtonSize.fieldName"
+                        title="desktopButtonSize.title"
+                        size-options="desktopButtonSize.sizeOptions"
+                    >
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Settings -->
+        <div
+            setting-card
+            for="setting-card-advanced-settings"
+            expended="advancedCardExpended"
+            ng-show="globalOptions.addthis_plugin_controls == 'AddThis'"
+        >
+            <h2 class="hndle ui-sortable-handle">
+                <span translate>share_tool_edit_advanced_label</span>
+            </h2>
+            <div class="inside inside-grey" ng-show="advancedCardExpended">
+                <div
+                    hide-on-pages
+                    ng-model="toolSettings"
+                >
+                </div>
+                <h3 translate>share_tool_extra_appearance_settings_label</h3>
+                <div
+                    share-count-threshold-picker
+                    ng-model="toolSettings.shareCountThreshold"
+                >
+                </div>
+                <div
+                    responsive-picker
+                    ng-model="toolSettings.responsive"
+                >
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="tool-right">
+    <div ng-include src="'/features/ToolSettings/submit.html'"></div>
+    <div ng-include src="'/features/Ads/HelpAd.html'"></div>
+</div>
+

@@ -1,0 +1,221 @@
+html,
+body,
+div,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+em,
+img,
+strong,
+sub,
+sup,
+b,
+u,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+table,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary,
+time,
+mark,
+audio,
+video
+{
+margin: 0;
+padding: 0;
+border: 0;
+outline: 0;
+vertical-align: baseline;
+background: transparent;
+font-size: 100%;
+}
+
+a
+{
+margin: 0;
+padding: 0;
+font-size: 100%;
+vertical-align: baseline;
+background: transparent;
+outline: 0;
+}
+
+table
+{
+border-collapse: collapse;
+border-spacing: 0;
+}
+
+td,
+td img
+{
+vertical-align: top;
+}
+
+input,
+select,
+button,
+textarea
+{
+margin: 0;
+font-size: 100%;
+font-family: 'Open Sans', sans-serif, Arial;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea
+{
+padding: 0;
+font-family: 'Open Sans', sans-serif, Arial;
+}
+
+input[type="checkbox"]
+{
+vertical-align: bottom;
+}
+
+input[type="radio"]
+{
+vertical-align: text-bottom;
+}
+
+sub
+{
+vertical-align: sub;
+font-size: smaller;
+}
+
+sup
+{
+vertical-align: super;
+font-size: smaller;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section
+{
+display: block;
+}
+
+nav ul
+{
+list-style: none;
+}
+
+html
+{
+overflow-y: scroll;
+}
+
+@media screen and (max-width: 970px) {
+    html {
+    overflow-x: scroll;
+    }
+}
+
+html,
+body
+{
+height: 100%;
+width: 100%;
+}
+
+body
+{
+line-height: 1;
+background: #fff;
+color: #333;
+text-align: left;
+font-size: 13px;
+font-family: 'Open Sans', sans-serif, Arial;
+font-weight: 400;
+position:relative;
+min-height: 100%;
+height: auto !important;
+height: 100%;
+min-width: 962px;
+}
+
+input,
+select,
+button,
+textarea
+{
+font-family: 'Open Sans', sans-serif, Arial;
+font-weight: 400;
+}
+
+a,
+label,
+input[type="button"],
+input[type="submit"],
+button
+{
+cursor: pointer;
+}
+
+a,
+a:visited
+{
+color: #f94a0c;
+text-decoration: underline;
+}
+
+a:hover
+{
+color: #f94a0c;
+text-decoration: none;
+}
+
+a:focus,
+a:active
+{
+color: #f94a0c;
+text-decoration: underline;
+}
+
+a:visited
+{
+color: inherit;
+}

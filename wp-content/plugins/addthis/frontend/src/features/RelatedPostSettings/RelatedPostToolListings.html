@@ -1,0 +1,92 @@
+<div class="header-container">
+    <div ng-include class="header-background" src="'/images/logo-pattern.svg'"></div>
+    <div ng-include class="header-logo" src="'/images/addthis-logo.svg'"></div>
+</div>
+
+<form
+  name="form"
+  novalidate
+  can-edit-tools-check
+  debug-hot-keys
+>
+    <section
+        alt="{{'cross_plugin_warnings_section_alt'|translate}}"
+        ng-include
+        src="'/features/CrossPluginWarnings/CrossPluginWarnings.html'"
+    >
+    </section>
+
+    <!-- What's Next -->
+    <section
+        alt="{{'tool_listing_smlwn_alt'|translate}}"
+        ng-include
+        src="'/features/RelatedPostSettings/smlwnCard.html'"
+    >
+    </section>
+
+    <!-- What's Next Mobile -->
+    <section
+        alt="{{'tool_listing_wnm_alt'|translate}}"
+        ng-show="globalOptions.addthis_plugin_controls === 'AddThis'"
+        ng-include
+        src="'/features/RelatedPostSettings/wnmCard.html'"
+    >
+    </section>
+
+    <!-- Related Post Footer -->
+    <section
+        alt="{{'tool_listing_smlre_alt'|translate}}"
+        ng-include
+        src="'/features/RelatedPostSettings/smlreCard.html'"
+    >
+    </section>
+
+    <!-- Horizontal Related Posts -->
+    <section
+        alt="{{'tool_listing_smlrebh_alt'|translate}}"
+        ng-show="globalOptions.addthis_plugin_controls === 'AddThis'"
+        ng-include
+        src="'/features/RelatedPostSettings/smlrebhCard.html'"
+    >
+    </section>
+
+    <!-- Vertical Related Posts -->
+    <section
+        alt="{{'tool_listing_smlrebv_alt'|translate}}"
+        ng-show="globalOptions.addthis_plugin_controls === 'AddThis'"
+        ng-include
+        src="'/features/RelatedPostSettings/smlrebvCard.html'"
+    >
+    </section>
+
+    <!-- Related Posts Drawer -->
+    <section
+        alt="{{'tool_listing_cod_alt'|translate}}"
+        ng-show="globalOptions.addthis_plugin_controls === 'AddThis'"
+        ng-include
+        src="'/features/RelatedPostSettings/codCard.html'"
+    >
+    </section>
+
+    <!-- Related Posts Toaster -->
+    <section
+        alt="{{'tool_listing_tst_alt'|translate}}"
+        ng-show="globalOptions.addthis_plugin_controls === 'AddThis'"
+        ng-include
+        src="'/features/RelatedPostSettings/tstCard.html'"
+    >
+    </section>
+
+    <!-- Jumbo Related Posts Footer -->
+    <section
+        alt="{{'tool_listing_jrcf_alt'|translate}}"
+        ng-show="globalOptions.addthis_plugin_controls === 'AddThis'"
+        ng-include
+        src="'/features/RelatedPostSettings/jrcfCard.html'"
+    >
+    </section>
+
+    <div ng-show="globalOptions.debug_enable">
+        <pre>toolSettings = {{toolSettings | json}}</pre>
+    </div>
+</form>

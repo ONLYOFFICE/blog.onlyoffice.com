@@ -1,0 +1,1711 @@
+# Translation of Plugins - reCaptcha by BestWebSoft - Stable (latest release) in Russian
+# This file is distributed under the same license as the Plugins - reCaptcha by BestWebSoft - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2019-12-24 13:17:42+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: GlotPress/2.4.0-alpha\n"
+"Language: ru\n"
+"Project-Id-Version: Plugins - reCaptcha by BestWebSoft - Stable (latest release)\n"
+
+#: bws_menu/bws_menu.php:382
+msgid "Download Pro Plugin"
+msgstr "Загрузить Pro плагина"
+
+#: bws_menu/bws_menu.php:384 bws_menu/class-bws-settings.php:736
+msgid "Your Pro plugin is ready"
+msgstr "Ваш Pro плагин готов"
+
+#: bws_menu/bws_menu.php:386 bws_menu/class-bws-settings.php:738
+msgid "Your plugin has been zipped, and now is ready to download."
+msgstr "Ваш плагин заархивирован, и готов к загрузке."
+
+#: bws_menu/bws_menu.php:389 bws_menu/class-bws-settings.php:741
+msgid "Download Now"
+msgstr "Загрузить сейчас"
+
+#: bws_menu/bws_menu.php:393 bws_menu/class-bws-settings.php:745
+msgid "Need help installing the plugin?"
+msgstr "Нужна помощь в установке плагина?"
+
+#: bws_menu/bws_menu.php:395 bws_menu/class-bws-settings.php:747
+msgid "How to install WordPress plugin from your admin Dashboard (ZIP archive)"
+msgstr "Как установить WordPress плагин с админ панели (ZIP архив)"
+
+#: bws_menu/bws_menu.php:398 bws_menu/class-bws-settings.php:751
+msgid "Get Started"
+msgstr "Начать "
+
+#: bws_menu/bws_menu.php:404 bws_menu/class-bws-settings.php:757
+msgid "Knowledge Base"
+msgstr "База Знаний"
+
+#: bws_menu/bws_menu.php:407
+msgid "Licenses & Domains"
+msgstr "Лицензии & Домены"
+
+#: bws_menu/bws_menu.php:518 bws_menu/bws_menu.php:541
+msgid "Get Pro"
+msgstr "Получить Pro"
+
+#: google-captcha.php:39 google-captcha.php:49 google-captcha.php:493
+#: includes/class-gglcptch-settings-tabs.php:149
+msgid "reCaptcha Settings"
+msgstr "Настройки reCaptcha"
+
+#: google-captcha.php:58 includes/whitelist.php:46
+msgid "reCaptcha Whitelist"
+msgstr "Белый cписок reCaptcha"
+
+#: includes/class-gglcptch-settings-tabs.php:369
+msgid "reCaptcha Shortcode"
+msgstr "Шорткод reCaptcha"
+
+#: includes/forms.php:78
+msgid "reCaptcha Plugin"
+msgstr "Плагин reCaptcha"
+
+#: bws_menu/deactivation-form.php:334
+msgid "Skip and Deactivate"
+msgstr "Пропустить и Деактивировать"
+
+#: bws_menu/product_list.php:32
+msgid "Create your own rental website for car renting and booking."
+msgstr "Создайте свой собственный сайт проката и резервирования автомобилей."
+
+#: includes/class-gglcptch-settings-tabs.php:281
+msgid "Light"
+msgstr "Светлая"
+
+#: includes/class-gglcptch-settings-tabs.php:282
+msgid "Dark"
+msgstr "Тёмная"
+
+#: includes/class-gglcptch-settings-tabs.php:327
+msgid "Advanced Protection"
+msgstr "Усиленная защита"
+
+#: google-captcha.php:576
+msgid "This site is protected by reCAPTCHA and the Google "
+msgstr "Этот сайт защищен reCAPTCHA и применяются "
+
+#: google-captcha.php:577
+msgid "Privacy Policy"
+msgstr "Политика конфиденциальности"
+
+#: google-captcha.php:578
+msgid " and "
+msgstr " и "
+
+#: google-captcha.php:579
+msgid "Terms of Service"
+msgstr "Условия обслуживания"
+
+#: google-captcha.php:580
+msgid " apply."
+msgstr " Google."
+
+#: includes/pro_banners.php:70
+msgid "Divi Contact Form"
+msgstr "Контактная форма плагина Divi"
+
+#: includes/pro_banners.php:71
+msgid "Divi Login Form"
+msgstr "Форма логина плагина Divi"
+
+#: includes/pro_banners.php:69
+msgid "Ninja Forms"
+msgstr "Ninja Forms"
+
+#: google-captcha.php:494
+msgid "Please enable JavaScript in your browser."
+msgstr "Пожалуйста, включите поддержку JavaScript в вашем браузере."
+
+#: includes/class-gglcptch-settings-tabs.php:288
+msgid "Score"
+msgstr "Количество очков"
+
+#: includes/forms.php:16
+msgid "Testimonials"
+msgstr "Testimonials"
+
+#: includes/forms.php:262
+msgid "Authentication failed."
+msgstr "Ошибка аутентификации."
+
+#: bws_menu/deactivation-form.php:22
+msgid "Need help? We are ready to answer your questions."
+msgstr "Нужна помощь? Мы готовы ответить на ваши вопросы."
+
+#: bws_menu/deactivation-form.php:22
+msgid "Contact Support"
+msgstr "Связаться с тех. поддержкой"
+
+#: bws_menu/deactivation-form.php:27
+msgid "The plugin is not working"
+msgstr "Плагин не работает"
+
+#: bws_menu/deactivation-form.php:29
+msgid "Kindly share what didn't work so we can fix it in future updates..."
+msgstr "Пожалуйста, сообщите, что не работает, чтобы мы смогли исправить это в будущих обновлениях..."
+
+#: bws_menu/deactivation-form.php:33
+msgid "The plugin didn't work as expected"
+msgstr "Плагин не работает, как ожидалось"
+
+#: bws_menu/deactivation-form.php:35
+msgid "What did you expect?"
+msgstr "Что именно вы ожидали?"
+
+#: bws_menu/deactivation-form.php:39
+msgid "The plugin suddenly stopped working"
+msgstr "Плагин внезапно перестал работать"
+
+#: bws_menu/deactivation-form.php:46
+msgid "The plugin broke my site"
+msgstr "Плагин сломал мой сайт"
+
+#: bws_menu/deactivation-form.php:53
+msgid "I couldn't understand how to get it work"
+msgstr "Я не могу понять, как заставить его работать"
+
+#: bws_menu/deactivation-form.php:60
+msgid "I found a better plugin"
+msgstr "Я нашел плагин лучше"
+
+#: bws_menu/deactivation-form.php:62
+msgid "What's the plugin name?"
+msgstr "Какое название плагина?"
+
+#: bws_menu/deactivation-form.php:66
+msgid "The plugin is great, but I need specific feature that you don't support"
+msgstr "Плагин замечательный, но мне нужен определенный функционал, которого у вас нет"
+
+#: bws_menu/deactivation-form.php:68
+msgid "What feature?"
+msgstr "Какой функционал?"
+
+#: bws_menu/deactivation-form.php:72
+msgid "I no longer need the plugin"
+msgstr "Мне больше не нужен плагин"
+
+#: bws_menu/deactivation-form.php:78
+msgid "It's a temporary deactivation, I'm just debugging an issue"
+msgstr "Это временная деактивация, я просто отлаживаю проблему"
+
+#: bws_menu/deactivation-form.php:93
+msgid "Quick Feedback"
+msgstr "Быстрый отзыв"
+
+#: bws_menu/deactivation-form.php:95
+msgid "If you have a moment, please let us know why you are deactivating"
+msgstr "Если у вас есть время, пожалуйста, сообщите нам, почему вы деактивируете плагин"
+
+#: bws_menu/deactivation-form.php:120
+msgid "Send website data and allow to contact me back"
+msgstr "Отправить данные сайта и позволить связаться со мной"
+
+#: bws_menu/deactivation-form.php:225
+msgid "Processing"
+msgstr "Обработка"
+
+#: bws_menu/deactivation-form.php:254
+msgid "Submit and Deactivate"
+msgstr "Отправить и Деактивировать"
+
+#: bws_menu/deactivation-form.php:269
+msgid "Please tell us the reason so we can improve it."
+msgstr "Пожалуйста, сообщите нам причину, чтобы мы могли улучшить плагин."
+
+#: bws_menu/product_list.php:22
+msgid "Best secure captcha plugin to protect your WordPress forms."
+msgstr "Лучший плагин капчи, который защитит формы вашего WordPress сайта."
+
+#: includes/class-gglcptch-settings-tabs.php:337
+msgid "Disabled Submit Button"
+msgstr "Отключенная кнопка подтверждения"
+
+#: includes/forms.php:57
+msgid "Custom Forms"
+msgstr "Пользовательские формы"
+
+#: includes/pro_banners.php:53
+msgid "Jetpack Contact Form"
+msgstr "Контактная форма плагина Jetpack"
+
+#: includes/pro_banners.php:56
+msgid "bbPress New Topic form"
+msgstr "Форма новой темы плагина bbPress"
+
+#: includes/pro_banners.php:57
+msgid "bbPress Reply form"
+msgstr "Форма ответа плагина bbPress"
+
+#: includes/pro_banners.php:58
+msgid "BuddyPress Registration form"
+msgstr "Форма регистрации плагина BuddyPress"
+
+#: includes/pro_banners.php:59
+msgid "BuddyPress Comments form"
+msgstr "Форма комментариев плагина BuddyPress"
+
+#: includes/pro_banners.php:60
+msgid "BuddyPress Add New Group form"
+msgstr "Форма добавления новой группы плагина BuddyPress"
+
+#: includes/pro_banners.php:61
+msgid "WooCommerce Login form"
+msgstr "Форма логина плагина WooCommerce"
+
+#: includes/pro_banners.php:62
+msgid "WooCommerce Registration form"
+msgstr "Форма регистрации плагина WooCommerce"
+
+#: includes/pro_banners.php:63
+msgid "WooCommerce Reset password form"
+msgstr "Форма восстановления пароля плагина WooCommerce"
+
+#: includes/pro_banners.php:64
+msgid "WooCommerce Checkout form"
+msgstr "Форма оформления заказа плагина WooCommerce"
+
+#: includes/pro_banners.php:65
+msgid "wpForo Login form"
+msgstr "Форма логина плагина wpForo"
+
+#: includes/pro_banners.php:66
+msgid "wpForo Registration form"
+msgstr "Форма регистрации плагина wpForo"
+
+#: includes/pro_banners.php:67
+msgid "wpForo New Topic form"
+msgstr "Форма новой темы плагина wpForo"
+
+#: includes/pro_banners.php:68
+msgid "wpForo Reply form"
+msgstr "Форма ответа плагина wpForo"
+
+#: bws_menu/bws_functions.php:93
+msgid "%s reviews"
+msgstr "%s отзывы"
+
+#: bws_menu/class-bws-settings.php:986
+msgid "Unfortunately, Your license has expired. To continue getting top-priority support and plugin updates, you should extend it in your %s."
+msgstr "К сожалению, время использования вашей лицензии истекло. Для получения обновлений и приоритетной тех.поддержки, вам необходимо продлить лицензию в вашей %s."
+
+#: bws_menu/product_list.php:7
+msgid "Admin Tools"
+msgstr "Инструменты"
+
+#: bws_menu/product_list.php:8
+msgid "Content"
+msgstr "Контент"
+
+#: bws_menu/product_list.php:9
+msgid "eCommerce"
+msgstr "Коммерция"
+
+#: bws_menu/product_list.php:10
+msgid "Marketing"
+msgstr "Маркетинг"
+
+#: bws_menu/product_list.php:11
+msgid "Navigation"
+msgstr "Навигация"
+
+#: bws_menu/product_list.php:15
+msgid "SMM"
+msgstr "СММ"
+
+#: bws_menu/product_list.php:135
+msgid "Stronger security solution which protects your WordPress website from hacks and unauthorized login attempts."
+msgstr "Мощнейшее решение для безопасности, которое защищает ваш сайт WordPress от взломов и неавторизованных попыток входа в систему."
+
+#: bws_menu/product_list.php:346
+msgid "Add related, featured, latest, and popular posts to your WordPress website. Connect your blog readers with a relevant content."
+msgstr "Добавляйте похожие, избранные, последние и популярные посты на ваш сайт WordPress. Предоставляйте своим читателям контент схожей тематики."
+
+#: google-captcha.php:1029
+msgid "Please submit \"Test verification\""
+msgstr "Пожалуйста, нажмите кнопку \"Тестирование проверки\"."
+
+#: includes/class-gglcptch-settings-tabs.php:23
+msgid "Misc"
+msgstr "Разное"
+
+#: includes/class-gglcptch-settings-tabs.php:62
+msgid "Invisible"
+msgstr "Невидимая"
+
+#: includes/class-gglcptch-settings-tabs.php:153
+msgid "Get the API Keys"
+msgstr "Получить API ключи"
+
+#: includes/class-gglcptch-settings-tabs.php:176
+msgid "General"
+msgstr "Общее"
+
+#: includes/pro_banners.php:75 includes/forms.php:47
+msgid "External Plugins"
+msgstr "Внешние плагины"
+
+#: includes/class-gglcptch-settings-tabs.php:277
+msgid "Theme"
+msgstr "Тема"
+
+#: includes/pro_banners.php:167
+msgid "Size"
+msgstr "Размер"
+
+#: includes/pro_banners.php:177
+msgid "Language"
+msgstr "Язык"
+
+#: includes/pro_banners.php:185
+msgid "Multilanguage"
+msgstr "Multilanguage"
+
+#: includes/whitelist.php:74
+msgid "IP to whitelist"
+msgstr "IP в белый список"
+
+#: includes/whitelist.php:221 includes/whitelist.php:231
+msgid "Delete"
+msgstr "Удалить"
+
+#: bws_menu/product_list.php:14
+msgid "SEO"
+msgstr "SEO"
+
+#: includes/class-gglcptch-settings-tabs.php:372
+msgid "Add reCaptcha to your posts or pages using the following shortcode:"
+msgstr "Добавьте reCaptcha в свои записи или страницы, используя следующий шорткод:"
+
+#: bws_menu/product_list.php:202
+msgid "Protect WordPress website – allow and deny access for certain IP addresses, hostnames, etc."
+msgstr "Защитите свой сайт WordPress - предоставляйте и запрещайте доступ с определенных IP-адресов, имен хостов и т.д."
+
+#: bws_menu/product_list.php:219
+msgid "Protect WordPress website against brute force attacks. Limit rate of login attempts."
+msgstr "Защищайте свой сайт WordPress от брутфорс-атак. Ограничивайте количество попыток ввода логина."
+
+#: bws_menu/product_list.php:229
+msgid "Add LinkedIn Share and Follow buttons to WordPress posts, pages and widgets. 5 plugins included – profile, insider, etc."
+msgstr "Добавляйте кнопки LinkedIn \"Поделиться\" и \"Отслеживать\" к постам, страницам и виджетам WordPress. 5 плагинов включено - Профиль, Инсайдер и т.д."
+
+#: bws_menu/product_list.php:249
+msgid "Add customizable pagination to WordPress website. Split long content to multiple pages for better navigation."
+msgstr "Добавляйте настраиваемую пагинацию на ваш сайт WordPress. Разбивайте объемный контент на несколько страниц для лучшей навигации."
+
+#: bws_menu/product_list.php:259
+msgid "Generate PDF files and print WordPress posts/pages. Customize document header/footer styles and appearance."
+msgstr "Создавайте PDF-файлы и печатайте посты/страницы сайта WordPress. Настраивайте стили хедера/футера документа и его внешний вид."
+
+#: bws_menu/product_list.php:269
+msgid "Add Pinterest Follow, Pin It buttons and profile widgets (Pin, Board, Profile) to WordPress posts, pages and widgets."
+msgstr "Добавляйте кнопки Pinterest \"Подписаться\", \"Сохранить\" и виджеты профиля (Пин, Доска, Профиль) к постам, страницам и виджетам WordPress."
+
+#: bws_menu/product_list.php:279
+msgid "Create your personal portfolio WordPress website. Manage and showcase past projects to get more clients."
+msgstr "Создавайте и добавляйте портфолио на свой сайт WordPress. Управляйте и демонстрируйте прошлые проекты, чтобы привлечь больше клиентов."
+
+#: bws_menu/product_list.php:289
+msgid "Export WordPress posts to CSV file format easily. Configure data order."
+msgstr "С легкостью экспортируйте посты WordPress в файлы формата CSV. Настраивайте порядок отображения данных."
+
+#: bws_menu/product_list.php:299
+msgid "Add extra fields to default WordPress user profile. The easiest way to create and manage additional custom values."
+msgstr "Добавляйте пользовательские поля в стандартный профиль WordPress. Самый простой способ создания и управления дополнительными полями."
+
+#: bws_menu/product_list.php:309
+msgid "Add and display HTML advertisement banner on WordPress website. Customize bar styles and appearance."
+msgstr "Добавляйте и отображайте баннерную HTML рекламу на сайте WordPress. Настраивайте стили и внешний вид баннера."
+
+#: bws_menu/product_list.php:319
+msgid "Add customizable quotes and tips blocks to WordPress posts, pages and widgets."
+msgstr "Добавляйте настраиваемые цитаты и подсказки к постам, страницам и виджетам WordPress."
+
+#: bws_menu/product_list.php:326
+msgid "Add rating plugin to your WordPress website to receive feedback from your customers."
+msgstr "Добавляйте систему оценивания и рейтинга на ваш сайт WordPress и получайте отзывы от ваших клиентов."
+
+#: bws_menu/product_list.php:336
+msgid "Create your personal real estate WordPress website. Sell, rent and buy properties. Add, search and browse listings easily."
+msgstr "Создайте свой личный сайт агентства недвижимости на базе WordPress. Продавайте, арендуйте и покупайте недвижимость. Легко добавляйте, находите и просматривайте листинги."
+
+#: bws_menu/product_list.php:353
+msgid "Send bulk email messages to WordPress users. Custom templates, advanced settings and detailed reports."
+msgstr "Осуществляйте массовую рассылку писем пользователям WordPress. Пользовательские шаблоны, дополнительные настройки и подробные отчеты."
+
+#: bws_menu/product_list.php:363
+msgid "The best responsive slider plugin for your WordPress website. Create beautifully animated slides just in a few clicks."
+msgstr "Самый лучший адаптивный слайдер для вашего сайта WordPress. Создавайте красиво анимированные слайды всего в несколько кликов."
+
+#: bws_menu/product_list.php:387
+msgid "Add social media login, registration, and commenting to your WordPress website."
+msgstr "Добавляйте на свой сайт WordPress возможность входа, регистрации и комментирования с использованием существующих аккаунтов социальных сетей."
+
+#: bws_menu/product_list.php:394
+msgid "Add email newsletter sign up form to WordPress posts, pages and widgets. Collect data and subscribe your users."
+msgstr "Добавляйте форму подписки на новостную рассылку в посты, страницы и виджеты WordPress. Собирайте данные и осуществляйте подписку пользователей."
+
+#: bws_menu/product_list.php:404
+msgid "Add testimonials and feedbacks from your customers to WordPress website posts, pages, and widgets."
+msgstr "Добавляйте рекомендации и отзывы ваших клиентов в посты, страницы и виджеты сайта WordPress."
+
+#: bws_menu/product_list.php:411
+msgid "Best timesheet plugin for WordPress. Track employee time, streamline attendance and generate reports."
+msgstr "Лучший плагин учёта рабочего времени на сайте WordPress. Отслеживайте время работы сотрудников, оптимизируйте график работы в офисе и создавайте отчеты."
+
+#: bws_menu/product_list.php:421
+msgid "Add Twitter Follow, Tweet, Hashtag, and Mention buttons to WordPress posts and pages."
+msgstr "Добавляйте кнопки Твиттера \"Читать\", \"Твитнуть\", \"Метка\" и \"Упомянуть\" к постам и страницам WordPress. "
+
+#: bws_menu/product_list.php:431
+msgid "Automatically check and update WordPress website core with all installed plugins and themes to the latest versions."
+msgstr "Выполняйте автоматическую проверку и обновление ядра WordPress до последних версий со всеми установленными плагинами и темами."
+
+#: bws_menu/product_list.php:441
+msgid "Powerful user role management plugin for WordPress website. Create, edit, copy, and delete user roles."
+msgstr "Эффективный плагин управления ролями пользователей для сайта WordPress. Создавайте, редактируйте, копируйте и удаляйте роли пользователей."
+
+#: bws_menu/product_list.php:451
+msgid "Display live count of online visitors who are currently browsing your WordPress website."
+msgstr "Ведите подсчет количества посетителей, которые в настоящее время просматривают ваш сайт WordPress."
+
+#: bws_menu/product_list.php:461
+msgid "Backup and export Zendesk Help Center content automatically to your WordPress website database."
+msgstr "Делайте автоматическое резервное копирование и экспорт содержимого Zendesk Help Center в базу данных вашего сайта WordPress."
+
+#: bws_menu/product_list.php:212
+msgid "Create your personal job board and listing WordPress website. Search jobs, submit CV/resumes, choose candidates."
+msgstr "Создавайте свою собственную доску объявлений с перечнем вакансий на базе WordPress. Осуществляйте поиск вакансий, подачу резюме/CV кандидата, выбор кандидатов."
+
+#: bws_menu/product_list.php:239
+msgid "Translate WordPress website content to other languages manually. Create multilingual pages, posts, widgets, menus, etc."
+msgstr "Переводите содержимое сайта WordPress на другие языки вручную. Создавайте многоязычные страницы, посты, виджеты, меню и т.д."
+
+#: bws_menu/product_list.php:370
+msgid "Configure SMTP server to receive email messages from WordPress to Gmail, Yahoo, Hotmail and other services."
+msgstr "Настраивайте SMTP-сервер, чтобы получать электронные сообщения с сайта WordPress на такие почтовые службы, как Gmail, Yahoo, Hotmail и многие другие."
+
+#: bws_menu/product_list.php:51
+msgid "Allow customers to reach you using secure contact form plugin any website must have."
+msgstr "Предоставьте возможность клиентам осуществлять связь с вами через безопасный плагин контактной формы, который должен иметь любой сайт."
+
+#: bws_menu/product_list.php:61
+msgid "Add unlimited number of contact forms to WordPress website."
+msgstr "Добавляйте неограниченное количество контактных форм на ваш сайт WordPress."
+
+#: bws_menu/product_list.php:71
+msgid "Save and manage Contact Form messages. Never lose important data."
+msgstr "Сохраняйте и управляйте сообщениями плагина Contact Form. Никогда не теряйте важные данные."
+
+#: bws_menu/product_list.php:81
+msgid "Add unlimited custom pages to WordPress admin dashboard."
+msgstr "Добавляйте неограниченное количество пользовательских страниц в панели администратора WordPress."
+
+#: bws_menu/product_list.php:91
+msgid "Add custom post types and taxonomies to WordPress website search results."
+msgstr "Добавляйте пользовательские типы постов и таксономии в результаты поиска на вашем сайте WordPress."
+
+#: bws_menu/product_list.php:101
+msgid "Add PayPal and 2CO donate buttons to receive charity payments."
+msgstr "Добавляйте кнопки PayPal и 2CO, чтобы получать пожертвования и благотворительные взносы."
+
+#: bws_menu/product_list.php:108
+msgid "Get latest error log messages to diagnose website problems. Define and fix issues faster."
+msgstr "Получайте последние сообщения из журнала ошибок для диагностики проблем сайта. Быстрее выявляйте и устраняйте проблемы."
+
+#: bws_menu/product_list.php:115
+msgid "Add Facebook Follow, Like, and Share buttons to WordPress posts, pages, and widgets."
+msgstr "Добавляйте кнопки Facebook \"Подписаться\", \"Нравится\" и \"Поделиться\" в посты, страницы и виджеты сайта WordPress."
+
+#: bws_menu/product_list.php:125
+msgid "Add beautiful galleries, albums & images to your WordPress website in a few clicks."
+msgstr "Добавляйте живописные галереи, альбомы и изображения на ваш сайт WordPress всего в несколько кликов."
+
+#: bws_menu/product_list.php:145
+msgid "Add Adsense ads to WordPress website pages, posts, custom posts, search results, categories, tags, and widgets."
+msgstr "Добавляйте рекламу сервиса Adsense на страницы, посты, пользовательские посты, результаты поиска, категории, теги и виджеты сайта WordPress."
+
+#: bws_menu/product_list.php:155
+msgid "Add Google Analytics code to WordPress website and track basic stats."
+msgstr "Добавляйте код Google Analytics на ваш сайт WordPress и отслеживайте базовую статистику сайта."
+
+#: bws_menu/product_list.php:175
+msgid "Add customized Google maps to WordPress posts, pages and widgets."
+msgstr "Добавляйте пользовательские карты Google в посты, страницы и виджеты WordPress."
+
+#: bws_menu/product_list.php:185
+msgid "Generate and add XML sitemap to WordPress website. Help search engines index your blog."
+msgstr "Создавайте и добавляйте файлы XML sitemap на ваш сайт WordPress. Помогите поисковым системам проиндексировать ваш блог."
+
+#: bws_menu/product_list.php:195
+msgid "Replace external WordPress website links with Google shortlinks and track click stats."
+msgstr "Замените внешние ссылки сайта WordPress на короткие ссылки Google и отслеживайте статистику кликов."
+
+#: bws_menu/bws_functions.php:103
+msgid "Need help?"
+msgstr "Нужна помощь?"
+
+#: google-captcha.php:268
+msgid "Please wait until Google reCAPTCHA is loaded."
+msgstr "Пожалуйста, дождитесь окончания загрузки Google reCAPTCHA."
+
+#: google-captcha.php:978
+msgid "User response is missing."
+msgstr "Ответ пользователя отсутствует."
+
+#: google-captcha.php:980
+msgid "Secret Key is missing."
+msgstr "Секретный ключ отсутствует."
+
+#: google-captcha.php:269
+msgid "Failed to load Google reCAPTCHA. Please check your internet connection and reload this page."
+msgstr "Не удалось загрузить Google reCAPTCHA. Пожалуйста, проверьте ваше подключение к сети Интернет и перезагрузите эту страницу."
+
+#: google-captcha.php:989
+msgid "More than one reCAPTCHA has been found in the current form. Please remove all unnecessary reCAPTCHA fields to make it work properly."
+msgstr "В текущей форме найдено более одного блока reCAPTCHA. Пожалуйста, удалите все лишние блоки reCAPTCHA для дальнейшей корректной работы."
+
+#: includes/forms.php:351
+msgid "Click the BACK button on your browser and try again."
+msgstr "Нажмите кнопку НАЗАД в вашем браузере и попытайтесь снова."
+
+#: bws_menu/bws_functions.php:304
+msgid "Deprecated function(-s) is used on the site here:"
+msgstr "Устаревшие функции используются на сайте здесь:"
+
+#: bws_menu/bws_functions.php:318
+msgid "This function(-s) will be removed over time. Please update the product(-s)."
+msgstr "Эти функции будет удалены через некоторое время. Пожалуйста, обновите продукт."
+
+#: bws_menu/bws_functions.php:218
+msgid "Your license key for %s expires on %s and you won't be granted TOP-PRIORITY SUPPORT or UPDATES."
+msgstr "Ваш лицензионный ключ для %s истекает %s и вы не будете получать приоритетную тех.поддержку или обновления."
+
+#: bws_menu/bws_functions.php:462
+msgid "Thank you for choosing %s plugin!"
+msgstr "Спасибо за выбор плагина %s!"
+
+#: bws_menu/bws_functions.php:495
+msgid "You can always look at premium options by checking the \"Pro Options\" in the \"Misc\" tab."
+msgstr "Вы всегда можете просмотреть премиум опции нажав на кнопку \"Pro опции\" на вкладке \"Разное\"."
+
+#: bws_menu/bws_functions.php:842
+msgid "Are you sure you want to restore default settings?"
+msgstr "Вы уверены что хотите восстановить все настройки плагина к настройкам по умолчанию?"
+
+#: bws_menu/bws_menu.php:196
+msgid "WordPress Environment"
+msgstr "WordPress Системная среда"
+
+#: bws_menu/bws_menu.php:199
+msgid "Website URL"
+msgstr "Адрес сайта"
+
+#: bws_menu/bws_menu.php:200
+msgid "WP Version"
+msgstr "Версия WordPress"
+
+#: bws_menu/bws_menu.php:201
+msgid "WP Multisite"
+msgstr "Мультисайт"
+
+#: bws_menu/bws_menu.php:202
+msgid "WP Memory Limit"
+msgstr "Лимит памяти WordPress"
+
+#: bws_menu/bws_menu.php:203 bws_menu/bws_menu.php:248
+#: bws_menu/bws_menu.php:251
+msgid "by %s"
+msgstr "%s"
+
+#: bws_menu/bws_menu.php:207
+msgid "Server Environment"
+msgstr "Системная среда сервера"
+
+#: bws_menu/bws_menu.php:226
+msgid "Database"
+msgstr "База данных"
+
+#: bws_menu/bws_menu.php:228
+msgid "WP DB version"
+msgstr "Версия базы данных WordPress"
+
+#: bws_menu/class-bws-settings.php:153
+msgid "Information"
+msgstr "Информация"
+
+#: bws_menu/class-bws-settings.php:161
+msgid "Inactive"
+msgstr "Неактивна"
+
+#: bws_menu/class-bws-settings.php:169
+msgid "Expired"
+msgstr "Истекла"
+
+#: bws_menu/class-bws-settings.php:172
+msgid "%s day(-s) left"
+msgstr "%s дней осталось"
+
+#: bws_menu/class-bws-settings.php:178
+msgid "Expired on %s"
+msgstr "Истекает %s"
+
+#: bws_menu/class-bws-settings.php:178
+msgid "Renew Now"
+msgstr "Возобновить сейчас"
+
+#: bws_menu/class-bws-settings.php:180
+msgid "Active"
+msgstr "Активна"
+
+#: bws_menu/class-bws-settings.php:185
+msgid "License"
+msgstr "Лицензия"
+
+#: bws_menu/class-bws-settings.php:188
+msgid "Status"
+msgstr "Статус"
+
+#: bws_menu/class-bws-settings.php:192
+#: includes/class-gglcptch-settings-tabs.php:60
+#: includes/class-gglcptch-settings-tabs.php:61
+msgid "Version"
+msgstr "Версия"
+
+#: bws_menu/class-bws-settings.php:302
+msgid "All plugin settings were restored."
+msgstr "Все настройки плагина были восстановлены."
+
+#: bws_menu/class-bws-settings.php:442
+#: includes/class-gglcptch-settings-tabs.php:24
+msgid "Custom Code"
+msgstr "Пользовательский код"
+
+#: bws_menu/class-bws-settings.php:457
+msgid "These code will be added to the header on all pages of your site."
+msgstr "Этот код будет добавлен в хедер на всех страницах вашего сайта."
+
+#: bws_menu/class-bws-settings.php:480
+msgid "Activate custom %s code."
+msgstr "Активировать пользовательский %s код."
+
+#: bws_menu/class-bws-settings.php:550
+msgid "Miscellaneous Settings"
+msgstr "Прочие настройки"
+
+#: bws_menu/class-bws-settings.php:559 bws_menu/class-bws-settings.php:614
+msgid "It is prohibited to change %s settings on this site in the %s network settings."
+msgstr "Cетевыми настройками %s запрещается изменять настройки %s на этом сайте."
+
+#: bws_menu/class-bws-settings.php:562 bws_menu/class-bws-settings.php:617
+msgid "It is prohibited to view %s settings on this site in the %s network settings."
+msgstr "Cетевыми настройками %s запрещается просматривать настройки %s на этом сайте."
+
+#: bws_menu/class-bws-settings.php:571
+msgid "Pro Options"
+msgstr "Pro опции"
+
+#: bws_menu/class-bws-settings.php:575
+msgid "Enable to display plugin Pro options."
+msgstr "Включите для отображения Pro опций плагина."
+
+#: bws_menu/class-bws-settings.php:581
+msgid "Track Usage"
+msgstr "Собирать статистику"
+
+#: bws_menu/class-bws-settings.php:585
+msgid "Enable to allow tracking plugin usage anonymously in order to make it better."
+msgstr "Включить, чтобы разрешить анонимно отслеживать использование и сделать плагин лучше."
+
+#: bws_menu/class-bws-settings.php:590
+msgid "Default Settings"
+msgstr "Настройки по умолчанию"
+
+#: bws_menu/class-bws-settings.php:592
+msgid "Restore Settings"
+msgstr "Восстановить настройки"
+
+#: bws_menu/class-bws-settings.php:593
+msgid "This will restore plugin settings to defaults."
+msgstr "Восстановить все настройки плагина к настройкам по умолчанию."
+
+#: bws_menu/class-bws-settings.php:605
+msgid "Import / Export"
+msgstr "Импорт / Экспорт"
+
+#: bws_menu/class-bws-settings.php:721
+#: includes/class-gglcptch-settings-tabs.php:25
+msgid "License Key"
+msgstr "Лицензионный ключ"
+
+#: bws_menu/class-bws-settings.php:783
+msgid "Enter your license key to activate %s and get premium plugin features."
+msgstr "Введите лицензионный ключ для активации %s и получения дополнительных возможностей плагина."
+
+#: bws_menu/class-bws-settings.php:804
+msgid "If necessary, you can check if the license key is correct or reenter it in the field below."
+msgstr "При необходимости вы можете проверить валидность лицензионного ключа или повторно ввести его в поле ниже."
+
+#: bws_menu/class-bws-settings.php:813
+msgid "Manage License Settings"
+msgstr "Управление настройками лицензий"
+
+#: bws_menu/class-bws-settings.php:815
+msgid "Login to Client Area"
+msgstr "Зайти в Client Area"
+
+#: bws_menu/class-bws-settings.php:817
+msgid "Manage active licenses, download BWS products, and view your payment history using BestWebSoft Client Area."
+msgstr "Управляй активными лицензиями, загружай BWS продукты, а также просматривай историю платежей с помощью BestWebSoft Client Area."
+
+#: bws_menu/class-bws-settings.php:1050
+msgid "Read the Instruction"
+msgstr "Читать инструкцию"
+
+#: bws_menu/class-bws-settings.php:1054
+msgid "Watch the Video"
+msgstr "Смотреть видео"
+
+#: bws_menu/class-bws-settings.php:1065
+msgid "Start Your Free Trial"
+msgstr "Использовать бесплатную Trial версию"
+
+#: bws_menu/deprecated.php:170
+msgid "Congratulations! The Pro license of the plugin is activated successfully."
+msgstr "Поздравляем! Pro версия плагина успешно активирована."
+
+#: bws_menu/deprecated.php:208
+msgid "Congratulations! Pro version of the plugin is  installed and activated successfully."
+msgstr "Поздравляем! Pro версия плагина успешно загружена и активирована."
+
+#: bws_menu/bws_menu.php:146
+msgid "Congratulations! Pro Membership license is activated successfully."
+msgstr "Поздравляем! Pro Membership лицензия успешно активирована."
+
+#: bws_menu/bws_functions.php:92
+msgid "Like the plugin?"
+msgstr "Понравился плагин?"
+
+#: bws_menu/bws_functions.php:94
+msgid "Rate it"
+msgstr "Оценить"
+
+#: bws_menu/bws_functions.php:107
+msgid "Want to support the plugin?"
+msgstr "Хотите поддержать плагин?"
+
+#: bws_menu/bws_functions.php:248
+msgid "Thank you for installing %s plugin!"
+msgstr "Спасибо, что установили %s плагин!"
+
+#: google-captcha.php:395
+msgid "You are in the whitelist"
+msgstr "Вы в белом списке"
+
+#: google-captcha.php:59
+msgid "Whitelist"
+msgstr "Белый список"
+
+#: includes/whitelist.php:81
+msgid "My IP"
+msgstr "Мой IP"
+
+#: includes/pro_banners.php:40 includes/whitelist.php:86
+msgid "Allowed formats"
+msgstr "Доступные форматы"
+
+#: includes/whitelist.php:88
+msgid "Allowed diapason"
+msgstr "Доступные диапазоны"
+
+#: includes/whitelist.php:105
+msgid "Search IP"
+msgstr "Искать IP"
+
+#: includes/whitelist.php:159
+msgid "Nothing found"
+msgstr "Ничего не найдено"
+
+#: includes/whitelist.php:159
+msgid "No IP in the whitelist"
+msgstr "Список IP пуст"
+
+#: includes/whitelist.php:327
+msgid "Invalid IP. See allowed formats."
+msgstr "Неверный IP. Смотите доступные форматы."
+
+#: includes/whitelist.php:369
+msgid "Search results for"
+msgstr "Результаты поиска для"
+
+#: includes/pro_banners.php:17
+msgid "This options is available in Pro version of plugin"
+msgstr "Эта опция доступна в Pro версии плагина"
+
+#: includes/pro_banners.php:42
+msgid "Reason"
+msgstr "Причина"
+
+#: includes/pro_banners.php:41
+msgid "Allowed separators for IPs: a comma"
+msgstr "Доступные разделители для IP-адресов: запятая"
+
+#: includes/pro_banners.php:41 includes/pro_banners.php:44
+msgid "semicolon"
+msgstr "точка с запятой"
+
+#: includes/pro_banners.php:44
+msgid "Allowed separators for reasons: a comma"
+msgstr "Доступные разделители для причин: запятая"
+
+#: includes/class-gglcptch-settings-tabs.php:320
+msgid "Whitelist Notification"
+msgstr "Уведомление о нахождении в белом списке"
+
+#. Plugin URI of the plugin
+msgid "https://bestwebsoft.com/products/wordpress/plugins/google-captcha/"
+msgstr "https://bestwebsoft.com/products/wordpress/plugins/google-captcha/"
+
+#: includes/pro_banners.php:41
+msgid "ordinary space, tab, new line or carriage return."
+msgstr "обычный пробел, табуляция, новая строка или возврат каретки."
+
+#: includes/pro_banners.php:44
+msgid "tab, new line or carriage return."
+msgstr "табуляция, новая строка или возврат каретки."
+
+#: includes/whitelist.php:100
+msgid "Add IP to whitelist"
+msgstr "Добавить IP в белый список"
+
+#: includes/whitelist.php:166
+msgid "IP Address"
+msgstr "IP Адресс"
+
+#: includes/whitelist.php:167
+msgid "Date Added"
+msgstr "Дата добавления"
+
+#: includes/whitelist.php:319
+msgid "IP added to the whitelist successfully."
+msgstr "IP адрес успешно добавлен в белый список."
+
+#: includes/whitelist.php:321 includes/whitelist.php:347
+#: includes/whitelist.php:361
+msgid "Some errors occurred."
+msgstr "Возникли некоторые ошибки."
+
+#: includes/whitelist.php:324
+msgid "IP is already in the whitelist."
+msgstr "IP адрес уже в белом списке."
+
+#: includes/whitelist.php:357
+msgid "One IP was deleted successfully."
+msgstr "Один IP адрес был успешно удален."
+
+#: includes/whitelist.php:364
+msgid "You have not entered any IP."
+msgstr "Вы не ввели ни одного IP адреса."
+
+#: includes/whitelist.php:367
+msgid "You have not entered any IP in to the search form."
+msgstr "Вы не ввели значения в форму поиска."
+
+#: includes/whitelist.php:343
+msgid "%s IP was deleted successfully."
+msgid_plural "%s IPs were deleted successfully."
+msgstr[0] "%s IP было успешно удалено "
+msgstr[1] "%s IP было успешно удалено "
+msgstr[2] "%s IP было успешно удалено "
+
+#: bws_menu/bws_menu.php:163
+msgid "Please enter your license key."
+msgstr "Пожалуйста, введите Ваш лицензионный ключ."
+
+#: bws_menu/bws_menu.php:499
+msgid "Not installed"
+msgstr "Не установлен"
+
+#. Description of the plugin
+#: bws_menu/product_list.php:165
+msgid "Protect WordPress website forms from spam entries with Google Captcha (reCaptcha)."
+msgstr "Защищайте формы вашего сайта WordPress от спама с помощью Google Captcha (reCaptcha)."
+
+#: bws_menu/deprecated.php:28
+msgid "System Status"
+msgstr "Системная информация"
+
+#: bws_menu/bws_functions.php:273
+msgid "Thank you for installing plugins by BestWebSoft!"
+msgstr "Спасибо за установку плагинов компании BestWebSoft!"
+
+#: bws_menu/bws_functions.php:275
+msgid "More Details"
+msgstr "Детали"
+
+#: bws_menu/bws_functions.php:276
+msgid "Less Details"
+msgstr "Скрыть детали"
+
+#: bws_menu/deprecated.php:224
+msgid "Enter your license key to install and activate"
+msgstr "Введите лицензионный ключ для установки и активации"
+
+#: bws_menu/deprecated.php:226
+msgid "version of the plugin."
+msgstr "версия плагина."
+
+#: bws_menu/deprecated.php:145 bws_menu/deprecated.php:228
+msgid "License key can be found in the"
+msgstr "Лицензионный ключ можно найти в"
+
+#: bws_menu/bws_menu.php:131
+msgid "Log in"
+msgstr "Авторизоваться"
+
+#: bws_menu/bws_menu.php:316
+msgid "Manage purchased licenses & subscriptions"
+msgstr "Управление купленными лицензиями и подписками"
+
+#: bws_menu/bws_menu.php:359
+msgid "Upload Plugin"
+msgstr "Добавить новый"
+
+#: bws_menu/bws_menu.php:363
+msgid "The plugin generated %d characters of <strong>unexpected output</strong> during activation. If you notice &#8220;headers already sent&#8221; messages, problems with syndication feeds or other issues, try deactivating or removing this plugin."
+msgstr "Плагин произвёл при активации %d символов <strong>неожиданного вывода</strong>. Если вы заметите ошибку &laquo;headers already sent&raquo;, проблемы с RSS-лентами или другие неполадки, попробуйте деактивировать или удалить этот плагин."
+
+#: bws_menu/bws_menu.php:365
+msgid "Plugin could not be activated because it triggered a <strong>fatal error</strong>."
+msgstr "Плагин не может быть активирован, поскольку он вызвал <strong>фатальную ошибку</strong>."
+
+#: bws_menu/bws_menu.php:368
+msgid "Plugin <strong>activated</strong>."
+msgstr "Плагин <strong>активировано</strong>."
+
+#: bws_menu/bws_menu.php:412
+msgid "Return to BestWebSoft Panel"
+msgstr "Возврат к BestWebSoft Panel"
+
+#: bws_menu/bws_menu.php:425
+msgid "Not Installed"
+msgstr "Не установленные"
+
+#: bws_menu/bws_menu.php:432
+msgid "Filter results"
+msgstr "Фильтр результатов"
+
+#: bws_menu/bws_menu.php:435 bws_menu/bws_menu.php:564
+msgid "Category"
+msgstr "Категория"
+
+#: bws_menu/bws_menu.php:503
+msgid "Renew to get updates"
+msgstr "Продлить для обновления"
+
+#: bws_menu/bws_menu.php:506
+msgid "Update to v %s"
+msgstr "Обновить до версии %s"
+
+#: bws_menu/bws_menu.php:528 bws_menu/bws_functions.php:108
+msgid "Donate"
+msgstr "Пожертвовать"
+
+#: bws_menu/bws_menu.php:550
+msgid "Install this plugin"
+msgstr "Установить этот плагин"
+
+#: bws_menu/bws_menu.php:559
+msgid "Nothing found. Try another criteria."
+msgstr "Ничего не найдено. Попробуйте другие критерии."
+
+#: bws_menu/product_list.php:13
+msgid "Security"
+msgstr "Безопасность"
+
+#: bws_menu/deactivation-form.php:84
+msgid "Other"
+msgstr "Другое"
+
+#: bws_menu/class-bws-settings.php:454
+msgid "This PHP code will be hooked to the %s action and will be printed on front end only."
+msgstr "Этот PHP код будет прикреплен к %s аction и будет добавлен только во фронтенде."
+
+#: bws_menu/deprecated.php:147 bws_menu/deprecated.php:230
+msgid "(your username is the email address specified during the purchase)."
+msgstr "(ваше имя пользователя - это емейл, указанный при покупке)."
+
+#: bws_menu/bws_menu.php:326
+msgid "Subscribe to Pro Membership"
+msgstr "Подписаться на Pro Membership"
+
+#: bws_menu/bws_menu.php:337
+msgid "Enter your license key"
+msgstr "Ваш лицензионный ключ"
+
+#: bws_menu/bws_functions.php:649
+msgid "Add BWS Shortcode"
+msgstr "Добавить BWS шорткод"
+
+#: bws_menu/bws_menu.php:131
+msgid "This license key is bound to another site. Change it via personal Client Area."
+msgstr "Этот лицензионный ключ привязан к другому сайту. Измените это в Client Area."
+
+#: bws_menu/bws_menu.php:324
+msgid "Get Access to %s+ Premium Plugins"
+msgstr "Получить доступ к %s+ премиум плагинам"
+
+#: google-captcha.php:76 bws_menu/bws_menu.php:524
+#: bws_menu/class-bws-settings.php:174 bws_menu/class-bws-settings.php:1061
+#: includes/pro_banners.php:29
+msgid "Upgrade to Pro"
+msgstr "Обновить до Pro"
+
+#: bws_menu/bws_menu.php:613
+msgid "Browse More WordPress Themes"
+msgstr "Обзор WordPress тем"
+
+#: bws_menu/bws_functions.php:463
+msgid "If you have a feature, suggestion or idea you'd like to see in the plugin, we'd love to hear about it!"
+msgstr "Если у вас есть предложения по добавлению нового или улучшению текущего функционала плагина, пожалуйста, присылайте их нам! Мы вседа открыты для новых идей!"
+
+#: bws_menu/bws_functions.php:464
+msgid "Suggest a Feature"
+msgstr "Предложить функционал"
+
+#: bws_menu/class-bws-settings.php:446
+msgid "You do not have sufficient permissions to edit plugins for this site."
+msgstr "У вас недостаточно полномочий, чтобы редактировать плагины на этом сайте."
+
+#: bws_menu/class-bws-settings.php:451
+msgid "These styles will be added to the header on all pages of your site."
+msgstr "Эти стили будут добавлены в хедер на всех страницах вашего сайта."
+
+#: bws_menu/class-bws-settings.php:475
+msgid "Browsing"
+msgstr "Просмотр"
+
+#: bws_menu/class-bws-settings.php:488
+msgid "Learn more about %s"
+msgstr "Подробнее о %s"
+
+#: bws_menu/class-bws-settings.php:465
+msgid "You need to make this files writable before you can save your changes. See %s the Codex %s for more information."
+msgstr "Чтобы сохранить изменения, нужно сделать этот файл доступным для записи. Дополнительную информацию можно получить в %s Кодексе %s."
+
+#: google-captcha.php:1037
+msgid "Test verification"
+msgstr "Тестирование проверки"
+
+#: google-captcha.php:985
+msgid "and enter it again"
+msgstr "и введите его снова"
+
+#: google-captcha.php:987
+msgid "User response is invalid"
+msgstr "Некорректный ответ пользователя"
+
+#: google-captcha.php:983
+msgid "Secret Key is invalid."
+msgstr "Некорректный секретный ключ."
+
+#: google-captcha.php:984
+msgid "Check your domain configurations"
+msgstr "Проверьте настройки вашего домена"
+
+#: google-captcha.php:1031
+msgid "Please complete the captcha and submit \"Test verification\""
+msgstr "Пожалуйста, заполните капчу и нажмите кнопку \"Тестирование проверки\"."
+
+#: google-captcha.php:1058
+msgid "The verification is successfully completed."
+msgstr "Тестирование проверки успешно завершено."
+
+#: google-captcha.php:281
+msgid "Warning"
+msgstr "Внимание"
+
+#: bws_menu/bws_menu.php:402 bws_menu/bws_functions.php:953
+#: bws_menu/class-bws-settings.php:755
+msgid "Video Instructions"
+msgstr "Видео инструкции"
+
+#: bws_menu/bws_functions.php:954
+msgid "Submit a Request"
+msgstr "Отправить запрос"
+
+#: includes/forms.php:38
+msgid "WordPress default"
+msgstr "Стандартных форм WordPress"
+
+#: bws_menu/bws_menu.php:400 bws_menu/bws_functions.php:952
+#: bws_menu/class-bws-settings.php:753
+msgid "Documentation"
+msgstr "Документация"
+
+#: bws_menu/bws_functions.php:671
+msgid "Add shortcode"
+msgstr "Добавить шорткод"
+
+#: bws_menu/bws_functions.php:671
+msgid "Add BestWebSoft plugins' shortcodes using this button."
+msgstr "Добавьте шорткоды BestWebSoft плагинов с помощью этой кнопки."
+
+#: bws_menu/bws_functions.php:104 bws_menu/bws_functions.php:940
+#: bws_menu/class-bws-settings.php:1052
+msgid "Visit Help Center"
+msgstr "Перейти в Help Center"
+
+#: bws_menu/bws_functions.php:951
+msgid "For more information:"
+msgstr "Для дополнительной информации:"
+
+#: bws_menu/bws_functions.php:888
+msgid "Plugin"
+msgstr "Плагин"
+
+#: bws_menu/bws_functions.php:250
+msgid "Let's get started"
+msgstr "Давайте начнем"
+
+#: bws_menu/bws_functions.php:480
+msgid "The plugin's settings have been changed."
+msgstr "Настройки плагина были изменены"
+
+#: bws_menu/bws_functions.php:650
+msgid "Add BWS Plugins Shortcode"
+msgstr "Добавить шорткод BWS Плагина"
+
+#: bws_menu/bws_functions.php:897
+msgid "Shortcode settings"
+msgstr "Настройки шорткода"
+
+#: bws_menu/bws_functions.php:902
+msgid "The shortcode will be inserted"
+msgstr "Будет вставлен шорткод"
+
+#: bws_menu/bws_functions.php:191 bws_menu/bws_functions.php:214
+#: bws_menu/bws_functions.php:258 bws_menu/bws_functions.php:268
+#: bws_menu/bws_functions.php:467
+msgid "Close notice"
+msgstr "Закрыть"
+
+#: bws_menu/bws_functions.php:254 bws_menu/bws_functions.php:286
+#: includes/whitelist.php:49
+msgid "Add New"
+msgstr "Добавить"
+
+#: bws_menu/bws_functions.php:233
+msgid "or higher! We do not guarantee that our plugin will work correctly. Please upgrade to WordPress latest version."
+msgstr "или выше! Мы не гарантируем, что наш плагин будет работать корректно. Пожалуйста, обновите WordPress до последней версии."
+
+#: bws_menu/deprecated.php:217
+msgid "Show Pro features"
+msgstr "Показать Pro опции"
+
+#: bws_menu/bws_functions.php:481 bws_menu/class-bws-settings.php:200
+#: bws_menu/class-bws-settings.php:220
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: google-captcha.php:588
+msgid "here"
+msgstr "здесь"
+
+#: google-captcha.php:589
+msgid "and enter them on the"
+msgstr "и вставить их на"
+
+#: google-captcha.php:856 includes/forms.php:349
+msgid "Error"
+msgstr "Ошибка"
+
+#. Author of the plugin
+msgid "BestWebSoft"
+msgstr "BestWebSoft"
+
+#: google-captcha.php:988
+msgid "You have entered an incorrect reCAPTCHA value."
+msgstr "Ошибка: Вы ввели неверное значение reCAPTCHA."
+
+#. Author URI of the plugin
+msgid "https://bestwebsoft.com/"
+msgstr "https://bestwebsoft.com/"
+
+#: google-captcha.php:591
+msgid "plugin setting page"
+msgstr "странице настроек плагина"
+
+#: google-captcha.php:587
+msgid "To use reCaptcha you must get the keys from"
+msgstr "Чтобы использовать reCaptcha, вам необходимо получить ключи"
+
+#: google-captcha.php:1094 bws_menu/bws_menu.php:315
+msgid "Support"
+msgstr "Поддержка"
+
+#: includes/pro_banners.php:171
+msgid "Normal"
+msgstr "Нормальный"
+
+#: includes/pro_banners.php:172
+msgid "Compact"
+msgstr "Компактный"
+
+#: includes/class-gglcptch-settings-tabs.php:53
+msgid "Secret Key"
+msgstr "Секретный ключ"
+
+#: includes/forms.php:11
+msgid "Login form"
+msgstr "Форма логина"
+
+#: includes/forms.php:12
+msgid "Registration form"
+msgstr "Форма регистрации"
+
+#: includes/forms.php:13
+msgid "Reset password form"
+msgstr "Форма восстановления пароля"
+
+#: includes/forms.php:14
+msgid "Comments form"
+msgstr "Форма комментариев"
+
+#: includes/class-gglcptch-settings-tabs.php:100
+msgid "Enter secret key"
+msgstr "Введите секретный ключ"
+
+#: google-captcha.php:50 google-captcha.php:1078 google-captcha.php:1091
+#: bws_menu/bws_menu.php:532 bws_menu/bws_menu.php:534
+#: bws_menu/bws_functions.php:251 bws_menu/bws_functions.php:284
+#: includes/class-gglcptch-settings-tabs.php:22
+msgid "Settings"
+msgstr "Настройки"
+
+#: google-captcha.php:1093 bws_menu/bws_functions.php:945
+msgid "FAQ"
+msgstr "FAQ"
+
+#: includes/class-gglcptch-settings-tabs.php:152
+msgid "Authentication"
+msgstr "Идентификация"
+
+#: bws_menu/deprecated.php:155 bws_menu/deprecated.php:163
+#: bws_menu/deprecated.php:240 bws_menu/deprecated.php:249
+#: bws_menu/bws_menu.php:343 bws_menu/bws_menu.php:538
+#: bws_menu/bws_menu.php:547 bws_menu/class-bws-settings.php:781
+#: includes/forms.php:116 includes/forms.php:140
+msgid "Activate"
+msgstr "Активировать"
+
+#: bws_menu/deprecated.php:172 bws_menu/deprecated.php:210
+msgid "the setting page"
+msgstr "страницу настроек"
+
+#: bws_menu/deprecated.php:234 bws_menu/bws_menu.php:326
+#: bws_menu/bws_functions.php:253 bws_menu/class-bws-settings.php:789
+#: bws_menu/class-bws-settings.php:1054 bws_menu/class-bws-settings.php:1064
+msgid "or"
+msgstr "или"
+
+#: bws_menu/deprecated.php:234 bws_menu/class-bws-settings.php:789
+msgid "Start Your Free %s-Day Trial Now"
+msgstr "Попробуйте %s-дневную Trial версию бесплатно"
+
+#: bws_menu/deprecated.php:142 bws_menu/class-bws-settings.php:894
+msgid "In order to continue using the plugin it is necessary to buy a %s license."
+msgstr "Чтобы продолжить пользоваться плагином, необходимо приобрести %s лицензию."
+
+#: bws_menu/deprecated.php:157 bws_menu/bws_menu.php:133
+#: bws_menu/bws_menu.php:332
+msgid "Unfortunately, you have exceeded the number of available tries per day."
+msgstr "К сожалению, вы превысили количество доступных попыток."
+
+#: bws_menu/bws_menu.php:129 bws_menu/class-bws-settings.php:871
+#: bws_menu/class-bws-settings.php:980
+msgid "Wrong license key."
+msgstr "Неправильный лицензионный ключ."
+
+#: bws_menu/class-bws-settings.php:875
+msgid "This license key is valid, but Your license has expired. If you want to update our plugin in future, you should extend the license."
+msgstr "Лицензионный ключ принят, но срок действия лицензии истек. Если вы хотите обновлять плагин в будущем, вы должны продлить лицензию."
+
+#: bws_menu/class-bws-settings.php:877
+msgid "Unfortunately, you have exceeded the number of available tries."
+msgstr "К сожалению, вы превысили количество доступных попыток."
+
+#: bws_menu/bws_menu.php:142 bws_menu/class-bws-settings.php:886
+msgid "The license key is valid."
+msgstr "Лицензионный ключ действителен."
+
+#: bws_menu/bws_menu.php:144 bws_menu/class-bws-settings.php:890
+msgid "Your license will expire on"
+msgstr "Ваша лицензия истечет"
+
+#: bws_menu/deprecated.php:123 bws_menu/bws_menu.php:334
+#: bws_menu/bws_menu.php:345 bws_menu/class-bws-settings.php:802
+msgid "Check license key"
+msgstr "Проверка лицензионного ключа"
+
+#: bws_menu/bws_functions.php:128
+msgid "WARNING: Illegal use notification"
+msgstr "ВНИМАНИЕ: уведомление о незаконном использовании"
+
+#: bws_menu/bws_functions.php:147 bws_menu/bws_functions.php:218
+msgid "Learn more"
+msgstr "Подробнее"
+
+#: bws_menu/bws_functions.php:756 includes/pro_banners.php:20
+#: includes/class-gglcptch-settings-tabs.php:238
+#: includes/class-gglcptch-settings-tabs.php:300
+msgid "Close"
+msgstr "Закрыть"
+
+#: bws_menu/deprecated.php:189
+msgid "Restore settings"
+msgstr "Восстановить настройки"
+
+#: bws_menu/bws_functions.php:845
+msgid "Yes, restore all settings"
+msgstr "Да, восстановить все настройки"
+
+#: bws_menu/bws_menu.php:174
+msgid "Not set"
+msgstr "Не задан"
+
+#: bws_menu/bws_menu.php:176
+msgid "On"
+msgstr "Вкл"
+
+#: bws_menu/bws_menu.php:176
+msgid "Off"
+msgstr "Выкл"
+
+#: bws_menu/bws_menu.php:177 bws_menu/bws_menu.php:178
+#: bws_menu/bws_menu.php:179 bws_menu/bws_menu.php:180
+#: bws_menu/bws_menu.php:181 bws_menu/bws_menu.php:182
+#: bws_menu/bws_menu.php:191
+msgid "N/A"
+msgstr "Неизвестно"
+
+#: bws_menu/bws_menu.php:183 bws_menu/bws_menu.php:184
+#: bws_menu/bws_menu.php:185 bws_menu/bws_menu.php:189
+msgid "Yes"
+msgstr "Да"
+
+#: bws_menu/bws_menu.php:183 bws_menu/bws_menu.php:184
+#: bws_menu/bws_menu.php:185 bws_menu/bws_menu.php:189
+msgid "No"
+msgstr "Нет"
+
+#: bws_menu/bws_menu.php:209
+msgid "Operating System"
+msgstr "Операционная система"
+
+#: bws_menu/bws_menu.php:210
+msgid "Server"
+msgstr "Тип сервера"
+
+#: bws_menu/bws_menu.php:230
+msgid "SQL Mode"
+msgstr "Режим SQL"
+
+#: bws_menu/bws_menu.php:211
+msgid "PHP Version"
+msgstr "Версия PHP"
+
+#: bws_menu/bws_menu.php:212
+msgid "PHP Allow URL fopen"
+msgstr "PHP Allow URL fopen"
+
+#: bws_menu/bws_menu.php:213
+msgid "PHP Memory Limit"
+msgstr "Лимит памяти"
+
+#: bws_menu/bws_menu.php:215
+msgid "PHP Max Upload Size"
+msgstr "Макс. размер загружаемого файла"
+
+#: bws_menu/bws_menu.php:216
+msgid "PHP Max Post Size"
+msgstr "Макс. размер записи"
+
+#: bws_menu/bws_menu.php:217
+msgid "PHP Max Script Execute Time"
+msgstr "Макс. время выполнения сценария"
+
+#: bws_menu/bws_menu.php:218
+msgid "PHP Exif support"
+msgstr "Поддержка PHP Exif"
+
+#: bws_menu/bws_menu.php:219
+msgid "PHP IPTC support"
+msgstr "Поддержка PHP IPTC"
+
+#: bws_menu/bws_menu.php:220
+msgid "PHP XML support"
+msgstr "Поддержка PHP XML"
+
+#: bws_menu/bws_menu.php:198
+msgid "Home URL"
+msgstr "Основной адрес сайта"
+
+#: bws_menu/bws_menu.php:203
+msgid "Active Theme"
+msgstr "Текущая тема"
+
+#: bws_menu/bws_menu.php:260
+msgid "Please enter a valid email address."
+msgstr "Пожалуйста, введите валидный емайл."
+
+#: bws_menu/bws_menu.php:266
+msgid "Thank you for contacting us."
+msgstr "Спасибо что связались с нами."
+
+#: bws_menu/bws_menu.php:307 bws_menu/bws_menu.php:311
+#: bws_menu/bws_menu.php:616
+msgid "System status"
+msgstr "Системная информация"
+
+#: bws_menu/deprecated.php:27 bws_menu/bws_menu.php:306
+#: bws_menu/bws_menu.php:310 bws_menu/bws_menu.php:586
+msgid "Themes"
+msgstr "Темы"
+
+#: bws_menu/bws_menu.php:419 bws_menu/bws_menu.php:439
+#: bws_menu/bws_menu.php:568
+msgid "All"
+msgstr "Все"
+
+#: bws_menu/bws_menu.php:422 bws_menu/bws_menu.php:605
+msgid "Installed"
+msgstr "Установленные"
+
+#: bws_menu/product_list.php:12
+msgid "Recommended"
+msgstr "Рекомендованные"
+
+#: bws_menu/bws_menu.php:538 bws_menu/bws_menu.php:547
+msgid "Activate this plugin"
+msgstr "Активировать плагин"
+
+#: bws_menu/bws_menu.php:596
+msgid "By %s"
+msgstr "%s"
+
+#: bws_menu/bws_menu.php:603
+msgid "Already Installed"
+msgstr "Уже установлена"
+
+#: bws_menu/bws_menu.php:234
+msgid "Active Plugins"
+msgstr "Активированные плагины"
+
+#: bws_menu/bws_menu.php:239
+msgid "Inactive Plugins"
+msgstr "Неактивированные плагины"
+
+#: bws_menu/bws_menu.php:622
+msgid "Send to support"
+msgstr "Отправить в тех. поддержку"
+
+#: bws_menu/bws_menu.php:629
+msgid "Send to custom email &#187;"
+msgstr "Отправить на емейл &#187;"
+
+#: bws_menu/class-bws-settings.php:879
+msgid "Unfortunately, the Pro Trial licence was already installed to this domain. The Pro Trial license can be installed only once."
+msgstr "К сожалению, Pro Trial версия плагина уже устанавливалась на этот домен. Pro Trial версию можно устанавливать лишь один раз."
+
+#: bws_menu/class-bws-settings.php:884
+msgid "The Pro Trial license key is valid."
+msgstr "Ключ Pro Trial версии действителен."
+
+#: bws_menu/deprecated.php:119
+msgid "(your username is the email address specified during the purchase). If necessary, please submit \"Lost your password?\" request."
+msgstr "(ваше имя пользователя - это емейл, указанный при покупке). При необходимости нажмите \"Забыли пароль?\"."
+
+#: bws_menu/bws_functions.php:165
+msgid "Notice: You are using the Pro Trial license of %s plugin."
+msgstr "Внимание: Вы используете Pro Trial версию плагина %s."
+
+#: bws_menu/bws_functions.php:167
+msgid "Notice: You are using the Pro Trial license of plugin."
+msgstr "Внимание: Вы используете Pro Trial версию плагина."
+
+#: bws_menu/bws_functions.php:170
+msgid "The Pro Trial license will expire on"
+msgstr "Ваша лицензия Pro Trial версии плагина истекает"
+
+#: bws_menu/bws_functions.php:480 bws_menu/class-bws-settings.php:559
+#: bws_menu/class-bws-settings.php:562 bws_menu/class-bws-settings.php:614
+#: bws_menu/class-bws-settings.php:617
+msgid "Notice"
+msgstr "Внимание"
+
+#: bws_menu/deprecated.php:187
+msgid "Restore all plugin settings to defaults"
+msgstr "Восстановить все настройки плагина к настройкам по умолчанию"
+
+#: bws_menu/bws_functions.php:846
+msgid "No, go back to the settings page"
+msgstr "Нет, вернуться на страницу настроек"
+
+#: bws_menu/bws_menu.php:289
+msgid "Sorry, email message could not be delivered."
+msgstr "Извините, ваш емейл не может быть отправлен."
+
+#: bws_menu/bws_menu.php:410
+msgid "Client Area"
+msgstr "Client Area"
+
+#: bws_menu/bws_functions.php:145
+msgid "Notice: Your Pro Trial license has expired. To continue using the plugin, you should buy a Pro license"
+msgstr "Внимание: Срок действия Pro Trial версии истек. Чтобы продолжить пользоваться плагином, пожалуйста, приобретите Pro лицензию"
+
+#: bws_menu/bws_functions.php:147
+msgid "Your license has expired. To continue getting top-priority support and plugin updates, you should extend it."
+msgstr "Время использования вашей лицензии истекло. Если вы хотите обновлять ваш плагин в дальнейшем и иметь приоритетную тех.поддержку, то вам нужно продлить лицензию."
+
+#: bws_menu/bws_menu.php:214
+msgid "Memory Usage"
+msgstr "Использование памяти"
+
+#: bws_menu/bws_menu.php:229
+msgid "MySQL version"
+msgstr "Версия MYSQL"
+
+#: bws_menu/class-bws-settings.php:873 bws_menu/class-bws-settings.php:982
+msgid "This license key is bound to another site."
+msgstr "Этот лицензионный ключ привязан к другому сайту."
+
+#: bws_menu/class-bws-settings.php:1048
+msgid "Need Help?"
+msgstr "Нужна помощь?"
+
+#: bws_menu/deprecated.php:119
+msgid "If necessary, you can check if the license key is correct or reenter it in the field below. You can find your license key on your personal page - Client Area - on our website"
+msgstr "При необходимости вы можете проверить валидность лицензионного ключа или повторно ввести его в поле ниже. Вы можете найти ваш лицензионный ключ на своей личной странице - Client Area - на нашем сайте"
+
+#: bws_menu/deprecated.php:142
+msgid "After that, you can activate it by entering your license key."
+msgstr "После этого вы сможете активировать его введя лицензионный ключ."
+
+#: includes/class-gglcptch-settings-tabs.php:48
+msgid "Site Key"
+msgstr "Ключ сайта"
+
+#: includes/class-gglcptch-settings-tabs.php:93
+msgid "Enter site key"
+msgstr "Введите ключ сайта"
+
+#: bws_menu/deprecated.php:26 bws_menu/bws_menu.php:305
+#: bws_menu/bws_menu.php:309 bws_menu/bws_menu.php:358
+msgid "Plugins"
+msgstr "Плагины"
+
+#: includes/class-gglcptch-settings-tabs.php:94
+#: includes/class-gglcptch-settings-tabs.php:101
+msgid "WARNING: The captcha will not be displayed until you fill key fields."
+msgstr "ПРЕДУПРЕЖДЕНИЕ: Google Captcha не будет отображаться пока вы не заполните поля с ключами."
+
+#: includes/class-gglcptch-settings-tabs.php:137
+msgid "Settings saved."
+msgstr "Настройки сохранены."
+
+#: bws_menu/bws_functions.php:128
+msgid "You can use one license of the Pro plugin for one domain only. Please check and edit your license or domain if necessary using your personal Client Area. We strongly recommend you to solve the problem within 24 hours, otherwise the Pro plugin will be deactivated."
+msgstr "Вы можете использовать одну лицензию Pro плагина только для одного домена. Пожалуйста, проверьте и отредактируйте при необходимости лицензию или домен, используя Ваш личный Client Area. Мы настоятельно рекомендуем вам решить проблему в течение 24 часов, в противном случае плагин будет деактивирован."
+
+#: bws_menu/bws_menu.php:262
+msgid "Email with system info is sent to %s."
+msgstr "Емейл с системной информацией отправлен на %s."
+
+#: bws_menu/bws_menu.php:550 includes/forms.php:118 includes/forms.php:143
+#: includes/forms.php:147
+msgid "Install Now"
+msgstr "Установить сейчас"
+
+#: bws_menu/bws_menu.php:599 bws_menu/bws_functions.php:128
+#: bws_menu/bws_functions.php:200 bws_menu/class-bws-settings.php:161
+msgid "Learn More"
+msgstr "Подробнее"
+
+#: bws_menu/bws_functions.php:73 bws_menu/bws_functions.php:231
+msgid "requires"
+msgstr "требует"
+
+#: bws_menu/bws_functions.php:75
+msgid "or higher, that is why it has been deactivated! Please upgrade WordPress and try again."
+msgstr "или выше, поэтому он был деактивирован! Пожалуйста, обновите WordPress и попробуйте еще раз."
+
+#: bws_menu/bws_functions.php:76
+msgid "Back to the WordPress"
+msgstr "Вернуться к WordPress на"
+
+#: bws_menu/bws_functions.php:78
+msgid "Plugins page"
+msgstr "Страницу плагинов"
+
+#: bws_menu/bws_functions.php:196
+msgid "It’s time to upgrade your"
+msgstr "Настало время обновить Ваш"
+
+#: bws_menu/bws_functions.php:196
+msgid "to"
+msgstr "до"
+
+#: bws_menu/bws_functions.php:196
+msgid "version!"
+msgstr "версии!"
+
+#: bws_menu/bws_functions.php:197
+msgid "Extend standard plugin functionality with new great options."
+msgstr "Расширяет возможности стандартного функционала плагина."
+
+#: bws_menu/bws_menu.php:101 bws_menu/class-bws-settings.php:838
+msgid "Wrong license key"
+msgstr "Неправильный лицензионный ключ"
+
+#: bws_menu/bws_menu.php:122 bws_menu/class-bws-settings.php:865
+#: bws_menu/class-bws-settings.php:936 bws_menu/class-bws-settings.php:974
+msgid "Something went wrong. Please try again later. If the error appears again, please contact us"
+msgstr "Что-то пошло не так. Повторите попытку позже. Если ошибка появится снова, пожалуйста, свяжитесь с нами"
+
+#: bws_menu/bws_menu.php:122 bws_menu/class-bws-settings.php:865
+#: bws_menu/class-bws-settings.php:936 bws_menu/class-bws-settings.php:974
+msgid "We are sorry for inconvenience."
+msgstr "Приносим извинения за неудобства."
+
+#: bws_menu/deprecated.php:243 bws_menu/class-bws-settings.php:786
+#: bws_menu/class-bws-settings.php:984
+msgid "Unfortunately, you have exceeded the number of available tries per day. Please, upload the plugin manually."
+msgstr "К сожалению, вы превысили количество доступных попыток в день. Пожалуйста, загрузите плагин вручную."
+
+#: bws_menu/bws_menu.php:153 bws_menu/class-bws-settings.php:998
+msgid "Something went wrong. Try again later or upload the plugin manually. We are sorry for inconvenience."
+msgstr "Что-то пошло не так. Повторите попытку позже или загрузите плагин вручную. Приносим извинения за неудобства."
+
+#: bws_menu/class-bws-settings.php:1035
+msgid "Please, enter Your license key"
+msgstr "Пожалуйста, введите ваш лицензионный ключ"
+
+#: bws_menu/deprecated.php:172 bws_menu/deprecated.php:210
+msgid "Please, go to"
+msgstr "Пожалуйста, перейдите на"
+
+#: bws_menu/bws_menu.php:137 bws_menu/class-bws-settings.php:988
+msgid "Unfortunately, the Pro licence was already installed to this domain. The Pro Trial license can be installed only once."
+msgstr "К сожалению, Pro лицензия уже была установлена на этом доменен. Pro Trial лицензия может быть установлена только один раз."
+
+#: bws_menu/bws_menu.php:135
+msgid "Unfortunately, Your license has expired. To continue getting top-priority support and plugin updates, you should extend it in your %s"
+msgstr "К сожалению, время использования вашей лицензии истекло. Для получения обновлений и приоритетной тех.поддержки, вам необходимо продлить лицензию в вашей %s"

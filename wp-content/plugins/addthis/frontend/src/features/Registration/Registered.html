@@ -1,0 +1,102 @@
+<div ng-show="successfulNewRegistration" soft-alert level="'success'">
+    <span translate>
+        success_message_registered
+    </span>
+</div>
+
+<!--section
+    ng-include
+    src="'/features/Registration/PointyAlertBoxExample.html'"
+>
+</section-->
+
+<div class="settings-card">
+    <header>
+    </header>
+
+    <div class="settings-body">
+        <p
+            ng-show="minimalistProPlugin()"
+            translate
+        >
+            registered_configure_at_addthis
+        </p>
+
+        <a
+            ng-show="minimalistProPlugin()"
+            ng-href="{{'https://www.addthis.com/dashboard#gallery/' + globalOptions.addthis_profile}}"
+            target="_blank"
+            class="addthis-btn addthis-btn-blue"
+            translate
+        >
+            configure_at_addthis_button
+        </a>
+
+        <a
+            ng-hide="minimalistProPlugin()"
+            ng-href="{{'https://www.addthis.com/dashboard#analytics/' + globalOptions.addthis_profile}}"
+            target="_blank"
+            class="addthis-btn addthis-btn-blue"
+            translate
+        >
+            analytics_at_addthis_button
+        </a>
+    </div>
+</div>
+
+<div>
+    <a
+        ng-href="{{'https://www.addthis.com/dashboard#gallery/' + globalOptions.addthis_profile}}"
+        target="_blank"
+        class="image-card"
+     >
+        <img
+            ng-src="{{templateBaseUrl}}src/images/share-tools-icon.png"
+            alt="{{'tool_listing_smlsh_example_image_alt'|translate}}"
+        >
+        <h3 translate>registered_intro_header_share_tools</h3>
+        <p translate>registered_intro_description_share_tools</p>
+    </a>
+    <a
+        ng-href="{{'https://www.addthis.com/dashboard#gallery/' + globalOptions.addthis_profile}}"
+        target="_blank"
+        class="image-card"
+     >
+        <img
+            ng-src="{{templateBaseUrl}}src/images/follow-tools-icon.png"
+            alt="{{'tool_listing_smlfw_example_image_alt'|translate}}"
+        >
+        <h3 translate>registered_intro_header_follow_tools</h3>
+        <p translate>registered_intro_description_follow_tools</p>
+    </a>
+    <a
+        ng-href="{{'https://www.addthis.com/dashboard#gallery/' + globalOptions.addthis_profile}}"
+        target="_blank"
+        class="image-card"
+     >
+        <img
+            ng-src="{{templateBaseUrl}}src/images/recommended-content-icon.png"
+            alt="{{'tool_smlrebv_example_image_alt'|translate}}"
+        >
+        <h3 translate>registered_intro_header_recommended_content</h3>
+        <p translate>registered_intro_description_recommended_content</p>
+    </a>
+    <a
+        ng-href="{{'https://www.addthis.com/dashboard#rule-manager/pub/' + globalOptions.addthis_profile}}"
+        target="_blank"
+        class="image-card"
+     >
+        <img
+            ng-src="{{templateBaseUrl}}src/images/audience-targeting-icon.png"
+            alt="{{'tool_listing_custom_message_example_image_alt'|translate}}"
+        >
+        <h3 translate>registered_intro_header_custom_messages</h3>
+        <p translate>registered_intro_description_custom_messages</p>
+    </a>
+</div>
+
+<p>
+    <a ng-click="signIn()" translate>
+        edit_registration_link
+    </a>
+</p>

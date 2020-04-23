@@ -1,0 +1,106 @@
+<!-- Follow Header -->
+<div
+    tool-gallery-settings-page
+    save="save"
+    go-back="goBack"
+    feature-settings="followButtons"
+    tool-pco="smlfw"
+    tool-name-msgid="tool_smlfw_name"
+    tool-description-msgid="tool_smlfw_long_description"
+>
+    <label
+        for="addthis-{{toolPco}}-title"
+        class="strong"
+        translate
+    >
+        tool_settings_title_label
+    </label>
+    <input
+        type="text"
+        ng-model="settings.title"
+        name="addthis-{{toolPco}}-title"
+        id="addthis-{{toolPco}}-title"
+    />
+
+    <div
+        follow-service-picker
+        ng-model="settings.services"
+        tool-pco="{{toolPco}}"
+    >
+    </div>
+
+    <div
+        layers-theme-picker
+        ng-model="settings.theme"
+        tool-pco="{{toolPco}}"
+    >
+    </div>
+
+    <div ng-show="$parent.globalOptions.addthis_plugin_controls === 'AddThis'">
+        <label
+            for="addthis-{{toolPco}}-hideonhomepage"
+            class="strong"
+            translate
+        >
+            layers_hide_on_homepage_title
+        </label>
+        <p translate>layers_hide_on_homepage_description</p>
+        <div
+            tool-drop-down-yes-no
+            ng-model="settings.__hideOnHomepage"
+            tool-pco="{{toolPco}}"
+            field-name="hideonhomepage"
+        >
+        </div>
+
+        <div
+            layers-hide-on-urls
+            ng-model="settings.__hideOnUrls"
+            tool-pco="{{toolPco}}"
+        >
+        </div>
+    </div>
+
+    <label
+        for="addthis-{{toolPco}}-responsive"
+        class="strong"
+        translate
+    >
+        layers_responsive_width
+    </label>
+    <input
+        type="number"
+        min="0"
+        ng-model="settings.responsive"
+        name="addthis-{{toolPco}}-responsive"
+        id="addthis-{{toolPco}}-responsive"
+    />
+    <label
+        for="addthis-{{toolPco}}-responsive"
+    >
+    px
+    </label>
+
+    <div
+        layers-offset-picker
+        positions="top,bottom"
+        ng-model="settings.offset"
+        tool-pco="{{toolPco}}"
+    >
+    </div>
+
+    <label
+        for="addthis-{{toolPco}}-thankyou"
+        class="strong"
+        translate
+    >
+        layers_thank_you
+    </label>
+    <div
+        tool-drop-down-yes-no
+        ng-model="settings.thankyou"
+        tool-pco="{{toolPco}}"
+        field-name="thankyou"
+    >
+    </div>
+</div>

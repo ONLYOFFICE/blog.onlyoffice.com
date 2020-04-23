@@ -1,0 +1,24 @@
+<div
+    class="tool-gallery-settings-page"
+    ng-show="showToolSettings()"
+>
+    <div class="tool-gallery-settings-page-inner-container">
+        <h2 translate>{{toolNameMsgid}}</h2>
+        <p
+            class="tool-gallery-subtitle"
+            translate
+        >
+            {{toolDescriptionMsgid}}
+        </p>
+
+        <div class="transclude-here transclude-here-tool-gallery-settings-page">
+        </div>
+    </div>
+    <div class="tool-gallery-settings-page-footer">
+        <section
+            ng-include
+            src="'/directives/toolGallerySettingsPage/toolGallerySettingsPageButtons.html'"
+        >
+        </section>
+    </div>
+</div>

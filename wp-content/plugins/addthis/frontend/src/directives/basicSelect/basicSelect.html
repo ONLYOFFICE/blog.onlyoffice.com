@@ -1,0 +1,17 @@
+<label
+    for="{{name}}"
+    class="strong"
+>
+    {{label}}
+</label>
+
+<div class="transclude-here transclude-here-basic-select">
+</div>
+
+<select
+    name="{{name}}"
+    id="{{name}}"
+    ng-model="ngModel"
+    ng-options="option.value as option.display for option in options"
+>
+</select>

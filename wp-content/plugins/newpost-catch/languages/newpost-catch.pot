@@ -1,0 +1,117 @@
+# Copyright 2012-2013 Newpost Catch
+msgid ""
+msgstr ""
+"Project-Id-Version: Newpost Catch\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-11 +900\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Tetsuya Imamura <wpdev@imamura.biz>\n"
+"Language-Team: Tetsuya Imamura <wpdev@imamura.biz>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "LatestPost(s)"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Thumbnail Size"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Show post(s)"
+msgstr ""
+
+msgid "Post(s)"
+msgstr ""
+
+msgid "Display date"
+msgstr ""
+
+msgid "Display sticky post"
+msgstr ""
+
+msgid "Use default css"
+msgstr ""
+
+msgid "Display category(ies)"
+msgstr ""
+
+msgid "Check the category ID"
+msgstr ""
+
+msgid "Use shortcode"
+msgstr ""
+
+msgid "Can use the shortcode in a textwidget and theme files."
+msgstr ""
+
+msgid "Contact/Follow"
+msgstr ""
+
+msgid "completed."
+msgstr ""
+
+msgid "Setting Thumbnails"
+msgstr ""
+
+msgid "Eyecatch image batch setting"
+msgstr ""
+
+msgid "Post type"
+msgstr ""
+
+msgid "I can set the eyecatch image, [the first image] found in the body of the post. (※ image does not exist, invalid image of (dead link) can not be set the URL."
+msgstr ""
+
+msgid "Search the post."
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Search Result"
+msgstr ""
+
+msgid "Can be edited post in the [Edit] button. Please confirm the image displayed in the text and, whether or not broken links."
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Image"
+msgstr ""
+
+msgid "Image URL"
+msgstr ""
+
+msgid "Not found."
+msgstr ""
+
+msgid "Image(s) found."
+msgstr ""
+
+msgid "Setting start in the [Generate] button"
+msgstr ""
+
+msgid "Generate"
+msgstr ""
+
+msgid "Not Found."
+msgstr ""
+
+msgid "Thumbnail"
+msgstr ""
+
+msgid "Configuration"
+msgstr ""
+
+msgid "Media Settings"
+msgstr ""

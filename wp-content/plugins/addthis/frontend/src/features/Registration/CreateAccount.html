@@ -1,0 +1,174 @@
+<form name="createaccount" novalidate>
+    <div class="settings-card">
+        <header>
+            <h2 translate>account_create_title</h2>
+        </header>
+
+        <div class="settings-body">
+            <div class="registration-field-area">
+                <div
+                    setting-title-and-description
+                    label="{{'email_address_input_label'|translate}}"
+                    name="registrationEmail"
+                    required=""
+                    ng-class="{'bad-choice': createaccount.registrationEmail.$error.email || createaccount.registrationEmail.$error.required}"
+                >
+                    <span translate>account_create_email_address_description</span>
+                </div>
+
+                <input
+                    type="email"
+                    id="registrationEmail"
+                    name="registrationEmail"
+                    placeholder="{{'email_address_input_placeholder'|translate}}"
+                    ng-model="registrationFormModel.email"
+                    ng-trim
+                    required=""
+                >
+
+                <div
+                    class="input-feedback"
+                    ng-show="createaccount.registrationEmail.$error.email"
+                    ng-class="{'bad-choice': createaccount.registrationEmail.$error.email}"
+                >
+                    <span custom-icon level="danger"></span>
+                    <span translate>error_message_email_address_invalid</span>
+                </div>
+
+                <div
+                    class="input-feedback"
+                    ng-show="createaccount.registrationEmail.$error.required"
+                    ng-class="{'bad-choice': createaccount.registrationEmail.$error.required}"
+                >
+                    <span custom-icon level="danger"></span>
+                    <span translate>error_message_email_address_required</span>
+                </div>
+
+                <div
+                    setting-title-and-description
+                    label="{{'client_string_password'|translate}}"
+                    name="registrationPassword"
+                    ng-class="{'bad-choice': createaccount.registrationPassword.$error.minlength || createaccount.registrationPassword.$error.required && (createaccount.registrationPassword.$touched || createaccount.$submitted)}"
+                >
+                    <span translate>account_create_password_description</span>
+                </div>
+
+                <input
+                    type="password"
+                    name="registrationPassword"
+                    placeholder="{{'password_input_placeholder'|translate}}"
+                    ng-model="registrationFormModel.password"
+                    ng-model-options="{ debounce: 1000 }"
+                    ng-minlength=4
+                    required=""
+                >
+
+                <div
+                    class="input-feedback"
+                    ng-show="createaccount.registrationPassword.$error.minlength || createaccount.registrationPassword.$error.required && (createaccount.registrationPassword.$touched || createaccount.$submitted)"
+                    ng-class="{'bad-choice': createaccount.registrationPassword.$error.minlength || createaccount.registrationPassword.$error.required}"
+                >
+                    <span custom-icon level="danger"></span>
+                    <span translate>error_message_password_too_short</span>
+                </div>
+
+                <div
+                    setting-title-and-description
+                    label="{{'account_create_retype_password_label'|translate}}"
+                    name="confirmPassword"
+                    ng-class="{'bad-choice': (createaccount.confirmPassword.$error.match || createaccount.confirmPassword.$error.required) && (createaccount.confirmPassword.$touched || createaccount.$submitted)}"
+                >
+                </div>
+
+                <input
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="{{'account_create_retype_password_placeholder'|translate}}"
+                    ng-model="registrationFormModel.confirmPassword"
+                    ng-model-options="{ debounce: 500 }"
+                    validate-match="registrationFormModel.password"
+                    required=""
+                >
+
+                <div
+                    setting-title-and-description
+                    label="Country"
+                    name="registrationEmail"
+                >
+                </div>
+
+                <select
+                    name="country"
+                    ng-model="registrationFormModel.country"
+                >
+                    <option
+                        ng-repeat="country in countryOptions"
+                        value="{{country.value}}"
+                        ng-disabled="{{country.disabled}}"
+                    >
+                        {{country.display}}
+                    </option>
+                </select>
+
+                <div
+                    class="input-feedback"
+                    ng-show="createaccount.confirmPassword.$error.match && (createaccount.confirmPassword.$touched || createaccount.$submitted)"
+                    ng-class="{'bad-choice': createaccount.confirmPassword.$error.match && (createaccount.confirmPassword.$touched || createaccount.$submitted)}"
+                >
+                    <span custom-icon level="danger"></span>
+                    <span translate>error_message_password_mismatch</span>
+                </div>
+
+                <div
+                    basic-checkbox
+                    ng-model="registrationFormModel.emailSubscription"
+                    name="emailSubscription"
+                    label="{{'account_create_newsletter_opt_in'|translate}}"
+                >
+                </div>
+
+                <div
+                    soft-alert
+                    level="'danger'"
+                    ng-show="createAccountFailed"
+                >
+                    <span translate>error_message_failed_unknown_reason</span>
+                </div>
+            </div>
+
+            <div
+                soft-alert
+                level="'warning'"
+                ng-show="globalOptions.addthis_plugin_controls === 'WordPress'"
+            >
+                <span translate>
+                    warning_message_changing_from_wordpress_mode
+                </span>
+            </div>
+
+            <div
+                eula
+                ng-hide="settings.enabled"
+                button-name="{{'register_button'|translate}}"
+            >
+            </div>
+
+            <button
+                type="submit"
+                class="addthis-btn addthis-btn-blue"
+                ng-class="{ 'addthis-btn-disabled': createaccount.$invalid || createaccount.$pending }"
+                ng-click="createAccountSubmit(createaccount.$valid && !createaccount.$pending)"
+                translate
+            >
+                register_button
+            </button>
+
+            <p>
+                <a ng-click="signIn()" translate>
+                    sign_in_existing_account
+                </a>
+            </p>
+
+        </div>
+    </div>
+</form>

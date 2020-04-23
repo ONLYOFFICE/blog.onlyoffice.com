@@ -1,0 +1,24 @@
+<div
+    can-edit-tools-check
+    debug-hot-keys
+    ng-controller="NewShareToolCtrl"
+>
+    <div class="wrap at-tool-new">
+        <h1 class="wp-heading-inline" translate>add_new_share_button_header</h1>
+        <div class="tool-grid-container" ng-repeat="tool in shareToolList">
+            <div new-share-tool-card
+                 toolPco="new"
+                 ng-model="tool"
+            >
+            </div>
+        </div>
+    </div>
+
+    <a
+        ng-show="globalOptions.debug_enable"
+        ui-sref="configurator({ toolPco: 'new', settings: deprecatedMobileToolbarDefaults})"
+
+    >
+        mobile toolbar
+    </a>
+</div>

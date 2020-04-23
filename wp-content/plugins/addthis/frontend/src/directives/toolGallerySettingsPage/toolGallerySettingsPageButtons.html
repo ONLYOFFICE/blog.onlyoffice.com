@@ -1,0 +1,51 @@
+<div
+    eula
+    ng-hide="settings.enabled"
+    button-name="{{'activate_button'|translate}}"
+>
+</div>
+<div
+    eula
+    ng-show="settings.enabled"
+    button-name="{{'save_button'|translate}}"
+>
+</div>
+
+<button
+    type="submit"
+    ng-click="goBack()"
+    class="addthis-btn addthis-btn-clear pull-left"
+    ng-class="{ 'addthis-btn-disabled': form.$pending }"
+>
+    <spans translate>close_button</span>
+</button>
+
+<button
+    type="submit"
+    ng-click="save(form.$valid && !form.$pending)"
+    class="addthis-btn addthis-btn-blue pull-right"
+    ng-class="{ 'addthis-btn-disabled': (form.$invalid || form.$pending || saving) }"
+>
+    <span ng-show="saving && !form.$pending" translate>progress_message_saving</span>
+    <span ng-hide="saving || form.$pending">
+        <span ng-hide="settings.enabled" translate>activate_button</span>
+        <span ng-show="settings.enabled" translate>save_button</span>
+    </span>
+    <span ng-show="form.$pending" translate>progress_message_checking_input</span>
+</button>
+
+<div
+    ng-show="form.$invalid"
+    soft-alert level="'danger'"
+    class="warning-invalid-form"
+>
+  {{'error_message_invalid_input_can_not_save'|translate}}
+</div>
+
+<div
+    ng-show="showSaveSuccessMessage"
+    soft-alert level="'info'" icon="'checkmark'"
+    class="warning-invalid-form"
+>
+  {{'success_message_saved'|translate}}
+</div>

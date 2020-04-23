@@ -1,0 +1,244 @@
+<div class="settings-card">
+    <header>
+        <h2 translate>advanced_settings_loading_options_header</h2>
+    </header>
+
+    <div class="settings-body">
+        <section>
+            <div
+                setting-title-and-description
+                label="{{'advanced_settings_script_location_label'|translate}}"
+                for="script-location"
+            >
+                {{'advanced_settings_script_location_description'|translate}}
+            </div>
+
+            <div
+                basic-radiobox
+                ng-model="globalOptions.script_location"
+                value="'footer'"
+                for="script-location-footer"
+                label="{{'advanced_settings_script_location_footer_label'|translate}} {{'option_recommended'|translate}}"
+            >
+            </div>
+
+            <div
+                basic-radiobox
+                ng-model="globalOptions.script_location"
+                value="'header'"
+                for="script-location-header"
+                label="{{'advanced_settings_script_location_header_label'|translate}}"
+            >
+            </div>
+            <div
+                soft-alert
+                level="'warning'"
+                ng-show="globalOptions.script_location !== 'footer'"
+            >
+                {{'warning_message_advanced_settings_script_location'|translate}}
+            </div>
+        </section>
+
+        <section>
+            <div
+                setting-title-and-description
+                label="{{'advanced_settings_enqueue_client_label'|translate}}"
+                for="enqueue-client"
+            >
+                {{'advanced_settings_enqueue_client_description'|translate}}
+            </div>
+
+            <label for="enqueue-client-true">
+                <input
+                        type="radio"
+                        id="enqueue-client-true"
+                        name="enqueue-client-true"
+                        ng-model="globalOptions.enqueue_client"
+                        ng-value="true"
+                />
+                <span class="addthis-checkbox-label">
+                    <strong translate>advanced_settings_enqueue_true_label</strong>
+                </span>
+            </label>
+
+            <label for="enqueue-client-false">
+                <input
+                        type="radio"
+                        id="enqueue-client-false"
+                        name="enqueue-client-false"
+                        ng-model="globalOptions.enqueue_client"
+                        ng-value="false"
+                />
+                <span class="addthis-checkbox-label">
+                    <strong translate>advanced_settings_enqueue_false_label</strong>
+                </span>
+            </label>
+
+            <div
+                soft-alert
+                level="'warning'"
+                ng-show="globalOptions.enqueue_client"
+            >
+                {{'warning_message_advanced_settings_enqueue_client'|translate}}
+            </div>
+
+            <div class="input-description">
+                {{'advanced_settings_enqueue_local_settings_description'|translate}}
+            </div>
+
+            <label for="enqueue-local-settings-true">
+                <input
+                        type="radio"
+                        id="enqueue-local-settings-true"
+                        name="enqueue-local-settings-true"
+                        ng-model="globalOptions.enqueue_local_settings"
+                        ng-value="true"
+                />
+                <span class="addthis-checkbox-label">
+                    <strong translate>advanced_settings_enqueue_true_label</strong>
+                </span>
+            </label>
+
+            <label for="enqueue-local-settings-false">
+                <input
+                        type="radio"
+                        id="enqueue-local-settings-false"
+                        name="enqueue-local-settings-false"
+                        ng-model="globalOptions.enqueue_local_settings"
+                        ng-value="false"
+                />
+                <span class="addthis-checkbox-label">
+                    <strong>{{'advanced_settings_enqueue_false_label'|translate}} {{'option_recommended'|translate}}</strong>
+                </span>
+            </label>
+
+            <div
+                soft-alert
+                level="'warning'"
+                ng-show="globalOptions.enqueue_local_settings && addthis_plugin_controls === 'AddThis'"
+            >
+                {{'warning_message_advanced_settings_enqueue_client'|translate}}
+            </div>
+            <div
+                soft-alert
+                level="'warning'"
+                ng-show="globalOptions.enqueue_local_settings && addthis_plugin_controls !== 'AddThis'"
+            >
+                {{'warning_message_advanced_settings_enqueue_local_settings'|translate}}
+            </div>
+        </section>
+
+        <section>
+            <div
+                setting-title-and-description
+                label="{{'advanced_settings_excerpt_filters_label'|translate}}"
+                for="excerpt_filters"
+            >
+                <p translate>advanced_settings_excerpt_filters_description</p>
+
+                <p
+                    translate
+                    translate-values="{'link': '<a href=\'mailto:help@addthis.com\'>{{'advanced_settings_excerpt_filters_help_link'|translate}}</a>'}"
+                >
+                    advanced_settings_excerpt_filters_help
+                </p>
+            </div>
+
+            <div class="indented-form-fields">
+                <div
+                    basic-checkbox
+                    ng-model="globalOptions.filter_get_the_excerpt"
+                    for="filter-get-the-excerpt"
+                    label="get_the_excerpt"
+                >
+                </div>
+
+                <div
+                    basic-checkbox
+                    ng-model="globalOptions.filter_the_excerpt"
+                    for="filter-the-excerpt"
+                    label="the_excerpt"
+                >
+                </div>
+
+                <div
+                    basic-checkbox
+                    ng-model="globalOptions.filter_wp_trim_excerpt"
+                    for="filter-wp-trim-excerpt"
+                    label="wp_trim_excerpt"
+                >
+                </div>
+
+            </div>
+
+            <div
+                soft-alert
+                level="'warning'"
+                ng-show="!globalOptions.filter_get_the_excerpt && !globalOptions.filter_the_excerpt && !globalOptions.filter_wp_trim_excerpt"
+            >
+                {{'warning_message_advanced_settings_excerpt_filters'|translate}}
+            </div>
+        </section>
+
+        <section
+            basic-checkbox
+            ng-model="globalOptions.addthis_per_post_enabled"
+            for="per-post-enabled"
+            label="{{'advanced_settings_per_post_option_label'|translate}}"
+            recommend="true"
+        >
+            {{'advanced_settings_per_post_option_description'|translate}}
+        </section>
+
+        <section
+            basic-checkbox
+            ng-model="globalOptions.addthis_508"
+            for="accessibility"
+            label="{{'advanced_settings_508_label'|translate}}"
+        >
+            {{'advanced_settings_508_description'|translate}}
+        </section>
+
+        <section
+            basic-checkbox
+            ng-model="globalOptions.addthis_asynchronous_loading"
+            for="async"
+            label="{{'advanced_settings_async_label'|translate}}"
+            recommend="false"
+            warning-text="{{'warning_message_advanced_settings_async'|translate}}"
+        >
+            {{'advanced_settings_async_description'|translate}}
+        </section>
+
+        <section
+            basic-checkbox
+            ng-model="globalOptions.xmlns_attrs"
+            for="xmlns-addthis"
+            label="{{'advanced_settings_xml_namespace_label'|translate}}"
+            recommend="true"
+        >
+            {{'advanced_settings_xml_namespace_description'|translate}}
+        </section>
+
+        <section
+            basic-checkbox
+            ng-model="globalOptions.ajax_support"
+            for="ajax-support"
+            label="{{'advanced_settings_ajax_support_label'|translate}} {{'option_experimental'|translate}}"
+        >
+            {{'advanced_settings_ajax_support_description'|translate}}
+        </section>
+
+        <section ng-controller="LanguagesCtrl">
+            <div
+                basic-select
+                ng-model="globalOptions.addthis_language"
+                for="language"
+                label="{{'advanced_settings_language_label'|translate}}"
+                options="languageOptions"
+            >
+            </div>
+        </section>
+
+    </div>
+</div>
