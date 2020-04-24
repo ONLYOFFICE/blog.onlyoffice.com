@@ -260,10 +260,6 @@
 .content img:first-child{
     width: 100%;
 }
-.pageContent img{
-    width: 100%;
-}
-
 /*---------SideBar-------*/
 .sidebar{
     width: 35%;
@@ -511,6 +507,7 @@
     margin-top: 13px;
 }
 /*-----------Subscribe-block--------*/
+
 
 .subscribe-block{
     position: relative;

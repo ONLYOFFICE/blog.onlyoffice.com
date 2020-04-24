@@ -769,7 +769,7 @@ body.desktop .button.red.disabled:visited {
     display: block;
   }
   .postwrapper{
-    margin-bottom: 61px;
+    margin:0 15px 61px 15px;
   }
   .download-block{
     margin: 64px 0;
@@ -781,16 +781,35 @@ body.desktop .button.red.disabled:visited {
     min-width: 300px;
   }
  .SingleContainer{
-    padding: 88px 16px 0;
+    padding: 88px 0;
+    width: 100%;
   }
-.sidebar{
+  .search-main{
+    padding: 0 15px;
+  }
+  .sidebar{
     margin-top: 48px;
   }
   .widget{
-    margin-bottom: 48px;
+    margin:0 15px 48px 15px;
   }
+  .cloud-block{
+    background: url(../images/cloud-block-mini.svg) no-repeat 50% 14px;
+    background-color: #F8F8F8;
+    padding-top: 14px;
+  }
+  .content .cloud-block .red{
+    bottom: 32px;
+  }
+  div#comments{
+    padding: 35px 15px 0 15px;
+  }
+
   .load_more_results{
     margin:48px auto;
+  }
+  .post{
+    padding: 0 15px;
   }
   .entry-title{
     font-size: 24px;
@@ -803,7 +822,6 @@ body.desktop .button.red.disabled:visited {
     height: 235px;
   }
   div#container{
-    padding: 0 15px;
     margin-top:0;
   }
   div.post div.post-header h2.entry-title a, div.post div.post-header h3.entry-title a{
