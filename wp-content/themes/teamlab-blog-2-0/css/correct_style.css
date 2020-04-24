@@ -13,14 +13,101 @@
 .search-main{
      margin: 40px 0 40px 0;
 }
-#searchform{
-    display: flex;
+
+.searchForm{
     width: 100%;
+	margin-top: 20px;
+    margin-bottom: 40px;
+	position: relative;
     height: 56px;
-    border: 1px solid rgba(189, 189, 189, 0.4);
     box-sizing: border-box;
     border-radius: 5px;
 }
+
+.searchForm.focus .searchInput{
+	background-color:transparent;
+}
+
+.searchForm .searchInput:hover{
+	border: 1px solid #666666;
+}
+
+.searchForm.focus .searchInput{
+	border: 1px solid #666666;
+}
+
+.searchForm .searchInput{
+	display: block;
+    width: 100%;
+    border: 1px solid #E0E0E0;
+    border-radius: 5px;
+    font-size: 18px;
+    padding: 12px 16px 0px;
+    font-weight: 500;
+    box-sizing: border-box;
+    color: #333;
+    outline: none;
+    height: inherit;
+}
+
+.searchForm .searchLabel{
+    font-size: 16px;
+    font-weight: 500;
+    color: #616161;
+    position: absolute;
+    top: 20px;
+    margin: auto;
+    left: 17px;
+    transition: .1s linear;
+    pointer-events: none;
+}
+
+.searchForm.focus .searchLabel{
+    font-size: 12px;
+    top:8px;
+}
+
+.searchForm .searhButton{
+    content: "";
+    position:absolute;
+    background-image: url('../images/search.svg');
+    background-size: 18px;
+    background-position: 50%;
+    width: 56px;
+    height: 100%;
+    background-repeat: no-repeat;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+}
+
+.searchForm .searhButton:hover{
+    background-image: url('../images/search-hover.svg');
+}
+
+.searchForm .clearButton{
+    content: "";
+    position:absolute;
+    display:none;
+    background-image: url('../images/close.svg');
+    background-size: 14px;
+    background-position: 50%;
+    width: 56px;
+    height: 100%;
+    background-repeat: no-repeat;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+}
+
+.searchForm.hasValue .clearButton{
+    display:block;
+}
+
+.searchForm.hasValue .searhButton{
+    display:none;
+}
+
 .textinput{
     width: 100%;
     position: relative;
