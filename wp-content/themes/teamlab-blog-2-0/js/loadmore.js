@@ -1,24 +1,35 @@
 jQuery(function($){
 	$('#true_loadmore').click(function(){
-		$(this).text('Loading...'); // изменяем текст кнопки
+		ajaxLoad(this.id, "cicle-wrapper");
+	});
+
+	$('#true_loadmore_press').click(function(){
+		ajaxLoad(this.id, "cicle-wrapper-press");
+	});
+
+	function ajaxLoad(buttonId, template){
+		$("#"+buttonId).text('Loading...'); 
+
 		var data = {
 			'action': 'loadmore',
 			'query': true_posts,
-			'page' : current_page
+			'page' : current_page,
+			'template': template
 		};
+
 		$.ajax({
-			url:ajaxurl, // обработчик
-			data:data, // данные
-			type:'POST', // тип запроса
+			url:ajaxurl, 
+			data:data, 
+			type:'POST', 
 			success:function(data){
 				if( data ) { 
-					$('#true_loadmore').text('Load more').before(data); // вставляем новые посты
-					current_page++; // увеличиваем номер страницы на единицу
-					if (current_page == max_pages) $("#true_loadmore").remove(); // если последняя страница, удаляем кнопку
+					$("#"+buttonId).text('Load more').before(data);
+					current_page++; 
+					if (current_page == max_pages) $("#"+buttonId).remove(); 
 				} else {
-					$('#true_loadmore').remove(); // если мы дошли до последней страницы постов, скроем кнопку
+					$("#"+buttonId).remove(); 
 				}
 			}
 		});
-	});
+	};
 });

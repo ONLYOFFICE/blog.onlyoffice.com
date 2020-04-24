@@ -236,33 +236,8 @@ function true_load_posts(){
   $args['post_status'] = 'publish';
   $q = new WP_Query($args);
   if( $q->have_posts() ):
-    while($q->have_posts()): $q->the_post();
-      /*
-       * Тут я пытался сделать кнопку LoadMore на странице in the press
-       
-      ?><?php if ($cat =1012) :?>
-      <article class="post in-the-press">
-                
-                <div class="meta press-page">
-                        <?php if(get_field('URL')){
-                                echo '<span><a class="press-url" href="http://'.get_field('URL').'/" target="_blank">'.get_field('URL').'</a></span>';
-                            }
-                        ?>
-                        <span class="date"><?php echo get_the_date('j F Y'); ?></span>
-                </div>
-                <h2 class="entry-title press-page-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'tmblog' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
-
-                 <p><?php the_excerpt() ?></p>
-                 </article>
-      
-
-        <?php elseif($cat =-1012): ?>?>
-        <?php include get_template_directory() . '/' . 'cicle-wrapper.php' ?>
-        <?php else: ?>
-        <?php endif; ?> 
-      */?>
-      <?php include get_template_directory() . '/' . 'cicle-wrapper.php' ?>
-      <?php
+    while($q->have_posts()): $q->the_post(); 
+       include get_template_directory() . '/' . $_POST['template'] . '.php' ;
     endwhile; 
   endif;
   wp_reset_postdata();

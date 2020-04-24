@@ -68,7 +68,7 @@ get_header();
    				</script>
   				<?php endif; ?>
 
-  				<div class="load_more_results" id="true_loadmore">Load more</div>
+  				<div class="load_more_results" id="true_loadmore_press">Load more</div>
 				<?php wp_reset_postdata(); ?>
 
 				<?php else : ?>
