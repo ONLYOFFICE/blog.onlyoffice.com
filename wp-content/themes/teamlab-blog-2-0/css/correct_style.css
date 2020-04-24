@@ -1412,7 +1412,7 @@ div#respond form#commentform p.submit {
 }
 
 .bg{
-    background-image: url(../images/no-results.svg);
+    background: url(../images/no-results.svg) no-repeat;
     -webkit-background-size: 100%;
     background-size: 100%;
     width: auto;

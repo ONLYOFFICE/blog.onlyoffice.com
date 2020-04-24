@@ -811,6 +811,9 @@ body.desktop .button.red.disabled:visited {
   .post{
     padding: 0 15px;
   }
+  h2.entry-title:first-child{
+    padding: 0 15px;
+  }
   .entry-title{
     font-size: 24px;
   }
