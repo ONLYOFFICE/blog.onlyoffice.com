@@ -105,6 +105,31 @@ $(".clearButton").on('click', function(){
     $(this).closest(".searchForm").removeClass("focus").removeClass("hasValue");
 });
 
+/***** VALIDATE FOOTER SEARCH *****/
+
+
+$(".FooterSearchInput").focus(function () {
+    $(this).closest(".FooterSearchForm").addClass("focus");
+});
+
+$(".FooterSearchInput").focusout(function () {
+    if ($(this).val() == "") {
+        $(this).closest(".FooterSearchForm").removeClass("focus");
+    }
+});
+
+$(".FooterSearchInput").on('keyup', function() {
+    if ($(this).val() != "") {
+        $(this).closest(".FooterSearchForm").addClass("hasValue");
+    } else {
+        $(this).closest(".FooterSearchForm").removeClass("hasValue");
+    }
+});
+
+$(".clearButton").on('click', function(){
+    $(this).siblings(".FooterSearchInput").val("");
+    $(this).closest(".FooterSearchForm").removeClass("focus").removeClass("hasValue");
+});
 
 /***** LANGUAGE SELECTOR *****/
 

@@ -732,10 +732,6 @@ body.desktop .button.red.disabled:visited {
     width: auto;
     padding: 88px 40px 80px 40px;
    }
-
-   .tagsList .tagItem{
-    margin-bottom: 8px;
-	}
   
   .narrowfooter {
       width: auto;

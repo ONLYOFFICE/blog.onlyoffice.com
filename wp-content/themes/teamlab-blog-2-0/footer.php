@@ -125,12 +125,16 @@
                                             </li>
 
                     <div class="footer-search">
-                        <form role="search" method="get" class="search-footer" action="<?php bloginfo('home'); ?>/">
-                              <div class="input-footer">
-                                <input type="text" name="s" id="s2" value="<?php the_search_query(); ?>" />
-                                <label>Find news, tips and how-tos</label>
-                            </div>
-                          <input name="submit" type="submit" id="searchformsubmit" class="searchformsubmit" value="" />
+                        <?php 
+                          if(get_search_query() != ""){
+                            $formClass = "focus hasValue";
+                          }
+                        ?>
+                        <form role="search" method="get" id="searchform" class="<?php echo "FooterSearchForm " . $formClass ?>" action="<?php echo home_url( '/' ) ?>" >
+                          <input id="footerInputSearch" class="FooterSearchInput" type="text" value="<?php echo get_search_query() ?>" name="s" id="s"/>
+                          <label id="searchLabel" class="searchLabel" for="footerInputSearch">Find news, tips and how-tos</label>
+                          <div class="searhButton"></div>
+                          <div class="clearButton"></div>
                         </form>
                     </div>
                     <div class="SocialLinks">

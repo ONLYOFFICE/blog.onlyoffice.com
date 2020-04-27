@@ -52,7 +52,9 @@ get_header();
 				<?php wp_reset_postdata(); ?>
 
 				<?php else : ?>
-  				<p> <?php _e('Sorry, no posts'); ?></p>
+  				<div class="no-results">
+				 <h3>No results matching your query could be found</h3>
+				 <div class="bg"></div>
 				<?php endif;?>
 
 
