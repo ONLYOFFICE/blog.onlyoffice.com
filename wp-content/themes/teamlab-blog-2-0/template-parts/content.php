@@ -55,26 +55,18 @@
 </article><!-- #post-<?php the_ID(); ?> -->
 
 <!-- get the term list and links -->
-<div class="terms_list">
+<div class="tagsList">
 <?php
 
-$terms_list = wp_get_post_terms( $post->ID, 'post_tag', array('fields' => 'names') );
-$terms_slug = wp_get_post_terms( $post->ID, 'post_tag', array('fields' => 'slugs') );	
-	
-var_dump ($terms_slug);
+$terms = wp_get_post_terms( $post->ID, 'post_tag');
 
 $term_id = $post->ID;
-$term_link = get_term_link($term_id, $terms_list);
+$term_link = get_term_link( $term_id, $terms_list);
 ?>
 
-<?php foreach ($terms_slug as $term_slug): ?>
 
-    <li><a class="term_list" href="<?php echo $term_slug ?>"><? echo $term_list ?></a></li>
-<?php endforeach;?>
-
-<?php foreach ($terms_list as $term_list): ?>
-
-    <li><a class="term_list" href="<?php echo $term_slug ?>"><? echo $term_list ?></a></li>
+<?php foreach ($terms as $term): ?>
+    <div class="tagItem"><?php echo '<a href="' . get_term_link($term->slug, $term->taxonomy) . '">' . '#' . $term->name . '</a>' ?></div>
 <?php endforeach;?>
 
 </div>
