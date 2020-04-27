@@ -7,6 +7,10 @@ jQuery(function($){
 		ajaxLoad(this.id, "cicle-wrapper-press");
 	});
 
+	$('#true_loadmore_tags').click(function(){
+		ajaxLoad(this.id, "loadmore-tag");
+	});
+
 	function ajaxLoad(buttonId, template){
 		$("#"+buttonId).text('Loading...'); 
 

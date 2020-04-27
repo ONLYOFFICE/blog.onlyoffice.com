@@ -39,14 +39,21 @@ get_header();
 				get_template_part( 'template-parts/content-tag', get_post_type() );
 
 			endwhile;
+			if ($wp_query->max_num_pages > 1) : ?>
+   				<script>
+    			var ajaxurl = '<?php echo site_url() ?>/wp-admin/admin-ajax.php';
+    			var true_posts = '<?php echo serialize($wp_query->query_vars); ?>';
+    			var current_page = '<?php echo (get_query_var('paged')) ? get_query_var('page') : 1; ?>';
+    			var max_pages = '<?php echo $wp_query->max_num_pages; ?>';
+   				</script>
+  				<?php endif; ?>
 
-		else :
+  				<div class="load_more_results" id="true_loadmore_tags">Load more</div>
+				<?php wp_reset_postdata(); ?>
 
-			get_template_part( 'template-parts/content-tag', 'none' );
-
-		endif;
-		?>
-
+				<?php else : ?>
+  				<p> <?php _e('Sorry, no posts'); ?></p>
+				<?php endif;?>
 
 
 					</div><!-- #content -->
