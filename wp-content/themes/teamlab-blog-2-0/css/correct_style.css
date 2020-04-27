@@ -198,6 +198,9 @@
 .tagsList a:hover{
     text-decoration: underline;
 }
+.tagsList a:visited{
+    color: #333333;
+}
 
 /*---------Search in header-------*/
 .serach-header{
@@ -454,16 +457,19 @@
     line-height: 19px;
     text-align: right;
     text-decoration: none;
-    color: #444444;
-}
-.widget .view-all a:hover{
-    text-decoration-line: underline;
+    color: #444444 !important;
 }
 .recent{
     display: flex;
 }
 .recent a img {
     margin-right: 16px;
+}
+.widget.widget_recent_entries a{
+    text-decoration: none;
+    font-style: normal;
+    font-weight: normal;
+    color: #000000;
 }
 
 .sidebar-press{
@@ -488,6 +494,29 @@
     border: 1px solid #4BB7F9;
     border-radius: 2px;
     margin-right: 8px;
+}
+
+/*---------PAGE TAGS-------*/
+
+.tags-page{
+    margin-top: 64px;
+}
+.content a.nameTags{
+    vertical-align: middle;
+    color: #616161;
+    padding: 6px 16px;
+    background: #F2F2F2;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 160%;
+    border-radius: 3px;
+    text-decoration: underline;
+    cursor: default;
+}
+.post h2.entry-title.tags-page-title{
+    margin-top: 15px;
 }
 
 /*-----------Last Post--------*/

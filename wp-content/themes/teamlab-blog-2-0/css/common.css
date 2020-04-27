@@ -732,6 +732,10 @@ body.desktop .button.red.disabled:visited {
     width: auto;
     padding: 88px 40px 80px 40px;
    }
+
+   .tagsList .tagItem{
+    margin-bottom: 8px;
+	}
   
   .narrowfooter {
       width: auto;
@@ -839,6 +843,9 @@ body.desktop .button.red.disabled:visited {
   div.post div.entry-utility span.googleplus-button{
     display: none;
   }
+  .tagsList{
+    padding: 0 15px;
+	}
 
   footer h6{
     margin-bottom: 0;
