@@ -105,6 +105,34 @@ $(".clearButton").on('click', function(){
     $(this).closest(".searchForm").removeClass("focus").removeClass("hasValue");
 });
 
+
+/***** LANGUAGE SELECTOR *****/
+
+var $dropdownSelector = $(".lang_sel_sel").siblings("ul");
+var $langSelector = $("#lang_sel");
+
+function toggleSelector(){
+    if($dropdownSelector.hasClass("show")){
+        $dropdownSelector.removeClass("show");
+    } else {
+        $dropdownSelector.addClass("show");
+    }
+}
+
+$("#lang_sel").on('click', function(){
+    toggleSelector();
+})
+
+
+$(document).on('click', function (e){ // событие клика по веб-документу
+
+    if (!$langSelector.is(e.target) // если клик был не по нашему блоку
+        && $langSelector.has(e.target).length === 0) { // и не по его дочерним элементам
+            $dropdownSelector.removeClass("show");
+    }
+});
+
+
 /***** 
 var input = document.getElementById("s");
 input.onfocus = function() {

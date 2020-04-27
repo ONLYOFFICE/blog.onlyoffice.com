@@ -402,9 +402,9 @@ ul.navitem_2nd_menu li a.nav_2nd_menu_link:hover {
 }
 .langselector {
   display: inline-block;
-  float: right;
   text-transform: none;
   margin: auto 0;
+  position: relative;
 }
 div.custom-select {
   background: none;

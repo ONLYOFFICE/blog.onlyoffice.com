@@ -181,6 +181,49 @@ div.custom-select ul.options li.option.uk-UA {
 }
 #LanguageSelector {
   width: 25px;
-  float: right;
   text-align: left;
+}
+
+#LanguageSelector a{
+  text-decoration: none;
+}
+
+#LanguageSelector li{
+  display:block;
+}
+
+#LanguageSelector #lang_sel{
+  cursor: pointer;
+}
+
+#LanguageSelector .lang_sel_sel~ul{
+  display:none;
+  position: absolute;
+  background: #fff;
+  width: 100%;
+  margin: 0;
+  padding: 6px 6px 6px 12px;
+  position: absolute;
+  left: -11px;
+  top: 25px;
+  z-index: 1000;
+  box-shadow: 0 1px 1px rgba(0,0,0,.2);
+  -moz-box-shadow: 0 1px 1px rgba(0,0,0,.2);
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.2);
+} 
+
+#LanguageSelector .lang_sel_sel~ul.show{
+  display:block;
+}
+
+#LanguageSelector .lang_sel_sel{
+  pointer-events: none;
+}
+
+#LanguageSelector .lang_sel_sel~ul li{
+  margin-bottom: 10px;
+}
+
+#LanguageSelector .lang_sel_sel~ul li:last-child{
+  margin-bottom: 0;
 }
