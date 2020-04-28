@@ -14,6 +14,15 @@ get_header();
 <div class="SearchContainer">
 	<div id="content" role="main">
 			<div class="content">
+				<div class="breadcrumbs-search">
+					<div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
+				    	<?php
+				    if(function_exists('bcn_display'))
+				   		 {
+				    bcn_display();
+				    		}?>
+				  </div>
+			 	</div>
 				<div class="search-page">
 		        	<?php get_search_form(); ?>
 		      	</div>

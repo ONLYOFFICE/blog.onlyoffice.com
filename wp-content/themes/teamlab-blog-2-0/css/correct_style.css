@@ -16,7 +16,6 @@
 
 .searchForm{
     width: 100%;
-	margin-top: 20px;
     margin-bottom: 40px;
 	position: relative;
     height: 56px;
@@ -528,7 +527,7 @@
 /*---------PAGE TAGS-------*/
 
 .tags-page{
-    margin-top: 64px;
+    margin-top: 57px;
 }
 .content a.nameTags{
     vertical-align: middle;
@@ -548,6 +547,87 @@
     margin-top: 15px;
 }
 
+/*---------PAGE THANK YOU FOR SIGNING-------*/
+.MailContainer{
+	width: 962px;
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex;
+    padding: 134px 0 80px 0;
+}
+.content-mail{
+    width: 65%;
+    display: flex;
+    align-items: center;
+}
+.content-mail h2{
+	font-family: Open Sans;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 32px;
+	line-height: 133%;
+/* or 43px */
+	letter-spacing: -0.01em;
+	font-feature-settings: 'tnum' on, 'lnum' on;
+	margin-bottom: 24px;
+}
+.thank-you{
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 133%;
+    /* identical to box height */
+    color: #FF6F3D;
+}
+.cta p{
+	font-family: Open Sans;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 16px;
+	line-height: 160%;
+	color: #333333;
+}
+.cta a:visited,
+.cta a:active{
+	color: #444444;
+}
+.cta a.go-home{
+	padding: 18px 25px 19px;
+	font-family: Open Sans;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 14px;
+	line-height: 133%;
+	margin-top: 40px;
+	display: inline-block;
+	align-items: center;
+	text-align: center;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	color: #444444;
+	text-decoration: none;
+	border: 1px solid #AAAAAA;
+	box-sizing: border-box;
+	border-radius: 3px;
+	transition: .1s linear all;
+     -moz-transition: .1s linear all;
+     -webkit-transition: .1s linear all;
+	}
+
+.cta a.go-home:hover{
+    color: #FF6F3D;
+    border: 1px solid #FF6F3D;
+    background: #fff;
+}
+.letter-box{
+	background: url(../images/letter-box.svg) no-repeat;
+    mix-blend-mode: luminosity;
+    -webkit-background-size: 100%;
+    background-size: 100%;
+    width: 35%;
+    height: 320px;
+}
 /*-----------Last Post--------*/
 .last{
     height: 1000px;
@@ -951,13 +1031,55 @@
 }
 
 
-/*-----------Single Page--------*/
+/*-----------Breadcrums--------*/
+.breadcrumbs-single{
+	margin: 32px 0;
+}
+.breadcrumbs-search{
+	margin-bottom: 32px;
+}
 
+.breadcrumbs span{
+	text-decoration: none;
+	font-family: Open Sans;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 133%;
+	/* identical to box height, or 19px */
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	color: #444444;
+	/* link */
+}
+
+.breadcrumbs a.home:visited,
+.breadcrumbs a.home:active{
+	color: #444444;
+}	
+.breadcrumbs a.home{
+	text-decoration: none;
+	font-family: Open Sans;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 133%;
+	/* identical to box height, or 19px */
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	/* link */
+	color: #444444;
+}
+.breadcrumbs a.home span:hover{
+	text-decoration: underline;
+	color: #333333;
+}
+/*-----------Single Page--------*/
 .SingleContainer{
     width: 962px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 110px 0 82px 0;
+    padding: 71px 0 82px 0;
 }
 .info-page{
     margin-top: 16px;
@@ -1432,7 +1554,7 @@ div#respond form#commentform p.submit {
     padding: 110px 0 82px 0;
 }
 .search-page{
-     margin-bottom: 61px;
+     margin-bottom: 45px;
 }
 .searchresult{
     margin-bottom: 14px;
@@ -1495,7 +1617,8 @@ div#respond form#commentform p.submit {
 }
 
 .bg{
-    background: url(../images/no-results.svg) no-repeat;
+    background: url(../images/no-results-gray.jpg) no-repeat;
+    mix-blend-mode: luminosity;
     -webkit-background-size: 100%;
     background-size: 100%;
     width: auto;

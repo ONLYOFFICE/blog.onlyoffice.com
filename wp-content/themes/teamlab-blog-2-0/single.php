@@ -12,9 +12,18 @@ get_header();
 
 <div class="SingleContainer">
 	
-
+	<div class="breadcrumbs-single">
+          <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
+              <?php
+            if(function_exists('bcn_display'))
+               {
+            bcn_display();
+                }?>
+          </div>
+      </div>
 	<div id="content" role="main">
 			<div class="content">
+
 
 		
 

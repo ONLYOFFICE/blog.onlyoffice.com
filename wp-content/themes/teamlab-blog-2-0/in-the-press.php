@@ -21,6 +21,15 @@ get_header();
 
 <main>
 <div class="SingleContainer">
+  <div class="breadcrumbs-single">
+          <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
+              <?php
+            if(function_exists('bcn_display'))
+               {
+            bcn_display();
+                }?>
+          </div>
+      </div>
 	<?php if ($wp_query->have_posts()) : ?>
 	<div id="content" role="main">
 			<div class="content">
