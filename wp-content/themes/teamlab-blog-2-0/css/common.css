@@ -47,6 +47,7 @@ footer {
   padding: 0 40px;
   position: relative;
   z-index: 20;
+  border-top: 1px solid #cccccc;
 }
 .narrowheader {
   width: calc(100% - 70px);
@@ -102,7 +103,7 @@ header {
   width: 928px;
   margin: 0 auto 71px;
   position: relative;
-  border-top: 1px solid #cccccc;
+  
 }
 .footer_menu {
   display: grid;
@@ -598,7 +599,27 @@ body.desktop .button.red.disabled:visited {
   padding: 10px 25px;
 }
 
+@media screen and (max-width: 1150px){
+  .input-header .search-field{
+    width: 0;
+    height: 32px;
+    padding: 0 0 0 14px;
+    border: none;
+    background-color: transparent;
+    background-size: 14px 15px;
+    cursor: pointer;
+    background-position: 99% center;
+  }
+  .input-header .search-field:focus{
+    background-color: #fff;
+    border: 1px solid #E0E0E0;
+    border-radius: 5px;
+    cursor: text;
+    outline: 0;
+    width: calc(100vw - 120px);
+	}
 
+}
 
 @media screen and (max-width: 1024px){
   .all-menu-items{
@@ -635,12 +656,6 @@ body.desktop .button.red.disabled:visited {
   .content{
     width: 100%;
   }
-  .serach-header{
-    position: absolute;
-    right: 40px;
-    top: 8px;
-    z-index: 15;
-}
   .SingleContainer{
       max-width: 736px;
       box-sizing: border-box;
@@ -655,6 +670,12 @@ body.desktop .button.red.disabled:visited {
       text-align: center;
       justify-content: center;
   }
+  .serach-header{
+    position: absolute;
+    right: 40px;
+    top: 8px;
+    z-index: 15;
+}
   .letter-box{
       order: 1;
       width: 352px;
@@ -668,25 +689,6 @@ body.desktop .button.red.disabled:visited {
       order:2;
   }
 
-  
-  .input-header .search-field{
-    width: 0;
-    height: 32px;
-    padding: 0 0 0 14px;
-    border: none;
-    background-color: transparent;
-    background-size: 14px 15px;
-    cursor: pointer;
-    background-position: 99% center;
-  }
-  .input-header .search-field:focus{
-    background-color: #fff;
-    border: 1px solid #E0E0E0;
-    border-radius: 5px;
-    cursor: text;
-    outline: 0;
-    min-width: 600px;
-}
   a img, div.post div.entry-content img.alignright{
     border: none;
     float: none;
@@ -738,9 +740,6 @@ body.desktop .button.red.disabled:visited {
 @media screen and (max-width: 768px){
   .MainContainer{
   padding: 48px 40px 80px 40px;
-  }
-  .input-header .search-field:focus{
-    min-width: 500px;
   }
   .download-block{
     height: auto;
@@ -815,10 +814,7 @@ body.desktop .button.red.disabled:visited {
   }
   .bottomWrapper {
     padding-bottom: 56px;
-}
-  .input-header .search-field:focus{
-    min-width: 300px;
-  }
+	}
  .SingleContainer{
     padding: 48px 0;
     width: 100%;
