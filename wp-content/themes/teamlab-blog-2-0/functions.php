@@ -161,7 +161,13 @@ add_action( 'after_setup_theme', function() {
     add_theme_support( 'pageviews' );
 });
 
+add_filter( 'excerpt_length', function(){
+	return 27;
+} );
 
+add_filter('excerpt_more', function($more) {
+	return '...';
+});
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
  *

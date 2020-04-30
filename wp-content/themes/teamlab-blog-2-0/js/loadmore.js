@@ -11,6 +11,10 @@ jQuery(function($){
 		ajaxLoad(this.id, "loadmore-tag");
 	});
 
+	$('#true_loadmore_search').click(function(){
+		ajaxLoad(this.id, "loadmore-search");
+	});
+
 	function ajaxLoad(buttonId, template){
 		$("#"+buttonId).text('Loading...'); 
 
