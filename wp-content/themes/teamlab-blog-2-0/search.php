@@ -26,9 +26,6 @@ get_header();
 				<div class="search-page">
 		        	<?php get_search_form(); ?>
 		      	</div>
-		      	<?php
-				var_dump($wp_query->query_vars);
-				?>
 
 				<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 				<article class="post searchlist">
@@ -48,7 +45,7 @@ get_header();
 				if ($wp_query->max_num_pages > 1) : ?>
    				<script>
     			var ajaxurl = '<?php echo site_url() ?>/wp-admin/admin-ajax.php';
-    			var true_posts = '<?php echo serialize($wp_query->query_vars); ?>';
+    			var true_posts = '<?php echo addslashes(wp_json_encode($wp_query->query_vars)); ?>';
     			var current_page = '<?php echo (get_query_var('paged')) ? get_query_var('page') : 1; ?>';
     			var max_pages = '<?php echo $wp_query->max_num_pages; ?>';
    				</script>
@@ -61,6 +58,7 @@ get_header();
   				<div class="no-results">
 				 <h3>No results matching your query could be found</h3>
 				 <div class="bg"></div>
+				</div>
 				<?php endif;?>
 
 				 

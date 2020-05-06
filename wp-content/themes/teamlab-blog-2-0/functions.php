@@ -223,6 +223,7 @@ function teamlab_blog_2_0_scripts() {
 	wp_enqueue_style( 'teamlab-blog-2-0-style', get_stylesheet_uri() );
 	wp_enqueue_script('jquery'); 
  	wp_enqueue_script( 'true_loadmore', get_stylesheet_directory_uri() . '/js/loadmore.js', array('jquery') );
+    wp_enqueue_script( 'true_search', get_stylesheet_directory_uri() . '/js/loadmore.js', array('jquery') );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
@@ -248,12 +249,30 @@ function true_load_posts(){
   endif;
   wp_reset_postdata();
   die();
-}
+};
 
  
 add_action('wp_ajax_loadmore', 'true_load_posts');
 add_action('wp_ajax_nopriv_loadmore', 'true_load_posts');
 
+
+function true_load_posts_in_search(){
+  $args = json_decode( stripslashes( $_POST['query'] ), true );
+  $args['paged'] = $_POST['page'] + 1; // следующая страница
+  $args['post_status'] = 'publish';
+  $q = new WP_Query($args);
+  if( $q->have_posts() ):
+    while($q->have_posts()): $q->the_post(); 
+       include get_template_directory() . '/' . $_POST['template'] . '.php' ;
+    endwhile; 
+  endif;
+  wp_reset_postdata();
+  die();
+};
+
+ 
+add_action('wp_ajax_search', 'true_load_posts_in_search');
+add_action('wp_ajax_nopriv_search', 'true_load_posts_in_search');
 
 /**
  * Implement the Custom Header feature.
