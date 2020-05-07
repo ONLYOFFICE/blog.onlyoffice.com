@@ -1,0 +1,1387 @@
+# Translation of Plugins - WP Mail SMTP by WPForms - Stable (latest release) in Chinese (China)
+# This file is distributed under the same license as the Plugins - WP Mail SMTP by WPForms - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2019-08-07 09:42:06+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: GlotPress/2.4.0-alpha\n"
+"Language: zh_CN\n"
+"Project-Id-Version: Plugins - WP Mail SMTP by WPForms - Stable (latest release)\n"
+
+#: src/Providers/Gmail/Auth.php:170
+msgid "There was an error while processing the Google authentication request. Please make sure that you have Client ID and Client Secret both valid and saved."
+msgstr "处理Google身份验证请求时出错。 请确保您的客户端ID和客户端密钥都有效且已保存。"
+
+#: src/Admin/Area.php:136
+msgid "You have successfully linked the current site with your Google API project. Now you can start sending emails through Gmail."
+msgstr "您已成功将当前站点与Google API项目相关联。 现在，您可以开始通过Gmail发送电子邮件。"
+
+#: src/Admin/Pages/About.php:307 src/Admin/Area.php:314 src/Admin/Area.php:321
+msgid "Activate"
+msgstr "启用"
+
+#: src/Core.php:379
+msgid "<strong>Please Note:</strong> Support for PHP 5.3-5.5 will be discontinued in 2019. After this, if no further action is taken, WP Mail SMTP functionality will be disabled."
+msgstr "<strong>请注意：</strong>对PHP 5.3-5.5的支持将在2019年停止。此后，如果不采取进一步措施，WP Mail SMTP功能将被禁用。"
+
+#: src/Admin/Area.php:678
+msgid "WP Mail SMTP Pro related message was successfully dismissed."
+msgstr "WP Mail SMTP Pro相关消息已成功解除。"
+
+#: src/Admin/Area.php:320
+msgid "Install and Activate"
+msgstr "安装并激活"
+
+#: src/Admin/Area.php:319
+msgid "Could not install a plugin. Please download from WordPress.org and install manually."
+msgstr "无法安装插件。 请从WordPress.org下载并手动安装。"
+
+#: src/Admin/Area.php:318
+msgid "Processing..."
+msgstr "处理中....."
+
+#: src/Admin/Pages/Settings.php:390
+msgid "Test and verify email delivery"
+msgstr "测试并验证电子邮件递送"
+
+#: src/Admin/Pages/Settings.php:389
+msgid "Set up WP Mail SMTP Pro plugin"
+msgstr "设置WP Mail SMTP Pro插件"
+
+#: src/Admin/Pages/Settings.php:388
+msgid "Configure Mailgun service"
+msgstr "配置Mailgun服务"
+
+#: src/Admin/Pages/Settings.php:387
+msgid "Set up domain name verification (DNS)"
+msgstr "设置域名验证（DNS）"
+
+#: src/Admin/Pages/Settings.php:386
+msgid "Install WP Mail SMTP Pro plugin"
+msgstr "安装WP Mail SMTP Pro插件"
+
+#: src/Admin/Pages/Settings.php:385
+msgid "White Glove Setup - sit back and relax while we handle everything for you"
+msgstr "白色手套设置 - 在我们为您处理一切时，让您高枕无忧"
+
+#: src/Admin/Pages/Settings.php:382
+msgid "Access to our world class support team"
+msgstr "访问我们的世界级支持团队"
+
+#: src/Admin/Pages/Settings.php:381
+msgid "Outlook.com - send emails using your Outlook.com account"
+msgstr "Outlook.com  - 使用您的Outlook.com帐户发送电子邮件"
+
+#: src/Admin/Pages/Settings.php:380
+msgid "Amazon SES - harness the power of AWS"
+msgstr "亚马逊SES  - 利用AWS的强大功能"
+
+#: src/Admin/Pages/Settings.php:379
+msgid "Office 365 - send emails using your Office 365 account"
+msgstr "Office 365  - 使用您的Office 365帐户发送电子邮件"
+
+#: src/Admin/Pages/Settings.php:378
+msgid "Email Logging - keep track of every email sent from your site"
+msgstr "电子邮件记录 - 跟踪从您的站点发送的每封电子邮件"
+
+#: src/Admin/Pages/Settings.php:377
+msgid "Manage Notifications - control which emails your site sends"
+msgstr "管理通知 - 控制您的站点发送的电子邮件"
+
+#: src/Admin/Pages/Settings.php:373
+msgid "Pro Features:"
+msgstr "专业特色："
+
+#: src/Admin/Pages/Settings.php:370
+msgid "We know that you will truly love WP Mail SMTP. It's used by over 1,000,000 websites."
+msgstr "我们知道您真的很喜欢WP Mail SMTP。 超过1,000,000个网站使用它。"
+
+#: src/Admin/Pages/Settings.php:366
+msgid "Thanks for being a loyal WP Mail SMTP user. Upgrade to WP Mail SMTP Pro to unlock more awesome features and experience why WP Mail SMTP is the most popular SMTP plugin."
+msgstr "感谢您成为忠实的WP Mail SMTP用户。 升级到WP Mail SMTP Pro以解锁更多令人敬畏的功能，亲身感受下为什么WP Mail SMTP是最受欢迎的SMTP插件。"
+
+#: src/Admin/Pages/Settings.php:362
+msgid "Get WP Mail SMTP Pro and Unlock all the Powerful Features"
+msgstr "获取WP Mail SMTP Pro并解锁所有强大的功能"
+
+#: src/Admin/Pages/Settings.php:301
+msgid "As a valued WP Mail SMTP Lite user you receive <strong>20% off</strong>, automatically applied at checkout!"
+msgstr "作为有价值的WP Mail SMTP Lite用户，您可以在结账时自动应用<strong> 八折折扣</strong>！"
+
+#: src/Admin/Pages/Settings.php:276
+msgid "You're using WP Mail SMTP Lite - no license needed. Enjoy!"
+msgstr "您正在使用WP Mail SMTP Lite  - 无需许可证。 请享用！"
+
+#: src/Admin/Pages/Settings.php:193
+msgid "If unchecked, bounce messages may be lost. Some providers may ignore this option."
+msgstr "如果未选中，退回邮件可能会丢失。 某些提供商可能会忽略此选项。"
+
+#: src/Admin/Pages/Settings.php:75
+msgid "License Key"
+msgstr "许可证密钥(注册码)"
+
+#: src/Admin/Pages/Settings.php:67
+msgid "Your license key provides access to updates and support."
+msgstr "您的许可证密钥提供对更新和支持的访问。"
+
+#: src/Admin/Pages/Settings.php:64
+msgid "License"
+msgstr "许可证"
+
+#: src/Admin/Pages/Test.php:1081
+msgid "As a valued WP Mail SMTP user, you will get <span class=\"price-off\">20% off regular pricing</span>, automatically applied at checkout!"
+msgstr "作为一名有价值的WP Mail SMTP用户，您将获得<span class=\"price-off\">八折折扣</span>，并在结账时自动应用！"
+
+#: src/Admin/Pages/Test.php:1075
+msgid "Additionally, you can take advantage of our White Glove Setup. Sit back and relax while we handle everything for you! If you simply don't have time or maybe you feel a bit in over your head - we got you covered."
+msgstr "此外，您还可以利用我们的白手套设置。 在我们为您处理一切时，请坐下来放松一下！ 如果你根本没有时间，或者你觉得有点无法理解 - 我们让你满意。"
+
+#: src/Admin/Pages/Test.php:680
+msgid "If you do not see activation email, go to your Mailgun control panel and resend the activation email."
+msgstr "如果您没有看到激活电子邮件，请转到您的Mailgun控制面板并重新发送激活电子邮件。"
+
+#: src/Admin/Pages/Test.php:679
+msgid "Check your inbox you used to create a Mailgun account. Click the activation link in an email from Mailgun."
+msgstr "检查您用于创建Mailgun帐户的收件箱。 单击Mailgun电子邮件中的激活链接。"
+
+#: src/Admin/Pages/Test.php:676
+msgid "It seems that you forgot to activate your Mailgun account."
+msgstr "您似乎忘了激活您的Mailgun帐户。"
+
+#: src/Admin/Pages/Test.php:72
+msgid "Enter email address where test email will be sent."
+msgstr "输入将发送测试电子邮件的电子邮件地址。"
+
+#: src/Admin/Pages/About.php:687
+msgid "Priority Support"
+msgstr "优先支持"
+
+#: src/Admin/Pages/About.php:681
+msgid "Limited Support"
+msgstr "有限支持"
+
+#: src/Admin/Pages/About.php:673
+msgid "Additional mailers: Microsoft Outlook (with Office365 support) and Amazon SES"
+msgstr "其他邮件程序：Microsoft Outlook（支持Office365）和Amazon SES"
+
+#: src/Admin/Pages/About.php:667
+msgid "Only default list of mailers"
+msgstr "只有默认的邮件列表"
+
+#: src/Admin/Pages/About.php:659
+msgid "Complete Email Controls management for most default WordPress emails"
+msgstr "完成大多数默认WordPress电子邮件的电子邮件控件管理"
+
+#: src/Admin/Pages/About.php:645
+msgid "Complete Email Log management inside WordPress"
+msgstr "在WordPress中完成电子邮件日志管理"
+
+#: src/Admin/Pages/About.php:639
+msgid "Emails are not logged"
+msgstr "电子邮件未记录"
+
+#: src/Admin/Pages/About.php:618
+msgid "Customer Support"
+msgstr "客户支持"
+
+#: src/Admin/Pages/About.php:617
+msgid "Additional Mailers"
+msgstr "额外的邮件(Additional Mailers)"
+
+#: src/Admin/Pages/About.php:616
+msgid "Email Controls"
+msgstr "电邮控制"
+
+#: src/Admin/Pages/About.php:582
+msgid "Get WP Mail SMTP Pro Today and Unlock all of these Powerful Features"
+msgstr "立即获取WP Mail SMTP Pro并解锁所有这些强大的功能"
+
+#: src/Admin/Pages/About.php:541
+msgid "Pro"
+msgstr "Pro(专业版)"
+
+#: src/Admin/Pages/About.php:531
+msgid "Feature"
+msgstr "特点"
+
+#: src/Admin/Pages/About.php:522
+msgid "Get the most out of WP Mail SMTP by upgrading to Pro and unlocking all of the powerful features."
+msgstr "通过升级到Pro并解锁所有强大功能，充分利用WP Mail SMTP。"
+
+#: src/Admin/Pages/About.php:487
+msgid "Plugin installed."
+msgstr "已安装插件。"
+
+#: src/Admin/Pages/About.php:479
+msgid "Plugin installed & activated."
+msgstr "已安装并激活插件。"
+
+#: src/Admin/Pages/About.php:415
+msgid "Could not install the plugin."
+msgstr "无法安装插件。"
+
+#: src/Admin/Pages/About.php:398
+msgid "Plugin activated."
+msgstr "插件已激活。"
+
+#: src/Admin/Pages/About.php:386
+msgid "Could not activate the plugin. Please activate it from the Plugins page."
+msgstr "无法激活插件。 请从“插件”页面激活它。"
+
+#: src/Admin/Pages/About.php:366
+msgid "WPForms Pro"
+msgstr "WPForms Pro (专业版)"
+
+#: src/Admin/Pages/About.php:361 src/Admin/Pages/About.php:367
+msgid "The best WordPress contact form plugin. Drag & Drop online form builder that helps you create beautiful contact forms with just a few clicks."
+msgstr "最好的WordPress联系表单插件。 拖放在线表单构建器，只需单击几下即可帮助您创建漂亮的联系表单。"
+
+#: src/Admin/Pages/About.php:360
+msgid "Contact Forms by WPForms"
+msgstr "通过WPForms联系表单"
+
+#: src/Admin/Pages/About.php:353
+msgid "OptinMonster"
+msgstr "OptinMonster"
+
+#: src/Admin/Pages/About.php:345
+msgid "MonsterInsights Pro"
+msgstr "MonsterInsights Pro"
+
+#: src/Admin/Pages/About.php:340 src/Admin/Pages/About.php:346
+msgid "MonsterInsights makes it “effortless” to properly connect your WordPress site with Google Analytics, so you can start making data-driven decisions to grow your business."
+msgstr "MonsterInsights使您的WordPress网站与Google Analytics正确连接变得“毫不费力”，因此您可以开始制定数据驱动的决策来发展您的业务。"
+
+#: src/Admin/Pages/About.php:339
+msgid "MonsterInsights"
+msgstr "MonsterInsights"
+
+#: src/Admin/Pages/About.php:304 src/Admin/Area.php:317
+msgid "Inactive"
+msgstr "未启用"
+
+#. translators: %s - status HTML text.
+#: src/Admin/Pages/About.php:249
+msgid "Status: %s"
+msgstr "状态： %s"
+
+#: src/Admin/Pages/About.php:209
+msgid "The WPForms Team"
+msgstr "WPForms团队"
+
+#: src/Admin/Pages/About.php:207
+msgid "The WPForms Team photo"
+msgstr "WPForms团队照片"
+
+#: src/Admin/Pages/About.php:201
+msgid "Yup, we know a thing or two about building awesome products that customers love."
+msgstr "是的，我们对有关建立客户喜爱的优质产品了如指掌。"
+
+#: src/Admin/Pages/About.php:177
+msgid "Our goal is to make reliable email deliverability easy for WordPress."
+msgstr "我们的目标是为WordPress提供可靠的电子邮件传送功能。"
+
+#: src/Admin/Pages/About.php:174
+msgid "Email deliverability has been a well-documented problem for all WordPress websites. However as WPForms grew, we became more aware of this painful issue that affects our users and the larger WordPress community. So we decided to solve this problem and make a solution that's beginner friendly."
+msgstr "对于所有WordPress网站，电子邮件可传递性一直是一个记录良好的问题。 然而，随着WPForms的发展，我们越来越意识到这个影响我们的用户和更大的WordPress社区的痛苦问题。 所以我们决定解决这个问题并制定一个初学者友好的解决方案。"
+
+#: src/Admin/Pages/About.php:170
+msgid "Hello and welcome to WP Mail SMTP, the easiest and most popular WordPress SMTP plugin. We build software that helps your site reliably deliver emails every time."
+msgstr "您好，欢迎使用WP Mail SMTP，这是最简单，最受欢迎的WordPress SMTP插件。 我们构建的软件可以帮助您的站点每次都可靠地发送电子邮件。"
+
+#: src/Admin/Pages/About.php:105 src/Admin/Area.php:224 src/Admin/Area.php:225
+msgid "About Us"
+msgstr "关于我们"
+
+#. translators: %s - plugin current license type.
+#: src/Admin/Pages/About.php:98 src/Admin/Pages/About.php:514
+msgid "%s vs Pro"
+msgstr "%s vs Pro"
+
+#: src/Admin/Pages/Logs.php:98
+msgid "and start logging all emails!"
+msgstr "并开始记录所有电子邮件！"
+
+#: src/Admin/Pages/Logs.php:94
+msgid "Upgrade to WP Mail SMTP Pro Now"
+msgstr "立即升级到WP Mail SMTP Pro"
+
+#: src/Admin/Pages/Logs.php:86
+msgid "Search for Specific Emails"
+msgstr "搜索特定电子邮件"
+
+#: src/Admin/Pages/Logs.php:85
+msgid "Filter All Emails"
+msgstr "过滤所有电子邮件"
+
+#: src/Admin/Pages/Logs.php:82
+msgid "View Emails Sent Status"
+msgstr "查看电子邮件发送状态"
+
+#: src/Admin/Pages/Logs.php:81
+msgid "View Sent Emails in Dashboard"
+msgstr "在仪表盘中查看已发送的电子邮件"
+
+#: src/Admin/Pages/Logs.php:76
+msgid "Once you upgrade to WP Mail SMTP Pro, all future sent emails will be stored in your WordPress database and displayed on this Logs screen."
+msgstr "升级到WP Mail SMTP Pro后，所有将来发送的电子邮件都将存储在您的WordPress数据库中并显示在此日志屏幕上。"
+
+#: src/Admin/Pages/Logs.php:75
+msgid "Sent emails are not stored in WP Mail SMTP Lite."
+msgstr "已发送的电子邮件不存储在WP Mail SMTP Lite中。"
+
+#: src/Admin/Pages/Logs.php:71
+msgid "View and Manage All Sent Emails inside WordPress"
+msgstr "查看和管理WordPress中的所有已发送电子邮件"
+
+#: src/Admin/Pages/About.php:615 src/Admin/Pages/Logs.php:40
+#: src/Admin/Area.php:216 src/Admin/Area.php:217 src/Admin/Area.php:723
+msgid "Email Log"
+msgstr "电子邮件日志"
+
+#. translators: %1$s - date, \a\t - specially escaped "at", %2$s - time.
+#: src/WP.php:183
+msgid "%1$s \\a\\t %2$s"
+msgstr "%1$s \\a\\t %2$s"
+
+#: src/Providers/Gmail/Options.php:191
+msgid "You need to save settings with Client ID and Client Secret before you can proceed."
+msgstr "您需要先使用客户端ID和客户端密钥保存设置，然后才能继续。"
+
+#. translators: %s - email address, as received from Google API.
+#: src/Providers/Gmail/Options.php:176
+msgid "Connected as %s"
+msgstr "连接到%s"
+
+#: src/Providers/Gmail/Options.php:121
+msgid "Please copy this URL into the \"Authorized redirect URIs\" field of your Google web application."
+msgstr "请将此网址复制到Google网络应用程序的“授权重定向URI”字段中。"
+
+#. translators: %1$s - constant name, %2$s - file name.
+#: src/Providers/OptionsAbstract.php:383
+msgid "The value of this field was set using a constant %1$s most likely inside %2$s of your WordPress installation."
+msgstr "此字段的值是使用常量%1$s设置的，最有可能在WordPress安装的%2$s内。"
+
+#. translators: %s - wp-config.php.
+#: src/Providers/OptionsAbstract.php:292
+msgid "To do this add the lines below to your %s file:"
+msgstr "为此，请将以下行添加到%s文件中："
+
+#: src/Providers/OptionsAbstract.php:287
+msgid "The password is stored in plain text. We highly recommend you set up your password in your WordPress configuration file for improved security."
+msgstr "密码以纯文本格式存储。 我们强烈建议您在WordPress配置文件中设置密码以提高安全性。"
+
+#: src/Providers/OptionsAbstract.php:279
+msgid "All the defined constants will stop working and you will be able to change all the values on this page."
+msgstr "所有定义的常量将停止工作，您将能够更改此页面上的所有值。"
+
+#. translators: %1$s - wp-config.php file, %2$s - WPMS_ON constant name.
+#: src/Providers/OptionsAbstract.php:269
+msgid "If you want to disable the use of constants, find in %1$s file the constant %2$s and turn if off:"
+msgstr "如果要禁用常量，请在%1$s文件中找到常量%2$s并关闭："
+
+#. translators: %s - constant name: WPMS_SMTP_PASS.
+#: src/Providers/OptionsAbstract.php:261
+msgid "To change the password you need to change the value of the constant there: %s"
+msgstr "要更改密码，您需要更改常量的值：%s"
+
+#: wp_mail_smtp.php:122
+msgid "Please deactivate the free version of the WP Mail SMTP plugin before activating WP Mail SMTP Pro."
+msgstr "请在激活WP Mail SMTP Pro之前停用免费版本的WP Mail SMTP插件。"
+
+#. translators: %1$s - WP Mail SMTP plugin name; %2$s - opening a link tag;
+#. %3$s - closing a link tag.
+#: wp-mail-smtp-0.11.2.php:770
+msgid "Your site is running an outdated version of PHP that is no longer supported and may cause issues with %1$s. %2$sRead more%3$s for additional information."
+msgstr "您的站点执行于不再受支持的旧版 PHP 环境，可能会导致 %1$s 出现问题。请参阅%2$s这份文件%3$s (英文) 以取得更多信息。"
+
+#: wp-mail-smtp-0.11.2.php:557
+msgid "To"
+msgstr "收件人"
+
+#. translators: %s - Pepipost registration URL.
+#: wp-mail-smtp-0.11.2.php:477
+msgid "You need to signup on %s to get the SMTP username/password."
+msgstr "您必须注册 %s 帐号以取得 SMTP 使用者名称及密码。"
+
+#: wp-mail-smtp-0.11.2.php:471
+msgid "Pepipost SMTP Options"
+msgstr "Pepipost SMTP 选项"
+
+#: wp-mail-smtp-0.11.2.php:457
+msgid "This is in plain text because it must not be stored encrypted."
+msgstr "这是纯文本，因为它不应当被加密储存。"
+
+#: wp-mail-smtp-0.11.2.php:413
+msgid "TLS is not the same as STARTTLS. For most servers SSL is the recommended option."
+msgstr "TLS 不同于 STARTTLS。对于大多数服务器来说 SSL 是推荐选项。"
+
+#: wp-mail-smtp-0.11.2.php:410 wp-mail-smtp-0.11.2.php:532
+msgid "Use TLS encryption."
+msgstr "使用 TLS 加密。"
+
+#. translators: %1$s - link start; %2$s - link end.
+#: wp-mail-smtp-0.11.2.php:307
+msgid "Looking for high inbox delivery? Try Pepipost with easy setup and free emails. Learn more %1$shere%2$s."
+msgstr "寻求大量邮件寄送方案？尝试配置简单并提供免费电子邮件传送额度的 Pepipost。了解更多点%1$s这里%2$s。"
+
+#: wp-mail-smtp-0.11.2.php:301
+msgid "Use Pepipost SMTP to send emails."
+msgstr "使用 Pepipost SMTP 发送电子邮件。"
+
+#: wp-mail-smtp-0.11.2.php:238 wp-mail-smtp-0.11.2.php:603
+msgid "WP Mail SMTP Settings"
+msgstr "WP Mail SMTP 设置"
+
+#: src/Providers/Pepipost/Options.php:25
+msgid "Pepipost"
+msgstr "Pepipost"
+
+#: src/Providers/Gmail/Options.php:183
+msgid "Removing the connection will give you an ability to redo the connection or link to another Google account."
+msgstr "删除连接后，便能再次设定连接或连结至其他 Google 帐户。"
+
+#: src/Providers/Gmail/Options.php:167
+msgid "Remove Connection"
+msgstr "删除连接"
+
+#: src/Providers/Gmail/Options.php:161
+msgid "Click the button above to confirm authorization."
+msgstr "按一下上方按钮以确认授权。"
+
+#: src/Providers/Gmail/Options.php:158
+msgid "Allow plugin to send emails using your Google account"
+msgstr "授与插件使用您的 Google 帐户发送电子邮件的权限"
+
+#: src/Admin/Area.php:266
+msgid "Are you sure you want to reset the current provider connection? You will need to immediately create a new one to be able to send emails."
+msgstr "您确定要重置当前的提供商连接吗？ 您需要立即创建一个新的，以便能够发送电子邮件。"
+
+#: src/Providers/Gmail/Options.php:130
+msgid "Authorization"
+msgstr "验证"
+
+#: src/Providers/Gmail/Options.php:116
+msgid "Copy URL to clipboard"
+msgstr "复制网址至剪贴板"
+
+#: src/Providers/Gmail/Options.php:108
+msgid "Authorized redirect URI"
+msgstr "已授权的重定向 URI"
+
+#: src/Providers/Gmail/Options.php:86
+msgid "Client Secret"
+msgstr "客户端密码"
+
+#: src/Providers/Gmail/Options.php:71
+msgid "Client ID"
+msgstr "客户端 ID"
+
+#. translators: %1$s - opening link tag; %2$s - closing link tag.
+#: src/Providers/Gmail/Options.php:36
+msgid "Send emails using your Gmail or G Suite (formerly Google Apps) account, all while keeping your login credentials safe. Other Google SMTP methods require enabling less secure apps in your account and entering your password. However, this integration uses the Google API to improve email delivery issues while keeping your site secure.<br><br>Read our %1$sGmail documentation%2$s to learn how to configure Gmail or G Suite."
+msgstr "使用 Gmail API 透过 Gmail 或 G Suite (之前的 Google Apps) 帐户发送电子邮件，发送邮件同时还能保障帐户登入凭证的安全。透过其他 Google SMTP 方法发送邮件，必须在您的帐户中启用安全性较低的应用程序，并在其中输入 Google 帐户及密码。但是使用 Gmail API 除了能改善发送邮件的问题外，还能保障网站安全。<br><br>请参考这份 %1$sGmail API 设定教学%2$s (英文)，为您的 Gmail 或 G Suite 进行设定。"
+
+#: src/Providers/OptionsAbstract.php:340 src/Providers/OptionsAbstract.php:364
+msgid "Meanwhile you can switch to the \"Other SMTP\" Mailer option."
+msgstr "同时您可以切换到“其他SMTP”邮件程序选项。"
+
+#. translators: %1$s - Provider name; %2$s - PHP version required by Provider;
+#. %3$s - current PHP version.
+#: src/Providers/OptionsAbstract.php:333
+msgid "%1$s requires PHP %2$s to work and does not support your current PHP version %3$s. Please contact your host and request a PHP upgrade to the latest one."
+msgstr "%1$s 需要 PHP %2$s (或更新版本) 才能正确执行，它不支持这台主机目前所使用的 PHP %3$s。请联系您的主机服务商，并提出将 PHP 升级至最新版的要求。"
+
+#: src/Providers/OptionsAbstract.php:249
+msgid "SMTP Password"
+msgstr "SMTP 密码"
+
+#: src/Providers/OptionsAbstract.php:235
+msgid "SMTP Username"
+msgstr "SMTP用户名"
+
+#: src/Providers/OptionsAbstract.php:208
+msgid "By default TLS encryption is automatically used if the server supports it, which is recommended. In some cases, due to server misconfigurations, this can cause issues and may need to be disabled."
+msgstr "依照预设，如果服务器支持 TLS (建议采用)，便会自动使用 TLS 加密。在某些情况下，由于服务器设定错误导致 TLS 加密可能会造成问题，这时便会需要停用 TLS 加密。"
+
+#: src/Providers/OptionsAbstract.php:194
+msgid "Auto TLS"
+msgstr "自动 TLS"
+
+#: src/Providers/OptionsAbstract.php:172
+msgid "For most servers TLS is the recommended option. If your SMTP provider offers both SSL and TLS options, we recommend using TLS."
+msgstr "对于大多数服务器，建议使用TLS。 如果您的SMTP提供商同时提供SSL和TLS选项，我们建议您使用TLS。"
+
+#: src/Providers/OptionsAbstract.php:168
+msgid "TLS"
+msgstr "TLS"
+
+#: src/Providers/OptionsAbstract.php:159
+msgid "SSL"
+msgstr "SSL"
+
+#: src/Providers/OptionsAbstract.php:150
+msgid "None"
+msgstr "无"
+
+#. translators: %s - URL to Mailgun.com page.
+#: src/Providers/Mailgun/Options.php:143
+msgid "<a href=\"%s\" rel=\"\" target=\"_blank\">More information</a> on Mailgun.com."
+msgstr "请参考 Mailgun.com 上的<a href=\"%s\" rel=\"\" target=\"_blank\">进一步说明</a>。"
+
+#: src/Providers/Mailgun/Options.php:138
+msgid "If you are operating under EU laws, you may be required to use EU region."
+msgstr "如果您在欧盟法律下运营，您可能需要使用欧盟地区。"
+
+#: src/Providers/Mailgun/Options.php:137
+msgid "Define which endpoint you want to use for sending messages."
+msgstr "请选取要用于发送信息的端点。"
+
+#: src/Providers/Mailgun/Options.php:133
+msgid "EU"
+msgstr "欧盟"
+
+#: src/Providers/Mailgun/Options.php:124
+msgid "US"
+msgstr "美国"
+
+#: src/Providers/Mailgun/Options.php:114
+msgid "Region"
+msgstr "发件/资料储存地区"
+
+#: src/Providers/Mailgun/Options.php:103
+msgid "Get a Domain Name"
+msgstr "取得域名"
+
+#. translators: %s - Domain Name link.
+#: src/Providers/Mailgun/Options.php:101
+msgid "Follow this link to get a Domain Name from Mailgun: %s."
+msgstr "请依照《%s》(英文) 中的指示，从 Mailgun 取得域名。"
+
+#: src/Providers/Mailgun/Options.php:89
+msgid "Domain Name"
+msgstr "域名"
+
+#: src/Providers/Mailgun/Options.php:78
+msgid "Get a Private API Key"
+msgstr "取得私有 API 密钥"
+
+#. translators: %s - API key link.
+#: src/Providers/Mailgun/Options.php:76
+msgid "Follow this link to get an API Key from Mailgun: %s."
+msgstr "请依照《%s》(英文) 中的指示，从 Mailgun 取得 API 密钥。"
+
+#: src/Providers/Mailgun/Options.php:57
+msgid "Private API Key"
+msgstr "私有 API 密钥"
+
+#. translators: %1$s - opening link tag; %2$s - closing link tag; %3$s -
+#. opening link tag; %4$s - closing link tag.
+#: src/Providers/Mailgun/Options.php:29
+msgid "%1$sMailgun%2$s is one of the leading transactional email services trusted by over 10,000 website and application developers. They provide users 10,000 free emails per month.<br><br>Read our %3$sMailgun documentation%4$s to learn how to configure Mailgun and improve your email deliverability."
+msgstr "%1$sMailgun%2$s 是触发式电子邮件服务的领导品牌之一，它提供使用者每月 10000 封电子邮件的免费发送额度，深受网站管理员及应用程序开发人员的信赖。<br><br>请参阅这份 %3$sMailgun 线上说明文件%4$s，以了解如何设定 Mailgun 及改善电子邮件寄达率。"
+
+#: src/Providers/Mailgun/Options.php:25
+msgid "Mailgun"
+msgstr "Mailgun"
+
+#: src/Providers/Mail/Options.php:37
+msgid "You currently have the native WordPress option selected. Please select any other Mailer option above to continue the setup."
+msgstr "您当前选择了本机WordPress选项。 请选择上面的任何其他邮件程序选项以继续设置。"
+
+#: src/Providers/Mail/Options.php:25
+msgid "Default (none)"
+msgstr "默认（无）"
+
+#. translators: %s - SendGrid access level.
+#: src/Providers/Sendgrid/Options.php:86
+msgid "To send emails you will need only a %s access level for this API key."
+msgstr "要发送电子邮件，您只需要%s访问级别即可获得此API密钥。"
+
+#: src/Providers/Sendgrid/Options.php:78
+msgid "Create API Key"
+msgstr "创建API密钥"
+
+#. translators: %s - API key link.
+#: src/Providers/Sendgrid/Options.php:76
+msgid "Follow this link to get an API Key from SendGrid: %s."
+msgstr "请依照《%s》(英文) 中的指示，从 SendGrid 取得 API 密钥。"
+
+#: src/Providers/Sendgrid/Options.php:57
+msgid "API Key"
+msgstr "API 密钥"
+
+#. translators: %1$s - opening link tag; %2$s - closing link tag; %3$s -
+#. opening link tag; %4$s - closing link tag.
+#: src/Providers/Sendgrid/Options.php:29
+msgid "%1$sSendGrid%2$s is one of the leading transactional email services, sending over 35 billion emails every month. They provide users 100 free emails per day.<br><br>Read our %3$sSendGrid documentation%4$s to learn how to set up SendGrid and improve your email deliverability."
+msgstr "%1$sSendGrid%2$s是领先的交易电子邮件服务之一，每月发送超过350亿封电子邮件。 他们每天为用户提供100封免费电子邮件。<br><br>阅读我们的%3$sSendGrid文档%4$s，了解如何设置SendGrid并提高您的电子邮件可传递性。"
+
+#: src/Providers/Sendgrid/Options.php:25
+msgid "SendGrid"
+msgstr "SendGrid"
+
+#: src/Providers/SMTP/Options.php:25
+msgid "Other SMTP"
+msgstr "其他 SMTP"
+
+#. translators: %1$s - Plugin name causing conflict; %2$s - Plugin name causing
+#. conflict.
+#: src/Conflicts.php:160
+msgid "Heads up! WP Mail SMTP has detected %1$s is activated. Please deactivate %2$s to prevent conflicts."
+msgstr "请注意，WP Mail SMTP 已侦测到启用的 %1$s 插件，请停用 %2$s 以避免发生冲突。"
+
+#: src/Core.php:477
+msgid "Consider running an email test after fixing it."
+msgstr "请在修正问题后执行电子邮件测试。"
+
+#. translators: %s - plugin admin page URL.
+#: src/Core.php:466
+msgid "Please review your WP Mail SMTP settings in <a href=\"%s\">plugin admin area</a>."
+msgstr "请在<a href=\"%s\">插件设定页</a>中检视 WP Mail SMTP 设定。"
+
+#. translators: %s - plugin name and its version.
+#: src/Core.php:447
+msgid "<strong>EMAIL DELIVERY ERROR:</strong> the plugin %s logged this error during the last time it tried to send an email:"
+msgstr "<strong>电子邮件发送错误:</strong> 插件 %s 最后一次尝试发送电子邮件所记录的错误:"
+
+#. translators: %1$s - plugin name and its version, %2$s - plugin Misc settings
+#. page.
+#: src/Core.php:418
+msgid "<strong>EMAILING DISABLED:</strong> The %1$s is currently blocking all emails from being sent. To send emails, go to plugin <a href=\"%2$s\">Misc settings</a> and disable the \"Do Not Send\" option."
+msgstr "<strong>电子邮件已停用:</strong> %1$s 目前阻止了全部电子邮件的发送。如需发送电子邮件，请至插件的 [<a href=\"%2$s\">其他</a>] 设定分页中停用 [停止发送邮件] 设定。"
+
+#: src/Admin/Pages/About.php:299 src/Admin/Area.php:315
+msgid "Activated"
+msgstr "已启用(Activated)"
+
+#: src/Admin/Pages/About.php:296 src/Admin/Area.php:316
+msgid "Active"
+msgstr "启用"
+
+#: src/Admin/Pages/About.php:315
+msgid "Not Installed"
+msgstr "未安装"
+
+#: src/Admin/Pages/About.php:318
+msgid "Install Plugin"
+msgstr "安装插件"
+
+#. translators: %1$s - WP.org link; %2$s - same WP.org link.
+#: src/Admin/Area.php:380
+msgid "Please rate <strong>WP Mail SMTP</strong> <a href=\"%1$s\" target=\"_blank\" rel=\"noopener noreferrer\">&#9733;&#9733;&#9733;&#9733;&#9733;</a> on <a href=\"%2$s\" target=\"_blank\" rel=\"noopener noreferrer\">WordPress.org</a> to help us spread the word. Thank you from the WP Mail SMTP team!"
+msgstr "请评价<strong>WP Mail SMTP</strong> <a href=\"%1$s\" target=\"_blank\" rel=\"noopener noreferrer\">&#9733;&#9733;&#9733;&#9733;&#9733;</a> 在 <a href=\"%2$s\" target=\"_blank\" rel=\"noopener noreferrer\">WordPress.org</a>来帮助我们推广。 WP Mail SMTP团队向您致敬！"
+
+#. translators: %s - Mailer anchor link.
+#: src/Admin/Area.php:174
+msgid "Thanks for using WP Mail SMTP! To complete the plugin setup and start sending emails, <strong>please select and configure your <a href=\"%s\">Mailer</a></strong>."
+msgstr "感谢采用 WP Mail SMTP。要完成插件设置并开始发送电子邮件，<strong>请先选取<a href=\"%s\">邮件程序</a>并加以配置</strong>。"
+
+#: src/Admin/Area.php:142
+msgid "You have successfully linked the current site with your Microsoft API project. Now you can start sending emails through Outlook."
+msgstr "您已成功将当前站点与Microsoft API项目链接。 现在，您可以开始通过Outlook发送电子邮件。"
+
+#: src/Admin/Area.php:127
+msgid "There was an error while processing the authentication request. Please make sure that you have Client ID and Client Secret both valid and saved."
+msgstr "处理验证要求时发生错误，请确认您填写的客户端 ID 及客户端密码均为有效且已正确储存。"
+
+#: src/Admin/Area.php:120
+msgid "There was an error while processing the authentication request. Please try again."
+msgstr "处理验证要求时发生错误，请稍后再试。"
+
+#. translators: %s - error code, returned by Google API.
+#: src/Admin/Area.php:112
+msgid "There was an error while processing the authentication request: %s. Please try again."
+msgstr "处理 %s 的验证要求时发生错误，请稍后再试。"
+
+#: src/Admin/Pages/Settings.php:192 wp-mail-smtp-0.11.2.php:336
+msgid "Return Path indicates where non-delivery receipts - or bounce messages - are to be sent."
+msgstr "传回路径会指出未发送的收件人或退回的邮件会发送至何处。"
+
+#: src/Admin/Pages/Settings.php:170
+msgid "If checked, the From Name setting above will be used for all emails, ignoring values set by other plugins."
+msgstr "启用这项设定后，上方 [发件人名称] 中的设定便会套用至全部外寄电子邮件，并忽略其他插件的相关设定。"
+
+#: src/Admin/Pages/Settings.php:161
+msgid "Force From Name"
+msgstr "强制使用 [发件人名称] 设置"
+
+#: src/Admin/Pages/Settings.php:149
+msgid "The name which emails are sent from."
+msgstr "发送电子邮件的发件人名称。"
+
+#: src/Admin/Pages/Settings.php:128
+msgid "If checked, the From Email setting above will be used for all emails, ignoring values set by other plugins."
+msgstr "启用这项设置后，上方 [发件人电子邮件地址] 中的设置便会套用至全部外寄电子邮件，并忽略其他插件的相关设置。"
+
+#: src/Admin/Pages/Settings.php:119
+msgid "Force From Email"
+msgstr "强制使用 [发件人电子邮件地址] 设置"
+
+#: src/Admin/Pages/Settings.php:107
+msgid "Please note that other plugins can change this, to prevent this use the setting below."
+msgstr "请注意，其他插件能变更这项设置值；如需防止变更，请使用下方的设置。"
+
+#: src/Admin/Pages/Settings.php:104
+msgid "If you using an email provider (Gmail, Yahoo, Outlook.com, etc) this should be your email address for that account."
+msgstr "如果采用的是 Gmail、Yahoo、Outlook.com 这类电子邮件服务，请填写服务帐号的电子邮件地址。"
+
+#: src/Admin/Pages/Settings.php:103
+msgid "The email address which emails are sent from."
+msgstr "设置用于发送电子邮件的电子邮件地址。"
+
+#: src/Admin/Pages/Settings.php:85
+msgid "Mail"
+msgstr "邮件"
+
+#: src/Admin/Pages/Test.php:1125
+msgid "Please copy only the content of the error debug message above, identified with an orange left border, into the support forum topic if you experience any issues."
+msgstr "如果您遇到任何问题，仅需复制上方以橙色左框线标注的侦错信息内容，然后发表于技术支持论坛时附上即可。"
+
+#: src/Admin/Pages/Test.php:1116
+msgid "Click here to view the full Error Log for debugging"
+msgstr "单击此处查看完整的错误日志以进行调试"
+
+#: src/Admin/Pages/Test.php:1053
+msgid "WP Mail SMTP is a free plugin, and the team behind WPForms maintains it to give back to the WordPress community."
+msgstr "WP Mail SMTP 是免费插件，由 WPForms 的幕后开发团队开发维护，并将它贡献给 WordPress 社群。"
+
+#. translators: %s - WPMailSMTP.com account area link.
+#: src/Admin/Pages/Test.php:1036
+msgid "As a WP Mail SMTP Pro user you have access to WP Mail SMTP priority support. Please log in to your WPMailSMTP.com account and <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">submit a support ticket</a>."
+msgstr "作为WP Mail SMTP Pro用户，您可以访问WP Mail SMTP获得优先支持。 请登录您的WPMailSMTP.com帐户并<a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">提交支持服务单</a>。"
+
+#: src/Admin/Pages/Test.php:1028
+msgid "Need support?"
+msgstr "需要技术支持？"
+
+#: src/Admin/Pages/Test.php:1018
+msgid "Recommended next steps:"
+msgstr "建议的处理步骤:"
+
+#: src/Admin/Pages/Test.php:1008
+msgid "There was a problem while sending the test email."
+msgstr "发送测试电子邮件时发生问题。"
+
+#: src/Admin/Pages/Test.php:989
+msgid "Try using a different mailer."
+msgstr "尝试使用其他邮件程序。"
+
+#: src/Admin/Pages/Test.php:983
+msgid "Contact your web hosting provider and ask them to verify your server can make outside connections. Additionally, ask them if a firewall or security policy may be preventing the connection - many shared hosts block certain ports.<br><strong>Note: this is the most common cause of this issue.</strong>"
+msgstr "联系这个网站的主机服务供应商，并要求它确认网站服务器是否可进行外部连接。此外，同时询问它是否有防火墙或安全性原则禁止了相关连接，因为有不少共用主机会阻止相关的特定通讯埠。<br><strong>请注意，这是造成这个问题的最常见原因。</strong>"
+
+#: src/Admin/Pages/Test.php:981
+msgid "Triple check the plugin settings, consider reconfiguring to make sure everything is correct (eg bad copy and paste)."
+msgstr "请反复检查插件设置是否正确，尝试重新设置以确认所有项目的正确性 (例如复制贴上操作有误)。"
+
+#: src/Admin/Pages/Test.php:978
+msgid "Your host is rejecting the connection."
+msgstr "您的SMTP主机拒绝连接。"
+
+#: src/Admin/Pages/Test.php:976
+msgid "Plugin settings are incorrect (wrong SMTP settings, invalid Mailer configuration, etc)."
+msgstr "插件设置不正确，例如错误的 SMTP 设置、不正确的邮件程序设置等。"
+
+#: src/Admin/Pages/Test.php:974
+msgid "This means your test email was unable to be sent."
+msgstr "这代表无法发送测试邮件。"
+
+#: src/Admin/Pages/Test.php:973
+msgid "An issue was detected."
+msgstr "检测出问题。"
+
+#: src/Admin/Pages/Test.php:937
+msgid "Try to use a separate project for your emails, so the project has only 1 Gmail API in it enabled. You will need to remove the old project and create a new one from scratch."
+msgstr "尝试为您的电子邮件使用单独的项目，因此该项目只启用了1个Gmail API。 您需要删除旧项目并从头开始创建一个新项目。"
+
+#: src/Admin/Pages/Test.php:933
+msgid "You may have added a new API to a project"
+msgstr "您可能已向项目添加了新API"
+
+#. translators: %s - WPForms.com tutorial URL.
+#: src/Admin/Pages/Test.php:912
+msgid "Please follow our <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">Gmail tutorial</a> to be sure that all the correct project and data is applied."
+msgstr "请依照这篇 <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">Gmail 教学课程</a>，以确认套用了正确的专案及资料。"
+
+#: src/Admin/Pages/Test.php:908 src/Admin/Pages/Test.php:936
+msgid "Make sure that the used Client ID/Secret correspond to a proper project that has Gmail API enabled."
+msgstr "确认使用的客户端 ID/客户端密码对应的是启用了 Gmail API 的正确专案。"
+
+#. translators: %s - Google Developers Console URL.
+#: src/Admin/Pages/Test.php:885
+msgid "Make sure that you have Gmail API enabled, and you can do that <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">here</a>."
+msgstr "确认 Gmail API 已启用，这项操作可在<a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">这里</a>进行。"
+
+#. translators: %s - Google G Suite Admin area URL.
+#: src/Admin/Pages/Test.php:871
+msgid "Make sure that Gmail app in your G Suite is actually enabled. You can check that in Apps list in <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">G Suite Admin</a> area."
+msgstr "确认已在 G Suite 中完成启用 Gmail 应用程序。请在 <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">G Suite 管理控制台</a>的应用程序清单中进行检查。"
+
+#. translators: %s - Google G Suite Admin area URL.
+#: src/Admin/Pages/Test.php:857
+msgid "Make sure that your G Suite trial period has not expired. You can check the status <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">here</a>."
+msgstr "确认 G Suite 的试用期尚未过期。请前往<a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">这个页面</a>检查相关状态。"
+
+#: src/Admin/Pages/Test.php:851
+msgid "There are various reasons for that, please review the steps below."
+msgstr "有许多原因会造成这个状况，请检阅以下步骤。"
+
+#: src/Admin/Pages/Test.php:840
+msgid "Make sure there is no aggressive caching on site admin area pages or try to clean cache between attempts."
+msgstr "确认网站后台管理页面并未采用加强式快取，或在每次尝试连接后清除快取。"
+
+#: src/Admin/Pages/Test.php:839
+msgid "Reinstall the plugin with clean plugin data turned on on Misc page. This will remove all the plugin options and you will be safe to retry."
+msgstr "在 [其他] 分页中启用清除插件资料重新安装插件的设置。这会删除全部插件设置资料，以便进行重新设置。"
+
+#: src/Admin/Pages/Test.php:838
+msgid "Make sure that you are not trying to manually clean up the plugin options to retry the \"Allow...\" step."
+msgstr "确认未曾尝试手动清除插件设置，以便重试 [允许] 步骤。"
+
+#: src/Admin/Pages/Test.php:835
+msgid "Authentication code that Google returned to you has already been used on your previous auth attempt."
+msgstr "Google 传回的验证代码已使用于之前的验证尝试。"
+
+#. translators: %s - Blog article URL.
+#: src/Admin/Pages/Test.php:814
+msgid "Please <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">read this article</a> to learn more about what can cause this error and how it can be resolved."
+msgstr "请 <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">阅读条款</a> 详细了解可能导致此错误的原因以及解决方法。"
+
+#: src/Admin/Pages/Test.php:808
+msgid "Unfortunately, this error can be due to many different reasons."
+msgstr "不过，这项错误通常由许多不同原因造成。"
+
+#: src/Admin/Pages/Test.php:797
+msgid "Make sure that the generated email has a TO header, useful when you are responsible for email creation."
+msgstr "确认产生的电子邮件具备 TO (收件人) 标头，这对负责建立电子邮件的人员会非常有帮助。"
+
+#. translators: 1 - correct email address example. 2 - incorrect email address
+#. example.
+#: src/Admin/Pages/Test.php:793
+msgid "It should be something like this: %1$s. These are incorrect values: %2$s."
+msgstr "有效电子邮件地址的范例: %1$s。无效电子邮件地址的范例: %2$s。"
+
+#: src/Admin/Pages/Test.php:790
+msgid "Check the \"Send To\" email address used and confirm it is a valid email and was not empty."
+msgstr "检查输入于 [收件人] 栏位的电子邮件地址，并确认它是有效的电子邮件地址且非空值。"
+
+#: src/Admin/Pages/Test.php:787
+msgid "Typically this error is because address the email was sent to is invalid or was empty."
+msgstr "一般来说，电子邮件发送的目标地址无效或为空值便会造成这项错误。"
+
+#. translators: %s - Google support article URL.
+#: src/Admin/Pages/Test.php:764
+msgid "if you are using G Suite, please <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">read this article</a> to proceed."
+msgstr "如果是用的是 G Suite，请<a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">阅读这份线上说明</a>以继续进行。"
+
+#. translators: %s - Google support article URL.
+#: src/Admin/Pages/Test.php:748
+msgid "if you are using regular Gmail account, please <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">read this article</a> to proceed."
+msgstr "如果是用的是一般 Gmail 帐户，请<a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">阅读这份线上说明</a>以继续进行。"
+
+#: src/Admin/Pages/Test.php:742
+msgid "Please click \"Agree\", if you see that button. If not - you will need to enable less secure apps first:"
+msgstr "如果有 [允许] 按钮，请点击该按钮；如果并未出现该按钮，必须先启用低安全性应用程序:"
+
+#: src/Admin/Pages/Test.php:741
+msgid "After the click you should be redirected to a Gmail authorization screen, where you will be asked a permission to send emails on your behalf."
+msgstr "点击按钮后，会重新导向至 Gmail 验证画面；在这个画面中，插件会要求授与以指定的 Gmail 帐户发送电子邮件的权限。"
+
+#: src/Admin/Pages/Test.php:740
+msgid "Go to plugin Settings page and click the \"Allow plugin to send emails using your Google account\" button."
+msgstr "前往插件设置页面并点击 [授与插件使用 Google 帐户发送电子邮件的权限] 按钮。"
+
+#: src/Admin/Pages/Test.php:737
+msgid "Make sure that you have clicked the \"Allow plugin to send emails using your Google account\" button under Gmail settings."
+msgstr "确认在插件的 Gmail 设置中已点击过 [授与插件使用 Google 帐户发送电子邮件的权限] 按钮。"
+
+#: src/Admin/Pages/Test.php:736
+msgid "You have not properly configured Gmail mailer."
+msgstr "这代表 Gmail 邮件程序目前并未正确配置。"
+
+#: src/Admin/Pages/Test.php:735 src/Admin/Pages/Test.php:786
+#: src/Admin/Pages/Test.php:807 src/Admin/Pages/Test.php:834
+#: src/Admin/Pages/Test.php:850 src/Admin/Pages/Test.php:905
+#: src/Admin/Pages/Test.php:932
+msgid "Google API Error."
+msgstr "Google API 发生错误。"
+
+#: src/Admin/Pages/Test.php:725
+msgid "Complete the steps in section \"2. Verify Your Domain\"."
+msgstr "请完成《2. 验证域名》(英文) 章节中的步骤。"
+
+#. translators: %s - Mailgun documentation URL.
+#: src/Admin/Pages/Test.php:714
+msgid "Go to our how-to guide for setting up <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">Mailgun with WP Mail SMTP</a>."
+msgstr "请参阅这篇《<a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">如何使用 WP Mail SMTP 插件以 Mailgun 为 WordPress 网站发送电子邮件 </a>》(英文) 以进行必要的设置。"
+
+#: src/Admin/Pages/Test.php:708
+msgid "Typically this error is because you have not set up and/or complete domain name verification for your Mailgun account."
+msgstr "通常，此错误是因为您尚未为Mailgun帐户设置和/或完成域名验证。"
+
+#: src/Admin/Pages/Test.php:707
+msgid "Your Mailgun account does not have access to send emails."
+msgstr "目前的 Mailgun 帐号没有发送电子邮件的权限。"
+
+#: src/Admin/Pages/Test.php:696
+msgid "Note that the API key includes the \"key\" prefix, so make sure that it is in the WP Mail SMTP Mailgun API setting."
+msgstr "请注意，私有 API 密钥包含“key”这个前置词，务必确认在 WP Mail SMTP 的 Mailgun [私有 API 密钥] 设置中已完整输入。"
+
+#: src/Admin/Pages/Test.php:695
+msgid "Go to your Mailgun account and view your API key."
+msgstr "前往 Mailgun 帐号页面并检视 API 密钥。"
+
+#: src/Admin/Pages/Test.php:694
+msgid "Verify your API key is correct."
+msgstr "验证 API 密钥是否正确。"
+
+#: src/Admin/Pages/Test.php:691
+msgid "Typically this error is because there is an issue with your Mailgun settings, in many cases the API key."
+msgstr "一般来说，Mailgun 设置 (多数为 API 密钥) 有误便会造成这项错误。"
+
+#: src/Admin/Pages/Test.php:675 src/Admin/Pages/Test.php:690
+#: src/Admin/Pages/Test.php:706
+msgid "Mailgun failed."
+msgstr "存取 Mailgun 发生错误。"
+
+#: src/Admin/Pages/Test.php:662
+msgid "no"
+msgstr "不"
+
+#. translators: %1$s - SMTP host address, %2$s - SMTP port, %3$s - SMTP
+#. encryption.
+#: src/Admin/Pages/Test.php:649
+msgid "Contact your web hosting provider and ask them to verify your server can connect to %1$s on port %2$s using %3$s encryption. Additionally, ask them if a firewall or security policy may be preventing the connection - many shared hosts block certain ports.<br><strong>Note: this is the most common cause of this issue.</strong>"
+msgstr "请联系这个网站的主机服务供应商，并要求它确认目前的网站服务器能以通讯埠 %2$s 连接至使用 %3$s 加密的 %1$s。此外，同时询问它是否有防火墙或安全性原则禁止了相关连接，因为有不少共用主机会阻止相关的特定通讯埠。<br><strong>请注意，这是造成这个问题的最常见原因。</strong>"
+
+#: src/Admin/Pages/Test.php:645
+msgid "Triple check your SMTP settings including host address, email, and password, port, and security."
+msgstr "请反复检查 SMTP 相关设置是否正确，包含 SMTP 服务器地址、发件帐号及密码、通讯埠及安全性设定。"
+
+#: src/Admin/Pages/Test.php:642
+msgid "Your SMTP host is rejecting the connection."
+msgstr "SMTP 服务器拒绝连接。"
+
+#: src/Admin/Pages/Test.php:641 src/Admin/Pages/Test.php:977
+msgid "Your web server is blocking the connection."
+msgstr "目前的网站服务器阻止了发送至 SMTP 服务器的连接。"
+
+#: src/Admin/Pages/Test.php:640
+msgid "SMTP settings are incorrect (wrong port, security setting, incorrect host)."
+msgstr "SMTP 的相关设置不正确，例如错误的通讯埠号、安全性设置有误或不正确的 SMTP 服务器地址。"
+
+#: src/Admin/Pages/Test.php:639 src/Admin/Pages/Test.php:975
+msgid "Typically this error is returned for one of the following reasons:"
+msgstr "一般来说，传回这项错误是因为以下其中一项原因所造成:"
+
+#: src/Admin/Pages/Test.php:631
+msgid "Could not connect to the SMTP host."
+msgstr "无法连接至 SMTP 服务器。"
+
+#: src/Admin/Pages/Test.php:621
+msgid "Enter correct SMTP Username (usually this is an email address) and Password in the appropriate fields."
+msgstr "在对应的栏位输入正确的 SMTP 用户名 (通常就是电子邮件地址) 及密码。"
+
+#: src/Admin/Pages/Test.php:620
+msgid "Enable Authentication"
+msgstr "启用验证"
+
+#: src/Admin/Pages/Test.php:619
+msgid "Go to WP Mail SMTP plugin Settings page."
+msgstr "前往 WP Mail SMTP 插件 [设置] 页面。"
+
+#: src/Admin/Pages/Test.php:616
+msgid "This means the connection to your SMTP host was made successfully, but you should enable Authentication and provide correct Username and Password."
+msgstr "这代表可成功连接至 SMTP 服务器，但必须启用插件的中的 [验证] 设置并提供正确的 [STMP 使用者名称] 及 [SMTP 密码]。"
+
+#: src/Admin/Pages/Test.php:615
+msgid "Unauthenticated senders are not allowed."
+msgstr "不接受未验证的发件人。"
+
+#: src/Admin/Pages/Test.php:605
+msgid "Verify with them your SMTP account is in good standing and your account has not been flagged."
+msgstr "请联系 SMTP 服务供应商，确认目前的 SMTP 帐号是否仍具备使用资格，以及帐号是否已遭标帜。"
+
+#: src/Admin/Pages/Test.php:604
+msgid "Contact your SMTP host to ask about sending/rate limits."
+msgstr "请联系 SMTP 服务供应商洽询关于电子邮件发送配额限制的相关资讯。"
+
+#: src/Admin/Pages/Test.php:603
+msgid "Check the emails that are sending are sending individually. Example: email is not sending to 30 recipients. You can install any WordPress e-mail logging plugin to do that."
+msgstr "检查发送的电子邮件是否个别发送。举例来说，电子邮件并未发送至 30 位收件人。网站管理员可以安装任何一款 WordPress 电子邮件记录插件进行检查。"
+
+#: src/Admin/Pages/Test.php:600
+msgid "Typically this error is returned when you are sending too many e-mails or e-mails that have been identified as spam."
+msgstr "通常，当您发送过多的电子邮件或已识别为垃圾邮件的电子邮件时，将返回此错误。"
+
+#: src/Admin/Pages/Test.php:599
+msgid "This means the connection to your SMTP host was made successfully, but the host rejected the email."
+msgstr "这代表可成功连接至 SMTP 服务器，但 SMTP 服务器拒绝发送邮件。"
+
+#: src/Admin/Pages/Test.php:598
+msgid "Error due to unsolicited and/or bulk e-mail."
+msgstr "由于来路不明电子邮件及/或大量电子邮件导致发生错误。"
+
+#: src/Admin/Pages/Test.php:588 src/Admin/Pages/Test.php:665
+msgid "Verify with your SMTP host that your account has permissions to send emails using outside connections."
+msgstr "请联系 SMTP 服务供应商，确认目前使用的帐号是否具备以外部连接发送电子邮件的权限。"
+
+#: src/Admin/Pages/Test.php:587 src/Admin/Pages/Test.php:664
+msgid "Contact your SMTP host to confirm you are using the correct username and password."
+msgstr "请联系 SMTP 服务供应商，确认目前使用的用户名及密码是否正确。"
+
+#: src/Admin/Pages/Test.php:586
+msgid "Triple check your SMTP settings including host address, email, and password. If you have recently reset your password you will need to update the settings."
+msgstr "请反复检查 SMTP 相关设置是否正确，包含 SMTP 服务器地址、发件帐号及密码。如果最近变更过发件密码，请更新插件中的相关设置。"
+
+#: src/Admin/Pages/Test.php:583
+msgid "Typically this error is returned when the email or password is not correct or is not what the SMTP host is expecting."
+msgstr "一般来说，传回这项错误是因为设置了不正确的发件帐号/密码或设置不符合 SMTP 服务器规则。"
+
+#: src/Admin/Pages/Test.php:582
+msgid "This means we were able to connect to your SMTP host, but were not able to proceed using the email/password in the settings."
+msgstr "这代表插件能够连接至指定的 SMTP 服务器，但无法以设置中的电子邮件地址 (帐号)/密码继续执行。"
+
+#: src/Admin/Pages/Test.php:581
+msgid "Could not authenticate your SMTP account."
+msgstr "无法验证 SMTP 帐号。"
+
+#: src/Admin/Pages/Test.php:569
+msgid "Contact your web hosting provider and inform them you are having issues making outbound connections."
+msgstr "联系这个网站的主机服务供应商，并通知它网站主机在进行外寄连接时发生问题。"
+
+#: src/Admin/Pages/Test.php:558
+msgid "Could not connect to your host."
+msgstr "无法连接至 SMTP 服务器。"
+
+#: src/Admin/Pages/Test.php:548
+msgid "If using \"Other SMTP\" Mailer, contact your SMTP host to confirm they are accepting outside connections with the settings you have configured (address, username, port, security, etc)."
+msgstr "如果使用了 [其他 SMTP] 邮件程序，请联系 SMTP 服务供应商以确认 SMTP 服务器是否接受包含目前设置 (SMTP 服务器地址、使用者名称、通讯埠、安全性设置等等) 的外部连接。"
+
+#: src/Admin/Pages/Test.php:547
+msgid "If using \"Other SMTP\" Mailer, triple check your SMTP settings including host address, email, and password."
+msgstr "如果使用了 [其他 SMTP] 邮件程序，请反复检查 SMTP 相关设置是否正确，包含 SMTP 服务器地址、发件帐号及密码。"
+
+#. translators: %s - SMTP host address.
+#: src/Admin/Pages/Test.php:544
+msgid "Contact your web hosting provider and ask them to verify your server can connect to %s. Additionally, ask them if a firewall or security policy may be preventing the connection."
+msgstr "联系这个网站的主机服务供应商，并要求它确认网站服务器是否连接至 %s。此外，同时询问它是否有防火墙或安全性原则禁止了相关连接。"
+
+#: src/Admin/Pages/Test.php:539
+msgid "Typically this error is returned your web server is blocking the connections or the SMTP host denying the request."
+msgstr "一般来说，传回这项错误是因为这个网站的服务器阻止了发送至 SMTP 服务器的连接或 SMTP 服务器拒绝了连接要求。"
+
+#: src/Admin/Pages/Test.php:538 src/Admin/Pages/Test.php:565
+#: src/Admin/Pages/Test.php:638
+msgid "This means your web server was unable to connect to the host server."
+msgstr "这代表这个网站的服务器无法连接至 SMTP 服务器。"
+
+#. translators: %s - SMTP host address.
+#: src/Admin/Pages/Test.php:535 src/Admin/Pages/Test.php:562
+#: src/Admin/Pages/Test.php:635
+msgid "This means your web server was unable to connect to %s."
+msgstr "这代表这个网站的服务器无法连接至 %s。"
+
+#: src/Admin/Pages/Test.php:531
+msgid "Could not connect to host."
+msgstr "无法连接至 SMTP 服务器。"
+
+#: src/Admin/Pages/Test.php:520 src/Admin/Pages/Test.php:571
+msgid "Ask them to resolve the issue then try again."
+msgstr "要求它解决问题然后再试一次。"
+
+#: src/Admin/Pages/Test.php:519 src/Admin/Pages/Test.php:570
+msgid "The exact error you can provide them is in the Error log, available at the bottom of this page."
+msgstr "请提供错误记录中的确切错误，这些资讯可于本页底部找到。"
+
+#: src/Admin/Pages/Test.php:518
+msgid "Contact your web hosting provider and inform them your site has an issue with SSL certificates."
+msgstr "联系这个网站的主机服务供应商，并通知它这个网站有 SSL 凭证的问题。"
+
+#: src/Admin/Pages/Test.php:515 src/Admin/Pages/Test.php:566
+msgid "Typically this error is returned when web server is not configured properly."
+msgstr "一般来说，传回这项错误是因为网页服务器并未正确配置。"
+
+#: src/Admin/Pages/Test.php:514
+msgid "This means your web server cannot reliably make secure connections (make requests to HTTPS sites)."
+msgstr "这代表这个网站的服务器无法可靠地建立安全连接 (向 HTTPS 网站发出要求)。"
+
+#: src/Admin/Pages/Test.php:513
+msgid "SSL certificate issue."
+msgstr "SSL 凭证问题。"
+
+#. translators: %s - "HTML" in bold.
+#: src/Admin/Pages/Test.php:185
+msgid "Test %s email was sent successfully! Please check your inbox to make sure it is delivered."
+msgstr "%s 格式测试电子邮件已成功发送。请检查电子邮件信箱以确认邮件是否寄达。"
+
+#: src/Admin/Pages/Test.php:181
+msgid "Test plain text email was sent successfully!"
+msgstr "纯文字格式测试电子邮件已成功发送。"
+
+#. translators: %s - email address a test email will be sent to.
+#: src/Admin/Pages/Test.php:149 src/Admin/Pages/Test.php:155
+msgid "Test email to %s"
+msgstr "发送至 %s 的测试电子邮件"
+
+#: src/Admin/Pages/Test.php:137
+msgid "Test failed. Please use a valid email address and try to resend the test email."
+msgstr "测试失败。请输入有效的电子邮件地址并重新发送测试电子邮件。"
+
+#: src/Admin/Pages/Test.php:109
+msgid "Send Email"
+msgstr "发送电子邮件"
+
+#: src/Admin/Pages/Test.php:105
+msgid "You cannot send an email. Mailer is not properly configured. Please check your settings."
+msgstr "由于邮件程序并未正确设定，因此这个网站无法发送电子邮件。请检查相关设置。"
+
+#: src/Admin/Pages/Test.php:90
+msgid "Send this email in HTML or in plain text format."
+msgstr "设置要以 HTML 或纯文字格式发送测试电子邮件。"
+
+#: src/Admin/Pages/Test.php:87 src/Providers/OptionsAbstract.php:205
+#: src/Providers/OptionsAbstract.php:227
+msgid "Off"
+msgstr "停用"
+
+#: src/Admin/Pages/Test.php:86 src/Providers/OptionsAbstract.php:204
+#: src/Providers/OptionsAbstract.php:226
+msgid "On"
+msgstr "启用"
+
+#: src/Admin/Pages/Test.php:80
+msgid "HTML"
+msgstr "HTML 格式电子邮件"
+
+#: src/Admin/Pages/Test.php:66
+msgid "Send To"
+msgstr "收件人"
+
+#: src/Admin/Pages/Test.php:37
+msgid "Email Test"
+msgstr "电子邮件测试"
+
+#: src/Admin/Pages/Settings.php:502 src/Admin/Pages/Misc.php:151
+msgid "Settings were successfully saved."
+msgstr "设置已成功储存。"
+
+#: src/Admin/PageAbstract.php:81
+msgid "Save Settings"
+msgstr "储存设置"
+
+#: src/Admin/Pages/Misc.php:116
+msgid "Check this if you would like to remove ALL WP Mail SMTP data upon plugin deletion. All settings will be unrecoverable."
+msgstr "启用这项设置后，在删除 WP Mail SMTP 时便会从网站资料库中删除全部插件资料。插件设置资料一经删除，便无法复原。"
+
+#: src/Admin/Pages/Misc.php:108
+msgid "Uninstall WP Mail SMTP"
+msgstr "解除安装 WP Mail SMTP"
+
+#: src/Admin/Pages/Misc.php:99 wp-mail-smtp-0.11.2.php:356
+msgid "Check this if you would like to hide plugin announcements and update details."
+msgstr "启用这项设置后，便会隐藏插件相关通知及更新详细资料。"
+
+#: src/Admin/Pages/Misc.php:90 wp-mail-smtp-0.11.2.php:346
+#: wp-mail-smtp-0.11.2.php:351
+msgid "Hide Announcements"
+msgstr "隐藏通知"
+
+#: src/Admin/Pages/Misc.php:81
+msgid "Test emails are allowed to be sent, regardless of this option."
+msgstr "无论这项设置为何，插件都会发送测试电子邮件。"
+
+#: src/Admin/Pages/Misc.php:79
+msgid "You will need to consult with their documentation to switch them to use default WordPress email delivery."
+msgstr "网站管理员需要查阅这类插件的相关说明文件，将其切换为使用预设的 WordPress 电子邮件发送方式。"
+
+#: src/Admin/Pages/Misc.php:71
+msgid "Some plugins, like BuddyPress and Events Manager, are using own email delivery solutions. By default, this option does not block their emails, as those plugins do not use default <code>wp_mail()</code> function to send emails."
+msgstr "某些插件 (如 BuddyPress 及 Events Manager) 会采用自有的电子邮件发送解决方案。依照预设，这项设置不会阻止这类插件发送电子邮件，因为他们并不是使用预设的 <code>wp_mail()</code> 函式发送电子邮件。"
+
+#: src/Admin/Pages/Misc.php:65
+msgid "Check this if you would like to stop sending all emails."
+msgstr "启用这项设置后，便会停止发送全部电子邮件。"
+
+#: src/Admin/Pages/Misc.php:56
+msgid "Do Not Send"
+msgstr "停止发送邮件"
+
+#: src/Admin/Pages/Settings.php:36 src/Admin/Pages/Misc.php:48
+msgid "General"
+msgstr "一般"
+
+#: src/Admin/Pages/Misc.php:24
+msgid "Misc"
+msgstr "其他"
+
+#. Author of the plugin
+msgid "WPForms"
+msgstr "WPForms"
+
+#. Description of the plugin
+msgid "Reconfigures the <code>wp_mail()</code> function to use Gmail/Mailgun/SendGrid/SMTP instead of the default <code>mail()</code> and creates an options page to manage the settings."
+msgstr "重新配置<code>wp_mail()</code>功能以使用Gmail/Mailgun/SendGrid/SMTP而不是默认的<code>mail()</code>，并创建一个选项页面来管理设置。"
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://wpforms.com/"
+msgstr "https://wpforms.com/"
+
+#. Plugin Name of the plugin
+#: src/Admin/Area.php:197 src/Admin/Area.php:198 wp-mail-smtp-0.11.2.php:603
+msgid "WP Mail SMTP"
+msgstr "WP Mail SMTP"
+
+#: src/Admin/Area.php:208 src/Admin/Area.php:209 src/Admin/Area.php:722
+#: wp-mail-smtp-0.11.2.php:709
+msgid "Settings"
+msgstr "设置"
+
+#: src/Providers/Gmail/Options.php:32
+msgid "Gmail"
+msgstr "Gmail"
+
+#: wp-mail-smtp-0.11.2.php:561
+msgid "Type an email address here and then click Send Test to generate a test email."
+msgstr "在这里输入电子邮件地址，然后单击“发送测试”生成测试邮件。"
+
+#: src/Admin/Pages/Test.php:59 wp-mail-smtp-0.11.2.php:549
+msgid "Send a Test Email"
+msgstr "发送测试邮件"
+
+#: wp-mail-smtp-0.11.2.php:364 wp-mail-smtp-0.11.2.php:464
+#: wp-mail-smtp-0.11.2.php:540
+msgid "Save Changes"
+msgstr "保存更改"
+
+#: wp-mail-smtp-0.11.2.php:451 wp-mail-smtp-0.11.2.php:494
+msgid "Password"
+msgstr "密码"
+
+#: wp-mail-smtp-0.11.2.php:443 wp-mail-smtp-0.11.2.php:486
+msgid "Username"
+msgstr "用户名"
+
+#: wp-mail-smtp-0.11.2.php:436
+msgid "If this is set to no, the values below are ignored."
+msgstr "如果设置为 [否]，下方设定会全部予以忽略。"
+
+#: wp-mail-smtp-0.11.2.php:432
+msgid "Yes: Use SMTP authentication."
+msgstr "是的：使用SMTP认证。"
+
+#: wp-mail-smtp-0.11.2.php:427
+msgid "No: Do not use SMTP authentication."
+msgstr "不：不使用SMTP认证。"
+
+#: src/Providers/OptionsAbstract.php:216 wp-mail-smtp-0.11.2.php:418
+#: wp-mail-smtp-0.11.2.php:422
+msgid "Authentication"
+msgstr "认证"
+
+#: wp-mail-smtp-0.11.2.php:405 wp-mail-smtp-0.11.2.php:527
+msgid "Use SSL encryption."
+msgstr "使用SSL加密。"
+
+#: wp-mail-smtp-0.11.2.php:400 wp-mail-smtp-0.11.2.php:522
+msgid "No encryption."
+msgstr "无加密。"
+
+#: src/Providers/OptionsAbstract.php:140 wp-mail-smtp-0.11.2.php:391
+#: wp-mail-smtp-0.11.2.php:395 wp-mail-smtp-0.11.2.php:510
+#: wp-mail-smtp-0.11.2.php:516
+msgid "Encryption"
+msgstr "加密"
+
+#: src/Providers/OptionsAbstract.php:180 wp-mail-smtp-0.11.2.php:384
+#: wp-mail-smtp-0.11.2.php:502
+msgid "SMTP Port"
+msgstr "SMTP 端口"
+
+#: src/Providers/OptionsAbstract.php:126 wp-mail-smtp-0.11.2.php:376
+msgid "SMTP Host"
+msgstr "SMTP 主机"
+
+#: wp-mail-smtp-0.11.2.php:371
+msgid "These options only apply if you have chosen to send mail by SMTP above."
+msgstr "以下设置仅在上方选取以 SMTP 发送邮件才会生效。"
+
+#: wp-mail-smtp-0.11.2.php:369
+msgid "SMTP Options"
+msgstr "SMTP设置"
+
+#: src/Admin/Pages/Settings.php:188 wp-mail-smtp-0.11.2.php:332
+msgid "Set the return-path to match the From Email"
+msgstr "设置传回路径以符合 [发件人电子邮件地址] 中的设置"
+
+#: src/Admin/Pages/Settings.php:179 wp-mail-smtp-0.11.2.php:322
+#: wp-mail-smtp-0.11.2.php:327
+msgid "Return Path"
+msgstr "返回路径"
+
+#: wp-mail-smtp-0.11.2.php:295
+msgid "Use the PHP mail() function to send emails."
+msgstr "使用 PHP mail() 函数来发送电子邮件。"
+
+#: wp-mail-smtp-0.11.2.php:291
+msgid "Send all WordPress emails via SMTP."
+msgstr "通过 SMTP 发送所有的 WordPress 邮件。"
+
+#: src/Admin/Pages/Settings.php:201 wp-mail-smtp-0.11.2.php:281
+#: wp-mail-smtp-0.11.2.php:286
+msgid "Mailer"
+msgstr "邮件程序"
+
+#: wp-mail-smtp-0.11.2.php:272
+msgid "You can specify the name that emails should be sent from. If you leave this blank, the emails will be sent from WordPress."
+msgstr "请在此设置发件人的电子邮件地址。如果此栏位留空，会将发件人显示为 WordPress。"
+
+#: src/Admin/Pages/Settings.php:138 wp-mail-smtp-0.11.2.php:266
+msgid "From Name"
+msgstr "发件人名称"
+
+#: wp-mail-smtp-0.11.2.php:257
+msgid "<strong>Please Note:</strong> You appear to be using a version of WordPress prior to 2.3. Please ignore the From Name field and instead enter Name&lt;email@domain.com&gt; in this field."
+msgstr "<strong>请注意：</strong> 您使用的 WordPress 为 2.3 版或更早之前的版本。请忽略 [发件人名称] 字段并在此字段改以输入“发件人名称&lt;email@domain.com&gt;”取代。"
+
+#: wp-mail-smtp-0.11.2.php:254
+msgid "You can specify the email address that emails should be sent from. If you leave this blank, the default email will be used."
+msgstr "请在此设置发件人的电子邮件地址。如果此栏位留空，将以预设的电子邮件地址发送邮件。"
+
+#: src/Admin/Pages/Settings.php:92 wp-mail-smtp-0.11.2.php:247
+msgid "From Email"
+msgstr "发件人"
+
+#: wp-mail-smtp-0.11.2.php:226
+msgid "The SMTP debugging output is shown below:"
+msgstr "SMTP调试输出如下所示："
+
+#: wp-mail-smtp-0.11.2.php:223
+msgid "The full debugging output is shown below:"
+msgstr "完整的调试输出如下所示："
+
+#: wp-mail-smtp-0.11.2.php:220
+msgid "The result was:"
+msgstr "结果是："
+
+#: wp-mail-smtp-0.11.2.php:219
+msgid "Test Message Sent"
+msgstr "测试消息已发送"
+
+#: wp-mail-smtp-0.11.2.php:203
+msgid "This is a test email generated by the WP Mail SMTP WordPress plugin."
+msgstr "这是由WP Mail SMTP WordPress插件生成的测试电子邮件。"
+
+#. translators: %s - email address where test mail will be sent to.
+#: wp-mail-smtp-0.11.2.php:202
+msgid "Test mail to %s"
+msgstr "测试邮件的收件人为 %s"
+
+#: wp-mail-smtp-0.11.2.php:193 wp-mail-smtp-0.11.2.php:567
+msgid "Send Test"
+msgstr "发送测试邮件"

@@ -29,7 +29,7 @@ get_header();
 			add_filter( 'get_the_archive_title', function( $title ){
 			return preg_replace('~^[^:]+: ~', '', $title );
 			});?>
-			<h2 class="entry-title">Tag Archives:
+			<h2 class="entry-title"><?php _e('Tag Archives:', 'teamlab-blog-2-0'); ?>
 			<?php
 			the_archive_title( '<a class="nameTags">#', '</a>' );
 			?></h2>
@@ -57,13 +57,13 @@ get_header();
     			var max_pages = '<?php echo $wp_query->max_num_pages; ?>';
    				</script>
   				
-  				<div class="load_more_results" id="true_loadmore_tags">Load more</div>
+  				<div class="load_more_results" id="true_loadmore_tags"><?php _e('Load more', 'teamlab-blog-2-0'); ?></div>
 				<?php wp_reset_postdata(); ?>
 				<?php endif; ?>
 
 				<?php else : ?>
   				<div class="no-results">
-				 <h3>No results matching your query could be found</h3>
+				 <h3><?php _e('No results matching your query could be found', 'teamlab-blog-2-0'); ?></h3>
 				 <div class="bg"></div>
 				<?php endif;?>
 

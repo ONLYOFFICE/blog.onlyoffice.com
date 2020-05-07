@@ -1,0 +1,50 @@
+# Translation of Plugins - WordPress Share Buttons Plugin – AddThis - Stable (latest release) in German
+# This file is distributed under the same license as the Plugins - WordPress Share Buttons Plugin – AddThis - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2017-10-05 13:36:44+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/2.4.0-alpha\n"
+"Language: de\n"
+"Project-Id-Version: Plugins - WordPress Share Buttons Plugin – AddThis - Stable (latest release)\n"
+
+#: backend/AddThisWidgetByDomClass.php:200
+#: backend/AddThisWidgetByDomClass.php:498
+msgid "Title: "
+msgstr "Titel:"
+
+#. Author of the plugin/theme
+msgid "The AddThis Team"
+msgstr "Das AddThis Team"
+
+#. Author URI of the plugin/theme
+msgid "http://www.addthis.com"
+msgstr "http://www.addthis.com"
+
+#. Plugin Name of the plugin/theme
+msgid "Share Buttons by AddThis"
+msgstr "Share Buttons by AddThis"
+
+#. Plugin URI of the plugin/theme
+msgid "https://wordpress.org/plugins/addthis/"
+msgstr "https://de.wordpress.org/plugins/addthis/"
+
+#: backend/AddThisGlobalOptionsFeature.php:945
+msgid "Privacy Policy"
+msgstr "Datenschutzerklärung"
+
+#: backend/AddThisGlobalOptionsFeature.php:950
+msgid "Terms of Service"
+msgstr "Nutzungsbedingungen"
+
+#: backend/AddThisGlobalOptionsFeature.php:905
+#: backend/AddThisWidgetByDomClass.php:491
+msgid "the plugin's settings"
+msgstr "die Einstellungen des Plugins"
+
+#: backend/AddThisWidgetByDomClass.php:242
+msgid "Tool: "
+msgstr "Werkzeug:"

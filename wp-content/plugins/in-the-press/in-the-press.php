@@ -91,7 +91,7 @@ class in_the_press extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		?>
-		<div class="view-all"><a href="<?php echo site_url('onlyoffice-in-the-press')?>">View all news ></a></div>
+		<div class="view-all"><a href="<?php echo site_url('onlyoffice-in-the-press')?>"><?php _e('View all news', 'teamlab-blog-2-0'); ?></a></div>
 		</div>
 		<ul>
 			<?php foreach ( $r->posts as $recent_post ) : ?>

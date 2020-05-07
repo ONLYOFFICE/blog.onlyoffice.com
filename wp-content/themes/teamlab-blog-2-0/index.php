@@ -124,7 +124,7 @@ $queryNews = new WP_Query($argsNews);?>
     var max_pages = '<?php echo $wp_query->max_num_pages; ?>';
    </script>
   <?php endif; ?>
-   <div class="main_button" id="true_loadmore">Load more</div>
+   <div class="main_button" id="true_loadmore"><?php _e('Load more', 'teamlab-blog-2-0'); ?></div>
  </div>
 
  

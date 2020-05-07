@@ -77,11 +77,14 @@ get_header();
    				</script>
   				<?php endif; ?>
 
-  				<div class="load_more_results" id="true_loadmore_press">Load more</div>
+  				<div class="load_more_results" id="true_loadmore_press"><?php _e('Load more', 'teamlab-blog-2-0'); ?></div>
 				<?php wp_reset_postdata(); ?>
 
 				<?php else : ?>
-  				<p> <?php _e('Sorry, no posts'); ?></p>
+  				<div class="no-results">
+          <h3><?php _e('No results matching your query could be found', 'teamlab-blog-2-0'); ?></h3>
+         <div class="bg"></div>
+          </div>
 				<?php endif;?>
 
 

@@ -1,6 +1,6 @@
 <div class="download-block">
 	<div class="download-top">
-		<h3>Download ONLYOFFICE desktop and mobile apps for&#160;<em class="free">FREE</em></h3>
+		<h3><?php _e('Download ONLYOFFICE desktop and mobile apps for', 'teamlab-blog-2-0'); ?>&#160;<em class="free"><?php _e('FREE', 'teamlab-blog-2-0'); ?></em></h3>
 	</div>
 	<div class="download-button">
 		<a class="download winodws" href=#></a>

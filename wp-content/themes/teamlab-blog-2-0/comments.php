@@ -14,7 +14,7 @@
 ?>
 <div id="comments">
     <?php if ( post_password_required() ) : ?>
-    <p class="nopassword"><?php _e( 'This post is password protected. Enter the password to view any comments.', 'tmblog' ); ?></p>
+    <p class="nopassword"><?php _e( 'This post is password protected. Enter the password to view any comments.', 'teamlab-blog-2-0' ); ?></p>
 </div><!-- #comments -->
 <?php
     /* Stop the rest of comments.php from being processed,
@@ -30,12 +30,12 @@
 <?php if ( have_comments() ) : ?>
 <?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
 <div class="navigation">
-    <div class="nav-previous"><?php previous_comments_link( __( '<span class="meta-nav">&larr;</span> Older Comments', 'tmblog' ) ); ?></div>
-    <div class="nav-next"><?php next_comments_link( __( 'Newer Comments <span class="meta-nav">&rarr;</span>', 'tmblog' ) ); ?></div>
+    <div class="nav-previous"><?php previous_comments_link( __( '<span class="meta-nav">&larr;</span> Older Comments', 'teamlab-blog-2-0' ) ); ?></div>
+    <div class="nav-next"><?php next_comments_link( __( 'Newer Comments <span class="meta-nav">&rarr;</span>', 'teamlab-blog-2-0' ) ); ?></div>
 </div> <!-- .navigation -->
 <?php endif; // check for comment navigation ?>
 <div class="comments-title">
-    <span class="comments-link"><?php comments_number( '', __( '1 comment', 'tmblog' ), __( 'Comments (%)', 'tmblog' ) ); ?></span>
+    <span class="comments-link"><?php comments_number( '', __( '1 comment', 'teamlab-blog-2-0' ), __( 'Comments (%)', 'teamlab-blog-2-0' ) ); ?></span>
 </div>
 <ol class="commentlist">
     <?php
@@ -49,7 +49,7 @@
          */
          if ( ! comments_open() ) :
 ?>
-<p class="nocomments"><?php _e( 'Comments are closed.', 'tmblog' ); ?></p>
+<p class="nocomments"><?php _e( 'Comments are closed.', 'teamlab-blog-2-0' ); ?></p>
 <?php endif; // end ! comments_open() ?>
 <?php endif; // end have_comments() ?>
 <!-- <comment form>  -->

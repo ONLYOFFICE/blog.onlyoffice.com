@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Themes - Twenty Nineteen package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2020-03-31 20:45:48+0000\n"
+"PO-Revision-Date: 2019-06-12 21:23:22+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,19 +19,7 @@ msgstr "Наша тема для 2019 года создана демонстри
 msgid "Twenty Nineteen"
 msgstr "Twenty Nineteen"
 
-#: classes/class-twentynineteen-walker-comment.php:96
-msgid "Your comment is awaiting moderation. This is a preview, your comment will be visible after it has been approved."
-msgstr "Ваш комментарий ожидает одобрения. Это его предварительный просмотр, комментарий станет видимым для всех после одобрения."
-
-#: functions.php:153
-msgid "Dark Blue"
-msgstr "Темно-синяя"
-
-#: functions.php:148
-msgid "Blue"
-msgstr "Синяя"
-
-#. translators: %s: Parent post link.
+#. translators: %s: parent post link
 #: single.php:31
 msgid "<span class=\"meta-nav\">Published in</span><span class=\"post-title\">%s</span>"
 msgstr "<span class=\"meta-nav\">Опубликовано в</span><span class=\"post-title\">%s</span>"
@@ -41,22 +29,21 @@ msgctxt "Parent post link"
 msgid "<span class=\"meta-nav\">Published in</span><br><span class=\"post-title\">%title</span>"
 msgstr "<span class=\"meta-nav\">Опубликовано в</span><br><span class=\"post-title\">%title</span>"
 
-#: template-parts/content/content-excerpt.php:18
 #: template-parts/content/content.php:18
+#: template-parts/content/content-excerpt.php:18
 msgctxt "post"
 msgid "Featured"
 msgstr "Продвигаемая"
 
-#. translators: %s: WordPress version.
-#: inc/back-compat.php:40 inc/back-compat.php:55 inc/back-compat.php:76
+#: inc/back-compat.php:39 inc/back-compat.php:53 inc/back-compat.php:73
 msgid "Twenty Nineteen requires at least WordPress version 4.7. You are running version %s. Please upgrade and try again."
 msgstr "Twenty Nineteen требует WordPress не ниже версии 4.7. У вас - %s. Пожалуйста обновите WordPress перед тем, как попробовать снова."
 
-#: inc/template-functions.php:143
+#: inc/template-functions.php:216
 msgid "Back"
 msgstr "Назад"
 
-#: inc/template-functions.php:136
+#: inc/template-functions.php:209
 msgid "More"
 msgstr "Больше"
 
@@ -78,51 +65,55 @@ msgctxt "primary color"
 msgid "Default"
 msgstr "По умолчанию"
 
-#: functions.php:168
+#: functions.php:166
 msgid "White"
 msgstr "Белая"
 
-#: functions.php:163
+#: functions.php:161
 msgid "Light Gray"
 msgstr "Светло-серая"
 
-#: functions.php:158
+#: functions.php:156
 msgid "Dark Gray"
 msgstr "Тёмно-серая"
 
-#: functions.php:136
+#: functions.php:151
+msgid "Secondary"
+msgstr "Вторичная"
+
+#: functions.php:134
 msgid "XL"
 msgstr "XL"
 
-#: functions.php:135
+#: functions.php:133
 msgid "Huge"
 msgstr "Огромный"
 
-#: functions.php:130
+#: functions.php:128
 msgid "L"
 msgstr "L"
 
-#: functions.php:129
+#: functions.php:127
 msgid "Large"
 msgstr "Большой"
 
-#: functions.php:124
+#: functions.php:122
 msgid "M"
 msgstr "M"
 
-#: functions.php:123
+#: functions.php:121
 msgid "Normal"
 msgstr "Обычный"
 
-#: functions.php:117
+#: functions.php:115
 msgid "Small"
 msgstr "Маленький"
 
-#: functions.php:118
+#: functions.php:116
 msgid "S"
 msgstr "S"
 
-#: footer.php:37 functions.php:60
+#: functions.php:60 footer.php:37
 msgid "Footer Menu"
 msgstr "Меню подвала"
 
@@ -135,11 +126,11 @@ msgstr "Полный размер"
 msgid "Page"
 msgstr "Страница"
 
-#: functions.php:192
+#: functions.php:190
 msgid "Add widgets here to appear in your footer."
 msgstr "Добавьте виджеты сюда, для помещения их в подвал сайта."
 
-#: template-parts/footer/footer-widgets.php:12 functions.php:190
+#: functions.php:188 template-parts/footer/footer-widgets.php:12
 msgid "Footer"
 msgstr "Подвал"
 
@@ -151,7 +142,7 @@ msgstr "Основной цвет"
 msgid "No comments"
 msgstr "Нет комментариев"
 
-#. translators: %d: Number of comments.
+#. translators: %1(X comments)$s
 #: template-parts/post/discussion-meta.php:16
 msgid "%d Comment"
 msgid_plural "%d Comments"
@@ -163,7 +154,7 @@ msgstr[2] "%d комментариев"
 msgid "View more posts"
 msgstr "Посмотреть больше записей"
 
-#. translators: %s: Post author.
+#. translators: %s: post author
 #: template-parts/post/author-bio.php:17
 msgid "Published by %s"
 msgstr "Опубликовано %s"
@@ -172,15 +163,15 @@ msgstr "Опубликовано %s"
 msgid "Top Menu"
 msgstr "Верхнее меню"
 
-#. translators: %s: Post title. Only visible to screen readers.
-#: template-parts/content/content-single.php:27
+#. translators: %s: Name of current post. Only visible to screen readers
 #: template-parts/content/content.php:36
+#: template-parts/content/content-single.php:27
 msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
 msgstr "Читать далее<span class=\"screen-reader-text\"> «%s»</span>"
 
-#: template-parts/content/content-single.php:40
+#: image.php:52 template-parts/content/content-page.php:27
 #: template-parts/content/content.php:49
-#: template-parts/content/content-page.php:27 image.php:52
+#: template-parts/content/content-single.php:40
 msgid "Pages:"
 msgstr "Страницы:"
 
@@ -192,7 +183,7 @@ msgstr "Запрошенную информацию найти не удалос
 msgid "Sorry, but nothing matched your search terms. Please try again with some different keywords."
 msgstr "Извините, по вашему запросу ничего не найдено. Попробуйте другие ключевые слова."
 
-#. translators: 1: Link to WP admin new post page.
+#. translators: 1: link to WP admin new post page.
 #: template-parts/content/content-none.php:26
 msgid "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
 msgstr "Готовы опубликовать свою первую запись? <a href=\"%1$s\">Начните отсюда</a>."
@@ -218,7 +209,7 @@ msgid "Next Post"
 msgstr "Следующая запись"
 
 #: search.php:22
-msgid "Search results for: "
+msgid "Search results for:"
 msgstr "Результаты поиска для:"
 
 #: inc/template-tags.php:234
@@ -237,12 +228,12 @@ msgstr "Метки:"
 msgid "Posted in"
 msgstr "Написано в"
 
-#. translators: Used between list items, there is a space after the comma.
+#. translators: used between list items, there is a space after the comma.
 #: inc/template-tags.php:86 inc/template-tags.php:98
 msgid ", "
 msgstr ", "
 
-#. translators: %s: Post title. Only visible to screen readers.
+#. translators: %s: Name of current post. Only visible to screen readers.
 #: inc/template-tags.php:63
 msgid "Leave a comment<span class=\"screen-reader-text\"> on %s</span>"
 msgstr "Оставьте комментарий<span class=\"screen-reader-text\"> к %s</span>"
@@ -265,7 +256,7 @@ msgstr "Y"
 msgid "Archives:"
 msgstr "Архивы:"
 
-#. translators: %s: Taxonomy singular name.
+#. translators: %s: Taxonomy singular name
 #: inc/template-functions.php:90
 msgid "%s Archives:"
 msgstr "Архивы %s:"
@@ -298,9 +289,10 @@ msgstr "Архивы меток:"
 msgid "Category Archives: "
 msgstr "Архивы рубрик:"
 
-#. translators: %s: Post title. Only visible to screen readers.
-#: template-parts/header/entry-header.php:32
-#: template-parts/content/content-page.php:41 inc/template-tags.php:120
+#. translators: %s: Name of current post. Only visible to screen readers
+#. translators: %s: Name of current post. Only visible to screen readers.
+#: template-parts/content/content-page.php:41
+#: template-parts/header/entry-header.php:32 inc/template-tags.php:120
 msgid "Edit <span class=\"screen-reader-text\">%s</span>"
 msgstr "Редактировать <span class=\"screen-reader-text\">%s</span>"
 
@@ -308,11 +300,11 @@ msgstr "Редактировать <span class=\"screen-reader-text\">%s</span>"
 msgid "Skip to content"
 msgstr "Перейти к содержимому"
 
-#: template-parts/header/site-branding.php:46 functions.php:61
+#: functions.php:61 template-parts/header/site-branding.php:46
 msgid "Social Links Menu"
 msgstr "Меню социальных ссылок"
 
-#: functions.php:59
+#: functions.php:59 functions.php:146
 msgid "Primary"
 msgstr "Основное"
 
@@ -337,7 +329,7 @@ msgstr "Назад"
 msgid "Comments"
 msgstr "Комментарии"
 
-#. translators: 1: Number of comments, 2: Post title.
+#. translators: 1: number of comments, 2: post title
 #: comments.php:44
 msgctxt "comments title"
 msgid "%1$s reply on &ldquo;%2$s&rdquo;"
@@ -346,7 +338,7 @@ msgstr[0] "%1$s ответ к &ldquo;%2$s&rdquo;"
 msgstr[1] "%1$s ответа к &ldquo;%2$s&rdquo;"
 msgstr[2] "%1$s ответов к &ldquo;%2$s&rdquo;"
 
-#. translators: %s: Post title.
+#. translators: %s: post title
 #: comments.php:40
 msgctxt "comments title"
 msgid "One reply on &ldquo;%s&rdquo;"
@@ -360,21 +352,20 @@ msgstr "Оставьте комментарий"
 msgid "Join the Conversation"
 msgstr "Вливайтесь в общение"
 
-#: classes/class-twentynineteen-walker-comment.php:94
+#: classes/class-twentynineteen-walker-comment.php:99
 msgid "Your comment is awaiting moderation."
 msgstr "Ваш комментарий ожидает одобрения."
 
-#: classes/class-twentynineteen-walker-comment.php:87
+#: classes/class-twentynineteen-walker-comment.php:94
 msgid "Edit"
 msgstr "Редактировать"
 
-#. translators: 1: Comment date, 2: Comment time.
-#: classes/class-twentynineteen-walker-comment.php:79
+#. translators: 1: comment date, 2: comment time
+#: classes/class-twentynineteen-walker-comment.php:86
 msgid "%1$s at %2$s"
 msgstr "%1$s в %2$s"
 
-#. translators: %s: Comment author link.
-#: classes/class-twentynineteen-walker-comment.php:59
+#: classes/class-twentynineteen-walker-comment.php:66
 msgid "%s <span class=\"screen-reader-text says\">says:</span>"
 msgstr "%s <span class=\"screen-reader-text says\">пишет:</span>"
 
