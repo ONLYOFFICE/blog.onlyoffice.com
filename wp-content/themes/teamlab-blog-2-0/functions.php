@@ -162,7 +162,7 @@ add_action( 'after_setup_theme', function() {
 });
 
 add_filter( 'excerpt_length', function(){
-	return 27;
+	return 40;
 } );
 
 add_filter('excerpt_more', function($more) {
@@ -183,6 +183,39 @@ function teamlab_blog_2_0_content_width() {
 }
 add_action( 'after_setup_theme', 'teamlab_blog_2_0_content_width', 0 );
 
+
+function tmblog_filter_wp_title( $title, $separator ) {
+        // Don't affect wp_title() calls in feeds.
+        if ( is_feed() )
+            return $title;
+        // The $paged global variable contains the page number of a listing of posts.
+        // The $page global variable contains the page number of a single post that is paged.
+        // We'll display whichever one applies, if we're not looking at the first page.
+        global $paged, $page;
+        if ( is_search() ) {
+            // If we're a search, let's start over:
+            $title = sprintf( __( 'Search results for %s', 'teamlab-blog-2-0' ), '"' . get_search_query() . '"' );
+            // Add a page number if we're on page 2 or more:
+            if ( $paged >= 2 )
+                $title .= " $separator " . sprintf( __( 'Page %s', 'teamlab-blog-2-0' ), $paged );
+            // Add the site name to the end:
+            $title .= " $separator " . get_bloginfo( 'name', 'display' );
+            // We're done. Let's send the new title back to wp_title():
+            return $title;
+        }
+        // Otherwise, let's start by adding the site name to the end:
+        $title .= get_bloginfo( 'name', 'display' );
+        // If we have a site description and we're on the home/front page, add the description:
+        $site_description = get_bloginfo( 'description', 'display' );
+        if ( $site_description && ( is_home() || is_front_page() ) )
+            $title .= " $separator " . $site_description;
+        // Add a page number if necessary:
+        if ( $paged >= 2 || $page >= 2 )
+            $title .= " $separator " . sprintf( __( 'Page %s', 'teamlab-blog-2-0' ), max( $paged, $page ) );
+        // Return the new title to wp_title():
+        return $title;
+    }
+    add_filter( 'wp_title', 'tmblog_filter_wp_title', 10, 2 );
 /**
  * Register widget area.
  *
@@ -230,10 +263,6 @@ function teamlab_blog_2_0_scripts() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'teamlab_blog_2_0_scripts' );
-
-
-// Get the tags
-
 
 
 // Load more
@@ -322,7 +351,7 @@ if ( ! function_exists( 'get_language_key' ) ) :
     preg_match_all($regex, $query, $matches);
 
     $lang = $matches[1][0];
-    $regextest = "/\/blog\/([a-z]{2})/";
+    $regextest = "/\/blog.onlyoffice.com\/([a-z]{2})/";
     $text = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
     preg_match($regextest, $text, $match);
     $lang = $match[1];
@@ -376,7 +405,7 @@ function language_selector($available_langs_keys) {
 
     $langGB = $matches[1][0];
 
-    $regextest = "/\/blog\/([a-z]{2})/";
+    $regextest = "/\/blog.onlyoffice.com\/([a-z]{2})/";
     $text = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
     preg_match($regextest, $text, $match);
     $langGB = $match[1];
@@ -397,7 +426,7 @@ function language_selector($available_langs_keys) {
                     . $lng[1]
                     . "\"><a href=\" "
                     . WEB_ROOT_URL
-                    . "/blog"
+                    . "/blog.onlyoffice.com"
                     . (($lng[0] != $default_lang || $lng[1] == "en-GB")? "/".$lng[0] : "")
                     . "\">"
                     . "</a></li>";
@@ -434,14 +463,14 @@ if ( ! function_exists( 'tmblog_comment' ) ) :
         <div class="comment-author vcard">
             <?php echo get_avatar( $comment, 40, 'gravatar_default' ); ?>
             <div class="title">
-                <?php printf( __( '%s', 'tmblog' ), sprintf( '<span class="fn">%s</span>', get_comment_author_link() ) ); ?>
+                <?php printf( __( '%s', 'teamlab-blog-2-0' ), sprintf( '<span class="fn">%s</span>', get_comment_author_link() ) ); ?>
                 <span class="sep">-</span>
                 <?php comment_reply_link( array_merge( $args, array( 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
             </div>
-            <span class="meta"><?php printf( __( '%1$s at %2$s', 'tmblog' ), get_comment_date(),  get_comment_time() ); ?><?php edit_comment_link( __( 'Edit', 'tmblog' ), ' ' ); ?></span>
+            <span class="meta"><?php printf( __( '%1$s at %2$s', 'teamlab-blog-2-0' ), get_comment_date(),  get_comment_time() ); ?><?php edit_comment_link( __( 'Edit', 'teamlab-blog-2-0' ), ' ' ); ?></span>
         </div><!-- .comment-author .vcard -->
         <?php if ( $comment->comment_approved == '0' ) : ?>
-        <em><?php _e( 'Your comment is awaiting moderation.', 'tmblog' ); ?></em>
+        <em><?php _e( 'Your comment is awaiting moderation.', 'teamlab-blog-2-0' ); ?></em>
         <br />
         <?php endif; ?>
         <div class="comment-body"><?php comment_text(); ?></div>
@@ -452,7 +481,7 @@ if ( ! function_exists( 'tmblog_comment' ) ) :
         case 'trackback' :
     ?>
 <li class="post pingback">
-    <p><?php _e( 'Pingback:', 'tmblog' ); ?> <?php comment_author_link(); ?><?php edit_comment_link( __('(Edit)', 'tmblog'), ' ' ); ?></p>
+    <p><?php _e( 'Pingback:', 'teamlab-blog-2-0' ); ?> <?php comment_author_link(); ?><?php edit_comment_link( __('(Edit)', 'teamlab-blog-2-0'), ' ' ); ?></p>
     <?php
                     break;
             endswitch;

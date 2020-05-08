@@ -802,6 +802,9 @@ body.desktop .button.red.disabled:visited {
   .postwrapper{
     margin:0 15px 61px 15px;
   }
+  .content li{
+    font-size: 14px;
+  }
   .download-block{
     margin: 64px 0;
   }

@@ -237,7 +237,7 @@
                         </nav>
                         <div class="langselector push">
                             <div id="LanguageSelector" class="custom-select">
-                                <?php do_action('icl_language_selector'); ?>
+                                <?php language_selector(array("en","engb","de","ru","fr","cs","es")); ?>
                             </div>
                         </div>
                     </div>
