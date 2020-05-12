@@ -59,7 +59,7 @@ get_header();
    				?>
 
    				<?php if (($countOfPosts == 3 || $countOfPosts == $wp_query->post_count) && $countOfCountSub == 0) : ?>
-    			<?php include get_template_directory() . '/' . 'subscribe-block.php' ?>
+    			<?php include get_template_directory() . '/' . 'subscribe-blue.php' ?>
     			<?php $countOfCountSub = $countOfCountSub + 1 ?>
    				<?php endif; ?>
 

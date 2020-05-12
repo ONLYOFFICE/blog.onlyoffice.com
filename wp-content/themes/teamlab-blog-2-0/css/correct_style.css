@@ -756,10 +756,10 @@
 .grid{
     margin-top: 13px;
 }
-/*-----------Subscribe-block--------*/
+/*-----------Subscribe-blue--------*/
 
 
-.subscribe-block{
+.subscribe-blue{
     position: relative;
     box-sizing: border-box;
     display: block;
@@ -768,7 +768,7 @@
     background: linear-gradient(90deg, #36A8ED 10.45%, #3CADF2 26.33%, #2A9EE5 79.49%);
     color: #FFFFFF;
 }
-.subscribe-block h3{
+.subscribe-blue h3{
     font-family: Open Sans;
     font-style: normal;
     font-weight: bold;
@@ -778,7 +778,7 @@
 
     text-align: center;
 }
-.subscribe-block p{
+.subscribe-blue p{
     margin-top: 24px;
     font-family: Open Sans;
     font-style: normal;
@@ -895,15 +895,41 @@ input.inputButton{
     background-color: #fda050;
 }
 
+/*-----------Subscribe-white--------*/
 
 
-.subscribe-block span{
-    padding-top: 16px;
+.subscribe-white{
+    position: relative;
+    box-sizing: border-box;
+    display: block;
+    padding: 53px 26px 73px;
+    width: 100%;
+    background-color: #FFFFFF;
+    color: #333333;
+    box-sizing: border-box;
+    background: url(../images/newsletter.svg) no-repeat  50% 53px;
+}
+.subscribe-white h4{
+    margin-top: 72px;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 133%;
+    /* identical to box height, or 32px */
+    text-align: center;
+    letter-spacing: -0.01em;
+
+}
+.subscribe-white p{
+    margin-top: 16px;
     font-family: Open Sans;
     font-style: normal;
     font-weight: normal;
-    font-size: 11px;
-    line-height: 15px;
+    font-size: 14px;
+    line-height: 160%;
+    /* or 22px */
+    text-align: center;
 }
 
 /*-----------Download-block--------*/

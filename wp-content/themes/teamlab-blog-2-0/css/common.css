@@ -832,6 +832,10 @@ body.desktop .button.red.disabled:visited {
   .sidebar{
     margin-top: 48px;
   }
+  .subscribe-white{
+    padding: 66px 40px 67px;
+    background: url(../images/newsletter.svg) no-repeat  50% 66px;
+}
   .widget{
     margin:0 15px 48px 15px;
   }

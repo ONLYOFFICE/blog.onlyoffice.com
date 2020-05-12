@@ -1,4 +1,4 @@
-<div class="subscribe-block">
+<div class="subscribe-blue">
 		<h3><?php _e('Newsletter', 'teamlab-blog-2-0'); ?></h3>
 		<p><?php _e('Get the latest ONLYOFFICE news delivered to your inbox', 'teamlab-blog-2-0'); ?></p>
 			<form id="InputBox" class="inputBox" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">

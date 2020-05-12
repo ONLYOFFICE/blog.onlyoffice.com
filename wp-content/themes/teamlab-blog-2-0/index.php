@@ -99,7 +99,7 @@ $queryNews = new WP_Query($argsNews);?>
    <?php include get_template_directory() . '/' . 'cicle-wrapper.php' ?>
 
 	<?php if (($countOfPosts == 6 || $countOfPosts == $wp_query->post_count) && $countOfCountSub == 0) : ?>
-    <?php include get_template_directory() . '/' . 'subscribe-block.php' ?>
+    <?php include get_template_directory() . '/' . 'subscribe-blue.php' ?>
     <?php $countOfCountSub = $countOfCountSub ?>
    <?php endif; ?>
 
