@@ -52,16 +52,7 @@ if ( ! function_exists( 'teamlab_blog_2_0_setup' ) ) :
 			'menu-1' => esc_html__( 'Primary', 'teamlab-blog-2-0' ),
 		) );
 
-		
-    load_theme_textdomain( 'teamlab-blog-2-0', TEMPLATEPATH . '/languages' );
-        $locale = get_locale();
-        $locale_file = TEMPLATEPATH . "/languages/$locale.php";
-        if ( is_readable( $locale_file ) )
-            require_once( $locale_file );
-        // This theme uses wp_nav_menu() in one location.
-        register_nav_menus( array(
-            'primary' => __( 'Primary Navigation', 'teamlab-blog-2-0' ),
-        ) );
+	
 		/*
 		 * Switch default core markup for search form, comment form, and comments
 		 * to output valid HTML5.
@@ -182,6 +173,22 @@ function teamlab_blog_2_0_content_width() {
 	$GLOBALS['content_width'] = apply_filters( 'teamlab_blog_2_0_content_width', 640 );
 }
 add_action( 'after_setup_theme', 'teamlab_blog_2_0_content_width', 0 );
+
+// Вывод первой картинки с поста
+function bloggood_ru_image() {
+  global $post, $posts;
+  $first_img = '';
+  ob_start();
+  ob_end_clean();
+  $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches); // выдираем первый имагес
+  $first_img = $matches [1] [0];
+ 
+// Если картинка в посте отсутствует, тогда выводим изображение по умолчанию (указать путь и имя к картинке)
+  if(empty($first_img)){
+   $first_img = "/img/default.jpg";
+  }
+  return $first_img;
+}
 
 
 function tmblog_filter_wp_title( $title, $separator ) {

@@ -92,7 +92,7 @@ class WP_Widget_Recent_Posts extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		?>
-		<div class="view-all"><a href="<?php echo site_url()?>">View all posts ></a></div>
+		<div class="view-all"><a href="<?php echo site_url()?>"><?php _e('View all posts', 'teamlab-blog-2-0'); ?></a></div>
 		</div>
 		<ul>
 			

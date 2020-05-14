@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Twenty Ten 1.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/twentyten\n"
-"POT-Creation-Date: 2019-11-20 15:21+0300\n"
-"PO-Revision-Date: 2019-11-21 11:56+0300\n"
+"POT-Creation-Date: 2020-05-14 12:07+0300\n"
+"PO-Revision-Date: 2020-05-14 12:09+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -16,846 +16,1435 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-Basepath: ../../../..\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-SearchPath-0: wp-content/themes/teamlab-blog-2-0\n"
+"X-Poedit-SearchPath-1: wp-content/plugins/in-the-press\n"
+"X-Poedit-SearchPath-2: wp-includes/widgets\n"
 
-#: 404.php:22
-msgid "Not Found"
+#: wp-content/plugins/in-the-press/in-the-press.php:26
+msgid "Your site&#8217;s in the press."
 msgstr ""
 
-#: 404.php:24
-msgid ""
-"Apologies, but the page you requested could not be found. Perhaps searching "
-"will help."
+#: wp-content/plugins/in-the-press/in-the-press.php:29
+msgid "ONLYOFFICE IN THE PRESS"
+msgstr "ONLYOFFICE IN DEN MEDIEN"
+
+#: wp-content/plugins/in-the-press/in-the-press.php:47
+#: wp-includes/widgets/class-wp-widget-recent-posts.php:30
+#: wp-includes/widgets/class-wp-widget-recent-posts.php:48
+msgid "Recent Posts"
+msgstr "NEUSTE BEITRÄGE"
+
+#: wp-content/plugins/in-the-press/in-the-press.php:94
+msgid "onlyoffice-in-the-press"
+msgstr "de/onlyoffice-in-the-press"
+
+#: wp-content/plugins/in-the-press/in-the-press.php:94
+msgid "View all news"
+msgstr "Alle Nachrichten ansehen"
+
+#: wp-content/plugins/in-the-press/in-the-press.php:100
+#: wp-includes/widgets/class-wp-widget-recent-posts.php:102
+msgid "(no title)"
 msgstr ""
 
-#: archive.php:31
-#, php-format
-msgid "Daily Archives: <span>%s</span>"
+#: wp-content/plugins/in-the-press/in-the-press.php:151
+#: wp-includes/widgets/class-wp-nav-menu-widget.php:152
+#: wp-includes/widgets/class-wp-widget-archives.php:200
+#: wp-includes/widgets/class-wp-widget-calendar.php:98
+#: wp-includes/widgets/class-wp-widget-categories.php:171
+#: wp-includes/widgets/class-wp-widget-meta.php:116
+#: wp-includes/widgets/class-wp-widget-pages.php:144
+#: wp-includes/widgets/class-wp-widget-recent-comments.php:179
+#: wp-includes/widgets/class-wp-widget-recent-posts.php:157
+#: wp-includes/widgets/class-wp-widget-search.php:70
+#: wp-includes/widgets/class-wp-widget-tag-cloud.php:132
+#: wp-includes/widgets/class-wp-widget-text.php:491
+msgid "Title:"
 msgstr ""
 
-#: archive.php:33
-#, php-format
-msgid "Monthly Archives: <span>%s</span>"
+#: wp-content/plugins/in-the-press/in-the-press.php:154
+#: wp-includes/widgets/class-wp-widget-recent-posts.php:160
+msgid "Number of posts to show:"
 msgstr ""
 
-#: archive.php:35
-#, php-format
-msgid "Yearly Archives: <span>%s</span>"
+#: wp-content/plugins/in-the-press/in-the-press.php:158
+#: wp-includes/widgets/class-wp-widget-recent-posts.php:164
+msgid "Display post date?"
 msgstr ""
 
-#: archive.php:37
-msgid "Blog Archives"
+#: wp-content/themes/teamlab-blog-2-0/archive.php:32
+msgid "Tag Archives:"
+msgstr "Tag-Archiv:"
+
+#: wp-content/themes/teamlab-blog-2-0/archive.php:60
+#: wp-content/themes/teamlab-blog-2-0/in-the-press.php:80
+#: wp-content/themes/teamlab-blog-2-0/index.php:127
+#: wp-content/themes/teamlab-blog-2-0/search.php:53
+msgid "Load more"
+msgstr "Mehr laden"
+
+#: wp-content/themes/teamlab-blog-2-0/archive.php:66
+#: wp-content/themes/teamlab-blog-2-0/in-the-press.php:86
+#: wp-content/themes/teamlab-blog-2-0/search.php:59
+msgid "No results matching your query could be found"
+msgstr "Keine Ergebnisse gefunden, die Ihrer Anfrage entsprechen"
+
+#: wp-content/themes/teamlab-blog-2-0/cicle-wrapper.php:10
+#: wp-content/themes/teamlab-blog-2-0/index.php:61
+#: wp-content/themes/teamlab-blog-2-0/loadmore-search.php:5
+#: wp-content/themes/teamlab-blog-2-0/loadmore-tag.php:5
+#: wp-content/themes/teamlab-blog-2-0/search.php:35
+#: wp-content/themes/teamlab-blog-2-0/template-parts/content-tag.php:15
+#: wp-content/themes/teamlab-blog-2-0/template-parts/content.php:24
+msgid "By"
 msgstr ""
 
-#: attachment.php:17
-#, php-format
-msgid "Return to %s"
-msgstr ""
+#: wp-content/themes/teamlab-blog-2-0/cloud-block.php:2
+msgid "Try ONLYOFFICE in the cloud"
+msgstr "ONLYOFFICE in der Cloud testen"
 
-#: attachment.php:19
-#, php-format
-msgid "<span class=\"meta-nav\">&larr;</span> %s"
-msgstr ""
-
-#: attachment.php:27
-#, php-format
-msgid "<span class=\"%1$s\">By</span> %2$s"
-msgstr ""
-
-#: attachment.php:38
-#, php-format
-msgid "<span class=\"%1$s\">Published</span> %2$s"
-msgstr ""
-
-#: attachment.php:48
-#, php-format
-msgid "Full size is %s pixels"
-msgstr ""
-
-#: attachment.php:51
-msgid "Link to full-size image"
-msgstr ""
-
-#: attachment.php:58 attachment.php:105 functions.php:396 loop.php:103
-#: loop.php:126 loop.php:168 onecolumn-page.php:25 single.php:63
-msgid "Edit"
-msgstr "Bearbeitung"
-
-#: attachment.php:98 loop.php:118 loop.php:161
-msgid "<span class=\"meta-nav\">&rarr;</span>"
-msgstr ""
-
-#: attachment.php:99 loop.php:162 onecolumn-page.php:24 page.php:26
-#: single.php:42
-msgid "Pages:"
-msgstr "Seiten:"
-
-#: author.php:31
-#, php-format
-msgid "Author Archives: %s"
-msgstr ""
-
-#: author.php:41
-#, php-format
-msgid "About %s"
-msgstr ""
-
-#: category.php:21
-#, php-format
-msgid "Category Archives: %s"
-msgstr ""
-
-#: comments.php:17
+#: wp-content/themes/teamlab-blog-2-0/comments.php:17
 msgid ""
 "This post is password protected. Enter the password to view any comments."
 msgstr ""
 
-#: comments.php:33 comments.php:53
+#: wp-content/themes/teamlab-blog-2-0/comments.php:33
 msgid "<span class=\"meta-nav\">&larr;</span> Older Comments"
 msgstr ""
 
-#: comments.php:34 comments.php:54
+#: wp-content/themes/teamlab-blog-2-0/comments.php:34
 msgid "Newer Comments <span class=\"meta-nav\">&rarr;</span>"
 msgstr ""
 
-#: comments.php:38 loop.php:154 loop.php:169 single.php:38
+#: wp-content/themes/teamlab-blog-2-0/comments.php:38
 #, fuzzy
 #| msgid "1 Comment"
 msgid "1 comment"
 msgstr "1 Kommentar"
 
-#: comments.php:38
+#: wp-content/themes/teamlab-blog-2-0/comments.php:38
 #, fuzzy
 #| msgid "% Comments"
 msgid "Comments (%)"
 msgstr "% Kommentare"
 
-#: comments.php:64
+#: wp-content/themes/teamlab-blog-2-0/comments.php:52
 msgid "Comments are closed."
 msgstr ""
 
-#: comments.php:70 loop.php:102 loop.php:125 loop.php:154 loop.php:169
-#: single.php:38
+#: wp-content/themes/teamlab-blog-2-0/comments.php:58
 #, fuzzy
 #| msgid "Leave a comment"
 msgid "Add a comment"
 msgstr "Einen Kommentar hinterlassen"
 
-#: comments.php:70
-#, php-format
+#: wp-content/themes/teamlab-blog-2-0/comments.php:58
+#, fuzzy, php-format
+#| msgid "Leave a comment"
 msgid "Add a comment to %s"
-msgstr ""
+msgstr "Einen Kommentar hinterlassen"
 
-#: comments.php:76
+#: wp-content/themes/teamlab-blog-2-0/comments.php:64
 #, php-format
 msgid "You must be <a href=\"%s\">logged in</a> to post a comment."
 msgstr ""
 
-#: comments.php:80
+#: wp-content/themes/teamlab-blog-2-0/comments.php:68
 #, php-format
 msgid "Logged in as <a class=\"account-name\" href=\"%1$s\">%2$s</a>"
 msgstr ""
 
-#: comments.php:80
+#: wp-content/themes/teamlab-blog-2-0/comments.php:68
 msgid "Log out of this account"
 msgstr ""
 
-#: comments.php:80
+#: wp-content/themes/teamlab-blog-2-0/comments.php:68
 msgid "Log out &raquo;"
 msgstr ""
 
-#: comments.php:83
+#: wp-content/themes/teamlab-blog-2-0/comments.php:71
 msgid "Name:"
 msgstr ""
 
-#: comments.php:83 comments.php:87
+#: wp-content/themes/teamlab-blog-2-0/comments.php:71
+#: wp-content/themes/teamlab-blog-2-0/comments.php:75
 msgid "<span class=\"important\">*</span>"
 msgstr ""
 
-#: comments.php:87
+#: wp-content/themes/teamlab-blog-2-0/comments.php:75
 msgid "E-mail (will not be published):"
 msgstr ""
 
-#: comments.php:91
+#: wp-content/themes/teamlab-blog-2-0/comments.php:79
 msgid "Website:"
 msgstr ""
 
-#: comments.php:96
+#: wp-content/themes/teamlab-blog-2-0/comments.php:84
 msgid "Message:"
 msgstr ""
 
-#: comments.php:101
+#: wp-content/themes/teamlab-blog-2-0/comments.php:89
 #, fuzzy
 #| msgid "1 Comment"
 msgid "Add comment"
 msgstr "1 Kommentar"
 
-#: footer-page.php:17 footer.php:98
-msgid "All rights reserved"
-msgstr "Alle Rechte vorbehalten"
+#: wp-content/themes/teamlab-blog-2-0/download-block.php:3
+msgid "Download ONLYOFFICE desktop and mobile apps for"
+msgstr "ONLYOFFICE Desktop- und Mobile-Apps herunterladen für"
 
-#: footer.php:25
-msgid "Developers"
-msgstr "Werkzeuge"
+#: wp-content/themes/teamlab-blog-2-0/download-block.php:3
+#: wp-content/themes/teamlab-blog-2-0/header.php:74
+#: wp-content/themes/teamlab-blog-2-0/header.php:89
+#: wp-content/themes/teamlab-blog-2-0/header.php:123
+msgid "FREE"
+msgstr "KOSTENLOS"
 
-#: footer.php:26 header.php:161 header.php:233 header.php:243
-msgid "Developer Edition"
-msgstr "Developer Edition"
+#: wp-content/themes/teamlab-blog-2-0/footer.php:23
+#: wp-content/themes/teamlab-blog-2-0/header.php:136
+msgid "Features"
+msgstr "FUNKTIONEN"
 
-#: footer.php:27 header.php:169 header.php:245
-msgid "Document Builder"
-msgstr "Document Builder"
+#: wp-content/themes/teamlab-blog-2-0/footer.php:26
+msgid "Documents editors"
+msgstr "Dokumenteneditoren"
 
-#: footer.php:28 header.php:168
-msgid "API"
-msgstr "API"
+#: wp-content/themes/teamlab-blog-2-0/footer.php:27
+#: wp-content/themes/teamlab-blog-2-0/header.php:156
+msgid "Collaboration Platform"
+msgstr "Plattform für Zusammenarbeit"
 
-#: footer.php:31
-msgid "Offers"
-msgstr "Angebote"
+#: wp-content/themes/teamlab-blog-2-0/footer.php:28
+msgid "Security"
+msgstr "Sicherheit"
 
-#: footer.php:32
+#: wp-content/themes/teamlab-blog-2-0/footer.php:29
+msgid "End-to-end encryption"
+msgstr "Ende-zu-Ende-Verschlüsselung"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:34
+msgid "Integration"
+msgstr "Integration"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:37
+msgid "Nextcloud"
+msgstr "Nextcloud"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:38
+msgid "OwnCloud"
+msgstr "OwnCloud"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:39
+msgid "Confluence"
+msgstr "Confluence"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:40
+msgid "Alfresco"
+msgstr "Alfresco"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:41
+msgid "SharePoint"
+msgstr "SharePoint"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:42
+msgid "Liferay"
+msgstr "Liferay"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:43
+msgid "Others"
+msgstr "Andere"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:50
+#: wp-content/themes/teamlab-blog-2-0/header.php:65
+msgid "Solutions"
+msgstr "LÖSUNGEN"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:53
+msgid "SMBs"
+msgstr "KMUs"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:54
+msgid "Enterprises"
+msgstr "Unternehmen"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:55
+msgid "Government"
+msgstr "Regierungseinrichtungen"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:56
 msgid "Education"
 msgstr "Bildungswesen"
 
-#: footer.php:33
-msgid "Personal Use"
-msgstr "Persönliches Office"
-
-#: footer.php:34
+#: wp-content/themes/teamlab-blog-2-0/footer.php:57
 msgid "Nonprofits"
 msgstr "Nicht-kommerzielle Nutzung"
 
-#: footer.php:37
-msgid "Contact Us"
-msgstr "Kontaktieren Sie uns"
+#: wp-content/themes/teamlab-blog-2-0/footer.php:58
+msgid "Personal Use"
+msgstr "Persönliches Office"
 
-#: footer.php:39
-msgid "Sales Questions"
-msgstr "Fragen zum Kauf"
-
-#: footer.php:43
-msgid "Partner Inquiries"
-msgstr "Partneranfrage"
-
-#: footer.php:47
-msgid "Press Inquiries"
-msgstr "Presseanfrage"
-
-#: footer.php:50
-msgid "Request a Call"
-msgstr "Rückruf anfordern"
-
-#: footer.php:53
+#: wp-content/themes/teamlab-blog-2-0/footer.php:63
 msgid "Support"
 msgstr "Support"
 
-#: footer.php:54
+#: wp-content/themes/teamlab-blog-2-0/footer.php:66
 msgid "SaaS Forum"
 msgstr "SaaS-Forum"
 
-#: footer.php:55
+#: wp-content/themes/teamlab-blog-2-0/footer.php:67
 msgid "Server Forum"
 msgstr "Server-Forum"
 
-#: footer.php:56
+#: wp-content/themes/teamlab-blog-2-0/footer.php:68
 msgid "Support Contact Form"
 msgstr "Support"
 
-#: footer.php:57
+#: wp-content/themes/teamlab-blog-2-0/footer.php:69
+msgid "Premium Support"
+msgstr "Premium-Support"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:70
 msgid "Order demo"
 msgstr "Demonstration anfragen"
 
-#: footer.php:60
+#: wp-content/themes/teamlab-blog-2-0/footer.php:71
+msgid "Subscribe to our newsletters"
+msgstr "Abonnieren Sie unseren Newsletter"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:78
+msgid "Developers"
+msgstr "Werkzeuge"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:81
+#: wp-content/themes/teamlab-blog-2-0/header.php:118
+#: wp-content/themes/teamlab-blog-2-0/header.php:190
+#: wp-content/themes/teamlab-blog-2-0/header.php:200
+msgid "Developer Edition"
+msgstr "Developer Edition"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:82
+#: wp-content/themes/teamlab-blog-2-0/header.php:126
+#: wp-content/themes/teamlab-blog-2-0/header.php:202
+msgid "Document Builder"
+msgstr "Document Builder"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:83
+#: wp-content/themes/teamlab-blog-2-0/header.php:125
+msgid "API"
+msgstr "API"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:84
+msgid "Github"
+msgstr ""
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:89
 msgid "Get Info"
 msgstr "Information"
 
-#: footer.php:61
+#: wp-content/themes/teamlab-blog-2-0/footer.php:92
 msgid "FAQ"
 msgstr "Häufig gestellte Fragen"
 
-#: footer.php:62
+#: wp-content/themes/teamlab-blog-2-0/footer.php:93
 msgid "Getting Started"
 msgstr "Einstieg"
 
-#: footer.php:63
+#: wp-content/themes/teamlab-blog-2-0/footer.php:94
 msgid "Video Guides"
 msgstr "Videoanleitungen"
 
-#: footer.php:64
+#: wp-content/themes/teamlab-blog-2-0/footer.php:95
+#: wp-content/themes/teamlab-blog-2-0/header.php:229
+msgid "Press downloads"
+msgstr "Presse-Downloads"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:96
 msgid "Legal Notice"
 msgstr "Impressum"
 
-#: footer.php:65
+#: wp-content/themes/teamlab-blog-2-0/footer.php:97
 msgid "GDPR Compliance"
 msgstr "DSGVO-Konformität"
 
-#: footer.php:70
-msgid "Follow us on:"
-msgstr "Folgen Sie uns auf:"
+#: wp-content/themes/teamlab-blog-2-0/footer.php:104
+msgid "Contact Us"
+msgstr "Kontaktieren Sie uns"
 
-#: footer.php:98
+#: wp-content/themes/teamlab-blog-2-0/footer.php:108
+msgid "Sales Questions"
+msgstr "Fragen zum Kauf"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:113
+msgid "Partner Inquiries"
+msgstr "Partneranfrage"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:117
+msgid "Press Inquiries"
+msgstr "Presseanfrage"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:121
+msgid "Request a Call"
+msgstr "Rückruf anfordern"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:128
+msgid "follow us on"
+msgstr "Folgen Sie uns auf"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:166
 msgid "Ascensio System SIA"
 msgstr "Ascensio System SIA"
 
-#: functions.php:88
-msgid "Primary Navigation"
-msgstr ""
+#: wp-content/themes/teamlab-blog-2-0/footer.php:166
+msgid "All rights reserved"
+msgstr "Alle Rechte vorbehalten"
 
-#: functions.php:116
-msgid "Berries"
-msgstr ""
-
-#: functions.php:122
-msgid "Cherry Blossoms"
-msgstr ""
-
-#: functions.php:128
-msgid "Concave"
-msgstr ""
-
-#: functions.php:134
-msgid "Fern"
-msgstr ""
-
-#: functions.php:140
-msgid "Forest Floor"
-msgstr ""
-
-#: functions.php:146
-msgid "Inkwell"
-msgstr ""
-
-#: functions.php:152
-msgid "Path"
-msgstr ""
-
-#: functions.php:158
-msgid "Sunset"
-msgstr ""
-
-#: functions.php:273
+#: wp-content/themes/teamlab-blog-2-0/functions.php:204
 #, php-format
 msgid "Search results for %s"
 msgstr ""
 
-#: functions.php:276 functions.php:290
-#, php-format
+#: wp-content/themes/teamlab-blog-2-0/functions.php:207
+#: wp-content/themes/teamlab-blog-2-0/functions.php:221
+#, fuzzy, php-format
+#| msgid "Page ID"
 msgid "Page %s"
-msgstr ""
+msgstr "Seiten"
 
-#: functions.php:328
-msgid "<span class=\"meta-nav nav-more\">Read more</span>"
-msgstr ""
-
-#: functions.php:392
+#: wp-content/themes/teamlab-blog-2-0/functions.php:473
 #, php-format
 msgid "%s"
 msgstr ""
 
-#: functions.php:396
+#: wp-content/themes/teamlab-blog-2-0/functions.php:477
 #, php-format
 msgid "%1$s at %2$s"
 msgstr ""
 
-#: functions.php:399
+#: wp-content/themes/teamlab-blog-2-0/functions.php:477
+#, fuzzy
+#| msgid "Edit"
+msgid "Edit"
+msgstr "Bearbeitung"
+
+#: wp-content/themes/teamlab-blog-2-0/functions.php:480
 msgid "Your comment is awaiting moderation."
 msgstr ""
 
-#: functions.php:410
+#: wp-content/themes/teamlab-blog-2-0/functions.php:491
 msgid "Pingback:"
 msgstr ""
 
-#: functions.php:410
+#: wp-content/themes/teamlab-blog-2-0/functions.php:491
 msgid "(Edit)"
 msgstr ""
 
-#: functions.php:428
-msgid "Primary Widget Area"
-msgstr ""
+#: wp-content/themes/teamlab-blog-2-0/header.php:56
+#: wp-content/themes/teamlab-blog-2-0/searchform.php:9
+msgid "Find news, tips and how-tos"
+msgstr "Nachrichten, Tipps und Anleitungen finden"
 
-#: functions.php:430
-msgid "The primary widget area"
-msgstr ""
-
-#: functions.php:438
-msgid "Secondary Widget Area"
-msgstr ""
-
-#: functions.php:440
-msgid "The secondary widget area"
-msgstr ""
-
-#: functions.php:448
-msgid "First Footer Widget Area"
-msgstr ""
-
-#: functions.php:450
-msgid "The first footer widget area"
-msgstr ""
-
-#: functions.php:458
-msgid "Second Footer Widget Area"
-msgstr ""
-
-#: functions.php:460
-msgid "The second footer widget area"
-msgstr ""
-
-#: functions.php:468
-msgid "Third Footer Widget Area"
-msgstr ""
-
-#: functions.php:470
-msgid "The third footer widget area"
-msgstr ""
-
-#: functions.php:478
-msgid "Fourth Footer Widget Area"
-msgstr ""
-
-#: functions.php:480
-msgid "The fourth footer widget area"
-msgstr ""
-
-#: functions.php:510
-#, php-format
-msgid ""
-"<span class=\"%2$s\">By %3$s</span><span style=\"display:inline-block; "
-"margin-left: 21px;\" class=\"%1$s\">Posted in: %4$s</span>"
-msgstr ""
-
-#: functions.php:530
-#, php-format
-msgid "<span class=\"%1$s\">%2$s</span>"
-msgstr ""
-
-#: functions.php:548
-#, php-format
-msgid ""
-"This entry was posted in %1$s and tagged %2$s. Bookmark the <a href=\"%3$s\" "
-"title=\"Permalink to %4$s\" rel=\"bookmark\">permalink</a>."
-msgstr ""
-
-#: functions.php:550
-#, php-format
-msgid ""
-"This entry was posted in %1$s. Bookmark the <a href=\"%3$s\" title="
-"\"Permalink to %4$s\" rel=\"bookmark\">permalink</a>."
-msgstr ""
-
-#: functions.php:552
-#, php-format
-msgid ""
-"Bookmark the <a href=\"%3$s\" title=\"Permalink to %4$s\" rel=\"bookmark"
-"\">permalink</a>."
-msgstr ""
-
-#: header.php:108
-msgid "Products"
-msgstr "Produkte"
-
-#: header.php:112 header.php:234
+#: wp-content/themes/teamlab-blog-2-0/header.php:69
+#: wp-content/themes/teamlab-blog-2-0/header.php:191
 msgid "Cloud Service"
 msgstr "Cloud Service"
 
-#: header.php:114
+#: wp-content/themes/teamlab-blog-2-0/header.php:71
 msgid ""
 "Online documents editors and productivity business tools provided as a SaaS"
 msgstr ""
 "Online-Dokumenteneditoren und Produktivitäts-Tools für Business, die als "
 "SaaS bereitgestellt werden"
 
-#: header.php:116 header.php:131 header.php:146 header.php:165 header.php:215
+#: wp-content/themes/teamlab-blog-2-0/header.php:73
+#: wp-content/themes/teamlab-blog-2-0/header.php:88
+#: wp-content/themes/teamlab-blog-2-0/header.php:103
+#: wp-content/themes/teamlab-blog-2-0/header.php:122
+#: wp-content/themes/teamlab-blog-2-0/header.php:172
 msgid "Overview"
 msgstr "Übersicht"
 
-#: header.php:117
+#: wp-content/themes/teamlab-blog-2-0/header.php:74
 msgid "No installation required. Get started for "
 msgstr "Keine Installation erforderlich. Starten "
 
-#: header.php:117 header.php:132 header.php:166
-msgid "FREE"
-msgstr "KOSTENLOS"
-
-#: header.php:118 header.php:133
+#: wp-content/themes/teamlab-blog-2-0/header.php:75
+#: wp-content/themes/teamlab-blog-2-0/header.php:90
 msgid "Complete set of business tools"
 msgstr "Vollständiges Paket von Business-Tools"
 
-#: header.php:119
+#: wp-content/themes/teamlab-blog-2-0/header.php:76
 msgid "Secure and reliable hosting"
 msgstr "Sichere und zuverlässige Hosting"
 
-#: header.php:120
+#: wp-content/themes/teamlab-blog-2-0/header.php:77
 msgid "Cloud for non-profits"
 msgstr "Cloud für gemeinnützige Organisationen"
 
-#: header.php:121
+#: wp-content/themes/teamlab-blog-2-0/header.php:78
 msgid "Cloud for personal use"
 msgstr "Cloud für den persönlichen Gebrauch"
 
-#: header.php:122
+#: wp-content/themes/teamlab-blog-2-0/header.php:79
 msgid "Sign in"
 msgstr "Login"
 
-#: header.php:127 header.php:231 header.php:241
+#: wp-content/themes/teamlab-blog-2-0/header.php:84
+#: wp-content/themes/teamlab-blog-2-0/header.php:188
+#: wp-content/themes/teamlab-blog-2-0/header.php:198
 msgid "Enterprise Edition"
 msgstr "Enterprise Edition"
 
-#: header.php:129
+#: wp-content/themes/teamlab-blog-2-0/header.php:86
 msgid ""
 "Online document editors and productivity business tools at private network"
 msgstr ""
 "Online-Dokumenteneditoren und Produktivitäts-Tools für Business im privaten "
 "Netzwerk"
 
-#: header.php:132 header.php:166
+#: wp-content/themes/teamlab-blog-2-0/header.php:89
+#: wp-content/themes/teamlab-blog-2-0/header.php:123
 msgid "Self-hosted. Try for"
 msgstr "Selbst gehostet. Testen"
 
-#: header.php:134
+#: wp-content/themes/teamlab-blog-2-0/header.php:91
 msgid "Enhanced security measures"
 msgstr "Verstärkte Sicherheitsmaßnahmen"
 
-#: header.php:135
+#: wp-content/themes/teamlab-blog-2-0/header.php:92
 msgid "Various installation options"
 msgstr "Verschiedenen Installationsmöglichkeiten"
 
-#: header.php:136 header.php:154
+#: wp-content/themes/teamlab-blog-2-0/header.php:93
+#: wp-content/themes/teamlab-blog-2-0/header.php:111
 msgid "Professional support"
 msgstr "Professionelle Unterstützung"
 
-#: header.php:137
+#: wp-content/themes/teamlab-blog-2-0/header.php:94
 msgid "Community Edition vs Enterprise Edition"
 msgstr "Community Edition vs Enterprise Edition"
 
-#: header.php:142 header.php:232 header.php:242
+#: wp-content/themes/teamlab-blog-2-0/header.php:99
+#: wp-content/themes/teamlab-blog-2-0/header.php:189
+#: wp-content/themes/teamlab-blog-2-0/header.php:199
 msgid "Integration Edition"
 msgstr "Integration Edition"
 
-#: header.php:144
+#: wp-content/themes/teamlab-blog-2-0/header.php:101
 msgid "Online document editors and connectors for popular web services"
 msgstr "Online-Dokumenteneditoren und Konnektoren für beliebige Web Services"
 
-#: header.php:147
+#: wp-content/themes/teamlab-blog-2-0/header.php:104
 msgid "Self-hosted. Get started"
 msgstr "Selbst gehostet. Starten"
 
-#: header.php:147
+#: wp-content/themes/teamlab-blog-2-0/header.php:104
 msgid "NOW"
 msgstr "JETZT"
 
-#: header.php:148
+#: wp-content/themes/teamlab-blog-2-0/header.php:105
 msgid "For Nextcloud"
 msgstr "Für Nextcloud"
 
-#: header.php:149
+#: wp-content/themes/teamlab-blog-2-0/header.php:106
 msgid "For ownCloud"
 msgstr "Für ownCloud"
 
-#: header.php:150
+#: wp-content/themes/teamlab-blog-2-0/header.php:107
 msgid "For Alfresco"
 msgstr "Für Alfresco"
 
-#: header.php:151
+#: wp-content/themes/teamlab-blog-2-0/header.php:108
 msgid "For Confluence"
 msgstr "Für Confluence"
 
-#: header.php:152
+#: wp-content/themes/teamlab-blog-2-0/header.php:109
 msgid "For SharePoint"
 msgstr "Für SharePoint"
 
-#: header.php:153
+#: wp-content/themes/teamlab-blog-2-0/header.php:110
 msgid "Third-party connectors"
 msgstr "Konnektoren von Drittanbietern"
 
-#: header.php:155
+#: wp-content/themes/teamlab-blog-2-0/header.php:112
 msgid "Community Edition vs Integration Edition"
 msgstr "Community Edition vs Integration Edition"
 
-#: header.php:163
+#: wp-content/themes/teamlab-blog-2-0/header.php:120
 msgid "Online document editors to integrate with a service you are building"
 msgstr ""
 "Online-Dokumenteneditoren für die Integration mit einem von Ihnen erstellten "
 "Service"
 
-#: header.php:167
+#: wp-content/themes/teamlab-blog-2-0/header.php:124
 msgid "Dual licensing"
 msgstr "Duales Lizenzsystem"
 
-#: header.php:175
+#: wp-content/themes/teamlab-blog-2-0/header.php:132
 msgid "Latest Releases"
 msgstr "Die Neuesten Versionen"
 
-#: header.php:179
-msgid "Apps"
-msgstr "Anwendungen"
-
-#: header.php:183
+#: wp-content/themes/teamlab-blog-2-0/header.php:140
 msgid "Online Editors"
 msgstr "Online-Editoren"
 
-#: header.php:186
+#: wp-content/themes/teamlab-blog-2-0/header.php:143
 msgid "Documents"
 msgstr "Dokumente"
 
-#: header.php:187
+#: wp-content/themes/teamlab-blog-2-0/header.php:144
 msgid "Spreadsheets"
 msgstr "Tabellen"
 
-#: header.php:188
+#: wp-content/themes/teamlab-blog-2-0/header.php:145
 msgid "Presentations"
 msgstr "Präsentationen"
 
-#: header.php:193 header.php:244
+#: wp-content/themes/teamlab-blog-2-0/header.php:150
+#: wp-content/themes/teamlab-blog-2-0/header.php:201
 msgid "Desktop Editors"
 msgstr "Desktop Editoren"
 
-#: header.php:194
+#: wp-content/themes/teamlab-blog-2-0/header.php:151
 msgid "Office for iOS"
 msgstr "Office für iOS"
 
-#: header.php:195
+#: wp-content/themes/teamlab-blog-2-0/header.php:152
 msgid "Office for Android"
 msgstr "Office für Android"
 
-#: header.php:196
+#: wp-content/themes/teamlab-blog-2-0/header.php:153
 msgid "Mobile Projects"
 msgstr "Mobile Projekte"
 
-#: header.php:199
-msgid "Collaboration Platform"
-msgstr "Plattform für Zusammenarbeit"
-
-#: header.php:202
+#: wp-content/themes/teamlab-blog-2-0/header.php:159
 msgid "Document Management"
 msgstr "Dokumente"
 
-#: header.php:203
+#: wp-content/themes/teamlab-blog-2-0/header.php:160
 msgid "Mail"
 msgstr "E-Mail"
 
-#: header.php:204
+#: wp-content/themes/teamlab-blog-2-0/header.php:161
 msgid "CRM"
 msgstr "CRM"
 
-#: header.php:205
+#: wp-content/themes/teamlab-blog-2-0/header.php:162
 msgid "Projects"
 msgstr "Projekte"
 
-#: header.php:206
+#: wp-content/themes/teamlab-blog-2-0/header.php:163
+#: wp-includes/widgets/class-wp-widget-calendar.php:37
 msgid "Calendar"
 msgstr "Kalender"
 
-#: header.php:207
+#: wp-content/themes/teamlab-blog-2-0/header.php:164
 msgid "Community"
 msgstr "Community"
 
-#: header.php:212
+#: wp-content/themes/teamlab-blog-2-0/header.php:169
 msgid "ONLYOFFICE alternatives"
 msgstr "Übersicht"
 
-#: header.php:216
+#: wp-content/themes/teamlab-blog-2-0/header.php:173
 msgid "ONLYOFFICE vs MS Office Online"
 msgstr ""
 
-#: header.php:217
+#: wp-content/themes/teamlab-blog-2-0/header.php:174
 msgid "ONLYOFFICE vs Google Docs"
 msgstr ""
 
-#: header.php:218
+#: wp-content/themes/teamlab-blog-2-0/header.php:175
 msgid "ONLYOFFICE vs Zoho Docs"
 msgstr ""
 
-#: header.php:219
+#: wp-content/themes/teamlab-blog-2-0/header.php:176
 msgid "ONLYOFFICE vs Collabora Online"
 msgstr ""
 
-#: header.php:220
+#: wp-content/themes/teamlab-blog-2-0/header.php:177
 msgid "ONLYOFFICE vs LibreOffice"
 msgstr ""
 
-#: header.php:221
+#: wp-content/themes/teamlab-blog-2-0/header.php:178
 msgid "ONLYOFFICE vs Office 365 vs G Suite"
 msgstr ""
 
-#: header.php:228
+#: wp-content/themes/teamlab-blog-2-0/header.php:185
 msgid "Pricing"
 msgstr "Preise"
 
-#: header.php:238
+#: wp-content/themes/teamlab-blog-2-0/header.php:195
 msgid "Download"
 msgstr "Herunterladen"
 
-#: header.php:249
+#: wp-content/themes/teamlab-blog-2-0/header.php:206
 msgid "Partnership"
 msgstr "Partnerschaft"
 
-#: header.php:252
+#: wp-content/themes/teamlab-blog-2-0/header.php:209
 msgid "For Resellers"
 msgstr "Für Resellers"
 
-#: header.php:253
+#: wp-content/themes/teamlab-blog-2-0/header.php:210
 msgid "For Affiliates"
 msgstr "Für Affiliates"
 
-#: header.php:254
+#: wp-content/themes/teamlab-blog-2-0/header.php:211
 msgid "For Developers"
 msgstr "Für Softwareentwickler"
 
-#: header.php:255
+#: wp-content/themes/teamlab-blog-2-0/header.php:212
 msgid "Find partners"
 msgstr "Unsere Partner"
 
-#: header.php:256
+#: wp-content/themes/teamlab-blog-2-0/header.php:213
 msgid "Submit request"
 msgstr "Anfrage Senden"
 
-#: header.php:260
+#: wp-content/themes/teamlab-blog-2-0/header.php:217
 msgid "About"
 msgstr "Über uns"
 
-#: header.php:263
+#: wp-content/themes/teamlab-blog-2-0/header.php:220
 msgid "About ONLYOFFICE"
 msgstr "Über ONLYOFFICE"
 
-#: header.php:264
+#: wp-content/themes/teamlab-blog-2-0/header.php:221
 msgid "Blog"
 msgstr "Blog"
 
-#: header.php:265
+#: wp-content/themes/teamlab-blog-2-0/header.php:222
 msgid "Contribute"
 msgstr "Beitragen"
 
-#: header.php:266
+#: wp-content/themes/teamlab-blog-2-0/header.php:223
 msgid "Success stories"
 msgstr "Erfolgsgeschichten"
 
-#: header.php:267
+#: wp-content/themes/teamlab-blog-2-0/header.php:224
 msgid "Case studies"
 msgstr "Erfahrungsberichte"
 
-#: header.php:268
+#: wp-content/themes/teamlab-blog-2-0/header.php:225
 msgid "Customers"
 msgstr "Kunden"
 
-#: header.php:269
+#: wp-content/themes/teamlab-blog-2-0/header.php:226
 msgid "Awards"
 msgstr "Auszeichnungen"
 
-#: header.php:270
+#: wp-content/themes/teamlab-blog-2-0/header.php:227
 msgid "Events"
 msgstr "Veranstaltungen"
 
-#: header.php:271
+#: wp-content/themes/teamlab-blog-2-0/header.php:228
 msgid "Webinars"
 msgstr "Webinare"
 
-#: header.php:272
-msgid "Press downloads"
-msgstr "Presse-Downloads"
-
-#: header.php:273
+#: wp-content/themes/teamlab-blog-2-0/header.php:230
 msgid "Contacts"
 msgstr "Kontakt"
 
-#: header.php:279
-msgid "Get onlyoffice"
-msgstr "Onlyoffice Starten"
-
-#: loop.php:26
-msgid "<span class=\"meta-nav\">&larr;</span> Older posts"
+#: wp-content/themes/teamlab-blog-2-0/inc/template-tags.php:82
+#, php-format
+msgid "Leave a Comment<span class=\"screen-reader-text\"> on %s</span>"
 msgstr ""
 
-#: loop.php:27
-msgid "Newer posts <span class=\"meta-nav\">&rarr;</span>"
+#: wp-content/themes/teamlab-blog-2-0/inc/template-tags.php:99
+#: wp-content/themes/teamlab-blog-2-0/template-parts/content-page.php:37
+#, php-format
+msgid "Edit <span class=\"screen-reader-text\">%s</span>"
 msgstr ""
 
-#: loop.php:38
-msgid "Not Foun d"
+#: wp-content/themes/teamlab-blog-2-0/index.php:70
+msgid "Sorry, no posts"
 msgstr ""
 
-#: loop.php:40
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:2
+msgid "Newsletter"
+msgstr "Newsletter"
+
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:3
+msgid "Get the latest ONLYOFFICE news delivered to your inbox"
+msgstr "Erhalten Sie die neuesten ONLYOFFICE-Nachrichten in Ihrem Posteingang"
+
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:6
+msgid "Your email*"
+msgstr "Ihre E-Mail*"
+
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:10
+msgid "Email is empty"
+msgstr ""
+
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:11
+msgid "Email is incorrect"
+msgstr ""
+
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:12
+msgid "Email is used"
+msgstr ""
+
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:16
 msgid ""
-"Apologies, but no results were found for the requested archive. Perhaps "
-"searching will help find a related post."
+"By clicking \"Subscribe\", you agree to the rules for using the service and "
+"processing personal data."
+msgstr ""
+"Durch Klicken auf \"Abonnieren\" stimmen Sie den Regeln für die Nutzung des "
+"Dienstes und die Verarbeitung personenbezogener Daten zu."
+
+#: wp-content/themes/teamlab-blog-2-0/subscribe-white.php:2
+msgid "Confirm your subscription"
 msgstr ""
 
-#: loop.php:89
+#: wp-content/themes/teamlab-blog-2-0/subscribe-white.php:3
+msgid "We sent an email message with confirmation to your email address"
+msgstr ""
+
+#: wp-content/themes/teamlab-blog-2-0/template-parts/content-none.php:24
 #, php-format
-msgid "This gallery contains <a %1$s>%2$s photos</a>."
-msgstr ""
-
-#: loop.php:100
-msgid "More Galleries"
-msgstr ""
-
-#: loop.php:102 loop.php:125
-msgid "1 Comment"
-msgstr "1 Kommentar"
-
-#: loop.php:102 loop.php:125
-msgid "% Comments"
-msgstr "% Kommentare"
-
-#: loop.php:151 single.php:35
-#, php-format
-msgid "%1$s"
-msgstr ""
-
-#: loop.php:154 loop.php:169 single.php:38
-#, fuzzy, php-format
-#| msgid "% Comments"
-msgid "% comments"
-msgstr "% Kommentare"
-
-#: loop.php:198
-msgid "<span class=\"meta-nav\">Older Entries &gt;</span>"
-msgstr ""
-
-#: loop.php:199
-msgid "<span class=\"meta-nav\">&lt; Newer Entries</span>"
-msgstr ""
-
-#: search.php:16
-#, php-format
-msgid "Search Results for: %s"
-msgstr ""
-
-#: search.php:26
-msgid "Nothing Found"
-msgstr ""
-
-#: search.php:28
 msgid ""
-"Sorry, but nothing matched your search criteria. Please try again with some "
-"different keywords."
+"Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
 msgstr ""
 
-#: searchform.php:2
-msgid "Search"
+#: wp-content/themes/teamlab-blog-2-0/template-parts/content.php:38
+#, php-format
+msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
 msgstr ""
 
-#: sidebar.php:25
+#: wp-includes/widgets/class-wp-nav-menu-widget.php:26
+msgid "Add a navigation menu to your sidebar."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-nav-menu-widget.php:29
+msgid "Navigation Menu"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-nav-menu-widget.php:147
+#, php-format
+msgid "No menus have been created yet. <a href=\"%s\">Create some</a>."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-nav-menu-widget.php:156
+msgid "Select Menu:"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-nav-menu-widget.php:158
+msgid "&mdash; Select &mdash;"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-nav-menu-widget.php:168
+#, fuzzy
+#| msgid "Edit"
+msgid "Edit Menu"
+msgstr "Bearbeitung"
+
+#: wp-includes/widgets/class-wp-widget-archives.php:27
+msgid "A monthly archive of your site&#8217;s Posts."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-archives.php:30
+#: wp-includes/widgets/class-wp-widget-archives.php:43
 msgid "Archives"
+msgstr "Tag-Archiv"
+
+#: wp-includes/widgets/class-wp-widget-archives.php:86
+msgid "Select Year"
 msgstr ""
 
-#: sidebar.php:32
+#: wp-includes/widgets/class-wp-widget-archives.php:89
+msgid "Select Month"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-archives.php:92
+msgid "Select Day"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-archives.php:95
+msgid "Select Week"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-archives.php:98
+msgid "Select Post"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-archives.php:202
+#: wp-includes/widgets/class-wp-widget-categories.php:175
+msgid "Display as dropdown"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-archives.php:204
+#: wp-includes/widgets/class-wp-widget-categories.php:178
+msgid "Show post counts"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-calendar.php:34
+msgid "A calendar of your site’s posts."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-categories.php:27
+msgid "A list or dropdown of categories."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-categories.php:30
+#: wp-includes/widgets/class-wp-widget-categories.php:49
+msgid "Categories"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-categories.php:77
+msgid "Select Category"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-categories.php:181
+msgid "Show hierarchy"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-custom-html.php:46
+msgid "Arbitrary HTML code."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-custom-html.php:53
+#, fuzzy
+#| msgid "Customers"
+msgid "Custom HTML"
+msgstr "Kunden"
+
+#: wp-includes/widgets/class-wp-widget-custom-html.php:283
+msgid "Some HTML tags are not permitted, including:"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-custom-html.php:304
+msgid ""
+"Use the Custom HTML widget to add arbitrary HTML code to your widget areas."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-custom-html.php:311
+#, php-format
+msgid ""
+"The edit field automatically highlights code syntax. You can disable this in "
+"your <a href=\"%1$s\" %2$s>user profile%3$s</a> to work in plain text mode."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-custom-html.php:317
+msgid "(opens in a new tab)"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-custom-html.php:322
+msgid "When using a keyboard to navigate:"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-custom-html.php:324
+msgid "In the editing area, the Tab key enters a tab character."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-custom-html.php:325
+msgid "To move away from this area, press the Esc key followed by the Tab key."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-custom-html.php:326
+msgid ""
+"Screen reader users: when in forms mode, you may need to press the Esc key "
+"twice."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-custom-html.php:333
+msgid "Custom HTML Widget"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-links.php:26
+msgid "Your blogroll"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-links.php:29
+msgid "Links"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-links.php:147
+msgid "Select Link Category:"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-links.php:158
+#: wp-includes/widgets/class-wp-widget-pages.php:148
+msgid "Sort by:"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-links.php:160
+msgid "Link title"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-links.php:161
+msgid "Link rating"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-links.php:162
+msgid "Link ID"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-links.php:168
+msgid "Show Link Image"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-links.php:170
+msgid "Show Link Name"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-links.php:172
+msgid "Show Link Description"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-links.php:174
+msgid "Show Link Rating"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-links.php:177
+msgid "Number of links to show:"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-audio.php:28
+msgid "Audio"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-audio.php:30
+msgid "Displays an audio player."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-audio.php:38
+msgid "No audio selected"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-audio.php:44
+#, php-format
+msgid ""
+"We can&#8217;t find that audio file. Check your <a href=\"%s\">media "
+"library</a> and make sure it wasn&#8217;t deleted."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-audio.php:49
+msgid "Audio Widget"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-audio.php:50
+msgid ""
+"Looks like this isn&#8217;t the correct kind of file. Please link to an "
+"audio file instead."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-audio.php:72
+#: wp-includes/widgets/class-wp-widget-media-video.php:74
+#, fuzzy
+#| msgid "Press downloads"
+msgid "Preload"
+msgstr "Presse-Downloads"
+
+#: wp-includes/widgets/class-wp-widget-media-audio.php:77
+#: wp-includes/widgets/class-wp-widget-media-video.php:80
+msgid "Loop"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-audio.php:87
+#, php-format
+msgid "URL to the %s audio source file"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-audio.php:197
+#: wp-includes/widgets/class-wp-widget-media-image.php:349
+#: wp-includes/widgets/class-wp-widget-media-video.php:240
+msgid "Unable to preview media due to an unknown error."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-gallery.php:28
+msgid "Gallery"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-gallery.php:30
+msgid "Displays an image gallery."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-gallery.php:38
+msgid "No images selected"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-gallery.php:63
+#: wp-includes/widgets/class-wp-widget-media.php:154
+msgid "Title for the widget"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-gallery.php:204
+#: wp-includes/widgets/class-wp-widget-media-image.php:359
+#, php-format
+msgid "The current image has no alternative text. The file name is: %s"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-gallery.php:218
+#, php-format
+msgid "Additional images added to this gallery: %s"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:28
+msgid "Image"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:30
+msgid "Displays an image."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:38
+msgid "No image selected"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:44
+#, php-format
+msgid ""
+"We can&#8217;t find that image. Check your <a href=\"%s\">media library</a> "
+"and make sure it wasn&#8217;t deleted."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:49
+msgid "Image Widget"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:72
+msgid "Size"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:78
+msgid "Width"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:84
+msgid "Height"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:91
+#, fuzzy
+#| msgid "Education"
+msgid "Caption"
+msgstr "Bildungswesen"
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:98
+msgid "Alternative Text"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:105
+msgid "Link To"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:113
+msgid "URL"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:121
+msgid "Image CSS Class"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:130
+msgid "Link CSS Class"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:137
+msgid "Link Rel"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:144
+msgid "Open link in a new tab"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-image.php:152
+msgid "Image Title Attribute"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-video.php:28
+msgid "Video"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-video.php:30
+msgid ""
+"Displays a video from the media library or from YouTube, Vimeo, or another "
+"provider."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-video.php:38
+msgid "No video selected"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-video.php:44
+#, php-format
+msgid ""
+"We can&#8217;t find that video. Check your <a href=\"%s\">media library</a> "
+"and make sure it wasn&#8217;t deleted."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-video.php:49
+#, fuzzy
+#| msgid "Video Guides"
+msgid "Video Widget"
+msgstr "Videoanleitungen"
+
+#: wp-includes/widgets/class-wp-widget-media-video.php:51
+#, php-format
+msgid ""
+"Sorry, we can&#8217;t load the video at the supplied URL. Please check that "
+"the URL is for a supported video file (%s) or stream (e.g. YouTube and "
+"Vimeo)."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-video.php:87
+msgid "Tracks (subtitles, captions, descriptions, chapters, or metadata)"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media-video.php:98
+#, php-format
+msgid "URL to the %s video source file"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media.php:60
+msgid "A media item."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media.php:69
+msgid "No media selected"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media.php:73
+msgid "Add to Widget"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media.php:76
+#, php-format
+msgid ""
+"We can&#8217;t find that file. Check your <a href=\"%s\">media library</a> "
+"and make sure it wasn&#8217;t deleted."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media.php:81
+msgid "Media Widget"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media.php:82
+msgid ""
+"Looks like this isn&#8217;t the correct kind of file. Please link to an "
+"appropriate file instead."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media.php:141
+msgid "Attachment post ID"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-media.php:148
+msgid "URL to the media file"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-meta.php:29
+msgid "Login, RSS, &amp; WordPress.org links."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-meta.php:32
+#: wp-includes/widgets/class-wp-widget-meta.php:45
 msgid "Meta"
 msgstr ""
 
-#: single.php:54
-#, php-format
-msgid "View all posts by %s <span class=\"meta-nav\">&rarr;</span>"
+#: wp-includes/widgets/class-wp-widget-meta.php:59
+msgid "Entries feed"
 msgstr ""
 
-#: tag.php:21
-#, php-format
-msgid "Tag Archives: %s"
+#: wp-includes/widgets/class-wp-widget-meta.php:60
+#, fuzzy
+#| msgid "% Comments"
+msgid "Comments feed"
+msgstr "% Kommentare"
+
+#: wp-includes/widgets/class-wp-widget-meta.php:75
+#, fuzzy
+#| msgid "http://wordpress.org/"
+msgid "https://wordpress.org/"
+msgstr "http://wordpress.org/"
+
+#: wp-includes/widgets/class-wp-widget-meta.php:76
+msgid "WordPress.org"
+msgstr "http://wordpress.org/"
+
+#: wp-includes/widgets/class-wp-widget-pages.php:27
+msgid "A list of your site&#8217;s Pages."
 msgstr ""
 
-#~ msgid "http://wordpress.org/"
-#~ msgstr "http://wordpress.org/"
+#: wp-includes/widgets/class-wp-widget-pages.php:30
+#: wp-includes/widgets/class-wp-widget-pages.php:43
+#, fuzzy
+#| msgid "Page ID"
+msgid "Pages"
+msgstr "Seiten"
+
+#: wp-includes/widgets/class-wp-widget-pages.php:150
+msgid "Page title"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-pages.php:151
+msgid "Page order"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-pages.php:152
+msgid "Page ID"
+msgstr "Seiten"
+
+#: wp-includes/widgets/class-wp-widget-pages.php:156
+msgid "Exclude:"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-pages.php:159
+msgid "Page IDs, separated by commas."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-recent-comments.php:27
+msgid "Your site&#8217;s most recent comments."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-recent-comments.php:30
+#: wp-includes/widgets/class-wp-widget-recent-comments.php:87
+#, fuzzy
+#| msgid "% Comments"
+msgid "Recent Comments"
+msgstr "% Kommentare"
+
+#: wp-includes/widgets/class-wp-widget-recent-comments.php:182
+msgid "Number of comments to show:"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-recent-posts.php:27
+msgid "Your site&#8217;s most recent Posts."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-recent-posts.php:95
+msgid "View all posts"
+msgstr "Alle Beiträge"
+
+#: wp-includes/widgets/class-wp-widget-rss.php:26
+msgid "Entries from any RSS or Atom feed."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-rss.php:33
+msgid "RSS"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-rss.php:81
+msgid "Unknown Feed"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-search.php:27
+msgid "A search form for your site."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-tag-cloud.php:26
+msgid "A cloud of your most used tags."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-tag-cloud.php:29
+msgid "Tag Cloud"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-tag-cloud.php:48
+msgid "Tags"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-tag-cloud.php:146
+msgid "Show tag counts"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-tag-cloud.php:153
+msgid ""
+"The tag cloud will not be displayed since there are no taxonomies that "
+"support the tag cloud widget."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-tag-cloud.php:171
+msgid "Taxonomy:"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-text.php:35
+msgid "Arbitrary text."
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-text.php:42
+msgid "Text"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-text.php:496
+msgid ""
+"This widget may contain code that may work better in the &#8220;Custom "
+"HTML&#8221; widget. How about trying that widget instead?"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-text.php:498
+msgid ""
+"This widget may have contained code that may work better in the &#8220;"
+"Custom HTML&#8221; widget. If you haven&#8217;t yet, how about trying that "
+"widget instead?"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-text.php:502
+msgid "Content:"
+msgstr "Kontakt:"
+
+#: wp-includes/widgets/class-wp-widget-text.php:506
+msgid "Automatically add paragraphs"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-text.php:531
+msgid "New Custom HTML Widget"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-text.php:533
+msgid ""
+"Did you know there is a &#8220;Custom HTML&#8221; widget now? You can find "
+"it by pressing the &#8220;<a class=\"add-widget\" href=\"#\">Add a Widget</"
+"a>&#8221; button and searching for &#8220;HTML&#8221;. Check it out to add "
+"some custom code to your site!"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-text.php:535
+msgid ""
+"Did you know there is a &#8220;Custom HTML&#8221; widget now? You can find "
+"it by scanning the list of available widgets on this screen. Check it out to "
+"add some custom code to your site!"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-text.php:538
+#: wp-includes/widgets/class-wp-widget-text.php:553
+msgid "Dismiss"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-text.php:550
+msgid "Did you just paste HTML?"
+msgstr ""
+
+#: wp-includes/widgets/class-wp-widget-text.php:551
+msgid ""
+"Hey there, looks like you just pasted HTML into the &#8220;Visual&#8221; tab "
+"of the Text widget. You may want to paste your code into the &#8220;"
+"Text&#8221; tab instead. Alternately, try out the new &#8220;Custom "
+"HTML&#8221; widget!"
+msgstr ""
+
+#~ msgid "Offers"
+#~ msgstr "Angebote"
+
+#~ msgid "Products"
+#~ msgstr "Produkte"
+
+#~ msgid "Apps"
+#~ msgstr "Anwendungen"
+
+#~ msgid "Get onlyoffice"
+#~ msgstr "Onlyoffice Starten"
+
+#~ msgid "1 Comment"
+#~ msgstr "1 Kommentar"
+
+#, fuzzy
+#~| msgid "% Comments"
+#~ msgid "% comments"
+#~ msgstr "% Kommentare"
 
 #~ msgid "Mobile Editors"
 #~ msgstr "Mobile Editoren"

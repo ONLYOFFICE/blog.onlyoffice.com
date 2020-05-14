@@ -767,10 +767,8 @@ body.desktop .button.red.disabled:visited {
     .tags-page{
     margin-top: 44px;
     }
-  
-  .narrowfooter {
-      width: auto;
-      vertical-align: top;
+  .footer_menu {
+  grid-gap: 2%;
   }
   .footer_menu p {
       font-size: 12px;
@@ -778,6 +776,7 @@ body.desktop .button.red.disabled:visited {
   .footer_menu p a {
       font-size: 12px;
   }
+
   .BaseFooter {
       margin-top: -30px;
   }
@@ -941,6 +940,7 @@ body.desktop .button.red.disabled:visited {
 
   .footer_menu li{
     position: relative;
+    margin-bottom: 0;
   }
 
   .footer-border {

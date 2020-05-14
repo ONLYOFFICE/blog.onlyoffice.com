@@ -1,186 +1,596 @@
 # Copyright (C) 2017 Automattic
 # This file is distributed under the GNU General Public License v2 or later.
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: _s 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/tags/_s\n"
-"POT-Creation-Date: 2016-12-23 16:00+0100\n"
+"POT-Creation-Date: 2020-05-13 11:39+0300\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
-"Last-Translator:\n"
+"Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"X-Generator: grunt-wp-i18n 0.5.4\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-KeywordsList: _e\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: 404.php:17
-msgid "Oops! That page can&rsquo;t be found."
+#: archive.php:32
+msgid "Tag Archives:"
 msgstr ""
 
-#: 404.php:21
+#: archive.php:60 in-the-press.php:80 index.php:127 search.php:53
+msgid "Load more"
+msgstr ""
+
+#: archive.php:66 in-the-press.php:85 search.php:59
+msgid "No results matching your query could be found"
+msgstr ""
+
+#: cicle-wrapper.php:10 index.php:61 loadmore-search.php:5 loadmore-tag.php:5
+#: search.php:35 template-parts/content-tag.php:15 template-parts/content.php:24
+msgid "By"
+msgstr ""
+
+#: cloud-block.php:2
+msgid "Try ONLYOFFICE in the cloud"
+msgstr ""
+
+#: comments.php:17
 msgid ""
-"It looks like nothing was found at this location. Maybe try one of the "
-"links below or a search?"
+"This post is password protected. Enter the password to view any comments."
 msgstr ""
 
-#: 404.php:30
-msgid "Most Used Categories"
-msgstr ""
-
-#: 404.php:47
-#. translators: %1$s: smiley
-msgid "Try looking in the monthly archives. %1$s"
-msgstr ""
-
-#: comments.php:34
-#. translators: 1: title.
-msgid "One thought on &ldquo;%1$s&rdquo;"
-msgstr ""
-
-#: comments.php:67
+#: comments.php:52
 msgid "Comments are closed."
 msgstr ""
 
-#: footer.php:18
-msgid "https://wordpress.org/"
+#: comments.php:68
+msgid "Log out of this account"
 msgstr ""
 
-#: footer.php:20
-#. translators: %s: CMS name, i.e. WordPress.
-msgid "Proudly powered by %s"
+#: comments.php:68
+msgid "Log out &raquo;"
 msgstr ""
 
-#: footer.php:25
-#. translators: 1: Theme name, 2: Theme author.
-msgid "Theme: %1$s by %2$s."
+#: comments.php:71
+msgid "Name:"
 msgstr ""
 
-#: functions.php:47
-msgid "Primary"
+#: comments.php:71 comments.php:75
+msgid "<span class=\"important\">*</span>"
 msgstr ""
 
-#: functions.php:105
-msgid "Sidebar"
+#: comments.php:75
+msgid "E-mail (will not be published):"
 msgstr ""
 
-#: functions.php:107
-msgid "Add widgets here."
+#: comments.php:79
+msgid "Website:"
 msgstr ""
 
-#: header.php:24
-msgid "Skip to content"
+#: comments.php:84
+msgid "Message:"
 msgstr ""
 
-#: header.php:45
-msgid "Primary Menu"
+#: comments.php:89
+msgid "Add comment"
 msgstr ""
 
-#: inc/template-tags.php:52
-#. translators: used between list items, there is a space after the comma
-msgid ", "
+#: download-block.php:3
+msgid "Download ONLYOFFICE desktop and mobile apps for"
 msgstr ""
 
-#: inc/template-tags.php:55
-#. translators: 1: list of categories.
-msgid "Posted in %1$s"
+#: download-block.php:3 header.php:74 header.php:89 header.php:123
+msgid "FREE"
 msgstr ""
 
-#: inc/template-tags.php:62
-#. translators: 1: list of tags.
-msgid "Tagged %1$s"
+#: footer.php:23 header.php:136
+msgid "Features"
 msgstr ""
 
-#: inc/template-tags.php:72
-#. translators: %s: post title
-msgid "Leave a Comment<span class=\"screen-reader-text\"> on %s</span>"
+#: footer.php:26
+msgid "Documents editors"
 msgstr ""
 
-#: inc/template-tags.php:89 template-parts/content-page.php:35
-#. translators: %s: Name of current post. Only visible to screen readers
-msgid "Edit <span class=\"screen-reader-text\">%s</span>"
+#: footer.php:27 header.php:156
+msgid "Collaboration Platform"
 msgstr ""
 
-#: search.php:21
-#. translators: %s: search query.
-msgid "Search Results for: %s"
+#: footer.php:28
+msgid "Security"
 msgstr ""
 
-#: template-parts/content-none.php:14
-msgid "Nothing Found"
+#: footer.php:29
+msgid "End-to-end encryption"
 msgstr ""
 
-#: template-parts/content-none.php:25
-#. translators: 1: link to WP admin new post page.
-msgid "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+#: footer.php:34
+msgid "Integration"
 msgstr ""
 
-#: template-parts/content-none.php:38
+#: footer.php:37
+msgid "Nextcloud"
+msgstr ""
+
+#: footer.php:38
+msgid "OwnCloud"
+msgstr ""
+
+#: footer.php:39
+msgid "Confluence"
+msgstr ""
+
+#: footer.php:40
+msgid "Alfresco"
+msgstr ""
+
+#: footer.php:41
+msgid "SharePoint"
+msgstr ""
+
+#: footer.php:42
+msgid "Liferay"
+msgstr ""
+
+#: footer.php:43
+msgid "Others"
+msgstr ""
+
+#: footer.php:50 header.php:65
+msgid "Solutions"
+msgstr ""
+
+#: footer.php:53
+msgid "SMBs"
+msgstr ""
+
+#: footer.php:54
+msgid "Enterprises"
+msgstr ""
+
+#: footer.php:55
+msgid "Government"
+msgstr ""
+
+#: footer.php:56
+msgid "Education"
+msgstr ""
+
+#: footer.php:57
+msgid "Nonprofits"
+msgstr ""
+
+#: footer.php:58
+msgid "Personal Use"
+msgstr ""
+
+#: footer.php:63
+msgid "Support"
+msgstr ""
+
+#: footer.php:66
+msgid "SaaS Forum"
+msgstr ""
+
+#: footer.php:67
+msgid "Server Forum"
+msgstr ""
+
+#: footer.php:68
+msgid "Support Contact Form"
+msgstr ""
+
+#: footer.php:69
+msgid "Premium Support"
+msgstr ""
+
+#: footer.php:70
+msgid "Order demo"
+msgstr ""
+
+#: footer.php:71
+msgid "Subscribe to our newsletters"
+msgstr ""
+
+#: footer.php:78
+msgid "Developers"
+msgstr ""
+
+#: footer.php:81 header.php:118 header.php:190 header.php:200
+msgid "Developer Edition"
+msgstr ""
+
+#: footer.php:82 header.php:126 header.php:202
+msgid "Document Builder"
+msgstr ""
+
+#: footer.php:83 header.php:125
+msgid "API"
+msgstr ""
+
+#: footer.php:84
+msgid "Github"
+msgstr ""
+
+#: footer.php:89
+msgid "Get Info"
+msgstr ""
+
+#: footer.php:92
+msgid "FAQ"
+msgstr ""
+
+#: footer.php:93
+msgid "Getting Started"
+msgstr ""
+
+#: footer.php:94
+msgid "Video Guides"
+msgstr ""
+
+#: footer.php:95 header.php:229
+msgid "Press downloads"
+msgstr ""
+
+#: footer.php:96
+msgid "Legal Notice"
+msgstr ""
+
+#: footer.php:97
+msgid "GDPR Compliance"
+msgstr ""
+
+#: footer.php:104
+msgid "Contact Us"
+msgstr ""
+
+#: footer.php:108
+msgid "Sales Questions"
+msgstr ""
+
+#: footer.php:113
+msgid "Partner Inquiries"
+msgstr ""
+
+#: footer.php:117
+msgid "Press Inquiries"
+msgstr ""
+
+#: footer.php:121
+msgid "Request a Call"
+msgstr ""
+
+#: footer.php:135 header.php:56 searchform.php:9
+msgid "Find news, tips and how-tos"
+msgstr ""
+
+#: footer.php:141
+msgid "follow us on"
+msgstr ""
+
+#: footer.php:179
+msgid "Ascensio System SIA"
+msgstr ""
+
+#: footer.php:179
+msgid "All rights reserved"
+msgstr ""
+
+#: functions.php:464
+msgid "Your comment is awaiting moderation."
+msgstr ""
+
+#: functions.php:475
+msgid "Pingback:"
+msgstr ""
+
+#: header.php:69 header.php:191
+msgid "Cloud Service"
+msgstr ""
+
+#: header.php:71
 msgid ""
-"Sorry, but nothing matched your search terms. Please try again with some "
-"different keywords."
+"Online documents editors and productivity business tools provided as a SaaS"
 msgstr ""
 
-#: template-parts/content-none.php:44
+#: header.php:73 header.php:88 header.php:103 header.php:122 header.php:172
+msgid "Overview"
+msgstr ""
+
+#: header.php:74
+msgid "No installation required. Get started for "
+msgstr ""
+
+#: header.php:75 header.php:90
+msgid "Complete set of business tools"
+msgstr ""
+
+#: header.php:76
+msgid "Secure and reliable hosting"
+msgstr ""
+
+#: header.php:77
+msgid "Cloud for non-profits"
+msgstr ""
+
+#: header.php:78
+msgid "Cloud for personal use"
+msgstr ""
+
+#: header.php:79
+msgid "Sign in"
+msgstr ""
+
+#: header.php:84 header.php:188 header.php:198
+msgid "Enterprise Edition"
+msgstr ""
+
+#: header.php:86
 msgid ""
-"It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps "
-"searching can help."
+"Online document editors and productivity business tools at private network"
 msgstr ""
 
-#: template-parts/content-page.php:22 template-parts/content.php:45
-msgid "Pages:"
+#: header.php:89 header.php:123
+msgid "Self-hosted. Try for"
 msgstr ""
 
-#: template-parts/content.php:34
-#. translators: %s: Name of current post. Only visible to screen readers
-msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
+#: header.php:91
+msgid "Enhanced security measures"
 msgstr ""
 
-#. Theme Name of the plugin/theme
-msgid "_s"
+#: header.php:92
+msgid "Various installation options"
 msgstr ""
 
-#. Theme URI of the plugin/theme
-msgid "https://underscores.me/"
+#: header.php:93 header.php:111
+msgid "Professional support"
 msgstr ""
 
-#. Description of the plugin/theme
+#: header.php:94
+msgid "Community Edition vs Enterprise Edition"
+msgstr ""
+
+#: header.php:99 header.php:189 header.php:199
+msgid "Integration Edition"
+msgstr ""
+
+#: header.php:101
+msgid "Online document editors and connectors for popular web services"
+msgstr ""
+
+#: header.php:104
+msgid "Self-hosted. Get started"
+msgstr ""
+
+#: header.php:104
+msgid "NOW"
+msgstr ""
+
+#: header.php:105
+msgid "For Nextcloud"
+msgstr ""
+
+#: header.php:106
+msgid "For ownCloud"
+msgstr ""
+
+#: header.php:107
+msgid "For Alfresco"
+msgstr ""
+
+#: header.php:108
+msgid "For Confluence"
+msgstr ""
+
+#: header.php:109
+msgid "For SharePoint"
+msgstr ""
+
+#: header.php:110
+msgid "Third-party connectors"
+msgstr ""
+
+#: header.php:112
+msgid "Community Edition vs Integration Edition"
+msgstr ""
+
+#: header.php:120
+msgid "Online document editors to integrate with a service you are building"
+msgstr ""
+
+#: header.php:124
+msgid "Dual licensing"
+msgstr ""
+
+#: header.php:132
+msgid "Latest Releases"
+msgstr ""
+
+#: header.php:140
+msgid "Online Editors"
+msgstr ""
+
+#: header.php:143
+msgid "Documents"
+msgstr ""
+
+#: header.php:144
+msgid "Spreadsheets"
+msgstr ""
+
+#: header.php:145
+msgid "Presentations"
+msgstr ""
+
+#: header.php:150 header.php:201
+msgid "Desktop Editors"
+msgstr ""
+
+#: header.php:151
+msgid "Office for iOS"
+msgstr ""
+
+#: header.php:152
+msgid "Office for Android"
+msgstr ""
+
+#: header.php:153
+msgid "Mobile Projects"
+msgstr ""
+
+#: header.php:159
+msgid "Document Management"
+msgstr ""
+
+#: header.php:160
+msgid "Mail"
+msgstr ""
+
+#: header.php:161
+msgid "CRM"
+msgstr ""
+
+#: header.php:162
+msgid "Projects"
+msgstr ""
+
+#: header.php:163
+msgid "Calendar"
+msgstr ""
+
+#: header.php:164
+msgid "Community"
+msgstr ""
+
+#: header.php:169
+msgid "ONLYOFFICE alternatives"
+msgstr ""
+
+#: header.php:173
+msgid "ONLYOFFICE vs MS Office Online"
+msgstr ""
+
+#: header.php:174
+msgid "ONLYOFFICE vs Google Docs"
+msgstr ""
+
+#: header.php:175
+msgid "ONLYOFFICE vs Zoho Docs"
+msgstr ""
+
+#: header.php:176
+msgid "ONLYOFFICE vs Collabora Online"
+msgstr ""
+
+#: header.php:177
+msgid "ONLYOFFICE vs LibreOffice"
+msgstr ""
+
+#: header.php:178
+msgid "ONLYOFFICE vs Office 365 vs G Suite"
+msgstr ""
+
+#: header.php:185
+msgid "Pricing"
+msgstr ""
+
+#: header.php:195
+msgid "Download"
+msgstr ""
+
+#: header.php:206
+msgid "Partnership"
+msgstr ""
+
+#: header.php:209
+msgid "For Resellers"
+msgstr ""
+
+#: header.php:210
+msgid "For Affiliates"
+msgstr ""
+
+#: header.php:211
+msgid "For Developers"
+msgstr ""
+
+#: header.php:212
+msgid "Find partners"
+msgstr ""
+
+#: header.php:213
+msgid "Submit request"
+msgstr ""
+
+#: header.php:217
+msgid "About"
+msgstr ""
+
+#: header.php:220
+msgid "About ONLYOFFICE"
+msgstr ""
+
+#: header.php:221
+msgid "Blog"
+msgstr ""
+
+#: header.php:222
+msgid "Contribute"
+msgstr ""
+
+#: header.php:223
+msgid "Success stories"
+msgstr ""
+
+#: header.php:224
+msgid "Case studies"
+msgstr ""
+
+#: header.php:225
+msgid "Customers"
+msgstr ""
+
+#: header.php:226
+msgid "Awards"
+msgstr ""
+
+#: header.php:227
+msgid "Events"
+msgstr ""
+
+#: header.php:228
+msgid "Webinars"
+msgstr ""
+
+#: header.php:230
+msgid "Contacts"
+msgstr ""
+
+#: index.php:70
+msgid "Sorry, no posts"
+msgstr ""
+
+#: subscribe-blue.php:2
+msgid "Newsletter"
+msgstr ""
+
+#: subscribe-blue.php:3
+msgid "Get the latest ONLYOFFICE news delivered to your inbox"
+msgstr ""
+
+#: subscribe-blue.php:16
 msgid ""
-"Hi. I'm a starter theme called <code>_s</code>, or <em>underscores</em>, if "
-"you like. I'm a theme meant for hacking so don't use me as a <em>Parent "
-"Theme</em>. Instead try turning me into the next, most awesome, WordPress "
-"theme out there. That's what I'm here for."
+"By clicking \"Subscribe\", you agree to the rules for using the service and "
+"processing personal data."
 msgstr ""
 
-#. Author of the plugin/theme
-msgid "Automattic"
+#: subscribe-white.php:2
+msgid "Confirm your subscription"
 msgstr ""
 
-#. Author URI of the plugin/theme
-msgid "https://automattic.com/"
-msgstr ""
-
-#: comments.php:40
-#. translators: 1: comment count number, 2: title.
-msgctxt "comments title"
-msgid "%1$s thought on &ldquo;%2$s&rdquo;"
-msgid_plural "%1$s thoughts on &ldquo;%2$s&rdquo;"
-msgstr[0] ""
-msgstr[1] ""
-
-#: inc/template-tags.php:29
-#. translators: %s: post date.
-msgctxt "post date"
-msgid "Posted on %s"
-msgstr ""
-
-#: inc/template-tags.php:35
-#. translators: %s: post author.
-msgctxt "post author"
-msgid "by %s"
-msgstr ""
-
-#: inc/template-tags.php:59
-#. translators: used between list items, there is a space after the comma
-msgctxt "list item separator"
-msgid ", "
+#: subscribe-white.php:3
+msgid "We sent an email message with confirmation to your email address"
 msgstr ""

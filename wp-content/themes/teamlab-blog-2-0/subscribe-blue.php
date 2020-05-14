@@ -3,13 +3,13 @@
 		<p><?php _e('Get the latest ONLYOFFICE news delivered to your inbox', 'teamlab-blog-2-0'); ?></p>
 			<form id="InputBox" class="inputBox" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
 				<input id="subscribe-email" type="email" class="main-input" required>
-				<label>Your email*</label>
+				<label><?php _e('Your email*', 'teamlab-blog-2-0'); ?></label>
 				<input type="hidden" name="action" value="contact_form">
-				<input type="submit" name="inputButton" class="inputButton" value="&#62;">
+				<input type="submit" name="inputButton" class="inputButton" value="">
 					<div class="loader"></div>
-				<p class="errorMessage empty">Email is empty</p>
-				<p class="errorMessage incorrect">Email is incorrect</p>
-				<p class="errorMessage used">Email is used</p>
+				<p class="errorMessage empty"><?php _e('Email is empty', 'teamlab-blog-2-0'); ?></p>
+				<p class="errorMessage incorrect"><?php _e('Email is incorrect', 'teamlab-blog-2-0'); ?></p>
+				<p class="errorMessage used"><?php _e('Email is used', 'teamlab-blog-2-0'); ?></p>
 			</form>
 		
 		

@@ -43,7 +43,7 @@ get_header();
 				
 				<div class="meta press-page">
 						<?php if(get_field('URL')){
-					            echo '<span><a class="press-url" href="'.get_field('URL').'" target="_blank">'.get_field('URL').'</a></span>';
+					            echo '<span><a class="press-url" href="'.get_field('URL').'" target="_blank">'.get_field('ShortURL').'</a></span>';
 					        }
 					    ?>
 						<span class="date"><?php echo get_the_date('j F Y'); ?></span>
@@ -75,10 +75,11 @@ get_header();
     			var current_page = '<?php echo (get_query_var('paged')) ? get_query_var('page') : 1; ?>';
     			var max_pages = '<?php echo $wp_query->max_num_pages; ?>';
    				</script>
-  				<?php endif; ?>
+  				
 
   				<div class="load_more_results" id="true_loadmore_press"><?php _e('Load more', 'teamlab-blog-2-0'); ?></div>
 				<?php wp_reset_postdata(); ?>
+        <?php endif; ?>
 
 				<?php else : ?>
   				<div class="no-results">

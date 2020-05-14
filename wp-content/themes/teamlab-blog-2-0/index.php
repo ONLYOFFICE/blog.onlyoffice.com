@@ -54,8 +54,8 @@ $queryNews = new WP_Query($argsNews);?>
 				<?php while ($querySticky->have_posts()) : $querySticky->the_post(); ?>
 
 				<article class="post"> 
-					<a href="<?php the_permalink() ?>" title=""><?php the_post_thumbnail( 'full-thumbnail' ) ?></a>
-					<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'tmblog' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
+					<a href="<?php the_permalink() ?>" alt="<?php the_title(); ?>"><img src="<?php echo bloggood_ru_image(); ?>" alt="<?php the_title(); ?>"/></a>
+					<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'teamlab-blog-2-0' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
 					<div class="meta head">
 						<span class="date"><?php echo get_the_date('j F Y'); ?></span>
 						<span class="autor"><?php _e('By') ?> <?php echo get_the_author(); ?></span>
@@ -123,9 +123,10 @@ $queryNews = new WP_Query($argsNews);?>
     var current_page = '<?php echo (get_query_var('paged')) ? get_query_var('paged') : 1; ?>';
     var max_pages = '<?php echo $wp_query->max_num_pages; ?>';
    </script>
-  <?php endif; ?>
+  
    <div class="main_button" id="true_loadmore"><?php _e('Load more', 'teamlab-blog-2-0'); ?></div>
  </div>
+ <?php endif; ?>
 
  
 

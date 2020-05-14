@@ -124,19 +124,6 @@
                                                 </div>
                                             </li>
 
-                    <div class="footer-search">
-                        <?php 
-                          if(get_search_query() != ""){
-                            $formClass = "focus hasValue";
-                          }
-                        ?>
-                        <form role="search" method="get" id="searchform" class="<?php echo "FooterSearchForm " . $formClass ?>" action="<?php echo home_url( '/' ) ?>" >
-                          <input id="footerInputSearch" class="FooterSearchInput" type="text" value="<?php echo get_search_query() ?>" name="s" id="s"/>
-                          <label id="searchLabel" class="searchLabel" for="footerInputSearch"><?php _e('Find news, tips and how-tos', 'teamlab-blog-2-0'); ?></label>
-                          <div class="searhButton"></div>
-                          <div class="clearButton"></div>
-                        </form>
-                    </div>
                     <div class="SocialLinks">
                         <ul class="ListSocLink"><h6><?php _e('follow us on', 'teamlab-blog-2-0'); ?></h6>
                             <li><a target="_blank" href="https://www.facebook.com/pages/OnlyOffice/833032526736775" onmouseup="PageTrack('GoTo_facebook');" title="Follow us on Facebook" class="faceBook">
