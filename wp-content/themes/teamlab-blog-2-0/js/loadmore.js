@@ -11,9 +11,10 @@ jQuery(function($){
 		ajaxLoad(this.id, "loadmore-tag");
 	});
 
-
+});
 	function ajaxLoad(buttonId, template){
-		$("#"+buttonId).text('Loading...'); 
+		var getvalue = $("#"+buttonId).text();
+		$("#"+buttonId).text('').addClass('change');
 
 		var data = {
 			'action': 'loadmore',
@@ -28,7 +29,8 @@ jQuery(function($){
 			type:'POST', 
 			success:function(data){
 				if( data ) { 
-					$("#"+buttonId).text('Load more').before(data);
+					$("#"+buttonId).removeClass('change');
+					$("#"+buttonId).text(getvalue).before(data);
 					current_page++; 
 					if (current_page == max_pages) $("#"+buttonId).remove(); 
 				} else {
@@ -37,7 +39,7 @@ jQuery(function($){
 			}
 		});
 	};
-});
+
 
 
 jQuery(function($){
