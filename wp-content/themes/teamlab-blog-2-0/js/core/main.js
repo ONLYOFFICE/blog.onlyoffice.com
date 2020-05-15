@@ -131,6 +131,113 @@ $(".clearButton").on('click', function(){
     $(this).closest(".FooterSearchForm").removeClass("focus").removeClass("hasValue");
 });
 
+
+/***** Suscribe input *****/
+
+var $subEmailInput = $("#subscribe-email-input");
+var $inputBox = $("#InputBox");
+var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
+
+function isValidEmail(value){
+    var valid = regex.test(value);
+    return valid;
+}
+
+function SubmitSubEmail(inputValue){
+    if(ValidateInput(inputValue)){
+
+        $inputBox.addClass("loading");
+
+        $.ajax({
+            type: "POST",
+            url: window.wp_data.ajax_url,
+            data: {
+                action : 'send_confirmation_email', email : inputValue
+            },
+            dataType: 'json',
+            success: function (response) {
+                if(response.errorMsg == ""){
+                    $inputBox.removeClass("loading");
+                    showMsg();
+                }  else {
+                    $inputBox.removeClass("loading");
+                    showErrors($thisInputContainer, response.errorMsg);
+                }
+            }
+        });
+    }
+};
+
+function ValidateInput(inputVal){
+    $(".errorMessage").hide();
+    $inputBox.removeClass("error");
+
+    correctValue = true;
+
+    if (inputVal == "") {
+        $inputBox.addClass("error");
+        $(".errorMessage.empty").show();
+        correctValue=false;
+    } else if(!isValidEmail(inputVal)){
+        $inputBox.addClass("error");
+        $(".errorMessage.incorrect").show();
+        correctValue=false;
+    } else {
+        $inputBox.addClass("valid");
+    }
+
+    return correctValue;
+};
+
+function showErrors($thisInputContainer, errorMsg){
+    $thisInputContainer.addClass("error");
+
+    if(errorMsg == "Empty email"){
+        $(".errorMessage.empty").show();
+    } else if(errorMsg == "Email incorrect"){
+       $(".errorMessage.incorrect").show();
+    } else if(errorMsg == "Email is used"){
+        $(".errorMessage.used").show();
+    } else if(errorMsg == "Incorrect recaptcha"){
+        //$thisRecaptchaContainer.children(".errorMessage").show();
+    }
+}
+
+function showMsg(){      // Тут надо запилить показ формы что письмо отправленно
+    $(".subscribe-blue").hide();
+    $(".subscribe-blue.sended").show();
+};
+
+$subEmailInput.focus(function () {
+    $inputBox.addClass("focus");
+    $inputBox.removeClass("error");
+    $(".errorMessage").hide();
+});
+
+$subEmailInput.focusout(function () {
+    if ($(this).val() == "") {
+        $inputBox.removeClass("focus");
+    }
+});
+
+$subEmailInput.on('keyup', function() {
+    if ($(this).val() != "") {
+        $inputBox.addClass("hasValue");
+    } else {
+        $inputBox.removeClass("hasValue");
+    }
+});
+
+$subEmailInput.keydown(function(e) {
+    if(e.keyCode === 13) {
+        SubmitSubEmail($subEmailInput.val());
+    }
+});
+
+$("#email-sub-button").on('click', function(){
+    SubmitSubEmail($subEmailInput.val());
+});
+
 /***** LANGUAGE SELECTOR *****/
 
 var $dropdownSelector = $(".lang_sel_sel").siblings("ul");
