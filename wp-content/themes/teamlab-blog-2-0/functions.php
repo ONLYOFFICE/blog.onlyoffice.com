@@ -263,7 +263,6 @@ function teamlab_blog_2_0_scripts() {
 	wp_enqueue_style( 'teamlab-blog-2-0-style', get_stylesheet_uri() );
 	wp_enqueue_script('jquery'); 
  	wp_enqueue_script( 'true_loadmore', get_stylesheet_directory_uri() . '/js/loadmore.js', array('jquery') );
-    wp_enqueue_script( 'true_search', get_stylesheet_directory_uri() . '/js/loadmore.js', array('jquery') );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );

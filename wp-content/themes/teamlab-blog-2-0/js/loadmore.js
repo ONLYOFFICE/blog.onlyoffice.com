@@ -1,4 +1,4 @@
-jQuery(function($){
+jQuery(function(){
 	$('#true_loadmore').click(function(){
 		ajaxLoad(this.id, "cicle-wrapper");
 	});
@@ -10,8 +10,8 @@ jQuery(function($){
 	$('#true_loadmore_tags').click(function(){
 		ajaxLoad(this.id, "loadmore-tag");
 	});
-
 });
+
 	function ajaxLoad(buttonId, template){
 		var getvalue = $("#"+buttonId).text();
 		$("#"+buttonId).text('').addClass('change');
@@ -34,11 +34,12 @@ jQuery(function($){
 					current_page++; 
 					if (current_page == max_pages) $("#"+buttonId).remove(); 
 				} else {
-					$("#"+buttonId).remove(); 
+					$("#"+buttonId).remove();
 				}
 			}
 		});
 	};
+
 
 
 
@@ -48,7 +49,8 @@ jQuery(function($){
 	});
 	
 	function ajaxLoad(buttonId, template){
-		$("#"+buttonId).text('Loading...'); 
+		var getvalue = $("#"+buttonId).text();
+		$("#"+buttonId).text('').addClass('change');
 
 		var data = {
 			'action': 'search',
@@ -63,7 +65,8 @@ jQuery(function($){
 			type:'POST', 
 			success:function(data){
 				if( data ) { 
-					$("#"+buttonId).text('Load more').before(data);
+					$("#"+buttonId).removeClass('change');
+					$("#"+buttonId).text(getvalue).before(data);
 					current_page++; 
 					if (current_page == max_pages) $("#"+buttonId).remove(); 
 				} else {

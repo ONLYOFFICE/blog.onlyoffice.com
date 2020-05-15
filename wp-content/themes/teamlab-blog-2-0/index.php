@@ -32,7 +32,7 @@ $argsNews =
  [
   'post_type' => 'post',
   'post_status' => 'publish',
-  'posts_per_page' => 3,
+  'posts_per_page' => 9,
   'category__in' => [$news_cat_id, $news_post_cat_id]
  ];
 
