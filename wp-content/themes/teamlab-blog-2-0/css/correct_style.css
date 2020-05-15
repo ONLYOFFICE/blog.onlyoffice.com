@@ -772,6 +772,10 @@
     background: linear-gradient(90deg, #36A8ED 10.45%, #3CADF2 26.33%, #2A9EE5 79.49%);
     color: #FFFFFF;
 }
+
+.subscribe-blue.sended{
+    display:none;
+}
 .subscribe-blue h3{
     font-family: Open Sans;
     font-style: normal;
@@ -826,16 +830,24 @@
      -webkit-transition: .1s linear all;
 }
 
-.main-input:focus ~ label,
-.main-input:valid ~ label{
-      top: -3px;
-      font-size: 10px;
+#InputBox.focus label{
+    top: -3px;
+    font-size: 10px;
     color: #666666;
 }
 
+#InputBox.error label, #InputBox.error .main-input{
+    color:#ff0c3e;
+}
+
+#InputBox.valid label,  #InputBox.valid .main-input {
+    color:#8BB825;
+}
+
+
 .inputBox .errorMessage{
     position: absolute;
-    top: 38px;
+    top: 46px;
     color: #ff0c3e;
     font-size: 12px;
     margin: 0;
@@ -870,7 +882,7 @@
     margin: auto;
     display: none;
 }
-input.inputButton{
+#email-sub-button{
     outline: none;
     border: none;
     font-family: Arial;
@@ -882,8 +894,12 @@ input.inputButton{
     letter-spacing: 0.02em;
     color: #fff;
     background-color: #FF6F3D;
-
 }
+
+#email-sub-button:hover{
+    background-color: #fda050;
+}
+
 .inputButton{
     cursor: pointer;
     align-content: center;
