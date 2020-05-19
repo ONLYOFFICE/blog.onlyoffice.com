@@ -12,6 +12,10 @@
 				<p class="errorMessage incorrect">Email is incorrect</p>
 				<p class="errorMessage used">Email is used</p>
 			</div>
+			<div class="recaptchaContainer">
+				<div class="gRecaptcha" id="popupCaptcha"></div> 
+				<p class="errorMessage recaptcha"><?php _e('Incorrect recaptcha', 'Incorrect recaptcha') ?></p>
+			</div>
 		
 		<span><?php _e('By clicking "Subscribe", you agree to the rules for using the service and processing personal data.', 'teamlab-blog-2-0'); ?></span>
 </div> 
