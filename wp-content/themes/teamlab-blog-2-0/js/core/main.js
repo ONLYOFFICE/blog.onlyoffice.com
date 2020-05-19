@@ -179,9 +179,8 @@ function SubmitSubEmail(inputValue){
 };
 
 function ValidateInput(inputVal, recaptchaResp){
-    $(".errorMessage").hide();
+    $(".errorMessage.recaptcha").hide();
     $inputBox.removeClass("error");
-    $(".recaptchaContainer").children(".errorMessage").hide();
 
     correctValue = true;
 
@@ -193,15 +192,15 @@ function ValidateInput(inputVal, recaptchaResp){
         $inputBox.addClass("error");
         $(".errorMessage.incorrect").show();
         correctValue=false;
+    } else if(recaptchaResp == "" || recaptchaResp == undefined){
+        $inputBox.addClass("error");
+        $(".errorMessage.recaptcha").show();
+        correctValue=false
     } else {
         $inputBox.addClass("valid");
     }
 
-    if(recaptchaResp == "" || recaptchaResp == undefined){
-        $inputBox.addClass("error");
-        $(".errorMessage.recaptcha").show();
-        correctValue=false
-    }
+    
 
     return correctValue;
 };
