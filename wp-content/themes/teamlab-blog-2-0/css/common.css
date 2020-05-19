@@ -780,6 +780,11 @@ body.desktop .button.red.disabled:visited {
   .ListSocLink li:first-child {
       margin-left: -13px;
   }
+  .gRecaptcha{
+    width: 150px;
+    transform: scale(.60);
+    -webkit-transform: scale(.60);
+  }
 }
 
 
@@ -828,6 +833,11 @@ body.desktop .button.red.disabled:visited {
     padding: 66px 40px 67px;
     background: url(../images/newsletter.svg) no-repeat  50% 66px;
 }
+.gRecaptcha{
+    width: 100%;
+    transform: none;
+    -webkit-transform: none;
+  }
   .widget{
     margin:0 15px 48px 15px;
   }
