@@ -845,10 +845,6 @@
     color:#8BB825;
 }
 
-.recaptchaContainer .errorMessage{
-    display: none;
-}
-
 .inputBox .errorMessage{
     position: absolute;
     top: 46px;

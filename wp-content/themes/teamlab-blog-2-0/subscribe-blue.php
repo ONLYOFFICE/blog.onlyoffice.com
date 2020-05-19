@@ -8,18 +8,19 @@
 				<div id="email-sub-button" class="inputButton">
 					<div class="loader"></div>
 				</div>
-				<p class="errorMessage empty">Email is empty</p>
-				<p class="errorMessage incorrect">Email is incorrect</p>
-				<p class="errorMessage used">Email is used</p>
+				<p class="errorMessage empty"><?php _e('Email is empty', 'teamlab-blog-2-0') ?></p>
+				<p class="errorMessage incorrect"><?php _e('Email is incorrect', 'teamlab-blog-2-0') ?></p>
+				<p class="errorMessage used"><?php _e('Email is used', 'teamlab-blog-2-0') ?></p>
+				<p class="errorMessage recaptcha"><?php _e('Incorrect recaptcha', 'teamlab-blog-2-0') ?></p>
 			</div>
 			<div class="recaptchaContainer">
 				<div class="gRecaptcha" id="popupCaptcha"></div> 
-				<p class="errorMessage recaptcha"><?php _e('Incorrect recaptcha', 'Incorrect recaptcha') ?></p>
 			</div>
 		
 		<span><?php _e('By clicking "Subscribe", you agree to the rules for using the service and processing personal data.', 'teamlab-blog-2-0'); ?></span>
 </div> 
 
-<div class="subscribe-blue sended">
-		<h3>Email is sended</h3>
+<div class="subscribe-white">
+		<h4><?php _e('Confirm your subscription', 'teamlab-blog-2-0'); ?></h4>
+		<p><?php _e('We sent an email message with confirmation to your email address', 'teamlab-blog-2-0'); ?></p>
 </div>

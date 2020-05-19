@@ -137,6 +137,7 @@ var $thisRecaptchaContainer;
 var $subEmailInput = $("#subscribe-email-input");
 
 var $inputBox = $("#InputBox");
+var $loading = $(".inputButton");
 var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
 
 $(window).load(function() {
@@ -154,7 +155,8 @@ function SubmitSubEmail(inputValue){
 
     if(ValidateInput(inputValue, recaptchaResp)){
 
-        $inputBox.addClass("loading");
+        $loading.addClass("change");
+        $loading.css("background", "#fda050");
 
         $.ajax({
             type: "POST",
@@ -165,10 +167,10 @@ function SubmitSubEmail(inputValue){
             dataType: 'json',
             success: function (response) {
                 if(response.errorMsg == ""){
-                    $inputBox.removeClass("loading");
+                    $loading.removeClass("change");
                     showMsg();
                 }  else {
-                    $inputBox.removeClass("loading");
+                    $loading.removeClass("change");
                     showErrors($thisInputContainer, response.errorMsg);
                 }
             }
@@ -196,7 +198,8 @@ function ValidateInput(inputVal, recaptchaResp){
     }
 
     if(recaptchaResp == "" || recaptchaResp == undefined){
-        $(".recaptchaContainer").children(".errorMessage").show();
+        $inputBox.addClass("error");
+        $(".errorMessage.recaptcha").show();
         correctValue=false
     }
 
@@ -213,13 +216,13 @@ function showErrors($thisInputContainer, errorMsg){
     } else if(errorMsg == "Email is used"){
         $(".errorMessage.used").show();
     } else if(errorMsg == "Incorrect recaptcha"){
-        $thisRecaptchaContainer.children(".errorMessage").show();
+        $(".errorMessage.recaptcha").show();
     }
 }
 
 function showMsg(){    
     $(".subscribe-blue").hide();
-    $(".subscribe-blue.sended").show();
+    $(".subscribe-white").show();
 };
 
 $subEmailInput.focus(function () {
