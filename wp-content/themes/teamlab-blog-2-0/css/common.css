@@ -95,10 +95,6 @@ header {
   cursor: pointer;
 }
 
-.footercolor,
-.gray-bg-block {
-  background: white;
-}
 .narrowfooter {
   width: 928px;
   margin: 0 auto;
@@ -202,8 +198,8 @@ footer h6.second_h {
   text-transform: uppercase;
 }
 .SocialLinks h6{
-	text-align: center;
-	display: none;
+  text-align: center;
+  display: none;
 }
 .blubase {
   display: none;
@@ -524,10 +520,7 @@ body > div.loadingBanner div {
   margin-left: 6px;
   font-size: 13px;
 }
-.loading,
-.loading * {
-  cursor: wait !important;
-}
+
 .companydata.inline-block {
   float: left;
   margin-right: 50px;
@@ -614,7 +607,7 @@ body.desktop .button.red.disabled:visited {
     cursor: text;
     outline: 0;
     width: calc(100vw - 120px);
-	}
+  }
 
 }
 
@@ -809,7 +802,7 @@ body.desktop .button.red.disabled:visited {
   }
   .bottomWrapper {
     padding-bottom: 56px;
-	}
+  }
  .SingleContainer{
     padding: 48px 0;
     width: 100%;
@@ -912,14 +905,17 @@ body.desktop .button.red.disabled:visited {
   }
   .tagsList{
     padding: 0 15px;
-	}
+  }
 
   footer h6{
     margin-bottom: 0;
     padding: 17px 14px;
   }
+  .footer_menu ul{
+    padding-left: 14px;
+  }
   .bottomlines{
-  	padding-top: 13px;
+    padding-top: 13px;
   }
   .footer_menu {
     display: block;
@@ -934,8 +930,8 @@ body.desktop .button.red.disabled:visited {
   #navitem_footer_developers,
   #navitem_footer_GetInfo,
   #navitem_footer_contact {
-  	display: none;
-  	transition: max-height 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    display: none;
+    transition: max-height 0.2s ease-in-out, visibility 0.2s ease-in-out;
   }
 
   .footer_menu li{
@@ -981,14 +977,14 @@ body.desktop .button.red.disabled:visited {
       transition: 0.1s linear;
   }
   .SocialLinks {
-  	margin-top: 32px;
-	}
+    margin-top: 32px;
+  }
   .SocialLinks h6{
-	display: block;
-	}
-	.footer-search{
-		margin-top: 32px;
-	}
+  display: block;
+  }
+  .footer-search{
+    margin-top: 32px;
+  }
   .copyReserved {
   margin-top: 49px;
   }

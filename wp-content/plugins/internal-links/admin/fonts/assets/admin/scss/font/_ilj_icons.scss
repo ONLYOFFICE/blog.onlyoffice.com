@@ -1,0 +1,26 @@
+@font-face {
+	font-family: "ilj_icons";
+	src: url('../fontsilj_icons.eot');
+	src: url('../fontsilj_icons.eot?#iefix') format('eot'),
+		url('../fontsilj_icons.woff2') format('woff2'),
+		url('../fontsilj_icons.woff') format('woff'),
+		url('../fontsilj_icons.ttf') format('truetype'),
+		url('../fontsilj_icons.svg#ilj_icons') format('svg');
+}
+
+.icon:before {
+	font-family: "ilj_icons";
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	/* speak: none; only necessary if not using the private unicode range (firstGlyph option) */
+	text-decoration: none;
+	text-transform: none;
+}
+
+
+.icon-ilj:before {
+	content: "\E001";
+}
