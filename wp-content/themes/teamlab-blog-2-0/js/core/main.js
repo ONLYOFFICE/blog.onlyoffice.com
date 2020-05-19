@@ -151,7 +151,6 @@ function isValidEmail(value){
 function SubmitSubEmail(inputValue){
 
     var recaptchaResp = (typeof (window.grecaptcha) != "undefined") ? window.grecaptcha.getResponse(0) : ""; 
-    recaptchaResp = recaptchaResp == "" ? window.grecaptcha.getResponse(1) : recaptchaResp;
 
     if(ValidateInput(inputValue, recaptchaResp)){
 
@@ -180,7 +179,7 @@ function SubmitSubEmail(inputValue){
 function ValidateInput(inputVal, recaptchaResp){
     $(".errorMessage").hide();
     $inputBox.removeClass("error");
-    $thisRecaptchaContainer.children(".errorMessage").hide();
+    $(".recaptchaContainer").children(".errorMessage").hide();
 
     correctValue = true;
 
@@ -197,7 +196,7 @@ function ValidateInput(inputVal, recaptchaResp){
     }
 
     if(recaptchaResp == "" || recaptchaResp == undefined){
-        $thisRecaptchaContainer.children(".errorMessage").show();
+        $(".recaptchaContainer").children(".errorMessage").show();
         correctValue=false
     }
 
