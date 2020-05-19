@@ -133,10 +133,15 @@ $(".clearButton").on('click', function(){
 
 
 /***** Suscribe input *****/
-
+var $thisRecaptchaContainer;
 var $subEmailInput = $("#subscribe-email-input");
+
 var $inputBox = $("#InputBox");
 var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
+
+$(window).load(function() {
+    $thisRecaptchaContainer = $(".recaptchaContainer");
+});
 
 function isValidEmail(value){
     var valid = regex.test(value);
@@ -144,7 +149,11 @@ function isValidEmail(value){
 }
 
 function SubmitSubEmail(inputValue){
-    if(ValidateInput(inputValue)){
+
+    var recaptchaResp = (typeof (window.grecaptcha) != "undefined") ? window.grecaptcha.getResponse(0) : ""; 
+    recaptchaResp = recaptchaResp == "" ? window.grecaptcha.getResponse(1) : recaptchaResp;
+
+    if(ValidateInput(inputValue, recaptchaResp)){
 
         $inputBox.addClass("loading");
 
@@ -152,7 +161,7 @@ function SubmitSubEmail(inputValue){
             type: "POST",
             url: window.wp_data.ajax_url,
             data: {
-                action : 'send_confirmation_email', email : inputValue
+                action : 'send_confirmation_email', email : inputValue, recaptchaResp : recaptchaResp
             },
             dataType: 'json',
             success: function (response) {
@@ -168,9 +177,10 @@ function SubmitSubEmail(inputValue){
     }
 };
 
-function ValidateInput(inputVal){
+function ValidateInput(inputVal, recaptchaResp){
     $(".errorMessage").hide();
     $inputBox.removeClass("error");
+    $thisRecaptchaContainer.children(".errorMessage").hide();
 
     correctValue = true;
 
@@ -186,6 +196,11 @@ function ValidateInput(inputVal){
         $inputBox.addClass("valid");
     }
 
+    if(recaptchaResp == "" || recaptchaResp == undefined){
+        $thisRecaptchaContainer.children(".errorMessage").show();
+        correctValue=false
+    }
+
     return correctValue;
 };
 
@@ -199,11 +214,11 @@ function showErrors($thisInputContainer, errorMsg){
     } else if(errorMsg == "Email is used"){
         $(".errorMessage.used").show();
     } else if(errorMsg == "Incorrect recaptcha"){
-        //$thisRecaptchaContainer.children(".errorMessage").show();
+        $thisRecaptchaContainer.children(".errorMessage").show();
     }
 }
 
-function showMsg(){      // Тут надо запилить показ формы что письмо отправленно
+function showMsg(){    
     $(".subscribe-blue").hide();
     $(".subscribe-blue.sended").show();
 };
@@ -256,10 +271,10 @@ $("#lang_sel").on('click', function(){
 })
 
 
-$(document).on('click', function (e){ // событие клика по веб-документу
+$(document).on('click', function (e){
 
-    if (!$langSelector.is(e.target) // если клик был не по нашему блоку
-        && $langSelector.has(e.target).length === 0) { // и не по его дочерним элементам
+    if (!$langSelector.is(e.target) 
+        && $langSelector.has(e.target).length === 0) { 
             $dropdownSelector.removeClass("show");
     }
 });
