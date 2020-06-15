@@ -254,15 +254,18 @@ class NextGen extends Abstract_Integration {
 	 * @param string $name  Setting name.
 	 */
 	public function additional_notice( $name ) {
-		if ( 'nextgen' === $name && ! $this->enabled ) {
+		if ( $this->module === $name && ! $this->enabled ) {
 			?>
-            <div class="sui-toggle-content">
-                <div class="sui-notice sui-notice-sm">
-                    <p>
-                        <?php esc_html_e( 'To use this feature you need to be using NextGen Gallery.', 'wp-smushit' ); ?>
-                    </p>
-                </div>
-            </div>
+			<div class="sui-toggle-content">
+				<div class="sui-notice">
+					<div class="sui-notice-content">
+						<div class="sui-notice-message">
+							<i class="sui-notice-icon sui-icon-info" aria-hidden="true"></i>
+							<p><?php esc_html_e( 'To use this feature you need to be using NextGen Gallery.', 'wp-smushit' ); ?></p>
+						</div>
+					</div>
+				</div>
+			</div>
 			<?php
 		}
 	}
@@ -627,8 +630,7 @@ class NextGen extends Abstract_Integration {
 		if ( empty( $_POST['attachment_id'] ) || empty( $_POST['_nonce'] ) ) {
 			wp_send_json_error(
 				array(
-					'error'   => 'empty_fields',
-					'message' => '<div class="wp-smush-error">' . esc_html__( "We couldn't process the image, fields empty.", 'wp-smushit' ) . '</div>',
+					'error_msg' => '<div class="wp-smush-error">' . esc_html__( "We couldn't process the image, fields empty.", 'wp-smushit' ) . '</div>',
 				)
 			);
 		}
@@ -637,32 +639,29 @@ class NextGen extends Abstract_Integration {
 		if ( ! wp_verify_nonce( $_POST['_nonce'], 'wp-smush-resmush-' . $_POST['attachment_id'] ) ) {
 			wp_send_json_error(
 				array(
-					'error'   => 'empty_fields',
-					'message' => '<div class="wp-smush-error">' . esc_html__( "Image couldn't be smushed as the nonce verification failed, try reloading the page.", 'wp-smushit' ) . '</div>',
+					'error_msg' => '<div class="wp-smush-error">' . esc_html__( "Image couldn't be smushed as the nonce verification failed, try reloading the page.", 'wp-smushit' ) . '</div>',
 				)
 			);
 		}
 
-		$image_id = intval( $_POST['attachment_id'] );
-
-		$smushed = $this->smush_image( $image_id );
+		$status = $this->smush_image( intval( $_POST['attachment_id'] ) );
 
 		// If any of the image is restored, we count it as success.
-		if ( ! empty( $smushed ) && ! is_wp_error( $smushed ) ) {
+		if ( ! empty( $status ) && ! is_wp_error( $status ) ) {
 			// Send button content.
 			wp_send_json_success(
 				array(
-					'button' => $smushed['status'] . $smushed['stats'],
+					'stats' => $status,
 				)
 			);
-		} elseif ( is_wp_error( $smushed ) ) {
+		} elseif ( is_wp_error( $status ) ) {
 			// Send Error Message.
 			wp_send_json_error(
 				array(
-					'message' => sprintf(
+					'error_msg' => sprintf(
 						/* translators: %s: error message */
 						'<div class="wp-smush-error">' . __( 'Unable to smush image, %s', 'wp-smushit' ) . '</div>',
-						$smushed->get_error_message()
+						$status->get_error_message()
 					),
 				)
 			);
@@ -682,9 +681,9 @@ class NextGen extends Abstract_Integration {
 			return;
 		}
 		?>
-        <span class="sui-tag sui-tag-pro"><?php esc_html_e( 'Pro', 'wp-smushit' ); ?></span>
+		<span class="sui-tag sui-tag-pro"><?php esc_html_e( 'Pro', 'wp-smushit' ); ?></span>
 		<?php
-    }
+	}
 
 	/**************************************
 	 *

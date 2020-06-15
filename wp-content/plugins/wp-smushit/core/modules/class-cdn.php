@@ -495,12 +495,12 @@ class CDN extends Abstract_Module {
 			return $new_image;
 		}
 
+		// Store the original $src to be used later on.
+		$original_src = $src;
+
 		// Make sure this image is inside a supported directory. Try to convert to valid path.
 		$src = $this->is_supported_path( $src );
 		if ( $src ) {
-			// Store the original $src to be used later on.
-			$original_src = $src;
-
 			$src = $this->process_src( $image, $src, false );
 
 			// Replace the src of the image with CDN link.
@@ -515,19 +515,42 @@ class CDN extends Abstract_Module {
 			 * For the majority of images, srcset will be parsed as part of the wp_calculate_image_srcset filter.
 			 * But some images, for example, logos in Avada - will add their own srcset. For such images - generate our own.
 			 */
-			if ( ! preg_match( '/srcset=["\'](.*?smushcdn\.com[^"\']+)["\']/i', $image ) && $this->settings->get( 'auto_resize' ) && ! apply_filters( 'smush_skip_adding_srcset', false ) ) {
-				list( $srcset, $sizes ) = $this->generate_srcset( $original_src );
+			if ( ! preg_match( '/srcset=["\'](.*?smushcdn\.com[^"\']+)["\']/i', $image ) ) {
+				if ( $this->settings->get( 'auto_resize' ) && ! apply_filters( 'smush_skip_adding_srcset', false ) ) {
+					list( $srcset, $sizes ) = $this->generate_srcset( $original_src );
 
-				if ( ! is_null( $srcset ) && false !== $srcset ) {
-					// Remove possibly empty srcset attribute.
-					Helpers\Parser::remove_attribute( $new_image, 'srcset' );
-					Helpers\Parser::add_attribute( $new_image, 'srcset', $srcset );
-				}
+					if ( ! is_null( $srcset ) && false !== $srcset ) {
+						// Remove possibly empty srcset attribute.
+						Helpers\Parser::remove_attribute( $new_image, 'srcset' );
+						Helpers\Parser::add_attribute( $new_image, 'srcset', $srcset );
+					}
 
-				if ( ! is_null( $srcset ) && false !== $sizes ) {
-					// Remove possibly empty sizes attribute.
-					Helpers\Parser::remove_attribute( $new_image, 'sizes' );
-					Helpers\Parser::add_attribute( $new_image, 'sizes', $sizes );
+					if ( ! is_null( $srcset ) && false !== $sizes ) {
+						// Remove possibly empty sizes attribute.
+						Helpers\Parser::remove_attribute( $new_image, 'sizes' );
+						Helpers\Parser::add_attribute( $new_image, 'sizes', $sizes );
+					}
+				} else {
+					$data_attributes = array( 'srcset', 'data-srcset' );
+					foreach ( $data_attributes as $attribute ) {
+						$links = Helpers\Parser::get_attribute( $new_image, $attribute );
+						$links = Helpers\Parser::get_links_from_content( $links );
+						if ( isset( $links[0] ) && is_array( $links[0] ) ) {
+							foreach ( $links[0] as $link ) {
+								$src = $this->is_supported_path( $link );
+								if ( ! $src ) {
+									continue;
+								}
+
+								// Replace the data-envira-srcset of the image with CDN link.
+								$src = $this->generate_cdn_url( $src );
+								if ( $src ) {
+									// Replace the src of the image with CDN link.
+									$new_image = str_replace( $link, $src, $new_image );
+								}
+							}
+						}
+					}
 				}
 			}
 		}

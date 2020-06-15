@@ -18,45 +18,50 @@ if ( ! defined( 'WPINC' ) ) {
 
 	<div class="smush-pro-features-header">
 		<div>
-			<h2><?php esc_html_e( 'Smush Pro benefits', 'wp-smushit' ); ?></h2>
+			<h2><?php esc_html_e( 'Optimize unlimited images with Smush Pro', 'wp-smushit' ); ?></h2>
 			<p class="sui-description"><?php esc_html_e( 'Get Smush Pro and bulk optimize every image you’ve ever added to your site with one-click and fix your Google PageSpeed with the best image optimizer WordPress has ever known. Upgrade to unlock all Pro features today!', 'wp-smushit' ); ?></p>
-			<a href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" class="sui-button sui-button-purple">
-				<?php esc_html_e( 'Try Smush Pro for Free', 'wp-smushit' ); ?>
-			</a>
-		</div>
-		<div>
-			<div class="thumbnail-container">
-				<img src="https://premium.wpmudev.org/wp-content/themes/wpmudev-2015-1/assets/img/projects/Smush-Thumbnail@2x.png?v=2" alt="<?php esc_attr_e( 'Play', 'wp-smushit' ); ?>" id="wistia-play-button" role="button">
+			<div>
+				<a href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" class="sui-button sui-button-purple">
+					<?php esc_html_e( 'Try Pro for Free', 'wp-smushit' ); ?>
+				</a>
+				<div>
+					<button role="button" class="sui-button sui-button-ghost sui-button-purple" id="wistia-play-button">
+						<i class="sui-icon-play" aria-hidden="true"></i> <?php esc_html_e( 'Watch Video', 'wp-smushit' ); ?>
+					</button>
+					<small><?php esc_html_e( 'less than 2 minutes', 'wp-smushit' ); ?></small>
+				</div>
 			</div>
-			<span id="wistia_oegnwrdag1"></span>
-			<script>
-				document.addEventListener("DOMContentLoaded", function() {
-					var trigger = document.getElementById("wistia-play-button");
-
-					window.wistiaSmushEmbed = null;
-					window.wistiaInit = function(Wistia) {
-						window.wistiaSmushEmbed = Wistia.embed("oegnwrdag1", {
-							version: "v2",
-							videoWidth: 1280,
-							videoHeight: 720,
-							playerColor: "14485f",
-							videoQuality: "hd-only",
-							popover: true,
-							popoverPreventScroll: true
-						});
-					};
-
-					if (trigger) {
-						trigger.addEventListener("click", function(e) {
-							e.preventDefault();
-							if (window.wistiaSmushEmbed) {
-								window.wistiaSmushEmbed.play();
-							}
-						});
-					}
-				});
-			</script>
 		</div>
+
+		<span id="wistia_oegnwrdag1"></span>
+
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+				var trigger = document.getElementById("wistia-play-button");
+
+				window.wistiaSmushEmbed = null;
+				window.wistiaInit = function(Wistia) {
+					window.wistiaSmushEmbed = Wistia.embed("oegnwrdag1", {
+						version: "v2",
+						videoWidth: 1280,
+						videoHeight: 720,
+						playerColor: "14485f",
+						videoQuality: "hd-only",
+						popover: true,
+						popoverPreventScroll: true
+					});
+				};
+
+				if (trigger) {
+					trigger.addEventListener("click", function(e) {
+						e.preventDefault();
+						if (window.wistiaSmushEmbed) {
+							window.wistiaSmushEmbed.play();
+						}
+					});
+				}
+			});
+		</script>
 	</div>
 
 	<div class="sui-description" style="margin-bottom: 20px">
@@ -150,18 +155,23 @@ if ( ! defined( 'WPINC' ) ) {
 <div class="sui-upsell-row">
 	<img class="sui-image sui-upsell-image sui-upsell-image-smush" src="<?php echo esc_url( WP_SMUSH_URL . 'app/assets/images/smush-promo.png' ); ?>">
 	<div class="sui-notice sui-notice-purple smush-upsell-notice">
-		<p>
-			<?php
-			esc_html_e(
-				'Smush Pro gives you all these extra settings and absolutely no limits on smushing your images. Did we mention Smush Pro also gives you up to 2x better compression too? Try it all free with a WPMU DEV membership today!',
-				'wp-smushit'
-			);
-			?>
-		</p>
-		<div class="sui-notice-buttons">
-			<a href="<?php echo esc_url( $upsell_url ); ?>" class="sui-button sui-button-purple" target="_blank">
-				<?php esc_html_e( 'Learn More', 'wp-smushit' ); ?>
-			</a>
+		<div class="sui-notice-content">
+			<div class="sui-notice-message">
+				<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+				<p>
+					<?php
+					esc_html_e(
+						'Smush Pro gives you all these extra settings and absolutely no limits on smushing your images. Did we mention Smush Pro also gives you up to 2x better compression too? Try it all free with a WPMU DEV membership today!',
+						'wp-smushit'
+					);
+					?>
+				</p>
+				<p>
+					<a href="<?php echo esc_url( $upsell_url ); ?>" class="sui-button sui-button-purple" target="_blank">
+						<?php esc_html_e( 'Learn More', 'wp-smushit' ); ?>
+					</a>
+				</p>
+			</div>
 		</div>
 	</div>
 </div>

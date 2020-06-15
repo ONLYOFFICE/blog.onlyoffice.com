@@ -3,6 +3,96 @@ Theme Name: Teamlab Blog 2.0
 Text Domanin: teamlab-blog-2-0;
 */
 
+/* @font-face {
+    font-family: 'Open Sans';
+    src: url('opensans-bold-webfont.woff2') format('woff2'),
+        url('opensans-bold-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('opensans-bolditalic-webfont.woff2') format('woff2'),
+        url('opensans-bolditalic-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('opensans-extrabold-webfont.woff2') format('woff2'),
+        url('opensans-extrabold-webfont.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('opensans-extrabolditalic-webfont.woff2') format('woff2'),
+        url('opensans-extrabolditalic-webfont.woff') format('woff');
+    font-weight: 800;
+    font-style: italic;
+
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('opensans-italic-webfont.woff2') format('woff2'),
+        url('opensans-italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('opensans-light-webfont.woff2') format('woff2'),
+        url('opensans-light-webfont.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('opensans-lightitalic-webfont.woff2') format('woff2'),
+        url('opensans-lightitalic-webfont.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('opensans-regular-webfont.woff2') format('woff2'),
+        url('opensans-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('opensans-semibold-webfont.woff2') format('woff2'),
+        url('opensans-semibold-webfont.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('opensans-semibolditalic-webfont.woff2') format('woff2'),
+        url('opensans-semibolditalic-webfont.woff') format('woff');
+    font-weight: 600;
+    font-style: italic;
+
+} */
+
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
     margin: 0;
     padding: 0;
@@ -67,7 +157,9 @@ body {
     min-height: 100%;
     position: relative;
 }
-
+strong{
+color:#333333;
+}
 * html body {
     height: 100%;
 }
@@ -92,4 +184,3 @@ a {
 a:hover {
     text-decoration: none;
 }
-

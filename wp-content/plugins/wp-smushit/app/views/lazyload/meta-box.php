@@ -25,8 +25,13 @@ wp_enqueue_style( 'wp-color-picker' );
 	?>
 </p>
 
-<div class="sui-notice sui-notice-info smush-notice-sm">
-	<p><?php esc_html_e( 'Lazy loading is active.', 'wp-smushit' ); ?></p>
+<div class="sui-notice sui-notice-info">
+	<div class="sui-notice-content">
+		<div class="sui-notice-message">
+			<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+			<p><?php esc_html_e( 'Lazy loading is active.', 'wp-smushit' ); ?></p>
+		</div>
+	</div>
 </div>
 
 <form id="wp-smush-settings-form" method="post">
@@ -293,7 +298,12 @@ wp_enqueue_style( 'wp-color-picker' );
 					</div>
 
 					<div class="sui-notice <?php echo ! $settings['animation']['selected'] ? 'active' : ''; ?>">
-						<p><?php esc_html_e( 'Images will flash into view as soon as they are ready to display.', 'wp-smushit' ); ?></p>
+						<div class="sui-notice-content">
+							<div class="sui-notice-message">
+								<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+								<p><?php esc_html_e( 'Images will flash into view as soon as they are ready to display.', 'wp-smushit' ); ?></p>
+							</div>
+						</div>
 					</div>
 				</div><!-- end data-panes -->
 			</div><!-- end .sui-tabs -->
@@ -500,13 +510,62 @@ wp_enqueue_style( 'wp-color-picker' );
 
 					<div data-panes>
 						<div class="sui-notice active">
-							<p><?php esc_html_e( 'Your theme must be using the wp_footer() function.', 'wp-smushit' ); ?></p>
+							<div class="sui-notice-content">
+								<div class="sui-notice-message">
+									<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+									<p><?php esc_html_e( 'Your theme must be using the wp_footer() function.', 'wp-smushit' ); ?></p>
+								</div>
+							</div>
 						</div>
 						<div class="sui-notice">
-							<p><?php esc_html_e( 'Your theme must be using the wp_head() function.', 'wp-smushit' ); ?></p>
+							<div class="sui-notice-content">
+								<div class="sui-notice-message">
+									<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+									<p><?php esc_html_e( 'Your theme must be using the wp_head() function.', 'wp-smushit' ); ?></p>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="sui-box-settings-row">
+		<div class="sui-box-settings-col-1">
+			<span class="sui-settings-label">
+				<?php esc_html_e( 'Native lazy load', 'wp-smushit' ); ?>
+			</span>
+			<span class="sui-description">
+				<?php esc_html_e( 'Enable support for native browser lazy loading.', 'wp-smushit' ); ?>
+			</span>
+		</div>
+		<div class="sui-box-settings-col-2">
+			<div class="sui-form-field">
+				<label for="native" class="sui-toggle">
+					<input
+						type="checkbox"
+						id="native"
+						name="native"
+						aria-labelledby="native-label"
+						aria-describedby="native-description"
+						<?php checked( isset( $settings['native'] ) && $settings['native'] ); ?>
+					/>
+					<span class="sui-toggle-slider" aria-hidden="true"></span>
+					<span id="native-label" class="sui-toggle-label">
+						<?php esc_html_e( 'Enable native lazy loading', 'wp-smushit' ); ?>
+					</span>
+					<span id="native-description" class="sui-description">
+						<?php
+						printf(
+							/* translators: %1$s - opening a tag, %2$s - closing a tag */
+							esc_html__( 'In some cases can cause the "Defer offscreen images" Google PageSpeed audit to fail. See browser compatibility %1$shere%2$s.', 'wp-smushit' ),
+							'<a href="https://caniuse.com/#feat=loading-lazy-attr" target="_blank">',
+							'</a>'
+						);
+						?>
+					</span>
+				</label>
 			</div>
 		</div>
 	</div>

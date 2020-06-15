@@ -588,7 +588,26 @@ body.desktop .button.red.disabled:visited {
   text-transform: none;
   padding: 10px 25px;
 }
+@media screen and (max-width: 1320px) {
+  .download-block {
+    height: auto;
+  }
 
+  .download-button {
+    display: block;
+    text-align: center;
+    align-items: center;
+  }
+  .download.GooglePlay{
+    margin: 0 16px 0 0;
+  }
+  .download.AppStore {
+    margin: 0;
+  }
+  .download {
+    margin: 0 16px 16px 0;
+  }
+}
 @media screen and (max-width: 1150px){
   .input-header .search-field{
     width: 0;
@@ -725,22 +744,21 @@ body.desktop .button.red.disabled:visited {
   .tags-page{
     margin-top: 62px;
   }
+  .recent{
+    margin-bottom: 32px;
+  }
+  .widget_recent_entries .press-all ul:last-child {
+    margin-bottom: 0;
+  }
+  .press-recent{
+    margin-top: 8px;
+    margin-bottom: 0;
+  }
 }
 
 @media screen and (max-width: 768px){
   .MainContainer{
   padding: 48px 40px 80px 40px;
-  }
-  .download-block{
-    height: auto;
-  }
-  .download-button{
-    display: block;
-    text-align: center;
-    align-items: center;
-  }
- .download{
-    margin:0 16px 16px 0;
   }
   .SingleContainer{
     width: auto;
@@ -848,6 +866,12 @@ body.desktop .button.red.disabled:visited {
   }
   .content .cloud-block .red{
     bottom: 32px;
+  }
+  .download.GooglePlay{
+    margin-bottom: 16px;
+  }
+  .download.AppStore {
+    margin: 0 16px 0 0;
   }
   div#comments{
     padding: 35px 15px 0 15px;

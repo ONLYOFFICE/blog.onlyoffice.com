@@ -549,7 +549,10 @@ class PI_SimpleTwitterTweets extends WP_Widget{
 									}
 								?>
 								<?php echo $t['text']; ?>
-								<div class="meta twitter">
+					
+
+							</li>
+										<div class="meta twitter">
 									
 								
 									<span class="stt-em date">
@@ -593,8 +596,6 @@ class PI_SimpleTwitterTweets extends WP_Widget{
 								<span <?php echo ($twitterIntentsText) ? 'class="pi-visuallyhidden"':''; ?>><?php _e('Favourite','simple-twitter-tweets'); ?></span></a>
 						</div>
 						<?php } ?>
-
-							</li>
 					<?php endforeach; ?>
 
 			<?php else : ?>

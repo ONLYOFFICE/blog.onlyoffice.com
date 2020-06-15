@@ -31,15 +31,20 @@ if ( ! defined( 'WPINC' ) ) {
 		?>
 	</p>
 
-	<div class="sui-notice sui-notice-<?php echo esc_attr( $class ); ?> smush-notice-sm">
-		<p><?php echo wp_kses_post( $status_msg ); ?></p>
-		<?php if ( 'error' === $class && 'overcap' === $status ) : ?>
-			<div class="sui-notice-buttons">
-				<a href="https://premium.wpmudev.org/hub/account/" target="_blank" class="sui-button">
-					<?php esc_html_e( 'Upgrade Plan', 'wp-smushit' ); ?>
-				</a>
+	<div class="sui-notice sui-notice-<?php echo esc_attr( $class ); ?>">
+		<div class="sui-notice-content">
+			<div class="sui-notice-message">
+				<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+				<p><?php echo wp_kses_post( $status_msg ); ?></p>
+				<?php if ( 'error' === $class && 'overcap' === $status ) : ?>
+					<p>
+						<a href="https://premium.wpmudev.org/hub/account/" target="_blank" class="sui-button">
+							<?php esc_html_e( 'Upgrade Plan', 'wp-smushit' ); ?>
+						</a>
+					</p>
+				<?php endif; ?>
 			</div>
-		<?php endif; ?>
+		</div>
 	</div>
 
 	<div class="sui-box-settings-row">

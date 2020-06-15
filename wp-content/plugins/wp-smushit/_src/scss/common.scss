@@ -128,52 +128,6 @@
 	width: 100%;
 }
 
-#wp-smush-invalid-member {
-	&.loading-notice:before {
-		content: attr(data-message);
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: 0;
-		bottom: 0;
-		background-color: rgba(255, 255, 255, 0.7);
-		z-index: 5;
-		text-align: center;
-		line-height: 40px;
-		font-size: 15px;
-	}
-
-	&.loaded-notice:before {
-		content: attr(data-message);
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: 0;
-		bottom: 0;
-		background-color: rgba(255, 255, 255, 0.7);
-		z-index: 5;
-		text-align: center;
-		line-height: 40px;
-		font-size: 15px;
-	}
-
-	a {
-		color: #514a30;
-		text-decoration: underline;
-	}
-
-	&.loading-notice,
-	&.loaded-notice {
-		> div {
-			-webkit-filter: blur(2px);
-			-moz-filter: blur(2px);
-			-o-filter: blur(2px);
-			-ms-filter: blur(2px);
-			filter: blur(2px);
-		}
-	}
-}
-
 /** Bulk Smush **/
 /** No Images **/
 .wp-smush-no-image {
@@ -212,9 +166,7 @@ div.smush-notice-cta a.smush-notice-act.button-primary {
 }
 
 .wp-smush-resmush-message,
-.wp-smush-settings-updated,
-.wp-smush-re-check-message,
-.wp-smush-api-message {
+.wp-smush-settings-updated {
 	border: none;
 	margin-bottom: 25px;
 	padding: 18px 50px;
@@ -250,9 +202,7 @@ ol.smush-recommendation-list li {
 /** Image Remaining **/
 div.wp-smush-remaining,
 div.wp-smush-dir-limit,
-div.smush-s3-setup-message,
-div.wp-smush-s3support-alert,
-div.wp-smush-notice.wp-smush-api-message.warning {
+div.smush-s3-setup-message {
 	background-color: #FFF5D5;
 	border: none;
 	color: #333333;
@@ -261,14 +211,8 @@ div.wp-smush-notice.wp-smush-api-message.warning {
 	letter-spacing: -0.015em;
 }
 
-div.smush-s3-setup-message,
-div.wp-smush-notice.wp-smush-api-message.info {
+div.smush-s3-setup-message {
 	background-color: #DFF6FA;
-}
-
-div.wp-smush-s3support-alert {
-	margin-left: 0;
-	margin-right: 0;
 }
 
 div.wp-smush-dir-limit {
@@ -277,11 +221,6 @@ div.wp-smush-dir-limit {
 
 .wp-smush-resmush-wrap .wp-smush-remaining {
 	padding: 10px 50px;
-}
-
-.bulk-smush-wrapper .wp-smush-notice-text {
-	display: inline-block;
-	max-width: 88%;
 }
 
 .wp-smush-count {
@@ -559,12 +498,6 @@ button.wp-smush-all {
 	.wp-smush-resize-settings-wrap,
 	.wp-smush-png_to_jpg-wrap {
 		padding: 20px;
-	}
-}
-
-@media screen and (max-width: 456px) {
-	.bulk-smush-wrapper .wp-smush-notice-text {
-		max-width: 85%;
 	}
 }
 

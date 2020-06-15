@@ -1,6 +1,6 @@
 <div class="subscribe-blue">
 		<h3><?php _e('Newsletter', 'teamlab-blog-2-0'); ?></h3>
-		<p><?php _e('Get the latest ONLYOFFICE news delivered to your inbox', 'teamlab-blog-2-0'); ?></p>
+		<p><?php _e('Get the latest ONLYOFFICE news', 'teamlab-blog-2-0'); ?></p>
 
 			<div id="InputBox" class="inputBox">
 				<input id="subscribe-email-input" class="main-input" />
@@ -13,11 +13,11 @@
 				<p class="errorMessage used"><?php _e('Email is used', 'teamlab-blog-2-0') ?></p>
 				<p class="errorMessage recaptcha"><?php _e('Incorrect recaptcha', 'teamlab-blog-2-0') ?></p>
 			</div>
-			<div class="recaptchaContainer">
+			 <div class="recaptchaContainer">
 				<div class="gRecaptcha" id="popupCaptcha"></div> 
-			</div>
+			</div> 
 		
-		<span><?php _e('By clicking "Subscribe", you agree to the rules for using the service and processing personal data.', 'teamlab-blog-2-0'); ?></span>
+		<span><a href="https://help.onlyoffice.com/products/files/doceditor.aspx?fileid=5048502&doc=SXhWMEVzSEYxNlVVaXJJeUVtS0kyYk14YWdXTEFUQmRWL250NllHNUFGbz0_IjUwNDg1MDIi0" target="_blank" ><?php _e('By clicking “Subscribe”, you understand and agree to <u>our Privacy statement</u>', 'teamlab-blog-2-0'); ?></a></span>
 </div> 
 
 <div class="subscribe-white">

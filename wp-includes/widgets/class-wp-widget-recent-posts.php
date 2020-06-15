@@ -112,7 +112,7 @@ class WP_Widget_Recent_Posts extends WP_Widget {
 				<li>
 					<a href="<?php the_permalink( $recent_post->ID ); ?>"<?php echo $aria_current; ?>><?php echo $title; ?></a>
 					<?php if ( $show_date ) : ?>
-						<div class="meta press">
+						<div class="meta press-recent">
 							<span class="date"><?php echo get_the_date( '', $recent_post->ID ); ?></span>
 						</div>
 					<?php endif; ?>

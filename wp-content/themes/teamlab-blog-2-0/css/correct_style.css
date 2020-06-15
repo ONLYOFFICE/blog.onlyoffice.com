@@ -388,26 +388,25 @@
 
 /*-----------Main Container--------*/
 .MainContainer {
-    width: 962px;
+    max-width: 1120px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 70px 0 82px 0;
+    padding: 70px 160px 82px;
 }
 #content{
-    display: flex;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 32px;
 }
-.content{
-    width: 65%;
-    padding-right: 32px;
-}
+/* .postwrapper a img{
+    min-height: 178px;
+    object-fit: cover;
+} */
 .content img{
     max-width: 100%;
     object-fit: contain;
 }
 /*---------SideBar-------*/
-.sidebar{
-    width: 35%;
-}
 .sideBar li{
     list-style-type: none;
 }
@@ -424,6 +423,9 @@
     margin-bottom: 36px;
     padding: 32px;
 }
+.widget:last-child{
+    margin-bottom: 0;
+}
 .widget li{
     font-family: Open Sans;
     font-style: normal;
@@ -432,8 +434,17 @@
     line-height: 19px;
     color: #333333;
     list-style-type: none;
-    padding-bottom: 8px;
-    margin-bottom: 20px;
+    padding-left: 15px;
+    position: relative;
+}
+.widget li:before{
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "•";
+    font-size: 20px;
+    color: #04ED37;
+    margin:0 8px 0 3px;
 }
 .widget li a{
     color: #444444;
@@ -456,6 +467,7 @@
 }
 .twitter{
     margin-top: 8px;
+    margin-bottom: 28px;
 }
 
 /*---------WIDGET ONLYOFFICE IN THE PRESS-------*/
@@ -463,6 +475,7 @@
     color: #444444;
     font-weight: 400;
     text-decoration: none;
+    display: block;
 }
 .in_the_press_entries li a:hover{
     text-decoration:underline;
@@ -470,6 +483,7 @@
 
 .press{
     margin-top: 8px;
+    margin-bottom: 28px;
 }
 .press-all{
     display: flex;
@@ -498,18 +512,26 @@
 .recent a img {
     margin-right: 16px;
 }
+
+.press-recent{
+    margin-top: 8px;
+    margin-bottom: 30px;
+}
 .widget.widget_recent_entries a{
     text-decoration: none;
     font-style: normal;
     font-weight: normal;
     color: #000000;
 }
+.widget.widget_recent_entries li {
+    padding: 0;
+    min-width: 100px;
+}
+.widget.widget_recent_entries li:before {
+    display: none;
+}
 .widget.widget_recent_entries a:hover{
     text-decoration: underline;
-}
-
-.sidebar-press{
-    width: 35%;
 }
 
 /*---------PAGE ONLYOFFICE IN THE PRESS-------*/
@@ -557,11 +579,11 @@
 
 /*---------PAGE THANK YOU FOR SIGNING-------*/
 .MailContainer{
-    width: 962px;
+    max-width: 1120px;
     margin: 0 auto;
     overflow: hidden;
     display: flex;
-    padding: 134px 0 80px 0;
+    padding: 134px 160px 80px;
 }
 .content-mail{
     width: 65%;
@@ -633,7 +655,7 @@
     mix-blend-mode: luminosity;
     -webkit-background-size: 100%;
     background-size: 100%;
-    width: 35%;
+    width: 352px;
     height: 320px;
 }
 /*-----------Last Post--------*/
@@ -775,6 +797,7 @@
     width: 100%;
     background: linear-gradient(90deg, #36A8ED 10.45%, #3CADF2 26.33%, #2A9EE5 79.49%);
     color: #FFFFFF;
+    text-align: center;
 }
 
 .subscribe-blue h3{
@@ -783,9 +806,6 @@
     font-weight: bold;
     font-size: 32px;
     line-height: 44px;
-    /* identical to box height */
-
-    text-align: center;
 }
 .subscribe-blue p{
     margin-top: 16px;
@@ -794,7 +814,21 @@
     font-weight: normal;
     font-size: 16px;
     line-height: 19px;
-    text-align: center;
+}
+.subscribe-blue span a,
+.subscribe-blue span a:hover,
+.subscribe-blue span a:visited,
+.subscribe-blue span a:link{
+    color: #FFFFFF;
+    font-size: 12px;
+    line-height: 16px;
+    text-decoration: none;
+    cursor: default;
+    pointer-events: none;
+}
+.subscribe-blue span a u{
+    cursor: pointer;
+    pointer-events: auto;
 }
 
 .inputBox{
@@ -937,6 +971,7 @@
     content: '';
 }
 .gRecaptcha{
+    display: none;
 	width: 224px;
 	 transform: scale(.80);
   	-webkit-transform: scale(.80);
@@ -953,12 +988,13 @@
     display: none;
     position: relative;
     box-sizing: border-box;
-    padding: 53px 26px 73px;
+    padding: 43px 26px 0;
+    height: 100%;
     width: 100%;
     background-color: #FFFFFF;
     color: #333333;
     box-sizing: border-box;
-    background: url(../images/newsletter.svg) no-repeat  50% 53px;
+    background: url(../images/newsletter.svg) no-repeat  50% 43px;
     border: 1px solid rgba(189, 189, 189, 0.6);
 }
 .subscribe-white h4{
@@ -991,7 +1027,7 @@
     height: 221px;
     width: 100%;
     background: #F8F8F8;
-    padding: 48px 10% 56px 10%;
+    padding: 48px 5% 56px 5%;
 }
 .download-top{
     display: flex;
@@ -1026,29 +1062,109 @@
     display: grid;
     grid-template-columns: auto auto auto auto auto;
     width: 100%;
-    height: auto;
+}
+a.download,
+a.download:hover,
+a.download:link,
+a.download:visited,
+a.download:active{
+    color: #444444;
+    text-decoration: none;
 }
 .download{
     display: inline-block;
-    width: 122px;
-    height: 46px;
-    background-size: 100%;
+    vertical-align: top;
+    width: 170px;
+    height: 64px;
+    background-color: #fff;
+    border: 1px solid #CCCCCC;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 22px 0 28px 56px;
+    font-size: 16px;
+    line-height: 24px;
+    background-repeat: no-repeat;
 }
-.winodws{
-    background: url(../images/ForWin.png) no-repeat  50% 50%;
+.winodws:hover:before,
+.linux:hover:before,
+.MacOs:hover:before,
+.GooglePlay:hover:before,
+.AppStore:hover:before {
+     -webkit-filter: grayscale(0);
+     filter: grayscale(0);
+     -moz-filter: grayscale(0);
+     -o-filter: grayscale(0);
+     -ms-filter: grayscale(0);
 }
-.linux{
-    background: url(../images/ForLin.png) no-repeat  50% 50%;
+
+
+
+.winodws,
+.linux,
+.MacOs,
+.GooglePlay,
+.AppStore {
+    position: relative;
+    text-decoration: none;
 }
-.MacOs{
-    background: url(../images/ForMac.png) no-repeat  50% 50%;
+.winodws:before,
+.linux:before,
+.MacOs:before,
+.GooglePlay:before,
+.AppStore:before {
+    height: 36px;
+    background-image: url(https://static-www.onlyoffice.com/images/mainpage/download.svg);
+    background-repeat: no-repeat;
+    background-size: 514px 34px;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -webkit-transition: filter 0.3s;
+    -moz-transition: filter 0.3s;
+    -o-transition: filter 0.3s;
+    transition: filter 0.3s;
+    position: absolute;
 }
-.GooglePlay{
-    background: url(../images/GooglePlay.png) no-repeat  50% 50%;
+.winodws:before {
+    content:"";
+    left: 16px;
+    top: 15px;
+    width: 36px;
+    background-position:-2px 0;
 }
-.AppStore{
-    background: url(../images/AppStore.png) no-repeat  50% 50%;
+.linux:before {
+    content: "";
+    left: 16px;
+    top: 15px;
+    width: 36px;
+    background-position: -35px 0;
 }
+
+.MacOs:before {
+    content: "";
+    left: 16px;
+    top: 14px;
+    width: 36px;
+    background-position: -69px 0;
+}
+.GooglePlay:before {
+    content: "";
+    left: 16px;
+    top: 15px;
+    width: 140px;
+    background-position: -233px 50%;
+}
+
+.AppStore:before {
+    content: "";
+    left: 16px;
+    top: 15px;
+    width: 120px;
+    background-position: -107px 50%;
+}
+
 .bottomWrapper{
     padding-bottom: 117px;
 }
@@ -1218,10 +1334,10 @@
 }
 /*-----------Single Page--------*/
 .SingleContainer{
-    width: 962px;
+    max-width: 1120px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 71px 0 82px 0;
+    padding: 71px 160px 82px;
 }
 .info-page{
     margin-top: 16px;
@@ -1691,10 +1807,10 @@ div#respond form#commentform p.submit {
 
 /*-----------Search Page--------*/
 .SearchContainer{
-    width: 962px;
+    max-width: 1120px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 110px 0 82px 0;
+    padding: 110px 160px 82px;
 }
 .search-page{
      margin-bottom: 45px;

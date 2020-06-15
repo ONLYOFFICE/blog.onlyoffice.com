@@ -502,6 +502,8 @@ class Settings {
 	 * Save settings.
 	 *
 	 * @param bool $json_response  Send a JSON response.
+	 *
+	 * @TODO: Refactor. Why do we have two different methods for mu and single?
 	 */
 	public function save( $json_response = true ) {
 		check_ajax_referer( 'save_wp_smush_options', 'wp_smush_options_nonce' );
@@ -647,6 +649,7 @@ class Settings {
 			'exclude-pages'   => FILTER_SANITIZE_STRING,
 			'exclude-classes' => FILTER_SANITIZE_STRING,
 			'footer'          => FILTER_VALIDATE_BOOLEAN,
+			'native'          => FILTER_VALIDATE_BOOLEAN,
 		);
 
 		$settings = filter_input_array( INPUT_POST, $args );
@@ -788,6 +791,7 @@ class Settings {
 			'exclude-pages'   => array(),
 			'exclude-classes' => array(),
 			'footer'          => true,
+			'native'          => false,
 		);
 
 		$this->set_setting( WP_SMUSH_PREFIX . 'lazy_load', $defaults );

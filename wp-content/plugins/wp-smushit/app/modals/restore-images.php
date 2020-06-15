@@ -80,18 +80,28 @@ if ( ! defined( 'WPINC' ) ) {
 			<# } else if ( 'finish' === data.slide ) { #>
 				<# if ( 0 === data.errors.length ) { #>
 				<div class="sui-notice sui-notice-success" style="text-align: left">
-					<p>{{{ data.success }}}
-						<?php esc_html_e( 'images were successfully restored.', 'wp-smushit' ); ?>
-					</p>
+					<div class="sui-notice-content">
+						<div class="sui-notice-message">
+							<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+							<p>{{{ data.success }}}
+								<?php esc_html_e( 'images were successfully restored.', 'wp-smushit' ); ?>
+							</p>
+						</div>
+					</div>
 				</div>
 				<button class="sui-button" onclick="window.location.reload()" data-modal-close="" type="button">
 					<?php esc_html_e( 'Finish', 'wp-smushit' ); ?>
 				</button>
 				<# } else { #>
 				<div class="sui-notice sui-notice-warning" style="text-align: left">
-					<p>{{{ data.success }}}/{{{ data.total }}}
-						<?php esc_html_e( 'images were successfully restored but some were unrecoverable. You can try again, or re-upload these images.', 'wp-smushit' ); ?>
-					</p>
+					<div class="sui-notice-content">
+						<div class="sui-notice-message">
+							<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+							<p>{{{ data.success }}}/{{{ data.total }}}
+								<?php esc_html_e( 'images were successfully restored but some were unrecoverable. You can try again, or re-upload these images.', 'wp-smushit' ); ?>
+							</p>
+						</div>
+					</div>
 				</div>
 				<# } #>
 			<# } #>

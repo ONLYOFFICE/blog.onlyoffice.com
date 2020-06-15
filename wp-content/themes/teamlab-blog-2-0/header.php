@@ -30,9 +30,9 @@
 
     <script type="text/javascript">
 
-		var onloadCallback = function() {
-			grecaptcha.render('popupCaptcha', {'sitekey' : '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'});  // test public key
-		};
+		// var onloadCallback = function() {
+		// 	grecaptcha.render('popupCaptcha', {'sitekey' : '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'});  // test public key
+		// };
 
 	</script>
     <script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl=en'></script>

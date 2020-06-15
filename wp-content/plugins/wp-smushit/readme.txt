@@ -1,13 +1,13 @@
 === Smush - Compress, Optimize and Lazy Load Images ===
 Plugin Name: Smush - Compress, Optimize and Lazy Load Images
-Version: 3.6.1
+Version: 3.6.3
 Author: WPMU DEV
 Author URI: https://premium.wpmudev.org/
 Contributors: WPMUDEV, alexdunae
 Tags: optimize images, convert webp, lazy load, image, resize, optimize, optimise, compress, performance, optimisation, photography, optimizer
-Requires at least: 4.6
-Tested up to: 5.4
-Stable tag: 3.6.1
+Requires at least: 5.2
+Tested up to: 5.4.1
+Stable tag: 3.6.3
 Requires PHP: 5.6.20
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -174,6 +174,24 @@ It depends what side of the pond you live on...but whether you say optimize, opt
 4. Smush will find and optimize images for you.
 
 == Changelog ==
+
+= 3.6.3 =
+
+Fix: CDN auto resize option causing issues with images
+
+= 3.6.2 =
+
+- New: CDN and lazy load integration with Soliloquy slider
+- Enhance: Native lazy loading disabled by default, added option to enable it
+- Enhance: Lazy load and CDN page parsing
+- Enhance: Summary module layout
+- Enhance: Image resize detection highlighting
+- Fix: Images with relative paths not processing by CDN
+- Fix: Object cache not clearing out stats during Re-Check Images action
+- Fix: Pages with lazy loading showing errors during W3C validation
+- Fix: Multiple noscript tags when lazy loading duplicate images
+- Fix: NextGen Re-Smush UI
+- Fix: Image resize settings not respecting the largest dimension
 
 = 3.6.1 =
 

@@ -376,12 +376,12 @@ function send_confirmation_email()
     global $wpdb;
     $responce = (object) ['errorMsg' => ''];
 
-    if (!verify_recaptcha($_POST['recaptchaResp'])) {
+    /*if (!verify_recaptcha($_POST['recaptchaResp'])) {
         $responce->errorMsg = "Incorrect recaptcha";
 
         echo json_encode($responce);
         wp_die();
-    }
+    }*/
 
     if (!empty($_POST['email']) && isset($_POST['email'])) {
 
@@ -428,7 +428,7 @@ function send_confirmation_email()
     wp_die();
 }
 
-/************ Recaptcha **************/
+/************ Recaptcha 
 
             
 function verify_recaptcha($recaptchaResp){
@@ -462,6 +462,9 @@ function verify_recaptcha($recaptchaResp){
 
     return $success;
 }
+*************Recaptcha */
+
+
 
  /**
  * Get curent language
