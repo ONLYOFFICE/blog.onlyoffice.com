@@ -13,7 +13,7 @@
   "author": "AddThis <plugins@addthis.com>",
   "license": "GPLv2",
   "devDependencies": {
-    "angular": "1.5.9",
+    "angular": "1.8.0",
     "angular-aria": "1.5.9",
     "angular-hotkeys": "^1.7.0",
     "angular-translate": "^2.9.2",
