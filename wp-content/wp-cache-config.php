@@ -17,7 +17,7 @@ $cache_enabled = true;
 $super_cache_enabled = true;
 $cache_max_time = 1800;
 //$use_flock = true; // Set it true or false if you know what to use
-$cache_path = 'D:\inetpub\wwwroot\blog.onlyoffice.com\wp-content/cache/';
+$cache_path = 'D:\inetpub\wwwroot\blog.onlyoffice.com/wp-content/cache/';
 $file_prefix = 'wp-cache-';
 $ossdlcdn = 0;
 

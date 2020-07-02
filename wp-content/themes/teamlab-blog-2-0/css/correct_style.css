@@ -398,10 +398,10 @@
     grid-template-columns: 2fr 1fr;
     grid-gap: 32px;
 }
-/* .postwrapper a img{
-    min-height: 178px;
+.postwrapper a img{
+    height: calc(100vw * 0.12);
     object-fit: cover;
-} */
+}
 .content img{
     max-width: 100%;
     object-fit: contain;
@@ -541,19 +541,25 @@
 .post h2.entry-title.press-page-title{
     margin-top: 15px;
 }
-.press-page a.press-url{
+.press-page a.press-url,
+.press-page a.press-url:visited{
     font-family: Open Sans;
     font-style: normal;
     font-weight: normal;
     font-size: 12px;
     line-height: 16px;
-    color: #4BB7F9;
+    color: #616161;
     padding: 4px 16px;
-    border: 1px solid #4BB7F9;
-    border-radius: 2px;
+    background: #F2F2F2;
+    border-radius: 3px;
     margin-right: 8px;
+    text-decoration: none;
 }
 
+.press-page a.press-url:hover,
+.press-page a.press-url:active{
+    text-decoration: underline;
+}
 /*---------PAGE TAGS-------*/
 
 .tags-page{
@@ -570,7 +576,7 @@
     font-size: 14px;
     line-height: 160%;
     border-radius: 3px;
-    text-decoration: underline;
+    text-decoration: none;
     cursor: default;
 }
 .post h2.entry-title.tags-page-title{
@@ -734,6 +740,15 @@
     background-size: 12px;
     background-position: 0 50%;
     background-repeat: no-repeat;
+}
+.autor a,
+.autor a:visited{
+    color: #919192;
+    text-decoration: none;
+}
+.autor a:hover,
+.autor a:active {
+    text-decoration: underline;
 }
 .comments {
     padding-left: 20px;

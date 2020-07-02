@@ -713,6 +713,9 @@ body.desktop .button.red.disabled:visited {
   .post .entry-info .post-info{
     padding-bottom: 10px;
   }
+  .postwrapper a img {
+    height: calc(100vw * 0.20);
+  }
   .sidebar{
     margin-top: 64px;
     width: 100%;
@@ -896,6 +899,9 @@ body.desktop .button.red.disabled:visited {
   .post h2.entry-title a{
     font-size: 18px;
     line-height: 133%;
+  }
+  .postwrapper a img {
+    height: auto;
   }
   .content-mail h2{
     font-size: 24px;

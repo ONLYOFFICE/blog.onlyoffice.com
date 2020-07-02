@@ -192,6 +192,28 @@ function bloggood_ru_image() {
 }
 
 
+
+ if ( ! function_exists( 'tmblog_posted_by' ) ) :
+        /**
+         * Prints HTML with meta information for the current post—date/time and author.
+         *
+         * @since Twenty Ten 1.0
+         */
+        function tmblog_posted_by() {
+            printf(
+            __( ( count( get_the_category() ) ) ? '<span class="%2$s">By %3$s</span>'
+                    : '<span class="%1$s">By %3$s</span>', 'teamlab-blog-2-0' ),
+                'meta-prep meta-prep-author',
+                'entry-utility-prep entry-utility-prep-cat-links',
+                sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
+                    get_author_posts_url( get_the_author_meta( 'ID' ) ),
+                    sprintf( esc_attr__( 'View all posts by %s', 'teamlab-blog-2-0' ), get_the_author() ),
+                    get_the_author()),
+                get_the_category_list( ', ' )
+            );
+        }
+        endif;
+
 function tmblog_filter_wp_title( $title, $separator ) {
         // Don't affect wp_title() calls in feeds.
         if ( is_feed() )
