@@ -56,8 +56,10 @@ var LanguageSelectorManager = new function () {
         openLngSelector: openLngSelector
     };
 };
-
-
+/***** Share button *****/
+$('.next-social').click(function () {
+    $('.other-social').toggleClass('active');
+})
 /***** INPUT VALIDATE
 var input = document.getElementById("s");
     input.addEventListener('input', function(e){

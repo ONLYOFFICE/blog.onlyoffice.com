@@ -10,7 +10,7 @@
 get_header();
 ?>
 
-<div class="SingleContainer">
+<div class="PostContainer">
 	
 	<div class="breadcrumbs-single">
           <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
@@ -21,7 +21,7 @@ get_header();
                 }?>
           </div>
       </div>
-	<div id="content" role="main">
+	<div id="post-content" role="main">
 			<div class="content">
 
 
@@ -34,16 +34,8 @@ get_header();
 
 
 			get_template_part( 'template-parts/content', get_post_type() );
-			include get_template_directory() . '/' . 'cloud-block.php';
 						
 		
-			// If comments are open or we have at least one comment, load up the comment template.
-			if ( comments_open() || get_comments_number() ) :
-				comments_template();
-			endif;
-
-
-
 		endwhile; // End of the loop.
 			
 		?>			

@@ -172,8 +172,11 @@
 .tagsList{
     margin-top: 50px;
     margin-bottom: 50px;
+    display: flex;
 }
-
+.tagLine{
+    width: 70%;
+}
 .tagsList .tagItem{
     display:inline-block;
     background-color:#F2F2F2;
@@ -195,7 +198,9 @@
 .tagsList a:visited{
     color: #333333;
 }
-
+.tagShare{
+    width: 30%;
+}
 /*---------Search in header-------*/
 .serach-header{
     position: absolute;
@@ -713,6 +718,9 @@
 }
 .head{
     margin-top: 14px;
+}
+.meta{
+    position: relative;
 }
 .meta span {
     font-family: Open Sans;
@@ -1348,11 +1356,37 @@ a.download:active{
     color: #333333;
 }
 /*-----------Single Page--------*/
+.PostContainer{
+    max-width: 1120px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 71px 160px 82px;
+}
+#post-content .content .entry-header{
+    text-align: center;
+}
+#post-content .content .entry-content {
+    max-width: 736px;
+    margin: 0 auto;
+}
 .SingleContainer{
     max-width: 1120px;
     margin: 0 auto;
     overflow: hidden;
     padding: 71px 160px 82px;
+}
+.PostContainer #post-content .sidebar .widget_recent_entries ul{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.PostContainer #post-content .sidebar .widget_recent_entries ul .recent {
+    display: block;
+}
+.PostContainer #post-content .sidebar .widget{
+    background: none;
+}
+.PostContainer #post-content #respond{
+    border-bottom: none;
 }
 .info-page{
     margin-top: 16px;
@@ -1441,8 +1475,141 @@ a.download:active{
     background-position: 0 50%;
     background-repeat: no-repeat;
 }
-
-
+/*-----------Share button--------*/
+.a2a_kit{
+    float: right !important;
+}
+.addtoany_share {
+    position: relative !important;
+}
+.a2a_mini_services{
+    display: grid;
+    grid-template-columns: auto;
+}
+.a2a_menu{
+    border: 1px solid #E7E7E7;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 8px rgba(85, 85, 85, 0.15);
+    border-radius: 5px;
+    padding: 24px 16px 14px 12px !important;
+    z-index: 15 !important;
+}
+.a2a_mini{
+    width: auto !important;
+    min-width: 50px !important;
+}
+.a2a_menu .a2a_mini .a2a_localize {
+    position: absolute !important;
+    right: -25px !important;
+    top: -25px !important;
+}
+a.a2a_i,
+i.a2a_i{
+    border: none !important;
+    margin-bottom: 14px !important;
+    padding: 0 !important;
+    width: auto !important;
+}
+a.a2a_i:last-child,
+i.a2a_i:last-child{
+    margin-bottom: 0 !important;
+}
+.a2a_more,
+.a2apage_wide{
+    display: none !important;
+}
+.a2a_menu a,
+.a2a_menu a.a2a_i:visited,
+.a2a_menu a.a2a_more,
+a.a2a_i span {
+    display: inline-block !important;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px !important;
+    line-height: 18px !important;
+    color: #333333 !important;
+    vertical-align: middle !important;
+}
+.a2a_mini_services a.a2a_i:hover {
+    background-color: #fff !important;
+    text-decoration: underline !important;
+    border: none !important;
+}
+.share-button{
+    position: relative;
+    display: inline-block;
+}
+.share-button a{
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+}
+.share-button a:last-child{
+    margin-right: 0;
+}
+.share-twitter{
+    background: url("../images/social_grey/twitter.svg") no-repeat 50% 50%;
+}
+.facebook{
+    background: url("../images/social_grey/facebook.svg") no-repeat 50% 50%;
+}
+.linkedin{
+    background: url("../images/social_grey/linkedin.svg") no-repeat 50% 50%;
+}
+.next-social{
+    background: url("../images/social_grey/dots.svg") no-repeat 50% 50%;
+}
+.other-social{
+    display: none;
+    position: absolute;
+    top: 24px;
+    right: -5px;
+    box-sizing: border-box;
+    width: 124px;
+    height: 138px;
+    background: url("../images/social_grey/share-block.svg") no-repeat 50% 40%;
+    padding: 25px 16px 16px 14px;
+}
+.other-social a,
+.other-social a:visited{
+    display: block;
+    margin-bottom: 14px;
+    height: 24px;
+    width: auto;
+    align-items: center;
+    box-sizing: border-box;
+    text-align: left;
+    text-decoration: none;
+}
+.other-social a:active,
+.other-social a:hover,
+.other-social a:link {
+    text-decoration: underline;
+}
+.active{
+    display: block;
+}
+.reddit{
+    padding: 4px 0 2px 32px;
+    background-size: 20px 20px;
+    background: url("../images/social_grey/reddit.svg") no-repeat 0 50%;
+}
+.telegram{
+    padding: 4px 0 2px 32px;
+    background-size: 20px 26px;
+    background: url("../images/social_grey/telegram.svg") no-repeat 0 50%;
+}
+.mastodon{
+    padding: 4px 0 2px 32px;
+    background-size: 20px 19px;
+    background: url("../images/social_grey/mastodon.svg") no-repeat 0 50%;
+}
+								
 
 
 
