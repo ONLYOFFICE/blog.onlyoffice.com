@@ -191,21 +191,6 @@ function bloggood_ru_image() {
   return $first_img;
 }
 
-// Отменяем обертку картинок в тег <p> в контенте
-add_filter('the_content', 'remove_img_ptags_func');
-function remove_img_ptags_func( $content ){
-	return preg_replace('/<p>\s*((?:<a[^>]+>)?\s*<img[^>]+>\s*(?:<\/a>)?)\s*<\/p>/i', '\1', $content );
-}
-
-
-// Выводим внутри записи первую картинку
-add_filter( 'the_content', 'first_img_in_the_content' );
-function first_img_in_the_content( $content ) {
-    // тут нужно обработать контент
-    return $content;
-    // тут нужно вывести "1-ая картинка" и дальше контент без этой самой первой картинки
-}
-
  if ( ! function_exists( 'tmblog_posted_by' ) ) :
         /**
          * Prints HTML with meta information for the current post—date/time and author.

@@ -41,25 +41,15 @@
 
 		<?php endif; ?>
 	</div><!-- .entry-header -->
-
-
+	<?php if ( is_singular('post') && has_post_thumbnail()) {
+	$thumbnail_attributes = wp_get_attachment_image_src( get_post_thumbnail_id(), 'full' ); ?>
+	<p class="first-img"><img src="<?php echo $thumbnail_attributes[0]; ?>" alt="<?php the_title(); ?>"/></p>
+	<?php } ?>
 	<div class="entry-content">
-		<?php
-		the_content( sprintf(
-			wp_kses(
-				/* translators: %s: Name of current post. Only visible to screen readers */
-				__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'teamlab-blog-2-0' ),
-				array(
-					'span' => array(
-						'class' => array(),
-					),
-				)
-			),
-			get_the_title()));?>
-
-
-			<!-- get the term list and links -->
-			<div class="tagsList">
+		<?php the_content( sprintf());?>
+	</div><!-- .entry-content -->
+</article><!-- #post-<?php the_ID(); ?> -->
+<div class="tagsList">
 				<div class="tagLine">
 					<?php
 
@@ -86,9 +76,5 @@
 				comments_template();
 			endif;?>
 
-
-
-	</div><!-- .entry-content -->
-</article><!-- #post-<?php the_ID(); ?> -->
 
 

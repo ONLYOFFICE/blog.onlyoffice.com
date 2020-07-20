@@ -54,7 +54,11 @@ $queryNews = new WP_Query($argsNews);?>
 				<?php while ($querySticky->have_posts()) : $querySticky->the_post(); ?>
 
 				<article class="post"> 
-					<a href="<?php the_permalink() ?>" alt="<?php the_title(); ?>"><img src="<?php echo bloggood_ru_image(); ?>" alt="<?php the_title(); ?>"/></a>
+					<?php if( has_post_thumbnail() ) { // условие, если есть миниатюра?>
+          <a href="<?php the_permalink() ?>" alt="<?php the_title(); ?>"><img src="<?php echo the_post_thumbnail_url( 'full' ); ?>" alt="<?php the_title(); ?>"/></a>
+          <?php } else { ?>
+          <a href="<?php the_permalink() ?>" alt="<?php the_title(); ?>"><img src="<?php echo bloggood_ru_image(); ?>" alt="<?php the_title(); ?>"/></a>
+          <?php } ?>
 					<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'teamlab-blog-2-0' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
 					<div class="meta head">
 						<span class="date"><?php echo get_the_date('j F Y'); ?></span>
@@ -74,13 +78,13 @@ $queryNews = new WP_Query($argsNews);?>
 
 <?php 
 
- $args = [
-  'post_type' => 'post',
-  'post_status' => 'publish',
-  'posts_per_page' => 9,
-  'cat'=>-1012,
-  'category__not_in' => $news_cat_id
- ];
+  $args = [
+    'post_type' => 'post',
+    'post_status' => 'publish',
+    'posts_per_page' => 9,
+    'cat'=>-1012,
+    'category__not_in' => $news_cat_id
+  ];
 
  $wp_query = new WP_Query($args); 
     

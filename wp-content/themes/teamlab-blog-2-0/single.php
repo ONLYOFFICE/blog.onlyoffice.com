@@ -42,7 +42,28 @@ get_header();
 
 		</div><!-- #content -->
 		<div class="sidebar">
-			<?php dynamic_sidebar('sidebar-2'); ?>
+            <h3><?php _e( 'Recent post', 'teamlab-blog-2-0' ); ?></h3>
+            <?php 
+             $args = [
+            'post_type' => 'post',
+            'post_status' => 'publish',
+            'posts_per_page' => 3,
+            'cat'=>-1012,
+            'category__not_in' => $news_cat_id
+        ];
+         $wp_query = new WP_Query($args); 
+            if ($wp_query->have_posts()) : ?>
+            <div class="wrapperMain">
+
+           
+            <?php while ($wp_query->have_posts()) : $wp_query->the_post(); ?>
+
+
+            <?php include get_template_directory() . '/' . 'cicle-wrapper.php' ?>
+            
+            <?php endwhile; ?>
+            <?php endif; ?>
+            </div>
 	</div>
 	</div><!-- .content -->
 	

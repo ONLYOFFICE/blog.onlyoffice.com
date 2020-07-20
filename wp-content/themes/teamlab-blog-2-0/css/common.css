@@ -588,6 +588,16 @@ body.desktop .button.red.disabled:visited {
   text-transform: none;
   padding: 10px 25px;
 }
+@media screen and (max-width: 1920px) {
+  .postwrapper a img {
+    height: calc(100vw * 0.10);
+  }
+}
+@media screen and (max-width: 1640px) {
+  .postwrapper a img {
+    height: calc(100vw * 0.13);
+  }
+}
 @media screen and (max-width: 1320px) {
   .download-block {
     height: auto;
@@ -606,6 +616,9 @@ body.desktop .button.red.disabled:visited {
   }
   .download {
     margin: 0 16px 16px 0;
+  }
+  .postwrapper a img {
+    height: calc(100vw * 0.12);
   }
 }
 @media screen and (max-width: 1150px){
@@ -659,26 +672,40 @@ body.desktop .button.red.disabled:visited {
     box-sizing: border-box;
     padding: 88px 0 80px 0;
   }
+  .PostContainer {
+    max-width: 736px;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 48px 0 80px 0;
+  }
+  .SingleContainer {
+    max-width: 736px;
+    box-sizing: border-box;
+    padding: 48px 0 80px 0;
+  }
+
+  .MailContainer {
+    padding: 112px 0 80px 0;
+    max-width: 736px;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: wrap;
+    text-align: center;
+    justify-content: center;
+  }
+  .PostContainer #post-content .sidebar .wrapperMain .postwrapper:last-child {
+    display: none;
+  }
+  .breadcrumbs-single {
+    margin: 32px 0 70px;
+  }
   #content{
     display: block;
   }
   .content{
     width: 100%;
   }
-  .SingleContainer{
-      max-width: 736px;
-      box-sizing: border-box;
-      padding: 48px 0 80px 0;
-  }
-  .MailContainer{
-      padding: 112px 0 80px 0;
-      max-width: 736px;
-      box-sizing: border-box;
-      display: flex;
-      flex-flow: wrap;
-      text-align: center;
-      justify-content: center;
-  }
+  
   .serach-header{
     position: absolute;
     right: 40px;
@@ -698,15 +725,6 @@ body.desktop .button.red.disabled:visited {
       order:2;
   }
 
-  a img, div.post div.entry-content img.alignright{
-    border: none;
-    float: none;
-    margin: auto;
-    display: block;
-    max-width: 736px;
-    width: 100%;
-    height: auto;
-  }
   .post .entry-info .post-info{
     white-space: normal;
   }
@@ -775,6 +793,38 @@ body.desktop .button.red.disabled:visited {
     width: auto;
     padding: 88px 40px 80px 40px;
    }
+   .PostContainer {
+     width: auto;
+     padding: 48px 40px 80px 40px;
+     margin: 0;
+   }
+   #post-content .content .entry-title {
+     font-size: 32px;
+   }
+   #post-content .content .entry-header {
+     text-align: left;
+   }
+   #post-content .content .entry-header {
+     text-align: left;
+   }
+   #post-content .content .meta .comments,
+   #post-content .content .meta .views {
+     display: none;
+   }
+   .tagsList {
+     display: block;
+     margin-bottom: 120px;
+   }
+   .tagLine{
+     width: 100%;
+     margin-bottom: 27px;
+   }
+   .tagShare{
+     width: 100%;
+   }
+   .a2a_kit{
+     float: left !important;
+   }
    .breadcrumbs-single{
     margin: 24px 0;
     }
@@ -833,10 +883,14 @@ body.desktop .button.red.disabled:visited {
     padding: 48px 0;
     width: 100%;
   }
+  .PostContainer {
+    padding: 48px 40px 20px 40px;
+  }
   .breadcrumbs-single{
     margin: 24px 0;
     padding: 0 15px;
     }
+    
     .SearchContainer{
     width: auto;
     padding: 88px 15px 80px;
@@ -886,9 +940,6 @@ body.desktop .button.red.disabled:visited {
   .post{
     padding: 0 15px;
   }
-  .post p{
-    font-size: 14px;
-  }
   h2.entry-title:first-child{
     padding: 0 15px;
   }
@@ -899,6 +950,12 @@ body.desktop .button.red.disabled:visited {
   .post h2.entry-title a{
     font-size: 18px;
     line-height: 133%;
+  }
+  .post h2.entry-title.press-page-title a {
+    font-size: 18px;
+  }
+  .in-the-press {
+    margin-top: 43px;
   }
   .postwrapper a img {
     height: auto;
@@ -942,9 +999,6 @@ body.desktop .button.red.disabled:visited {
 
   div.post div.entry-utility span.googleplus-button{
     display: none;
-  }
-  .tagsList{
-    padding: 0 15px;
   }
 
   footer h6{
@@ -1031,8 +1085,52 @@ body.desktop .button.red.disabled:visited {
 }
 
 @media screen and (max-width: 320px){
+  .PostContainer {
+    padding: 48px 0 20px 0;
+    margin: 0;
+  }
+  #post-content .post {
+    padding: 0;
+  }
+  #post-content .content .entry-title {
+    font-size: 24px;
+  }
+  #post-content .content .entry-header{
+    padding: 0 15px;
+  }
+  #post-content .content .entry-content {
+    padding: 0 15px;
+  }
+  .tagsList {
+    margin-top: 43px;
+    margin-bottom: 96px;
+    padding: 0 15px;
+  }
+  div#respond{
+    padding-bottom: 0;
+  }
+  #post-content .sidebar h3 {
+    padding: 0 15px;
+    text-align: left;
+  }
+  #post-content .sidebar .wrapperMain{
+    margin: 32px 0 0 0;
+  }
   div.post div.entry-utility span.googleplus-button{
     display: none;
+  }
+  .wrapperMain .postwrapper .postThemeGridBox .meta .comments,
+  .wrapperMain .postwrapper .postThemeGridBox .meta .views {
+    display: none;
+  }
+  #post-content .content .entry-header .meta .a2a_kit{
+    bottom: -50px;
+    left: 0;
+    top: auto;
+    right: auto;
+  }
+  #post-content .content .entry-content {
+    margin: 72px auto 0;
   }
   .postwrapper {
     margin-bottom: 45px;

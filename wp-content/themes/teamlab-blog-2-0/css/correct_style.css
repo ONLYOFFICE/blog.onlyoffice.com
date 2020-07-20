@@ -170,9 +170,9 @@
 /*---------Tags in single post-------*/
 
 .tagsList{
-    margin-top: 50px;
-    margin-bottom: 50px;
     display: flex;
+    max-width: 736px;
+    margin: 50px auto 80px;
 }
 .tagLine{
     width: 70%;
@@ -408,8 +408,18 @@
     object-fit: cover;
 }
 .content img{
-    max-width: 100%;
     object-fit: contain;
+    max-width: 100%;
+}
+.content p.first-img {
+    text-align: center;
+}
+.content p.first-img img{
+    
+    max-width: 100%;
+}
+.content .entry-content:first-child {
+    display: none;
 }
 /*---------SideBar-------*/
 .sideBar li{
@@ -418,6 +428,19 @@
 .sideBar ul{
     margin-left: 0;
     padding-left: 0;
+}
+.sidebar h3{
+    font-style: normal;
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 133%;
+    text-align: center;
+    letter-spacing: -0.02em;
+    font-feature-settings: 'tnum'on, 'lnum'on;
+    color: #333333;
+}
+.sidebar .wrapperMain{
+    margin: 56px 0 0 0;
 }
 
 /*---------Widgets-------*/
@@ -446,7 +469,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    content: "•";
+    content: "•" !important;
     font-size: 20px;
     color: #04ED37;
     margin:0 8px 0 3px;
@@ -541,10 +564,13 @@
 
 /*---------PAGE ONLYOFFICE IN THE PRESS-------*/
 .in-the-press{
-    margin-top: 64px;
+    margin-top: 59px;
 }
 .post h2.entry-title.press-page-title{
-    margin-top: 15px;
+    margin-top: 11px;
+}
+.post h2.entry-title.press-page-title a {
+    font-size: 24px;
 }
 .press-page a.press-url,
 .press-page a.press-url:visited{
@@ -1210,6 +1236,10 @@ a.download:active{
     max-width: 240px;
     margin: auto;
 }
+.PostContainer .cloud-block{
+    max-width: 736px;
+    margin: 0 auto;
+}
 
 
 /*-----------Load More--------*/
@@ -1314,7 +1344,7 @@ a.download:active{
 
 /*-----------Breadcrums--------*/
 .breadcrumbs-single{
-    margin: 32px 0;
+    margin: 32px 0 48px;
 }
 .breadcrumbs-search{
     margin-bottom: 32px;
@@ -1360,30 +1390,28 @@ a.download:active{
     max-width: 1120px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 71px 160px 82px;
+    padding: 71px 160px 120px;
 }
 #post-content .content .entry-header{
     text-align: center;
 }
+#post-content .content .entry-title {
+    font-size: 40px;
+}
 #post-content .content .entry-content {
     max-width: 736px;
-    margin: 0 auto;
+    margin: 40px auto 0;
+}
+#post-content .content .entry-header .meta .a2a_kit {
+    position: absolute;
+    right: 0;
+    top: -5px;
 }
 .SingleContainer{
     max-width: 1120px;
     margin: 0 auto;
     overflow: hidden;
     padding: 71px 160px 82px;
-}
-.PostContainer #post-content .sidebar .widget_recent_entries ul{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-}
-.PostContainer #post-content .sidebar .widget_recent_entries ul .recent {
-    display: block;
-}
-.PostContainer #post-content .sidebar .widget{
-    background: none;
 }
 .PostContainer #post-content #respond{
     border-bottom: none;
@@ -1482,20 +1510,24 @@ a.download:active{
 .addtoany_share {
     position: relative !important;
 }
+.addtoany_share img{
+    margin-top: 0 !important;
+}
 .a2a_mini_services{
     display: grid;
     grid-template-columns: auto;
 }
 .a2a_menu{
-    border: 1px solid #E7E7E7;
-    box-sizing: border-box;
-    box-shadow: 0px 2px 8px rgba(85, 85, 85, 0.15);
-    border-radius: 5px;
-    padding: 24px 16px 14px 12px !important;
+    box-sizing: border-box !important;
+    border: none !important;
+    border-radius: 5px;   
     z-index: 15 !important;
 }
 .a2a_mini{
-    width: auto !important;
+    width: 132px !important;
+    height: 143px !important;
+    background: url("../images/social_grey/share-block.svg") no-repeat 50% 40% !important;
+    padding: 24px 16px 14px 12px !important;
     min-width: 50px !important;
 }
 .a2a_menu .a2a_mini .a2a_localize {
@@ -1503,6 +1535,7 @@ a.download:active{
     right: -25px !important;
     top: -25px !important;
 }
+
 a.a2a_i,
 i.a2a_i{
     border: none !important;
@@ -1623,9 +1656,9 @@ div#comments a{
 }
 
 div#comments {
+    max-width: 736px;
     padding-top: 35px;
-    border-top: 1px solid #e0e0e0;
-    margin: -5px 0 0;
+    margin: -5px auto 0;
     font-size: 12px;
 }
 

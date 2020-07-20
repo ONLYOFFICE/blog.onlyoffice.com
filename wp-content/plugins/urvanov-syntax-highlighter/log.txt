@@ -3,789 +3,362 @@ The log has been truncated since it exceeded 50000 bytes.
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 7:50:01 AM - 10 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:10:45 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 7:52:50 AM - 10 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:11:43 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 7:54:13 AM - 10 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:13:55 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 9:41:25 AM - 10 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:15:20 PM - 17 Jul 2020]
 
-
-[Crayon Syntax Highlighter Log Entry - 9:41:25 AM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 9:41:35 AM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 9:45:42 AM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 9:45:48 AM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 1:45:07 PM - 10 Jul 2020]
-
-
-[Crayon Syntax Highlighter Log Entry - 1:45:07 PM - 10 Jul 2020]
-
-ult/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 1:45:16 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 1:48:21 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 1:48:22 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 2:00:45 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 2:00:49 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 2:04:31 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 2:07:28 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 2:09:20 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 2:09:44 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 2:24:00 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:23:52 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:29:36 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:31:21 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:34:47 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:34:53 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:35:17 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:36:24 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:37:37 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:40:40 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:41:08 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:41:50 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:42:37 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:42:49 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:43:34 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:45:10 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:46:30 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 3:49:18 PM - 10 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:16:25 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:16:35 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:29:01 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:29:32 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:29:43 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:30:02 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:38:05 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:39:03 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:40:08 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:40:21 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:42:17 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:42:39 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:43:13 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:43:29 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:44:36 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:45:58 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:46:42 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:47:25 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:47:54 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:48:14 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:48:45 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:49:16 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:51:31 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:52:21 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:54:28 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:55:51 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 7:56:24 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:00:57 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:09:11 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:09:23 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:10:28 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:10:43 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:10:59 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:11:04 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:12:39 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:12:55 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:13:08 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:15:15 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:16:30 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:29:18 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:29:48 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:30:43 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:32:02 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:32:22 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:32:56 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:35:24 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:35:49 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:37:46 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:39:04 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:39:39 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 8:41:32 AM - 13 Jul 2020]
-
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 8:42:40 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:15:48 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 8:44:19 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:16:04 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 8:44:32 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:16:26 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 8:45:32 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:26:58 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 8:46:12 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:29:41 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 8:46:30 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:30:15 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 8:49:28 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:31:45 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 8:50:53 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:32:04 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 8:51:24 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:41:21 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 8:52:58 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:42:33 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:09:05 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:43:53 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:14:01 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:45:04 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:14:06 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:45:20 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:21:04 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:46:10 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:22:06 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:46:57 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:22:58 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:48:03 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:23:45 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:48:40 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:24:30 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:51:02 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:24:49 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:53:26 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:25:01 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:55:57 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:25:49 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:56:09 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:26:04 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:57:40 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:26:19 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 1:59:47 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:26:44 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 2:08:46 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:27:45 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 2:09:27 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:29:10 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 2:10:38 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:29:16 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 2:12:26 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:29:24 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 2:12:51 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:31:11 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 2:14:07 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:47:41 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 2:16:21 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:48:31 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 2:16:27 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:48:58 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 2:18:39 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:49:03 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 2:18:44 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:49:45 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 4:15:21 PM - 17 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:51:27 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 6:53:48 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
- [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 10:54:09 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 6:53:48 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
-
-[Crayon Syntax Highlighter Log Entry - 10:55:35 AM - 13 Jul 2020]
-
- [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 11:11:46 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 6:54:09 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 11:13:00 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:00:39 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 11:19:12 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:03:24 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 11:22:08 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:05:06 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 11:23:12 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:05:17 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 11:28:31 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:05:59 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 11:29:32 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:07:52 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 11:32:22 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:09:18 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 11:52:19 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:09:51 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 11:54:08 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:10:54 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 11:54:31 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:11:38 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 11:55:08 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:11:47 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 11:55:49 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:12:10 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 11:56:12 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:12:23 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 11:56:56 AM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:12:40 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 12:04:17 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:12:54 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 1:13:23 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:14:01 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 1:15:19 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:14:56 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 2:29:53 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:15:41 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 2:30:40 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:16:13 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 2:30:52 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:16:33 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 2:51:09 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:16:55 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 2:52:33 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:18:03 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 2:52:59 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:19:27 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 2:54:19 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:19:39 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 2:54:43 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:20:16 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 2:55:28 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:20:42 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 2:56:44 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:20:47 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 2:58:34 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:29:22 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 2:58:50 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:29:27 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 3:07:24 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:30:04 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
 
-[Crayon Syntax Highlighter Log Entry - 3:08:10 PM - 13 Jul 2020]
+[Crayon Syntax Highlighter Log Entry - 7:30:47 AM - 20 Jul 2020]
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
