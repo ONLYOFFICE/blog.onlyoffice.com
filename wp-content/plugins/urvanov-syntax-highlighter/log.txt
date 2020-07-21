@@ -362,3 +362,23 @@ The log has been truncated since it exceeded 50000 bytes.
 
  [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
  [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
+
+[Crayon Syntax Highlighter Log Entry - 7:02:30 AM - 21 Jul 2020]
+
+ [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
+ [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
+
+[Crayon Syntax Highlighter Log Entry - 7:05:13 AM - 21 Jul 2020]
+
+ [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
+ [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
+
+[Crayon Syntax Highlighter Log Entry - 7:05:25 AM - 21 Jul 2020]
+
+ [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
+ [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'
+
+[Crayon Syntax Highlighter Log Entry - 7:55:47 AM - 21 Jul 2020]
+
+ [SYSTEM LOG] 'The regex for the element \'VARIABLE\' in \'/langs/default/default.txt\' is not valid.'
+ [SYSTEM LOG] 'The regex for the element \'OPERATOR\' in \'/langs/default/default.txt\' is not valid.'

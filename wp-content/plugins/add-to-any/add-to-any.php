@@ -786,7 +786,7 @@ function A2A_SHARE_SAVE_head_script() {
 	}
 	
 	// Set static server.
-	$static_server = $cache ? $upload_dir['baseurl'] . '/addtoany' : '/wp-content/plugins/add-to-any';
+	$static_server = $cache ? $upload_dir['baseurl'] . '/Blog/addtoany' : '/wp-content/plugins/add-to-any';
 	
 	// Icon colors.
 	$icon_bg = ! empty( $options['icon_bg'] ) && in_array( $options['icon_bg'], array( 'custom', 'transparent' ) ) ? $options['icon_bg'] : false;
