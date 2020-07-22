@@ -870,9 +870,6 @@ body.desktop .button.red.disabled:visited {
   .postwrapper{
     margin:0 15px 61px 15px;
   }
-  .content li{
-    font-size: 14px;
-  }
   .download-block{
     margin: 64px 0;
   }
@@ -1083,7 +1080,17 @@ body.desktop .button.red.disabled:visited {
   margin-top: 49px;
   }
 }
-
+@media screen and (max-width: 488px) {
+#post-content .content .entry-header .meta .a2a_kit {
+  bottom: -50px;
+  left: 0;
+  top: auto;
+  right: auto;
+}
+#post-content .content .entry-content {
+  margin: 72px auto 0;
+}
+}
 @media screen and (max-width: 320px){
   .PostContainer {
     padding: 48px 0 20px 0;
@@ -1122,15 +1129,6 @@ body.desktop .button.red.disabled:visited {
   .wrapperMain .postwrapper .postThemeGridBox .meta .comments,
   .wrapperMain .postwrapper .postThemeGridBox .meta .views {
     display: none;
-  }
-  #post-content .content .entry-header .meta .a2a_kit{
-    bottom: -50px;
-    left: 0;
-    top: auto;
-    right: auto;
-  }
-  #post-content .content .entry-content {
-    margin: 72px auto 0;
   }
   .postwrapper {
     margin-bottom: 45px;

@@ -42,7 +42,7 @@ get_header();
 
 		</div><!-- #content -->
 		<div class="sidebar">
-            <h3><?php _e( 'Recent post', 'teamlab-blog-2-0' ); ?></h3>
+            <h3><?php _e( 'Recent posts', 'teamlab-blog-2-0' ); ?></h3>
             <?php 
              $args = [
             'post_type' => 'post',
