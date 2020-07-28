@@ -137,12 +137,12 @@ header {
 }
 .footer_menu ul li {
   list-style-type: none;
-  font-size: 12px;
-  line-height: 1.6em;
   margin: 0 0 5px;
 }
 .footer_menu li a {
   text-decoration: none;
+  font-size: 13px;
+  line-height: 18px;
 }
 
 .footer_menu li a.emailus{
@@ -198,8 +198,7 @@ footer h6.second_h {
   text-transform: uppercase;
 }
 .SocialLinks h6{
-  text-align: center;
-  display: none;
+  text-align: left;
 }
 .blubase {
   display: none;
@@ -302,115 +301,102 @@ input.vertical-bottom {
   background: transparent;
 }
 .SocialLinks {
-  margin: 0;
-  text-align: center;
   align-items: center;
 }
 .ListSocLink {
-  display: inline-block;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin: 20px 0 28px -5px;
+  max-width: 300px
 }
 .ListSocLink li {
   list-style-type: none;
   display: inline-block;
-  width: 30px;
-  height: 32px;
-  margin: 0 1px 0 1px;
-  vertical-align: middle;
-}
-.ListSocLink li:first-child {
-  margin-left: 20px;
+  width: 26px;
+  height: 42px;
+  margin: 0;
+  padding-right: 24px;
+  vertical-align: middle
 }
 .ListSocLink li label {
   background-repeat: no-repeat;
-  background-image: url("../images/social_2x.png");
-  background-size: 342px 66px;
+  background-image: url("https://static-www.onlyoffice.com/images/color_social_icons.svg");
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
   display: block;
   height: 24px;
   width: 32px;
   margin: 0;
   vertical-align: middle;
+  background-position-y: 0;
 }
+.ListSocLink li label:hover {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0)
+}
+.ListSocLink li label:active {
+  background-position-y: -41px
+}
+
+.ListSocLink li label.social_grey_subscribe{
+  background-position-x: -430px;
+}
+
 .ListSocLink li label.social_grey_fb {
-  background-position: 0 0;
+  background-position-x: 4px;
 }
-.ListSocLink li label.social_grey_fb:hover {
-  background-position: 0 -21px;
-}
-.ListSocLink li label.social_grey_fb:active {
-  background-position: 0 -41px;
-}
+
+
 .ListSocLink li label.social_grey_twi {
-  background-position: -34px 0;
+  background-position-x: -36px;
 }
-.ListSocLink li label.social_grey_twi:hover {
-  background-position: -34px -21px;
-}
-.ListSocLink li label.social_grey_twi:active {
-  background-position: -34px -41px;
-}
+
+
 .ListSocLink li label.social_grey_in {
-  background-position: -114px 0;
+  background-position-x: -76px;
 }
-.ListSocLink li label.social_grey_in:hover {
-  background-position: -114px -21px;
-}
-.ListSocLink li label.social_grey_in:active {
-  background-position: -114px -41px;
-}
+
+
 .ListSocLink li label.social_grey_g {
-  background-position: -75px 0;
+  background-position-x: -75px;
 }
-.ListSocLink li label.social_grey_g:hover {
-  background-position: -75px -21px;
-}
-.ListSocLink li label.social_grey_g:active {
-  background-position: -75px -41px;
-}
+
+
 .ListSocLink li label.social_grey_tube {
-  background-position: -154px 0;
+  background-position-x: -116px;
 }
-.ListSocLink li label.social_grey_tube:hover {
-  background-position: -154px -21px;
-}
-.ListSocLink li label.social_grey_tube:active {
-  background-position: -154px -41px;
-}
+
+
 .ListSocLink li label.social_grey_blog {
-  background-position: -192px 0;
+  background-position-x: -196px;
 }
-.ListSocLink li label.social_grey_blog:hover {
-  background-position: -192px -21px;
-}
-.ListSocLink li label.social_grey_blog:active {
-  background-position: -192px -41px;
-}
+
 .ListSocLink li label.social_grey_medium {
-  background-position: -231px 0;
+  background-position-x: -236px;
 }
-.ListSocLink li label.social_grey_medium:hover {
-  background-position: -231px -21px;
-}
-.ListSocLink li label.social_grey_medium:active {
-  background-position: -231px -41px;
-}
+
 .ListSocLink li label.social_grey_instagram {
-  background-position: -269px 0;
+  background-position-x: -276px;
 }
-.ListSocLink li label.social_grey_instagram:hover {
-  background-position: -269px -21px;
-}
-.ListSocLink li label.social_grey_instagram:active {
-  background-position: -269px -41px;
-}
+
 .ListSocLink li label.social_grey_vk {
-  background-position: -303px 0;
+  background-position-x: -156px;
 }
-.ListSocLink li label.social_grey_vk:hover {
-  background-position: -303px -21px;
+
+.ListSocLink li label.social_grey_github {
+  background-position-x: -316px
 }
-.ListSocLink li label.social_grey_vk:active {
-  background-position: -303px -41px;
+
+.ListSocLink li label.social_grey_fosstodon {
+  background-position-x: -393px
 }
+
+
 
 /*****************livechat fix***********************/
 
@@ -592,10 +578,16 @@ body.desktop .button.red.disabled:visited {
   .postwrapper a img {
     height: calc(100vw * 0.10);
   }
+  .ErrorContainer .bg {
+    height: 312px;
+  }
 }
 @media screen and (max-width: 1640px) {
   .postwrapper a img {
     height: calc(100vw * 0.13);
+  }
+  .ErrorContainer .bg{
+    height: 212px;
   }
 }
 @media screen and (max-width: 1320px) {
@@ -633,12 +625,18 @@ body.desktop .button.red.disabled:visited {
     background-position: 99% center;
   }
   .input-header .search-field:focus{
-    background-color: #fff;
+    background-color: #F9F9F9;
     border: 1px solid #E0E0E0;
     border-radius: 5px;
     cursor: text;
     outline: 0;
     width: calc(100vw - 120px);
+  }
+  .serach-header {
+    position: absolute;
+    right: 40px;
+    top: 20px;
+    z-index: 15;
   }
 
 }
@@ -683,6 +681,11 @@ body.desktop .button.red.disabled:visited {
     box-sizing: border-box;
     padding: 48px 0 80px 0;
   }
+  .ErrorContainer {
+    max-width: 736px;
+    overflow: hidden;
+    padding: 88px 0 80px 0;
+  }
 
   .MailContainer {
     padding: 112px 0 80px 0;
@@ -705,10 +708,12 @@ body.desktop .button.red.disabled:visited {
   .content{
     width: 100%;
   }
-  
+  .input-header .search-field:focus {
+    width: calc(100vw - 130px);
+  }
   .serach-header{
     position: absolute;
-    right: 40px;
+    right: 61px;
     top: 8px;
     z-index: 15;
 }
@@ -807,9 +812,15 @@ body.desktop .button.red.disabled:visited {
    #post-content .content .entry-header {
      text-align: left;
    }
+   #post-content .content .entry-header .info-page {
+     margin-top: 20px;
+   }
    #post-content .content .meta .comments,
    #post-content .content .meta .views {
      display: none;
+   }
+   #post-content .sidebar {
+     margin-top: 72px;
    }
    .tagsList {
      display: block;
@@ -848,8 +859,11 @@ body.desktop .button.red.disabled:visited {
       display: block;
       padding-bottom: 10px;
   }
-  .ListSocLink li:first-child {
-      margin-left: -13px;
+  .ListSocLink {
+    max-width: 102%;
+  }
+  .ListSocLink li {
+    padding-right: 1vw;
   }
   .gRecaptcha{
     width: 150px;
@@ -881,7 +895,7 @@ body.desktop .button.red.disabled:visited {
     width: 100%;
   }
   .PostContainer {
-    padding: 48px 40px 20px 40px;
+    padding: 48px 0 20px;
   }
   .breadcrumbs-single{
     margin: 24px 0;
@@ -898,13 +912,19 @@ body.desktop .button.red.disabled:visited {
   .search-main{
     padding: 0 15px;
   }
-  .sidebar{
+  .SingleContainer .subscribe-blue,
+  .SingleContainer .subscribe-white,
+  .sidebar {
     margin-top: 48px;
   }
   .subscribe-white{
     padding: 66px 40px 67px;
     background: url(../images/newsletter.svg) no-repeat  50% 66px;
 }
+  .ErrorContainer {
+    width:  auto;
+    padding: 88px 16px 64px;
+  }
 .gRecaptcha{
     width: 100%;
     transform: none;
@@ -977,6 +997,13 @@ body.desktop .button.red.disabled:visited {
   }
   .go-home{
     margin-top: 32px;
+  }
+  .ErrorContainer p {
+    width: 100%;
+  }
+  .ErrorContainer h1 {
+    margin-top: 40px;
+    font-size: 24px;
   }
 
   p iframe{
@@ -1079,6 +1106,9 @@ body.desktop .button.red.disabled:visited {
   .copyReserved {
   margin-top: 49px;
   }
+  .tagsList{
+    padding: 0 15px;
+  }
 }
 @media screen and (max-width: 488px) {
 #post-content .content .entry-header .meta .a2a_kit {
@@ -1108,6 +1138,13 @@ body.desktop .button.red.disabled:visited {
   #post-content .content .entry-content {
     padding: 0 15px;
   }
+  #post-content .content .entry-header .info-page {
+    margin-top: 16px;
+  }
+  #post-content .sidebar {
+    margin-top: 48px;
+  }
+  
   .tagsList {
     margin-top: 43px;
     margin-bottom: 96px;
@@ -1142,6 +1179,16 @@ body.desktop .button.red.disabled:visited {
   .letter-box{
     width: 220px;
     height: 200px;
+  }
+  .ErrorContainer .bg {
+    height: 133px;
+  }
+  .logo {
+    width: 180px;
+    height: 70px;
+    background: url("../images/logo-mini.svg") no-repeat 0 50%;
+    z-index: 1;
+    position: relative;
   }
 
 }

@@ -212,38 +212,6 @@ function bloggood_ru_image() {
         }
         endif;
 
-function tmblog_filter_wp_title( $title, $separator ) {
-        // Don't affect wp_title() calls in feeds.
-        if ( is_feed() )
-            return $title;
-        // The $paged global variable contains the page number of a listing of posts.
-        // The $page global variable contains the page number of a single post that is paged.
-        // We'll display whichever one applies, if we're not looking at the first page.
-        global $paged, $page;
-        if ( is_search() ) {
-            // If we're a search, let's start over:
-            $title = sprintf( __( 'Search results for %s', 'teamlab-blog-2-0' ), '"' . get_search_query() . '"' );
-            // Add a page number if we're on page 2 or more:
-            if ( $paged >= 2 )
-                $title .= " $separator " . sprintf( __( 'Page %s', 'teamlab-blog-2-0' ), $paged );
-            // Add the site name to the end:
-            $title .= " $separator " . get_bloginfo( 'name', 'display' );
-            // We're done. Let's send the new title back to wp_title():
-            return $title;
-        }
-        // Otherwise, let's start by adding the site name to the end:
-        $title .= get_bloginfo( 'name', 'display' );
-        // If we have a site description and we're on the home/front page, add the description:
-        $site_description = get_bloginfo( 'description', 'display' );
-        if ( $site_description && ( is_home() || is_front_page() ) )
-            $title .= " $separator " . $site_description;
-        // Add a page number if necessary:
-        if ( $paged >= 2 || $page >= 2 )
-            $title .= " $separator " . sprintf( __( 'Page %s', 'teamlab-blog-2-0' ), max( $paged, $page ) );
-        // Return the new title to wp_title():
-        return $title;
-    }
-    add_filter( 'wp_title', 'tmblog_filter_wp_title', 10, 2 );
 /**
  * Register widget area.
  *
@@ -323,6 +291,25 @@ add_action('wp_ajax_loadmore', 'true_load_posts');
 add_action('wp_ajax_nopriv_loadmore', 'true_load_posts');
 
 
+
+// Search tags on page search
+function search_tags_query($query) {
+    if(is_search()) {
+        $s = $query->get('s');
+        if(strpos($s, '#')){
+            $terms = explode('#', $s);
+            $query->set('tax_query', [
+                'relation' => 'OR',
+                [
+                    'term_taxonomy' => 'post_tag', // или custom taxonomy какой-то, если нужно
+                    'field' => 'name',
+                    'terms' => $terms
+                ]
+            ]);
+        }
+  }
+}
+add_action('pre_get_posts', 'search_tags_query');
 // Load more on page search
 
 function true_load_posts_in_search(){

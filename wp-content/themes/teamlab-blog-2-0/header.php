@@ -15,31 +15,51 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Google Tag Manager -->
+    <script>(function (a, s, y, n, c, h, i, d, e) { s.className += ' ' + y; h.start = 1 * new Date; h.end = i = function () { s.className = s.className.replace(RegExp(' ?' + y), '') }; (a[n] = a[n] || []).hide = h; setTimeout(function () { i(); h.end = null }, c); h.timeout = c; })(window, document.documentElement, 'async-hide', 'dataLayer', 4000, { 'GTM-PMBZ8H3': true });</script>  <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+            new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-5NW47TX');
+    </script>
+    <!-- End Google Tag Manager -->  
+    <script>    (function (i, s, o, g, r, a, m) {
+                    i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                        (i[r].q = i[r].q || []).push(arguments)
+                    }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+                })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+                ga('create', 'UA-12442749-5', 'auto', { 'name': 'www', 'allowLinker': true });
+                ga('require', 'linker');
+                ga('www.linker:autoLink', ['onlyoffice.com', 'onlyoffice.eu', 'onlyoffice.sg', 'avangate.com']);
+                ga('www.send', 'pageview');
+
+                ga('create', 'UA-12442749-21', 'auto', { 'name': 'testTracker', 'allowLinker': true });
+                ga('require', 'linker');
+                ga('testTracker.linker:autoLink', ['onlyoffice.com', 'onlyoffice.eu', 'onlyoffice.sg', 'avangate.com']);
+                ga('testTracker.send', 'pageview');
+    </script>
 	<meta content="text/html; charset=<?php bloginfo( 'charset' ); ?>" />
-	<title><?php
-                /*
-                * Print the <title> tag based on what is being viewed.
-                * We filter the output of wp_title() a bit -- see
-                * teamlab-blog-2-0_filter_wp_title() in functions.php.
-                */
-                wp_title( '-', true, 'right' );
-            ?>
-    </title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
     <link rel="icon" href="<?php bloginfo( 'template_directory' ); ?>/images/favicon.ico" type="image/x-icon" />
-
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
 
 		// var onloadCallback = function() {
 		// 	grecaptcha.render('popupCaptcha', {'sitekey' : '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'});  // test public key
 		// };
 
 	</script>
-    <script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl=en'></script>
-	
+    <script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl=en'></script> -->
 	<?php wp_head() ?>
 </head>
 <body <?php body_class(); ?>>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5NW47TX"  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 	<div class="BaseSide">
             <div class="mainpart">
                 <div class="site-overlay"></div>
@@ -146,12 +166,12 @@
                                         <div id="navitem_features_menu">
                                             <ul class="dropdown-content akkordeon">
                                                 <li id="navitem_editors_third_level_menu">
-                                                    <a id="navitem_features_editors" class="dropdown-item mobile_no_link" href="<?php echo WEB_ROOT_URL?>/editors.aspx"><?php _e('Online Editors', 'teamlab-blog-2-0'); ?></a>
+                                                    <a id="navitem_features_editors" class="dropdown-item mobile_no_link" href="<?php echo WEB_ROOT_URL?>/office-suite.aspx"><?php _e('Online Editors', 'teamlab-blog-2-0'); ?></a>
                                                     <div>
                                                         <ul class="navitem_2nd_menu">
-                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_document_editor" href="<?php echo WEB_ROOT_URL?>/editors.aspx#documenteditor"><?php _e('Documents', 'teamlab-blog-2-0'); ?></a></li>
-                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_spreadsheet_editor" href="<?php echo WEB_ROOT_URL?>/editors.aspx#spreadsheeteditor"><?php _e('Spreadsheets', 'teamlab-blog-2-0'); ?></a></li>
-                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_presentation_editor" href="<?php echo WEB_ROOT_URL?>/editors.aspx#presentationeditor"><?php _e('Presentations', 'teamlab-blog-2-0'); ?></a></li>
+                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_document_editor" href="<?php echo WEB_ROOT_URL?>/document-editor.aspx"><?php _e('Documents', 'teamlab-blog-2-0'); ?></a></li>
+                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_spreadsheet_editor" href="<?php echo WEB_ROOT_URL?>/spreadsheet-editor.aspx"><?php _e('Spreadsheets', 'teamlab-blog-2-0'); ?></a></li>
+                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_presentation_editor" href="<?php echo WEB_ROOT_URL?>/presentation-editor.aspx"><?php _e('Presentations', 'teamlab-blog-2-0'); ?></a></li>
                                                             
                                                         </ul>
 
@@ -162,15 +182,15 @@
                                                     <span class="navitem_solutions"><a id="navitem_solutions_clients_mobile" class="dropdown-item" href="<?php echo WEB_ROOT_URL?>/mobile-projects.aspx"><?php _e('Mobile Projects', 'teamlab-blog-2-0'); ?></a></span>
                                                 </li>
                                                 <li id="navitem_comserver_third_level_menu">
-                                                    <a id="navitem_features_comserver" class="dropdown-item mobile_no_link" href="<?php echo WEB_ROOT_URL?>/features.aspx#documents"><?php _e('Collaboration Platform', 'teamlab-blog-2-0'); ?></a>
+                                                    <a id="navitem_features_comserver" class="dropdown-item mobile_no_link" href="<?php echo WEB_ROOT_URL?>/collaboration-platform.aspx"><?php _e('Collaboration Platform', 'teamlab-blog-2-0'); ?></a>
                                                     <div>
                                                         <ul class="navitem_2nd_menu">
-                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_documents" href="<?php echo WEB_ROOT_URL?>/features.aspx#documents"><?php _e('Document Management', 'teamlab-blog-2-0'); ?></a></li>
-                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_mail" href="<?php echo WEB_ROOT_URL?>/features.aspx#mail"><?php _e('Mail', 'teamlab-blog-2-0'); ?></a></li>
-                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_crm" href="<?php echo WEB_ROOT_URL?>/features.aspx#crm"><?php _e('CRM', 'teamlab-blog-2-0'); ?></a></li>
-                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_projects" href="<?php echo WEB_ROOT_URL?>/features.aspx#projects"><?php _e('Projects', 'teamlab-blog-2-0'); ?></a></li>
-                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_calendar" href="<?php echo WEB_ROOT_URL?>/features.aspx#calendar"><?php _e('Calendar', 'teamlab-blog-2-0'); ?></a></li>
-                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_network" href="<?php echo WEB_ROOT_URL?>/features.aspx#network"><?php _e('Community', 'teamlab-blog-2-0'); ?></a></li>
+                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_documents" href="<?php echo WEB_ROOT_URL?>/document-management.aspx"><?php _e('Document Management', 'teamlab-blog-2-0'); ?></a></li>
+                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_mail" href="<?php echo WEB_ROOT_URL?>/mail.aspx"><?php _e('Mail', 'teamlab-blog-2-0'); ?></a></li>
+                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_crm" href="<?php echo WEB_ROOT_URL?>/crm.aspx"><?php _e('CRM', 'teamlab-blog-2-0'); ?></a></li>
+                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_projects" href="<?php echo WEB_ROOT_URL?>/projects.aspx"><?php _e('Projects', 'teamlab-blog-2-0'); ?></a></li>
+                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_calendar" href="<?php echo WEB_ROOT_URL?>/calendar.aspx"><?php _e('Calendar', 'teamlab-blog-2-0'); ?></a></li>
+                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_network" href="<?php echo WEB_ROOT_URL?>/community.aspx"><?php _e('Community', 'teamlab-blog-2-0'); ?></a></li>
                                                         </ul>
                                                     </div>
                                                 </li>
@@ -229,8 +249,6 @@
                                                 <li class="pushy-link"><a id="navitem_about_about" class="dropdown-item" href="<?php echo WEB_ROOT_URL?>/about.aspx"><?php _e('About ONLYOFFICE', 'teamlab-blog-2-0'); ?></a></li>
                                                 <li class="pushy-link"><a id="navitem_about_blog" class="dropdown-item" target="_blank" href="<?php echo WEB_ROOT_URL?>/blog/"><?php _e('Blog', 'teamlab-blog-2-0'); ?></a></li>
                                                 <li class="pushy-link"><a id="navitem_about_contribute" class="dropdown-item" href="<?php echo WEB_ROOT_URL?>/contribute.aspx"><?php _e('Contribute', 'teamlab-blog-2-0'); ?></a></li>
-                                                <li class="pushy-link"><a id="navitem_about_stories" class="dropdown-item" href="<?php echo WEB_ROOT_URL?>/customers.aspx"><?php _e('Success stories', 'teamlab-blog-2-0'); ?></a></li>
-                                                <li class="pushy-link"><a id="navitem_about_casestudies" class="dropdown-item" href="<?php echo WEB_ROOT_URL?>/case-studies.aspx"><?php _e('Case studies', 'teamlab-blog-2-0'); ?></a></li>
                                                 <li class="pushy-link"><a id="navitem_about_customers" class="dropdown-item" href="<?php echo WEB_ROOT_URL?>/customers.aspx"><?php _e('Customers', 'teamlab-blog-2-0'); ?></a></li>
                                                 <li class="pushy-link"><a id="navitem_about_awards" class="dropdown-item" href="<?php echo WEB_ROOT_URL?>/awards.aspx"><?php _e('Awards', 'teamlab-blog-2-0'); ?></a></li>
                                                 <li class="pushy-link"><a id="navitem_about_events" class="dropdown-item" href="<?php echo WEB_ROOT_URL?>/events.aspx"><?php _e('Events', 'teamlab-blog-2-0'); ?></a></li>

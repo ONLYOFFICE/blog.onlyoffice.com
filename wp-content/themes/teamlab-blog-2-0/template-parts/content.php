@@ -25,17 +25,6 @@
 			      <span class="comments"><?php comments_number('0', '1', '%'); ?></span>
 						<span class="views"><?php if(function_exists('the_views')) { the_views(); } ?></span>
 						<?php if ( function_exists( 'ADDTOANY_SHARE_SAVE_KIT' ) ) { ADDTOANY_SHARE_SAVE_KIT(); } ?>
-						<!-- <div class="share-button">
-								<a class="share-twitter"></a>
-								<a class="facebook"></a>
-								<a class="linkedin"></a>
-								<a class="next-social"></a>
-								<div class="other-social">
-									<a class="reddit">Reddit</a>
-									<a class="telegram">Telegram</a>
-									<a class="mastodon">Mastodon</a>
-								</div>
-						</div> -->
 			</div>
 			
 

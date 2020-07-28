@@ -25,7 +25,7 @@ get_header();
 			 	</div>
 				<div class="search-page">
 		        	<?php get_search_form(); ?>
-		      	</div>
+		    </div>
 
 				<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 				<article class="post searchlist">
@@ -39,6 +39,7 @@ get_header();
 				
 				<?php $excerpt = get_the_excerpt(); $keys= explode(" ",$s); $excerpt = preg_replace('/('.implode('|', $keys) .')/iu', '<span class="search-excerpt">\0</span>', $excerpt); ?>
 				 <p><?php echo $excerpt; ?></p>
+
 				 </article>
 
 				 <?php endwhile;

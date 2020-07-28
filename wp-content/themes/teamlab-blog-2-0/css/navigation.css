@@ -792,7 +792,9 @@ div.custom-select div.selector {
       width: 100%;
   }
   .langselector {
-      margin-right: 10px;
+      position: absolute;
+      right: 29px;
+      top: 15px;
   }
   a.dropdown-item {
       white-space: normal;

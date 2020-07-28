@@ -20,13 +20,40 @@
                  <ul class="footer_menu">
                                             <div group-menu>
                                             <li class="footer-border">
+                                                <a id="footer_menu_developers" class="footer-button"><h6><?php _e('Developers', 'teamlab-blog-2-0'); ?></h6></a>
+                                                <div id="navitem_footer_developers">
+                                                    <ul>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/developer-edition.aspx"><?php _e('Developer Edition', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/document-builder.aspx"><?php _e('Document Builder', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a target="_blank" id="navitem_api" href="https://api.onlyoffice.com/"><?php _e('API', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="https://github.com/ONLYOFFICE/"><?php _e('Github', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li class="footer-border">
+                                                <a id="footer_menu_solutions" class="footer-button"><h6><?php _e('Solutions', 'teamlab-blog-2-0'); ?></h6></a>
+                                                <div id="navitem_footer_solutions">
+                                                    <ul>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/for-small-business.aspx"><?php _e('SMBs', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/enterprise-edition.aspx"><?php _e('Enterprises', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/for-government.aspx"><?php _e('Government', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/education.aspx"><?php _e('Education', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/nonprofit-organizations.aspx"><?php _e('Nonprofits', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a target="_blank" href="https://personal.onlyoffice.com"><?php _e('Personal Use', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            </div>
+                                            <div group-menu>
+                                            <li class="footer-border">
                                                 <a id="footer_menu_features" class="footer-button"><h6><?php _e('Features', 'teamlab-blog-2-0'); ?></h6></a>
                                                 <div id="navitem_footer_features">
                                                     <ul>
                                                         <li><p><a href="<?php echo WEB_ROOT_URL?>/editors.aspx#documenteditor"><?php _e('Documents editors', 'teamlab-blog-2-0'); ?></a></p></li>
                                                         <li><p><a href="<?php echo WEB_ROOT_URL?>/features.aspx#documents"><?php _e('Collaboration Platform', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/#"><?php _e('Security', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/#"><?php _e('End-to-end encryption', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/security.aspx"><?php _e('Security', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/e2e-encryption.aspx"><?php _e('End-to-end encryption', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/app-directory"><?php _e('App Directory', 'teamlab-blog-2-0'); ?></a></p></li>
                                                     </ul>
                                                 </div>
                                             </li>
@@ -39,26 +66,16 @@
                                                         <li><p><a href="<?php echo WEB_ROOT_URL?>/connectors-confluence.aspx"><?php _e('Confluence', 'teamlab-blog-2-0'); ?></a></p><li>
                                                         <li><p><a href="<?php echo WEB_ROOT_URL?>/connectors-alfresco.aspx"><?php _e('Alfresco', 'teamlab-blog-2-0'); ?></a></p></li>
                                                         <li><p><a href="<?php echo WEB_ROOT_URL?>/connectors-sharepoint.aspx"><?php _e('SharePoint', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/#"><?php _e('Liferay', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/#"><?php _e('Others', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/office-for-liferay.aspx"><?php _e('Liferay', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/office-for-humhub.aspx"><?php _e('HumHub', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/office-for-plone.aspx"><?php _e('Plone', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/office-for-nuxeo.aspx"><?php _e('Nuxeo', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/all-connectors.aspx"><?php _e('Others', 'teamlab-blog-2-0'); ?></a></p></li>
                                                     </ul>
                                                 </div>
                                             </li>
                                             </div>
                                             <div group-menu>
-                                            <li class="footer-border">
-                                                <a id="footer_menu_solutions" class="footer-button"><h6><?php _e('Solutions', 'teamlab-blog-2-0'); ?></h6></a>
-                                                <div id="navitem_footer_solutions">
-                                                    <ul>
-                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/#"><?php _e('SMBs', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/enterprise-edition.aspx"><?php _e('Enterprises', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a target="_blank" href="#"><?php _e('Government', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/education.aspx"><?php _e('Education', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/nonprofit-organizations.aspx"><?php _e('Nonprofits', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a target="_blank" href="https://personal.onlyoffice.com"><?php _e('Personal Use', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
                                             <li class="footer-border">
                                                 <a id="footer_menu_support" class="footer-button"><h6><?php _e('Support', 'teamlab-blog-2-0'); ?></h6></a>
                                                 <div id="navitem_footer_support">
@@ -66,22 +83,8 @@
                                                         <li><p><a target="_blank" href="https://cloud.onlyoffice.org/"><?php _e('SaaS Forum', 'teamlab-blog-2-0'); ?></a></p></li>
                                                         <li><p><a target="_blank" href="https://dev.onlyoffice.org/"><?php _e('Server Forum', 'teamlab-blog-2-0'); ?></a></p></li>
                                                         <li><p><a target="_blank" href="https://support.onlyoffice.com"><?php _e('Support Contact Form', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/#"><?php _e('Premium Support', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/support.aspx"><?php _e('Premium Support', 'teamlab-blog-2-0'); ?></a></p></li>
                                                         <li><p><a href="<?php echo WEB_ROOT_URL?>/demo-order.aspx"><?php _e('Order demo', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/#"><?php _e('Subscribe to our newsletters', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            </div>
-                                            <div group-menu>
-                                            <li class="footer-border">
-                                                <a id="footer_menu_developers" class="footer-button"><h6><?php _e('Developers', 'teamlab-blog-2-0'); ?></h6></a>
-                                                <div id="navitem_footer_developers">
-                                                    <ul>
-                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/developer-edition.aspx"><?php _e('Developer Edition', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/document-builder.aspx"><?php _e('Document Builder', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a target="_blank" id="navitem_api" href="https://api.onlyoffice.com/"><?php _e('API', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/#"><?php _e('Github', 'teamlab-blog-2-0'); ?></a></p></li>
                                                     </ul>
                                                 </div>
                                             </li>
@@ -92,7 +95,8 @@
                                                         <li><p><a target="_blank" href="https://helpcenter.onlyoffice.com/faq/faq.aspx"><?php _e('FAQ', 'teamlab-blog-2-0'); ?></a></p></li>
                                                         <li><p><a target="_blank" href="https://helpcenter.onlyoffice.com/index.aspx"><?php _e('Getting Started', 'teamlab-blog-2-0'); ?></a></p></li>
                                                         <li><p><a target="_blank" href="https://helpcenter.onlyoffice.com/video.aspx"><?php _e('Video Guides', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/#"><?php _e('Press downloads', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/webinars.aspx"><?php _e('Webinars', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo WEB_ROOT_URL?>/press-downloads.aspx"><?php _e('Press downloads', 'teamlab-blog-2-0'); ?></a></p></li>
                                                         <li><p><a href="<?php echo WEB_ROOT_URL?>/legalterms.aspx"><?php _e('Legal Notice', 'teamlab-blog-2-0'); ?></a></p></li>
                                                         <li><p><a target="_blank" href="https://www.onlyoffice.com/blog/2018/05/how-onlyoffice-complies-with-gdpr/"><?php _e('GDPR Compliance', 'teamlab-blog-2-0'); ?></a></p></li>
                                                     </ul>
@@ -125,7 +129,11 @@
                                             </li>
 
                     <div class="SocialLinks">
-                        <ul class="ListSocLink"><h6><?php _e('follow us on', 'teamlab-blog-2-0'); ?></h6>
+                    <h6><?php _e('follow us on:', 'teamlab-blog-2-0'); ?></h6>
+                        <ul class="ListSocLink">
+                            <li><a class="subscribe-mail" title="Subscribe to our newsletters" href="javascript:void(0);" id="subscribelink">
+                                <label title="Subscribe to our newsletters" class="social_grey_subscribe"></label>
+                            </a></li>
                             <li><a target="_blank" href="https://www.facebook.com/pages/OnlyOffice/833032526736775" onmouseup="PageTrack('GoTo_facebook');" title="Follow us on Facebook" class="faceBook">
                                     <label class="social_grey_fb" title="Facebook"></label>
                                 </a></li>
@@ -137,10 +145,7 @@
                                 </a></li>
                             <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_youtube');" href="https://www.youtube.com/user/onlyofficeTV" title="Follow us on YouTube" class="youtube">
                                     <label class="social_grey_tube" title="YouTube"></label>
-                                </a></li>
-                            <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_vkontakte');" href="https://vk.com/onlyoffice" class="blog" title="Follow us on Vkontakte"  >
-                                <label title="Vkontakte" class="social_grey_vk"></label>
-                            </a></li>    
+                                </a></li>  
                             <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_blog');" href="https://www.onlyoffice.com/blog" title="Read our blog" class="blog">
                                     <label title="Blog" class="social_grey_blog"></label>
                                 </a></li>
@@ -149,6 +154,12 @@
                                 </a></li>
                             <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_instagram');" class="medium" title="Follow us on Instagram" href="https://www.instagram.com/the_onlyoffice/" >
                                 <label title="Instagram" class="social_grey_instagram"></label>
+                            </a></li>
+                            <li><a class="github" title="Follow us on GitHub" href="https://github.com/ONLYOFFICE/" onmouseup="PageTrack('GoTo_medium');" target="_blank">
+                                <label title="GitHub" class="social_grey_github"></label>
+                            </a></li>
+                            <li><a class="fosstodon" title="Follow us on Fosstodon" href="https://fosstodon.org/@ONLYOFFICE" onmouseup="PageTrack('GoTo_medium');" target="_blank">
+                                <label title="Fosstodon" class="social_grey_fosstodon"></label>
                             </a></li>
                         </ul>
                     </div>

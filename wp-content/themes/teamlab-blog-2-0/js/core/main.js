@@ -56,10 +56,6 @@ var LanguageSelectorManager = new function () {
         openLngSelector: openLngSelector
     };
 };
-/***** Share button *****/
-$('.next-social').click(function () {
-    $('.other-social').toggleClass('active');
-})
 /***** INPUT VALIDATE
 var input = document.getElementById("s");
     input.addEventListener('input', function(e){
@@ -157,9 +153,16 @@ function SubmitSubEmail(inputValue){
 
     if(ValidateInput(inputValue/*, recaptchaResp*/)){
 
+        var $thisInputContainer = $("#InputBox");
+        var $urlImg = $(".inputButton").css("background-image");
+        var $ValForButton = $(".inputButton").text();
+        $(".inputButton").text('');
         $loading.addClass("change");
-        $loading.css("background", "#fda050");
-
+        $loading.css({
+            "background-color": "#fda050",
+            "background-image": "none"
+        });
+        
         $.ajax({
             type: "POST",
             url: window.wp_data.ajax_url,
@@ -170,9 +173,19 @@ function SubmitSubEmail(inputValue){
             success: function (response) {
                 if(response.errorMsg == ""){
                     $loading.removeClass("change");
+                    $loading.css({
+                        "background-color": "#FF6F3D",
+                        "background-image": $urlImg
+                    });
+                    $(".inputButton").text($ValForButton);
                     showMsg();
                 }  else {
                     $loading.removeClass("change");
+                    $loading.css({
+                        "background-color": "#FF6F3D",
+                        "background-image": $urlImg
+                    });
+                    $(".inputButton").text($ValForButton);
                     showErrors($thisInputContainer, response.errorMsg);
                 }
             }

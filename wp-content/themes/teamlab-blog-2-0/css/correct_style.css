@@ -207,8 +207,8 @@
     right: 40px;
     top: 15px;
     z-index: 15;
-
 }
+
 .input-header .search-field{
     background-color: #fff;
     background: url('../images/search.svg') no-repeat;
@@ -469,7 +469,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    content: "•" !important;
+    content: "•";
     font-size: 20px;
     color: #04ED37;
     margin:0 8px 0 3px;
@@ -844,9 +844,13 @@
     display: block;
     padding: 32px 32px 40px 32px;
     width: 100%;
-    background: linear-gradient(90deg, #36A8ED 10.45%, #3CADF2 26.33%, #2A9EE5 79.49%);
+    background: linear-gradient(127.11deg, #4BB7F9 15.54%, #40B3F9 81.42%);
     color: #FFFFFF;
     text-align: center;
+}
+.SingleContainer .subscribe-blue,
+.SingleContainer .subscribe-white {
+    margin-top: 64px;
 }
 
 .subscribe-blue h3{
@@ -881,13 +885,21 @@
 }
 
 .inputBox{
-    max-width: 100%;
+    max-width: 400px;
     display: grid;
     grid-template-columns: 75% 25%;
-    margin: auto;
     position: relative;
-    margin: 24px 0 16px;
+    margin: 24px auto 16px;
+    background-color: #fff;
+    border-radius: 3px;
     }
+
+.forPressPage {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    position: relative;
+}
+
 
 .inputBox input{
     color: #333333;
@@ -920,6 +932,8 @@
     color: #666666;
 }
 
+
+
 #InputBox.error label, #InputBox.error .main-input{
     color:#ff0c3e;
 }
@@ -941,7 +955,7 @@
     height: 48px;
     display: block;
     width: 100%;
-    border-radius: 5px;
+    border-radius: 3px;
     border: none;
     font-size: 18px;
     font-weight: 500;
@@ -950,10 +964,9 @@
     outline: none;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-    border: 1px solid #fff;
 }
 .inputBox .loader {
-    background: url(../images/loader.gif);
+    background-image: url(../images/loader.gif);
     width: 20px;
     height: 20px;
     position: absolute;
@@ -968,13 +981,6 @@
 #email-sub-button{
     outline: none;
     border: none;
-    font-family: Arial;
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 19px;
-    align-items: center;
-    text-align: center;
-    letter-spacing: 0.02em;
     color: #fff;
     background-color: #FF6F3D;
 }
@@ -989,13 +995,13 @@
     align-content: center;
     height: 48px;
     display: grid;
-    border-bottom-right-radius: 3px;
-    border-top-right-radius: 3px;
+    border-radius: 3px;
     -moz-user-select: none;
     -khtml-user-select: none;
     user-select: none;
-    position: relative;
-    background: url(../images/Union.svg) no-repeat  50% 16px;
+    background-image: url(../images/Union.svg);
+    background-position: 50% 16px;
+    background-repeat: no-repeat;
 }
 .inputButton:hover {
     background-color: #fda050;
@@ -1019,6 +1025,25 @@
 .inputButton.change::after{
     content: '';
 }
+.forPressPage .inputButton::after {
+    left: 42%;
+    top: 27%;
+}
+.pressPage{
+    background-image: none;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 133%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
 .gRecaptcha{
     display: none;
 	width: 224px;
@@ -1037,7 +1062,7 @@
     display: none;
     position: relative;
     box-sizing: border-box;
-    padding: 43px 26px 0;
+    padding: 43px 26px 67px;
     height: 100%;
     width: 100%;
     background-color: #FFFFFF;
@@ -1398,6 +1423,9 @@ a.download:active{
 #post-content .content .entry-title {
     font-size: 40px;
 }
+#post-content .content .entry-header .info-page{
+    margin-top: 24px;
+}
 #post-content .content .entry-content {
     max-width: 736px;
     margin: 40px auto 0;
@@ -1406,6 +1434,9 @@ a.download:active{
     position: absolute;
     right: 0;
     top: -5px;
+}
+#post-content .sidebar {
+    margin-top: 80px;
 }
 .SingleContainer{
     max-width: 1120px;
@@ -1568,81 +1599,15 @@ a.a2a_i span {
     text-decoration: underline !important;
     border: none !important;
 }
-.share-button{
-    position: relative;
-    display: inline-block;
+.zoom-social-icons-list li:before {
+    content: none;
 }
-.share-button a{
-    display: inline-block;
-    vertical-align: middle;
-    width: 24px;
-    height: 24px;
-    margin-right: 10px;
-    font-weight: normal;
-    font-size: 13px;
-    line-height: 18px;
+.zoom-social-icons-list li{
+    padding-left: 0;
 }
-.share-button a:last-child{
-    margin-right: 0;
+.zoom-social-icons-widget h4 {
+    font-size: 16px;
 }
-.share-twitter{
-    background: url("../images/social_grey/twitter.svg") no-repeat 50% 50%;
-}
-.facebook{
-    background: url("../images/social_grey/facebook.svg") no-repeat 50% 50%;
-}
-.linkedin{
-    background: url("../images/social_grey/linkedin.svg") no-repeat 50% 50%;
-}
-.next-social{
-    background: url("../images/social_grey/dots.svg") no-repeat 50% 50%;
-}
-.other-social{
-    display: none;
-    position: absolute;
-    top: 24px;
-    right: -5px;
-    box-sizing: border-box;
-    width: 124px;
-    height: 138px;
-    background: url("../images/social_grey/share-block.svg") no-repeat 50% 40%;
-    padding: 25px 16px 16px 14px;
-}
-.other-social a,
-.other-social a:visited{
-    display: block;
-    margin-bottom: 14px;
-    height: 24px;
-    width: auto;
-    align-items: center;
-    box-sizing: border-box;
-    text-align: left;
-    text-decoration: none;
-}
-.other-social a:active,
-.other-social a:hover,
-.other-social a:link {
-    text-decoration: underline;
-}
-.active{
-    display: block;
-}
-.reddit{
-    padding: 4px 0 2px 32px;
-    background-size: 20px 20px;
-    background: url("../images/social_grey/reddit.svg") no-repeat 0 50%;
-}
-.telegram{
-    padding: 4px 0 2px 32px;
-    background-size: 20px 26px;
-    background: url("../images/social_grey/telegram.svg") no-repeat 0 50%;
-}
-.mastodon{
-    padding: 4px 0 2px 32px;
-    background-size: 20px 19px;
-    background: url("../images/social_grey/mastodon.svg") no-repeat 0 50%;
-}
-								
 
 
 
@@ -1805,7 +1770,6 @@ div#comments .button:hover{
 div#respond {
     background: #FFF;
     margin: 34px 0 0;
-    padding-bottom: 37px;
     border-bottom: 1px solid #e0e0e0;
 }
 div#respond .disabled{
@@ -2027,6 +1991,9 @@ div#respond form#commentform p.submit {
     overflow: hidden;
     padding: 110px 160px 82px;
 }
+.SearchContainer #content {
+    grid-gap: 128px;
+}
 .search-page{
      margin-bottom: 45px;
 }
@@ -2096,4 +2063,72 @@ div#respond form#commentform p.submit {
     background-size: 100%;
     width: auto;
     height: 340px;
+}
+
+/*-----------Error Page--------*/
+.ErrorContainer {
+    max-width: 775px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 141px 160px 100px;
+    text-align: center;
+}
+.ErrorContainer .bg{
+    height: 412px;
+    background-size: contain;
+    background-position: 50% 50%;
+}
+.ErrorContainer h1{
+    margin-top: 64px;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 133%;
+    text-align: center;
+    letter-spacing: -0.01em;
+    font-feature-settings: 'tnum'on, 'lnum'on;
+    color: #333333;
+}
+.ErrorContainer p{
+    margin: 24px auto 0;
+    width: 530px;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 22px;
+    text-align: center;
+    color: #555555;
+}
+.ErrorContainer a:visited,
+.ErrorContainer a:active {
+    color: #fff;
+}
+
+.ErrorContainer a.go-home {
+    display: inline-block;
+    padding: 18px 25px 19px;
+    margin-top: 40px;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 133%;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    text-decoration: none;
+    box-sizing: border-box;
+    border-radius: 3px;
+    background-color: #FF6F3D;
+    transition: .1s linear all;
+    -moz-transition: .1s linear all;
+    -webkit-transition: .1s linear all;
+}
+
+.ErrorContainer a.go-home:hover {
+    background-color: #FF994F;
 }
