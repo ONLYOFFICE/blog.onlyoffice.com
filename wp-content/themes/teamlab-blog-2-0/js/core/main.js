@@ -1,4 +1,3 @@
-;
 /***** Page Tracker *****/
 
 function PageTrack(key) {
@@ -103,33 +102,6 @@ $(".clearButton").on('click', function(){
     $(this).closest(".searchForm").removeClass("focus").removeClass("hasValue");
 });
 
-/***** VALIDATE FOOTER SEARCH *****/
-
-
-$(".FooterSearchInput").focus(function () {
-    $(this).closest(".FooterSearchForm").addClass("focus");
-});
-
-$(".FooterSearchInput").focusout(function () {
-    if ($(this).val() == "") {
-        $(this).closest(".FooterSearchForm").removeClass("focus");
-    }
-});
-
-$(".FooterSearchInput").on('keyup', function() {
-    if ($(this).val() != "") {
-        $(this).closest(".FooterSearchForm").addClass("hasValue");
-    } else {
-        $(this).closest(".FooterSearchForm").removeClass("hasValue");
-    }
-});
-
-$(".clearButton").on('click', function(){
-    $(this).siblings(".FooterSearchInput").val("");
-    $(this).closest(".FooterSearchForm").removeClass("focus").removeClass("hasValue");
-});
-
-
 /***** Suscribe input *****/
 /*var $thisRecaptchaContainer;*/
 var $subEmailInput = $("#subscribe-email-input");
@@ -145,7 +117,7 @@ var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\
 function isValidEmail(value){
     var valid = regex.test(value);
     return valid;
-}
+};
 
 function SubmitSubEmail(inputValue){
 
@@ -232,7 +204,7 @@ function showErrors($thisInputContainer, errorMsg){
     }/* else if(errorMsg == "Incorrect recaptcha"){
         $(".errorMessage.recaptcha").show();
     }*/
-}
+};
 
 function showMsg(){    
     $(".subscribe-blue").hide();
@@ -269,6 +241,295 @@ $("#email-sub-button").on('click', function(){
     SubmitSubEmail($subEmailInput.val());
 });
 
+
+
+
+/***** Suscribe input *****/
+/*var $thisRecaptchaContainer;*/
+var $subEmailInput = $("#subscribe-email-input");
+
+var $inputBox = $("#InputBox");
+var $loading = $(".inputButton");
+var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
+
+/*$(window).load(function() {
+    $thisRecaptchaContainer = $(".recaptchaContainer");
+});*/
+
+function isValidEmail(value) {
+    var valid = regex.test(value);
+    return valid;
+};
+
+function SubmitSubEmail(inputValue) {
+
+    /*var recaptchaResp = (typeof (window.grecaptcha) != "undefined") ? window.grecaptcha.getResponse(0) : ""; */
+
+    if (ValidateInput(inputValue /*, recaptchaResp*/ )) {
+
+        var $thisInputContainer = $("#InputBox");
+        var $urlImg = $(".inputButton").css("background-image");
+        var $ValForButton = $(".inputButton").text();
+        $(".inputButton").text('');
+        $loading.addClass("change");
+        $loading.css({
+            "background-color": "#fda050",
+            "background-image": "none"
+        });
+
+        $.ajax({
+            type: "POST",
+            url: window.wp_data.ajax_url,
+            data: {
+                action: 'send_confirmation_email',
+                email: inputValue /*, recaptchaResp : recaptchaResp*/
+            },
+            dataType: 'json',
+            success: function (response) {
+                if (response.errorMsg == "") {
+                    $loading.removeClass("change");
+                    $loading.css({
+                        "background-color": "#FF6F3D",
+                        "background-image": $urlImg
+                    });
+                    $(".inputButton").text($ValForButton);
+                    showMsg();
+                } else {
+                    $loading.removeClass("change");
+                    $loading.css({
+                        "background-color": "#FF6F3D",
+                        "background-image": $urlImg
+                    });
+                    $(".inputButton").text($ValForButton);
+                    showErrors($thisInputContainer, response.errorMsg);
+                }
+            }
+        });
+    }
+};
+
+function ValidateInput(inputVal /*, recaptchaResp*/ ) {
+    /*$(".errorMessage.recaptcha").hide();
+    $inputBox.removeClass("error");*/
+
+    correctValue = true;
+
+    if (inputVal == "") {
+        $inputBox.addClass("error");
+        $(".errorMessage.empty").show();
+        correctValue = false;
+    } else if (!isValidEmail(inputVal)) {
+        $inputBox.addClass("error");
+        $(".errorMessage.incorrect").show();
+        correctValue = false;
+    }
+    /*else if(recaptchaResp == "" || recaptchaResp == undefined){
+           $inputBox.addClass("error");
+           $(".errorMessage.recaptcha").show();
+           correctValue=false
+       }*/
+    else {
+        $inputBox.addClass("valid");
+    }
+
+
+
+    return correctValue;
+};
+
+function showErrors($thisInputContainer, errorMsg) {
+    $thisInputContainer.addClass("error");
+
+    if (errorMsg == "Empty email") {
+        $(".errorMessage.empty").show();
+    } else if (errorMsg == "Email incorrect") {
+        $(".errorMessage.incorrect").show();
+    } else if (errorMsg == "Email is used") {
+        $(".errorMessage.used").show();
+    }
+    /* else if(errorMsg == "Incorrect recaptcha"){
+            $(".errorMessage.recaptcha").show();
+        }*/
+};
+
+function showMsg() {
+    $(".subscribe-blue").hide();
+    $(".subscribe-white").show();
+};
+
+$subEmailInput.focus(function () {
+    $inputBox.addClass("focus");
+    $inputBox.removeClass("error");
+    $(".errorMessage").hide();
+});
+
+$subEmailInput.focusout(function () {
+    if ($(this).val() == "") {
+        $inputBox.removeClass("focus");
+    }
+});
+
+$subEmailInput.on('keyup', function () {
+    if ($(this).val() != "") {
+        $inputBox.addClass("hasValue");
+    } else {
+        $inputBox.removeClass("hasValue");
+    }
+});
+
+$subEmailInput.keydown(function (e) {
+    if (e.keyCode === 13) {
+        SubmitSubEmail($subEmailInput.val());
+    }
+});
+
+$("#email-sub-button").on('click', function () {
+    SubmitSubEmail($subEmailInput.val());
+});
+
+/***** FORM SUBSCRIBE IN FOOTER *****/
+var $subEmailInput = $("#subscribe-email-input2");
+
+var $inputBox = $("#InputBox2");
+var $loading = $(".inputButton");
+var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
+
+/*$(window).load(function() {
+    $thisRecaptchaContainer = $(".recaptchaContainer");
+});*/
+
+function isValidEmail(value) {
+    var valid = regex.test(value);
+    return valid;
+};
+
+function SubmitSubEmail(inputValue) {
+
+    /*var recaptchaResp = (typeof (window.grecaptcha) != "undefined") ? window.grecaptcha.getResponse(0) : ""; */
+
+    if (ValidateInput(inputValue /*, recaptchaResp*/ )) {
+
+        var $thisInputContainer = $("#InputBox2");
+        var $urlImg = $(".inputButton").css("background-image");
+        var $ValForButton = $(".inputButton").text();
+        $(".inputButton").text('');
+        $loading.addClass("change");
+        $loading.css({
+            "background-color": "#fda050",
+            "background-image": "none"
+        });
+
+        $.ajax({
+            type: "POST",
+            url: window.wp_data.ajax_url,
+            data: {
+                action: 'send_confirmation_email',
+                email: inputValue /*, recaptchaResp : recaptchaResp*/
+            },
+            dataType: 'json',
+            success: function (response) {
+                if (response.errorMsg == "") {
+                    $loading.removeClass("change");
+                    $loading.css({
+                        "background-color": "#FF6F3D",
+                        "background-image": $urlImg
+                    });
+                    $(".inputButton").text($ValForButton);
+                    showMsg();
+                } else {
+                    $loading.removeClass("change");
+                    $loading.css({
+                        "background-color": "#FF6F3D",
+                        "background-image": $urlImg
+                    });
+                    $(".inputButton").text($ValForButton);
+                    showErrors($thisInputContainer, response.errorMsg);
+                }
+            }
+        });
+    }
+};
+
+function ValidateInput(inputVal /*, recaptchaResp*/ ) {
+    /*$(".errorMessage.recaptcha").hide();
+    $inputBox.removeClass("error");*/
+
+    correctValue = true;
+
+    if (inputVal == "") {
+        $inputBox.addClass("error");
+        $(".errorMessage.empty").show();
+        correctValue = false;
+    } else if (!isValidEmail(inputVal)) {
+        $inputBox.addClass("error");
+        $(".errorMessage.incorrect").show();
+        correctValue = false;
+    }
+    /*else if(recaptchaResp == "" || recaptchaResp == undefined){
+           $inputBox.addClass("error");
+           $(".errorMessage.recaptcha").show();
+           correctValue=false
+       }*/
+    else {
+        $inputBox.addClass("valid");
+    }
+
+
+
+    return correctValue;
+};
+
+function showErrors($thisInputContainer, errorMsg) {
+    $thisInputContainer.addClass("error");
+
+    if (errorMsg == "Empty email") {
+        $(".errorMessage.empty").show();
+    } else if (errorMsg == "Email incorrect") {
+        $(".errorMessage.incorrect").show();
+    } else if (errorMsg == "Email is used") {
+        $(".errorMessage.used").show();
+    }
+    /* else if(errorMsg == "Incorrect recaptcha"){
+            $(".errorMessage.recaptcha").show();
+        }*/
+};
+
+function showMsg() {
+    $(".subscribe-blue").hide();
+    $(".subscribe-white").show();
+};
+
+$subEmailInput.focus(function () {
+    $inputBox.addClass("focus");
+    $inputBox.removeClass("error");
+    $(".errorMessage").hide();
+});
+
+$subEmailInput.focusout(function () {
+    if ($(this).val() == "") {
+        $inputBox.removeClass("focus");
+    }
+});
+
+$subEmailInput.on('keyup', function () {
+    if ($(this).val() != "") {
+        $inputBox.addClass("hasValue");
+    } else {
+        $inputBox.removeClass("hasValue");
+    }
+});
+
+$subEmailInput.keydown(function (e) {
+    if (e.keyCode === 13) {
+        SubmitSubEmail($subEmailInput.val());
+    }
+});
+
+$("#email-sub-button2").on('click', function () {
+    SubmitSubEmail($subEmailInput.val());
+});
+
+
 /***** LANGUAGE SELECTOR *****/
 
 var $dropdownSelector = $(".lang_sel_sel").siblings("ul");
@@ -280,11 +541,11 @@ function toggleSelector(){
     } else {
         $dropdownSelector.addClass("show");
     }
-}
+};
 
 $("#lang_sel").on('click', function(){
     toggleSelector();
-})
+});
 
 
 $(document).on('click', function (e){
@@ -294,6 +555,23 @@ $(document).on('click', function (e){
             $dropdownSelector.removeClass("show");
     }
 });
+/***** Popup for subcribe *****/
+$('#subscribelink').click(function() {
+    var html = document.documentElement;
+    var body = document.body;
+
+    var scrollTop = html.scrollTop || body && body.scrollTop || 0;
+    scrollTop -= html.clientTop; // в IE7- <html> смещён относительно (0,0)
+
+    $('.hidden').css('top', scrollTop);
+    $('.hidden').show();
+});
+
+
+$('.close-popup').click(function() {
+    $('.hidden').hide();
+});
+
 
 
 /***** 

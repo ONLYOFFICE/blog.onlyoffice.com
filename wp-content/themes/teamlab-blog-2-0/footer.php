@@ -131,7 +131,7 @@
                     <div class="SocialLinks">
                     <h6><?php _e('follow us on:', 'teamlab-blog-2-0'); ?></h6>
                         <ul class="ListSocLink">
-                            <li><a class="subscribe-mail" title="Subscribe to our newsletters" href="javascript:void(0);" id="subscribelink">
+                            <li><a class="subscribe-mail" title="Subscribe to our newsletters" id="subscribelink">
                                 <label title="Subscribe to our newsletters" class="social_grey_subscribe"></label>
                             </a></li>
                             <li><a target="_blank" href="https://www.facebook.com/pages/OnlyOffice/833032526736775" onmouseup="PageTrack('GoTo_facebook');" title="Follow us on Facebook" class="faceBook">
@@ -172,7 +172,7 @@
                 
             </div>
         </div>
-    </div>
+    </div>	
 </footer>
 <div class="copyReserved">&copy; <?php _e('Ascensio System SIA', 'teamlab-blog-2-0'); ?> <?php echo date("Y"); ?>. <?php _e('All rights reserved', 'teamlab-blog-2-0'); ?></div>
 		<?php wp_footer();?>

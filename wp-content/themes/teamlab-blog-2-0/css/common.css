@@ -693,6 +693,7 @@ body.desktop .button.red.disabled:visited {
     box-sizing: border-box;
     display: flex;
     flex-flow: wrap;
+    grid-gap: 0;
     text-align: center;
     justify-content: center;
   }
@@ -937,6 +938,10 @@ body.desktop .button.red.disabled:visited {
     background: url(../images/cloud-block-mini.svg) no-repeat 50% 14px;
     background-color: #F8F8F8;
     padding-top: 14px;
+  }
+  .popup{
+    width: 100%;
+    padding: 0;
   }
   .content .cloud-block .red{
     bottom: 32px;

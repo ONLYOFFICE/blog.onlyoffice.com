@@ -37,7 +37,7 @@ if(!empty($_GET['code']) && isset($_GET['code']) && !empty($_GET['email']) && is
 
 			<div class="content-mail">
 				<div class="cta">
-					<h2><em class="thank-you"><?php _e('You are already subscribed. Please check your spam folder', 'teamlab-blog-2-0') ?></h2>
+					<h2><?php _e('You are already subscribed. Please check your spam folder', 'teamlab-blog-2-0') ?></h2>
 					<p>
 						<?php _e('Enjoy reading ONLYOFFICE blog!', 'teamlab-blog-2-0') ?>
 					</p>
@@ -76,7 +76,7 @@ if(!empty($_GET['code']) && isset($_GET['code']) && !empty($_GET['email']) && is
 				<div class="letter-box"></div>
 
 
-			</div><!-- #Single Container -->
+			</div><!-- Mail Container -->
 
         <?php } else {
             wp_redirect(site_url()); 

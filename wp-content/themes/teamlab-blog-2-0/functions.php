@@ -109,6 +109,7 @@ if ( ! function_exists( 'add_my_theme_stylesheet' ) ) :
         wp_enqueue_style( 'navigation_css', $template_uri . '/css/navigation.css' );
         wp_enqueue_style( 'language_selector_css', $template_uri . '/css/language-selector.css' );
         wp_enqueue_style( 'pushy_css', $template_uri . '/css/pushy.css' );
+        wp_enqueue_style( 'magnific_popup_css', $template_uri . '/css/magnific-popup.css' );
     }
 
     endif;
@@ -291,12 +292,11 @@ add_action('wp_ajax_loadmore', 'true_load_posts');
 add_action('wp_ajax_nopriv_loadmore', 'true_load_posts');
 
 
-
 // Search tags on page search
+// ПОИСК ПО ТЕГАМ НЕ РАБОТАЕТ МОЖНО УДАЛИТЬ
 function search_tags_query($query) {
-    if(is_search()) {
         $s = $query->get('s');
-        if(strpos($s, '#')){
+        if(strpos($s, '#') !== false){
             $terms = explode('#', $s);
             $query->set('tax_query', [
                 'relation' => 'OR',
@@ -307,7 +307,6 @@ function search_tags_query($query) {
                 ]
             ]);
         }
-  }
 }
 add_action('pre_get_posts', 'search_tags_query');
 // Load more on page search

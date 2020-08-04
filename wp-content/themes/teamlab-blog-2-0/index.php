@@ -138,9 +138,7 @@ $queryNews = new WP_Query($argsNews);?>
 
 <?php else : ?>
  <p><?php pll_e('Sorry, no posts matched your query'); ?>.</p>
-<?php endif; ?>
-					
-				
+<?php endif; ?>		
 </main>
 <div class="delimetr"></div>
 <?php get_footer(); ?>
