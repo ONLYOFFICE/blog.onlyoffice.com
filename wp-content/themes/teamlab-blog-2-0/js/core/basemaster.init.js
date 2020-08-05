@@ -80,7 +80,10 @@ jQuery(document).ready(function ($) {
             }
         });
     }
-    jQuery('ul').mouseleave(function() {
+    jQuery('.pushy-content').mouseleave(function () {
+        mouseleaveCloseMenu();
+    });
+    jQuery('nav > div > ul > li > div').mouseleave(function () {
         mouseleaveCloseMenu();
     });
     jQuery('body').on("click", "a.nav_2nd_menu_link", function () {
