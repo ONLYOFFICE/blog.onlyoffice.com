@@ -370,11 +370,6 @@ function js_variables()
         ';</script>');
 }
 
-global $wpdb;
-$wpdb->query( "
-    DELETE FROM $wpdb->postmeta
-    WHERE meta_key = '_thumbnail_id'
-" );
 /**********************Send subscribe email*************************/
 
 add_action('wp_ajax_send_confirmation_email', 'send_confirmation_email');
