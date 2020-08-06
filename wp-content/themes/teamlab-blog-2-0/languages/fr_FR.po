@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: teamlab-blog-2-0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/twentyten\n"
-"POT-Creation-Date: 2020-08-06 11:56+0300\n"
-"PO-Revision-Date: 2020-08-06 11:57+0300\n"
+"POT-Creation-Date: 2020-08-06 13:02+0300\n"
+"PO-Revision-Date: 2020-08-06 13:02+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -424,29 +424,29 @@ msgstr "Tous droits réservés"
 msgid "<span class=\"%2$s\">By %3$s</span>"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:606
+#: wp-content/themes/teamlab-blog-2-0/functions.php:611
 #, php-format
 msgid "%s"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:610
+#: wp-content/themes/teamlab-blog-2-0/functions.php:615
 #, php-format
 msgid "%1$s at %2$s"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:610
+#: wp-content/themes/teamlab-blog-2-0/functions.php:615
 msgid "Edit"
 msgstr "Éditer"
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:613
+#: wp-content/themes/teamlab-blog-2-0/functions.php:618
 msgid "Your comment is awaiting moderation."
 msgstr "Votre commentaire est en attente de modération"
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:624
+#: wp-content/themes/teamlab-blog-2-0/functions.php:629
 msgid "Pingback:"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:624
+#: wp-content/themes/teamlab-blog-2-0/functions.php:629
 msgid "(Edit)"
 msgstr "(Éditer)"
 
@@ -874,8 +874,11 @@ msgid "Your site&#8217;s most recent Posts."
 msgstr ""
 
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:95
-msgid "View all posts"
-msgstr "Tous les articles"
+msgid "View all posts&nbsp;>"
+msgstr "Voir toutes les actualités&nbsp;>"
+
+#~ msgid "View all posts"
+#~ msgstr "Tous les articles"
 
 #~ msgid "Subscribe to our newsletters"
 #~ msgstr "S'inscrire à la newsletter"

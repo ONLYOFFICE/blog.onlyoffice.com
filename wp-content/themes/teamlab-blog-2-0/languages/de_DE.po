@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Twenty Ten 1.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/twentyten\n"
-"POT-Creation-Date: 2020-08-06 11:58+0300\n"
-"PO-Revision-Date: 2020-08-06 11:58+0300\n"
+"POT-Creation-Date: 2020-08-06 13:00+0300\n"
+"PO-Revision-Date: 2020-08-06 13:01+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -434,29 +434,29 @@ msgstr "Alle Rechte vorbehalten"
 msgid "<span class=\"%2$s\">By %3$s</span>"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:606
+#: wp-content/themes/teamlab-blog-2-0/functions.php:611
 #, php-format
 msgid "%s"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:610
+#: wp-content/themes/teamlab-blog-2-0/functions.php:615
 #, php-format
 msgid "%1$s at %2$s"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:610
+#: wp-content/themes/teamlab-blog-2-0/functions.php:615
 msgid "Edit"
 msgstr "Bearbeitung"
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:613
+#: wp-content/themes/teamlab-blog-2-0/functions.php:618
 msgid "Your comment is awaiting moderation."
 msgstr "Ihr Kommentar wartet auf Modertaion."
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:624
+#: wp-content/themes/teamlab-blog-2-0/functions.php:629
 msgid "Pingback:"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:624
+#: wp-content/themes/teamlab-blog-2-0/functions.php:629
 msgid "(Edit)"
 msgstr "(Bearbeiten)"
 
@@ -1380,8 +1380,8 @@ msgid "Your site&#8217;s most recent Posts."
 msgstr ""
 
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:95
-msgid "View all posts"
-msgstr "Alle Beiträge"
+msgid "View all posts&nbsp;>"
+msgstr "Alle Nachrichten ansehen&nbsp;>"
 
 #: wp-includes/widgets/class-wp-widget-rss.php:26
 msgid "Entries from any RSS or Atom feed."
@@ -1489,6 +1489,9 @@ msgid ""
 "Text&#8221; tab instead. Alternately, try out the new &#8220;Custom "
 "HTML&#8221; widget!"
 msgstr ""
+
+#~ msgid "View all posts"
+#~ msgstr "Alle Beiträge"
 
 #~ msgid "Subscribe to our newsletters"
 #~ msgstr "Abonnieren Sie unseren Newsletter"

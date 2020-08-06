@@ -383,7 +383,7 @@
 .widget-title{
     font-family: Open Sans;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 16px;
     line-height: 22px;
     color: #333333;
@@ -751,7 +751,7 @@
 }
 .SingleContainer .subscribe-blue,
 .SingleContainer .subscribe-white {
-    margin-top: 64px;
+    margin: 64px 0;
 }
 
 .subscribe-blue h3{
