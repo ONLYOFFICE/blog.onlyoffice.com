@@ -953,7 +953,10 @@ body.desktop .button.red.disabled:visited {
     margin: 0 16px 0 0;
   }
   div#comments{
-    padding: 35px 15px 0 15px;
+    padding: 35px 15px 40px 15px;
+  }
+  #post-content .sidebar {
+    margin-top: 40px;
   }
 
   .load_more_results{
@@ -1145,9 +1148,6 @@ body.desktop .button.red.disabled:visited {
   }
   #post-content .content .entry-header .info-page {
     margin-top: 16px;
-  }
-  #post-content .sidebar {
-    margin-top: 48px;
   }
   
   .tagsList {

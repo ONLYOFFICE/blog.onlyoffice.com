@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Twenty Ten 1.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/twentyten\n"
-"POT-Creation-Date: 2020-08-01 11:41+0300\n"
-"PO-Revision-Date: 2020-08-01 12:22+0300\n"
+"POT-Creation-Date: 2020-08-06 11:57+0300\n"
+"PO-Revision-Date: 2020-08-06 11:58+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -42,8 +42,8 @@ msgid "onlyoffice-in-the-press"
 msgstr "es/onlyoffice-in-the-press"
 
 #: wp-content/plugins/in-the-press/in-the-press.php:94
-msgid "View all news"
-msgstr "Ver todas las noticias"
+msgid "View all news&nbsp;>"
+msgstr "Ver todas las noticias&nbsp;>"
 
 #: wp-content/plugins/in-the-press/in-the-press.php:100
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:102
@@ -415,104 +415,42 @@ msgstr "Solicitar llamada"
 msgid "follow us on:"
 msgstr "Síganos en"
 
-#: wp-content/themes/teamlab-blog-2-0/footer.php:180
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:2
-msgid "Newsletter"
-msgstr "Newsletter"
-
-#: wp-content/themes/teamlab-blog-2-0/footer.php:181
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:3
-msgid "Get the latest ONLYOFFICE news"
-msgstr "Obtenga las últimas noticias sobre ONLYOFFICE"
-
-#: wp-content/themes/teamlab-blog-2-0/footer.php:184
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:8
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:18
-msgid "Your email"
-msgstr "Su dirección de correo electrónico"
-
-#: wp-content/themes/teamlab-blog-2-0/footer.php:186
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:20
-msgid "Subscribe"
-msgstr "Suscríbase"
-
-#: wp-content/themes/teamlab-blog-2-0/footer.php:189
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:25
-msgid "Email is empty"
-msgstr "El correo electrónico está vacío"
-
-#: wp-content/themes/teamlab-blog-2-0/footer.php:190
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:26
-msgid "Email is incorrect"
-msgstr "El correo electrónico es incorrecto"
-
-#: wp-content/themes/teamlab-blog-2-0/footer.php:191
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:27
-msgid "Email is used"
-msgstr "Este correo electrónico ya está registrado."
-
-#: wp-content/themes/teamlab-blog-2-0/footer.php:192
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:28
-msgid "Incorrect recaptcha"
-msgstr "Recaptcha incorrecta"
-
-#: wp-content/themes/teamlab-blog-2-0/footer.php:194
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:36
-msgid ""
-"By clicking “Subscribe”, you understand and agree to <u>our Privacy "
-"statement</u>"
-msgstr ""
-"Al hacer clic en \"Suscribirse\", usted entiende y acepta <u>nuestra "
-"Política de privacidad</u>"
-
-#: wp-content/themes/teamlab-blog-2-0/footer.php:197
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:40
-msgid "Confirm your subscription"
-msgstr "Confirme su suscripción"
-
-#: wp-content/themes/teamlab-blog-2-0/footer.php:198
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:41
-msgid "We sent an email message with confirmation to your email address"
-msgstr ""
-"Hemos enviado un correo electrónico con la confirmación a su dirección de "
-"correo electrónico"
-
-#: wp-content/themes/teamlab-blog-2-0/footer.php:204
+#: wp-content/themes/teamlab-blog-2-0/footer.php:177
 msgid "Ascensio System SIA"
 msgstr "Ascensio System SIA"
 
-#: wp-content/themes/teamlab-blog-2-0/footer.php:204
+#: wp-content/themes/teamlab-blog-2-0/footer.php:177
 msgid "All rights reserved"
 msgstr "Todos los derechos reservados"
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:203
+#: wp-content/themes/teamlab-blog-2-0/functions.php:202
 #, php-format
 msgid "<span class=\"%2$s\">By %3$s</span>"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:609
+#: wp-content/themes/teamlab-blog-2-0/functions.php:606
 #, php-format
 msgid "%s"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:613
+#: wp-content/themes/teamlab-blog-2-0/functions.php:610
 #, php-format
 msgid "%1$s at %2$s"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:613
+#: wp-content/themes/teamlab-blog-2-0/functions.php:610
 msgid "Edit"
 msgstr "Editar"
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:616
+#: wp-content/themes/teamlab-blog-2-0/functions.php:613
 msgid "Your comment is awaiting moderation."
 msgstr "Su comentario espera que sea moderado."
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:627
+#: wp-content/themes/teamlab-blog-2-0/functions.php:624
 msgid "Pingback:"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:627
+#: wp-content/themes/teamlab-blog-2-0/functions.php:624
 msgid "(Edit)"
 msgstr "(Editar)"
 
@@ -811,6 +749,68 @@ msgstr "Eventos"
 #: wp-content/themes/teamlab-blog-2-0/header.php:257
 msgid "Contacts"
 msgstr "Contactos"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:275
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:2
+msgid "Newsletter"
+msgstr "Newsletter"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:276
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:3
+msgid "Get the latest ONLYOFFICE news"
+msgstr "Obtenga las últimas noticias sobre ONLYOFFICE"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:279
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:8
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:18
+msgid "Your email"
+msgstr "Su dirección de correo electrónico"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:281
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:20
+msgid "Subscribe"
+msgstr "Suscríbase"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:284
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:25
+msgid "Email is empty"
+msgstr "El correo electrónico está vacío"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:285
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:26
+msgid "Email is incorrect"
+msgstr "El correo electrónico es incorrecto"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:286
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:27
+msgid "Email is used"
+msgstr "Este correo electrónico ya está registrado."
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:287
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:28
+msgid "Incorrect recaptcha"
+msgstr "Recaptcha incorrecta"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:289
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:36
+msgid ""
+"By clicking “Subscribe”, you understand and agree to <u>our Privacy "
+"statement</u>"
+msgstr ""
+"Al hacer clic en \"Suscribirse\", usted entiende y acepta <u>nuestra "
+"Política de privacidad</u>"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:292
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:40
+msgid "Confirm your subscription"
+msgstr "Confirme su suscripción"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:293
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:41
+msgid "We sent an email message with confirmation to your email address"
+msgstr ""
+"Hemos enviado un correo electrónico con la confirmación a su dirección de "
+"correo electrónico"
 
 #: wp-content/themes/teamlab-blog-2-0/inc/template-tags.php:82
 #, php-format

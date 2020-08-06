@@ -368,18 +368,9 @@
     line-height: 19px;
     color: #333333;
     list-style-type: none;
-    padding-left: 15px;
     position: relative;
 }
-.widget li:before{
-    position: absolute;
-    top: 0;
-    left: 0;
-    content: "•";
-    font-size: 20px;
-    color: #04ED37;
-    margin:0 8px 0 3px;
-}
+
 .widget li a{
     color: #444444;
     font-weight: bold;
@@ -398,6 +389,7 @@
     color: #333333;
     padding-bottom: 24px;
     text-transform: uppercase;
+    max-width: 150px;
 }
 .twitter{
     margin-top: 8px;
@@ -470,7 +462,7 @@
 
 /*---------PAGE ONLYOFFICE IN THE PRESS-------*/
 .in-the-press{
-    margin-top: 59px;
+    margin-top: 40px;
 }
 .post h2.entry-title.press-page-title{
     margin-top: 11px;
@@ -500,7 +492,7 @@
 /*---------PAGE TAGS-------*/
 
 .tags-page{
-    margin-top: 57px;
+    margin-top: 40px;
 }
 .content a.nameTags{
     vertical-align: middle;
@@ -1348,7 +1340,7 @@ a.download:active{
     margin: 32px 0 48px;
 }
 .breadcrumbs-search{
-    margin-bottom: 32px;
+    margin-bottom: 56px;
 }
 
 .breadcrumbs span{
@@ -1422,6 +1414,9 @@ a.download:active{
 }
 .SingleContainer #content {
     grid-gap: 128px;
+}
+.SingleContainer .breadcrumbs-single{
+    margin: 32px 0 56px;
 }
 .PostContainer #post-content #respond{
     border-bottom: none;
@@ -1602,8 +1597,10 @@ div#comments a{
 div#comments {
     max-width: 736px;
     padding-top: 35px;
+    padding-bottom: 80px;
     margin: -5px auto 0;
     font-size: 12px;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 div#comments ol, div#comments ul {
@@ -1974,7 +1971,7 @@ div#respond form#commentform p.submit {
     grid-gap: 128px;
 }
 .search-page{
-     margin-bottom: 45px;
+     margin-bottom: 40px;
 }
 .searchresult{
     margin-bottom: 14px;

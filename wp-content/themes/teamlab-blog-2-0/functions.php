@@ -109,7 +109,6 @@ if ( ! function_exists( 'add_my_theme_stylesheet' ) ) :
         wp_enqueue_style( 'navigation_css', $template_uri . '/css/navigation.css' );
         wp_enqueue_style( 'language_selector_css', $template_uri . '/css/language-selector.css' );
         wp_enqueue_style( 'pushy_css', $template_uri . '/css/pushy.css' );
-        wp_enqueue_style( 'magnific_popup_css', $template_uri . '/css/magnific-popup.css' );
     }
 
     endif;
