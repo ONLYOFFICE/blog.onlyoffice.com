@@ -1910,7 +1910,6 @@ div#respond form#commentform p.message {
 }
 
 div#respond form#commentform label {
-    display: block;
     margin-bottom: 5px;
     font: 11px "Open Sans", "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif;
     color: #333333;
