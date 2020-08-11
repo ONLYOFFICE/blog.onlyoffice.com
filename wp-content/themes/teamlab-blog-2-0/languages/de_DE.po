@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Twenty Ten 1.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/twentyten\n"
-"POT-Creation-Date: 2020-08-06 13:00+0300\n"
-"PO-Revision-Date: 2020-08-06 13:01+0300\n"
+"POT-Creation-Date: 2020-08-11 17:03+0300\n"
+"PO-Revision-Date: 2020-08-11 17:17+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -42,8 +42,8 @@ msgid "onlyoffice-in-the-press"
 msgstr "de/onlyoffice-in-the-press"
 
 #: wp-content/plugins/in-the-press/in-the-press.php:94
-msgid "View all news&nbsp;>"
-msgstr "Alle Nachrichten ansehen&nbsp;>"
+msgid "View all news&nbsp;<div class=\"grey-arrow\"></div>"
+msgstr "Alle Nachrichten ansehen&nbsp;<div class=\"grey-arrow\"></div>"
 
 #: wp-content/plugins/in-the-press/in-the-press.php:100
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:102
@@ -58,7 +58,7 @@ msgstr ""
 #: wp-includes/widgets/class-wp-widget-meta.php:116
 #: wp-includes/widgets/class-wp-widget-pages.php:144
 #: wp-includes/widgets/class-wp-widget-recent-comments.php:179
-#: wp-includes/widgets/class-wp-widget-recent-posts.php:157
+#: wp-includes/widgets/class-wp-widget-recent-posts.php:158
 #: wp-includes/widgets/class-wp-widget-search.php:70
 #: wp-includes/widgets/class-wp-widget-tag-cloud.php:132
 #: wp-includes/widgets/class-wp-widget-text.php:491
@@ -66,12 +66,12 @@ msgid "Title:"
 msgstr ""
 
 #: wp-content/plugins/in-the-press/in-the-press.php:157
-#: wp-includes/widgets/class-wp-widget-recent-posts.php:160
+#: wp-includes/widgets/class-wp-widget-recent-posts.php:161
 msgid "Number of posts to show:"
 msgstr ""
 
 #: wp-content/plugins/in-the-press/in-the-press.php:161
-#: wp-includes/widgets/class-wp-widget-recent-posts.php:164
+#: wp-includes/widgets/class-wp-widget-recent-posts.php:165
 msgid "Display post date?"
 msgstr ""
 
@@ -434,29 +434,29 @@ msgstr "Alle Rechte vorbehalten"
 msgid "<span class=\"%2$s\">By %3$s</span>"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:611
+#: wp-content/themes/teamlab-blog-2-0/functions.php:606
 #, php-format
 msgid "%s"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:615
+#: wp-content/themes/teamlab-blog-2-0/functions.php:610
 #, php-format
 msgid "%1$s at %2$s"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:615
+#: wp-content/themes/teamlab-blog-2-0/functions.php:610
 msgid "Edit"
 msgstr "Bearbeitung"
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:618
+#: wp-content/themes/teamlab-blog-2-0/functions.php:613
 msgid "Your comment is awaiting moderation."
 msgstr "Ihr Kommentar wartet auf Modertaion."
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:629
+#: wp-content/themes/teamlab-blog-2-0/functions.php:624
 msgid "Pingback:"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:629
+#: wp-content/themes/teamlab-blog-2-0/functions.php:624
 msgid "(Edit)"
 msgstr "(Bearbeiten)"
 
@@ -766,38 +766,38 @@ msgid "Get the latest ONLYOFFICE news"
 msgstr "Erhalten Sie die neuesten Nachrichten über ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:279
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:8
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:18
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:7
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:16
 msgid "Your email"
 msgstr "Ihre E-Mail"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:281
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:20
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:18
 msgid "Subscribe"
 msgstr "Abonnieren"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:284
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:25
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:23
 msgid "Email is empty"
 msgstr "Die E-Mail-Adresse fehlt"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:285
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:26
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:24
 msgid "Email is incorrect"
 msgstr "Die angegebene E-Mail-Adresse ist ungültig"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:286
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:27
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:25
 msgid "Email is used"
 msgstr "Die angegebene E-Mail-Adresse ist bereits registriert"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:287
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:28
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:26
 msgid "Incorrect recaptcha"
 msgstr "Falsches Recaptcha"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:289
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:36
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:34
 msgid ""
 "By clicking “Subscribe”, you understand and agree to <u>our Privacy "
 "statement</u>"
@@ -806,12 +806,12 @@ msgstr ""
 "Datenschutzerklärung</u> und stimmen dieser zu"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:292
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:40
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:38
 msgid "Confirm your subscription"
 msgstr "Bestätigen Sie Ihr Abonnement"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:293
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:41
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:39
 msgid "We sent an email message with confirmation to your email address"
 msgstr "Wir haben eine Bestätigung an Ihre E-Mail-Adresse gesendet"
 
@@ -838,9 +838,14 @@ msgstr ""
 msgid "By"
 msgstr ""
 
+#: wp-content/themes/teamlab-blog-2-0/search.php:71
 #: wp-content/themes/teamlab-blog-2-0/single.php:45
 msgid "Recent posts"
 msgstr "Neuste beiträge"
+
+#: wp-content/themes/teamlab-blog-2-0/social-icons.php:2
+msgid "Follow us"
+msgstr "Folgen Sie uns"
 
 #: wp-content/themes/teamlab-blog-2-0/template-parts/content-none.php:24
 #, php-format
@@ -1380,8 +1385,8 @@ msgid "Your site&#8217;s most recent Posts."
 msgstr ""
 
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:95
-msgid "View all posts&nbsp;>"
-msgstr "Alle Nachrichten ansehen&nbsp;>"
+msgid "View all posts&nbsp;<div class=\"grey-arrow\"></div>"
+msgstr "Alle Beiträge ansehen&nbsp;<div class=\"grey-arrow\"></div>"
 
 #: wp-includes/widgets/class-wp-widget-rss.php:26
 msgid "Entries from any RSS or Atom feed."
@@ -1489,6 +1494,12 @@ msgid ""
 "Text&#8221; tab instead. Alternately, try out the new &#8220;Custom "
 "HTML&#8221; widget!"
 msgstr ""
+
+#~ msgid "View all news&nbsp;>"
+#~ msgstr "Alle Nachrichten ansehen&nbsp;>"
+
+#~ msgid "View all posts&nbsp;>"
+#~ msgstr "Alle Nachrichten ansehen&nbsp;>"
 
 #~ msgid "View all posts"
 #~ msgstr "Alle Beiträge"

@@ -81,6 +81,7 @@ get_header();
 					</div><!-- #content -->
 					<div class="sidebar-press">
 				<?php dynamic_sidebar('sidebar-2'); ?>
+				<?php include get_template_directory() . '/' . 'social-icons.php' ?>
 				</div>
 				</div><!-- .content -->
 			</div><!-- SingleContainer -->

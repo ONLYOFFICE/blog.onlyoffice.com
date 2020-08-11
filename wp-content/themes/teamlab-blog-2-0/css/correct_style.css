@@ -438,10 +438,27 @@
 .recent a img {
     margin-right: 16px;
 }
+.grey-arrow{
+    display: inline-block;
+    vertical-align: middle;
+    background-image: url('../images/gray-arrow.svg');
+    background-position: 50% 0;
+    background-size: 100%;
+    width: 4px;
+    height: 7px;
+    margin-bottom: 2px;
+    margin-left: 4px;
+}
 
 .press-recent{
     margin-top: 8px;
     margin-bottom: 30px;
+}
+.recent-post{
+    display:none;
+    padding-top: 80px;
+    border-top: 1px solid #e0e0e0;
+    margin-bottom: 64px;
 }
 .widget.widget_recent_entries a{
     text-decoration: none;
@@ -458,6 +475,42 @@
 }
 .widget.widget_recent_entries a:hover{
     text-decoration: underline;
+}
+/*---------WIDGET SOCIAL-ICONS IN THE PRESS-------*/
+.icons-item {
+    display: inline-block;
+    background-position: 50% 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.wdgt-facebook,
+.wdgt-twitter,
+.wdgt-vk,
+.wdgt-instagram{
+    display: block;
+    margin-right: 24px;
+}
+
+.wdgt-facebook{
+    width: 14px;
+    height: 23px;
+    background-image: url("../images/social-facebook.svg");
+}
+.wdgt-twitter{
+    width: 27px;
+    height: 22px;
+    background-image: url("../images/social-twitter.svg");
+}
+.wdgt-vk{
+    width: 35px;
+    height: 19px;
+    background-image: url("../images/social-VK.svg");
+}
+.wdgt-instagram{
+    width: 25px;
+    height: 24px;
+    background-image: url("../images/social-instagram.svg");
+    margin-right: 0;
 }
 
 /*---------PAGE ONLYOFFICE IN THE PRESS-------*/
@@ -495,6 +548,7 @@
     margin-top: 40px;
 }
 .content a.nameTags{
+    display: inline-block;
     vertical-align: middle;
     color: #616161;
     padding: 6px 16px;
@@ -507,6 +561,7 @@
     border-radius: 3px;
     text-decoration: none;
     cursor: default;
+    white-space: nowrap;
 }
 .post h2.entry-title.tags-page-title{
     margin-top: 15px;
@@ -642,6 +697,7 @@
     line-height: 26px;
     /* or 162% */
     color: #333333;
+    text-align: justify;
 }
 .head{
     margin-top: 14px;
@@ -1155,7 +1211,7 @@ a.download:active{
 .GooglePlay:before,
 .AppStore:before {
     height: 36px;
-    background-image: url(https://static-www.onlyoffice.com/images/mainpage/download.svg);
+    background-image: url(../images/download.svg);
     background-repeat: no-repeat;
     background-size: 514px 34px;
     -webkit-filter: grayscale(100%);
@@ -1444,11 +1500,16 @@ a.download:active{
     font-weight: normal;
     font-size: 16px;
     line-height: 160%;
+    text-align: justify;
+    margin-bottom: 16px;
 }
 .content li:before {
     color: #FF6F3D; /* Цвет маркера */
-    content: "\25CF"; /* Сам маркер */
+    content: "\2666";/* Сам маркер */
+    transform: rotate(-45deg);
     padding-right: 15px; /* Расстояние от маркера до текста */
+    width: 5.73px;
+    height: 5.72px;
    }
 
 .content a{

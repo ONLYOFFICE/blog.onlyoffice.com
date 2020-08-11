@@ -325,7 +325,7 @@ input.vertical-bottom {
 }
 .ListSocLink li label {
   background-repeat: no-repeat;
-  background-image: url("https://static-www.onlyoffice.com/images/color_social_icons.svg");
+  background-image: url("../images/color_social_icons.svg");
   -webkit-filter: grayscale(1);
   filter: grayscale(1);
   display: block;
@@ -741,7 +741,7 @@ body.desktop .button.red.disabled:visited {
     height: calc(100vw * 0.20);
   }
   .sidebar{
-    margin-top: 64px;
+    margin-top: 80px;
     width: 100%;
     display: block;
   }
@@ -773,6 +773,15 @@ body.desktop .button.red.disabled:visited {
   }
   .recent{
     margin-bottom: 32px;
+  }
+  .recent-post{
+    display: block;
+  }
+  .SearchContainer #content .sidebar .recent-post .wrapperMain .postwrapper:last-child {
+    display: none;
+  }
+  .widget_recent_entries{
+    display: none;
   }
   .widget_recent_entries .press-all ul:last-child {
     margin-bottom: 0;
@@ -896,16 +905,38 @@ body.desktop .button.red.disabled:visited {
     width: 100%;
   }
   .PostContainer {
-    padding: 48px 0 20px;
+    padding: 48px 0 60px;
+  }
+   .PostContainer .content img{
+     object-fit: cover;
+   }
+  .SingleContainer .breadcrumbs-single{
+    margin: 32px 0 40px;
   }
   .breadcrumbs-single{
-    margin: 24px 0;
     padding: 0 15px;
     }
-    
+    .tags-page{
+      margin-top: 28px;
+    }
     .SearchContainer{
     width: auto;
-    padding: 88px 15px 80px;
+    padding: 88px 0 48px;
+   }
+   
+   .PostContainer #post-content .sidebar .wrapperMain .postwrapper:last-child,
+   .SearchContainer #content .sidebar .recent-post .wrapperMain .postwrapper:last-child {
+     display: block;
+    margin: 0 15px 0 15px;
+   }
+
+   .SearchContainer .search-page,
+   .breadcrumbs-search{
+     padding: 0 15px;
+   }
+   .recent-post {
+     padding-top: 48px;
+     margin-bottom: 48px;
    }
   .MailContainer{
       padding: 80px 15px 40px;
@@ -958,9 +989,11 @@ body.desktop .button.red.disabled:visited {
   #post-content .sidebar {
     margin-top: 40px;
   }
-
+  .content a.nameTags {
+    margin: 16px 0;
+  }
   .load_more_results{
-    margin:48px auto;
+    margin: 48px auto 0;
   }
   .post{
     padding: 0 15px;
@@ -971,6 +1004,10 @@ body.desktop .button.red.disabled:visited {
 
   .entry-title{
     font-size: 24px;
+  }
+  .SearchContainer .post h2.entry-title a {
+    font-size: 20px;
+    line-height: 133%;
   }
   .post h2.entry-title a{
     font-size: 18px;
@@ -1032,7 +1069,9 @@ body.desktop .button.red.disabled:visited {
   div.post div.entry-utility span.googleplus-button{
     display: none;
   }
-
+  footer{
+    padding: 0 31px;
+  }
   footer h6{
     margin-bottom: 0;
     padding: 17px 14px;
@@ -1128,6 +1167,18 @@ body.desktop .button.red.disabled:visited {
 #post-content .content .entry-content {
   margin: 72px auto 0;
 }
+.content p.first-img {
+  margin-top: 72px;
+}
+.wrapperMain .postwrapper .postThemeGridBox .meta .comments,
+.wrapperMain .postwrapper .postThemeGridBox .meta .views {
+  display: none;
+}
+.MainContainer .meta .comments,
+.MainContainer .meta .views {
+  display: none;
+}
+
 }
 @media screen and (max-width: 320px){
   .PostContainer {
@@ -1166,10 +1217,6 @@ body.desktop .button.red.disabled:visited {
     margin: 32px 0 0 0;
   }
   div.post div.entry-utility span.googleplus-button{
-    display: none;
-  }
-  .wrapperMain .postwrapper .postThemeGridBox .meta .comments,
-  .wrapperMain .postwrapper .postThemeGridBox .meta .views {
     display: none;
   }
   .postwrapper {

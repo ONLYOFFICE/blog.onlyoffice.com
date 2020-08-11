@@ -92,7 +92,7 @@ class WP_Widget_Recent_Posts extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		?>
-		<div class="view-all"><a href="<?php echo site_url()?>"><?php _e('View all posts&nbsp;>', 'teamlab-blog-2-0'); ?></a></div>
+		<div class="view-all"><a href="<?php echo site_url()?>"><?php _e('View all posts&nbsp;<div class="grey-arrow"></div>', 'teamlab-blog-2-0'); ?></a></div>
 		</div>
 		<ul>
 			
@@ -109,6 +109,7 @@ class WP_Widget_Recent_Posts extends WP_Widget {
 				?>
 				<div class="recent">
 				<a href="<?php the_permalink($recent_post->ID) ?>" title=""><?php echo $thumb; ?></a>
+
 				<li>
 					<a href="<?php the_permalink( $recent_post->ID ); ?>"<?php echo $aria_current; ?>><?php echo $title; ?></a>
 					<?php if ( $show_date ) : ?>

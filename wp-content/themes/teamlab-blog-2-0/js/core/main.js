@@ -55,26 +55,6 @@ var LanguageSelectorManager = new function () {
         openLngSelector: openLngSelector
     };
 };
-/***** INPUT VALIDATE
-var input = document.getElementById("s");
-    input.addEventListener('input', function(e){
-        if(!e.target.classList.contains('focus')) {
-            e.target.classList.add('focus');
-        }
-        if(!e.target.value) {
-            e.target.classList.toggle('focus');
-        }
-    });
-
-    input.addEventListener('blur', function(e){
-        if(!e.target.value && e.target.classList.contains('focus')) {
-            e.target.classList.toggle('focus');
-        }
-    });
-
-$('.footer_menu').click(function(){
-    $(this).toggleClass('active');    
-})
 
 /***** VALIDATE MAIN SEARCH *****/
 
@@ -163,33 +143,6 @@ function SubmitSubEmail(inputValue){
             }
         });
     }
-};
-
-function ValidateInput(inputVal/*, recaptchaResp*/){
-    /*$(".errorMessage.recaptcha").hide();
-    $inputBox.removeClass("error");*/
-
-    correctValue = true;
-
-    if (inputVal == "") {
-        $inputBox.addClass("error");
-        $(".errorMessage.empty").show();
-        correctValue=false;
-    } else if(!isValidEmail(inputVal)){
-        $inputBox.addClass("error");
-        $(".errorMessage.incorrect").show();
-        correctValue=false;
-    } /*else if(recaptchaResp == "" || recaptchaResp == undefined){
-        $inputBox.addClass("error");
-        $(".errorMessage.recaptcha").show();
-        correctValue=false
-    }*/ else {
-        $inputBox.addClass("valid");
-    }
-
-    
-
-    return correctValue;
 };
 
 function showErrors($thisInputContainer, errorMsg){
@@ -314,10 +267,12 @@ function ValidateInput(inputVal /*, recaptchaResp*/ ) {
     correctValue = true;
 
     if (inputVal == "") {
+        $inputBox.addClass("error");
         $inputBox2.addClass("error");
         $(".errorMessage.empty").show();
         correctValue = false;
     } else if (!isValidEmail(inputVal)) {
+        $inputBox.addClass("error");
         $inputBox2.addClass("error");
         $(".errorMessage.incorrect").show();
         correctValue = false;
@@ -328,6 +283,7 @@ function ValidateInput(inputVal /*, recaptchaResp*/ ) {
            correctValue=false
        }*/
     else {
+        $inputBox.addClass("valid");
         $inputBox2.addClass("valid");
     }
 
@@ -428,20 +384,3 @@ $('#subscribelink').click(function() {
 $('.close-popup').click(function() {
     $('.hidden').hide();
 });
-
-
-
-/***** 
-var input = document.getElementById("s");
-input.onfocus = function() {
-  if (input.val().lenght==0) {
-    input.classList.add('focus');
-  }
-};
-
-input.onblur = function() {
-  if (this.classList.contains('focus')) {
-    this.classList.remove('focus');
-    error.innerHTML = "";
-  }
-};*****/

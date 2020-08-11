@@ -4,9 +4,7 @@
 
 	<?php if ( is_home() ) { ?>
 	<div id="InputBox" class="inputBox">
-		<input id="subscribe-email-input" class="main-input" />
-		<label><?php _e('Your email', 'teamlab-blog-2-0'); ?></label>
-
+		<input id="subscribe-email-input" class="main-input" placeholder="<?php _e('Your email', 'teamlab-blog-2-0') ?>" />
 		<div id="email-sub-button" class="inputButton">
 			<div class="loader"></div>
 		</div>
