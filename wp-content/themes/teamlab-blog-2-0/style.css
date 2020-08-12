@@ -18,7 +18,9 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 24px;
     line-height: 33px;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 700;
+    margin-bottom: 24px;
+    margin: 40px 0 23px;
 }
 blockquote {
   border-left: 3px solid #FF6F3D;

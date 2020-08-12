@@ -843,6 +843,9 @@ body.desktop .button.red.disabled:visited {
    .tagShare{
      width: 100%;
    }
+   .tagShare .a2a_kit {
+     margin: 0;
+   }
    .a2a_kit{
      float: left !important;
    }

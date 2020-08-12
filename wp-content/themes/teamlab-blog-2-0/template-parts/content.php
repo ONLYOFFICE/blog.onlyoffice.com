@@ -30,10 +30,6 @@
 
 		<?php endif; ?>
 	</div><!-- .entry-header -->
-	<?php if ( is_singular('post') && has_post_thumbnail()) {
-	$thumbnail_attributes = wp_get_attachment_image_src( get_post_thumbnail_id(), 'full' ); ?>
-	<p class="first-img"><img src="<?php echo $thumbnail_attributes[0]; ?>" alt="<?php the_title(); ?>"/></p>
-	<?php } ?>
 	<div class="entry-content">
 		<?php the_content( sprintf());?>
 	</div><!-- .entry-content -->

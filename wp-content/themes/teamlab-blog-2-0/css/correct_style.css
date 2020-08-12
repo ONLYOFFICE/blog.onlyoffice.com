@@ -200,6 +200,9 @@
 .tagShare{
     width: 30%;
 }
+.tagShare .a2a_kit {
+    margin: 10px 0;
+}
 /*---------Search in header-------*/
 .serach-header{
     position: absolute;
@@ -316,13 +319,19 @@
 .content img{
     object-fit: contain;
     max-width: 100%;
+    margin: 16px 0;
 }
 .content p.first-img {
     text-align: center;
 }
 .content p.first-img img{
-    
     max-width: 100%;
+}
+.MainContainer .post p{
+    margin-bottom: 0;
+}
+.MainContainer .content img{
+    margin: 0;
 }
 .content .entry-content:first-child {
     display: none;
@@ -689,12 +698,12 @@
     color: #919192;
 }
 .post p{
-    margin-top: 16px;
+    margin:24px 0;
     font-family: Open Sans;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
-    line-height: 26px;
+    line-height: 160%;
     /* or 162% */
     color: #333333;
     text-align: justify;
@@ -717,6 +726,9 @@
 }
 .meta span:last-child{
     margin-right: 0;
+}
+.meta span a{
+    color: #919192;
 }
 .date {
     padding-left: 20px;
@@ -1443,12 +1455,14 @@ a.download:active{
 }
 #post-content .content .entry-header{
     text-align: center;
+    max-width: 846px;
+    margin: 0 auto;
 }
 #post-content .content .entry-title {
     font-size: 40px;
 }
 #post-content .content .entry-header .info-page{
-    margin-top: 24px;
+    margin-top: 32px;
 }
 #post-content .content .entry-content {
     max-width: 736px;
@@ -1501,7 +1515,7 @@ a.download:active{
     font-size: 16px;
     line-height: 160%;
     text-align: justify;
-    margin-bottom: 16px;
+    margin: 24px 0;
 }
 .content li:before {
     color: #FF6F3D; /* Цвет маркера */
@@ -1517,7 +1531,6 @@ a.download:active{
 }
 .content .button{
     display: inline-block;
-    margin-top: 32px;
     font-family: Open Sans;
     font-style: normal;
     font-weight: bold;
@@ -1578,6 +1591,7 @@ a.download:active{
 }
 .addtoany_share img{
     margin-top: 0 !important;
+    margin-bottom: 0 !important;
 }
 .a2a_mini_services{
     display: grid;

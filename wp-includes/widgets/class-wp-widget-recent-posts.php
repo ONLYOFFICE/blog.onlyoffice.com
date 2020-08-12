@@ -74,7 +74,7 @@ class WP_Widget_Recent_Posts extends WP_Widget {
 					'posts_per_page'      => $number,
 					'no_found_rows'       => true,
 					'post_status'         => 'publish',
-					'cat'    		  	=> -1125,
+					'cat'    		  	=> -1012,
 					'ignore_sticky_posts' => true,
 				),
 				$instance
@@ -100,7 +100,6 @@ class WP_Widget_Recent_Posts extends WP_Widget {
 				<?php
 				$post_title   = get_the_title( $recent_post->ID );
 				$title        = ( ! empty( $post_title ) ) ? $post_title : __( '(no title)' );
-				$thumb 		  = get_the_post_thumbnail($recent_post->ID);
 				$aria_current = '';
 
 				if ( get_queried_object_id() === $recent_post->ID ) {
@@ -108,8 +107,6 @@ class WP_Widget_Recent_Posts extends WP_Widget {
 				}
 				?>
 				<div class="recent">
-				<a href="<?php the_permalink($recent_post->ID) ?>" title=""><?php echo $thumb; ?></a>
-
 				<li>
 					<a href="<?php the_permalink( $recent_post->ID ); ?>"<?php echo $aria_current; ?>><?php echo $title; ?></a>
 					<?php if ( $show_date ) : ?>
