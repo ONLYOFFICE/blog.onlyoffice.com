@@ -755,7 +755,7 @@ body.desktop .button.red.disabled:visited {
     display: none;
   }
   .wrapperMain{
-    margin-top: 32px;
+    margin-top: 56px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 32px;
@@ -808,6 +808,13 @@ body.desktop .button.red.disabled:visited {
     width: auto;
     padding: 88px 40px 80px 40px;
    }
+   .SearchContainer .sidebar .recent-post h3 {
+     font-size: 24px;
+     font-weight: 600;
+   }
+   .SearchContainer .sidebar .wrapperMain {
+     margin: 40px 0 0 0;
+   }
    .PostContainer {
      width: auto;
      padding: 48px 40px 80px 40px;
@@ -831,6 +838,9 @@ body.desktop .button.red.disabled:visited {
    }
    #post-content .sidebar {
      margin-top: 72px;
+   }
+   #post-content .content h3 {
+     font-size: 24px !important;
    }
    .tagsList {
      display: block;
@@ -911,7 +921,8 @@ body.desktop .button.red.disabled:visited {
     padding: 48px 0 60px;
   }
    .PostContainer .content img{
-     object-fit: cover;
+     height: 100%;
+     margin: 0;
    }
   .SingleContainer .breadcrumbs-single{
     margin: 32px 0 40px;
@@ -925,8 +936,7 @@ body.desktop .button.red.disabled:visited {
     .SearchContainer{
     width: auto;
     padding: 88px 0 48px;
-   }
-   
+   } 
    .PostContainer #post-content .sidebar .wrapperMain .postwrapper:last-child,
    .SearchContainer #content .sidebar .recent-post .wrapperMain .postwrapper:last-child {
      display: block;
@@ -1202,6 +1212,9 @@ body.desktop .button.red.disabled:visited {
   }
   #post-content .content .entry-header .info-page {
     margin-top: 16px;
+  }
+  #post-content .content h3 {
+    font-size: 18px !important;
   }
   
   .tagsList {

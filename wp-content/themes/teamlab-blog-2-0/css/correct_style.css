@@ -437,6 +437,10 @@
     text-decoration: none;
     color: #444444 !important;
 }
+.no-wrap{
+    display: inline-block;
+    white-space: nowrap;
+}
 .widget .view-all a:hover,
 .widget .view-all a:visited{
     text-decoration: underline;
@@ -1462,7 +1466,8 @@ a.download:active{
     font-size: 40px;
 }
 #post-content .content .entry-header .info-page{
-    margin-top: 32px;
+    max-width: 736px;
+    margin: 36px auto 0;
 }
 #post-content .content .entry-content {
     max-width: 736px;
@@ -1515,7 +1520,7 @@ a.download:active{
     font-size: 16px;
     line-height: 160%;
     text-align: justify;
-    margin: 24px 0;
+    margin: 16px 0;
 }
 .content li:before {
     color: #FF6F3D; /* Цвет маркера */

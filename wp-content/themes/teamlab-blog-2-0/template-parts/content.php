@@ -21,7 +21,7 @@
 			?>
 			<div class="meta info-page">
 						<span class="date"><?php echo get_the_date('j F Y'); ?></span>
-						<span class="autor"><?php _e('By') ?> <?php echo get_the_author(); ?></span>
+						<span class="autor"><?php tmblog_posted_by(); ?></span>
 			      <span class="comments"><?php comments_number('0', '1', '%'); ?></span>
 						<span class="views"><?php if(function_exists('the_views')) { the_views(); } ?></span>
 						<?php if ( function_exists( 'ADDTOANY_SHARE_SAVE_KIT' ) ) { ADDTOANY_SHARE_SAVE_KIT(); } ?>

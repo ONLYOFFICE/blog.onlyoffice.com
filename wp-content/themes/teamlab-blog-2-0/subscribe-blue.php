@@ -12,8 +12,7 @@
 		<?php } else { ?>
 
 		<div id="InputBox" class="inputBox forPressPage">
-			<input id="subscribe-email-input" class="main-input" />
-			<label label><?php _e('Your email', 'teamlab-blog-2-0'); ?></label>
+			<input id="subscribe-email-input" class="main-input" placeholder="<?php _e('Your email', 'teamlab-blog-2-0') ?>" />
 
 			<div id="email-sub-button" class="inputButton pressPage"><?php _e('Subscribe', 'teamlab-blog-2-0') ?>
 				<div class="loader"></div>

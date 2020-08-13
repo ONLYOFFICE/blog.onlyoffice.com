@@ -275,8 +275,7 @@
       <h3><?php _e('Newsletter', 'teamlab-blog-2-0'); ?></h3>
       <p><?php _e('Get the latest ONLYOFFICE news', 'teamlab-blog-2-0'); ?></p>
         <div id="InputBox2" class="inputBox forPressPage">
-            <input id="subscribe-email-input2" class="main-input" />
-            <label	label><?php _e('Your email', 'teamlab-blog-2-0'); ?></label>
+            <input id="subscribe-email-input2" class="main-input" placeholder="<?php _e('Your email', 'teamlab-blog-2-0') ?>" />
 
             <div id="email-sub-button2" class="inputButton pressPage"><?php _e('Subscribe', 'teamlab-blog-2-0') ?>
               <div class="loader"></div>
