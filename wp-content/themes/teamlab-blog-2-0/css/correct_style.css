@@ -171,7 +171,7 @@
 .tagsList{
     display: flex;
     max-width: 736px;
-    margin: 50px auto 80px;
+    margin: 50px auto 64px;
 }
 .tagLine{
     width: 70%;
@@ -442,6 +442,7 @@
     white-space: nowrap;
 }
 .widget .view-all a:hover,
+.widget .view-all a:hover > .no-wrap,
 .widget .view-all a:visited{
     text-decoration: underline;
 }

@@ -613,6 +613,14 @@ body.desktop .button.red.disabled:visited {
     height: calc(100vw * 0.12);
   }
 }
+@media screen and (max-width: 1200px) {
+  .wdgt-facebook,
+  .wdgt-twitter,
+  .wdgt-vk,
+  .wdgt-instagram {
+    margin-right: 10px;
+  }
+}
 @media screen and (max-width: 1150px){
   .input-header .search-field{
     width: 0;
@@ -637,6 +645,12 @@ body.desktop .button.red.disabled:visited {
     right: 40px;
     top: 20px;
     z-index: 15;
+  }
+  .wdgt-facebook,
+  .wdgt-twitter,
+  .wdgt-vk,
+  .wdgt-instagram {
+    margin-right: 4px;
   }
 
 }
@@ -789,6 +803,12 @@ body.desktop .button.red.disabled:visited {
   .press-recent{
     margin-top: 8px;
     margin-bottom: 0;
+  }
+  .wdgt-facebook,
+  .wdgt-twitter,
+  .wdgt-vk,
+  .wdgt-instagram {
+    margin-right: 24px;
   }
 }
 
