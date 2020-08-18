@@ -2,7 +2,7 @@
 /*
 Plugin Name: ¤ Kama Quicktags
 Plugin URI: http://wp-kama.ru/?p=1
-Description: Вставляет кнопки в HTML редактор: "PRE", "Код в ХТМЛ". Можно добавить свои кнопки, как это сделать смотрите <a href='http://wp-kama.ru/?p=1'>здесь</a>.
+Description: Вставляет кнопки в HTML редактор. Можно добавить свои кнопки, как это сделать смотрите <a href='http://wp-kama.ru/?p=1'>здесь</a>.
 Version: 2.2
 Author: kama
 Author URI: http://wp-kama.ru
