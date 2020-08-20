@@ -308,6 +308,24 @@ function search_tags_query($query) {
         }
 }
 add_action('pre_get_posts', 'search_tags_query');
+
+// Empty search query
+add_filter('posts_search', function( $search, \WP_Query $q ) {
+    if (empty($search) && $q->is_search() && $q->is_main_query())
+        $search .=" AND 0=1 ";
+
+    return $search;
+}, 10, 2);
+
+//Excluding pages from search results
+function wph_exclude_pages($query) {
+    if ($query->is_search) {
+        $query->set('post_type', 'post');
+    }
+    return $query;
+}
+add_filter('pre_get_posts','wph_exclude_pages');
+
 // Load more on page search
 
 function true_load_posts_in_search(){

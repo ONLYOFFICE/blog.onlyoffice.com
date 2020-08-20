@@ -34,6 +34,7 @@ function TrackEvent(category, action, label) {
     } catch(err) { }
 };
 
+
 /***** Language Selector *****/
 
 var LanguageSelectorManager = new function () {
@@ -57,8 +58,6 @@ var LanguageSelectorManager = new function () {
 };
 
 /***** VALIDATE MAIN SEARCH *****/
-
-
 $(".searchInput").focus(function () {
     $(this).closest(".searchForm").addClass("focus");
 });
@@ -74,6 +73,14 @@ $(".searchInput").on('keyup', function() {
         $(this).closest(".searchForm").addClass("hasValue");
     } else {
         $(this).closest(".searchForm").removeClass("hasValue");
+    }
+});
+
+$('#searchform').on('submit', function (event) {
+    s = $('#headerInputSearch').val();
+    s = s.replace(/^\s+|\s+$/g, '');
+    if (!s){
+        event.preventDefault();
     }
 });
 

@@ -24,7 +24,7 @@ $argsSticky = [
  'posts_per_page' => 1,
  'post__in' => get_option('sticky_posts'),
  'ignore_sticky_posts' => 1,
- 'cat'=>-1125,
+ 'cat'=>-1012,
  'category__not_in' => $news_cat_id
 ];
 
@@ -63,8 +63,6 @@ $queryNews = new WP_Query($argsNews);?>
 					<div class="meta head">
 						<span class="date"><?php echo get_the_date('j F Y'); ?></span>
 						<span class="autor"><?php tmblog_posted_by(); ?></span>
-            <span class="comments"><?php comments_number('0', '1', '%'); ?></span>
-            <span class="views"><?php if(function_exists('the_views')) { the_views(); } ?></span>
 					</div>
 					<p><?php the_excerpt() ?></p>
 				</article>
@@ -82,7 +80,7 @@ $queryNews = new WP_Query($argsNews);?>
     'post_type' => 'post',
     'post_status' => 'publish',
     'posts_per_page' => 9,
-    'cat'=>-1125,
+    'cat'=>-1012,
     'category__not_in' => $news_cat_id
   ];
 

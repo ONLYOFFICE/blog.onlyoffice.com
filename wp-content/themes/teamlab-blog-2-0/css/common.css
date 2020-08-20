@@ -584,7 +584,7 @@ body.desktop .button.red.disabled:visited {
 }
 @media screen and (max-width: 1640px) {
   .postwrapper a img {
-    height: calc(100vw * 0.13);
+    height: calc(100vw * 0.12);
   }
   .ErrorContainer .bg{
     height: 212px;
@@ -850,7 +850,7 @@ body.desktop .button.red.disabled:visited {
      text-align: left;
    }
    #post-content .content .entry-header .info-page {
-     margin-top: 20px;
+     margin-top: 7px;
    }
    #post-content .content .meta .comments,
    #post-content .content .meta .views {

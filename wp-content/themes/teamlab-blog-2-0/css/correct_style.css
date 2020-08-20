@@ -561,6 +561,10 @@
 .tags-page{
     margin-top: 40px;
 }
+.tags-page .autor,
+.tags-page .date{
+    margin-top: 0;
+}
 .content a.nameTags{
     display: inline-block;
     vertical-align: middle;
@@ -713,13 +717,11 @@
     color: #333333;
     text-align: justify;
 }
-.head{
-    margin-top: 14px;
-}
 .meta{
     position: relative;
 }
 .meta span {
+    display: inline-block;
     font-family: Open Sans;
     font-style: normal;
     font-weight: normal;
@@ -728,6 +730,7 @@
     /* icon+text */
     color: #919192;
     margin-right: 16px;
+    
 }
 .meta span:last-child{
     margin-right: 0;
@@ -735,7 +738,12 @@
 .meta span a{
     color: #919192;
 }
+.head,
+.grid{
+    margin-top: 6px;
+}
 .date {
+    margin-top: 7px;
     padding-left: 20px;
     background: url("../images/calendar.svg") no-repeat 50% 50%;
     background-size: 12px;
@@ -743,6 +751,7 @@
     background-repeat: no-repeat;
 }
 .autor {
+    margin-top: 7px;
     padding-left: 20px;
     background: url("../images/autor.svg") no-repeat 50% 50%;
     background-size: 12px;
@@ -759,6 +768,7 @@
     text-decoration: underline;
 }
 .comments {
+    margin-top: 7px;
     padding-left: 20px;
     background: url("../images/comments.svg") no-repeat 50% 50%;
     background-size: 12px;
@@ -766,6 +776,7 @@
     background-repeat: no-repeat;
 }
 .views {
+    margin-top: 13px;
     padding-left: 20px;
     background: url("../images/views.svg") no-repeat 50% 50%;
     background-size: 14px;
@@ -805,9 +816,6 @@
 }
 .postThemeGridBox h4.entry-title a:hover{
     text-decoration: underline;
-}
-.grid{
-    margin-top: 13px;
 }
 /*-----------Subscribe-blue--------*/
 
@@ -1468,7 +1476,7 @@ a.download:active{
 }
 #post-content .content .entry-header .info-page{
     max-width: 736px;
-    margin: 36px auto 0;
+    margin: 29px auto 0;
 }
 #post-content .content .entry-content {
     max-width: 736px;
@@ -1477,7 +1485,15 @@ a.download:active{
 #post-content .content .entry-header .meta .a2a_kit {
     position: absolute;
     right: 0;
-    top: -5px;
+    top: 7px;
+}
+#post-content .sidebar .postwrapper .meta {
+    margin-top: 6px;
+}
+
+#post-content .sidebar .postwrapper .meta .autor,
+#post-content .sidebar .postwrapper .meta .date{
+    margin-top: 7px;
 }
 #post-content .sidebar {
     margin-top: 80px;
@@ -2058,6 +2074,11 @@ div#respond form#commentform p.submit {
 .searchresult{
     margin-bottom: 14px;
 }
+.searchresult .autor,
+.searchresult .date{
+    margin-top: 0;
+}
+
 
 .post h2.results{
     margin: 0 0 16px 0;
