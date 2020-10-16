@@ -8,13 +8,11 @@
 
 var mobileMenu = function() {
     jQuery('ul.akkordeon > li > a').removeClass('active');
-    jQuery('ul.akkordeon > li > div').hide();
     jQuery('ul.akkordeon > li > a').unbind('click');
     jQuery('ul.akkordeon > li > a').click(function (event) {
         if (!jQuery(this).hasClass('active')) {
             jQuery('ul.akkordeon > li > a').removeClass('active').next('div').slideUp();
             jQuery(this).addClass('active');
-            jQuery(this).next('div').slideDown(200);
         } else {
             jQuery(this).removeClass('active').next('div').slideUp();
         }

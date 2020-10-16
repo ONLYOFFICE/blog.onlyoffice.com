@@ -43,8 +43,9 @@
 /****************************************/
 
 footer {
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 160px;
   position: relative;
   z-index: 20;
   border-top: 1px solid #cccccc;
@@ -85,18 +86,18 @@ header {
   width: 180px;
   height: 70px;
   background: url("../images/logo_small.svg") no-repeat 0 50%;
+  background-size: contain;
   z-index: 1;
   position: relative;
 }
 .logo a {
   display: block;
-  height: 40px;
-  width: 250px;
+  height: 100%;
+  width: 100%;
   cursor: pointer;
 }
 
 .narrowfooter {
-  width: 928px;
   margin: 0 auto;
   position: relative;
   
@@ -574,6 +575,12 @@ body.desktop .button.red.disabled:visited {
   text-transform: none;
   padding: 10px 25px;
 }
+@media screen and (min-width: 1920px) {
+  .postwrapper a img {
+    height: calc(100vw * 0.10);
+  }
+}
+
 @media screen and (max-width: 1920px) {
   .postwrapper a img {
     height: calc(100vw * 0.10);
@@ -776,6 +783,10 @@ body.desktop .button.red.disabled:visited {
     grid-row-gap: 61px;
     position: relative;
   }
+  footer {
+    max-width: 736px;
+    padding: 0;
+  }
   .narrowfooter{
     width: auto;
   }
@@ -885,6 +896,11 @@ body.desktop .button.red.disabled:visited {
     .tags-page{
     margin-top: 44px;
     }
+
+    footer {
+      width: auto;
+      padding: 0 40px;
+    }
   .footer_menu {
   grid-gap: 2%;
   }
@@ -912,6 +928,11 @@ body.desktop .button.red.disabled:visited {
     width: 150px;
     transform: scale(.60);
     -webkit-transform: scale(.60);
+  }
+  .cloud-block{
+    background-position: 50% 25%;
+    background-size: 95%;
+    background-color: #F8F8F8;
   }
 }
 
@@ -998,11 +1019,6 @@ body.desktop .button.red.disabled:visited {
   .widget{
     margin:0 15px 48px 15px;
   }
-  .cloud-block{
-    background: url(../images/cloud-block-mini.svg) no-repeat 50% 14px;
-    background-color: #F8F8F8;
-    padding-top: 14px;
-  }
   .popup{
     width: 100%;
     padding: 0;
@@ -1051,6 +1067,16 @@ body.desktop .button.red.disabled:visited {
   }
   .in-the-press {
     margin-top: 43px;
+  }
+  .cloud-block{
+    background: url(../images/cloud-block-mini.svg) no-repeat 50% 39px;
+    background-color: #F8F8F8;
+    height: 252px;
+    padding-top: 39px;
+    background-size: 272px 122.78px;
+  }
+  .content .cloud-block .red{
+    padding: 12px 20px;
   }
   .postwrapper a img {
     height: auto;
@@ -1103,7 +1129,7 @@ body.desktop .button.red.disabled:visited {
     display: none;
   }
   footer{
-    padding: 0 31px;
+    padding: 0 15px;
   }
   footer h6{
     margin-bottom: 0;
@@ -1210,6 +1236,10 @@ body.desktop .button.red.disabled:visited {
 .MainContainer .meta .comments,
 .MainContainer .meta .views {
   display: none;
+}
+
+.cloud-block{
+  background-size: 272px 122.78px;
 }
 
 }
