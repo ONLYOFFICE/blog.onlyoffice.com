@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Twenty Ten 1.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/twentyten\n"
 "POT-Creation-Date: 2020-10-16 15:30+0300\n"
-"PO-Revision-Date: 2020-10-16 16:31+0300\n"
+"PO-Revision-Date: 2020-10-20 11:34+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -462,7 +462,7 @@ msgstr "(Bearbeiten)"
 #: wp-content/themes/teamlab-blog-2-0/header.php:85
 #: wp-content/themes/teamlab-blog-2-0/searchform.php:9
 msgid "Find news, tips and how-tos"
-msgstr "Nachrichten, Tipps und Anleitungen finden"
+msgstr "Nachrichten, Tipps finden"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:101
 msgid "Hosting providers"
@@ -482,7 +482,7 @@ msgstr "Heimgebrauch"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:112
 msgid "Products & Features"
-msgstr "Produkte und Funktionen"
+msgstr "Produkte"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:116
 #: wp-content/themes/teamlab-blog-2-0/header.php:167

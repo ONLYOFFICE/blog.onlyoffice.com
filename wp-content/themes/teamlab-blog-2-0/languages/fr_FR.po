@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: teamlab-blog-2-0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/twentyten\n"
 "POT-Creation-Date: 2020-10-16 15:48+0300\n"
-"PO-Revision-Date: 2020-10-16 16:26+0300\n"
+"PO-Revision-Date: 2020-10-20 11:56+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -452,7 +452,7 @@ msgstr "(Éditer)"
 #: wp-content/themes/teamlab-blog-2-0/header.php:85
 #: wp-content/themes/teamlab-blog-2-0/searchform.php:9
 msgid "Find news, tips and how-tos"
-msgstr "Chercher les actualités, les astuces et les tutoriels"
+msgstr "Actualités, astuces et tutoriels"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:101
 msgid "Hosting providers"
@@ -472,7 +472,7 @@ msgstr "Utilisation à domicile"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:112
 msgid "Products & Features"
-msgstr "Produits et fonctionnalités"
+msgstr "Produits"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:116
 #: wp-content/themes/teamlab-blog-2-0/header.php:167

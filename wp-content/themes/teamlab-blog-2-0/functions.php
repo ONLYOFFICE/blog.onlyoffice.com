@@ -154,12 +154,16 @@ add_action( 'after_setup_theme', function() {
 });
 
 add_filter( 'excerpt_length', function(){
-    return 40;
+    return 35;
 } );
 
 add_filter('excerpt_more', function($more) {
     return '...';
 });
+add_filter( 'jpeg_quality', create_function('', 'return 100;' ) ); //не сжимать больше JPG 
+add_filter( 'big_image_size_threshold', '__return_false' ); // не ограничивать размер изображения
+
+
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
  *
@@ -186,7 +190,8 @@ function bloggood_ru_image() {
  
 // Если картинка в посте отсутствует, тогда выводим изображение по умолчанию (указать путь и имя к картинке)
   if(empty($first_img)){
-   $first_img = "/img/default.jpg";
+    $template_uri = get_template_directory_uri();
+   $first_img = $template_uri . "/images/blog_online_editors.jpg";
   }
   return $first_img;
 }
