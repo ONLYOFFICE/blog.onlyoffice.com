@@ -492,7 +492,54 @@ function verify_recaptcha($recaptchaResp){
 }
 *************Recaptcha */
 
+/* Get comments
+ */
 
+if ( ! function_exists( 'tmblog_comment' ) ) :
+    /**
+     * Template for comments and pingbacks.
+     *
+     * To override this walker in a child theme without modifying the comments template
+     * simply create your own tmblog_comment(), and that function will be used instead.
+     *
+     * Used as a callback by wp_list_comments() for displaying the comments.
+     *
+     * @since Twenty Ten 1.0
+     */
+    function tmblog_comment( $comment, $args, $depth ) {
+        $GLOBALS['comment'] = $comment;
+        switch ( $comment->comment_type ) :
+            case '' :
+?>
+<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
+    <div id="comment-<?php comment_ID(); ?>" class="comment-wrap">
+        <div class="comment-author vcard">
+            <?php echo get_avatar( $comment, 40, 'gravatar_default' ); ?>
+            <div class="title">
+                <?php printf( __( '%s', 'teamlab-blog-2-0' ), sprintf( '<span class="fn">%s</span>', get_comment_author_link() ) ); ?>
+                <span class="sep">-</span>
+                <?php comment_reply_link( array_merge( $args, array( 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
+            </div>
+            <span class="meta"><?php printf( __( '%1$s at %2$s', 'teamlab-blog-2-0' ), get_comment_date(),  get_comment_time() ); ?><?php edit_comment_link( __( 'Edit', 'teamlab-blog-2-0' ), ' ' ); ?></span>
+        </div><!-- .comment-author .vcard -->
+        <?php if ( $comment->comment_approved == '0' ) : ?>
+        <em><?php _e( 'Your comment is awaiting moderation.', 'teamlab-blog-2-0' ); ?></em>
+        <br />
+        <?php endif; ?>
+        <div class="comment-body"><?php comment_text(); ?></div>
+    </div><!-- #comment-##  -->
+    <?php
+            break;
+        case 'pingback'  :
+        case 'trackback' :
+    ?>
+<li class="post pingback">
+    <p><?php _e( 'Pingback:', 'teamlab-blog-2-0' ); ?> <?php comment_author_link(); ?><?php edit_comment_link( __('(Edit)', 'teamlab-blog-2-0'), ' ' ); ?></p>
+    <?php
+                    break;
+            endswitch;
+        }
+        endif;
 
  /**
  * Get curent language
@@ -600,53 +647,3 @@ function language_selector($available_langs_keys) {
 endif;
 
 define('ICL_DONT_LOAD_LANGUAGE_SELECTOR_CSS', true);
-
-
-/* Get comments
- */
-
-if ( ! function_exists( 'tmblog_comment' ) ) :
-    /**
-     * Template for comments and pingbacks.
-     *
-     * To override this walker in a child theme without modifying the comments template
-     * simply create your own tmblog_comment(), and that function will be used instead.
-     *
-     * Used as a callback by wp_list_comments() for displaying the comments.
-     *
-     * @since Twenty Ten 1.0
-     */
-    function tmblog_comment( $comment, $args, $depth ) {
-        $GLOBALS['comment'] = $comment;
-        switch ( $comment->comment_type ) :
-            case '' :
-?>
-<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
-    <div id="comment-<?php comment_ID(); ?>" class="comment-wrap">
-        <div class="comment-author vcard">
-            <?php echo get_avatar( $comment, 40, 'gravatar_default' ); ?>
-            <div class="title">
-                <?php printf( __( '%s', 'teamlab-blog-2-0' ), sprintf( '<span class="fn">%s</span>', get_comment_author_link() ) ); ?>
-                <span class="sep">-</span>
-                <?php comment_reply_link( array_merge( $args, array( 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
-            </div>
-            <span class="meta"><?php printf( __( '%1$s at %2$s', 'teamlab-blog-2-0' ), get_comment_date(),  get_comment_time() ); ?><?php edit_comment_link( __( 'Edit', 'teamlab-blog-2-0' ), ' ' ); ?></span>
-        </div><!-- .comment-author .vcard -->
-        <?php if ( $comment->comment_approved == '0' ) : ?>
-        <em><?php _e( 'Your comment is awaiting moderation.', 'teamlab-blog-2-0' ); ?></em>
-        <br />
-        <?php endif; ?>
-        <div class="comment-body"><?php comment_text(); ?></div>
-    </div><!-- #comment-##  -->
-    <?php
-            break;
-        case 'pingback'  :
-        case 'trackback' :
-    ?>
-<li class="post pingback">
-    <p><?php _e( 'Pingback:', 'teamlab-blog-2-0' ); ?> <?php comment_author_link(); ?><?php edit_comment_link( __('(Edit)', 'teamlab-blog-2-0'), ' ' ); ?></p>
-    <?php
-                    break;
-            endswitch;
-        }
-        endif;
