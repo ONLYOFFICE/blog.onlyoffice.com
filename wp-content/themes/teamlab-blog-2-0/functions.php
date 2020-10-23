@@ -617,6 +617,7 @@ function language_selector($available_langs_keys) {
 
     $regextest = "/\/blog\/([a-z]{2})/";
     $text = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+
     preg_match($regextest, $text, $match);
     $langGB = $match[1];
 
