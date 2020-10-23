@@ -74,15 +74,4 @@ $exit_msg='Kama Quicktags требует минимум WordPress 3.3. <a href="
 if( version_compare($wp_version,"3.3","<") ) 
 	exit ( $exit_msg );
 	
-	
-	
-// удаляем ненужные кнопки
-function set_buttons_for_html_editor( $buttons ) {
-    $buttons['buttons'] = 'strong,em,link,block,img,ul,ol,li,code,fullscreen';
-    return $buttons;
-	// default: $buttons['buttons'] = 'strong,em,link,block,del,ins,img,ul,ol,li,code,more,close,fullscreen';
-}
-
-
-add_filter('quicktags_settings', 'set_buttons_for_html_editor');
 add_action( 'admin_print_footer_scripts', 'appthemes_add_quicktags' );
