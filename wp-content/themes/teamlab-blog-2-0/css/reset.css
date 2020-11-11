@@ -143,17 +143,6 @@ nav ul
 list-style: none;
 }
 
-html
-{
-overflow-y: scroll;
-}
-
-@media screen and (max-width: 970px) {
-    html {
-    overflow-x: scroll;
-    }
-}
-
 html,
 body
 {
