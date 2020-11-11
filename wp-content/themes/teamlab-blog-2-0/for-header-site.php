@@ -42,7 +42,7 @@ $querySticky = new WP_Query($argsSticky);?>
 		  			<div class="meta head">
 						<span class="date"><?php echo get_the_date('j F Y'); ?></span>
 					</div>
-					<p class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'teamlab-blog-2-0' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></p>
+					<p class="entry-title"><a href="<?php the_permalink(); ?>" target="_blank" title="<?php printf( esc_attr__( 'Permalink to %s', 'teamlab-blog-2-0' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></p>
 				</article>
 				<?php  endwhile;else: ?>
 				 <?php  endif; ?>

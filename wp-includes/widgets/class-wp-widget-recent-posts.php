@@ -74,7 +74,7 @@ class WP_Widget_Recent_Posts extends WP_Widget {
 					'posts_per_page'      => $number,
 					'no_found_rows'       => true,
 					'post_status'         => 'publish',
-					'cat'    		  	=> -1125,
+					'cat'    		  	=> -1012,
 					'ignore_sticky_posts' => true,
 				),
 				$instance
