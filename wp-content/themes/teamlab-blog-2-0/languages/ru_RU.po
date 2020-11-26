@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Twenty Ten 1.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/twentyten\n"
-"POT-Creation-Date: 2020-10-16 16:44+0300\n"
-"PO-Revision-Date: 2020-10-20 11:36+0300\n"
+"POT-Creation-Date: 2020-11-26 11:22+0300\n"
+"PO-Revision-Date: 2020-11-26 11:26+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.4.2\n"
 "X-Poedit-KeywordsList: _e;__\n"
 "X-Poedit-Basepath: ../../../..\n"
 "X-Poedit-SearchPath-0: wp-content/themes/teamlab-blog-2-0\n"
@@ -208,12 +208,12 @@ msgid "For Mac OS"
 msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:23
-#: wp-content/themes/teamlab-blog-2-0/header.php:100
+#: wp-content/themes/teamlab-blog-2-0/header.php:111
 msgid "Developers"
 msgstr "Разработчики"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:26
-#: wp-content/themes/teamlab-blog-2-0/header.php:162
+#: wp-content/themes/teamlab-blog-2-0/header.php:180
 msgid "Developer Edition"
 msgstr "Developer Edition"
 
@@ -235,27 +235,27 @@ msgid "Solutions"
 msgstr "Решения"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:37
-#: wp-content/themes/teamlab-blog-2-0/header.php:98
+#: wp-content/themes/teamlab-blog-2-0/header.php:101
 msgid "SMBs"
 msgstr "Малый и средний бизнес"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:38
-#: wp-content/themes/teamlab-blog-2-0/header.php:99
+#: wp-content/themes/teamlab-blog-2-0/header.php:102
 msgid "Enterprises"
 msgstr "Крупные компании"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:39
-#: wp-content/themes/teamlab-blog-2-0/header.php:102
+#: wp-content/themes/teamlab-blog-2-0/header.php:113
 msgid "Government"
 msgstr "Госучреждения"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:40
-#: wp-content/themes/teamlab-blog-2-0/header.php:105
+#: wp-content/themes/teamlab-blog-2-0/header.php:116
 msgid "Education"
 msgstr "Образование"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:41
-#: wp-content/themes/teamlab-blog-2-0/header.php:106
+#: wp-content/themes/teamlab-blog-2-0/header.php:117
 msgid "Nonprofits"
 msgstr "Нон-профиты"
 
@@ -276,6 +276,7 @@ msgid "Collaboration Platform"
 msgstr "Платформа для совместной работы"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:54
+#: wp-content/themes/teamlab-blog-2-0/header.php:163
 msgid "Security"
 msgstr "Безопасность"
 
@@ -376,7 +377,7 @@ msgid "Webinars"
 msgstr "Вебинары"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:99
-#: wp-content/themes/teamlab-blog-2-0/header.php:211
+#: wp-content/themes/teamlab-blog-2-0/header.php:244
 msgid "Press downloads"
 msgstr "Для прессы"
 
@@ -420,34 +421,34 @@ msgstr "Ascensio System SIA"
 msgid "All rights reserved"
 msgstr "Все права защищены"
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:202
+#: wp-content/themes/teamlab-blog-2-0/functions.php:207
 #, php-format
 msgid "<span class=\"%2$s\">By %3$s</span>"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:624
+#: wp-content/themes/teamlab-blog-2-0/functions.php:519
 #, php-format
 msgid "%s"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:628
+#: wp-content/themes/teamlab-blog-2-0/functions.php:523
 #, php-format
 msgid "%1$s at %2$s"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:628
+#: wp-content/themes/teamlab-blog-2-0/functions.php:523
 msgid "Edit"
 msgstr "Редактировать"
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:631
+#: wp-content/themes/teamlab-blog-2-0/functions.php:526
 msgid "Your comment is awaiting moderation."
 msgstr "Ваш комментарий на модерации"
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:642
+#: wp-content/themes/teamlab-blog-2-0/functions.php:537
 msgid "Pingback:"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:642
+#: wp-content/themes/teamlab-blog-2-0/functions.php:537
 msgid "(Edit)"
 msgstr "(Редактировать)"
 
@@ -456,230 +457,272 @@ msgstr "(Редактировать)"
 msgid "Find news, tips and how-tos"
 msgstr "Искать новости и советы"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:101
-msgid "Hosting providers"
-msgstr "Хостинг-провайдеры"
+#: wp-content/themes/teamlab-blog-2-0/header.php:98
+msgid "By size"
+msgstr "По размеру"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:103
-msgid "Healthcare"
-msgstr "Медицина"
-
-#: wp-content/themes/teamlab-blog-2-0/header.php:104
-msgid "Research"
-msgstr "Наука"
-
-#: wp-content/themes/teamlab-blog-2-0/header.php:107
 msgid "Home use"
 msgstr "Домашнее использование"
 
+#: wp-content/themes/teamlab-blog-2-0/header.php:108
+msgid "By industry"
+msgstr "По отрасли"
+
 #: wp-content/themes/teamlab-blog-2-0/header.php:112
+msgid "Hosting providers"
+msgstr "Хостинг-провайдеры"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:114
+msgid "Healthcare"
+msgstr "Медицина"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:115
+msgid "Research"
+msgstr "Наука"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:122
+msgid "Customer stories"
+msgstr "Истории клиентов"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:125
+msgid ""
+"How Germany’s public radio and television deployed ONLYOFFICE for seamless "
+"online content collaboration within Nextcloud"
+msgstr ""
+"Как Нантский университет развернул онлайн-платформу для совместной работы на "
+"базе Nextcloud и ONLYOFFICE"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:131
 msgid "Products & Features"
 msgstr "Продукты"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:116
-#: wp-content/themes/teamlab-blog-2-0/header.php:167
+#: wp-content/themes/teamlab-blog-2-0/header.php:135
+#: wp-content/themes/teamlab-blog-2-0/header.php:183
 msgid "ONLYOFFICE Workspace"
 msgstr "ONLYOFFICE Workspace"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:117
-#: wp-content/themes/teamlab-blog-2-0/header.php:158
+#: wp-content/themes/teamlab-blog-2-0/header.php:136
+#: wp-content/themes/teamlab-blog-2-0/header.php:176
 msgid "ONLYOFFICE Docs"
 msgstr "ONLYOFFICE Docs"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:120
+#: wp-content/themes/teamlab-blog-2-0/header.php:139
 msgid "Document Editor"
 msgstr "Редактор документов"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:121
+#: wp-content/themes/teamlab-blog-2-0/header.php:140
 msgid "Spreadsheet Editor"
 msgstr "Редактор таблиц"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:122
+#: wp-content/themes/teamlab-blog-2-0/header.php:141
 msgid "Presentation Editor"
 msgstr "Редактор презентаций"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:126
+#: wp-content/themes/teamlab-blog-2-0/header.php:145
 msgid "ONLYOFFICE for desktop"
 msgstr "Десктопный ONLYOFFICE"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:127
+#: wp-content/themes/teamlab-blog-2-0/header.php:146
 msgid "ONLYOFFICE for iOS"
 msgstr "ONLYOFFICE для iOS"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:128
+#: wp-content/themes/teamlab-blog-2-0/header.php:147
 msgid "ONLYOFFICE for Android"
 msgstr "ONLYOFFICE для Android"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:131
+#: wp-content/themes/teamlab-blog-2-0/header.php:150
 msgid "ONLYOFFICE Groups"
 msgstr "ONLYOFFICE Groups"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:134
+#: wp-content/themes/teamlab-blog-2-0/header.php:153
 msgid "Documents"
 msgstr "Документы"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:135
+#: wp-content/themes/teamlab-blog-2-0/header.php:154
 msgid "Mail"
 msgstr "Почта"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:136
+#: wp-content/themes/teamlab-blog-2-0/header.php:155
 msgid "CRM"
 msgstr "CRM"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:137
+#: wp-content/themes/teamlab-blog-2-0/header.php:156
 msgid "Projects"
 msgstr "Проекты"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:138
+#: wp-content/themes/teamlab-blog-2-0/header.php:157
 msgid "Calendar"
 msgstr "Календарь"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:139
+#: wp-content/themes/teamlab-blog-2-0/header.php:158
 msgid "Community"
 msgstr "Сообщество"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:144
-msgid "Latest releases"
-msgstr "Последние выпуски"
+#: wp-content/themes/teamlab-blog-2-0/header.php:166
+msgid ""
+"Meet ONLYOFFICE Private Rooms where every symbol you type is encrypted <span "
+"class=\"nowrap\">end-to-end</span>"
+msgstr ""
+"Встречайте Приватные комнаты ONLYOFFICE, где каждый введенный символ защищен "
+"сквозным шифрованием"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:154
+#: wp-content/themes/teamlab-blog-2-0/header.php:172
 msgid "Pricing"
 msgstr "Цены"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:161
+#: wp-content/themes/teamlab-blog-2-0/header.php:179
 msgid "Enterprise Edition"
 msgstr "Enterprise Edition"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:170
+#: wp-content/themes/teamlab-blog-2-0/header.php:186
 msgid "Cloud Service"
 msgstr "Облачный сервис"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:171
+#: wp-content/themes/teamlab-blog-2-0/header.php:187
 msgid "Server Enterprise"
 msgstr "Enterprise Сервер"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:178
+#: wp-content/themes/teamlab-blog-2-0/header.php:192
+msgid "Buy from an ONLYOFFICE reseller"
+msgstr "Купить ONLYOFFICE у реселлера"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:195
+msgid ""
+"Find out the list of all the authorized ONLYOFFICE resellers in your area"
+msgstr ""
+"Посмотрите список всех официальных&nbsp;партнеров ONLYOFFICE в вашем регионе."
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:201
 msgid "Get ONLYOFFICE"
 msgstr "Получить ONLYOFFICE"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:182
+#: wp-content/themes/teamlab-blog-2-0/header.php:206
 msgid "Sign in"
 msgstr "Зарегистрироваться"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:184
+#: wp-content/themes/teamlab-blog-2-0/header.php:208
 msgid "Sign up for ONLYOFFICE Cloud"
 msgstr "Зайти в облако"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:186
+#: wp-content/themes/teamlab-blog-2-0/header.php:210
 msgid "Open source packages"
 msgstr "Скачать open-source решения"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:187
+#: wp-content/themes/teamlab-blog-2-0/header.php:211
 msgid "Commercial packages"
 msgstr "Скачать коммерческие сборки"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:188
+#: wp-content/themes/teamlab-blog-2-0/header.php:212
 msgid "Desktop and mobile apps"
 msgstr "Десктопные и мобильные редакторы"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:192
+#: wp-content/themes/teamlab-blog-2-0/header.php:215
+msgid "Compare editions"
+msgstr "Сравнение версий"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:218
+msgid "Choose the ONLYOFFICE edition that suits you best."
+msgstr "Выберите подходящее решение ONLYOFFICE."
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:224
 msgid "Partners"
 msgstr "Партнеры"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:195
+#: wp-content/themes/teamlab-blog-2-0/header.php:227
 msgid "Affiliates"
 msgstr "Аффилиаты"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:196
+#: wp-content/themes/teamlab-blog-2-0/header.php:228
 msgid "Resellers"
 msgstr "Реселлеры"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:197
+#: wp-content/themes/teamlab-blog-2-0/header.php:229
 msgid "Find partners"
 msgstr "Найти партнеров"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:198
+#: wp-content/themes/teamlab-blog-2-0/header.php:230
 msgid "Submit request"
 msgstr "Стать партнером"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:202
+#: wp-content/themes/teamlab-blog-2-0/header.php:234
 msgid "About"
 msgstr "О нас"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:205
+#: wp-content/themes/teamlab-blog-2-0/header.php:238
 msgid "About ONLYOFFICE"
 msgstr "О проекте ONLYOFFICE"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:206
+#: wp-content/themes/teamlab-blog-2-0/header.php:239
 msgid "Blog"
 msgstr "Блог"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:207
+#: wp-content/themes/teamlab-blog-2-0/header.php:240
 msgid "Contribute"
 msgstr "Помочь проекту"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:208
+#: wp-content/themes/teamlab-blog-2-0/header.php:241
 msgid "Customers"
 msgstr "Клиенты"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:209
+#: wp-content/themes/teamlab-blog-2-0/header.php:242
 msgid "Awards"
 msgstr "Награды"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:210
+#: wp-content/themes/teamlab-blog-2-0/header.php:243
 msgid "Events"
 msgstr "События"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:212
+#: wp-content/themes/teamlab-blog-2-0/header.php:245
 msgid "Gift shop"
 msgstr "Мерч ONLYOFFICE"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:213
+#: wp-content/themes/teamlab-blog-2-0/header.php:246
 msgid "Contacts"
 msgstr "Контакты"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:230
+#: wp-content/themes/teamlab-blog-2-0/header.php:264
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:2
 msgid "Newsletter"
 msgstr "Рассылка"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:231
+#: wp-content/themes/teamlab-blog-2-0/header.php:265
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:3
 msgid "Get the latest ONLYOFFICE news"
 msgstr "Получайте последние новости ONLYOFFICE на ваш email"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:233
+#: wp-content/themes/teamlab-blog-2-0/header.php:267
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:7
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:15
 msgid "Your email"
 msgstr "Ваш email"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:234
+#: wp-content/themes/teamlab-blog-2-0/header.php:268
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:17
 msgid "Subscribe"
 msgstr "Подписаться"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:237
+#: wp-content/themes/teamlab-blog-2-0/header.php:271
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:22
 msgid "Email is empty"
 msgstr "Поле Email не заполнено"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:238
+#: wp-content/themes/teamlab-blog-2-0/header.php:272
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:23
 msgid "Email is incorrect"
 msgstr "Некорректный email "
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:239
+#: wp-content/themes/teamlab-blog-2-0/header.php:273
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:24
 msgid "Email is used"
 msgstr "Такой email уже зарегистрирован"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:240
+#: wp-content/themes/teamlab-blog-2-0/header.php:274
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:25
 msgid "Incorrect recaptcha"
 msgstr "Код введен неверно"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:242
+#: wp-content/themes/teamlab-blog-2-0/header.php:276
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:33
 msgid ""
 "By clicking “Subscribe”, you understand and agree to <u>our Privacy "
@@ -688,12 +731,12 @@ msgstr ""
 "Нажимая \"Подписаться\", вы соглашаетесь с нашей <u>политикой "
 "конфиденциальности</u>"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:245
+#: wp-content/themes/teamlab-blog-2-0/header.php:279
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:37
 msgid "Confirm your subscription"
 msgstr "Подтвердите подписку"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:246
+#: wp-content/themes/teamlab-blog-2-0/header.php:280
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:38
 msgid "We sent an email message with confirmation to your email address"
 msgstr "Мы отправили email с подтверждением на ваш почтовый ящик"
@@ -764,6 +807,9 @@ msgid ""
 "div>"
 msgstr ""
 "Все <div class=\"no-wrap\">записи&nbsp;<div class=\"grey-arrow\"></div></div>"
+
+#~ msgid "Latest releases"
+#~ msgstr "Последние выпуски"
 
 #~ msgid ""
 #~ "Online documents editors and productivity business tools provided as a "
@@ -923,9 +969,6 @@ msgstr ""
 
 #~ msgid "Mobile Editors"
 #~ msgstr "Мобильные редакторы"
-
-#~ msgid "Compare office suites"
-#~ msgstr "Сравнение офисных пакетов"
 
 #, fuzzy
 #~| msgid "Video Guides"

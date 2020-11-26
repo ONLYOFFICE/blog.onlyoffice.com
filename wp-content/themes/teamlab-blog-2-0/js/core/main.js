@@ -391,3 +391,20 @@ $('#subscribelink').click(function() {
 $('.close-popup').click(function() {
     $('.hidden').hide();
 });
+
+/***** Click for header *****/
+$("#customer_stories_div").on("click", function () {
+    location.href = "/customers.aspx";
+});
+
+$("#compare_div").on("click", function () {
+    location.href = "/compare-editions.aspx";
+});
+
+$("#reseller_div").on("click", function () {
+    location.href = "/find-partners.aspx";
+});
+
+$("#security_div").on("click", function () {
+    location.href = "/private-rooms.aspx";
+});

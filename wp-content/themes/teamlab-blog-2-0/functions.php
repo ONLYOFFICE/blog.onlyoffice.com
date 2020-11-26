@@ -590,11 +590,11 @@ function language_selector($available_langs_keys) {
     $available_langs_full = array(
         'en' =>  array('en', 'en-US', 'English'),
         'engb' =>  array('uk', 'en-GB', 'English'),
-        'de' =>  array('de', 'de-DE', 'Deutsch'),
-        'fr' =>  array('fr', 'fr-FR', 'Francais'),
-        'es' =>  array('es', 'es-ES', 'Espanol'),
         'ru' =>  array('ru', 'ru-RU', 'Русский'),
-        'it' =>  array('it', 'it-IT', 'Italiano'),
+        'fr' =>  array('fr', 'fr-FR', 'Francais'),
+        'de' =>  array('de', 'de-DE', 'Deutsch'),
+        'es' =>  array('es', 'es-ES', 'Espanol'),
+        'ptbr' =>  array('pt-br', 'pt-BR', 'Brazilian'),
         'cs' =>  array('cs', 'cs-CZ', 'Česky')
         
     );

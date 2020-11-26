@@ -161,7 +161,8 @@ a.singin {
 #navitem_download_menu .dropdown-content > li.nowrap-link, 
 #navitem_partnership_menu .dropdown-content > li.nowrap-link, 
 #navitem_prices_menu .dropdown-content > li.nowrap-link, 
-#navitem_solutions_menu .dropdown-content > li.nowrap-link {
+#navitem_solutions_menu .dropdown-content > li.nowrap-link,
+#navitem_download_menu .dropdown-content > li > span.nowrap-link{
   white-space: nowrap;
 }
 a.dropdown-item {
@@ -189,10 +190,10 @@ a.dropdown-item#navitem_download_signin {
   display: inline-block;
   padding-right: 4px;
 }
-/* a.dropdown-item#navitem_download_signup {
+a.dropdown-item#navitem_download_signup {
   display: inline-block;
   padding-left: 4px;
-} */
+}
 #navitem_about,
 #navitem_download,
 #navitem_partners,
@@ -469,17 +470,73 @@ div.custom-select div.selector {
 .accented{
   color: #ff642e;
 }
-@media screen and (min-width: 1600px) {
-  #navitem_solutions_menu {
-    left: 0;
- }
-  #navitem_features_menu {
-    left: 0;
- }
-  .all-menu-items > li:nth-of-type(1), .all-menu-items > li:nth-of-type(2) {
-    position: relative;
- }
+
+
+#latest_release_date {
+      color: #808080;
+      font-size: 13px;
+      line-height: 1.6em;
+      padding-bottom: 10px;
+  }
+
+  #security_header {
+      min-width: 180px;
+  }
+.menu_pic_div {
+  cursor: pointer;
+  margin: 12px 24px 0 32px;
 }
+
+.menu_pic_div .menu_pic_img {
+      background-repeat: no-repeat;
+      background-size: contain;
+      height: 88px;
+      margin-bottom: 16px;
+      width: 180px;
+  }
+
+.menu_pic_div .menu_pic_header {
+      color: #444444;
+      font-size: 14px;
+      line-height: 1.6em;
+      min-width: 192px;
+      padding-bottom: 10px;
+  }
+  .menu_pic_header:hover {
+    color: #ff6f3d;;
+  }
+
+  #customer_stories_img{
+    background-image: url('../images/img_for_header/ivz_onlyoffice_nextcloud_post.jpg');
+  }
+
+  #security_img{
+    background-image: url('../images/img_for_header/menu_security.svg');
+  }
+
+  #reseller_img{
+    background-image: url('../images/img_for_header/menu_reseller.svg');
+  }
+  #compare_img{
+    background-image: url('../images/img_for_header/menu_compare_edition.svg');
+  }
+
+
+@media screen and (max-width: 1280px){
+  #navitem_features_menu, 
+  #navitem_partnership_menu, 
+  #navitem_prices_menu, 
+  #navitem_solutions_menu {
+      left: -30%;
+  }
+  #navitem_download_menu{
+      left: -200%;
+  }
+  #navitem_about_menu{
+      left: -60%;
+  }
+}
+
 
 @media screen and (min-width: 1024px){
   #navitem_features_menu .dropdown-content, 
@@ -507,13 +564,6 @@ div.custom-select div.selector {
   #navitem_solutions_integration_mobile,
   #navitem_solutions_apps_comparison_overview {
       display: none;
-  }
-  #navitem_solutions_menu {
-      left: calc(50% - 126px);
-  }
-
-  #navitem_features_menu{
-    right: 0px;
   }
   #navitem_features_menu:before, 
   #navitem_about_menu:before, 
@@ -568,7 +618,6 @@ div.custom-select div.selector {
       position: absolute;
       z-index: 1999;
       border: 0 none;
-      border-bottom: 1px solid #ff642e;
       top: 70px;
       box-shadow: 0 40px 40px rgba(0,0,0,.15);
       -moz-box-shadow: 0 40px 40px rgba(0,0,0,.15);
@@ -576,13 +625,64 @@ div.custom-select div.selector {
       right: auto;
   }
 
-  #navitem_features_menu .dropdown-content>li {
+  #navitem_download_menu .dropdown-content>li,
+  #navitem_features_menu .dropdown-content>li,
+  #navitem_solutions_menu .dropdown-content>li,
+  #navitem_prices_menu .dropdown-content>li{
       display: table-cell;
       border-right: 1px solid #CCCCCC;
   }
-  #navitem_solutions_menu .dropdown-content > li:last-of-type {
+  #navitem_about_menu .dropdown-content > li {
+    min-width: 246px;
+  }
+  #navitem_download_menu .dropdown-content > li:first-of-type{
+    min-width: 330px;
+  }
+  #navitem_download_menu .dropdown-content > li:last-of-type{
+    min-width: 254px;
     border-right: 0 none;
- }
+  }
+  #navitem_features_menu .dropdown-content > li:first-of-type{
+    min-width: 246px;
+  }
+  #navitem_features_menu .dropdown-content > li:nth-of-type(2){
+    min-width: 272px;
+  }
+  #navitem_features_menu .dropdown-content > li:last-of-type,
+  #navitem_prices_menu .dropdown-content > li:last-of-type,
+  #navitem_solutions_menu .dropdown-content > li:last-of-type{
+    border-right: 0 none;
+  }
+
+  #navitem_solutions_menu .dropdown-content > li {
+    width: 25%;
+  }
+  #navitem_solutions_menu .dropdown-content > li:first-of-type{
+    min-width: 240px;
+  }
+  #navitem_solutions_menu .dropdown-content > li:nth-of-type(2){
+    min-width: 236px;
+  }
+  #navitem_prices_menu .dropdown-content > li{
+    min-width: 236px;
+  }
+
+  #navitem_prices_menu #navitem_prices_reseller{
+    line-height: 1.33em;
+    padding-top: 10px;
+    white-space: initial;
+  }
+
+  .all-menu-items > li:nth-of-type(3), 
+  .all-menu-items > li:nth-of-type(4), 
+  .all-menu-items > li:nth-of-type(5), 
+  .all-menu-items > li:nth-of-type(6){
+    position: relative;
+  }
+  .all-menu-items > li:nth-of-type(1), 
+  .all-menu-items > li:nth-of-type(2){
+    position: static;
+  }
 }
 
   
@@ -824,5 +924,8 @@ div.custom-select div.selector {
   }
   a.dropdown-item {
       white-space: normal;
+  }
+  #compare_div, #customer_stories_div, #latest_release_div, #reseller_div, #security_div {
+    display: none;
   }
 }

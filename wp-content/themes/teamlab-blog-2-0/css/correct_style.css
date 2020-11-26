@@ -2228,6 +2228,14 @@ body.page-template-for-main-page-site-php footer,
 body.page-template-for-main-page-site-php .copyReserved{
     display: none;
 }
+body.page-template-for-main-page-site-php .pageContent{
+    max-width: 736px;
+    margin: 0 auto;
+}
+body.page-template-for-main-page-site-php #content{
+    display: block;
+}
+
 body.page-template-for-main-page-site-php .content img{
     margin: 0;   
 }
@@ -2285,6 +2293,16 @@ body.page-template-for-header-site-php footer,
 body.page-template-for-header-site-php .copyReserved{
     display: none;
 }
+
+body.page-template-for-header-site-php .pageContent{
+    max-width: 736px;
+    margin: 0 auto;
+}
+
+body.page-template-for-header-site-php #content{
+    display: block;
+}
+
 body.page-template-for-header-site-php .content img{
     margin: 0;   
 }
