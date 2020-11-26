@@ -594,7 +594,7 @@ function language_selector($available_langs_keys) {
         'fr' =>  array('fr', 'fr-FR', 'Francais'),
         'de' =>  array('de', 'de-DE', 'Deutsch'),
         'es' =>  array('es', 'es-ES', 'Espanol'),
-        'ptbr' =>  array('pt-br', 'pt-BR', 'Brazilian'),
+        'ptbr' =>  array('pt-br', 'pt-BR', 'Brazil'),
         'cs' =>  array('cs', 'cs-CZ', 'Česky')
         
     );
