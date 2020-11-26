@@ -639,7 +639,6 @@ function language_selector($available_langs_keys) {
                     . WEB_ROOT_URL
                     . "/blog"
                     . (($lng[0] != $default_lang || $lng[1] == "en-GB")? "/".$lng[0] : "")
-                    . (($lng[0] != $default_lang || $lng[6] == "pt-BR")? "/".$lng[0] : "")
                     . "\">"
                     . "</a></li>";
     }
