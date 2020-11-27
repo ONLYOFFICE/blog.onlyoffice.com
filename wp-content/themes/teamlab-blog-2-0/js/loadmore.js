@@ -1,4 +1,4 @@
-jQuery(function(){
+jQuery(function($){
 	$('#true_loadmore').click(function(){
 		ajaxLoad(this.id, "cicle-wrapper");
 	});

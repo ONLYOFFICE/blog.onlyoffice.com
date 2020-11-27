@@ -160,7 +160,7 @@ add_filter( 'excerpt_length', function(){
 add_filter('excerpt_more', function($more) {
     return '...';
 });
-add_filter( 'jpeg_quality', create_function('', 'return 100;' ) ); //не сжимать больше JPG 
+add_filter( 'jpeg_quality', create_function('', 'return 100;') ); //не сжимать больше JPG 
 add_filter( 'big_image_size_threshold', '__return_false' ); // не ограничивать размер изображения
 
 
@@ -594,9 +594,8 @@ function language_selector($available_langs_keys) {
         'fr' =>  array('fr', 'fr-FR', 'Francais'),
         'de' =>  array('de', 'de-DE', 'Deutsch'),
         'es' =>  array('es', 'es-ES', 'Espanol'),
-        'ptbr' =>  array('pt-br', 'pt-BR', 'Brazil'),
+        'pt' =>  array('pt-br', 'pt-BR', 'Brazil'),
         'cs' =>  array('cs', 'cs-CZ', 'Česky')
-        
     );
 
     $available_langs  = array();

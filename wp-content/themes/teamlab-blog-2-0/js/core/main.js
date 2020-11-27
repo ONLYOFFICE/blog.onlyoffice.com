@@ -349,32 +349,6 @@ $("#email-sub-button2").on('click', function () {
     SubmitSubEmail($subEmailInput2.val());
 });
 
-
-/***** LANGUAGE SELECTOR *****/
-
-var $dropdownSelector = $(".lang_sel_sel").siblings("ul");
-var $langSelector = $("#lang_sel");
-
-function toggleSelector(){
-    if($dropdownSelector.hasClass("show")){
-        $dropdownSelector.removeClass("show");
-    } else {
-        $dropdownSelector.addClass("show");
-    }
-};
-
-$("#lang_sel").on('click', function(){
-    toggleSelector();
-});
-
-
-$(document).on('click', function (e){
-
-    if (!$langSelector.is(e.target) 
-        && $langSelector.has(e.target).length === 0) { 
-            $dropdownSelector.removeClass("show");
-    }
-});
 /***** Popup for subcribe *****/
 $('#subscribelink').click(function() {
     var html = document.documentElement;

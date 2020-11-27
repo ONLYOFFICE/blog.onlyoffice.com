@@ -253,7 +253,7 @@
                         </nav>
                         <div class="langselector push">
                             <div id="LanguageSelector" class="custom-select">
-                                <?php language_selector(array("en","engb","ru","fr","de","es","ptbr","cs")); ?>
+                                <?php language_selector(array("en","engb","ru","fr","de","es","pt","cs")); ?>
                             </div>
                         </div>
                     </div>
