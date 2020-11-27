@@ -372,13 +372,13 @@ $("#customer_stories_div").on("click", function () {
 });
 
 $("#compare_div").on("click", function () {
-    location.href = ("#navitem_download_compare").attr('href');
+    location.href = $("#navitem_download_compare").attr('href');
 });
 
 $("#reseller_div").on("click", function () {
-    location.href = ("#navitem_prices_reseller").attr('href');
+    location.href = $("#navitem_prices_reseller").attr('href');
 });
 
 $("#security_div").on("click", function () {
-    location.href = ("#navitem_features_security").attr('href');
+    location.href = $("#navitem_features_security").attr('href');
 });
