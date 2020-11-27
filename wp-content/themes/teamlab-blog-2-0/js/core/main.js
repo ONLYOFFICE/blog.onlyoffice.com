@@ -368,17 +368,17 @@ $('.close-popup').click(function() {
 
 /***** Click for header *****/
 $("#customer_stories_div").on("click", function () {
-    location.href = "/customers.aspx";
+    location.href = $("#navitem_features_customer_stories").attr('href');
 });
 
 $("#compare_div").on("click", function () {
-    location.href = "/compare-editions.aspx";
+    location.href = ("#navitem_download_compare").attr('href');
 });
 
 $("#reseller_div").on("click", function () {
-    location.href = "/find-partners.aspx";
+    location.href = ("#navitem_prices_reseller").attr('href');
 });
 
 $("#security_div").on("click", function () {
-    location.href = "/private-rooms.aspx";
+    location.href = ("#navitem_features_security").attr('href');
 });
