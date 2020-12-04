@@ -73,7 +73,7 @@ class in_the_press extends WP_Widget {
 					'posts_per_page'      => $number,
 					'no_found_rows'       => true,
 					'post_status'         => 'publish',
-					'cat'    		  	=> 1125,
+					'cat'    		  	=> 1012,
 					'ignore_sticky_posts' => true,
 				),
 				$instance
@@ -91,7 +91,7 @@ class in_the_press extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		?>
-		<div class="view-all"><a href="<?php echo site_url(__('onlyoffice-in-the-press', 'teamlab-blog-2-0'))?>"><?php _e( 'View all <div class="no-wrap">news&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
+		<div class="view-all"><a href="<?php echo icl_get_home_url() ?>onlyoffice-in-the-press"><?php _e( 'View all <div class="no-wrap">news&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
 		</div>
 		<ul>
 			<?php foreach ( $r->posts as $recent_post ) : ?>
