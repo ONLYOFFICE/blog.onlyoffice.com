@@ -92,6 +92,7 @@ class in_the_press extends WP_Widget {
 		}
 		?>
 		<div class="view-all"><a href="<?php echo home_url() ?>onlyoffice-in-the-press"><?php _e( 'View all <div class="no-wrap">news&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
+		<?php var_dump( home_url()) ?>
 		</div>
 		<ul>
 			<?php foreach ( $r->posts as $recent_post ) : ?>
