@@ -73,7 +73,7 @@ class in_the_press extends WP_Widget {
 					'posts_per_page'      => $number,
 					'no_found_rows'       => true,
 					'post_status'         => 'publish',
-					'cat'    		  	=> 1012,
+					'cat'    		  	=> 1125,
 					'ignore_sticky_posts' => true,
 				),
 				$instance
