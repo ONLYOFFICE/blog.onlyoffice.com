@@ -910,6 +910,12 @@ body.desktop .button.red.disabled:visited {
   .footer_menu p a {
       font-size: 12px;
   }
+  .footer_menu li a.emailus,
+  .footer_menu li
+  {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
 
   .BaseFooter {
       margin-top: -30px;

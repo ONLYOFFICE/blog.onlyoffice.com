@@ -8,7 +8,9 @@
  *
  * @package Teamlab_Blog_2.0
  */
+global $current_language;
 ?>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" <?php language_attributes(); ?>>
 <head>
@@ -54,21 +56,6 @@
 	</script>
     <script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl=en'></script> -->
 	<?php wp_head() ?>
-
-    <?php 
-        global $sitepress;
-        $current_language = $sitepress->get_current_language();
-        if($current_language !== 'null'){
-            $current_language = WEB_ROOT_URL.'/'.$current_language;
-            if($current_language == WEB_ROOT_URL.'/'.'pt-br'){
-                $current_language = WEB_ROOT_URL.'/'.'pt';
-            }else if($current_language == WEB_ROOT_URL.'/'.'uk'){
-                $current_language = WEB_ROOT_URL.'/'.'en';
-            }else if($current_language == WEB_ROOT_URL.'/'.'en'){
-                $current_language = null;
-            }
-        }
-    ?>
 </head>
 <body <?php body_class(); ?>>
     <!-- Google Tag Manager (noscript) -->
@@ -80,7 +67,7 @@
                 <header>
                     <div class="narrowheader">
                         <div class="logo push">
-                            <a href="<?php echo $current_language ?>"></a>
+                            <a href="<?php echo icl_get_home_url() ?>"></a>
                         </div>
                         <div class="ham_menu push menu-btn pushy-link">
                             <span></span>
