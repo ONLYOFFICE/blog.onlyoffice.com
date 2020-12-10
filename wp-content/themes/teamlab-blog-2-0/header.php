@@ -44,6 +44,8 @@ global $current_language;
                 ga('testTracker.linker:autoLink', ['onlyoffice.com', 'onlyoffice.eu', 'onlyoffice.sg', 'avangate.com']);
                 ga('testTracker.send', 'pageview');
     </script>
+    <script type="text/javascript">window.liveSettings={api_key:"9f43715b82db4266b1c4972c28b9b084"}</script>
+    <script type="text/javascript" src="//cdn.transifex.com/live.js"></script>
 	<meta content="text/html; charset=<?php bloginfo( 'charset' ); ?>" />
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
     <link rel="icon" href="<?php bloginfo( 'template_directory' ); ?>/images/favicon.ico" type="image/x-icon" />
