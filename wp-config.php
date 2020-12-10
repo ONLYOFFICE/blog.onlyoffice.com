@@ -22,13 +22,13 @@
 /** The name of the database for WordPress */
 define('WP_CACHE', true); //Added by WP-Cache Manager
 define( 'WPCACHEHOME', 'D:\www.teamlab.info\Blog\wp-content\plugins\wp-super-cache/' ); //Added by WP-Cache Manager
-define('DB_NAME', 'DB_NAME');
+define('DB_NAME', 'name-database');
 
 /** MySQL database username */
-define('DB_USER', 'DB_USERNAME');
+define('DB_USER', 'username-database');
 
 /** MySQL database password */
-define('DB_PASSWORD', 'DB_PASSWORD');
+define('DB_PASSWORD', 'password-database');
 
 /** MySQL hostname */
 define('DB_HOST', 'teamlab-4testing.cyxlgbdbuyvm.us-east-1.rds.amazonaws.com');
