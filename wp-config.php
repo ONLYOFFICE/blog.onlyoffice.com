@@ -18,24 +18,30 @@
  * @package WordPress
  */
 
-// ** Параметры MySQL: Эту информацию можно получить у вашего хостинг-провайдера ** //
-/** Имя базы данных для WordPress */
-define( 'DB_NAME', 'DB_NAME' );
+// ** MySQL settings - You can get this info from your web host ** //
+/** The name of the database for WordPress */
+define('WP_CACHE', true); //Added by WP-Cache Manager
+define( 'WPCACHEHOME', 'D:\www.teamlab.info\Blog\wp-content\plugins\wp-super-cache/' ); //Added by WP-Cache Manager
+define('DB_NAME', 'DB_NAME');
 
-/** Имя пользователя MySQL */
-define( 'DB_USER', 'DB_USER' );
+/** MySQL database username */
+define('DB_USER', 'DB_USERNAME');
 
-/** Пароль к базе данных MySQL */
-define( 'DB_PASSWORD', 'DB_PASSWORD' );
+/** MySQL database password */
+define('DB_PASSWORD', 'DB_PASSWORD');
 
-/** Имя сервера MySQL */
-define( 'DB_HOST', 'localhost' );
+/** MySQL hostname */
+define('DB_HOST', 'teamlab-4testing.cyxlgbdbuyvm.us-east-1.rds.amazonaws.com');
 
-/** Кодировка базы данных для создания таблиц. */
-define( 'DB_CHARSET', 'utf8mb4' );
+/** Database Charset to use in creating database tables. */
+define('DB_CHARSET', 'utf8');
 
-/** Схема сопоставления. Не меняйте, если не уверены. */
-define( 'DB_COLLATE', '' );
+/** The Database Collate type. Don't change this if in doubt. */
+define('DB_COLLATE', '');
+
+define('WEB_ROOT_URL', 'https://teamlab.info');
+
+$GLOBALS['WEB_BLOG_FOLDER_URL'] = '/blog';
 
 /**#@+
  * Уникальные ключи и соли для аутентификации.
@@ -77,6 +83,7 @@ $table_prefix = 'tm_';
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
 define( 'WP_DEBUG', false );
+define ('WPLANG', '');
 
 /* Это всё, дальше не редактируем. Успехов! */
 
