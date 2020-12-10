@@ -25,7 +25,7 @@ define( 'WPCACHEHOME', 'cache1' ); //Added by WP-Cache Manager
 define('DB_NAME', 'name-database');
 
 /** MySQL database username */
-define('DB_USER', 'username-database');
+define('DB_USER', 'user-database');
 
 /** MySQL database password */
 define('DB_PASSWORD', 'password-database');
