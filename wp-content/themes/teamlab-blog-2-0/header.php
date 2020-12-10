@@ -203,7 +203,7 @@ global $current_language;
                                             </ul>
                                         </div>
                                     </li><!--
-                                --><li class="pushy-submenu"><a class="menuitem <?php echo get_locale();?>" id="navitem_download"><?php _e('Get ONLYOFFICE', 'teamlab-blog-2-0'); ?></a>
+                                --><li class="pushy-submenu"><a class="menuitem <?php echo get_locale();?>" id="navitem_download"><?php _e('Get ONLYOFFICE', 'teamlab-blog-2-0'); ?>007</a>
                                         <div id="navitem_download_menu">
                                             <ul class="dropdown-content">
                                                 <li class="pushy-link">
