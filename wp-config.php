@@ -52,14 +52,14 @@ $GLOBALS['WEB_BLOG_FOLDER_URL'] = '/blog';
  *
  * @since 2.6.0
  */
-define( 'AUTH_KEY',         'some_key' );
-define( 'SECURE_AUTH_KEY',  'some_key' );
-define( 'LOGGED_IN_KEY',    'some_key' );
-define( 'NONCE_KEY',        'some_key' );
-define( 'AUTH_SALT',        'some_key' );
-define( 'SECURE_AUTH_SALT', 'some_key' );
-define( 'LOGGED_IN_SALT',   'some_key' );
-define( 'NONCE_SALT',       'some_key' );
+define( 'AUTH_KEY',         'some_key1' );
+define( 'SECURE_AUTH_KEY',  'some_key2' );
+define( 'LOGGED_IN_KEY',    'some_key3' );
+define( 'NONCE_KEY',        'some_key4' );
+define( 'AUTH_SALT',        'some_key5' );
+define( 'SECURE_AUTH_SALT', 'some_key6' );
+define( 'LOGGED_IN_SALT',   'some_key7' );
+define( 'NONCE_SALT',       'some_key8' );
 
 /**#@-*/
 
