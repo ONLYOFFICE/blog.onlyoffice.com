@@ -21,7 +21,7 @@
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define('WP_CACHE', true); //Added by WP-Cache Manager
-define( 'WPCACHEHOME', 'D:\www.teamlab.info\Blog\wp-content\plugins\wp-super-cache/' ); //Added by WP-Cache Manager
+define( 'WPCACHEHOME', 'cache1' ); //Added by WP-Cache Manager
 define('DB_NAME', 'name-database');
 
 /** MySQL database username */
@@ -31,7 +31,7 @@ define('DB_USER', 'username-database');
 define('DB_PASSWORD', 'password-database');
 
 /** MySQL hostname */
-define('DB_HOST', 'teamlab-4testing.cyxlgbdbuyvm.us-east-1.rds.amazonaws.com');
+define('DB_HOST', 'host1');
 
 /** Database Charset to use in creating database tables. */
 define('DB_CHARSET', 'utf8');
@@ -39,7 +39,7 @@ define('DB_CHARSET', 'utf8');
 /** The Database Collate type. Don't change this if in doubt. */
 define('DB_COLLATE', '');
 
-define('WEB_ROOT_URL', 'https://teamlab.info');
+define('WEB_ROOT_URL', 'root1');
 
 $GLOBALS['WEB_BLOG_FOLDER_URL'] = '/blog';
 
@@ -83,6 +83,7 @@ $table_prefix = 'tm_';
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
 define( 'WP_DEBUG', false );
+define('WP_TEMP_DIR', dirname(__FILE__) . '/wp-content/temp/');
 define ('WPLANG', '');
 
 /* Это всё, дальше не редактируем. Успехов! */
