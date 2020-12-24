@@ -18,24 +18,30 @@
  * @package WordPress
  */
 
-// ** Параметры MySQL: Эту информацию можно получить у вашего хостинг-провайдера ** //
-/** Имя базы данных для WordPress */
-define( 'DB_NAME', 'DB_NAME' );
+// ** MySQL settings - You can get this info from your web host ** //
+/** The name of the database for WordPress */
+define('WP_CACHE', true); //Added by WP-Cache Manager
+define( 'WPCACHEHOME', 'cache1' ); //Added by WP-Cache Manager
+define('DB_NAME', 'name-database');
 
-/** Имя пользователя MySQL */
-define( 'DB_USER', 'DB_USER' );
+/** MySQL database username */
+define('DB_USER', 'user-database');
 
-/** Пароль к базе данных MySQL */
-define( 'DB_PASSWORD', 'DB_PASSWORD' );
+/** MySQL database password */
+define('DB_PASSWORD', 'password-database');
 
-/** Имя сервера MySQL */
-define( 'DB_HOST', 'localhost' );
+/** MySQL hostname */
+define('DB_HOST', 'host1');
 
-/** Кодировка базы данных для создания таблиц. */
-define( 'DB_CHARSET', 'utf8mb4' );
+/** Database Charset to use in creating database tables. */
+define('DB_CHARSET', 'utf8');
 
-/** Схема сопоставления. Не меняйте, если не уверены. */
-define( 'DB_COLLATE', '' );
+/** The Database Collate type. Don't change this if in doubt. */
+define('DB_COLLATE', '');
+
+define('WEB_ROOT_URL', 'root1');
+
+$GLOBALS['WEB_BLOG_FOLDER_URL'] = '/blog';
 
 /**#@+
  * Уникальные ключи и соли для аутентификации.
@@ -46,14 +52,14 @@ define( 'DB_COLLATE', '' );
  *
  * @since 2.6.0
  */
-define( 'AUTH_KEY',         'some_key' );
-define( 'SECURE_AUTH_KEY',  'some_key' );
-define( 'LOGGED_IN_KEY',    'some_key' );
-define( 'NONCE_KEY',        'some_key' );
-define( 'AUTH_SALT',        'some_key' );
-define( 'SECURE_AUTH_SALT', 'some_key' );
-define( 'LOGGED_IN_SALT',   'some_key' );
-define( 'NONCE_SALT',       'some_key' );
+define( 'AUTH_KEY',         'some_key1' );
+define( 'SECURE_AUTH_KEY',  'some_key2' );
+define( 'LOGGED_IN_KEY',    'some_key3' );
+define( 'NONCE_KEY',        'some_key4' );
+define( 'AUTH_SALT',        'some_key5' );
+define( 'SECURE_AUTH_SALT', 'some_key6' );
+define( 'LOGGED_IN_SALT',   'some_key7' );
+define( 'NONCE_SALT',       'some_key8' );
 
 /**#@-*/
 
@@ -77,6 +83,8 @@ $table_prefix = 'tm_';
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
 define( 'WP_DEBUG', false );
+define('WP_TEMP_DIR', dirname(__FILE__) . '/wp-content/temp/');
+define ('WPLANG', '');
 
 /* Это всё, дальше не редактируем. Успехов! */
 
