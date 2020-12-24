@@ -274,30 +274,9 @@ function change_empty_alt_to_title( $response ) {
 
     return $response;
 }
-
 add_filter( 'wp_prepare_attachment_for_js', 'change_empty_alt_to_title' );
-// Load more
-function true_load_posts(){
-  $args = unserialize(stripslashes($_POST['query']));
-  $args['paged'] = $_POST['page'] + 1; // следующая страница
-  $args['post_status'] = 'publish';
-  $q = new WP_Query($args);
-  if( $q->have_posts() ):
-    while($q->have_posts()): $q->the_post(); 
-       include get_template_directory() . '/' . $_POST['template'] . '.php' ;
-    endwhile; 
-  endif;
-  wp_reset_postdata();
-  die();
-};
 
- 
-add_action('wp_ajax_loadmore', 'true_load_posts');
-add_action('wp_ajax_nopriv_loadmore', 'true_load_posts');
-
-
-// Search tags on page search
-// ПОИСК ПО ТЕГАМ НЕ РАБОТАЕТ МОЖНО УДАЛИТЬ
+// Search tags on page search (not working)
 function search_tags_query($query) {
         $s = $query->get('s');
         if(strpos($s, '#') !== false){
@@ -330,6 +309,50 @@ function wph_exclude_pages($query) {
     return $query;
 }
 add_filter('pre_get_posts','wph_exclude_pages');
+
+
+// Load more
+function true_load_posts(){
+    $args = unserialize(stripslashes($_POST['query']));
+    $args['paged'] = $_POST['page'] + 1; // следующая страница
+    $args['post_status'] = 'publish';
+    $q = new WP_Query($args);
+    if( $q->have_posts() ):
+      while($q->have_posts()): $q->the_post(); 
+         include get_template_directory() . '/' . $_POST['template'] . '.php' ;
+      endwhile; 
+    endif;
+    wp_reset_postdata();
+    die();
+  };
+  
+  add_action('wp_ajax_loadmore', 'true_load_posts');
+  add_action('wp_ajax_nopriv_loadmore', 'true_load_posts');
+
+
+
+// Load more on page "In the press"
+function true_load_posts_in_press(){
+    $args = json_decode( stripslashes( $_POST['query'] ), true );
+    $args['paged'] = $_POST['page'] + 1; // следующая страница
+    $args['post_type'] = 'news';
+    $args['post_status'] = 'publish';
+    $args['meta_key'] = 'dateNews';
+    $args['orderby'] = 'meta_value';
+    $args['order'] = 'DESC';
+    $q = new WP_Query($args);
+    if( $q->have_posts() ):
+      while($q->have_posts()): $q->the_post(); 
+         include get_template_directory() . '/' . $_POST['template'] . '.php' ;
+      endwhile; 
+    endif;
+    wp_reset_postdata();
+    die();
+  };
+  
+  add_action('wp_ajax_press', 'true_load_posts_in_press');
+  add_action('wp_ajax_nopriv_press', 'true_load_posts_in_press');
+
 
 // Load more on page search
 

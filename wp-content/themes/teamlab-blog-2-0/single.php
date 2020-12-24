@@ -48,7 +48,6 @@ get_header();
             'post_type' => 'post',
             'post_status' => 'publish',
             'posts_per_page' => 3,
-            'cat'=>-1125,
             'category__not_in' => $news_cat_id
         ];
          $wp_query = new WP_Query($args); 

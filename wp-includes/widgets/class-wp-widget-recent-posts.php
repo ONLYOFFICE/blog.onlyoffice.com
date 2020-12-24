@@ -71,10 +71,10 @@ class WP_Widget_Recent_Posts extends WP_Widget {
 			apply_filters(
 				'widget_posts_args',
 				array(
+					'post_type'           => 'post',
 					'posts_per_page'      => $number,
 					'no_found_rows'       => true,
 					'post_status'         => 'publish',
-					'cat'    		  	=> -1125,
 					'ignore_sticky_posts' => true,
 				),
 				$instance

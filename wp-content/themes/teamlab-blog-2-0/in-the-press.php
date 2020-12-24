@@ -10,11 +10,13 @@ get_header();
 // запрос
 
  $args = [
-  'post_type' => 'post',
+  'post_type' => 'news',
   'post_status' => 'publish',
   'posts_per_page' => 5,
-  'cat'=>1125,
-  'category__not_in' => $news_cat_id
+  'category__not_in' => $news_cat_id,
+  'meta_key' => 'dateNews',
+  'orderby'	=> 'meta_value',
+  'order'	=> 'DESC'
  ];
 
  $wp_query = new WP_Query($args); ?>

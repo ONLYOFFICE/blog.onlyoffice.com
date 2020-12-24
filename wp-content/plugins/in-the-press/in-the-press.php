@@ -70,11 +70,14 @@ class in_the_press extends WP_Widget {
 			apply_filters(
 				'widget_posts_args',
 				array(
+					'post_type'           => 'news',
 					'posts_per_page'      => $number,
 					'no_found_rows'       => true,
 					'post_status'         => 'publish',
-					'cat'    		  	=> 1125,
 					'ignore_sticky_posts' => true,
+					'meta_key' => 'dateNews',
+					'orderby'	=> 'meta_value',
+					'order'	=> 'DESC'
 				),
 				$instance
 			)
