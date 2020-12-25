@@ -8,5 +8,5 @@
     </div>
     <h2 class="entry-title press-page-title"><a href="<?php echo get_field('URL')?>" target="_blank" title="<?php printf( esc_attr__( 'Permalink to %s', 'tmblog' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
 
-    <p><?php the_excerpt() ?></p>
+    <p><?php $content = get_the_content(); echo wp_trim_words( $content , '35' ); ?></p>
 </article>

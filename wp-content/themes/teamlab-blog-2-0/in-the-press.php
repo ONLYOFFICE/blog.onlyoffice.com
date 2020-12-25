@@ -25,11 +25,13 @@ get_header();
 <div class="SingleContainer">
   <div class="breadcrumbs-single">
           <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
-              <?php
-            if(function_exists('bcn_display'))
-               {
-            bcn_display();
-                }?>
+             <span property="itemListElement" typeof="ListItem">
+				<a property="item" typeof="WebPage" title="Go to BLOG." href="<?php echo icl_get_home_url() ?>" class="home">
+					<span property="name"><?php _e('BLOG', 'teamlab-blog-2-0'); ?></span>
+				</a>
+				<meta property="position" content="1">
+			 </span>&ensp;/&ensp;
+			 <span><?php _e('ONLYOFFICE IN THE PRESS', 'teamlab-blog-2-0'); ?></span>
           </div>
   </div>
 	<?php if ($wp_query->have_posts()) : ?>
@@ -52,7 +54,7 @@ get_header();
 				</div>
 				<h2 class="entry-title press-page-title"><a href="<?php echo get_field('URL')?>" target="_blank" title="<?php printf( esc_attr__( 'Permalink to %s', 'tmblog' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
 
-				 <p><?php the_excerpt() ?></p>
+				 <p><?php $content = get_the_content(); echo wp_trim_words( $content , '35' ); ?></p>
 				 </article>
 
   				<?php
