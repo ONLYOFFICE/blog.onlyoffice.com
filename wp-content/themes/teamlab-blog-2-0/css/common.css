@@ -625,10 +625,8 @@ body.desktop .button.red.disabled:visited {
   .wdgt-twitter,
   .wdgt-vk,
   .wdgt-instagram {
-    margin-right: 10px;
+    margin-right: 4px;
   }
-}
-@media screen and (max-width: 1150px){
   .input-header .search-field{
     width: 0;
     height: 32px;
@@ -653,11 +651,33 @@ body.desktop .button.red.disabled:visited {
     top: 20px;
     z-index: 15;
   }
-  .wdgt-facebook,
-  .wdgt-twitter,
-  .wdgt-vk,
-  .wdgt-instagram {
-    margin-right: 4px;
+
+    .input-header .search-field::placeholder { 
+      line-height: 220%;
+  }
+  /* WebKit, Edge */
+  .input-header .search-field::-webkit-input-placeholder {
+    line-height: 220%;
+  }
+
+  /* Firefox 4-18 */
+  .input-header .search-field:-moz-placeholder { 
+    line-height: 220%;
+  }
+
+  /* Firefox 19+ */
+  .input-header .search-field::-moz-placeholder { 
+    line-height: 220%;
+  }
+
+  /* IE 10-11 */
+  .input-header .search-field:-ms-input-placeholder { 
+    line-height: 220%;
+  }
+
+  /* Edge */
+  .input-header .search-field::-ms-input-placeholder { 
+    line-height: 220%;
   }
 
 }
@@ -1313,6 +1333,13 @@ body.desktop .button.red.disabled:visited {
     background: url("../images/logo-mini.svg") no-repeat 0 50%;
     z-index: 1;
     position: relative;
+  }
+  .wdgt-facebook,
+  .wdgt-twitter,
+  .wdgt-vk,
+  .wdgt-instagram {
+    margin-right: 4px;
+    white-space: nowrap;
   }
 
 }
