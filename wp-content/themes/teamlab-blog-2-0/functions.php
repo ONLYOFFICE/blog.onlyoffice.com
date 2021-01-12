@@ -677,15 +677,15 @@ endif;
  * Сurrent language for urls
  */
 
-// global $sitepress;
-// $current_language = $sitepress->get_current_language();
-//     if($current_language !== 'null'){
-//         $current_language = WEB_ROOT_URL.'/'.$current_language;
-//     if($current_language == WEB_ROOT_URL.'/'.'pt-br'){
-//          $current_language = WEB_ROOT_URL.'/'.'pt';
-//     }else if($current_language == WEB_ROOT_URL.'/'.'uk'){
-//          $current_language = WEB_ROOT_URL.'/'.'en';
-//     }else if($current_language == WEB_ROOT_URL.'/'.'en'){
-//        $current_language = null;
-//     }
-// }
+global $sitepress;
+$current_language = $sitepress->get_current_language();
+    if($current_language !== 'null'){
+        $current_language = WEB_ROOT_URL.'/'.$current_language;
+    if($current_language == WEB_ROOT_URL.'/'.'pt-br'){
+         $current_language = WEB_ROOT_URL.'/'.'pt';
+    }else if($current_language == WEB_ROOT_URL.'/'.'uk'){
+         $current_language = WEB_ROOT_URL.'/'.'en';
+    }else if($current_language == WEB_ROOT_URL.'/'.'en'){
+       $current_language = null;
+    }
+}
