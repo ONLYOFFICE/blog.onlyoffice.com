@@ -3,7 +3,11 @@
 namespace WPMailSMTP\Providers\Sendinblue;
 
 use WPMailSMTP\Debug;
+use WPMailSMTP\MailCatcherInterface;
 use WPMailSMTP\Providers\MailerAbstract;
+use WPMailSMTP\Vendor\SendinBlue\Client\ApiException;
+use WPMailSMTP\Vendor\SendinBlue\Client\Model\CreateSmtpEmail;
+use WPMailSMTP\Vendor\SendinBlue\Client\Model\SendSmtpEmail;
 use WPMailSMTP\WP;
 
 /**
@@ -50,7 +54,7 @@ class Mailer extends MailerAbstract {
 	 *
 	 * @since 1.6.0
 	 *
-	 * @param \WPMailSMTP\MailCatcher $phpmailer
+	 * @param MailCatcherInterface $phpmailer The MailCatcher object.
 	 */
 	public function __construct( $phpmailer ) {
 
@@ -285,11 +289,11 @@ class Mailer extends MailerAbstract {
 	 *
 	 * @since 1.6.0
 	 *
-	 * @return \SendinBlue\Client\Model\SendSmtpEmail
+	 * @return SendSmtpEmail
 	 */
 	public function get_body() {
 
-		return new \SendinBlue\Client\Model\SendSmtpEmail( $this->body );
+		return new SendSmtpEmail( $this->body );
 	}
 
 	/**
@@ -305,21 +309,22 @@ class Mailer extends MailerAbstract {
 			$response = $api->get_smtp_client()->sendTransacEmail( $this->get_body() );
 
 			$this->process_response( $response );
-		}
-		catch ( \SendinBlue\Client\ApiException $e ) {
+		} catch ( ApiException $e ) {
 			$error = json_decode( $e->getResponseBody() );
-			if ( json_last_error() === JSON_ERROR_NONE ) {
-				Debug::set(
-					'Mailer: Sendinblue' . "\r\n" .
-					'[' . sanitize_key( $error->code ) . ']: ' . esc_html( $error->message )
-				);
+
+			if ( json_last_error() === JSON_ERROR_NONE && ! empty( $error ) ) {
+				$message = '[' . sanitize_key( $error->code ) . ']: ' . esc_html( $error->message );
+			} else {
+				$message = $e->getMessage();
 			}
-		}
-		catch ( \Exception $e ) {
-			Debug::set(
-				'Mailer: Sendinblue' . "\r\n" .
-				$e->getMessage()
-			);
+
+			$this->error_message = $message;
+
+			Debug::set( 'Mailer: Sendinblue' . PHP_EOL . $message );
+		} catch ( \Exception $e ) {
+			$this->error_message = $e->getMessage();
+
+			Debug::set( 'Mailer: Sendinblue' . PHP_EOL . $e->getMessage() );
 
 			return;
 		}
@@ -332,11 +337,19 @@ class Mailer extends MailerAbstract {
 	 *
 	 * @since 1.6.0
 	 *
-	 * @param \SendinBlue\Client\Model\CreateSmtpEmail $response
+	 * @param CreateSmtpEmail $response The Sendinblue Email object.
 	 */
 	protected function process_response( $response ) {
 
 		$this->response = $response;
+
+		if (
+			is_a( $response, 'WPMailSMTP\Vendor\SendinBlue\Client\Model\CreateSmtpEmail' ) &&
+			method_exists( $response, 'getMessageId' )
+		) {
+			$this->phpmailer->MessageID = $response->getMessageId();
+			$this->verify_sent_status   = true;
+		}
 	}
 
 	/**
@@ -350,7 +363,7 @@ class Mailer extends MailerAbstract {
 
 		$is_sent = false;
 
-		if ( $this->response instanceof \SendinBlue\Client\Model\CreateSmtpEmail ) {
+		if ( $this->response instanceof CreateSmtpEmail ) {
 			$is_sent = $this->response->valid();
 		}
 
