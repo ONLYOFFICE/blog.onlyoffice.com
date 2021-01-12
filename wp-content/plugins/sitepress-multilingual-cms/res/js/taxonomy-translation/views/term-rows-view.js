@@ -1,113 +1,107 @@
 (function () {
-	TaxonomyTranslation.views.TermRowsView = Backbone.View.extend({
+    TaxonomyTranslation.views.TermRowsView = Backbone.View.extend({
 
-		tagName: 'tbody',
-		collection: TaxonomyTranslation.data.termRowsCollection,
-		rowViews: [],
-		start: 0,
-		end: 10,
-		count: -1,
-		initialize: function (data, options) {
-			var self = this;
-			self.end = options.end;
-			self.start = options.start;
-		},
-		getDisplayedRows: function () {
-			var self = this;
-			var displayedRows = self.collection;
+        tagName: 'tbody',
+        collection: TaxonomyTranslation.data.termRowsCollection,
+        rowViews: [],
+        start: 0,
+        end: 10,
+        count: -1,
+        initialize: function (data, options) {
+            var self = this;
+            self.end = options.end;
+            self.start = options.start;
+        },
+        getDisplayedRows: function () {
+            var self = this;
+            var displayedRows = self.collection;
 
-			if (!displayedRows) {
-				self.count = -1;
-				return false;
-			}
+            if (!displayedRows) {
+                self.count = -1;
+                return false;
+            }
 
-			if (TaxonomyTranslation.mainView.mode === 'sync') {
-				displayedRows = displayedRows.filter(function (row) {
-					"use strict";
-					return row.unSyncFilter();
-				});
-			}
+            var parentFilter = false;
+            if (TaxonomyTranslation.mainView.filterView.parent) {
+                parentFilter = TaxonomyTranslation.mainView.filterView.parent;
+            }
 
-			var parentFilter = TaxonomyTranslation.mainView.filterView.parent ? TaxonomyTranslation.mainView.filterView.parent : false;
+            if (parentFilter) {
+                displayedRows = displayedRows.filter(function (row) {
+                    return row.parentOf(parentFilter)
+                });
+            }
 
-			if (parentFilter) {
-				displayedRows = displayedRows.filter(function (row) {
-					return row.parentOf(parentFilter);
-				});
-			}
+            var untranslatedFilter = false;
 
-			var untranslatedFilter = TaxonomyTranslation.mainView.filterView.untranslated ? TaxonomyTranslation.mainView.filterView.untranslated : false;
+            if (TaxonomyTranslation.mainView.filterView.untranslated) {
+                untranslatedFilter = TaxonomyTranslation.mainView.filterView.untranslated;
+            }
 
-			if (untranslatedFilter) {
-				displayedRows = displayedRows.filter(function (row) {
-					return !row.allTermsTranslated();
-				});
-			}
+            if (untranslatedFilter) {
+                displayedRows = displayedRows.filter(function (row) {
+                    return !row.allTermsTranslated();
+                });
+            }
 
-			var langFilter = TaxonomyTranslation.mainView.filterView.lang && TaxonomyTranslation.mainView.filterView.lang !== 'all' ? TaxonomyTranslation.mainView.filterView.lang : false;
+            var langFilter = false;
 
-			if (langFilter && langFilter != 'all' && (untranslatedFilter || parentFilter)) {
-				displayedRows = displayedRows.filter(function (row) {
-					return !row.translatedIn(langFilter);
-				});
-			}
+            if (TaxonomyTranslation.mainView.filterView.lang && TaxonomyTranslation.mainView.filterView.lang != 'all') {
+                langFilter = TaxonomyTranslation.mainView.filterView.lang;
+            }
 
-			var searchFilter = false;
+            if (langFilter && langFilter != 'all' && (untranslatedFilter || parentFilter)) {
+                displayedRows = displayedRows.filter(function (row) {
+                    return !row.translatedIn(langFilter);
+                });
+            }
 
-			if (TaxonomyTranslation.mainView.filterView.search && TaxonomyTranslation.mainView.filterView.search !== '') {
-				searchFilter = TaxonomyTranslation.mainView.filterView.search;
-			}
+            var searchFilter = false;
 
-			if (searchFilter) {
-				displayedRows = displayedRows.filter(function (row) {
-					if (langFilter && langFilter !== 'all') {
-						return row.matchesInLang(searchFilter, langFilter);
-					} else {
-						return row.matches(searchFilter);
-					}
-				});
-			}
+            if (TaxonomyTranslation.mainView.filterView.search && TaxonomyTranslation.mainView.filterView.search != '') {
+                searchFilter = TaxonomyTranslation.mainView.filterView.search;
+            }
 
-			self.count = displayedRows.length;
+            if (searchFilter && searchFilter != '') {
+                displayedRows = displayedRows.filter(function (row) {
+                    if (langFilter && langFilter != 'all') {
+                        return row.matchesInLang(searchFilter, langFilter);
+                    } else {
+                        return row.matches(searchFilter);
+                    }
+                });
+            }
 
-			return displayedRows;
-		},
-		getDisplayCount: function(){
-			return this.count;
-		},
-		render: function () {
+            self.count = displayedRows.length;
 
-			var self = this,
-				output = document.createDocumentFragment(),
-				displayedRows = self.getDisplayedRows();
-				
-			self.rowViews = [];
+            return displayedRows;
+        },
+        getDisplayCount: function(){
+            return this.count;
+        },
+        render: function () {
 
-			if ( displayedRows && displayedRows.length > 0 ) {
-				displayedRows = displayedRows.slice(self.start, self.end);
+            var self = this;
+            var output = document.createDocumentFragment();
+            self.rowViews = [];
 
-				displayedRows.forEach(function (row) {
-					var newView = new TaxonomyTranslation.views.TermRowView({model: row });
-					self.rowViews.push(newView);
-					output.appendChild(newView.render().el);
-					newView.delegateEvents();
-					
-				});
-				self.$el.html(output);
-			} else {
-				var taxonomy = TaxonomyTranslation.classes.taxonomy.get("taxonomy"),
-					taxonomyPluralLabel = TaxonomyTranslation.data.taxonomies[taxonomy].label,
-					message = labels.noTermsFound.replace( '%taxonomy%', taxonomyPluralLabel );
-				
-				self.$el.html(
-					WPML_core[ 'templates/taxonomy-translation/no-terms-found.html' ] ({
-						message: message
-					})
-					);
-			}
+            var displayedRows = self.getDisplayedRows();
 
-			return self;
+            if (displayedRows) {
+                displayedRows = displayedRows.slice(self.start, self.end);
 
-		}
-	});
+
+                displayedRows.forEach(function (row) {
+                    var newView = new TaxonomyTranslation.views.TermRowView({model: row});
+                    self.rowViews.push(newView);
+                    output.appendChild(newView.render().el);
+                    newView.delegateEvents();
+                });
+            }
+            self.$el.html(output);
+
+            return self;
+
+        }
+    })
 })(TaxonomyTranslation);
