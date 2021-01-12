@@ -1,0 +1,51 @@
+parameters:
+  level: 2
+  featureToggles:
+    disableRuntimeReflectionProvider: true
+  bootstrapFiles:
+    - tests/phpstan/bootstrap.php
+
+    - tests/phpstan/constants/wp.php
+    - tests/phpstan/constants/wpml-st.php
+    - tests/phpstan/constants/wpml-tm.php
+    - tests/phpstan/constants/divi.php
+
+    - inc/constants.php
+
+    - tests/phpstan/stubs/wp-background-processing.stub
+
+    - tests/phpstan/stubs/wpml-st.stub
+    - tests/phpstan/stubs/wpml-tm.stub
+
+  paths:
+    - sitepress.php
+    - sitepress.class.php
+    - classes
+    - compatibility
+    - inc
+    - lib
+    - menu
+    - modules
+    - templates
+
+  excludes_analyse:
+    - lib/twig
+
+  scanDirectories:
+    - vendor/otgs/ui
+    - vendor/otgs/installer
+    - vendor/otgs/auryn/lib
+
+  checkFunctionNameCase: true
+  inferPrivatePropertyTypeFromConstructor: true
+
+  ignoreErrors:
+    # Uses func_get_args()
+    - '#^Function apply_filters(_ref_array)? invoked with [34567] parameters, 2 required\.$#'
+
+services:
+  -
+    class: OTGS\PHPStan\WordPress\wpdbMagicPropertiesClassReflectionExtension
+    tags:
+      - phpstan.broker.propertiesClassReflectionExtension
+

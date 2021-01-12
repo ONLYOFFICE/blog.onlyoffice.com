@@ -1,11 +1,11 @@
-jQuery(document).ready(function(){
-    
+jQuery(function () {
+
     display_side_bar_if_required();
     show_help_links();
-    
+
     jQuery('#icl_sidebar_hide').click(icl_hide_sidebar);
     jQuery('#icl_sidebar_show').click(icl_show_sidebar);
-    
+
 });
 
 function show_help_links() {
