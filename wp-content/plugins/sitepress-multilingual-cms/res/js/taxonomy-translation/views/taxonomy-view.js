@@ -1,266 +1,150 @@
-/*globals WPML_core, TaxonomyTranslation, Backbone, labels, jQuery, document */
-
 (function () {
-	"use strict";
 
-	TaxonomyTranslation.views.TaxonomyView = Backbone.View.extend({
+    TaxonomyTranslation.views.TaxonomyView = Backbone.View.extend({
 
-		el: "#taxonomy-translation",
-		model: TaxonomyTranslation.models.Taxonomy,
-		tag: "div",
-		termRowsView: {},
-		mode: 'translate',
-		initialMode: 'translate',
-		perPage: 10,
-		events: {
-			"click #term-table-sync-header": "setToSync",
-			"click #term-table-header": "setToTranslate",
-			"click #tax-apply": "doSync"
-		},
-		syncedLabel: labels.hieraAlreadySynced,
-		initialize: function (model, options) {
-			var self = this;
-			self.perPage = jQuery( '#wpml_tt_taxonomy_translation_wrap' ).data( 'items_per_page' );
-			self.initialMode = options.sync === true ? 'sync' : 'translate';
-			self.navView = new TaxonomyTranslation.views.NavView({model: self.model}, {perPage: self.perPage});
-			self.filterView = new TaxonomyTranslation.views.FilterView({model: self.model});
-			self.listenTo(self.filterView, 'updatedFilter', function () {
-				self.navView.page = 1;
-				self.renderRows();
-			});
-			self.termTableView = new TaxonomyTranslation.views.TableView({model: self.model}, {type: "terms"});
-			self.labelTableView = new TaxonomyTranslation.views.TableView({model: self.model}, {type: "labels"});
-			self.termRowsView = new TaxonomyTranslation.views.TermRowsView({collection: TaxonomyTranslation.data.termRowsCollection}, {
-				start: 0,
-				end: self.perPage
-			});
-			self.listenTo(self.model, 'newTaxonomySet', self.renderNewTaxonomy);
-			self.listenTo(self.model, 'syncDataLoaded', self.renderNewTaxonomy);
+        el: jQuery("#taxonomy-translation"),
+        template: TaxonomyTranslation.getTemplate("taxonomy"),
+        model: TaxonomyTranslation.models.Taxonomy,
+        tag: "div",
+        termRowViews: {},
+        perPage: 10,
 
-			return self;
-		},
-		changeMode: function (mode) {
-			var self = this;
-			self.mode = mode === 'translate' || ( mode === 'sync' && self.model.isHierarchical() ) ? mode : 'translate';
-			self.navView.off();
-			self.navView = new TaxonomyTranslation.views.NavView({model: self.model}, {perPage: self.perPage});
-			self.listenTo(self.navView, 'newPage', self.render);
+        initialize: function () {
+            var self = this;
+            this.fragment = document.createDocumentFragment();
+            this.navView = new TaxonomyTranslation.views.NavView({model: self.model}, {perPage: self.perPage});
+            this.filterView = new TaxonomyTranslation.views.FilterView({model: this.model});
+            this.listenTo(this.filterView, 'updatedFilter', function () {
+                self.navView.page = 1;
+                self.renderRows();
+            });
+            this.termTableView = new TaxonomyTranslation.views.TableView({model: this.model}, {type: "terms"});
+            this.labelTableView = new TaxonomyTranslation.views.TableView({model: this.model}, {type: "labels"});
+            this.termRowsView = new TaxonomyTranslation.views.TermRowsView({collection: TaxonomyTranslation.data.termRowsCollection}, {
+                start: 0,
+                end: self.perPage
+            });
 
-			if (self.mode === "sync") {
-				self.model.loadSyncData(self.filterView.selectedLang());
-			} else {
-				self.renderRows();
-				self.render();
-			}
-			self.model.trigger('modeChanged');
+            this.listenTo(this.model, 'newTaxonomySet', this.renderNewTaxonomy);
+        },
+        setLabels: function () {
+            var tax = this.model.get("taxonomy");
+            var taxonomyDefaultLabel = TaxonomyTranslation.data.taxonomies[tax].label;
+            this.headerTerms = labels.translate + " " + taxonomyDefaultLabel;
+            this.summaryTerms = labels.summaryTerms.replace('%taxonomy%', taxonomyDefaultLabel);
+            this.labelSummary = labels.summaryLabels.replace('%taxonomy%', taxonomyDefaultLabel);
+        },
+        renderRows: function () {
+            var self = this;
+            if (TaxonomyTranslation.data.termRowsCollection.length > 0) {
+                self.termRowsView.start = (self.navView.page - 1 ) * self.perPage;
+                self.termRowsView.end = self.termRowsView.start + self.perPage;
+                var termRowsFragment = self.termRowsView.render().el;
+                jQuery("#tax-table-terms").first('tbody').append(termRowsFragment);
+            }
 
-			self.syncedLabel = labels.hieraAlreadySynced;
-			
-			return self;
-		},
-		setToTranslate: function () {
-			var self = this;
-			if (self.mode !== 'translate') {
-				self.changeMode('translate');
-			}
+            self.navView.render();
+        },
+        renderNewTaxonomy: function(){
+            var self = this;
+            self.navView.off();
+            self.navView = undefined;
+            self.navView = new TaxonomyTranslation.views.NavView({model: self.model}, {perPage: self.perPage});
+            this.listenTo(this.navView, 'newPage', this.render);
+            self.renderRows();
+            self.render();
+            return self;
+        },
+        render: function () {
 
-			return self;
-		},
-		setToSync: function () {
-			var self = this;
-			if (self.mode !== 'sync') {
-				self.changeMode('sync');
-				TaxonomyTranslation.mainView.showLoadingSpinner();
-			}
+            var self = this;
 
-			return self;
-		},
-		setLabels: function () {
-			var self = this,
-				tax = self.model.get("taxonomy"),
-				taxonomyPluralLabel = TaxonomyTranslation.data.taxonomies[tax].label,
-				taxonomySingularLabel = TaxonomyTranslation.data.taxonomies[tax].singularLabel;
-				
-			self.headerTerms = labels.translate.replace( '%taxonomy%', taxonomySingularLabel );
-			self.summaryTerms = labels.summaryTerms.replace( '%taxonomy%', '<strong>' + taxonomyPluralLabel + '</strong>' );
-			self.resultsTruncated = labels.resultsTruncated.replace( '%taxonomy%', '<strong>' + taxonomyPluralLabel + '</strong>' );
-			self.labelSummary = labels.summaryLabels.replace( '%taxonomy%', '<strong>' + taxonomySingularLabel + '</strong>' );
+            this.setLabels();
 
-			return self;
-		},
-		renderRows: function () {
-			var self = this;
-			if (TaxonomyTranslation.data.termRowsCollection.length > 0) {
-				self.termRowsView.start = (self.navView.page - 1 ) * self.perPage;
-				self.termRowsView.end = self.termRowsView.start + self.perPage;
-				var termRowsFragment = self.termRowsView.render().el;
-				jQuery("#tax-table-terms").first('tbody').append(termRowsFragment);
-			}
-			self.navView.render();
+            var mainFragment = document.createElement("div");
 
-			return self;
-		},
-		renderNewTaxonomy: function(){
-			var self = this;
-			self.navView.off();
-			self.navView = undefined;
-			self.navView = new TaxonomyTranslation.views.NavView({model: self.model}, {perPage: self.perPage});
-			this.listenTo(this.navView, 'newPage', this.render);
-			self.renderRows();
-			self.render();
-			if (self.initialMode === 'sync') {
-				self.initialMode = false;
-				self.setToSync();
-			}
-			return self;
-		},
-		getMainFragment: function () {
-			var self = this;
+            mainFragment.innerHTML = (self.template({
+                taxonomy: TaxonomyTranslation.data.taxonomies[self.model.get("taxonomy")],
+                langs: TaxonomyTranslation.data.activeLanguages,
+                headerTerms: self.headerTerms,
+                summaryTerms: self.summaryTerms,
+                labelSummary: self.labelSummary
+            }));
 
-			var mainFragment = document.createElement("div"),
-				mainTemplate = WPML_core[ 'templates/taxonomy-translation/taxonomy-main-wrap.html' ],
-				tabsTemplate = WPML_core[ 'templates/taxonomy-translation/tabs.html' ],
-				taxonomy = TaxonomyTranslation.data.taxonomies[ self.model.get( "taxonomy" ) ],
-				htmlTabs = tabsTemplate( {
-					taxonomy: taxonomy,
-					headerTerms: self.headerTerms,
-					syncLabel: labels.Synchronize,
-					mode: self.mode
-				}),
-				hasContent = self.termRowsView && self.termRowsView.getDisplayCount() !== 0,
-				htmlMain = mainTemplate({
-					taxonomy: taxonomy,
-					langs: TaxonomyTranslation.data.activeLanguages,
-					summaryTerms: self.summaryTerms,
-					resultsTruncated: self.resultsTruncated,
-					labelSummary: self.labelSummary,
-					mode: self.mode,
-					hasContent: hasContent,
-					labelSynced: self.syncedLabel
-				});
 
-			mainFragment.innerHTML = htmlTabs + htmlMain;
+            if (!self.filterFragment) {
+                self.filterFragment = self.filterView.render().el;
+            }
 
-			mainFragment = self.addMainElements( mainFragment, hasContent );
+            mainFragment.querySelector("#wpml-taxonomy-translation-filters").appendChild(self.filterFragment);
 
-			return mainFragment;
-		},
-		addMainElements: function ( mainFragment, hasContent ) {
-			var self = this;
-			self.filterFragment = self.filterFragment ? self.filterFragment : self.filterView.render().el;
-			mainFragment.querySelector("#wpml-taxonomy-translation-filters").appendChild(self.filterFragment);
-			if ( hasContent || self.mode === 'translate' ) {
-				var termTableFragment = self.termTableView.render().el;
-				mainFragment.querySelector("#wpml-taxonomy-translation-terms-table").appendChild(termTableFragment);
-				mainFragment = self.addTableRows(mainFragment);
-			}
+            self.fragment.appendChild(mainFragment);
 
-			var bottomContent = self.model.get( "bottomContent" );
-			if( typeof bottomContent != 'undefined' ){
-				mainFragment.appendChild( jQuery( bottomContent )[0] );
-			}
 
-			return mainFragment;
-		},
-		render: function () {
-			var self = this;
+            if (TaxonomyTranslation.data.termRowsCollection.length > self.perPage && this.fragment.querySelector("#wpml-taxonomy-translation-terms-nav")) {
+                var navFragment = self.navView.render().el;
+                self.fragment.querySelector("#wpml-taxonomy-translation-terms-nav").appendChild(navFragment);
+            }
 
-			self.setLabels();
-			var renderedFragment = document.createDocumentFragment();
-			var mainFragment = self.getMainFragment();
-			renderedFragment.appendChild(mainFragment);
+            var termTableFragment = self.termTableView.render().el;
+            mainFragment.querySelector("#wpml-taxonomy-translation-terms-table").appendChild(termTableFragment);
 
-			if (TaxonomyTranslation.data.termRowsCollection.length > self.perPage &&
-					renderedFragment.querySelector("#wpml-taxonomy-translation-terms-nav")) {
-				var navFragment = self.navView.render().el;
-				renderedFragment.querySelector("#wpml-taxonomy-translation-terms-nav").appendChild(navFragment);
-			}
-			self.addLabelTranslation(mainFragment, renderedFragment);
-			self.$el.html(renderedFragment);
-			jQuery(".icl_tt_label").on("click", self.openPopUPLabel);
-			self.showLoadingSpinner( false );
-			self.isRendered = true;
-			self.filterView.delegateEvents();
-			self.delegateEvents();
-			self.maybeHideHeader();
-			jQuery('.icl_tt_main_bottom').show();
+            if (TaxonomyTranslation.data.termRowsCollection.length > 0) {
+                self.termRowsView.start = (self.navView.page - 1 ) * self.perPage;
+                self.termRowsView.end = self.termRowsView.start + self.perPage;
+                var termRowsFragment = self.termRowsView.render().el;
+                mainFragment.querySelector("#tax-table-terms").appendChild(termRowsFragment);
+            }
 
-			var loading = jQuery( '.wpml-loading-taxonomy' );
-			if ( loading.length ) {
-				loading.hide();
-				var loaded = jQuery( '.wpml_taxonomy_loaded' );
-				if ( loaded.length ) {
-					loaded.show();
-					loaded.parent().children( '.wpml-loading-taxonomy' ).remove();
-				}
-				
-			}
-			
-			return self;
-		},
-		addLabelTranslation: function (mainFragment, renderedFragment) {
-			var self = this;
+            if (TaxonomyTranslation.data.translatedTaxonomyLabels) {
+                var labelTableFragment = self.labelTableView.render().el;
 
-			if (TaxonomyTranslation.data.translatedTaxonomyLabels && self.mode !== 'sync') {
-				var labelTableFragment = self.labelTableView.render().el;
-				mainFragment.querySelector("#wpml-taxonomy-translation-labels-table").appendChild(labelTableFragment);
-				if (renderedFragment.querySelector("#tax-table-labels")) {
-					var labelRowFragment = new TaxonomyTranslation.views.LabelRowView(({model: self.model})).render().el;
-					mainFragment.querySelector("#tax-table-labels").appendChild(labelRowFragment);
-				}
-			}
+                mainFragment.querySelector("#wpml-taxonomy-translation-labels-table").appendChild(labelTableFragment);
 
-			return mainFragment;
-		},
-		addTableRows: function (mainFragment) {
-			var self = this;
-			var termRowsFragment;
+                if (this.fragment.querySelector("#tax-table-labels")) {
+                    var labelRowFragment = new TaxonomyTranslation.views.LabelRowView(({model: self.model})).render().el;
+                    mainFragment.querySelector("#tax-table-labels").appendChild(labelRowFragment);
+                }
+            }
 
-			self.termRowsView.start = (self.navView.page - 1 ) * self.perPage;
-			self.termRowsView.end = self.termRowsView.start + self.perPage;
-			termRowsFragment = self.termRowsView.render().el;
-			mainFragment.querySelector("#tax-table-terms").appendChild(termRowsFragment);
+            jQuery("#taxonomy-translation").html(self.fragment);
 
-			return mainFragment;
-		},
-		/**
-		 * Used by WCML to hide the controls for changing the taxonomy
-		 */
-		maybeHideHeader: function () {
-			var taxonomySwitcher = jQuery("#icl_tt_tax_switch");
-			var potentialHiddenSelectInput = jQuery('#tax-selector-hidden');
-			var potentialHiddenTaxInput = jQuery('#tax-preselected');
-			if (potentialHiddenSelectInput.length !== 0 &&
-					potentialHiddenSelectInput.val() &&
-					potentialHiddenTaxInput.length !== 0 &&
-					potentialHiddenTaxInput.val()) {
-				taxonomySwitcher.closest('label').hide();
-				jQuery('[id="term-table-summary"]').hide();
-			}
-		},
-		selectTaxonomy: function () {
-			var self = this,
-				tax = jQuery("#icl_tt_tax_switch").val();
-				
-			if (tax !== undefined) {
-				self.mode = 'translate';
-				self.model.setTaxonomy(tax);
-			}
-		},
-		doSync: function () {
-			var self = this;
-			
-			self.$el.find( '#tax-apply' ).prop( 'disabled', true );
-			TaxonomyTranslation.mainView.model.doSync( self.$el.find("#in-lang").val() );
-			self.syncedLabel = labels.hieraSynced;
-		},
-		showLoadingSpinner: function( state ) {
-			if ( state === undefined || state ) {
-				jQuery('.wpml-loading-taxonomy').show();
-			} else {
-				jQuery('.wpml-loading-taxonomy').hide();
-			}
-		}
+            jQuery(".icl_tt_term_name").on("click", self.openPopUPTerm);
 
-	});
+            jQuery(".icl_tt_label").on("click", self.openPopUPLabel);
+
+            self.isRendered = true;
+
+            jQuery('.loading-taxonomy').closest('div').hide();
+
+            self.filterView.delegateEvents();
+            self.delegateEvents();
+
+            jQuery('.icl_tt_main_bottom').show();
+            // WCML compatibility
+            var taxonomySwitcher = jQuery("#icl_tt_tax_switch");
+            var potentialHiddenSelectInput = jQuery('#tax-selector-hidden');
+            var potentialHiddenTaxInput = jQuery('#tax-preselected');
+            if (potentialHiddenSelectInput.length !== 0
+                && potentialHiddenSelectInput.val()
+                && potentialHiddenTaxInput.length !== 0
+                && potentialHiddenTaxInput.val()) {
+                var taxonomy = potentialHiddenTaxInput.val();
+                taxonomySwitcher.closest('label').hide();
+                jQuery('[id="term-table-header"]').hide();
+                jQuery('[id="term-table-summary"]').hide();
+            }
+
+            return self;
+
+        },
+
+        selectTaxonomy: function () {
+            var tax = jQuery("#icl_tt_tax_switch").val();
+            if (tax != undefined && tax != this.model.get("taxonomy")) {
+                this.model.setTaxonomy(tax);
+            }
+        }
+
+    });
 })(TaxonomyTranslation);

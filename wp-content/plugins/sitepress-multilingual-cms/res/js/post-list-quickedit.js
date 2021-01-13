@@ -1,14 +1,28 @@
-jQuery(function () {
-    "use strict";
-    jQuery('.editinline').on(
-        'click', function () {
-            var lang, parentDiv, editButton, postLink;
+jQuery(document).ready(
+	function () {
+		"use strict";
+		jQuery('.editinline').on(
+			'click', function () {
+				var lang, parentDiv, editButton, postLink;
 
-            parentDiv = jQuery(this).closest('div');
-            editButton = parentDiv.find('.edit').find('a');
-            postLink = editButton.attr('href');
-            lang = postLink.match(/(?=lang=).*.$/).pop().replace('lang=', '');
-            parseJSONTerms(lang);
+				parentDiv = jQuery(this).closest('div');
+				editButton = parentDiv.find('.edit').find('a');
+				postLink = editButton.attr('href');
+				lang = postLink.match(/(?=lang=).*.$/).pop().replace('lang=', '');
+				jQuery.ajax(
+					{
+						type:     "POST",
+						url:      ajaxurl,
+						dataType: 'json',
+						data:     {
+							wpml_post_lang: lang,
+							action:         'wpml_set_post_edit_lang'
+						},
+						success:  function (response) {
+						}
+					}
+				);
+				parseJSONTerms(lang);
 			}
 		);
 	}
@@ -17,14 +31,15 @@ jQuery(function () {
 /**
  * This is only used for hierarchical Taxonomies
  *
- * @param lang String
+ * @param termsList
+ * @param taxonomy
  */
 
 function parseJSONTerms(lang) {
 	"use strict";
 	var JSONString, allTerms, termsInCorrectLang, taxonomy;
 	JSONString = jQuery('#icl-terms-by-lang').html();
-	allTerms = JSON.parse(JSONString);
+	allTerms = jQuery.parseJSON(JSONString);
 	if (allTerms.hasOwnProperty(lang)) {
 		termsInCorrectLang = allTerms[lang];
 		for (taxonomy in termsInCorrectLang) {

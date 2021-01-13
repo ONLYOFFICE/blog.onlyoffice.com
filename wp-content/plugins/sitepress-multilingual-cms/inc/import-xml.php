@@ -1,8 +1,8 @@
 <?php
 
 global $pagenow;
-$filtered_import = filter_input( INPUT_GET, 'import',FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_NULL_ON_FAILURE );
-$filtered_step   = filter_input( INPUT_GET, 'step',FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_NULL_ON_FAILURE );
+$filtered_import = filter_input( INPUT_GET, 'import' );
+$filtered_step   = filter_input( INPUT_GET, 'step' );
 
 if ($pagenow == 'admin.php' && 0 === strcmp( $filtered_import, 'wordpress' ) && $filtered_step == 1 ) {
 	add_action('admin_head', 'icl_import_xml');
@@ -16,20 +16,20 @@ function icl_import_xml() {
 	}
 	$default = $sitepress->get_default_language();
 	
-		$out = '<h3>' . esc_html__('Select Language', 'sitepress') . '</h3><p><select name="icl_post_language">';
+		$out = '<h2>' . __('Select Language', 'sitepress') . '<\/h2><p><select name="icl_post_language">';
 		foreach ($langs as $lang) {
-			$out .= '<option value="' . esc_attr( $lang['code'] ) . '"';
+			$out .= '<option value="' . $lang['code'] . '"';
 			if ($default == $lang['code']) {
 				$out .= ' selected="selected"';
 			}
-			$out .= '>' . esc_html( $lang['native_name'] ) . '<\/option>';
+			$out .= '>' . $lang['native_name'] . '<\/option>';
 		}
 		$out .= '<\/select><\/p>';
 	
 	echo '
 	<script type="text/javascript">
 		jQuery(document).ready(function(){
-			jQuery("#wpbody-content").find("form .submit").before(\'' . $out . '\');
+			jQuery("#wpbody-content .submit").before(\'' . $out . '\');
 		});
 	</script>
 	';
@@ -37,8 +37,6 @@ function icl_import_xml() {
 
 add_action('import_start', 'icl_import_xml_start', 0);
 function icl_import_xml_start() {
-	set_time_limit( 0 );
-	$post_languages = isset( $_POST['icl_post_language'] ) ? $_POST['icl_post_language'] : array();
-
-	$_POST['icl_tax_post_tag_language'] = $_POST['icl_tax_category_language'] = $_POST['icl_tax_language'] = $post_languages;
+	set_time_limit(0);
+	$_POST['icl_tax_post_tag_language'] = $_POST['icl_tax_category_language'] = $_POST['icl_tax_language'] = $_POST['icl_post_language'];
 }
