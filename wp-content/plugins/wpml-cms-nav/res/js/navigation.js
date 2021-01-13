@@ -2,7 +2,7 @@
 
 jQuery(document).ready(function () {
 	jQuery('#icl_navigation_show_cat_menu').change(function () {
-		if (jQuery(this).prop('checked')) {
+		if (jQuery(this).attr('checked')) {
 			jQuery('#icl_cat_menu_contents').fadeIn();
 		} else {
 			jQuery('#icl_cat_menu_contents').fadeOut();
@@ -14,33 +14,26 @@ jQuery(document).ready(function () {
 
 function clearNavigationCache() {
 	var thisb = jQuery(this);
-	thisb.prop('disabled', true);
-	thisb.after(wpml_cms_nav_ajxloaderimg);
+	thisb.attr('disabled', 'disabled').after(wpml_cms_nav_ajxloaderimg);
 	jQuery.ajax({
 		type: "POST",
 		url: ajaxurl,
 		data: "action=wpml_cms_nav_clear_nav_cache",
 		success: function () {
-			thisb.prop('disabled', false);
-			thisb.next().fadeOut();
+			thisb.removeAttr('disabled').next().fadeOut();
 		}
 	});
 }
 
 function wpmlCMSNavSaveForm() {
 	var form = jQuery(this);
-	var submitButton = form.find(':submit');
-	submitButton.prop('disabled', false);
-	submitButton.addClass('disabled');
-	submitButton.after(wpml_cms_nav_ajxloaderimg);
+	form.find(':submit').attr('disabled', 'disabled').after(wpml_cms_nav_ajxloaderimg);
 	jQuery.ajax({
 		type: "POST",
 		url: ajaxurl,
 		data: "action=wpml_cms_nav_save_form&" + form.serialize(),
 		success: function () {
-			submitButton.prop('disabled', false);
-			submitButton.removeClass('disabled');
-			submitButton.next().fadeOut();
+			form.find(':submit').removeAttr('disabled').next().fadeOut();
 		}
 	});
 	return false;
