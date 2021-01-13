@@ -31,7 +31,7 @@
 		<?php endif; ?>
 	</div><!-- .entry-header -->
 	<div class="entry-content">
-		<?php the_content( sprintf());?>
+		<?php the_content();?>
 	</div><!-- .entry-content -->
 </article><!-- #post-<?php the_ID(); ?> -->
 <div class="tagsList">
@@ -46,7 +46,7 @@
 
 
 					<?php foreach ($terms as $term): ?>
-							<div class="tagItem"><?php echo '<a href="' . get_term_link($term->slug, $term->taxonomy) . '">' . '#' . $term->name . '</a>' ?></div>
+							<div class="tagItem"><?php echo '<a href="' . get_term_link($term->slug, $term->taxonomy) . '">' . '#' . $term->name . '</a>' ;?></div>
 					<?php endforeach;?>
 				</div>
 				<div class="tagShare">

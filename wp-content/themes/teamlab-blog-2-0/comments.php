@@ -63,7 +63,7 @@
     <?php if ( get_option('comment_registration') && !is_user_logged_in() ) : ?>
     <p><?php printf(__('You must be <a href="%s">logged in</a> to post a comment.'), wp_login_url( get_permalink() )); ?></p>
     <?php else : ?>
-    <form action="<?php echo get_option('siteurl'); ?>/wp-comments-post.php" method="post" id="commentform">
+    <form action="<?php echo site_url('wp-comments-post.php') ?>" method="post" id="commentform">
         <?php if ( is_user_logged_in() ) : ?>
         <p><?php printf(__('Logged in as <a class="account-name" href="%1$s">%2$s</a>', 'teamlab-blog-2-0'), get_option('siteurl') . '/wp-admin/profile.php', $user_identity); ?><a class="logout" href="<?php echo wp_logout_url(get_permalink()); ?>" title="<?php _e('Log out of this account', 'teamlab-blog-2-0'); ?>"><?php _e('Log out &raquo;', 'teamlab-blog-2-0'); ?></a></p>
         <?php else : ?>
@@ -85,6 +85,7 @@
             <div class="textarea"><textarea name="comment" id="comment"></textarea></div>
         </p>
         <?php do_action('comment_form', $post->ID); ?>
+        
         <p class="submit">
             <input name="submit" type="submit" id="commentformsubmit" value="<?php _e('Add comment', 'teamlab-blog-2-0'); ?>" class="button gray" /><?php comment_id_fields(); ?>
         </p>

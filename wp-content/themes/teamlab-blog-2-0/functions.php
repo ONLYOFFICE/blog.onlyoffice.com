@@ -141,7 +141,11 @@ if ( ! function_exists( 'add_my_theme_js' ) ) :
 
         }
 
-
+function enqueue_comment_reply() {
+	if( is_singular() && comments_open() && get_option( 'thread_comments' ) )
+		wp_enqueue_script('comment-reply');
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_comment_reply' );
 
      /* Action for loading your custom stylesheet and scripts*/
 
@@ -257,13 +261,8 @@ add_action( 'widgets_init', 'register_my_widgets' );
  * Enqueue scripts and styles.
  */
 function teamlab_blog_2_0_scripts() {
-    wp_enqueue_style( 'teamlab-blog-2-0-style', get_stylesheet_uri() );
     wp_enqueue_script('jquery'); 
     wp_enqueue_script( 'true_loadmore', get_stylesheet_directory_uri() . '/js/loadmore.js', array('jquery') );
-
-    if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-        wp_enqueue_script( 'comment-reply' );
-    }
 }
 add_action( 'wp_enqueue_scripts', 'teamlab_blog_2_0_scripts' );
 
@@ -534,7 +533,7 @@ if ( ! function_exists( 'tmblog_comment' ) ) :
      */
     function tmblog_comment( $comment, $args, $depth ) {
         $GLOBALS['comment'] = $comment;
-        switch ( $comment->comment_type ) :
+        switch ( $comment->comment ) :
             case '' :
 ?>
 <li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
@@ -544,7 +543,7 @@ if ( ! function_exists( 'tmblog_comment' ) ) :
             <div class="title">
                 <?php printf( __( '%s', 'teamlab-blog-2-0' ), sprintf( '<span class="fn">%s</span>', get_comment_author_link() ) ); ?>
                 <span class="sep">-</span>
-                <?php comment_reply_link( array_merge( $args, array( 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
+                <?php comment_reply_link( array_merge( $args, array( 'depth' => $depth ) ) ); ?>
             </div>
             <span class="meta"><?php printf( __( '%1$s at %2$s', 'teamlab-blog-2-0' ), get_comment_date(),  get_comment_time() ); ?><?php edit_comment_link( __( 'Edit', 'teamlab-blog-2-0' ), ' ' ); ?></span>
         </div><!-- .comment-author .vcard -->
