@@ -892,7 +892,7 @@
     height: 100vh;
     top: 0;
     left: 0;
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(119, 119, 119);
     cursor: default;
     z-index: 1001;
     opacity: 0.5;
@@ -922,9 +922,9 @@
 }
 .close-popup:before{
     content:'';
-    background-color: #666666;
+    background-color: #ffffff;
     position: absolute;
-    height: 1px;
+    height: 2px;
     width: 31px;
     top: 11px;
     transform: rotate(-45deg);
@@ -933,9 +933,9 @@
 }
 .close-popup:after {
     content: '';
-    background-color: #666666;
+    background-color: #ffffff;
     position: absolute;
-    height: 1px;
+    height: 2px;
     width: 31px;
     top: 11px;
     transform: rotate(45deg);
@@ -1612,6 +1612,39 @@ a.download:active{
     background-repeat: no-repeat;
     margin-top: 0 !important;
 }
+
+.wpdc-join-discussion{
+    box-sizing: border-box;
+    max-width: 736px;
+    margin: 64px auto 0;
+    text-align: center;
+}
+
+.wpdc-join-discussion a.wpdc-join-discussion-link{
+    display: block;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 133%;
+    letter-spacing: -0.02em;
+    color: #444444;
+    text-decoration: none;
+    padding: 16px 24px;
+    width: 100%;
+    border: 1px solid #CCCCCC;
+    box-sizing: border-box;
+    border-radius: 3px;
+    transition: .1s linear all;
+    -moz-transition: .1s linear all;
+    -webkit-transition: .1s linear all;
+}
+
+.wpdc-join-discussion a.wpdc-join-discussion-link:hover{
+    color: #FF6F3D;
+    border: 1px solid #FF6F3D;
+}
+
+
 /*-----------Share button--------*/
 .a2a_kit{
     float: right !important;
@@ -2061,7 +2094,46 @@ div#respond form#commentform div.textarea textarea {
 div#respond form#commentform p.submit {
     margin: 24px 0 0;
 }
-
+/*-----------Fancybox popup--------*/
+#fancybox-outer{
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+}
+#fancybox-close {
+    background: none !important;
+}
+#fancybox-close:before{
+    content:'';
+    background-color: #ffffff;
+    position: absolute;
+    height: 2px;
+    width: 31px;
+    transform: rotate(-45deg);
+    z-index: 1004;
+}
+#fancybox-close:after {
+    content: '';
+    background-color: #ffffff;
+    position: absolute;
+    height: 2px;
+    width: 31px;
+    transform: rotate(45deg);
+    z-index: 1004;
+}
+#fancybox-loading{
+    background-color:rgba(189, 189, 189, 0.5);
+}
+#fancybox-loading div{
+    background-image: url(../images/loader.gif) !important;
+    width: 20px !important;
+    height: 20px !important;
+    left: 10px !important;
+    background-size: 100% !important;
+    background-repeat: no-repeat !important;
+    bottom: 0 !important;
+    margin: auto !important;
+}
 
 /*-----------Search Page--------*/
 .SearchContainer{
@@ -2141,10 +2213,11 @@ div#respond form#commentform p.submit {
 }
 
 .bg{
-    background: url(../images/no-results-gray.jpg) no-repeat;
-    mix-blend-mode: luminosity;
-    -webkit-background-size: 100%;
-    background-size: 100%;
+    background-image: url(../images/404_errors.svg);
+    -webkit-background-size: contain;
+    background-size: contain;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
     width: auto;
     height: 340px;
 }
@@ -2158,15 +2231,13 @@ div#respond form#commentform p.submit {
     text-align: center;
 }
 .ErrorContainer .bg{
-    height: 412px;
-    background-size: contain;
-    background-position: 50% 50%;
+    height: 424px;
 }
 .ErrorContainer h1{
     margin-top: 64px;
     font-family: Open Sans;
     font-style: normal;
-    font-weight: 600;
+    font-weight: bold;
     font-size: 32px;
     line-height: 133%;
     text-align: center;

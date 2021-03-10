@@ -1,5 +1,4 @@
 /***** Page Tracker *****/
-
 function PageTrack(key) {
     try {
         if (typeof(window.pageTracker) == "undefined") {

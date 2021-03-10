@@ -585,16 +585,10 @@ body.desktop .button.red.disabled:visited {
   .postwrapper a img {
     height: calc(100vw * 0.10);
   }
-  .ErrorContainer .bg {
-    height: 312px;
-  }
 }
 @media screen and (max-width: 1640px) {
   .postwrapper a img {
     height: calc(100vw * 0.12);
-  }
-  .ErrorContainer .bg{
-    height: 212px;
   }
 }
 @media screen and (max-width: 1320px) {
@@ -750,6 +744,9 @@ body.desktop .button.red.disabled:visited {
   .content{
     width: 100%;
   }
+  .content .cloud-block .red{
+    padding: 12px 20px;
+  }
   .input-header .search-field:focus {
     width: calc(100vw - 130px);
   }
@@ -758,6 +755,12 @@ body.desktop .button.red.disabled:visited {
     right: 61px;
     top: 8px;
     z-index: 15;
+}
+.no-results h3{
+  margin-bottom: 80px;
+}
+.bg{
+  height: 302px;
 }
   .letter-box{
       order: 1;
@@ -960,6 +963,9 @@ body.desktop .button.red.disabled:visited {
     background-size: 95%;
     background-color: #F8F8F8;
   }
+  .ErrorContainer .bg{
+    height: 300px;
+  }
 }
 
 
@@ -1029,6 +1035,18 @@ body.desktop .button.red.disabled:visited {
   .sidebar {
     margin-top: 48px;
   }
+  .wpdc-join-discussion{
+    max-width: none;
+    width: 100%;
+    margin: 48px auto 0;
+    text-align: center;
+    padding: 0 15px;
+}
+.wpdc-join-discussion a.wpdc-join-discussion-link{
+    font-size: 13px;
+    line-height: 133%;
+    letter-spacing: 0.04em;
+}
   .subscribe-white{
     padding: 66px 40px 67px;
     background: url(../images/newsletter.svg) no-repeat  50% 66px;
@@ -1036,6 +1054,9 @@ body.desktop .button.red.disabled:visited {
   .ErrorContainer {
     width:  auto;
     padding: 88px 16px 64px;
+  }
+  .ErrorContainer .bg{
+    height: 235px;
   }
 .gRecaptcha{
     width: 100%;
@@ -1101,9 +1122,6 @@ body.desktop .button.red.disabled:visited {
     padding-top: 39px;
     background-size: 272px 122.78px;
   }
-  .content .cloud-block .red{
-    padding: 12px 20px;
-  }
   .postwrapper a img {
     height: auto;
   }
@@ -1135,7 +1153,12 @@ body.desktop .button.red.disabled:visited {
     margin-top: 40px;
     font-size: 24px;
   }
-
+  .no-results h3{
+    margin-bottom: 48px;
+  }
+  .bg{
+    height: 55vw;
+  }
   p iframe{
     height: 235px;
   }
