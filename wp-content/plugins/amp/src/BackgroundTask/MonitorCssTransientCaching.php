@@ -19,6 +19,8 @@ use Exception;
  * This checks whether there's excessive cycling of CSS cached stylesheets and disables transient caching if so.
  *
  * @package AmpProject\AmpWP
+ * @since 2.0
+ * @internal
  */
 final class MonitorCssTransientCaching extends CronBasedBackgroundTask {
 
@@ -90,26 +92,26 @@ final class MonitorCssTransientCaching extends CronBasedBackgroundTask {
 	 * @todo This has arbitrary arguments to allow for testing, as we don't have dependency injection for services.
 	 *       With dependency injection, we could for example inject a Clock object and mock it for testing.
 	 *
-	 * @param DateTimeInterface $date            Optional. Date to use for timestamping the processing (for testing).
-	 * @param int               $transient_count Optional. Count of transients to use for the processing (for testing).
+	 * @param DateTimeInterface|string $date            Optional. Date to use for timestamping the processing (for testing). An empty string is provided during cron.
+	 * @param int|string               $transient_count Optional. Count of transients to use for the processing (for testing). An empty string is provided during cron.
 	 * @return void
 	 * @throws Exception If a date could not be instantiated.
 	 */
-	public function process( DateTimeInterface $date = null, $transient_count = null ) {
+	public function process( $date = '', $transient_count = '' ) {
 		if ( wp_using_ext_object_cache() || $this->is_css_transient_caching_disabled() ) {
 			return;
 		}
 
-		if ( null === $date ) {
+		if ( ! $date instanceof DateTimeInterface ) {
 			$date = new DateTimeImmutable();
 		}
 
-		if ( null === $transient_count ) {
-			$transient_count = self::query_css_transient_count();
+		if ( ! is_int( $transient_count ) ) {
+			$transient_count = $this->query_css_transient_count();
 		}
 
 		$date_string = $date->format( 'Ymd' );
-		$time_series = self::get_time_series();
+		$time_series = $this->get_time_series();
 
 		$time_series[ $date_string ] = $transient_count;
 		ksort( $time_series );
@@ -147,7 +149,7 @@ final class MonitorCssTransientCaching extends CronBasedBackgroundTask {
 	 *
 	 * @return int Count of transients caching stylesheets.
 	 */
-	public static function query_css_transient_count() {
+	public function query_css_transient_count() {
 		global $wpdb;
 
 		return (int) $wpdb->get_var(
@@ -172,8 +174,26 @@ final class MonitorCssTransientCaching extends CronBasedBackgroundTask {
 	 *
 	 * @return int[] Time series with the count of transients per day.
 	 */
-	public static function get_time_series() {
+	public function get_time_series() {
 		return (array) get_option( self::TIME_SERIES_OPTION_KEY, [] );
+	}
+
+	/**
+	 * Get the default threshold to use.
+	 *
+	 * @return float Default threshold to use.
+	 */
+	public function get_default_threshold() {
+		return self::DEFAULT_THRESHOLD;
+	}
+
+	/**
+	 * Get the default sampling range to use.
+	 *
+	 * @return int Default sampling range to use.
+	 */
+	public function get_default_sampling_range() {
+		return self::DEFAULT_SAMPLING_RANGE;
 	}
 
 	/**

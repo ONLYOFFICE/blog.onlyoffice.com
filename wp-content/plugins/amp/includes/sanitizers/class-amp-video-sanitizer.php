@@ -10,9 +10,10 @@ use AmpProject\DevMode;
 /**
  * Class AMP_Video_Sanitizer
  *
- * @since 0.2
- *
  * Converts <video> tags to <amp-video>
+ *
+ * @since 0.2
+ * @internal
  */
 class AMP_Video_Sanitizer extends AMP_Base_Sanitizer {
 	use AMP_Noscript_Fallback;
@@ -291,6 +292,12 @@ class AMP_Video_Sanitizer extends AMP_Base_Sanitizer {
 
 				case 'data-amp-noloading':
 					$out['noloading'] = $value;
+					break;
+
+				// Skip copying playsinline attributes which are automatically added by amp-video:
+				// <https://github.com/ampproject/amphtml/blob/264e5c0/extensions/amp-video/0.1/amp-video.js#L234-L236>.
+				case 'playsinline':
+				case 'webkit-playsinline':
 					break;
 
 				default:
