@@ -237,7 +237,7 @@ global $current_language;
                                             <ul class="dropdown-content">
                                                 <li class="pushy-link">
                                                     <a id="navitem_about_about" class="dropdown-item" href="<?php echo $current_language ?>/about.aspx"><?php _e('About ONLYOFFICE', 'teamlab-blog-2-0'); ?></a>
-                                                    <a id="navitem_about_blog" class="dropdown-item" target="_blank" href="<?php echo $current_language ?>/blog/"><?php _e('Blog', 'teamlab-blog-2-0'); ?></a>
+                                                    <a id="navitem_about_blog" class="dropdown-item" href="<?php echo icl_get_home_url() ?>"><?php _e('Blog', 'teamlab-blog-2-0'); ?></a>
                                                     <a id="navitem_about_contribute" class="dropdown-item" href="<?php echo $current_language ?>/contribute.aspx"><?php _e('Contribute', 'teamlab-blog-2-0'); ?></a>
                                                     <a id="navitem_about_customers" class="dropdown-item" href="<?php echo $current_language ?>/customers.aspx"><?php _e('Customers', 'teamlab-blog-2-0'); ?></a>
                                                     <a id="navitem_about_awards" class="dropdown-item" href="<?php echo $current_language ?>/awards.aspx"><?php _e('Awards', 'teamlab-blog-2-0'); ?></a>
