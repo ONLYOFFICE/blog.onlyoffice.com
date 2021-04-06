@@ -71,13 +71,13 @@ final class CssLength
     protected $attrValue;
 
     /**
-     * AMP_CSS_Length constructor.
+     * Instantiate a CssLength object.
      *
      * @param string|null $attrValue Attribute value to be parsed.
      */
     public function __construct($attrValue)
     {
-        if ((! isset($attrValue) || '' === $attrValue)) {
+        if (null === $attrValue) {
             $this->isValid = true;
             return;
         }
@@ -94,6 +94,10 @@ final class CssLength
      */
     public function validate($allowAuto, $allowFluid)
     {
+        if ($this->isValid()) {
+            return;
+        }
+
         if (self::AUTO === $this->attrValue) {
             $this->isAuto  = true;
             $this->isValid = $allowAuto;

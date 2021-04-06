@@ -6,11 +6,15 @@
  */
 
 use AmpProject\DevMode;
+use AmpProject\Attribute;
+use AmpProject\Layout;
 
 /**
  * Class AMP_Iframe_Sanitizer
  *
  * Converts <iframe> tags to <amp-iframe>
+ *
+ * @internal
  */
 class AMP_Iframe_Sanitizer extends AMP_Base_Sanitizer {
 	use AMP_Noscript_Fallback;
@@ -18,18 +22,37 @@ class AMP_Iframe_Sanitizer extends AMP_Base_Sanitizer {
 	/**
 	 * Default values for sandboxing IFrame.
 	 *
-	 * @since 0.2
+	 * | Sandbox Token                             | Included | Rationale
+	 * |-------------------------------------------|----------|----------
+	 * | `allow-downloads`                         | Yes      | Useful for downloading documents, etc.
+	 * | `allow-downloads-without-user-activation` | No       | Experimental per MDN. Bad UX.
+	 * | `allow-forms`                             | Yes      | For embeds like polls.
+	 * | `allow-modals`                            | Yes      | For apps to show `confirm()`, etc.
+	 * | `allow-orientation-lock`                  | Yes      | Since we `allowfullscreen`, useful for games, etc.
+	 * | `allow-pointer-lock`                      | Yes      | Useful for games.
+	 * | `allow-popups`                            | Yes      | To open YouTube video in new window, for example.
+	 * | `allow-popups-to-escape-sandbox`          | Yes      | Useful for ads.
+	 * | `allow-presentation`                      | Yes      | To cast YouTube videos, for example.
+	 * | `allow-same-origin`                       | Yes      | Removed if iframe is same origin.
+	 * | `allow-scripts`                           | Yes      | An iframe's primary use case is custom JS.
+	 * | `allow-storage-access-by-user-activation` | No       | Experimental per MDN.
+	 * | `allow-top-navigation`                    | No       | Poor user experience.
+	 * | `allow-top-navigation-by-user-activation` | Yes      | Key for clicking `target=_top` links in iframes.
 	 *
-	 * @const int
+	 * @since 0.2
+	 * @since 2.0.5 Updated to include majority of other sandbox values which are included by default if sandbox is not provided.
+	 * @link https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-sandbox
+	 *
+	 * @const string
 	 */
-	const SANDBOX_DEFAULTS = 'allow-scripts allow-same-origin';
+	const SANDBOX_DEFAULTS = 'allow-downloads allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation-by-user-activation';
 
 	/**
 	 * Tag.
 	 *
-	 * @var string HTML <iframe> tag to identify and replace with AMP version.
-	 *
 	 * @since 0.2
+	 *
+	 * @var string HTML <iframe> tag to identify and replace with AMP version.
 	 */
 	public static $tag = 'iframe';
 
@@ -124,8 +147,7 @@ class AMP_Iframe_Sanitizer extends AMP_Base_Sanitizer {
 			}
 
 			$this->did_convert_elements = true;
-			if ( empty( $normalized_attributes['layout'] ) && ! empty( $normalized_attributes['width'] ) && ! empty( $normalized_attributes['height'] ) ) {
-				$normalized_attributes['layout'] = 'intrinsic';
+			if ( empty( $normalized_attributes[ Attribute::LAYOUT ] ) && ! empty( $normalized_attributes[ Attribute::HEIGHT ] ) && ! empty( $normalized_attributes[ Attribute::WIDTH ] ) ) {
 
 				// Set layout to responsive if the iframe is aligned to full width.
 				$figure_node = null;
@@ -135,8 +157,15 @@ class AMP_Iframe_Sanitizer extends AMP_Base_Sanitizer {
 				if ( $node->parentNode->parentNode instanceof DOMElement && 'figure' === $node->parentNode->parentNode->tagName ) {
 					$figure_node = $node->parentNode->parentNode;
 				}
-				if ( $figure_node && $figure_node->hasAttribute( 'class' ) && in_array( 'alignfull', explode( ' ', $figure_node->getAttribute( 'class' ) ), true ) ) {
-					$normalized_attributes['layout'] = 'responsive';
+
+				if (
+					! empty( $this->args['align_wide_support'] )
+					&& $figure_node
+					&& preg_match( '/(^|\s)(alignwide|alignfull)(\s|$)/', $figure_node->getAttribute( Attribute::CLASS_ ) )
+				) {
+					$normalized_attributes[ Attribute::LAYOUT ] = Layout::RESPONSIVE;
+				} else {
+					$normalized_attributes[ Attribute::LAYOUT ] = Layout::INTRINSIC;
 				}
 
 				$this->add_or_append_attribute( $normalized_attributes, 'class', 'amp-wp-enforced-sizes' );
@@ -161,7 +190,7 @@ class AMP_Iframe_Sanitizer extends AMP_Base_Sanitizer {
 			// Add placeholder.
 			if ( $placeholder_node || true === $this->args['add_placeholder'] ) {
 				if ( ! $placeholder_node ) {
-					$placeholder_node = $this->build_placeholder( $normalized_attributes ); // @todo Can a better placeholder default be devised?
+					$placeholder_node = $this->build_placeholder(); // @todo Can a better placeholder default be devised?
 				}
 				$new_node->appendChild( $placeholder_node );
 			}
@@ -205,7 +234,7 @@ class AMP_Iframe_Sanitizer extends AMP_Base_Sanitizer {
 	 *
 	 *      @type string $src IFrame URL - Empty if HTTPS required per $this->args['require_https_src']
 	 *      @type int $width <iframe> width attribute - Set to numeric value if px or %
-	 *      @type int $height <iframe> width attribute - Set to numeric value if px or %
+	 *      @type int $height <iframe> height attribute - Set to numeric value if px or %
 	 *      @type string $sandbox <iframe> `sandbox` attribute - Pass along if found; default to value of self::SANDBOX_DEFAULTS
 	 *      @type string $class <iframe> `class` attribute - Pass along if found
 	 *      @type string $sizes <iframe> `sizes` attribute - Pass along if found
@@ -213,6 +242,7 @@ class AMP_Iframe_Sanitizer extends AMP_Base_Sanitizer {
 	 *      @type int $frameborder <iframe> `frameborder` attribute - Filter to '0' or '1'; default to '0'
 	 *      @type bool $allowfullscreen <iframe> `allowfullscreen` attribute - Convert 'false' to empty string ''
 	 *      @type bool $allowtransparency <iframe> `allowtransparency` attribute - Convert 'false' to empty string ''
+	 *      @type string $type <iframe> `type` attribute - Pass along if value is not `text/html`
 	 * }
 	 * @return array Returns HTML attributes; normalizes src, dimensions, frameborder, sandbox, allowtransparency and allowfullscreen
 	 */
@@ -296,6 +326,16 @@ class AMP_Iframe_Sanitizer extends AMP_Base_Sanitizer {
 					// No need to copy.
 					break;
 
+				case 'type':
+					/*
+					 * Omit the `type` attribute if its value is `text/html`. Popular embed providers such as Amazon
+					 * Kindle use this non-standard attribute, which is apparently a vestige from usage on <object>.
+					 */
+					if ( 'text/html' !== strtolower( $value ) ) {
+						$out[ $name ] = $value;
+					}
+					break;
+
 				default:
 					$out[ $name ] = $value;
 					break;
@@ -344,16 +384,10 @@ class AMP_Iframe_Sanitizer extends AMP_Base_Sanitizer {
 	 *
 	 * @since 0.2
 	 *
-	 * @param string[] $parent_attributes {
-	 *      Attributes.
-	 *
-	 *      @type string $placeholder AMP HTML <amp-iframe> `placeholder` attribute; default to 'amp-wp-iframe-placeholder'
-	 *      @type string $class AMP HTML <amp-iframe> `class` attribute; default to 'amp-wp-iframe-placeholder'
-	 * }
 	 * @return DOMElement|false
 	 */
-	private function build_placeholder( $parent_attributes ) {
-		$placeholder_node = AMP_DOM_Utils::create_node(
+	private function build_placeholder() {
+		return AMP_DOM_Utils::create_node(
 			$this->dom,
 			'span',
 			[
@@ -361,8 +395,6 @@ class AMP_Iframe_Sanitizer extends AMP_Base_Sanitizer {
 				'class'       => 'amp-wp-iframe-placeholder',
 			]
 		);
-
-		return $placeholder_node;
 	}
 
 	/**
