@@ -16,7 +16,7 @@ get_header();
 				<div class="bg"></div>
 				<h1><?php _e( '404 Page not found', 'teamlab-blog-2-0' ); ?></h1>
 				<p><?php _e( "The page you were looking for doesn't exist, isn't available, or was loading incorrectly.", "teamlab-blog-2-0" ); ?></p>
-				<a class="go-home" href="<?php echo WEB_ROOT_URL?>/blog/"><?php _e('Go back to Home', 'teamlab-blog-2-0'); ?></a>
+				<a class="go-home" href="<?php echo icl_get_home_url() ?>"><?php _e('Go back to Home', 'teamlab-blog-2-0'); ?></a>
 			</div><!-- .ErrorContainer -->
 		</main><!-- #main -->
 	</div><!-- #primary -->

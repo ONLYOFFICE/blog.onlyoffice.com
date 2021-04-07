@@ -123,7 +123,7 @@ global $current_language;
                                                 <a id="navitem_features_customer_stories" class="dropdown-item" href="<?php echo $current_language ?>/customers.aspx"><?php _e('Customer stories', 'teamlab-blog-2-0'); ?></a>
                                                 <div id="customer_stories_div" class="menu_pic_div">
                                                     <div id="customer_stories_img" class="menu_pic_img"></div>
-                                                    <p id="customer_stories_header" class="menu_pic_header"><?php _e('How Germany’s public radio and television deployed ONLYOFFICE for seamless online content collaboration within Nextcloud', 'teamlab-blog-2-0'); ?></p>
+                                                    <p id="customer_stories_header" class="menu_pic_header"><?php _e('How ONLYOFFICE and Nextcloud ensure streamlined workflow at the Vegan in Leipzig project', 'teamlab-blog-2-0'); ?></p>
                                                 </div>
                                             </li>
                                         </ul>

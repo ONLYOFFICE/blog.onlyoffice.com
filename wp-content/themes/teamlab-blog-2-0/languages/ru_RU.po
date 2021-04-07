@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Twenty Ten 1.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/twentyten\n"
-"POT-Creation-Date: 2020-12-09 10:56+0300\n"
-"PO-Revision-Date: 2020-12-09 10:56+0300\n"
+"POT-Creation-Date: 2021-04-07 13:22+0300\n"
+"PO-Revision-Date: 2021-04-07 13:23+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -30,6 +30,7 @@ msgid "Your site&#8217;s in the press."
 msgstr ""
 
 #: wp-content/plugins/in-the-press/in-the-press.php:29
+#: wp-content/themes/teamlab-blog-2-0/in-the-press.php:34
 msgid "ONLYOFFICE IN THE PRESS"
 msgstr "ONLYOFFICE в прессе"
 
@@ -39,7 +40,7 @@ msgstr "ONLYOFFICE в прессе"
 msgid "Recent Posts"
 msgstr "Недавние посты"
 
-#: wp-content/plugins/in-the-press/in-the-press.php:94
+#: wp-content/plugins/in-the-press/in-the-press.php:97
 msgid ""
 "View all <div class=\"no-wrap\">news&nbsp;<div class=\"grey-arrow\"></div></"
 "div>"
@@ -47,22 +48,22 @@ msgstr ""
 "Смотреть все <div class=\"no-wrap\">новости&nbsp;<div class=\"grey-arrow\"></"
 "div></div>"
 
-#: wp-content/plugins/in-the-press/in-the-press.php:100
+#: wp-content/plugins/in-the-press/in-the-press.php:103
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:102
 msgid "(no title)"
 msgstr ""
 
-#: wp-content/plugins/in-the-press/in-the-press.php:154
+#: wp-content/plugins/in-the-press/in-the-press.php:157
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:155
 msgid "Title:"
 msgstr ""
 
-#: wp-content/plugins/in-the-press/in-the-press.php:157
+#: wp-content/plugins/in-the-press/in-the-press.php:160
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:158
 msgid "Number of posts to show:"
 msgstr ""
 
-#: wp-content/plugins/in-the-press/in-the-press.php:161
+#: wp-content/plugins/in-the-press/in-the-press.php:164
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:162
 msgid "Display post date?"
 msgstr ""
@@ -90,14 +91,14 @@ msgid "Author Archives:"
 msgstr "Архив автора:"
 
 #: wp-content/themes/teamlab-blog-2-0/archive.php:70
-#: wp-content/themes/teamlab-blog-2-0/in-the-press.php:80
-#: wp-content/themes/teamlab-blog-2-0/index.php:129
+#: wp-content/themes/teamlab-blog-2-0/in-the-press.php:84
+#: wp-content/themes/teamlab-blog-2-0/index.php:127
 #: wp-content/themes/teamlab-blog-2-0/search.php:54
 msgid "Load more"
 msgstr "Загрузить больше"
 
 #: wp-content/themes/teamlab-blog-2-0/archive.php:76
-#: wp-content/themes/teamlab-blog-2-0/in-the-press.php:86
+#: wp-content/themes/teamlab-blog-2-0/in-the-press.php:90
 #: wp-content/themes/teamlab-blog-2-0/search.php:60
 msgid "No results matching your query could be found"
 msgstr "Не удалось ничего найти по вашему запросу"
@@ -179,7 +180,7 @@ msgstr ""
 msgid "Message:"
 msgstr "Текст сообщения:"
 
-#: wp-content/themes/teamlab-blog-2-0/comments.php:89
+#: wp-content/themes/teamlab-blog-2-0/comments.php:90
 msgid "Add comment"
 msgstr "Добавить комментарий"
 
@@ -383,34 +384,34 @@ msgstr "Ascensio System SIA"
 msgid "All rights reserved"
 msgstr "Все права защищены"
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:207
+#: wp-content/themes/teamlab-blog-2-0/functions.php:214
 #, php-format
 msgid "<span class=\"%2$s\">By %3$s</span>"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:519
+#: wp-content/themes/teamlab-blog-2-0/functions.php:544
 #, php-format
 msgid "%s"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:523
+#: wp-content/themes/teamlab-blog-2-0/functions.php:548
 #, php-format
 msgid "%1$s at %2$s"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:523
+#: wp-content/themes/teamlab-blog-2-0/functions.php:548
 msgid "Edit"
 msgstr "Редактировать"
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:526
+#: wp-content/themes/teamlab-blog-2-0/functions.php:551
 msgid "Your comment is awaiting moderation."
 msgstr "Ваш комментарий на модерации"
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:537
+#: wp-content/themes/teamlab-blog-2-0/functions.php:562
 msgid "Pingback:"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:537
+#: wp-content/themes/teamlab-blog-2-0/functions.php:562
 msgid "(Edit)"
 msgstr "(Редактировать)"
 
@@ -473,11 +474,11 @@ msgstr "Истории клиентов"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:126
 msgid ""
-"How Germany’s public radio and television deployed ONLYOFFICE for seamless "
-"online content collaboration within Nextcloud"
+"How ONLYOFFICE and Nextcloud ensure streamlined workflow at the Vegan in "
+"Leipzig project"
 msgstr ""
-"Как Нантский университет развернул онлайн-платформу для совместной работы на "
-"базе Nextcloud и ONLYOFFICE"
+"ONLYOFFICE и Nextcloud помогают оптимизировать процессы в проекте Vegan in "
+"Leipzig"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:132
 msgid "Products & Features"
@@ -727,6 +728,10 @@ msgstr "Подтвердите подписку"
 msgid "We sent an email message with confirmation to your email address"
 msgstr "Мы отправили email с подтверждением на ваш почтовый ящик"
 
+#: wp-content/themes/teamlab-blog-2-0/in-the-press.php:30
+msgid "BLOG"
+msgstr ""
+
 #: wp-content/themes/teamlab-blog-2-0/inc/template-tags.php:82
 #, php-format
 msgid "Leave a Comment<span class=\"screen-reader-text\"> on %s</span>"
@@ -738,7 +743,7 @@ msgstr ""
 msgid "Edit <span class=\"screen-reader-text\">%s</span>"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/index.php:72
+#: wp-content/themes/teamlab-blog-2-0/index.php:71
 msgid "Sorry, no posts"
 msgstr ""
 
@@ -793,6 +798,13 @@ msgid ""
 "div>"
 msgstr ""
 "Все <div class=\"no-wrap\">записи&nbsp;<div class=\"grey-arrow\"></div></div>"
+
+#~ msgid ""
+#~ "How Germany’s public radio and television deployed ONLYOFFICE for "
+#~ "seamless online content collaboration within Nextcloud"
+#~ msgstr ""
+#~ "Как Нантский университет развернул онлайн-платформу для совместной работы "
+#~ "на базе Nextcloud и ONLYOFFICE"
 
 #~ msgid "Github"
 #~ msgstr "Исходный код на GitHub"

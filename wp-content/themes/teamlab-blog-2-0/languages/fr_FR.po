@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: teamlab-blog-2-0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/twentyten\n"
-"POT-Creation-Date: 2020-12-09 10:55+0300\n"
-"PO-Revision-Date: 2020-12-09 10:55+0300\n"
+"POT-Creation-Date: 2021-04-07 13:29+0300\n"
+"PO-Revision-Date: 2021-04-07 13:29+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -28,6 +28,7 @@ msgid "Your site&#8217;s in the press."
 msgstr ""
 
 #: wp-content/plugins/in-the-press/in-the-press.php:29
+#: wp-content/themes/teamlab-blog-2-0/in-the-press.php:34
 msgid "ONLYOFFICE IN THE PRESS"
 msgstr "ONLYOFFICE dans la presse"
 
@@ -37,7 +38,7 @@ msgstr "ONLYOFFICE dans la presse"
 msgid "Recent Posts"
 msgstr "BILLETS RÉCENTS"
 
-#: wp-content/plugins/in-the-press/in-the-press.php:94
+#: wp-content/plugins/in-the-press/in-the-press.php:97
 msgid ""
 "View all <div class=\"no-wrap\">news&nbsp;<div class=\"grey-arrow\"></div></"
 "div>"
@@ -45,22 +46,22 @@ msgstr ""
 "Voir toutes les <div class=\"no-wrap\">actualités&nbsp;<div class=\"grey-"
 "arrow\"></div></div>"
 
-#: wp-content/plugins/in-the-press/in-the-press.php:100
+#: wp-content/plugins/in-the-press/in-the-press.php:103
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:102
 msgid "(no title)"
 msgstr ""
 
-#: wp-content/plugins/in-the-press/in-the-press.php:154
+#: wp-content/plugins/in-the-press/in-the-press.php:157
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:155
 msgid "Title:"
 msgstr ""
 
-#: wp-content/plugins/in-the-press/in-the-press.php:157
+#: wp-content/plugins/in-the-press/in-the-press.php:160
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:158
 msgid "Number of posts to show:"
 msgstr ""
 
-#: wp-content/plugins/in-the-press/in-the-press.php:161
+#: wp-content/plugins/in-the-press/in-the-press.php:164
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:162
 msgid "Display post date?"
 msgstr ""
@@ -88,14 +89,14 @@ msgid "Author Archives:"
 msgstr "Les archives de l'auteur :"
 
 #: wp-content/themes/teamlab-blog-2-0/archive.php:70
-#: wp-content/themes/teamlab-blog-2-0/in-the-press.php:80
-#: wp-content/themes/teamlab-blog-2-0/index.php:129
+#: wp-content/themes/teamlab-blog-2-0/in-the-press.php:84
+#: wp-content/themes/teamlab-blog-2-0/index.php:127
 #: wp-content/themes/teamlab-blog-2-0/search.php:54
 msgid "Load more"
 msgstr "Afficher plus"
 
 #: wp-content/themes/teamlab-blog-2-0/archive.php:76
-#: wp-content/themes/teamlab-blog-2-0/in-the-press.php:86
+#: wp-content/themes/teamlab-blog-2-0/in-the-press.php:90
 #: wp-content/themes/teamlab-blog-2-0/search.php:60
 msgid "No results matching your query could be found"
 msgstr "Aucun résultat ne correspond à votre recherche"
@@ -177,7 +178,7 @@ msgstr ""
 msgid "Message:"
 msgstr "Message :"
 
-#: wp-content/themes/teamlab-blog-2-0/comments.php:89
+#: wp-content/themes/teamlab-blog-2-0/comments.php:90
 msgid "Add comment"
 msgstr "Ajouter un comentaire"
 
@@ -381,34 +382,34 @@ msgstr "Ascensio System SIA"
 msgid "All rights reserved"
 msgstr "Tous droits réservés"
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:207
+#: wp-content/themes/teamlab-blog-2-0/functions.php:214
 #, php-format
 msgid "<span class=\"%2$s\">By %3$s</span>"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:519
+#: wp-content/themes/teamlab-blog-2-0/functions.php:544
 #, php-format
 msgid "%s"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:523
+#: wp-content/themes/teamlab-blog-2-0/functions.php:548
 #, php-format
 msgid "%1$s at %2$s"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:523
+#: wp-content/themes/teamlab-blog-2-0/functions.php:548
 msgid "Edit"
 msgstr "Éditer"
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:526
+#: wp-content/themes/teamlab-blog-2-0/functions.php:551
 msgid "Your comment is awaiting moderation."
 msgstr "Votre commentaire est en attente de modération"
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:537
+#: wp-content/themes/teamlab-blog-2-0/functions.php:562
 msgid "Pingback:"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/functions.php:537
+#: wp-content/themes/teamlab-blog-2-0/functions.php:562
 msgid "(Edit)"
 msgstr "(Éditer)"
 
@@ -471,12 +472,11 @@ msgstr "Témoignages"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:126
 msgid ""
-"How Germany’s public radio and television deployed ONLYOFFICE for seamless "
-"online content collaboration within Nextcloud"
+"How ONLYOFFICE and Nextcloud ensure streamlined workflow at the Vegan in "
+"Leipzig project"
 msgstr ""
-"Comment la radio et la télévision publiques allemandes ont déployé "
-"ONLYOFFICE pour une collaboration de contenu en ligne transparente au sein "
-"de Nextcloud"
+"Comment ONLYOFFICE et Nextcloud assure la fluidité de collaboration au sein "
+"du projet pour les végétariens à Leipzig"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:132
 msgid "Products & Features"
@@ -727,6 +727,10 @@ msgstr "Confirmez votre inscription"
 msgid "We sent an email message with confirmation to your email address"
 msgstr "Nous avons envoyé le mail de confirmation à votre adresse e-mail"
 
+#: wp-content/themes/teamlab-blog-2-0/in-the-press.php:30
+msgid "BLOG"
+msgstr ""
+
 #: wp-content/themes/teamlab-blog-2-0/inc/template-tags.php:82
 #, php-format
 msgid "Leave a Comment<span class=\"screen-reader-text\"> on %s</span>"
@@ -738,7 +742,7 @@ msgstr ""
 msgid "Edit <span class=\"screen-reader-text\">%s</span>"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/index.php:72
+#: wp-content/themes/teamlab-blog-2-0/index.php:71
 msgid "Sorry, no posts"
 msgstr ""
 
@@ -798,6 +802,14 @@ msgid ""
 msgstr ""
 "Tous les <div class=\"no-wrap\">billets&nbsp;<div class=\"grey-arrow\"></"
 "div></div>"
+
+#~ msgid ""
+#~ "How Germany’s public radio and television deployed ONLYOFFICE for "
+#~ "seamless online content collaboration within Nextcloud"
+#~ msgstr ""
+#~ "Comment la radio et la télévision publiques allemandes ont déployé "
+#~ "ONLYOFFICE pour une collaboration de contenu en ligne transparente au "
+#~ "sein de Nextcloud"
 
 #~ msgid "Github"
 #~ msgstr "Code sur GitHub"
