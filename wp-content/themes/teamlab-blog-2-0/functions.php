@@ -685,6 +685,6 @@ $current_language = $sitepress->get_current_language();
     }else if($current_language == WEB_ROOT_URL.'/'.'uk'){
          $current_language = WEB_ROOT_URL.'/'.'en';
     }else if($current_language == WEB_ROOT_URL.'/'.'en'){
-       $current_language = null;
+       $current_language = WEB_ROOT_URL;
     }
 }

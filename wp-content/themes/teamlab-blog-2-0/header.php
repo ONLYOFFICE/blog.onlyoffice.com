@@ -67,7 +67,7 @@ global $current_language;
                 <header>
                     <div class="narrowheader">
                         <div class="logo push">
-                            <a href="<?php echo icl_get_home_url() ?>"></a>
+                            <a href="<?php echo $current_language ?>"></a>
                         </div>
                         <div class="ham_menu push menu-btn pushy-link">
                             <span></span>
