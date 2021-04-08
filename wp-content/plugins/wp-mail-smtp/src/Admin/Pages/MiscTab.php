@@ -4,6 +4,7 @@ namespace WPMailSMTP\Admin\Pages;
 
 use WPMailSMTP\Admin\PageAbstract;
 use WPMailSMTP\Options;
+use WPMailSMTP\UsageTracking\UsageTracking;
 use WPMailSMTP\WP;
 
 /**
@@ -88,10 +89,18 @@ class MiscTab extends PageAbstract {
 								'<code>wp-config.php</code>'
 							);
 						} else {
-							printf( /* translators: %1$s - constant to use; %2$s - file to put that constant in. */
-								esc_html__( 'If you want to disable using a constant, put %1$s in your %2$s file.', 'wp-mail-smtp' ),
-								'<code>define( \'WPMS_DO_NOT_SEND\', true );</code>',
-								'<code>wp-config.php</code>'
+							printf(
+								wp_kses( /* translators: %s - The URL to the constants support article. */
+									__( 'Please read this <a href="%s" target="_blank" rel="noopener noreferrer">support article</a> if you want to enable this option using constants.', 'wp-mail-smtp' ),
+									[
+										'a' => [
+											'href'   => [],
+											'target' => [],
+											'rel'    => [],
+										],
+									]
+								),
+								'https://wpmailsmtp.com/docs/how-to-secure-smtp-settings-by-using-constants/'
 							);
 						}
 						?>
@@ -182,6 +191,25 @@ class MiscTab extends PageAbstract {
 				</div>
 			</div>
 
+			<?php if ( apply_filters( 'wp_mail_smtp_admin_pages_misc_tab_show_usage_tracking_setting', true ) ) : ?>
+				<!-- Usage Tracking -->
+				<div id="wp-mail-smtp-setting-row-usage-tracking" class="wp-mail-smtp-setting-row wp-mail-smtp-setting-row-checkbox wp-mail-smtp-clear">
+					<div class="wp-mail-smtp-setting-label">
+						<label for="wp-mail-smtp-setting-usage-tracking">
+							<?php esc_html_e( 'Allow Usage Tracking', 'wp-mail-smtp' ); ?>
+						</label>
+					</div>
+					<div class="wp-mail-smtp-setting-field">
+						<input name="wp-mail-smtp[general][<?php echo esc_attr( UsageTracking::SETTINGS_SLUG ); ?>]" type="checkbox"
+							value="true" <?php checked( true, $options->get( 'general', UsageTracking::SETTINGS_SLUG ) ); ?>
+							id="wp-mail-smtp-setting-usage-tracking">
+						<label for="wp-mail-smtp-setting-usage-tracking">
+							<?php esc_html_e( 'By allowing us to track usage data we can better help you because we know with which WordPress configurations, themes and plugins we should test.', 'wp-mail-smtp' ); ?>
+						</label>
+					</div>
+				</div>
+			<?php endif; ?>
+
 			<?php $this->display_save_btn(); ?>
 
 		</form>
@@ -190,7 +218,12 @@ class MiscTab extends PageAbstract {
 	}
 
 	/**
-	 * @inheritdoc
+	 * Process tab form submission ($_POST).
+	 *
+	 * @since 1.0.0
+	 * @since 2.2.0 Fixed checkbox saving and use the correct merge to prevent breaking other 'general' checkboxes.
+	 *
+	 * @param array $data Tab data specific for the plugin ($_POST).
 	 */
 	public function process_post( $data ) {
 
@@ -199,17 +232,24 @@ class MiscTab extends PageAbstract {
 		$options = new Options();
 
 		// Unchecked checkboxes doesn't exist in $_POST, so we need to ensure we actually have them in data to save.
+		if ( empty( $data['general']['do_not_send'] ) ) {
+			$data['general']['do_not_send'] = false;
+		}
 		if ( empty( $data['general']['am_notifications_hidden'] ) ) {
 			$data['general']['am_notifications_hidden'] = false;
+		}
+		if ( empty( $data['general']['email_delivery_errors_hidden'] ) ) {
+			$data['general']['email_delivery_errors_hidden'] = false;
 		}
 		if ( empty( $data['general']['uninstall'] ) ) {
 			$data['general']['uninstall'] = false;
 		}
-
-		$to_save = array_merge( $options->get_all(), $data );
+		if ( empty( $data['general'][ UsageTracking::SETTINGS_SLUG ] ) ) {
+			$data['general'][ UsageTracking::SETTINGS_SLUG ] = false;
+		}
 
 		// All the sanitization is done there.
-		$options->set( $to_save );
+		$options->set( $data, false, false );
 
 		WP::add_admin_notice(
 			esc_html__( 'Settings were successfully saved.', 'wp-mail-smtp' ),

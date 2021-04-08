@@ -5,33 +5,46 @@ msgid ""
 msgstr ""
 "Project-Id-Version: _s 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/tags/_s\n"
-"POT-Creation-Date: 2020-05-13 11:39+0300\n"
+"POT-Creation-Date: 2020-08-01 17:24+0300\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.4\n"
 "X-Poedit-KeywordsList: _e\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: archive.php:32
+#: 404.php:17
+msgid "404 Page not found"
+msgstr ""
+
+#: 404.php:18
+msgid ""
+"The page you were looking for doesn't exist, isn't available, or was loading "
+"incorrectly."
+msgstr ""
+
+#: 404.php:19
+msgid "Go back to Home"
+msgstr ""
+
+#: archive.php:37
 msgid "Tag Archives:"
 msgstr ""
 
-#: archive.php:60 in-the-press.php:80 index.php:127 search.php:53
+#: archive.php:42
+msgid "Author Archives:"
+msgstr ""
+
+#: archive.php:70 in-the-press.php:80 index.php:131 search.php:54
 msgid "Load more"
 msgstr ""
 
-#: archive.php:66 in-the-press.php:85 search.php:59
+#: archive.php:76 in-the-press.php:86 search.php:60
 msgid "No results matching your query could be found"
-msgstr ""
-
-#: cicle-wrapper.php:10 index.php:61 loadmore-search.php:5 loadmore-tag.php:5
-#: search.php:35 template-parts/content-tag.php:15 template-parts/content.php:24
-msgid "By"
 msgstr ""
 
 #: cloud-block.php:2
@@ -83,514 +96,587 @@ msgstr ""
 msgid "Download ONLYOFFICE desktop and mobile apps for"
 msgstr ""
 
-#: download-block.php:3 header.php:74 header.php:89 header.php:123
+#: download-block.php:3 header.php:103 header.php:118 header.php:152
 msgid "FREE"
 msgstr ""
 
-#: footer.php:23 header.php:136
-msgid "Features"
+#: download-block.php:6
+msgid "For Windows"
 msgstr ""
 
-#: footer.php:26
-msgid "Documents editors"
+#: download-block.php:7
+msgid "For Linux"
 msgstr ""
 
-#: footer.php:27 header.php:156
-msgid "Collaboration Platform"
+#: download-block.php:8
+msgid "For Mac OS"
 msgstr ""
 
-#: footer.php:28
-msgid "Security"
-msgstr ""
-
-#: footer.php:29
-msgid "End-to-end encryption"
-msgstr ""
-
-#: footer.php:34
-msgid "Integration"
-msgstr ""
-
-#: footer.php:37
-msgid "Nextcloud"
-msgstr ""
-
-#: footer.php:38
-msgid "OwnCloud"
-msgstr ""
-
-#: footer.php:39
-msgid "Confluence"
-msgstr ""
-
-#: footer.php:40
-msgid "Alfresco"
-msgstr ""
-
-#: footer.php:41
-msgid "SharePoint"
-msgstr ""
-
-#: footer.php:42
-msgid "Liferay"
-msgstr ""
-
-#: footer.php:43
-msgid "Others"
-msgstr ""
-
-#: footer.php:50 header.php:65
-msgid "Solutions"
-msgstr ""
-
-#: footer.php:53
-msgid "SMBs"
-msgstr ""
-
-#: footer.php:54
-msgid "Enterprises"
-msgstr ""
-
-#: footer.php:55
-msgid "Government"
-msgstr ""
-
-#: footer.php:56
-msgid "Education"
-msgstr ""
-
-#: footer.php:57
-msgid "Nonprofits"
-msgstr ""
-
-#: footer.php:58
-msgid "Personal Use"
-msgstr ""
-
-#: footer.php:63
-msgid "Support"
-msgstr ""
-
-#: footer.php:66
-msgid "SaaS Forum"
-msgstr ""
-
-#: footer.php:67
-msgid "Server Forum"
-msgstr ""
-
-#: footer.php:68
-msgid "Support Contact Form"
-msgstr ""
-
-#: footer.php:69
-msgid "Premium Support"
-msgstr ""
-
-#: footer.php:70
-msgid "Order demo"
-msgstr ""
-
-#: footer.php:71
-msgid "Subscribe to our newsletters"
-msgstr ""
-
-#: footer.php:78
+#: footer.php:23
 msgid "Developers"
 msgstr ""
 
-#: footer.php:81 header.php:118 header.php:190 header.php:200
+#: footer.php:26 header.php:147 header.php:219 header.php:229
 msgid "Developer Edition"
 msgstr ""
 
-#: footer.php:82 header.php:126 header.php:202
+#: footer.php:27 header.php:155 header.php:231
 msgid "Document Builder"
 msgstr ""
 
-#: footer.php:83 header.php:125
+#: footer.php:28 header.php:154
 msgid "API"
 msgstr ""
 
-#: footer.php:84
+#: footer.php:29
 msgid "Github"
 msgstr ""
 
-#: footer.php:89
-msgid "Get Info"
+#: footer.php:34 header.php:94
+msgid "Solutions"
+msgstr ""
+
+#: footer.php:37
+msgid "SMBs"
+msgstr ""
+
+#: footer.php:38
+msgid "Enterprises"
+msgstr ""
+
+#: footer.php:39
+msgid "Government"
+msgstr ""
+
+#: footer.php:40
+msgid "Education"
+msgstr ""
+
+#: footer.php:41
+msgid "Nonprofits"
+msgstr ""
+
+#: footer.php:42
+msgid "Personal Use"
+msgstr ""
+
+#: footer.php:49 header.php:165
+msgid "Features"
+msgstr ""
+
+#: footer.php:52
+msgid "Documents editors"
+msgstr ""
+
+#: footer.php:53 header.php:185
+msgid "Collaboration Platform"
+msgstr ""
+
+#: footer.php:54
+msgid "Security"
+msgstr ""
+
+#: footer.php:55
+msgid "End-to-end encryption"
+msgstr ""
+
+#: footer.php:56
+msgid "App Directory"
+msgstr ""
+
+#: footer.php:61
+msgid "Integration"
+msgstr ""
+
+#: footer.php:64
+msgid "Nextcloud"
+msgstr ""
+
+#: footer.php:65
+msgid "OwnCloud"
+msgstr ""
+
+#: footer.php:66
+msgid "Confluence"
+msgstr ""
+
+#: footer.php:67
+msgid "Alfresco"
+msgstr ""
+
+#: footer.php:68
+msgid "SharePoint"
+msgstr ""
+
+#: footer.php:69
+msgid "Liferay"
+msgstr ""
+
+#: footer.php:70
+msgid "HumHub"
+msgstr ""
+
+#: footer.php:71
+msgid "Plone"
+msgstr ""
+
+#: footer.php:72
+msgid "Nuxeo"
+msgstr ""
+
+#: footer.php:73
+msgid "Others"
+msgstr ""
+
+#: footer.php:80
+msgid "Support"
+msgstr ""
+
+#: footer.php:83
+msgid "SaaS Forum"
+msgstr ""
+
+#: footer.php:84
+msgid "Server Forum"
+msgstr ""
+
+#: footer.php:85
+msgid "Support Contact Form"
+msgstr ""
+
+#: footer.php:86
+msgid "Premium Support"
+msgstr ""
+
+#: footer.php:87
+msgid "Order demo"
 msgstr ""
 
 #: footer.php:92
+msgid "Get Info"
+msgstr ""
+
+#: footer.php:95
 msgid "FAQ"
 msgstr ""
 
-#: footer.php:93
+#: footer.php:96
 msgid "Getting Started"
 msgstr ""
 
-#: footer.php:94
+#: footer.php:97
 msgid "Video Guides"
 msgstr ""
 
-#: footer.php:95 header.php:229
+#: footer.php:98 header.php:255
+msgid "Webinars"
+msgstr ""
+
+#: footer.php:99 header.php:256
 msgid "Press downloads"
 msgstr ""
 
-#: footer.php:96
+#: footer.php:100
 msgid "Legal Notice"
 msgstr ""
 
-#: footer.php:97
+#: footer.php:101
 msgid "GDPR Compliance"
 msgstr ""
 
-#: footer.php:104
+#: footer.php:108
 msgid "Contact Us"
 msgstr ""
 
-#: footer.php:108
+#: footer.php:112
 msgid "Sales Questions"
 msgstr ""
 
-#: footer.php:113
+#: footer.php:117
 msgid "Partner Inquiries"
 msgstr ""
 
-#: footer.php:117
+#: footer.php:121
 msgid "Press Inquiries"
 msgstr ""
 
-#: footer.php:121
+#: footer.php:125
 msgid "Request a Call"
 msgstr ""
 
-#: footer.php:135 header.php:56 searchform.php:9
-msgid "Find news, tips and how-tos"
+#: footer.php:132
+msgid "follow us on:"
 msgstr ""
 
-#: footer.php:141
-msgid "follow us on"
+#: footer.php:180 subscribe-blue.php:2
+msgid "Newsletter"
 msgstr ""
 
-#: footer.php:179
+#: footer.php:181 subscribe-blue.php:3
+msgid "Get the latest ONLYOFFICE news"
+msgstr ""
+
+#: footer.php:184 subscribe-blue.php:8 subscribe-blue.php:18
+msgid "Your email"
+msgstr ""
+
+#: footer.php:186 subscribe-blue.php:20
+msgid "Subscribe"
+msgstr ""
+
+#: footer.php:189 subscribe-blue.php:25
+msgid "Email is empty"
+msgstr ""
+
+#: footer.php:190 subscribe-blue.php:26
+msgid "Email is incorrect"
+msgstr ""
+
+#: footer.php:191 subscribe-blue.php:27
+msgid "Email is used"
+msgstr ""
+
+#: footer.php:192 subscribe-blue.php:28
+msgid "Incorrect recaptcha"
+msgstr ""
+
+#: footer.php:194 subscribe-blue.php:36
+msgid ""
+"By clicking “Subscribe”, you understand and agree to <u>our Privacy "
+"statement</u>"
+msgstr ""
+
+#: footer.php:197 subscribe-blue.php:40
+msgid "Confirm your subscription"
+msgstr ""
+
+#: footer.php:198 subscribe-blue.php:41
+msgid "We sent an email message with confirmation to your email address"
+msgstr ""
+
+#: footer.php:204
 msgid "Ascensio System SIA"
 msgstr ""
 
-#: footer.php:179
+#: footer.php:204
 msgid "All rights reserved"
 msgstr ""
 
-#: functions.php:464
+#: functions.php:616
 msgid "Your comment is awaiting moderation."
 msgstr ""
 
-#: functions.php:475
+#: functions.php:627
 msgid "Pingback:"
 msgstr ""
 
-#: header.php:69 header.php:191
+#: header.php:85 searchform.php:9
+msgid "Find news, tips and how-tos"
+msgstr ""
+
+#: header.php:98 header.php:220
 msgid "Cloud Service"
 msgstr ""
 
-#: header.php:71
+#: header.php:100
 msgid ""
 "Online documents editors and productivity business tools provided as a SaaS"
 msgstr ""
 
-#: header.php:73 header.php:88 header.php:103 header.php:122 header.php:172
+#: header.php:102 header.php:117 header.php:132 header.php:151 header.php:201
 msgid "Overview"
 msgstr ""
 
-#: header.php:74
+#: header.php:103
 msgid "No installation required. Get started for "
 msgstr ""
 
-#: header.php:75 header.php:90
+#: header.php:104 header.php:119
 msgid "Complete set of business tools"
 msgstr ""
 
-#: header.php:76
+#: header.php:105
 msgid "Secure and reliable hosting"
 msgstr ""
 
-#: header.php:77
+#: header.php:106
 msgid "Cloud for non-profits"
 msgstr ""
 
-#: header.php:78
+#: header.php:107
 msgid "Cloud for personal use"
 msgstr ""
 
-#: header.php:79
+#: header.php:108
 msgid "Sign in"
 msgstr ""
 
-#: header.php:84 header.php:188 header.php:198
+#: header.php:113 header.php:217 header.php:227
 msgid "Enterprise Edition"
 msgstr ""
 
-#: header.php:86
+#: header.php:115
 msgid ""
 "Online document editors and productivity business tools at private network"
 msgstr ""
 
-#: header.php:89 header.php:123
+#: header.php:118 header.php:152
 msgid "Self-hosted. Try for"
 msgstr ""
 
-#: header.php:91
+#: header.php:120
 msgid "Enhanced security measures"
 msgstr ""
 
-#: header.php:92
+#: header.php:121
 msgid "Various installation options"
 msgstr ""
 
-#: header.php:93 header.php:111
+#: header.php:122 header.php:140
 msgid "Professional support"
 msgstr ""
 
-#: header.php:94
+#: header.php:123
 msgid "Community Edition vs Enterprise Edition"
 msgstr ""
 
-#: header.php:99 header.php:189 header.php:199
+#: header.php:128 header.php:218 header.php:228
 msgid "Integration Edition"
 msgstr ""
 
-#: header.php:101
+#: header.php:130
 msgid "Online document editors and connectors for popular web services"
 msgstr ""
 
-#: header.php:104
+#: header.php:133
 msgid "Self-hosted. Get started"
 msgstr ""
 
-#: header.php:104
+#: header.php:133
 msgid "NOW"
 msgstr ""
 
-#: header.php:105
+#: header.php:134
 msgid "For Nextcloud"
 msgstr ""
 
-#: header.php:106
+#: header.php:135
 msgid "For ownCloud"
 msgstr ""
 
-#: header.php:107
+#: header.php:136
 msgid "For Alfresco"
 msgstr ""
 
-#: header.php:108
+#: header.php:137
 msgid "For Confluence"
 msgstr ""
 
-#: header.php:109
+#: header.php:138
 msgid "For SharePoint"
 msgstr ""
 
-#: header.php:110
+#: header.php:139
 msgid "Third-party connectors"
 msgstr ""
 
-#: header.php:112
+#: header.php:141
 msgid "Community Edition vs Integration Edition"
 msgstr ""
 
-#: header.php:120
+#: header.php:149
 msgid "Online document editors to integrate with a service you are building"
 msgstr ""
 
-#: header.php:124
+#: header.php:153
 msgid "Dual licensing"
 msgstr ""
 
-#: header.php:132
+#: header.php:161
 msgid "Latest Releases"
 msgstr ""
 
-#: header.php:140
+#: header.php:169
 msgid "Online Editors"
 msgstr ""
 
-#: header.php:143
+#: header.php:172
 msgid "Documents"
 msgstr ""
 
-#: header.php:144
+#: header.php:173
 msgid "Spreadsheets"
 msgstr ""
 
-#: header.php:145
+#: header.php:174
 msgid "Presentations"
 msgstr ""
 
-#: header.php:150 header.php:201
+#: header.php:179 header.php:230
 msgid "Desktop Editors"
 msgstr ""
 
-#: header.php:151
+#: header.php:180
 msgid "Office for iOS"
 msgstr ""
 
-#: header.php:152
+#: header.php:181
 msgid "Office for Android"
 msgstr ""
 
-#: header.php:153
+#: header.php:182
 msgid "Mobile Projects"
 msgstr ""
 
-#: header.php:159
+#: header.php:188
 msgid "Document Management"
 msgstr ""
 
-#: header.php:160
+#: header.php:189
 msgid "Mail"
 msgstr ""
 
-#: header.php:161
+#: header.php:190
 msgid "CRM"
 msgstr ""
 
-#: header.php:162
+#: header.php:191
 msgid "Projects"
 msgstr ""
 
-#: header.php:163
+#: header.php:192
 msgid "Calendar"
 msgstr ""
 
-#: header.php:164
+#: header.php:193
 msgid "Community"
 msgstr ""
 
-#: header.php:169
+#: header.php:198
 msgid "ONLYOFFICE alternatives"
 msgstr ""
 
-#: header.php:173
+#: header.php:202
 msgid "ONLYOFFICE vs MS Office Online"
 msgstr ""
 
-#: header.php:174
+#: header.php:203
 msgid "ONLYOFFICE vs Google Docs"
 msgstr ""
 
-#: header.php:175
+#: header.php:204
 msgid "ONLYOFFICE vs Zoho Docs"
 msgstr ""
 
-#: header.php:176
+#: header.php:205
 msgid "ONLYOFFICE vs Collabora Online"
 msgstr ""
 
-#: header.php:177
+#: header.php:206
 msgid "ONLYOFFICE vs LibreOffice"
 msgstr ""
 
-#: header.php:178
+#: header.php:207
 msgid "ONLYOFFICE vs Office 365 vs G Suite"
 msgstr ""
 
-#: header.php:185
+#: header.php:214
 msgid "Pricing"
 msgstr ""
 
-#: header.php:195
+#: header.php:224
 msgid "Download"
 msgstr ""
 
-#: header.php:206
+#: header.php:235
 msgid "Partnership"
 msgstr ""
 
-#: header.php:209
+#: header.php:238
 msgid "For Resellers"
 msgstr ""
 
-#: header.php:210
+#: header.php:239
 msgid "For Affiliates"
 msgstr ""
 
-#: header.php:211
+#: header.php:240
 msgid "For Developers"
 msgstr ""
 
-#: header.php:212
+#: header.php:241
 msgid "Find partners"
 msgstr ""
 
-#: header.php:213
+#: header.php:242
 msgid "Submit request"
 msgstr ""
 
-#: header.php:217
+#: header.php:246
 msgid "About"
 msgstr ""
 
-#: header.php:220
+#: header.php:249
 msgid "About ONLYOFFICE"
 msgstr ""
 
-#: header.php:221
+#: header.php:250
 msgid "Blog"
 msgstr ""
 
-#: header.php:222
+#: header.php:251
 msgid "Contribute"
 msgstr ""
 
-#: header.php:223
-msgid "Success stories"
-msgstr ""
-
-#: header.php:224
-msgid "Case studies"
-msgstr ""
-
-#: header.php:225
+#: header.php:252
 msgid "Customers"
 msgstr ""
 
-#: header.php:226
+#: header.php:253
 msgid "Awards"
 msgstr ""
 
-#: header.php:227
+#: header.php:254
 msgid "Events"
 msgstr ""
 
-#: header.php:228
-msgid "Webinars"
-msgstr ""
-
-#: header.php:230
+#: header.php:257
 msgid "Contacts"
 msgstr ""
 
-#: index.php:70
+#: index.php:74
 msgid "Sorry, no posts"
 msgstr ""
 
-#: subscribe-blue.php:2
-msgid "Newsletter"
+#: loadmore-search.php:5 loadmore-tag.php:5 search.php:35
+#: template-parts/content-tag.php:15 template-parts/content.php:24
+msgid "By"
 msgstr ""
 
-#: subscribe-blue.php:3
-msgid "Get the latest ONLYOFFICE news delivered to your inbox"
+#: single.php:45
+msgid "Recent posts"
 msgstr ""
 
-#: subscribe-blue.php:16
-msgid ""
-"By clicking \"Subscribe\", you agree to the rules for using the service and "
-"processing personal data."
+#: templates/activation.php:40
+msgid "You are already subscribed. Please check your spam folder"
 msgstr ""
 
-#: subscribe-white.php:2
-msgid "Confirm your subscription"
+#: templates/activation.php:42
+msgid "Enjoy reading ONLYOFFICE blog!"
 msgstr ""
 
-#: subscribe-white.php:3
-msgid "We sent an email message with confirmation to your email address"
+#: templates/activation.php:44 templates/activation.php:73
+msgid "/"
+msgstr ""
+
+#: templates/activation.php:44 templates/activation.php:73
+msgid "Explore blog"
+msgstr ""
+
+#: templates/activation.php:69
+msgid "Thank you </em>for signing up for ONLYOFFICE newsletter!"
+msgstr ""
+
+#: templates/activation.php:71
+msgid "Check your inbox for your first email and stay updated from now on!"
 msgstr ""

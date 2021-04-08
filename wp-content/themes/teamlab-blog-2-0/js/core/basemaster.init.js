@@ -8,13 +8,11 @@
 
 var mobileMenu = function() {
     jQuery('ul.akkordeon > li > a').removeClass('active');
-    jQuery('ul.akkordeon > li > div').hide();
     jQuery('ul.akkordeon > li > a').unbind('click');
     jQuery('ul.akkordeon > li > a').click(function (event) {
         if (!jQuery(this).hasClass('active')) {
             jQuery('ul.akkordeon > li > a').removeClass('active').next('div').slideUp();
             jQuery(this).addClass('active');
-            jQuery(this).next('div').slideDown(200);
         } else {
             jQuery(this).removeClass('active').next('div').slideUp();
         }
@@ -80,7 +78,10 @@ jQuery(document).ready(function ($) {
             }
         });
     }
-    jQuery('nav > div > ul > li > div').mouseleave(function() {
+    jQuery('.pushy-content').mouseleave(function () {
+        mouseleaveCloseMenu();
+    });
+    jQuery('nav > div > ul > li > div').mouseleave(function () {
         mouseleaveCloseMenu();
     });
     jQuery('body').on("click", "a.nav_2nd_menu_link", function () {

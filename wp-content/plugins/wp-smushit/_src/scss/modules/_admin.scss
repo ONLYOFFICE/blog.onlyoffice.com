@@ -33,9 +33,9 @@
 		 * @since 3.2.3
 		 */
 		.smush-upsell-notice {
-			margin-left: 130px;
+			margin-left: 130px !important;
 			@media screen and (max-width: 782px) {
-				margin-left: 0;
+				margin-left: 0 !important;
 			}
 		}
 
@@ -546,10 +546,6 @@
 			font-size: 13px;
 		}
 
-		.auto-smush-notice {
-			margin: 5px 0 0 47px;
-		}
-
 		.wp-smush-resize-settings-wrap,
 		.wp-smush-png_to_jpg-wrap,
 		.wp-smush-image-size-list {
@@ -596,29 +592,63 @@
 		 */
 		.sui-upgrade-page .thumbnail-container {
 			cursor: pointer;
-			img { width: 640px; }
+			img {
+				width: 640px;
+				@media screen and (max-width: 600px) {
+					width: 100%;
+				}
+			}
 		}
 
 		.smush-pro-features {
 			.smush-pro-features-header {
-				background-color: #FAFAFA;
+				background: #F6F6F6 url('#{$img--path}/widget-background-smush.svg') center no-repeat;
+				background-size: cover;
 				margin: -45px -30px 30px;
-				padding: 40px 30px 15px;
-				display: flex;
-				justify-content: space-evenly;
-
-				& > div:first-of-type {
-					max-width: 380px;
-				}
+				padding: 40px 30px;
+				text-align: center;
 
 				@media screen and (max-width: 782px) {
 					margin: -35px -20px 20px;
 				}
 
-				.thumbnail-container {
-					cursor: pointer;
-					text-align: center;
-					img { width: 380px; }
+				& > div {
+					max-width: 610px;
+					margin: 0 auto;
+
+					p { margin-bottom: 10px; }
+
+					& > div {
+						display: flex;
+						justify-content: center;
+						align-items: flex-start;
+
+						@media screen and (max-width: 782px) {
+							flex-flow: column;
+							align-items: center;
+
+							a {
+								margin-bottom: 10px;
+								margin-right: 0;
+							}
+
+							.sui-button {
+								padding: 12px 0;
+								width: 200px;
+							}
+						}
+					}
+
+					.sui-button-ghost {
+						margin-right: 0;
+					}
+				}
+
+				small {
+					color: #C053DC;
+					font-size: 10px;
+					line-height: 30px;
+					display: block;
 				}
 			}
 
@@ -658,7 +688,6 @@
 			.sui-upsell-image {
 				&.sui-upsell-image-smush:not(.integrations-upsell-image) {
 					bottom: -30px;
-					width: 85px;
 				}
 			}
 		}
@@ -681,12 +710,6 @@
 		}
 
 		.sui-notice {
-			&.smush-notice-sm {
-				p {
-					font-size: 13px;
-				}
-			}
-
 			&.smush-highlighting-notice,
 			&.smush-highlighting-warning {
 				margin-top: 10px;

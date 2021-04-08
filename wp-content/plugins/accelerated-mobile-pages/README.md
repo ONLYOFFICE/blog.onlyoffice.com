@@ -3,8 +3,8 @@ Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Tags: AMP, accelerated mobile pages, mobile, amp project, google amp, amp wp, google, plugin, SEO
 Donate link: https://www.paypal.me/Kaludi/25
 Requires at least: 3.0
-Tested up to: 5.4
-Stable tag: 1.0.39
+Tested up to: 5.6
+Stable tag: 1.0.76.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,7 +42,6 @@ Bug reports for AMP for WP are [welcomed on GitHub](https://github.com/ahmedkalu
 * 3 Pre-built AMP Layouts for Business websites and landing pages 
 * OneSignal Push Notifications integration 
 * Advanced WooCommerce Support [More Info](https://ampforwp.com/woocommerce/)
-* Gravity Forms Support [More Info](https://ampforwp.com/gravity-forms/)
 * AMP Plugins Manager - Which allows you to disable a specific plugin functionality only in the AMP version
 * Structured Data Options
 * Page Break / NextPage (Pagination) Support
@@ -194,29 +193,31 @@ Device testing done through [BrowserStack](https://www.browserstack.com)
 
 == Changelog ==
 
-= 1.0.39 (3rd April 2020) =
-* Improvement: Code improvements in related post #4300
-* Fixed: Images are streching in the gallary #4334
+= 1.0.76.6 (12th March 2021) =
+* Improvements: Added an option to show the author details after the title on mobile #4858
+* Fixed: Images not appearing with WP stateless Google cloud storage plugin #4575
+* Fixed: Category module doesnot have "/" at the end of the URL #4932
+* Fixed: Proper commenting added for hooks #3368
+* Fixed: Sticky social share bar icon colliding with polylang plugin #4935
+* Fixed: AMP Page Builder is breaking with contact form module #4937
+* Fixed: Truepush notification not working in AMP #4936
 
-= 1.0.38 (1st April 2020) =
-* Improvement: Added Title for facebook comments section #3716
-* Improvement: Added iZooto support for AMP #4312
-* Fixed: Alignment issue in Advertisement Section #4325
-* Fixed: Slow Queries on Homepage in D3 #4319
-* Fixed: Category module links in AMP pagebuilder doesn't change to ?amp #4314
-* Fixed: Debug Warnings #4324 #4321 #4299
+= 1.0.76.5 (20th February 2021) =
+* Improvements: Added UX Builder compatibility #4933
+* Fixed: Second paginated post not working #4892
+* Fixed: Jetpack hosted videos not working on AMP #4931
+* Fixed: AMP Pagebuilder module getting narrowed with All in One SEO plugin #4930
 
-= 1.0.37 (28th March 2020) =
-* Improvement: Added filter to change Author name #4238
-* Improvement: Added option to show/hide jetpack related post in AMP #4272
-* Improvement: Added option to show/hide sassy social share in AMP #4273
-* Improvement: Added iZooto Push Notification Option #4286
-* Improvement: Code Improvements in #4288 #4300
-* Fixed: Fatal Error - Class ‘QM_Dispatchers’ not found. #4322 
-* Fixed: Header shifting to left in swift 404 page #4316
-* Fixed: Fatal error on activation on old php versions #4320
-* Fixed: Design breaks in 2 column layout pagebuilder in Design 2 #4313
-* Fixed: Hide AMP Bulk Tools option isn't working with WPML #4249
-* Fixed: Transparent header background color not working #4315
+= 1.0.76.4 (19th February 2021) =
+* Fixed: AMP front page not working after update #4892
+
+= 1.0.76.3 (19th February 2021) =
+* Improvement: Added the Smart Mag Theme review schema #4898
+* Improvement: Added disable right click for copy protection #4877
+* Improvement: Added an option to hide the title on pages #4929
+* Fixed: AMP Browser caching policy #4876
+* Fixed: p tags getting stripped with Change Pagination Links to /amp option #4892
+* Fixed: Missing URL for attribute error for SVG images #4911
+* Fixed: Debug warnings #4924
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/accelerated-mobile-pages/trunk/changelog.txt)

@@ -5,7 +5,7 @@ namespace WPMailSMTP;
 /**
  * Class SiteHealth adds the plugin status and information to the WP Site Health admin page.
  *
- * @since {VERSION}
+ * @since 1.9.0
  */
 class SiteHealth {
 
@@ -15,7 +15,7 @@ class SiteHealth {
 	 *
 	 * @see https://make.wordpress.org/core/2019/04/25/site-health-check-in-5-2/
 	 *
-	 * @since {VERSION}
+	 * @since 1.9.0
 	 */
 	const BADGE_COLOR = 'blue';
 
@@ -24,14 +24,14 @@ class SiteHealth {
 	 * This should be a plugin unique string, which will be used in the WP Site Health page,
 	 * for the "info" tab and will present the plugin info section.
 	 *
-	 * @since {VERSION}
+	 * @since 1.9.0
 	 */
 	const DEBUG_INFO_SLUG = 'wp_mail_smtp';
 
 	/**
 	 * Translatable string for the plugin label.
 	 *
-	 * @since {VERSION}
+	 * @since 1.9.0
 	 *
 	 * @return string
 	 */
@@ -43,7 +43,7 @@ class SiteHealth {
 	/**
 	 * Initialize the site heath functionality.
 	 *
-	 * @since {VERSION}
+	 * @since 1.9.0
 	 */
 	public function init() {
 
@@ -55,7 +55,7 @@ class SiteHealth {
 	 * Register plugin WP site health tests.
 	 * This will be displayed in the "Status" tab of the WP Site Health page.
 	 *
-	 * @since {VERSION}
+	 * @since 1.9.0
 	 *
 	 * @param array $tests The array with all WP site health tests.
 	 *
@@ -68,6 +68,11 @@ class SiteHealth {
 			'test'  => array( $this, 'mailer_setup_complete_test' ),
 		);
 
+		$tests['direct']['wp_mail_smtp_db_tables_exist'] = array(
+			'label' => esc_html__( 'Do WP Mail SMTP DB tables exist?', 'wp-mail-smtp' ),
+			'test'  => [ $this, 'db_tables_test' ],
+		);
+
 		return $tests;
 	}
 
@@ -75,7 +80,7 @@ class SiteHealth {
 	 * Register plugin WP Site Health debug information.
 	 * This will be displayed in the "Info" tab of the WP Site Health page.
 	 *
-	 * @since {VERSION}
+	 * @since 1.9.0
 	 *
 	 * @param array $debug_info Array of existing debug information.
 	 *
@@ -84,24 +89,41 @@ class SiteHealth {
 	public function register_debug_information( $debug_info ) {
 
 		$debug_notices = Debug::get();
+		$db_tables     = $this->get_db_tables( 'existing' );
 
-		$debug_info[ self::DEBUG_INFO_SLUG ] = array(
+		$debug_info[ self::DEBUG_INFO_SLUG ] = [
 			'label'  => $this->get_label(),
-			'fields' => array(
-				'version'          => array(
+			'fields' => [
+				'version'          => [
 					'label' => esc_html__( 'Version', 'wp-mail-smtp' ),
 					'value' => WPMS_PLUGIN_VER,
-				),
-				'license_key_type' => array(
+				],
+				'license_key_type' => [
 					'label' => esc_html__( 'License key type', 'wp-mail-smtp' ),
 					'value' => wp_mail_smtp()->get_license_type(),
-				),
-				'debug'            => array(
+				],
+				'debug'            => [
 					'label' => esc_html__( 'Debug', 'wp-mail-smtp' ),
 					'value' => ! empty( $debug_notices ) ? implode( '. ', $debug_notices ) : esc_html__( 'No debug notices found.', 'wp-mail-smtp' ),
-				),
-			),
-		);
+				],
+				'db_tables'        => [
+					'label' => esc_html__( 'DB tables', 'wp-mail-smtp' ),
+					'value' => ! empty( $db_tables ) ?
+						implode( ', ', $db_tables ) : esc_html__( 'No DB tables found.', 'wp-mail-smtp' ),
+				],
+			],
+		];
+
+		// Install date.
+		$activated = get_option( 'wp_mail_smtp_activated', [] );
+		if ( ! empty( $activated['lite'] ) ) {
+			$date = $activated['lite'] + ( get_option( 'gmt_offset' ) * 3600 );
+
+			$debug_info[ self::DEBUG_INFO_SLUG ]['fields']['lite_install_date'] = [
+				'label' => esc_html__( 'Lite install date', 'wp-mail-smtp' ),
+				'value' => date_i18n( esc_html__( 'M j, Y @ g:ia' ), $date ),
+			];
+		}
 
 		return $debug_info;
 	}
@@ -109,17 +131,24 @@ class SiteHealth {
 	/**
 	 * Perform the WP site health test for checking, if the mailer setup is complete.
 	 *
-	 * @since {VERSION}
+	 * @since 1.9.0
 	 */
 	public function mailer_setup_complete_test() {
 
 		$mailer          = Options::init()->get( 'mail', 'mailer' );
-		$mailer_complete = wp_mail_smtp()
-			->get_providers()
-			->get_mailer(
-				$mailer,
-				wp_mail_smtp()->get_processor()->get_phpmailer()
-			)->is_mailer_complete();
+		$mailer_complete = false;
+		$mailer_title    = esc_html__( 'None selected', 'wp-mail-smtp' );
+
+		if ( ! empty( $mailer ) ) {
+			$mailer_complete = wp_mail_smtp()
+				->get_providers()
+				->get_mailer(
+					$mailer,
+					wp_mail_smtp()->get_processor()->get_phpmailer()
+				)->is_mailer_complete();
+
+			$mailer_title = wp_mail_smtp()->get_providers()->get_options( $mailer )->get_title();
+		}
 
 		// The default mailer should be considered as a non-complete mailer.
 		if ( $mailer === 'mail' ) {
@@ -129,7 +158,7 @@ class SiteHealth {
 		$mailer_text = sprintf(
 			'%s: <strong>%s</strong>',
 			esc_html__( 'Current mailer', 'wp-mail-smtp' ),
-			esc_html( wp_mail_smtp()->get_providers()->get_options( $mailer )->get_title() )
+			esc_html( $mailer_title )
 		);
 
 		$result = array(
@@ -176,5 +205,78 @@ class SiteHealth {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Perform the test for checking if all custom plugin DB tables exist.
+	 *
+	 * @since 2.1.2
+	 *
+	 * @return array
+	 */
+	public function db_tables_test() {
+
+		$result = array(
+			'label'       => esc_html__( 'WP Mail SMTP DB tables are created', 'wp-mail-smtp' ),
+			'status'      => 'good',
+			'badge'       => array(
+				'label' => $this->get_label(),
+				'color' => self::BADGE_COLOR,
+			),
+			'description' => esc_html__( 'WP Mail SMTP is using custom database tables for some of its features. In order to work properly, the custom tables should be created, and it looks like they exist in your database.', 'wp-mail-smtp' ),
+			'actions'     => '',
+			'test'        => 'wp_mail_smtp_db_tables_exist',
+		);
+
+		$missing_tables = $this->get_db_tables( 'missing' );
+
+		if ( ! empty( $missing_tables ) ) {
+			$result['label']          = esc_html__( 'WP Mail SMTP DB tables check has failed', 'wp-mail-smtp' );
+			$result['status']         = 'critical';
+			$result['badge']['color'] = 'red';
+			$result['description']    = sprintf(
+				'<p>%s</p><p>%s</p>',
+				sprintf( /* translators: %s - the list of missing tables separated by comma. */
+					esc_html( _n( 'Missing table: %s', 'Missing tables: %s', count( $missing_tables ), 'wp-mail-smtp' ) ),
+					esc_html( implode( ', ', $missing_tables ) )
+				),
+				esc_html__( 'WP Mail SMTP is using custom database tables for some of its features. In order to work properly, the custom tables should be created, and it seems they are missing. Please try to re-install the WP Mail SMTP plugin. If this issue persists, please contact our support.', 'wp-mail-smtp' )
+			);
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Check DB:
+	 * - if any required plugin DB table is missing,
+	 * - which of the required plugin DB tables exist.
+	 *
+	 * @since 2.1.2
+	 *
+	 * @param string $check Which type of tables to return: 'missing' or 'existing'.
+	 *
+	 * @return array Missing or existing tables.
+	 */
+	private function get_db_tables( $check = 'missing' ) {
+
+		global $wpdb;
+
+		$tables = wp_mail_smtp()->get_custom_db_tables();
+
+		$missing_tables  = [];
+		$existing_tables = [];
+
+		foreach ( $tables as $table ) {
+			$db_result = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ); // phpcs:ignore
+
+			if ( strtolower( $db_result ) !== strtolower( $table ) ) {
+				$missing_tables[] = $table;
+			} else {
+				$existing_tables[] = $table;
+			}
+		}
+
+		return ( $check === 'existing' ) ? $existing_tables : $missing_tables;
 	}
 }

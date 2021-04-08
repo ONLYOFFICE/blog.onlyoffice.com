@@ -34,11 +34,14 @@ header('Content-Type: ' . esc_attr(feed_content_type('rss2')) . '; charset=' . e
         'no_found_rows' => true,
         'meta_query' => array(
             array(
-                'value'      => 'hide-ia',
-                'compare'    => "!="
+                'key'        => 'ampforwp-ia-on-off',
+                'value'      => 'default',
             ),
         )        
     );
+    if(ampforwp_get_setting('fb-instant-article-order-by') == 2){
+        $ia_args['orderby'] = 'post_modified';
+    }
     if ( ampforwp_get_setting('hide-amp-ia-categories') ) {
         $exclude_cats = array_values(array_filter(ampforwp_get_setting('hide-amp-ia-categories')));
         $ia_args['category__not_in'] = $exclude_cats;

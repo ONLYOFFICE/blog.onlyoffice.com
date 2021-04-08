@@ -1994,7 +1994,8 @@
                     'repeater',
                     'color_scheme',
                     'social_profiles',
-                    'css_layout'
+                    'css_layout',
+                    'multitext_repeater'
                 );
 
                 if ( $this->args['default_show'] == true && isset ( $field['default'] ) && isset ( $this->options[ $field['id'] ] ) && $this->options[ $field['id'] ] != $field['default'] && ! in_array( $field['type'], $filter_arr ) ) {
@@ -3317,16 +3318,6 @@
              */
             public function generate_panel() {
                 require_once 'core/panel.php';
-                if(is_admin()){
-                     echo '<div class="a-f-wp-help"><div class="a-f-wp-help-message">
-                        <a target="_blank" href="http://ampforwp.com/support/?utm_source=options-panel&utm_medium=contact_link_btn&utm_campaign=AMP%20Plugin"> <img src="'.AMPFORWP_IMAGE_DIR . '/amp-img-conv.png'.'" /></a>
-
-                        </div>
-                        <div class="a-f-wp-help-container">
-                          <script type="text/javascript">!function(e,t,n){function a(){var e=t.getElementsByTagName("script")[0],n=t.createElement("script");n.type="text/javascript",n.async=!0,n.src="https://beacon-v2.helpscout.net",e.parentNode.insertBefore(n,e)}if(e.Beacon=n=function(t,n,a){e.Beacon.readyQueue.push({method:t,options:n,data:a})},n.readyQueue=[],"complete"===t.readyState)return a();e.attachEvent?e.attachEvent("onload",a):e.addEventListener("load",a,!1)}(window,document,window.Beacon||function(){});</script>
-<script type="text/javascript">window.Beacon("init", "15cc2e40-aa70-4571-8e62-09906c77d535")</script>
-                        </div></div>';
-                }
                 $panel = new reduxCorePanel ( $this );
                 $panel->init();
                 $this->set_transients();

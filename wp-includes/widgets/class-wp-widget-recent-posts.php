@@ -71,10 +71,10 @@ class WP_Widget_Recent_Posts extends WP_Widget {
 			apply_filters(
 				'widget_posts_args',
 				array(
+					'post_type'           => 'post',
 					'posts_per_page'      => $number,
 					'no_found_rows'       => true,
 					'post_status'         => 'publish',
-					'cat'    		  	=> -1012,
 					'ignore_sticky_posts' => true,
 				),
 				$instance
@@ -92,7 +92,7 @@ class WP_Widget_Recent_Posts extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		?>
-		<div class="view-all"><a href="<?php echo site_url()?>"><?php _e('View all posts', 'teamlab-blog-2-0'); ?></a></div>
+		<div class="view-all"><a href="<?php echo icl_get_home_url() ?>"><?php _e('View all <div class="no-wrap">posts&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
 		</div>
 		<ul>
 			
@@ -100,7 +100,6 @@ class WP_Widget_Recent_Posts extends WP_Widget {
 				<?php
 				$post_title   = get_the_title( $recent_post->ID );
 				$title        = ( ! empty( $post_title ) ) ? $post_title : __( '(no title)' );
-				$thumb 		  = get_the_post_thumbnail($recent_post->ID);
 				$aria_current = '';
 
 				if ( get_queried_object_id() === $recent_post->ID ) {
@@ -108,11 +107,10 @@ class WP_Widget_Recent_Posts extends WP_Widget {
 				}
 				?>
 				<div class="recent">
-				<a href="<?php the_permalink($recent_post->ID) ?>" title=""><?php echo $thumb; ?></a>
 				<li>
 					<a href="<?php the_permalink( $recent_post->ID ); ?>"<?php echo $aria_current; ?>><?php echo $title; ?></a>
 					<?php if ( $show_date ) : ?>
-						<div class="meta press">
+						<div class="meta press-recent">
 							<span class="date"><?php echo get_the_date( '', $recent_post->ID ); ?></span>
 						</div>
 					<?php endif; ?>

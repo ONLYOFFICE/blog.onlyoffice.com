@@ -21,6 +21,7 @@ if( $current_post_type = get_post_type( $post )) {
 // The query arguments
 	if($current_post_type != 'page'){
     $args = array(
+    	'fields'=>'ids',
         'posts_per_page'=> $int_number_of_related_posts,
         'post__not_in' => array($post->ID),
         'order' => 'DESC',
@@ -43,6 +44,7 @@ if($redux_builder_amp['ampforwp-single-select-type-of-related']==2){
 		$category_ids = array();
 		foreach($categories as $individual_category) $category_ids[] = $individual_category->term_id;
 		$args=array(
+			'fields'=>'ids',
 		    'category__in' 		 => $category_ids,
 		    'posts_per_page'	 => $int_number_of_related_posts,
 		    'post__not_in' => array($post->ID),
@@ -67,6 +69,7 @@ if($redux_builder_amp['ampforwp-single-select-type-of-related']==1) {
 		$tag_ids = array();
 		foreach($ampforwp_tags as $individual_tag) $tag_ids[] = $individual_tag->term_id;
 			$args=array(
+			  'fields'=>'ids',
 			   'tag__in' 			 => $tag_ids,
 			    'posts_per_page'	 => $int_number_of_related_posts,
 			    'post__not_in' => array($post->ID),
@@ -104,7 +107,12 @@ if( isset($redux_builder_amp['ampforwp-single-related-posts-switch']) && $redux_
 		if( $my_query->have_posts() ) { ?>
 			<div class="amp-wp-content relatedpost">
 			     <div class="rp">
-			    	<span class="related-title"><?php echo esc_attr(ampforwp_translation( $redux_builder_amp['amp-translator-related-text'], 'Related Post' )); ?></span>
+			    	<span class="related-title">
+				    <?php if (function_exists('pll__')) {
+			    		echo pll__(esc_html__( ampforwp_get_setting('amp-translator-related-text'), 'accelerated-mobile-pages'));
+			    	}else{
+			    		echo esc_attr(ampforwp_translation( ampforwp_get_setting('amp-translator-related-text'), 'Related Post' ));
+			    	} ?></span>
 					<ol class="clearfix">
 						<?php
 						

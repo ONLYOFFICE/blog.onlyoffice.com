@@ -17,6 +17,7 @@ function ampforwp_analytics_options($opt_name){
    Redux::setSection( $opt_name,    array(
                 'title' => esc_html__('Analytics'),
                 // 'icon' => 'el el-th-large',
+                'id' => 'analytics',
                 'subsection' => true,
                 'fields' =>
                     array(
@@ -49,7 +50,7 @@ function ampforwp_analytics_options($opt_name){
                 array(
                       'id' => 'ampforwp-analytics_1',
                       'type' => 'section',
-                      'title' => esc_html__('Primary Analytic Providers', 'accelerated-mobile-pages'),
+                      'title' => esc_html__('Primary Analytics Provider', 'accelerated-mobile-pages'),
                       'indent' => true,
                       'layout_type' => 'accordion',
                         'accordion-open'=> 1, 
@@ -105,7 +106,7 @@ function ampforwp_analytics_options($opt_name){
                           'class' => 'child_opt',
                           'id'       => 'ampforwp-ga-field-advance-switch',
                           'type'     => 'switch',
-                          'title'    => esc_html__( 'Advanced Google Analytics', 'accelerated-mobile-pages' ),
+                          'title'    => esc_html__( 'Customize Configuration', 'accelerated-mobile-pages' ),
                           'required' => array(
                             array('amp-use-gtm-option', '=' , '0'),
                             array('ampforwp-ga-switch', '=' , '1')
@@ -127,8 +128,11 @@ function ampforwp_analytics_options($opt_name){
                         'theme'    => 'monokai',
                         'desc'     => '',
                         'default'  => ('{
-    "vars": {
-        "account": "UA-xxxxxxx-x"
+    "vars" : {
+      "gtag_id": "UA-xxxxxxx-x",
+      "config" : {
+        "UA-xxxxxxx-x": { "groups": "default" }
+      }
     },
     "triggers": {
         "trackPageview": {
@@ -160,7 +164,7 @@ function ampforwp_analytics_options($opt_name){
                               ),
                         ),
                         array(
-                            'class'=>'hide',
+                            'class'=>'child_opt child_opt_arrow',
                             'id'            =>'amp-gtm-analytics-code',
                             'type'          => 'text',
                             'title'         => esc_html__('Analytics ID','accelerated-mobile-pages'),
@@ -219,6 +223,37 @@ function ampforwp_analytics_options($opt_name){
                             array('amp-use-gtm-option', '=' , '1'),
                           ),
                         ),
+
+                      array(
+                        'id' => 'ampforwp-analytics-conversion-goals',
+                        'type' => 'section',
+                        'title' => esc_html__('Google Analytics Conversion Goals', 'accelerated-mobile-pages'),
+                        'indent' => true,
+                        'layout_type' => 'accordion',
+                          'accordion-open'=> 1, 
+                          'required' => array(
+                            array('amp-use-gtm-option', '=' , '0'),
+                          ),
+                        ),
+
+
+                    array(
+                        'id' => 'ampforwp-analytics-conversion-goals-switch',
+                        'type'  => 'switch',
+                        'title' => 'Conversion Tracking for GA',
+                        'default' => 0,
+                        'required' => array(
+                          array('amp-use-gtm-option', '=' , '0'),
+                        ),
+                    ),
+                    array( 
+                          'id'   => 'ampforwp-analytics-conversion-goals-info',
+                          'type' => 'info',
+                          'required' => array(
+                              array('ampforwp-analytics-conversion-goals-switch', '=' , true),  
+                              ),
+                           'desc' => sprintf('<div style="background: #FFF9C4;padding: 12px;line-height: 1.6;margin: -45px -14px -18px -17px;"><b>%s</b> %s <a href="https://ampforwp.com/addons/conversion-goals-tracking-for-amp/" target="_blank">%s</a> extension.<br /> <div style="margin-top:4px;">(<a href="https://ampforwp.com/addons/conversion-goals-tracking-for-amp/" target="_blank">%s</a>)</div></div>',esc_html__( 'ONE LAST STEP REQUIRED:','accelerated-mobile-pages'),esc_html__( 'This feature requires', 'accelerated-mobile-pages' ),esc_html__( 'Conversion Goals Tracking for AMP', 'accelerated-mobile-pages'),esc_html__( 'Click here for more info', 'accelerated-mobile-pages' )),               
+                           ),
 
 
                 array(
@@ -502,7 +537,53 @@ function ampforwp_analytics_options($opt_name){
                         ),
                         'placeholder'  => esc_html__('YOUR_SITE_ID_HERE','accelerated-mobile-pages'),
                     ),
-
+                    //Call Rail Analytics    
+                    array(
+                        'id'            =>'ampforwp-callrail-switch',
+                        'type'          => 'switch',
+                        'title'         => esc_html__('Call Rail Analytics','accelerated-mobile-pages'),
+                        'default'       => 0,
+                        'tooltip-subtitle' => sprintf('%s <a href="%s" target="_blank">%s</a> %s', 
+                         esc_html__('Enable this option to track callrail analytics in AMP and', 'accelerated-mobile-pages'), esc_url('https://ampforwp.com/tutorials/article/how-to-add-callrail-analytics-in-amp/'),esc_html__('Click Here','accelerated-mobile-pages'), esc_html__('for more info','accelerated-mobile-pages')),
+                    ),
+                    array(
+                        'id'       => 'ampforwp-callrail-config-url',
+                        'type'     => 'text',
+                        'title'    => esc_html__( 'Config URL', 'accelerated-mobile-pages' ),
+                        'tooltip-subtitle' => esc_html__( 'Enter your Call Rail Analytics Site Config URL','accelerated-mobile-pages'),
+                        'desc'=>sprintf( '<a href="https://ampforwp.com/tutorials/article/how-to-add-callrail-analytics-in-amp/" target="_blank">%s</a>',esc_html__('View integration tutorial','accelerated-mobile-pages' )),
+                        'required' => array('ampforwp-callrail-switch', '=' , '1')
+                    ),
+                    array(
+                        'id'       => 'ampforwp-callrail-number',
+                        'type'     => 'text',
+                        'title'    => esc_html__( 'Tell Number', 'accelerated-mobile-pages' ),
+                        'tooltip-subtitle' => esc_html__( 'Enter your Tell Number for Call Rail Analytics','accelerated-mobile-pages'),
+                        'required' => array('ampforwp-callrail-switch', '=' , '1')
+                    ),
+                    array(
+                        'id'       => 'ampforwp-callrail-analytics-url',
+                        'type'     => 'text',
+                        'title'    => esc_html__( 'Analytics Config URL', 'accelerated-mobile-pages' ),
+                        'tooltip-subtitle' => esc_html__( 'Enter your Analytics Config URL','accelerated-mobile-pages'),
+                        'required' => array('ampforwp-callrail-switch', '=' , '1')
+                    ),
+                    //iotechnologies Analytics    
+                    array(
+                        'id'            =>'ampforwp-iotech-switch',
+                        'type'          => 'switch',
+                        'title'         => esc_html__('IO Technologies Analytics','accelerated-mobile-pages'),
+                        'default'       => 0,
+                        'tooltip-subtitle' => sprintf('%s <a href="%s" target="_blank">%s</a> %s', 
+                         esc_html__('Enable this option to track io technologies analytics in AMP and', 'accelerated-mobile-pages'), esc_url('https://ampforwp.com/tutorials/article/how-to-add-iotechnologies-analytics-in-amp/'),esc_html__('Click Here','accelerated-mobile-pages'), esc_html__('for more info','accelerated-mobile-pages')),
+                    ),
+                    array(
+                        'id'       => 'ampforwp-iotech-projectid',
+                        'type'     => 'text',
+                        'title'    => esc_html__( 'Project ID', 'accelerated-mobile-pages' ),
+                        'tooltip-subtitle' => esc_html__( 'Enter Your Project ID Here','accelerated-mobile-pages'),
+                        'required' => array('ampforwp-iotech-switch', '=' , '1')
+                    ),
                         )
             )
    );

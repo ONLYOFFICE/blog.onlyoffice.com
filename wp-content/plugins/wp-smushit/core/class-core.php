@@ -412,6 +412,9 @@ class Core extends Stats {
 			// Ignore text.
 			'ignored'                 => esc_html__( 'Ignored from auto-smush', 'wp-smushit' ),
 			'not_processed'           => esc_html__( 'Not processed', 'wp-smushit' ),
+			// Notices.
+			'noticeDismiss'           => esc_html__( 'Dismiss', 'wp-smushit' ),
+			'noticeDismissTooltip'    => esc_html__( 'Dismiss notice', 'wp-smushit' ),
 		);
 
 		wp_localize_script( $handle, 'wp_smush_msgs', $wp_smush_msgs );
@@ -485,14 +488,6 @@ class Core extends Stats {
 		$data['timeout'] = WP_SMUSH_TIMEOUT * 1000;
 
 		wp_localize_script( $handle, 'wp_smushit_data', $data );
-
-		// Check if settings were changed for a multisite, and localize whether to run re-check on page load.
-		if ( Settings::can_access( 'bulk' ) ) {
-			// If not same, Set a variable to run re-check on page load.
-			if ( get_site_option( WP_SMUSH_PREFIX . 'run_recheck', false ) ) {
-				wp_localize_script( $handle, 'wp_smush_run_re_check', array( 1 ) );
-			}
-		}
 	}
 
 	/**
@@ -674,7 +669,7 @@ class Core extends Stats {
 			return $threshold;
 		}
 
-		return $resize_sizes['width'];
+		return $resize_sizes['width'] > $resize_sizes['height'] ? $resize_sizes['width'] : $resize_sizes['height'];
 	}
 
 }

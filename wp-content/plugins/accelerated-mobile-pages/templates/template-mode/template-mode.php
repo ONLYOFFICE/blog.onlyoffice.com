@@ -614,6 +614,7 @@ Class AMPforWP_theme_mode{
 		$sanitizer_obj = new AMPFORWP_Content( $content,
 				 apply_filters( 'amp_content_embed_handlers_template_mode', array(
 					'AMP_Core_Block_Handler' => array(),
+					'AMP_Reddit_Embed_Handler' => array(),
 					'AMP_Twitter_Embed_Handler' => array(),
 					'AMP_YouTube_Embed_Handler' => array(),
 					'AMP_DailyMotion_Embed_Handler' => array(),
@@ -677,6 +678,10 @@ Class AMPforWP_theme_mode{
 }//Class Closed
 add_action('after_setup_theme', 'ampforwp_template_mode_is_activate', 999);
 function ampforwp_template_mode_is_activate(){
+	$url_path = trim(parse_url(add_query_arg(array()), PHP_URL_PATH),'/' );
+	if((function_exists('td_wp_title') || class_exists('Bunyad_Theme_SmartMag') ) && function_exists('ampforwp_is_amp_inURL') && ampforwp_is_amp_inURL($url_path)){
+		add_theme_support( 'title-tag' );
+	}
 	if(get_theme_support('amp-template-mode') && !is_customize_preview()){
 		$ampforwp_theme_mode = new AMPforWP_theme_mode();
 		$ampforwp_theme_mode->init();

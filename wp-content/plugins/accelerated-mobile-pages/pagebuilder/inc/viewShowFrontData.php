@@ -426,9 +426,10 @@ function amp_pagebuilder_content_styles(){
 			 					if(!isset($moduleTemplate[$contentArray['type']]['repeater']['front_css'])){
 			 						continue;
 			 					}
-			                  	$repeaterFrontCss = $moduleTemplate[$contentArray['type']]['repeater']['front_css'];
-
+			 					$repeaterFrontCss = $moduleTemplate[$contentArray['type']]['repeater']['front_css'];
+			 					$repeaterFrontCss = str_replace("{{acc_head_type}}", $moduleTemplate["accordion-mod"]["repeater"]["fields"][1]["default"] , $repeaterFrontCss );
 			                    if($moduleField['content_type']=='css'){
+			                    	$repeaterFrontCss = str_replace("{{module-class}}", '.ap_m_'.$contentArray['cell_id'], $repeaterFrontCss );
 			                    	$repeaterFrontCss = str_replace('{{repeater-module-class}}', $moduleField['name'].'_'.$repeaterVarIndex, $repeaterFrontCss);
 			                    	$replace = $repeaterUserValues[$moduleField['name'].'_'.$repeaterVarIndex];
 				                    if(is_array($replace)){
@@ -456,8 +457,13 @@ function amp_pagebuilder_content_styles(){
 			                              $repeaterFrontCss
 			                            );
 			                      }
-			 
-			                      
+			 				}else{
+					                $repeaterCss = $moduleTemplate[$contentArray['type']]['repeater']['front_css'];
+			                    	if(strpos($repeaterCss, '{{'.$moduleField['name'].'}}')!==false){
+			                    		$repeaterFrontCss = $repeaterCss;
+			                    		$replace_with = $repeaterUserValues[$moduleField['name'].'_'.$repeaterVarIndex];
+				                    	$repeaterFrontCss = str_replace('{{'.$moduleField['name'].'}}',$replace_with, $repeaterFrontCss);
+				                    }
 			                    }
 			                  }
 			                  $repeaterFieldsCss .= $repeaterFrontCss;
@@ -497,7 +503,6 @@ function amppb_validateCss($css){
 	$css = str_replace(array('.amppb-fluid','.amppb-fixed','.accordion-mod'), array('.ap-fl','.ap-fi','.apac'), $css);
 	$css = preg_replace('/(([a-z -]*:(\s)*;))/', "", $css);
 	$css = preg_replace('/((;[\s\n;]*;))/', ";", $css);
-	$css = preg_replace('/(?:[^\r\n,{}]+)(?:,(?=[^}]*{,)|\s*{[\s]*})/', "", $css);
 	$css = preg_replace('/\s\n+/', "", $css);
 	return ampforwp_pb_autoCompileLess($css);
 }
@@ -519,8 +524,11 @@ function ampforwp_pb_autoCompileLess($css)
     $medias = array();
     foreach ($completeCssMinifies as $key => $value) {
     	preg_match_all('!\d+!', $key, $matches);
-    	if($matches){
+    	if($matches && !isset($medias[$matches[0][0]])){
 			$medias[$matches[0][0]] = $value;
+		}
+		if($matches && isset($medias[$matches[0][0]])){
+			$medias[$matches[0][0]] .= $value;
 		}
     }   
     krsort($medias);
@@ -585,7 +593,7 @@ function amppb_post_content($content){
 		$html ="";
 		$previousData = json_decode($previousData,true);
 		//Call Sorting for rows 
-		if(count($previousData['rows'])>0){
+		if(is_array($previousData) && count($previousData['rows'])>0){
 			$mainContentClass = '';
 			if(isset($previousData['settingdata']) && isset($previousData['settingdata']['front_class'])){
 				$mainContentClass = $previousData['settingdata']['front_class'];
@@ -611,12 +619,12 @@ function amppb_post_content($content){
 							}elseif($field['name']=='grid_type' && $rowsData['data'][$field['name']]=='amppb-fixed'){
 								$replace .= 'ap-fi';
 							}else{
-								$replace .= esc_html($rowsData['data'][$field['name']]);
+								$allowed_tags = '<p><a><b><strong><i><u><ul><ol><li><h1><h2><h3><h4><h5><h6><table><tr><th><td><em><span><div>';
+								$replace .= strip_tags($rowsData['data'][$field['name']],$allowed_tags);
 							}
 						}else{
 							$replace .= '';
 						}
-						$replace = esc_attr($replace);
 						if(! is_array($field['name']) && $field['content_type']=='html'){
 							$rowStartTemplate = str_replace('{{'.$field['name'].'}}', $replace, $rowStartTemplate);
 						}
@@ -635,7 +643,7 @@ function amppb_post_content($content){
 							foreach($rowsData['cell_data'] as $colDevider){
 								$colData[$colDevider['cell_container']][] = $colDevider;
 							}
-							$html .= '<div class="col-2-wrap">';
+							$html .= '<div class="col-2-wrap col">';
 							foreach($colData as $data)
 								$html .= ampforwp_rowData($data,$rowsData['cells'],$moduleTemplate);
 							$html .= '</div>';
@@ -707,6 +715,8 @@ function ampforwp_rowData($container,$col,$moduleTemplate){
 										$replace = "";
 										if(isset($repeaterUserValues[$moduleField['name'].'_'.$repeaterVarIndex])){
 											$replace = $repeaterUserValues[$moduleField['name'].'_'.$repeaterVarIndex];
+										}else{
+											$replace = $moduleField['default'];
 										}
 										if(is_array($replace)){
 											if(count($replace)>0){

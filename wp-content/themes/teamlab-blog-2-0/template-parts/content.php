@@ -21,52 +21,45 @@
 			?>
 			<div class="meta info-page">
 						<span class="date"><?php echo get_the_date('j F Y'); ?></span>
-						<span class="autor"><?php _e('By') ?> <?php echo get_the_author(); ?></span>
-			            <span class="comments"><?php comments_number('0', '1', '%'); ?></span>
-			            <span class="views"><?php if(function_exists('the_views')) { the_views(); } ?></span>
-					</div>
+						<span class="autor"><?php tmblog_posted_by(); ?></span>
+			      <span class="comments"><?php comments_number('0', '1', '%'); ?></span>
+						<span class="views"><?php if(function_exists('the_views')) { the_views(); } ?></span>
+						<?php if ( function_exists( 'ADDTOANY_SHARE_SAVE_KIT' ) ) { ADDTOANY_SHARE_SAVE_KIT(); } ?>
+			</div>
+			
 
 		<?php endif; ?>
 	</div><!-- .entry-header -->
-
-
 	<div class="entry-content">
-		<?php
-		the_content( sprintf(
-			wp_kses(
-				/* translators: %s: Name of current post. Only visible to screen readers */
-				__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'teamlab-blog-2-0' ),
-				array(
-					'span' => array(
-						'class' => array(),
-					),
-				)
-			),
-			get_the_title()));?>
-
-
-
-		 
-
-
-
-
+		<?php the_content();?>
 	</div><!-- .entry-content -->
 </article><!-- #post-<?php the_ID(); ?> -->
-
-<!-- get the term list and links -->
 <div class="tagsList">
-<?php
+				<div class="tagLine">
+					<?php
 
-$terms = wp_get_post_terms( $post->ID, 'post_tag');
+					$terms = wp_get_post_terms( $post->ID, 'post_tag');
 
-$term_id = $post->ID;
-$term_link = get_term_link( $term_id, $terms_list);
-?>
+					$term_id = $post->ID;
+					$term_link = get_term_link( $term_id, $terms_list);
+					?>
 
 
-<?php foreach ($terms as $term): ?>
-    <div class="tagItem"><?php echo '<a href="' . get_term_link($term->slug, $term->taxonomy) . '">' . '#' . $term->name . '</a>' ?></div>
-<?php endforeach;?>
+					<?php foreach ($terms as $term): ?>
+							<div class="tagItem"><?php echo '<a href="' . get_term_link($term->slug, $term->taxonomy) . '">' . '#' . $term->name . '</a>' ;?></div>
+					<?php endforeach;?>
+				</div>
+				<div class="tagShare">
+					<?php if ( function_exists( 'ADDTOANY_SHARE_SAVE_KIT' ) ) { ADDTOANY_SHARE_SAVE_KIT(); } ?>
+				</div>
+			</div>
+			
 
-</div>
+			<?php	include get_template_directory() . '/' . 'cloud-block.php'; 
+			// If comments are open or we have at least one comment, load up the comment template.
+			if ( comments_open() || get_comments_number() ) :
+				comments_template();
+			endif;?>
+
+
+

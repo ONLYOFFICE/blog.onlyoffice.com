@@ -43,16 +43,21 @@ if ( ! defined( 'WPINC' ) ) {
 	<!-- Notices -->
 	<?php $this->smush_result_notice(); ?>
 	<div class="sui-notice sui-notice-info wp-smush-dir-limit sui-hidden">
-		<p>
-			<?php
-			printf(
-				/* translators: %1$s: a tag start, %2$s: closing a tag */
-				esc_html__( '%1$sUpgrade to pro%2$s to bulk smush all your directory images with one click. Free users can smush 50 images with each click.', 'wp-smushit' ),
-				'<a href="' . esc_url( $upgrade_url ) . '" target="_blank" title="' . esc_html__( 'Smush Pro', 'wp-smushit' ) . '">',
-				'</a>'
-			);
-			?>
-		</p>
+		<div class="sui-notice-content">
+			<div class="sui-notice-message">
+				<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+				<p>
+					<?php
+					printf(
+					/* translators: %1$s: a tag start, %2$s: closing a tag */
+						esc_html__( '%1$sUpgrade to pro%2$s to bulk smush all your directory images with one click. Free users can smush 50 images with each click.', 'wp-smushit' ),
+						'<a href="' . esc_url( $upgrade_url ) . '" target="_blank" title="' . esc_html__( 'Smush Pro', 'wp-smushit' ) . '">',
+						'</a>'
+					);
+					?>
+				</p>
+			</div>
+		</div>
 	</div>
 
 	<?php if ( ! empty( $images ) ) : ?>

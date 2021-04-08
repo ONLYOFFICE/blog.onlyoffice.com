@@ -29,11 +29,21 @@ get_header();
 			add_filter( 'get_the_archive_title', function( $title ){
 			return preg_replace('~^[^:]+: ~', '', $title );
 			});?>
+
+			
+			
+
+			<?php if( is_tag() ) {?>
 			<h2 class="entry-title"><?php _e('Tag Archives:', 'teamlab-blog-2-0'); ?>
 			<?php
 			the_archive_title( '<a class="nameTags">#', '</a>' );
 			?></h2>
-			
+			<?php  } elseif( is_author() ) {?>
+			<h2 class="entry-title"><?php _e('Author Archives:', 'teamlab-blog-2-0'); ?>
+			<?php
+			the_archive_title( '<a class="nameTags">', '</a>' );
+			?></h2>
+			<?php  } ?>
 				
 
 			<?php
@@ -71,6 +81,7 @@ get_header();
 					</div><!-- #content -->
 					<div class="sidebar-press">
 				<?php dynamic_sidebar('sidebar-2'); ?>
+				<?php include get_template_directory() . '/' . 'social-icons.php' ?>
 				</div>
 				</div><!-- .content -->
 			</div><!-- SingleContainer -->

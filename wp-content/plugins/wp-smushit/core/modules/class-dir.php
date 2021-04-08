@@ -87,6 +87,8 @@ class Dir extends Abstract_Module {
 
 		// Add stats to stats box.
 		add_action( 'stats_ui_after_resize_savings', array( $this, 'directory_stats_ui' ), 10 );
+		// Check and show missing directory smush table error.
+		add_action( 'wp_smush_header_notices', array( $this, 'show_table_error' ) );
 
 		// Check directory smush table after screen is set.
 		add_action( 'current_screen', array( $this, 'check_table' ) );
@@ -620,6 +622,8 @@ class Dir extends Abstract_Module {
 
 			/**
 			 * Path is an image.
+			 *
+			 * @TODO: The is_dir() check fails directories with spaces.
 			 */
 			if ( ! is_dir( $path ) && ! $this->is_media_library_file( $path ) && ! strpos( $path, '.bak' ) ) {
 				if ( ! $this->is_image( $path ) ) {
@@ -758,9 +762,11 @@ class Dir extends Abstract_Module {
 
 	/**
 	 * Sends a Ajax response if no images are found in selected directory.
+	 *
+	 * Not used to display any messages.
 	 */
 	private function send_error() {
-		$message = sprintf( "<div class='sui-notice sui-notice-info'><p>%s</p></div>", esc_html__( 'We could not find any images in the selected directory.', 'wp-smushit' ) );
+		$message = sprintf( '<p>%s</p>', esc_html__( 'We could not find any images in the selected directory.', 'wp-smushit' ) );
 		wp_send_json_error(
 			array(
 				'message' => $message,
@@ -781,11 +787,11 @@ class Dir extends Abstract_Module {
 		check_ajax_referer( 'smush_get_image_list', 'image_list_nonce' );
 
 		// Check if directory path is set or not.
-		if ( empty( $_GET['smush_path'] ) ) { // Input var ok.
+		if ( empty( $_POST['smush_path'] ) ) { // Input var ok.
 			wp_send_json_error( __( 'Empty Directory Path', 'wp-smushit' ) );
 		}
 
-		$smush_path = filter_input( INPUT_GET, 'smush_path', FILTER_SANITIZE_URL, FILTER_REQUIRE_ARRAY );
+		$smush_path = filter_input( INPUT_POST, 'smush_path', FILTER_SANITIZE_URL, FILTER_REQUIRE_ARRAY );
 
 		// This will add the images to the database and get the file list.
 		$files = $this->get_image_list( $smush_path );
@@ -1173,7 +1179,7 @@ class Dir extends Abstract_Module {
 		<li class="smush-dir-savings">
 			<span class="sui-list-label"><?php esc_html_e( 'Directory Smush Savings', 'wp-smushit' ); ?>
 				<?php if ( $human <= 0 ) { ?>
-					<p class="wp-smush-stats-label-message">
+					<p class="wp-smush-stats-label-message sui-hidden-sm sui-hidden-md sui-hidden-lg">
 						<?php esc_html_e( "Smush images that aren't located in your uploads folder.", 'wp-smushit' ); ?>
 						<a href="<?php echo esc_url( admin_url( 'admin.php?page=smush&view=directory' ) ); ?>" class="wp-smush-dir-link"
 						title="<?php esc_attr_e( "Select a directory you'd like to Smush.", 'wp-smushit' ); ?>">
@@ -1187,9 +1193,33 @@ class Dir extends Abstract_Module {
 				<span class="wp-smush-stats-human"></span>
 				<span class="wp-smush-stats-sep sui-hidden">/</span>
 				<span class="wp-smush-stats-percent"></span>
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=smush&view=directory' ) ); ?>" class="wp-smush-dir-link sui-hidden-xs sui-hidden"
+				   title="<?php esc_attr_e( "Select a directory you'd like to Smush.", 'wp-smushit' ); ?>">
+					<?php esc_html_e( 'Choose directory', 'wp-smushit' ); ?>
+				</a>
 			</span>
 		</li>
 		<?php
+	}
+
+	/**
+	 * Display a admin notice on smush screen if the custom table wasn't created
+	 */
+	public function show_table_error() {
+		if ( ! self::table_exist() ) { // Display a notice.
+			?>
+		<div class="sui-notice sui-notice-warning">
+			<div class="sui-notice-content">
+				<div class="sui-notice-message">
+					<i class="sui-notice-icon sui-icon-info" aria-hidden="true"></i>
+					<p>
+						<?php esc_html_e( 'Directory smushing requires custom tables and it seems there was an error creating tables. For help, please contact our team on the support forums.', 'wp-smushit' ); ?>
+					</p>
+				</div>
+			</div>
+		</div>
+			<?php
+		}
 	}
 
 }

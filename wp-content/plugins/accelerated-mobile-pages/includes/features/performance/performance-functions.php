@@ -2,6 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
+use AMPforWP\AMPVendor\AMP_DOM_Utils;
 // 86. minify the content of pages
 add_filter('ampforwp_the_content_last_filter','ampforwp_minify_html_output');
 function ampforwp_minify_html_output($content_buffer){
@@ -26,6 +27,37 @@ function ampforwp_minify_html_output($content_buffer){
     if(class_exists('Cli_Optimizer') && preg_match('/<style type="text\/css">@font-face(.*?)<\/style>/s', $content_buffer)!=0){
         $content_buffer = preg_replace('/<style type="text\/css">@font-face(.*?)<\/style>/s', '', $content_buffer);
     }
+    if(preg_match('/<script(.*?)type="text\/javascript"(.*?)>[\s\S]*?<\/script>/', $content_buffer)){
+        $content_buffer = preg_replace('/<script(.*?)type="text\/javascript"(.*?)>[\s\S]*?<\/script>/', '', $content_buffer);
+    }
+    if(preg_match('/<amp-story-player(.*?)<\/amp-story-player>/s', $content_buffer)){
+        $content_buffer = preg_replace('/<amp-story-player(.*?)<\/amp-story-player>/s', '<amp-story-player width="360" height="600" $1</amp-story-player>', $content_buffer);
+    }
+    if(preg_match('/<input(.*?)type="image"(.*?)>/', $content_buffer)){
+        $content_buffer = preg_replace('/<input(.*?)type="image"(.*?)src="(.*?)"(.*?)>/', '<amp-img src="$3" layout="responsive" width="150" height="50" style="width:150px;height:50px;"></amp-img>', $content_buffer);
+    }
+    if(preg_match('/<figcaption class="ampforwp-blocks-gallery-caption">(.*?)<\/figcaption>/', $content_buffer)){
+        $content_buffer = preg_replace('/&lt;/', '<', $content_buffer);
+        $content_buffer = preg_replace('/&gt;/', '>', $content_buffer);
+    }
+    if(function_exists('googlesitekit_activate_plugin') && preg_match('/<script custom-element="amp-auto-ads"(.*?)src="(.*?)" async><\/script>(.*?)<amp-auto-ads/', $content_buffer)==0){
+        $content_buffer = preg_replace('/<script custom-element="amp-auto-ads"(.*?)src="(.*?)" async><\/script>/', '', $content_buffer);
+    }
+    if(preg_match('/<form(.*?)for="categories-dropdown-(.*?)"(.*?)class="postform(.*?)>/', $content_buffer)){
+        $content_buffer = preg_replace('/<form(.*?)for="categories-dropdown-(.*?)"(.*?)class="postform(.*?)>/', '<form id="amp-wp-widget-categories-1" on="change:amp-wp-widget-categories-1.submit" $1for="categories-dropdown-$2"$3class="postform$4>', $content_buffer);
+    }
+    if (function_exists('aioseo_pro_just_activated') && preg_match('/<link rel="canonical" href="([^>]*)\/amp\/" \/>/', $content_buffer)) {
+        $content_buffer = preg_replace('/<link rel="canonical" href="([^>]*)\/amp\/" \/>/','<link rel="canonical" href="$1/" />', $content_buffer);
+    }
+    if(preg_match('/<script(.*?)src="https:\/\/www.google-analytics.com\/analytics.js"><\/script>/', $content_buffer)){
+        $content_buffer = preg_replace('/<script(.*?)src="https:\/\/www.google-analytics.com\/analytics.js"><\/script>/', '', $content_buffer);
+    }
+    if(preg_match('/<blockquote class="imgur-embed(.*?)"(.*?)data-id="(.*?)"(.*?)<\/blockquote>/', $content_buffer)){
+        $content_buffer = preg_replace('/<blockquote class="imgur-embed(.*?)"(.*?)data-id="(.*?)"(.*?)<\/blockquote>/', '<amp-imgur data-imgur-id="$3" layout="responsive" width="500" height="600"></amp-imgur>', $content_buffer);
+    }
+    if ( class_exists( 'Jetpack' ) && preg_match('/<div(.*?)id="v-(.*?)-(.*?)"(.*?)class="video-player">(.*?)<\/div>/', $content_buffer)) {
+        $content_buffer = preg_replace('/<div(.*?)id="v-(.*?)-(.*?)"(.*?)class="video-player">(.*?)<\/div>/', '<div$1id="v-$2-$3"$4class="video-player"><amp-iframe width="300" height="150" sandbox="allow-scripts allow-same-origin" layout="responsive" src="https://videopress.com/embed/$2"></amp-iframe></div>', $content_buffer);
+    }
     global $redux_builder_amp;
     if(!$redux_builder_amp['ampforwp_cache_minimize_mode']){
            return $content_buffer;       
@@ -41,7 +73,7 @@ function ampforwp_minify_html_output($content_buffer){
     else
         $mod = '/s';
     $buffer = str_replace(array (chr(13) . chr(10), chr(9)), array (chr(10), ' '), $buffer);
-    $buffer = str_ireplace(array ('<script', '/script>', '<pre', '/pre>', '<textarea', '/textarea>', '<style', '/style>'), array ('M1N1FY-ST4RT<script', '/script>M1N1FY-3ND', 'M1N1FY-ST4RT<pre', '/pre>M1N1FY-3ND', 'M1N1FY-ST4RT<textarea', '/textarea>M1N1FY-3ND', 'M1N1FY-ST4RT<style', '/style>M1N1FY-3ND'), $buffer);
+    $buffer = str_ireplace(array ('<script', '/script>', '<pre', '/pre>', '<textarea', '/textarea>', '<style', '/style>','<p', '/p>'), array ('M1N1FY-ST4RT<script', '/script>M1N1FY-3ND', 'M1N1FY-ST4RT<pre', '/pre>M1N1FY-3ND', 'M1N1FY-ST4RT<textarea', '/textarea>M1N1FY-3ND', 'M1N1FY-ST4RT<style', '/style>M1N1FY-3ND','M1N1FY-ST4RT<p', '/p>M1N1FY-3ND'), $buffer);
     $split = explode('M1N1FY-3ND', $buffer);
     $buffer = ''; 
     for ($i=0; $i<count($split); $i++) {
@@ -188,6 +220,18 @@ function ampforwp_no_htaccess_notice(){
     echo wp_kses_post( $message );
 }
 function ampforwp_code_to_add_in_htaccess(){
+    $expires = ampforwp_get_setting('ampforwp_leverage_browser_caching_expires');
+    if (empty($expires)) {
+        $expires = '3 month';
+    }
+    if ($expires == 90) {
+        $expires = '3 month';
+    }
+    else if ($expires == 1) {
+        $expires = '1 day';
+    }else{
+        $expires = $expires . ' days';
+    }    
     $htaccess_cntn  = "\n";
     $htaccess_cntn .= '# AMPFORWPLBROWSERCSTART Browser Caching' . "\n";
     $htaccess_cntn .= '<IfModule mod_expires.c>' . "\n";
@@ -208,15 +252,13 @@ function ampforwp_code_to_add_in_htaccess(){
     $htaccess_cntn .= 'ExpiresByType image/jpeg "access 1 year"' . "\n";
     $htaccess_cntn .= 'ExpiresByType image/png "access 1 year"' . "\n";
     $htaccess_cntn .= 'ExpiresByType image/x-icon "access 1 year"' . "\n";
-    $htaccess_cntn .= 'ExpiresByType text/css "access 3 month"' . "\n";
-    $htaccess_cntn .= 'ExpiresByType text/javascript "access 3 month"' . "\n";
-    $htaccess_cntn .= 'ExpiresByType text/html "access 3 month"' . "\n";
-    $htaccess_cntn .= 'ExpiresByType application/javascript "access 3 month"' . "\n";
-    $htaccess_cntn .= 'ExpiresByType application/x-javascript "access 3 month"' . "\n";
-    $htaccess_cntn .= 'ExpiresByType application/xhtml-xml "access 3 month"' . "\n";
-    $htaccess_cntn .= 'ExpiresByType application/pdf "access 3 month"' . "\n";
-    $htaccess_cntn .= 'ExpiresByType application/x-shockwave-flash "access 3 month"' . "\n";
-    $htaccess_cntn .= 'ExpiresDefault "access 3 month"' . "\n";
+    $htaccess_cntn .= 'ExpiresByType text/css "access '.esc_html($expires).'"' . "\n";
+    $htaccess_cntn .= 'ExpiresByType text/javascript "access '.esc_html($expires).'"' . "\n";
+    $htaccess_cntn .= 'ExpiresByType application/javascript "access '.esc_html($expires).'"' . "\n";
+    $htaccess_cntn .= 'ExpiresByType application/x-javascript "access '.esc_html($expires).'"' . "\n";
+    $htaccess_cntn .= 'ExpiresByType application/xhtml-xml "access '.esc_html($expires).'"' . "\n";
+    $htaccess_cntn .= 'ExpiresByType application/pdf "access '.esc_html($expires).'"' . "\n";
+    $htaccess_cntn .= 'ExpiresByType application/x-shockwave-flash "access '.esc_html($expires).'"' . "\n";
     $htaccess_cntn .= '</IfModule>' . "\n";
     $htaccess_cntn .= '# END Caching AMPFORWPLBROWSERCEND' . "\n";
     return $htaccess_cntn;
@@ -226,6 +268,9 @@ function ampforwp_white_list_selectors($completeContent){
     $white_list = array();
     if(ampforwp_get_setting('ampforwp_css_tree_shaking')==1 && ampforwp_get_setting('content-sneak-peek')==1 ){
         $white_list[] = '.hide';
+    }
+    if(ampforwp_get_setting('ampforwp_css_tree_shaking')==1){
+       $white_list[] = '.amp-carousel-img img';
     }
     $white_list = (array)apply_filters('ampforwp_tree_shaking_white_list_selector',$white_list);
     $w_l_str = '';
@@ -250,7 +295,7 @@ if( !function_exists("ampforwp_tree_shaking_purify_amphtml") ){
         $completeContent = str_replace(array('"\\', "'\\"), array('":backSlash:',"':backSlash:"), $completeContent);   
         /***Replacements***/
         if(!empty($completeContent)){
-            $tmpDoc = new DOMDocument();
+            $tmpDoc = AMP_DOM_Utils::get_dom_from_content($completeContent); 
             libxml_use_internal_errors(true);
             $tmpDoc->loadHTML($completeContent);
             $font_css = '';

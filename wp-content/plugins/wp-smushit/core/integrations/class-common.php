@@ -47,6 +47,9 @@ class Common {
 
 		// Compatibility modules for lazy loading.
 		add_filter( 'smush_skip_image_from_lazy_load', array( $this, 'lazy_load_compat' ), 10, 3 );
+
+		// Soliloquy slider CDN support.
+		add_filter( 'soliloquy_image_src', array( $this, 'soliloquy_image_src' ) );
 	}
 
 	/**
@@ -323,6 +326,34 @@ class Common {
 	 */
 	public function exclude_recaptcha_iframe( $skip, $src ) {
 		return false !== strpos( $src, 'recaptcha/api' );
+	}
+
+	/**************************************
+	 *
+	 * Soliloquy slider
+	 *
+	 * @since 3.6.2
+	 */
+
+	/**
+	 * Replace slider image links with CDN links.
+	 *
+	 * @param string $src  Image source.
+	 *
+	 * @return string
+	 */
+	public function soliloquy_image_src( $src ) {
+		$cdn = WP_Smush::get_instance()->core()->mod->cdn;
+
+		if ( ! $cdn->get_status() || empty( $src ) ) {
+			return $src;
+		}
+
+		if ( $cdn->is_supported_path( $src ) ) {
+			return $cdn->generate_cdn_url( $src );
+		}
+
+		return $src;
 	}
 
 	/**************************************

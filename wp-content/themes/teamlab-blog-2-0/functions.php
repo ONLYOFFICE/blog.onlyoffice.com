@@ -141,7 +141,11 @@ if ( ! function_exists( 'add_my_theme_js' ) ) :
 
         }
 
-
+function enqueue_comment_reply() {
+	if( is_singular() && comments_open() && get_option( 'thread_comments' ) )
+		wp_enqueue_script('comment-reply');
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_comment_reply' );
 
      /* Action for loading your custom stylesheet and scripts*/
 
@@ -154,12 +158,19 @@ add_action( 'after_setup_theme', function() {
 });
 
 add_filter( 'excerpt_length', function(){
-    return 40;
+    return 35;
 } );
 
 add_filter('excerpt_more', function($more) {
     return '...';
 });
+add_filter( 'jpeg_quality', function(){
+    return 100;
+}); //не сжимать больше JPG 
+
+add_filter( 'big_image_size_threshold', '__return_false' ); // не ограничивать размер изображения
+
+
 /**
  * Set the content width in pixels, based on the theme's design and stylesheet.
  *
@@ -186,44 +197,33 @@ function bloggood_ru_image() {
  
 // Если картинка в посте отсутствует, тогда выводим изображение по умолчанию (указать путь и имя к картинке)
   if(empty($first_img)){
-   $first_img = "/img/default.jpg";
+    $template_uri = get_template_directory_uri();
+   $first_img = $template_uri . "/images/blog_online_editors.jpg";
   }
   return $first_img;
 }
 
-
-function tmblog_filter_wp_title( $title, $separator ) {
-        // Don't affect wp_title() calls in feeds.
-        if ( is_feed() )
-            return $title;
-        // The $paged global variable contains the page number of a listing of posts.
-        // The $page global variable contains the page number of a single post that is paged.
-        // We'll display whichever one applies, if we're not looking at the first page.
-        global $paged, $page;
-        if ( is_search() ) {
-            // If we're a search, let's start over:
-            $title = sprintf( __( 'Search results for %s', 'teamlab-blog-2-0' ), '"' . get_search_query() . '"' );
-            // Add a page number if we're on page 2 or more:
-            if ( $paged >= 2 )
-                $title .= " $separator " . sprintf( __( 'Page %s', 'teamlab-blog-2-0' ), $paged );
-            // Add the site name to the end:
-            $title .= " $separator " . get_bloginfo( 'name', 'display' );
-            // We're done. Let's send the new title back to wp_title():
-            return $title;
+ if ( ! function_exists( 'tmblog_posted_by' ) ) :
+        /**
+         * Prints HTML with meta information for the current post—date/time and author.
+         *
+         * @since Twenty Ten 1.0
+         */
+        function tmblog_posted_by() {
+            printf(
+            __( ( count( get_the_category() ) ) ? '<span class="%2$s">By %3$s</span>'
+                    : '<span class="%1$s">By %3$s</span>', 'teamlab-blog-2-0' ),
+                'meta-prep meta-prep-author',
+                'entry-utility-prep entry-utility-prep-cat-links',
+                sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',
+                    get_author_posts_url( get_the_author_meta( 'ID' ) ),
+                    sprintf( esc_attr__( 'View all posts by %s', 'teamlab-blog-2-0' ), get_the_author() ),
+                    get_the_author()),
+                get_the_category_list( ', ' )
+            );
         }
-        // Otherwise, let's start by adding the site name to the end:
-        $title .= get_bloginfo( 'name', 'display' );
-        // If we have a site description and we're on the home/front page, add the description:
-        $site_description = get_bloginfo( 'description', 'display' );
-        if ( $site_description && ( is_home() || is_front_page() ) )
-            $title .= " $separator " . $site_description;
-        // Add a page number if necessary:
-        if ( $paged >= 2 || $page >= 2 )
-            $title .= " $separator " . sprintf( __( 'Page %s', 'teamlab-blog-2-0' ), max( $paged, $page ) );
-        // Return the new title to wp_title():
-        return $title;
-    }
-    add_filter( 'wp_title', 'tmblog_filter_wp_title', 10, 2 );
+        endif;
+
 /**
  * Register widget area.
  *
@@ -261,13 +261,8 @@ add_action( 'widgets_init', 'register_my_widgets' );
  * Enqueue scripts and styles.
  */
 function teamlab_blog_2_0_scripts() {
-    wp_enqueue_style( 'teamlab-blog-2-0-style', get_stylesheet_uri() );
     wp_enqueue_script('jquery'); 
     wp_enqueue_script( 'true_loadmore', get_stylesheet_directory_uri() . '/js/loadmore.js', array('jquery') );
-
-    if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-        wp_enqueue_script( 'comment-reply' );
-    }
 }
 add_action( 'wp_enqueue_scripts', 'teamlab_blog_2_0_scripts' );
 
@@ -281,26 +276,84 @@ function change_empty_alt_to_title( $response ) {
 
     return $response;
 }
-
 add_filter( 'wp_prepare_attachment_for_js', 'change_empty_alt_to_title' );
+
+// Search tags on page search (not working)
+function search_tags_query($query) {
+        $s = $query->get('s');
+        if(strpos($s, '#') !== false){
+            $terms = explode('#', $s);
+            $query->set('tax_query', [
+                'relation' => 'OR',
+                [
+                    'term_taxonomy' => 'post_tag', // или custom taxonomy какой-то, если нужно
+                    'field' => 'name',
+                    'terms' => $terms
+                ]
+            ]);
+        }
+}
+add_action('pre_get_posts', 'search_tags_query');
+
+// Empty search query
+add_filter('posts_search', function( $search, \WP_Query $q ) {
+    if (empty($search) && $q->is_search() && $q->is_main_query())
+        $search .=" AND 0=1 ";
+
+    return $search;
+}, 10, 2);
+
+//Excluding pages from search results
+function wph_exclude_pages($query) {
+    if ($query->is_search) {
+        $query->set('post_type', 'post');
+    }
+    return $query;
+}
+add_filter('pre_get_posts','wph_exclude_pages');
+
+
 // Load more
 function true_load_posts(){
-  $args = unserialize(stripslashes($_POST['query']));
-  $args['paged'] = $_POST['page'] + 1; // следующая страница
-  $args['post_status'] = 'publish';
-  $q = new WP_Query($args);
-  if( $q->have_posts() ):
-    while($q->have_posts()): $q->the_post(); 
-       include get_template_directory() . '/' . $_POST['template'] . '.php' ;
-    endwhile; 
-  endif;
-  wp_reset_postdata();
-  die();
-};
+    $args = unserialize(stripslashes($_POST['query']));
+    $args['paged'] = $_POST['page'] + 1; // следующая страница
+    $args['post_status'] = 'publish';
+    $q = new WP_Query($args);
+    if( $q->have_posts() ):
+      while($q->have_posts()): $q->the_post(); 
+         include get_template_directory() . '/' . $_POST['template'] . '.php' ;
+      endwhile; 
+    endif;
+    wp_reset_postdata();
+    die();
+  };
+  
+  add_action('wp_ajax_loadmore', 'true_load_posts');
+  add_action('wp_ajax_nopriv_loadmore', 'true_load_posts');
 
- 
-add_action('wp_ajax_loadmore', 'true_load_posts');
-add_action('wp_ajax_nopriv_loadmore', 'true_load_posts');
+
+
+// Load more on page "In the press"
+function true_load_posts_in_press(){
+    $args = json_decode( stripslashes( $_POST['query'] ), true );
+    $args['paged'] = $_POST['page'] + 1; // следующая страница
+    $args['post_type'] = 'news';
+    $args['post_status'] = 'publish';
+    $args['meta_key'] = 'dateNews';
+    $args['orderby'] = 'meta_value';
+    $args['order'] = 'DESC';
+    $q = new WP_Query($args);
+    if( $q->have_posts() ):
+      while($q->have_posts()): $q->the_post(); 
+         include get_template_directory() . '/' . $_POST['template'] . '.php' ;
+      endwhile; 
+    endif;
+    wp_reset_postdata();
+    die();
+  };
+  
+  add_action('wp_ajax_press', 'true_load_posts_in_press');
+  add_action('wp_ajax_nopriv_press', 'true_load_posts_in_press');
 
 
 // Load more on page search
@@ -376,12 +429,12 @@ function send_confirmation_email()
     global $wpdb;
     $responce = (object) ['errorMsg' => ''];
 
-    if (!verify_recaptcha($_POST['recaptchaResp'])) {
+    /*if (!verify_recaptcha($_POST['recaptchaResp'])) {
         $responce->errorMsg = "Incorrect recaptcha";
 
         echo json_encode($responce);
         wp_die();
-    }
+    }*/
 
     if (!empty($_POST['email']) && isset($_POST['email'])) {
 
@@ -428,7 +481,7 @@ function send_confirmation_email()
     wp_die();
 }
 
-/************ Recaptcha **************/
+/************ Recaptcha 
 
             
 function verify_recaptcha($recaptchaResp){
@@ -462,6 +515,56 @@ function verify_recaptcha($recaptchaResp){
 
     return $success;
 }
+*************Recaptcha */
+
+/* Get comments
+ */
+
+if ( ! function_exists( 'tmblog_comment' ) ) :
+    /**
+     * Template for comments and pingbacks.
+     *
+     * To override this walker in a child theme without modifying the comments template
+     * simply create your own tmblog_comment(), and that function will be used instead.
+     *
+     * Used as a callback by wp_list_comments() for displaying the comments.
+     *
+     * @since Twenty Ten 1.0
+     */
+    function tmblog_comment( $comment, $args, $depth ) {
+        $GLOBALS['comment'] = $comment;
+        switch ( $comment->comment ) :
+            case '' :
+?>
+<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
+    <div id="comment-<?php comment_ID(); ?>" class="comment-wrap">
+        <div class="comment-author vcard">
+            <?php echo get_avatar( $comment, 40, 'gravatar_default' ); ?>
+            <div class="title">
+                <?php printf( __( '%s', 'teamlab-blog-2-0' ), sprintf( '<span class="fn">%s</span>', get_comment_author_link() ) ); ?>
+                <span class="sep">-</span>
+                <?php comment_reply_link( array_merge( $args, array( 'depth' => $depth ) ) ); ?>
+            </div>
+            <span class="meta"><?php printf( __( '%1$s at %2$s', 'teamlab-blog-2-0' ), get_comment_date(),  get_comment_time() ); ?><?php edit_comment_link( __( 'Edit', 'teamlab-blog-2-0' ), ' ' ); ?></span>
+        </div><!-- .comment-author .vcard -->
+        <?php if ( $comment->comment_approved == '0' ) : ?>
+        <em><?php _e( 'Your comment is awaiting moderation.', 'teamlab-blog-2-0' ); ?></em>
+        <br />
+        <?php endif; ?>
+        <div class="comment-body"><?php comment_text(); ?></div>
+    </div><!-- #comment-##  -->
+    <?php
+            break;
+        case 'pingback'  :
+        case 'trackback' :
+    ?>
+<li class="post pingback">
+    <p><?php _e( 'Pingback:', 'teamlab-blog-2-0' ); ?> <?php comment_author_link(); ?><?php edit_comment_link( __('(Edit)', 'teamlab-blog-2-0'), ' ' ); ?></p>
+    <?php
+                    break;
+            endswitch;
+        }
+        endif;
 
  /**
  * Get curent language
@@ -483,7 +586,7 @@ if ( ! function_exists( 'get_language_key' ) ) :
     preg_match_all($regex, $query, $matches);
 
     $lang = $matches[1][0];
-    $regextest = "/\/blog.onlyoffice.com\/([a-z]{2})/";
+    $regextest = "/\/blog\/([a-z]{2})/";
     $text = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
     preg_match($regextest, $text, $match);
     $lang = $match[1];
@@ -512,13 +615,12 @@ function language_selector($available_langs_keys) {
     $available_langs_full = array(
         'en' =>  array('en', 'en-US', 'English'),
         'engb' =>  array('uk', 'en-GB', 'English'),
-        'de' =>  array('de', 'de-DE', 'Deutsch'),
-        'fr' =>  array('fr', 'fr-FR', 'Francais'),
-        'es' =>  array('es', 'es-ES', 'Espanol'),
         'ru' =>  array('ru', 'ru-RU', 'Русский'),
-        'it' =>  array('it', 'it-IT', 'Italiano'),
+        'fr' =>  array('fr', 'fr-FR', 'Francais'),
+        'de' =>  array('de', 'de-DE', 'Deutsch'),
+        'es' =>  array('es', 'es-ES', 'Espanol'),
+        'pt' =>  array('pt-br', 'pt-BR', 'Brazil'),
         'cs' =>  array('cs', 'cs-CZ', 'Česky')
-        
     );
 
     $available_langs  = array();
@@ -537,8 +639,9 @@ function language_selector($available_langs_keys) {
 
     $langGB = $matches[1][0];
 
-    $regextest = "/\/blog.onlyoffice.com\/([a-z]{2})/";
+    $regextest = "/\/blog\/([a-z]{2})/";
     $text = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+
     preg_match($regextest, $text, $match);
     $langGB = $match[1];
 
@@ -558,7 +661,7 @@ function language_selector($available_langs_keys) {
                     . $lng[1]
                     . "\"><a href=\" "
                     . WEB_ROOT_URL
-                    . "/blog.onlyoffice.com"
+                    . "/blog"
                     . (($lng[0] != $default_lang || $lng[1] == "en-GB")? "/".$lng[0] : "")
                     . "\">"
                     . "</a></li>";
@@ -568,54 +671,20 @@ function language_selector($available_langs_keys) {
 }
 endif;
 
-define('ICL_DONT_LOAD_LANGUAGE_SELECTOR_CSS', true);
 
-
-/* Get comments
+ /**
+ * Сurrent language for urls
  */
 
-if ( ! function_exists( 'tmblog_comment' ) ) :
-    /**
-     * Template for comments and pingbacks.
-     *
-     * To override this walker in a child theme without modifying the comments template
-     * simply create your own tmblog_comment(), and that function will be used instead.
-     *
-     * Used as a callback by wp_list_comments() for displaying the comments.
-     *
-     * @since Twenty Ten 1.0
-     */
-    function tmblog_comment( $comment, $args, $depth ) {
-        $GLOBALS['comment'] = $comment;
-        switch ( $comment->comment_type ) :
-            case '' :
-?>
-<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
-    <div id="comment-<?php comment_ID(); ?>" class="comment-wrap">
-        <div class="comment-author vcard">
-            <?php echo get_avatar( $comment, 40, 'gravatar_default' ); ?>
-            <div class="title">
-                <?php printf( __( '%s', 'teamlab-blog-2-0' ), sprintf( '<span class="fn">%s</span>', get_comment_author_link() ) ); ?>
-                <span class="sep">-</span>
-                <?php comment_reply_link( array_merge( $args, array( 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
-            </div>
-            <span class="meta"><?php printf( __( '%1$s at %2$s', 'teamlab-blog-2-0' ), get_comment_date(),  get_comment_time() ); ?><?php edit_comment_link( __( 'Edit', 'teamlab-blog-2-0' ), ' ' ); ?></span>
-        </div><!-- .comment-author .vcard -->
-        <?php if ( $comment->comment_approved == '0' ) : ?>
-        <em><?php _e( 'Your comment is awaiting moderation.', 'teamlab-blog-2-0' ); ?></em>
-        <br />
-        <?php endif; ?>
-        <div class="comment-body"><?php comment_text(); ?></div>
-    </div><!-- #comment-##  -->
-    <?php
-            break;
-        case 'pingback'  :
-        case 'trackback' :
-    ?>
-<li class="post pingback">
-    <p><?php _e( 'Pingback:', 'teamlab-blog-2-0' ); ?> <?php comment_author_link(); ?><?php edit_comment_link( __('(Edit)', 'teamlab-blog-2-0'), ' ' ); ?></p>
-    <?php
-                    break;
-            endswitch;
-        }
-        endif;
+global $sitepress;
+$current_language = $sitepress->get_current_language();
+    if($current_language !== 'null'){
+        $current_language = WEB_ROOT_URL.'/'.$current_language;
+    if($current_language == WEB_ROOT_URL.'/'.'pt-br'){
+         $current_language = WEB_ROOT_URL.'/'.'pt';
+    }else if($current_language == WEB_ROOT_URL.'/'.'uk'){
+         $current_language = WEB_ROOT_URL.'/'.'en';
+    }else if($current_language == WEB_ROOT_URL.'/'.'en'){
+       $current_language = WEB_ROOT_URL;
+    }
+}

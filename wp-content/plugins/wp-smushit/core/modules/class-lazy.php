@@ -34,6 +34,19 @@ class Lazy extends Abstract_Module {
 	protected $parser;
 
 	/**
+	 * Excluded classes list.
+	 *
+	 * @since 3.6.2
+	 * @var array
+	 */
+	private $excluded_classes = array(
+		'no-lazyload', // Internal class to skip images.
+		'skip-lazy',
+		'rev-slidebg', // Skip Revolution slider images.
+		'soliloquy-preload', // Soliloquy slider.
+	);
+
+	/**
 	 * Lazy constructor.
 	 *
 	 * @since 3.2.2
@@ -182,6 +195,12 @@ class Lazy extends Abstract_Module {
 			$in_footer
 		);
 
+		// Native lazy loading support.
+		$native = isset( $this->options['native'] ) && $this->options['native'] ? 'true' : 'false';
+		$custom = 'lazySizes.cfg.nativeLoading={setLoadingAttribute:' . $native . ',disableListeners:{scroll:true}};lazySizes.init();';
+
+		wp_add_inline_script( 'smush-lazy-load', $custom );
+
 		$this->add_masonry_support();
 	}
 
@@ -231,6 +250,7 @@ class Lazy extends Abstract_Module {
 		$smush_attributes = array(
 			'data-src'    => true,
 			'data-srcset' => true,
+			'data-sizes'  => true,
 		);
 
 		$img_attributes = array_merge( $allowedposttags['img'], $smush_attributes );
@@ -334,10 +354,18 @@ class Lazy extends Abstract_Module {
 
 		$new_image = $image;
 
-		$src = Helpers\Parser::get_attribute( $new_image, 'src' );
-		if ( $src ) {
-			Helpers\Parser::remove_attribute( $new_image, 'src' );
-			Helpers\Parser::add_attribute( $new_image, 'data-src', $src );
+		/**
+		 * The sizes attribute does not have to be replaced to data-sizes, but it fixes the W3C validation.
+		 *
+		 * @since 3.6.2
+		 */
+		$attributes = array( 'src', 'sizes' );
+		foreach ( $attributes as $attribute ) {
+			$attr = Helpers\Parser::get_attribute( $new_image, $attribute );
+			if ( $attr ) {
+				Helpers\Parser::remove_attribute( $new_image, $attribute );
+				Helpers\Parser::add_attribute( $new_image, "data-{$attribute}", $attr );
+			}
 		}
 
 		// Change srcset to data-srcset attribute.
@@ -501,13 +529,7 @@ class Lazy extends Abstract_Module {
 		}
 
 		foreach ( $image_classes as $class ) {
-			// Skip Revolution Slider images.
-			if ( 'rev-slidebg' === $class ) {
-				return true;
-			}
-
-			// Internal class to skip images.
-			if ( 'no-lazyload' === $class || 'skip-lazy' === $class ) {
+			if ( in_array( $class, $this->excluded_classes, true ) ) {
 				return true;
 			}
 

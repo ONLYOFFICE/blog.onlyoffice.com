@@ -25,20 +25,21 @@ get_header();
 			 	</div>
 				<div class="search-page">
 		        	<?php get_search_form(); ?>
-		      	</div>
+		    </div>
 
 				<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 				<article class="post searchlist">
 
 				<div class="meta searchresult">
 						<span class="date"><?php echo get_the_date('j F Y'); ?></span>
-						<span class="autor"><?php _e('By') ?> <?php echo get_the_author(); ?></span>
+						<span class="autor"><?php tmblog_posted_by(); ?></span>
 				</div>
 				<?php $title = get_the_title(); $keys= explode(" ",$s); $title = preg_replace('/('.implode('|', $keys) .')/iu', '<span class="search-excerpt">\0</span>', $title); ?>
 				 <h2 class="entry-title results"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'tmblog' ),the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php echo $title; ?></a></h2>
 				
 				<?php $excerpt = get_the_excerpt(); $keys= explode(" ",$s); $excerpt = preg_replace('/('.implode('|', $keys) .')/iu', '<span class="search-excerpt">\0</span>', $excerpt); ?>
 				 <p><?php echo $excerpt; ?></p>
+
 				 </article>
 
 				 <?php endwhile;
@@ -66,7 +67,31 @@ get_header();
 
 			</div><!-- #content -->
 			<div class="sidebar">
+			<div class="recent-post">
+            <h3><?php _e( 'Recent posts', 'teamlab-blog-2-0' ); ?></h3>
+            <?php 
+             $args = [
+            'post_type' => 'post',
+            'post_status' => 'publish',
+            'posts_per_page' => 3,
+            'category__not_in' => $news_cat_id
+        ];
+         $wp_query = new WP_Query($args); 
+            if ($wp_query->have_posts()) : ?>
+            <div class="wrapperMain">
+
+           
+            <?php while ($wp_query->have_posts()) : $wp_query->the_post(); ?>
+
+
+            <?php include get_template_directory() . '/' . 'cicle-wrapper.php' ?>
+            
+            <?php endwhile; ?>
+            <?php endif; ?>
+            </div>
+		</div>
 		<?php dynamic_sidebar('sidebar-2'); ?>
+		<?php include get_template_directory() . '/' . 'social-icons.php' ?>
 		</div><!-- .sidebar -->
 	</div><!-- .content -->
 </main><!-- #main -->

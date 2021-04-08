@@ -33,7 +33,7 @@
                 } else {
                     return;
                 }
-                el.find( '.redux-repeater-remove' ).live(
+                el.find( '.redux-repeater-remove' ).on(
                     'click', function() {
                         redux_change( $( this ) );
                         $( this ).prev( 'input[type="text"]' ).val( '' );
@@ -58,7 +58,7 @@
                             var new_input = $( '#' + id + ' li:last-child' ).clone();
                             el.find( '#' + id ).append( new_input );
                             el.find( '#' + id + ' li:last-child' ).removeAttr( 'style' );
-                            el.find( '#' + id + ' li:last-child input[type="text"]' ).val( '' );
+                            el.find( '#' + id + ' li:last-child input[type="text"]' ).val('Enter URL Here');
                             $('.redux-repeater-remove').removeAttr('style');
                         }
                     }

@@ -248,9 +248,9 @@ class Ajax {
 		$api_message = get_site_option( WP_SMUSH_PREFIX . 'api_message', array() );
 		if ( ! empty( $api_message ) && is_array( $api_message ) ) {
 			$api_message[ key( $api_message ) ]['status'] = 'hide';
+			update_site_option( WP_SMUSH_PREFIX . 'api_message', $api_message );
 		}
 
-		update_site_option( WP_SMUSH_PREFIX . 'api_message', true );
 		wp_send_json_success();
 	}
 
@@ -364,6 +364,8 @@ class Ajax {
 	public function scan_images() {
 		check_ajax_referer( 'save_wp_smush_options', 'wp_smush_options_nonce' );
 
+		wp_cache_delete( 'media_attachments', 'wp-smush' );
+
 		$resmush_list = array();
 
 		// Scanning for NextGen or Media Library.
@@ -381,17 +383,6 @@ class Ajax {
 
 		// If there aren't any images in the library, return the notice.
 		if ( 0 === count( $core->get_media_attachments() ) && 'nextgen' !== $type ) {
-			$notice = esc_html__( 'We haven’t found any images in your media library yet so there’s no smushing to be done! Once you upload images, reload this page and start playing!', 'wp-smushit' );
-			$resp   = '<div class="sui-notice-top sui-notice-success sui-can-dismiss">
-					<div class="sui-notice-content">
-						<p>' . $notice . '</p>
-					</div>
-					<span class="sui-notice-dismiss">
-						<a role="button" href="#" aria-label="' . __( 'Dismiss', 'wp-smushit' ) . '" class="sui-icon-check"></a>
-					</span>
-				</div>';
-
-			delete_site_option( WP_SMUSH_PREFIX . 'run_recheck' );
 			wp_send_json_success(
 				array(
 					'notice'      => esc_html__( 'We haven’t found any images in your media library yet so there’s no smushing to be done! Once you upload images, reload this page and start playing!', 'wp-smushit' ),
@@ -425,7 +416,6 @@ class Ajax {
 
 		if ( 0 === (int) $remaining_count && ( ! WP_Smush::is_pro() || ! $this->settings->get( 'lossy' ) ) && ( ! $this->settings->get( 'original' ) || ! WP_Smush::is_pro() ) && ! $this->settings->get( 'strip_exif' ) ) {
 			delete_option( $key );
-			delete_site_option( WP_SMUSH_PREFIX . 'run_recheck' );
 			// Default Notice, to be displayed at the top of page. Show a message, at the top.
 			wp_send_json_success(
 				array(
@@ -654,7 +644,8 @@ class Ajax {
 		}
 
 		if ( ! empty( $count ) ) {
-			$return['notice'] = sprintf(
+			$return['noticeType'] = 'warning';
+			$return['notice']     = sprintf(
 				/* translators: %1$d - number of images, %2$s - opening a tag, %3$s - closing a tag */
 				esc_html__( 'Image check complete, you have %1$d images that need smushing. %2$sBulk smush now!%3$s', 'wp-smushit' ),
 				$count,
@@ -668,7 +659,6 @@ class Ajax {
 			$return['super_smush_stats'] = sprintf( '<strong><span class="smushed-count">%d</span>/%d</strong>', $ss_count, $core->nextgen->ng_admin->total_count );
 		}
 
-		delete_site_option( WP_SMUSH_PREFIX . 'run_recheck' );
 		wp_send_json_success( $return );
 	}
 

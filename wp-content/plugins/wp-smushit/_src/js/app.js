@@ -15,27 +15,27 @@ window.WP_Smush = WP_Smush;
  * object to a String, at one or more positions that are
  * greater than or equal to position; otherwise, returns false.
  */
-if (!String.prototype.includes) {
-  String.prototype.includes = function(search, start) {
-    if (typeof start !== "number") {
-      start = 0;
-    }
+if ( ! String.prototype.includes ) {
+	String.prototype.includes = function( search, start ) {
+		if ( typeof start !== 'number' ) {
+			start = 0;
+		}
 
-    if (start + search.length > this.length) {
-      return false;
-    }
-    return this.indexOf(search, start) !== -1;
-  };
+		if ( start + search.length > this.length ) {
+			return false;
+		}
+		return this.indexOf( search, start ) !== -1;
+	};
 }
 
-require("./modules/helpers");
-require("./modules/admin");
-require("./modules/bulk-smush");
-require("./modules/onboarding");
-require("./modules/directory-smush");
-require("./smush/cdn");
-require("./smush/lazy-load");
-require("./modules/bulk-restore");
+require( './modules/helpers' );
+require( './modules/admin' );
+require( './modules/bulk-smush' );
+require( './modules/onboarding' );
+require( './modules/directory-smush' );
+require( './smush/cdn' );
+require( './smush/lazy-load' );
+require( './modules/bulk-restore' );
 
 /**
  * Notice scripts.
@@ -48,4 +48,4 @@ require("./modules/bulk-restore");
  *
  * TODO: should this be moved out in a separate file like common.scss?
  */
-require("./modules/notice");
+require( './modules/notice' );

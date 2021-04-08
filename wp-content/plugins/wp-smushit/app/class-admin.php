@@ -225,8 +225,7 @@ class Admin {
 		} else {
 			if ( isset( $links[2] ) && false !== strpos( $links[2], 'project/wp-smush-pro' ) ) {
 				$links[2] = sprintf(
-					'<a href="%s" target="_blank">%s</a>',
-					'https://premium.wpmudev.org/project/wp-smush-pro/',
+					'<a href="https://premium.wpmudev.org/project/wp-smush-pro/" target="_blank">%s</a>',
 					__( 'View details', 'wp-smushit' )
 				);
 			}
@@ -277,10 +276,10 @@ class Admin {
 			'<p>' . __( 'Smush sends images to the WPMU DEV servers to optimize them for web use. This includes the transfer of EXIF data. The EXIF data will either be stripped or returned as it is. It is not stored on the WPMU DEV servers.', 'wp-smushit' ) . '</p>';
 		$content .=
 			'<p>' . sprintf(
-			__( "Smush uses the Stackpath Content Delivery Network (CDN). Stackpath may store web log information of site visitors, including IPs, UA, referrer, Location and ISP info of site visitors for 7 days. Files and images served by the CDN may be stored and served from countries other than your own. Stackpath's privacy policy can be found %1\$shere%2\$s.", 'wp-smushit' ),
-			'<a href="https://www.stackpath.com/legal/privacy-statement/" target="_blank">',
-			'</a>'
-		) . '</p>';
+				__( "Smush uses the Stackpath Content Delivery Network (CDN). Stackpath may store web log information of site visitors, including IPs, UA, referrer, Location and ISP info of site visitors for 7 days. Files and images served by the CDN may be stored and served from countries other than your own. Stackpath's privacy policy can be found %1\$shere%2\$s.", 'wp-smushit' ),
+				'<a href="https://www.stackpath.com/legal/privacy-statement/" target="_blank">',
+				'</a>'
+			) . '</p>';
 
 		if ( strpos( WP_SMUSH_DIR, 'wp-smushit' ) !== false ) {
 			// Only for wordpress.org members.
@@ -305,42 +304,27 @@ class Admin {
 
 		// Show it on Media Library page only.
 		$screen = get_current_screen();
-		if ( ! empty( $screen ) && 'upload' === $screen->id ) {
-			$this->get_user_validation_message( false );
-		}
-	}
-
-	/**
-	 * Get membership validation message.
-	 *
-	 * @param bool $notice Is a notice.
-	 */
-	public function get_user_validation_message( $notice = true ) {
-		$notice_class = $notice ? ' sui-notice sui-notice-warning' : ' notice notice-warning is-dismissible';
-		$wpmu_contact = '<a href="' . esc_url( 'https://premium.wpmudev.org/contact' ) . '" target="_blank">';
-		$recheck_link = '<a href="#" id="wp-smush-revalidate-member" data-message="%s">';
-		?>
-
-		<div id="wp-smush-invalid-member" data-message="<?php esc_attr_e( 'Validating..', 'wp-smushit' ); ?>" class="sui-hidden hidden <?php echo esc_attr( $notice_class ); ?>">
-			<p>
-				<?php
-				printf(
+		if ( ! empty( $screen ) && ( 'upload' === $screen->id || in_array( $screen->id, self::$plugin_pages, true ) ) ) {
+			?>
+			<div id="wp-smush-invalid-member" data-message="<?php esc_attr_e( 'Validating..', 'wp-smushit' ); ?>" class="hidden notice notice-warning is-dismissible">
+				<p>
+					<?php
+					printf(
 					/* translators: $1$s: recheck link, $2$s: closing a tag, %3$s; contact link, %4$s: closing a tag */
-					esc_html__(
-						'It looks like Smush couldn’t verify your WPMU DEV membership so Pro features
-					have been disabled for now. If you think this is an error, run a %1$sre-check%2$s or get in touch
-					with our %3$ssupport team%4$s.',
-						'wp-smushit'
-					),
-					$recheck_link,
-					'</a>',
-					$wpmu_contact,
-					'</a>'
-				);
-				?>
-			</p>
-		</div>
-		<?php
+						esc_html__(
+							'It looks like Smush couldn’t verify your WPMU DEV membership so Pro features have been disabled for now. If you think this is an error, run a %1$sre-check%2$s or get in touch with our %3$ssupport team%4$s.',
+							'wp-smushit'
+						),
+						'<a href="#" id="wp-smush-revalidate-member" data-message="%s">',
+						'</a>',
+						'<a href="https://premium.wpmudev.org/contact" target="_blank">',
+						'</a>'
+					);
+					?>
+				</p>
+			</div>
+			<?php
+		}
 	}
 
 	/**
@@ -352,7 +336,8 @@ class Admin {
 	 */
 	public function bulk_resmush_content( $count = false ) {
 		// If we already have count, don't fetch it.
-		if ( false === $count && $resmush_ids = get_option( 'wp-smush-resmush-list' ) ) {
+		$resmush_ids = get_option( 'wp-smush-resmush-list' );
+		if ( false === $count && $resmush_ids ) {
 			// If we have the resmush ids list, Show Resmush notice and button.
 			// Get the actual remainaing count.
 			if ( ! isset( WP_Smush::get_instance()->core()->remaining_count ) && ( ! defined( 'WP_SMUSH_DISABLE_STATS' ) || ! WP_SMUSH_DISABLE_STATS ) ) {
@@ -367,10 +352,10 @@ class Admin {
 		// Show only if we have any images to ber resmushed.
 		if ( $count > 0 ) {
 			$notice  = '<div class="sui-notice sui-notice-warning wp-smush-resmush-notice wp-smush-remaining" tabindex="0">';
-			$notice .= '<p>';
-			$notice .= '<span class="wp-smush-notice-text">';
+			$notice .= '<div class="sui-notice-content"><div class="sui-notice-message">';
+			$notice .= '<i class="sui-notice-icon sui-icon-warning-alert" aria-hidden="true"></i><p>';
 			$notice .= sprintf(
-				/* translators: %1$s: user name, %2$s: strong tag, %3$s: span tag, %4$d: number of remaining umages, %5$s: closing span tag, %6$s: closing strong tag  */
+			/* translators: %1$s: user name, %2$s: strong tag, %3$s: span tag, %4$d: number of remaining umages, %5$s: closing span tag, %6$s: closing strong tag  */
 				_n( '%1$s, you have %2$s%3$s%4$d%5$s attachment%6$s that needs re-compressing!', '%1$s, you have %2$s%3$s%4$d%5$s attachments%6$s that need re-compressing!', $count, 'wp-smushit' ),
 				esc_html( Helper::get_user_name() ),
 				'<strong>',
@@ -379,9 +364,8 @@ class Admin {
 				'</span>',
 				'</strong>'
 			);
-			$notice .= '</span>';
-			$notice .= '</p>';
-			$notice .= '</div>';
+			$notice .= '</p></div></div></div>';
+
 		}
 
 		return $notice;

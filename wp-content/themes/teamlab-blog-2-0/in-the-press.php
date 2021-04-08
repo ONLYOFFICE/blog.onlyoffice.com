@@ -10,11 +10,13 @@ get_header();
 // запрос
 
  $args = [
-  'post_type' => 'post',
+  'post_type' => 'news',
   'post_status' => 'publish',
   'posts_per_page' => 5,
-  'cat'=>1012,
-  'category__not_in' => $news_cat_id
+  'category__not_in' => $news_cat_id,
+  'meta_key' => 'dateNews',
+  'orderby'	=> 'meta_value',
+  'order'	=> 'DESC'
  ];
 
  $wp_query = new WP_Query($args); ?>
@@ -23,13 +25,15 @@ get_header();
 <div class="SingleContainer">
   <div class="breadcrumbs-single">
           <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
-              <?php
-            if(function_exists('bcn_display'))
-               {
-            bcn_display();
-                }?>
+             <span property="itemListElement" typeof="ListItem">
+				<a property="item" typeof="WebPage" title="Go to BLOG." href="<?php echo icl_get_home_url() ?>" class="home">
+					<span property="name"><?php _e('BLOG', 'teamlab-blog-2-0'); ?></span>
+				</a>
+				<meta property="position" content="1">
+			 </span>&ensp;/&ensp;
+			 <span><?php _e('ONLYOFFICE IN THE PRESS', 'teamlab-blog-2-0'); ?></span>
           </div>
-      </div>
+  </div>
 	<?php if ($wp_query->have_posts()) : ?>
 	<div id="content" role="main">
 			<div class="content">
@@ -46,11 +50,11 @@ get_header();
 					            echo '<span><a class="press-url" href="'.get_field('URL').'" target="_blank">'.get_field('ShortURL').'</a></span>';
 					        }
 					    ?>
-						<span class="date"><?php echo get_the_date('j F Y'); ?></span>
+						<span class="date"><?php echo get_field('dateNews'); ?></span>
 				</div>
 				<h2 class="entry-title press-page-title"><a href="<?php echo get_field('URL')?>" target="_blank" title="<?php printf( esc_attr__( 'Permalink to %s', 'tmblog' ), the_title_attribute( 'echo=0' ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
 
-				 <p><?php the_excerpt() ?></p>
+				 <p><?php $content = get_the_content(); echo wp_trim_words( $content , '35' ); ?></p>
 				 </article>
 
   				<?php
@@ -89,11 +93,13 @@ get_header();
 				<?php endif;?>
 
 
-			</div><!-- #content -->
+			</div><!-- .content -->
 		<div class="sidebar-press">
-      <?php dynamic_sidebar('sidebar-2'); ?>
+			<?php dynamic_sidebar('sidebar-2'); ?>
+			<?php include get_template_directory() . '/' . 'social-icons.php' ?>
+
   </div>
-	</div><!-- .content -->
+	</div><!-- #content -->
 	</div><!-- .SingleContainer -->
 </main><!-- #main -->
 

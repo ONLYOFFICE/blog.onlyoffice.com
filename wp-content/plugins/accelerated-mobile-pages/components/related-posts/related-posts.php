@@ -57,6 +57,7 @@ function ampforwp_related_post_loop_query(){
 			$orderby = 'rand';
 		}
 	$args=array(
+		'fields' => 'ids',
 		'post_type'	   => get_post_type($post),
 	    'posts_per_page'=> $int_number_of_related_posts,
 	    'post__not_in' => array($post->ID),
@@ -116,7 +117,12 @@ function ampforwp_related_post(){
 	global $redux_builder_amp;
 	do_action('ampforwp_above_related_post'); //Above Related Posts
 	?>
-   <h3 class="amp-related-posts-title"><?php echo esc_html(ampforwp_translation( $redux_builder_amp['amp-translator-related-text'], 'Related Post' )); ?></h3>
+    <h3 class="amp-related-posts-title"><?php 
+    if (function_exists('pll__')) {
+		echo pll__(esc_html__( ampforwp_get_setting('amp-translator-related-text'), 'accelerated-mobile-pages'));
+	}else {
+		echo esc_html(ampforwp_translation(ampforwp_get_setting('amp-translator-related-text'), 'Related Post' ));
+	}?></h3>
 <?php } 
 
 function ampforwp_get_relatedpost_image( $imagetype ='thumbnail', $data=array() ){
@@ -133,6 +139,7 @@ function ampforwp_get_relatedpost_image( $imagetype ='thumbnail', $data=array() 
 	    	$thumb_url = ampforwp_get_post_thumbnail('url', $imagetype);
 			$thumb_width = ampforwp_get_post_thumbnail('width', $imagetype);
 			$thumb_height = ampforwp_get_post_thumbnail('height', $imagetype);
+			$thumb_alt = '';
 	        if(isset($data['image_crop']) && $data['image_crop'] != ""){
 				$width 	= $data['image_crop_width'];
 				if(empty($width)){
@@ -160,7 +167,6 @@ function ampforwp_get_relatedpost_image( $imagetype ='thumbnail', $data=array() 
 				$thumb_url = $thumb_url_array[0];
 				$thumb_width = $thumb_url_array[1];
 				$thumb_height = $thumb_url_array[2];
-				$thumb_alt = '';
 				$thumb_alt = get_post_meta ( get_post_thumbnail_id(), '_wp_attachment_image_alt', true );
 			}
 	    

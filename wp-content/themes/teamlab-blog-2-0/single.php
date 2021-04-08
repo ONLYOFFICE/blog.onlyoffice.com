@@ -10,7 +10,7 @@
 get_header();
 ?>
 
-<div class="SingleContainer">
+<div class="PostContainer">
 	
 	<div class="breadcrumbs-single">
           <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
@@ -21,7 +21,7 @@ get_header();
                 }?>
           </div>
       </div>
-	<div id="content" role="main">
+	<div id="post-content" role="main">
 			<div class="content">
 
 
@@ -34,23 +34,35 @@ get_header();
 
 
 			get_template_part( 'template-parts/content', get_post_type() );
-			include get_template_directory() . '/' . 'cloud-block.php';
 						
 		
-			// If comments are open or we have at least one comment, load up the comment template.
-			if ( comments_open() || get_comments_number() ) :
-				comments_template();
-			endif;
-
-
-
 		endwhile; // End of the loop.
 			
 		?>			
 
 		</div><!-- #content -->
 		<div class="sidebar">
-			<?php dynamic_sidebar('sidebar-2'); ?>
+            <h3><?php _e( 'Recent posts', 'teamlab-blog-2-0' ); ?></h3>
+            <?php 
+             $args = [
+            'post_type' => 'post',
+            'post_status' => 'publish',
+            'posts_per_page' => 3,
+            'category__not_in' => $news_cat_id
+        ];
+         $wp_query = new WP_Query($args); 
+            if ($wp_query->have_posts()) : ?>
+            <div class="wrapperMain">
+
+           
+            <?php while ($wp_query->have_posts()) : $wp_query->the_post(); ?>
+
+
+            <?php include get_template_directory() . '/' . 'cicle-wrapper.php' ?>
+            
+            <?php endwhile; ?>
+            <?php endif; ?>
+            </div>
 	</div>
 	</div><!-- .content -->
 	

@@ -1,7 +1,6 @@
 @media screen and (max-width: 1024px) {
   .pushy {
     position: fixed;
-    width: 300px;
     height: 100%;
     top: 0;
     z-index: 9999;
@@ -9,6 +8,7 @@
     overflow: auto;
     border-right: 1px solid #e5e5e5;
     -webkit-overflow-scrolling: touch;
+    width: 429px;
     /* enables momentum scrolling in iOS overflow elements */
   
   }
@@ -40,26 +40,26 @@
   }
   /* Menu Movement */
   .pushy-left {
-    -webkit-transform: translate3d(-300px, 0, 0);
-    -ms-transform: translate3d(-300px, 0, 0);
-    transform: translate3d(-300px, 0, 0);
+    -webkit-transform: translate3d(-430px, 0, 0);
+    -ms-transform: translate3d(-430px, 0, 0);
+    transform: translate3d(-430px, 0, 0);
   }
  
   .pushy-open-left .push {
-    -webkit-transform: translate3d(300px, 0, 0);
-    -ms-transform: translate3d(300px, 0, 0);
-    transform: translate3d(300px, 0, 0);
+    -webkit-transform: translate3d(430px, 0, 0);
+    -ms-transform: translate3d(430px, 0, 0);
+    transform: translate3d(430px, 0, 0);
   }
   .pushy-right {
-    -webkit-transform: translate3d(300px, 0, 0);
-    -ms-transform: translate3d(300px, 0, 0);
-    transform: translate3d(300px, 0, 0);
+    -webkit-transform: translate3d(430px, 0, 0);
+    -ms-transform: translate3d(430px, 0, 0);
+    transform: translate3d(430px, 0, 0);
   }
 
   .pushy-open-right .push {
-    -webkit-transform: translate3d(-300px, 0, 0);
-    -ms-transform: translate3d(-300px, 0, 0);
-    transform: translate3d(-300px, 0, 0);
+    -webkit-transform: translate3d(-430px, 0, 0);
+    -ms-transform: translate3d(-430px, 0, 0);
+    transform: translate3d(-430px, 0, 0);
   }
   .pushy-open-left .pushy,
   .pushy-open-right .pushy {
@@ -69,6 +69,7 @@
   }
   .pushy-open-left .pushy-content,
   .pushy-open-right .pushy-content {
+    width: 100%;
     visibility: visible;
   }
   /* Menu Transitions */
@@ -138,12 +139,14 @@
     /* Submenu Icon */
   
   }
-  .pushy-submenu-open ul {
+  .pushy-submenu-open > div > ul {
+    padding-top: 8px;
     visibility: visible;
   }
   .pushy-submenu-open .pushy-link {
     opacity: 1;
   }
+
   .pushy-submenu-open a::after,
   .pushy-submenu-open button::after {
     -webkit-transform: translateY(-50%) rotate(90deg);
@@ -153,9 +156,25 @@
 }
 
 @media screen and (max-width: 592px){
+  .pushy{
+    box-sizing: border-box;
+    width: 267px;
+  }
   .pushy-open-left .push{
-    -webkit-transform: translate3d(248px, 0, 0);
-    -ms-transform: translate3d(248px, 0, 0);
-    transform: translate3d(248px, 0, 0);
+    -webkit-transform: translate3d(267px, 0, 0);
+    -ms-transform: translate3d(267px, 0, 0);
+    transform: translate3d(267px, 0, 0);
+  }
+
+  #navitem_features, 
+  #navitem_blockchain, 
+  #navitem_download, 
+  #navitem_partners, 
+  #navitem_solutions, 
+  #navitem_prices, 
+  #navitem_about, 
+  a.singin {
+    font-size: 16px;
+    padding: 9px 36px 9px 18px;
   }
 }

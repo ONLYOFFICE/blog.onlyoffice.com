@@ -11,14 +11,17 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     background: transparent;
 }
 
-body {
-    line-height: 1;
-}
-
 h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
 }
-
+#post-content .content h3 {
+    font-size: 26px;
+    line-height: 33px;
+    font-style: normal;
+    font-weight: 700;
+    margin-bottom: 24px;
+    margin: 40px 0 23px;
+}
 blockquote {
   border-left: 3px solid #FF6F3D;
   margin: 1.5em 0;
@@ -67,7 +70,9 @@ body {
     min-height: 100%;
     position: relative;
 }
-
+strong{
+color:#333333;
+}
 * html body {
     height: 100%;
 }
@@ -92,4 +97,3 @@ a {
 a:hover {
     text-decoration: none;
 }
-

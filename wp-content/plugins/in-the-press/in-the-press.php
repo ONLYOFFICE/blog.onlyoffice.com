@@ -70,11 +70,14 @@ class in_the_press extends WP_Widget {
 			apply_filters(
 				'widget_posts_args',
 				array(
+					'post_type'           => 'news',
 					'posts_per_page'      => $number,
 					'no_found_rows'       => true,
 					'post_status'         => 'publish',
-					'cat'    		  	=> 1012,
 					'ignore_sticky_posts' => true,
+					'meta_key' => 'dateNews',
+					'orderby'	=> 'meta_value',
+					'order'	=> 'DESC'
 				),
 				$instance
 			)
@@ -91,7 +94,7 @@ class in_the_press extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		?>
-		<div class="view-all"><a href="<?php echo site_url(__('onlyoffice-in-the-press', 'teamlab-blog-2-0'))?>"><?php _e( 'View all news', 'teamlab-blog-2-0'); ?></a></div>
+		<div class="view-all"><a href="<?php echo icl_get_home_url() ?>onlyoffice-in-the-press"><?php _e( 'View all <div class="no-wrap">news&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
 		</div>
 		<ul>
 			<?php foreach ( $r->posts as $recent_post ) : ?>
@@ -99,19 +102,22 @@ class in_the_press extends WP_Widget {
 				$post_title   = get_the_title( $recent_post->ID );
 				$title        = ( ! empty( $post_title ) ) ? $post_title : __( '(no title)' );
 				$aria_current = '';
+				$dateNews = get_post_meta($recent_post->ID, 'dateNews', true);
+				$dateNews = new DateTime($dateNews);
 
 				if ( get_queried_object_id() === $recent_post->ID ) {
 					$aria_current = ' aria-current="page"';
+
 				}
 				?>
 				<li>
-					<a href="<?php the_permalink( $recent_post->ID ); ?>"<?php echo $aria_current; ?>><?php echo $title; ?></a>
+					<a href="<?php echo get_post_meta($recent_post->ID, 'URL', true); ?>" <?php echo $aria_current; ?> target="_blank" rel="bookmark"><?php echo $title; ?></a>
+				</li>
 					<?php if ( $show_date ) : ?>
 						<div class="meta press">
-							<span class="date"><?php echo get_the_date( '', $recent_post->ID ); ?></span>
+							<span class="date"><?php echo $dateNews->format('j M Y'); ?></span>
 						</div>
 					<?php endif; ?>
-				</li>
 			<?php endforeach; ?>
 		</ul>
 		<?php

@@ -13,20 +13,26 @@ use WPMailSMTP\Options;
 class Area {
 
 	/**
+	 * Slug of the admin area page.
+	 *
 	 * @since 1.0.0
 	 *
-	 * @var string Slug of the admin area page.
+	 * @var string
 	 */
 	const SLUG = 'wp-mail-smtp';
 
 	/**
+	 * Admin page unique hook.
+	 *
 	 * @since 1.0.0
 	 *
-	 * @var string Admin page unique hook.
+	 * @var string
 	 */
 	public $hook;
 
 	/**
+	 * List of admin area pages.
+	 *
 	 * @since 1.0.0
 	 *
 	 * @var PageAbstract[]
@@ -34,11 +40,13 @@ class Area {
 	private $pages;
 
 	/**
+	 * List of official registered pages.
+	 *
 	 * @since 1.5.0
 	 *
-	 * @var array List of official registered pages.
+	 * @var array
 	 */
-	public static $pages_registered = array( 'general', 'logs', 'about' );
+	public static $pages_registered = [ 'general', 'logs', 'about' ];
 
 	/**
 	 * Area constructor.
@@ -46,6 +54,7 @@ class Area {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
+
 		$this->hooks();
 	}
 
@@ -57,34 +66,43 @@ class Area {
 	protected function hooks() {
 
 		// Add the Settings link to a plugin on Plugins page.
-		add_filter( 'plugin_action_links', array( $this, 'add_plugin_action_link' ), 10, 2 );
+		add_filter( 'plugin_action_links_' . plugin_basename( WPMS_PLUGIN_FILE ), [ $this, 'add_plugin_action_link' ], 10, 1 );
 
 		// Add the options page.
-		add_action( 'admin_menu', array( $this, 'add_admin_options_page' ) );
+		add_action( 'admin_menu', [ $this, 'add_admin_options_page' ] );
+
+		// Add WPMS network-wide setting page for product education.
+		add_action( 'network_admin_menu', [ $this, 'add_wpms_network_wide_setting_product_education_page' ] );
+
+		// Register on load Email Log admin menu hook.
+		add_action( 'load-wp-mail-smtp_page_wp-mail-smtp-logs', [ $this, 'maybe_redirect_email_log_menu_to_email_log_settings_tab' ] );
 
 		// Admin footer text.
-		add_filter( 'admin_footer_text', array( $this, 'get_admin_footer' ), 1, 2 );
+		add_filter( 'admin_footer_text', [ $this, 'get_admin_footer' ], 1, 2 );
 
 		// Enqueue admin area scripts and styles.
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
 
 		// Process the admin page forms actions.
-		add_action( 'admin_init', array( $this, 'process_actions' ) );
+		add_action( 'admin_init', [ $this, 'process_actions' ] );
 
 		// Display custom notices based on the error/success codes.
-		add_action( 'admin_init', array( $this, 'display_custom_auth_notices' ) );
+		add_action( 'admin_init', [ $this, 'display_custom_auth_notices' ] );
 
 		// Display notice instructing the user to complete plugin setup.
-		add_action( 'admin_init', array( $this, 'display_setup_notice' ) );
+		add_action( 'admin_init', [ $this, 'display_setup_notice' ] );
 
 		// Outputs the plugin admin header.
-		add_action( 'in_admin_header', array( $this, 'display_admin_header' ), 100 );
+		add_action( 'in_admin_header', [ $this, 'display_admin_header' ], 100 );
 
 		// Hide all unrelated to the plugin notices on the plugin admin pages.
-		add_action( 'admin_print_scripts', array( $this, 'hide_unrelated_notices' ) );
+		add_action( 'admin_print_scripts', [ $this, 'hide_unrelated_notices' ] );
 
 		// Process all AJAX requests.
-		add_action( 'wp_ajax_wp_mail_smtp_ajax', array( $this, 'process_ajax' ) );
+		add_action( 'wp_ajax_wp_mail_smtp_ajax', [ $this, 'process_ajax' ] );
+
+		( new Review() )->hooks();
+		( new Education() )->hooks();
 	}
 
 	/**
@@ -107,15 +125,13 @@ class Area {
 
 		switch ( $error ) {
 			case 'google_access_denied':
-				WP::add_admin_notice(
-					/* translators: %s - error code, returned by Google API. */
+				WP::add_admin_notice( /* translators: %s - error code, returned by Google API. */
 					sprintf( esc_html__( 'There was an error while processing the authentication request: %s. Please try again.', 'wp-mail-smtp' ), '<code>' . $error . '</code>' ),
 					WP::ADMIN_NOTICE_ERROR
 				);
 				break;
 
 			case 'google_no_code_scope':
-			case 'microsoft_no_code':
 				WP::add_admin_notice(
 					esc_html__( 'There was an error while processing the authentication request. Please try again.', 'wp-mail-smtp' ),
 					WP::ADMIN_NOTICE_ERROR
@@ -134,12 +150,6 @@ class Area {
 			case 'google_site_linked':
 				WP::add_admin_notice(
 					esc_html__( 'You have successfully linked the current site with your Google API project. Now you can start sending emails through Gmail.', 'wp-mail-smtp' ),
-					WP::ADMIN_NOTICE_SUCCESS
-				);
-				break;
-			case 'microsoft_site_linked':
-				WP::add_admin_notice(
-					esc_html__( 'You have successfully linked the current site with your Microsoft API project. Now you can start sending emails through Outlook.', 'wp-mail-smtp' ),
 					WP::ADMIN_NOTICE_SUCCESS
 				);
 				break;
@@ -169,15 +179,14 @@ class Area {
 		// Display notice informing user further action is needed.
 		WP::add_admin_notice(
 			sprintf(
-				wp_kses(
-					/* translators: %s - Mailer anchor link. */
+				wp_kses( /* translators: %s - Mailer anchor link. */
 					__( 'Thanks for using WP Mail SMTP! To complete the plugin setup and start sending emails, <strong>please select and configure your <a href="%s">Mailer</a></strong>.', 'wp-mail-smtp' ),
-					array(
-						'a'      => array(
-							'href' => array(),
-						),
-						'strong' => array(),
-					)
+					[
+						'a'      => [
+							'href' => [],
+						],
+						'strong' => [],
+					]
 				),
 				wp_mail_smtp()->get_admin()->get_admin_page_url( self::SLUG . '#wp-mail-smtp-setting-row-mailer' )
 			),
@@ -219,14 +228,128 @@ class Area {
 			self::SLUG . '-logs',
 			array( $this, 'display' )
 		);
-		\add_submenu_page(
-			self::SLUG,
-			\esc_html__( 'About Us', 'wp-mail-smtp' ),
-			\esc_html__( 'About Us', 'wp-mail-smtp' ),
+
+		if ( ! wp_mail_smtp()->is_white_labeled() ) {
+			\add_submenu_page(
+				self::SLUG,
+				\esc_html__( 'About Us', 'wp-mail-smtp' ),
+				\esc_html__( 'About Us', 'wp-mail-smtp' ),
+				'manage_options',
+				self::SLUG . '-about',
+				array( $this, 'display' )
+			);
+		}
+	}
+
+	/**
+	 * Add network admin settings page for the WPMS product education.
+	 *
+	 * @since 2.5.0
+	 */
+	public function add_wpms_network_wide_setting_product_education_page() {
+
+		add_menu_page(
+			esc_html__( 'WP Mail SMTP', 'wp-mail-smtp' ),
+			esc_html__( 'WP Mail SMTP', 'wp-mail-smtp' ),
 			'manage_options',
-			self::SLUG . '-about',
-			array( $this, 'display' )
+			self::SLUG,
+			[ $this, 'display_network_product_education_page' ],
+			'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiM5ZWEzYTgiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgdmlld0JveD0iMCAwIDQzIDM0Ij48cGF0aCBkPSJNMC4wMDcsMy41ODVWMjAuNDIxcTAsMy41ODYsMy43NTEsMy41ODVMMjAsMjRWMTlIMzBWMTQuMDE0bDAuOTkxLTFMMzQsMTNWMy41ODVRMzQsMCwzMC4yNDksMEgzLjc1OFEwLjAwNywwLC4wMDcsMy41ODVoMFpNMy41MjQsNi4xNTdhMS40OSwxLjQ5LDAsMCwxLS41MDgtMC45MzUsMS41ODEsMS41ODEsMCwwLDEsLjI3NC0xLjIwOCwxLjQ0OSwxLjQ0OSwwLDAsMSwxLjA5NC0uNjYzLDEuNzU2LDEuNzU2LDAsMCwxLDEuMjUuMzEybDExLjQwOSw3LjcxNkwyOC4zNzQsMy42NjNhMS45NiwxLjk2LDAsMCwxLDEuMjg5LS4zMTIsMS41NDYsMS41NDYsMCwwLDEsMS4wOTQuNjYzLDEuNCwxLjQsMCwwLDEsLjI3MywxLjIwOCwxLjY3LDEuNjcsMCwwLDEtLjU0Ny45MzVMMTcuMDQzLDE3LjIyNVoiLz48cGF0aCBkPSJNMjIsMjhIMzJsLTAuMDA5LDQuNjI0YTEuMTI2LDEuMTI2LDAsMCwwLDEuOTIyLjhsOC4yNS04LjIzNmExLjEyNiwxLjEyNiwwLDAsMCwwLTEuNTk0bC04LjI1LTguMjQxYTEuMTI2LDEuMTI2LDAsMCwwLTEuOTIyLjh2NC44NjZMMjIsMjF2N1oiLz48L3N2Zz4=',
+			98
 		);
+	}
+
+	/**
+	 * HTML output for the network admin settings page (for the WPMS product education).
+	 *
+	 * @since 2.5.0
+	 */
+	public function display_network_product_education_page() {
+
+		// Skip if not on multisite and not on network admin site.
+		if ( ! is_multisite() || ! is_network_admin() ) {
+			return;
+		}
+
+		?>
+
+		<div class="wrap" id="wp-mail-smtp">
+			<div class="wp-mail-smtp-page wp-mail-smtp-page-general wp-mail-smtp-page-nw-product-edu wp-mail-smtp-tab-settings">
+				<div class="wp-mail-smtp-page-title">
+					<a href="#" class="tab active">
+						<?php esc_html_e( 'General', 'wp-mail-smtp' ); ?>
+					</a>
+				</div>
+
+				<div class="wp-mail-smtp-page-content">
+					<h1 class="screen-reader-text">
+						<?php esc_html_e( 'General', 'wp-mail-smtp' ); ?>
+					</h1>
+
+					<?php do_action( 'wp_mail_smtp_admin_pages_before_content' ); ?>
+
+					<!-- Multisite Section Title -->
+					<div class="wp-mail-smtp-setting-row wp-mail-smtp-setting-row-content wp-mail-smtp-clear section-heading no-desc" id="wp-mail-smtp-setting-row-multisite-heading">
+						<div class="wp-mail-smtp-setting-field">
+							<h2><?php esc_html_e( 'Multisite', 'wp-mail-smtp' ); ?></h2>
+							<img src="<?php echo esc_url( wp_mail_smtp()->assets_url . '/images/pro-badge.svg' ); ?>" class="badge" alt="<?php esc_attr_e( 'Pro+ badge icon', 'wp-mail-smtp' ); ?>">
+						</div>
+						<p>
+							<?php esc_html_e( 'Simply enable network-wide settings and every site on your network will inherit the same SMTP settings. Save time and only configure your SMTP provider once.', 'wp-mail-smtp' ); ?>
+						</p>
+					</div>
+
+					<!-- Network wide setting -->
+					<div id="wp-mail-smtp-setting-row-multisite" class="wp-mail-smtp-setting-row wp-mail-smtp-setting-row-multisite wp-mail-smtp-clear">
+						<div class="wp-mail-smtp-setting-label">
+							<label for="wp-mail-smtp-setting-multisite-settings-control"><?php esc_html_e( 'Settings control', 'wp-mail-smtp' ); ?></label>
+						</div>
+						<div class="wp-mail-smtp-setting-field">
+							<input name="wp-mail-smtp[general][nw_product_edu]" type="checkbox" value="true" id="wp-mail-smtp-setting-nw-product-edu" disabled>
+
+							<label for="wp-mail-smtp-setting-nw-product-edu">
+								<?php esc_html_e( 'Make the plugin settings global network-wide', 'wp-mail-smtp' ); ?>
+							</label>
+
+							<p class="desc">
+								<?php esc_html_e( 'If disabled, each subsite of this multisite will have its own WP Mail SMTP settings page that has to be configured separately.', 'wp-mail-smtp' ); ?>
+								<br>
+								<?php esc_html_e( 'If enabled, these global settings will manage email sending for all subsites of this multisite.', 'wp-mail-smtp' ); ?>
+							</p>
+						</div>
+					</div>
+
+					<div class="wp-mail-smtp-setting-row-no-setting">
+						<a href="<?php echo esc_url( wp_mail_smtp()->get_upgrade_link( [ 'medium' => 'network-settings', 'content' => '' ] ) ); // phpcs:ignore ?>" target="_blank" rel="noopener noreferrer" class="wp-mail-smtp-btn wp-mail-smtp-btn-lg wp-mail-smtp-btn-orange">
+							<?php esc_html_e( 'Upgrade to WP Mail SMTP Pro', 'wp-mail-smtp' ); ?>
+						</a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<?php
+	}
+
+	/**
+	 * Redirect the "Email Log" WP menu link to the "Email Log" setting tab for lite version of the plugin.
+	 *
+	 * @since 2.1.0
+	 */
+	public function maybe_redirect_email_log_menu_to_email_log_settings_tab() {
+
+		/**
+		 * The Email Logs object to be used for loading the Email Log page.
+		 *
+		 * @var \WPMailSMTP\Admin\PageAbstract $logs
+		 */
+		$logs = $this->generate_display_logs_object();
+
+		if ( $logs instanceof \WPMailSMTP\Admin\Pages\Logs ) {
+			wp_safe_redirect( $logs->get_link() );
+			exit;
+		}
 	}
 
 	/**
@@ -236,7 +359,7 @@ class Area {
 	 * @since 1.5.0 Added new assets for new pages.
 	 * @since 1.7.0 Added jQuery Confirm library css/js files.
 	 *
-	 * @param string $hook
+	 * @param string $hook Current hook.
 	 */
 	public function enqueue_assets( $hook ) {
 
@@ -266,25 +389,38 @@ class Area {
 			array(
 				'text_provider_remove'    => esc_html__( 'Are you sure you want to reset the current provider connection? You will need to immediately create a new one to be able to send emails.', 'wp-mail-smtp' ),
 				'text_settings_not_saved' => esc_html__( 'Changes that you made to the settings are not saved!', 'wp-mail-smtp' ),
+				'default_mailer_notice'   => array(
+					'title'         => esc_html__( 'Heads up!', 'wp-mail-smtp' ),
+					'content'       => wp_kses(
+						__( '<p>The Default (PHP) mailer is currently selected, but is not recommended because in most cases it does not resolve email delivery issues.</p><p>Please consider selecting and configuring one of the other mailers.</p>', 'wp-mail-smtp' ),
+						[ 'p' => [] ]
+					),
+					'save_button'   => esc_html__( 'Save Settings', 'wp-mail-smtp' ),
+					'cancel_button' => esc_html__( 'Cancel', 'wp-mail-smtp' ),
+					'icon_alt'      => esc_html__( 'Warning icon', 'wp-mail-smtp' ),
+				),
+				'plugin_url'              => wp_mail_smtp()->plugin_url,
 				'education'               => array(
 					'upgrade_icon_lock' => '<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="lock" class="svg-inline--fa fa-lock fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 152v72H48c-26.5 0-48 21.5-48 48v192c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V272c0-26.5-21.5-48-48-48zm-104 0H152v-72c0-39.7 32.3-72 72-72s72 32.3 72 72v72z"></path></svg>',
 					'upgrade_title'     => esc_html__( '%name% is a PRO Feature', 'wp-mail-smtp' ),
 					'upgrade_button'    => esc_html__( 'Upgrade to Pro', 'wp-mail-smtp' ),
-					'upgrade_url'       => 'https://wpmailsmtp.com/lite-upgrade/?discount=SMTPLITEUPGRADE&utm_source=WordPress&utm_medium=plugin-settings&utm_campaign=liteplugin',
+					'upgrade_url'       => add_query_arg( 'discount', 'SMTPLITEUPGRADE', wp_mail_smtp()->get_upgrade_link( '' ) ),
 					'upgrade_bonus'     => '<p>' .
 											wp_kses(
-												__( '<strong>Bonus:</strong> WP Mail SMTP users get <span>20% off</span> regular price,<br>applied at checkout.', 'wp-mail-smtp' ),
-												array(
-													'strong' => true,
-													'span'   => true,
-													'br'     => true,
-												)
+												__( '<strong>Bonus:</strong> WP Mail SMTP users get <span>$50 off</span> regular price,<br>applied at checkout.', 'wp-mail-smtp' ),
+												[
+													'strong' => [],
+													'span'   => [],
+													'br'     => [],
+												]
 											)
 											. '</p>',
 					'upgrade_doc'       => '<a href="https://wpmailsmtp.com/docs/how-to-upgrade-wp-mail-smtp-to-pro-version/?utm_source=WordPress&amp;utm_medium=link&amp;utm_campaign=liteplugin" target="_blank" rel="noopener noreferrer" class="already-purchased">
 												' . esc_html__( 'Already purchased?', 'wp-mail-smtp' ) . '
 											</a>',
 				),
+				'all_mailers_supports'    => wp_mail_smtp()->get_providers()->get_supports_all(),
+				'nonce'                   => wp_create_nonce( 'wp-mail-smtp-admin' ),
 			)
 		);
 
@@ -368,7 +504,7 @@ class Area {
 
 			\wp_enqueue_script(
 				'wp-mail-smtp-admin-about-matchheight',
-				\wp_mail_smtp()->assets_url . '/js/jquery.matchHeight.min.js',
+				\wp_mail_smtp()->assets_url . '/js/vendor/jquery.matchHeight.min.js',
 				array( 'wp-mail-smtp-admin' ),
 				'0.7.2',
 				false
@@ -389,12 +525,14 @@ class Area {
 		if ( ! $this->is_admin_page() ) {
 			return;
 		}
+
+		do_action( 'wp_mail_smtp_admin_header_before' );
 		?>
 
 		<div id="wp-mail-smtp-header-temp"></div>
 		<div id="wp-mail-smtp-header">
 			<!--suppress HtmlUnknownTarget -->
-			<img class="wp-mail-smtp-header-logo" src="<?php echo esc_url( wp_mail_smtp()->assets_url ); ?>/images/logo.svg" alt="WP Mail SMTP"/>
+			<img class="wp-mail-smtp-header-logo" src="<?php echo esc_url( wp_mail_smtp()->assets_url ); ?>/images/logo<?php echo wp_mail_smtp()->is_white_labeled() ? '-whitelabel' : ''; ?>.svg" alt="WP Mail SMTP"/>
 		</div>
 
 		<?php
@@ -466,9 +604,12 @@ class Area {
 						break;
 
 					case self::SLUG . '-logs':
-						$logs_class = apply_filters( 'wp_mail_smtp_admin_display_get_logs_fqcn', '\WPMailSMTP\Admin\Pages\Logs' );
-						/** @var \WPMailSMTP\Admin\PageAbstract $logs */
-						$logs = new $logs_class();
+						/**
+						 * The Email Logs object to be used for loading the Email Log page.
+						 *
+						 * @var \WPMailSMTP\Admin\PageAbstract $logs
+						 */
+						$logs = $this->generate_display_logs_object();
 
 						$is_archive = wp_mail_smtp()->is_pro() && wp_mail_smtp()->pro->get_logs()->is_archive();
 						?>
@@ -495,6 +636,20 @@ class Area {
 		</div>
 
 		<?php
+	}
+
+	/**
+	 * Generate the appropriate Email Log page object used for displaying the Email Log page.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @return \WPMailSMTP\Admin\PageAbstract
+	 */
+	public function generate_display_logs_object() {
+
+		$logs_class = apply_filters( 'wp_mail_smtp_admin_display_get_logs_fqcn', \WPMailSMTP\Admin\Pages\Logs::class );
+
+		return new $logs_class();
 	}
 
 	/**
@@ -526,6 +681,8 @@ class Area {
 			<h1 class="screen-reader-text">
 				<?php echo esc_html( $this->get_current_tab_title() ); ?>
 			</h1>
+
+			<?php do_action( 'wp_mail_smtp_admin_pages_before_content' ); ?>
 
 			<?php $this->display_current_tab_content(); ?>
 		</div>
@@ -775,29 +932,38 @@ class Area {
 	}
 
 	/**
-	 * Add a link to Settings page of a plugin on Plugins page.
+	 * Add plugin action links on Plugins page (lite version only).
 	 *
 	 * @since 1.0.0
 	 * @since 1.5.0 Added a link to Email Log.
+	 * @since 2.0.0 Adjusted links. Process only the Lite plugin.
 	 *
-	 * @param array $links
-	 * @param string $file
+	 * @param array $links Existing plugin action links.
 	 *
-	 * @return mixed
+	 * @return array
 	 */
-	public function add_plugin_action_link( $links, $file ) {
+	public function add_plugin_action_link( $links ) {
 
-		// Will target both pro and lite version of a plugin.
-		if ( strpos( $file, 'wp-mail-smtp' ) === false ) {
+		// Do not register lite plugin action links if on pro version.
+		if ( wp_mail_smtp()->is_pro() ) {
 			return $links;
 		}
 
-		$settings_link = '<a href="' . esc_url( $this->get_admin_page_url() ) . '">' . esc_html__( 'Settings', 'wp-mail-smtp' ) . '</a>';
-		$logs_link     = '<a href="' . esc_url( $this->get_admin_page_url( self::SLUG . '-logs' ) ) . '">' . esc_html__( 'Email Log', 'wp-mail-smtp' ) . '</a>';
+		$custom['settings'] = sprintf(
+			'<a href="%s" aria-label="%s">%s</a>',
+			esc_url( $this->get_admin_page_url() ),
+			esc_attr__( 'Go to WP Mail SMTP Settings page', 'wp-mail-smtp' ),
+			esc_html__( 'Settings', 'wp-mail-smtp' )
+		);
 
-		array_unshift( $links, $settings_link, $logs_link );
+		$custom['support'] = sprintf(
+			'<a href="%1$s" aria-label="%2$s" style="font-weight:bold;">%3$s</a>',
+			esc_url( add_query_arg( 'tab','versus', $this->get_admin_page_url( Area::SLUG . '-about' ) ) ),
+			esc_attr__( 'Go to WP Mail SMTP Lite vs Pro comparison page', 'wp-mail-smtp' ),
+			esc_html__( 'Premium Support', 'wp-mail-smtp' )
+		);
 
-		return $links;
+		return array_merge( $custom, (array) $links );
 	}
 
 	/**
@@ -819,7 +985,7 @@ class Area {
 		return add_query_arg(
 			'page',
 			$page,
-			admin_url( 'admin.php' )
+			WP::admin_url( 'admin.php' )
 		);
 	}
 

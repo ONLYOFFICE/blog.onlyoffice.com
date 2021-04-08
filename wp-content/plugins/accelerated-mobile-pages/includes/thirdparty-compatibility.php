@@ -59,6 +59,35 @@ function ampforwp_thirdparty_compatibility(){
 	if(function_exists('heateor_sss_save_default_options') && false == ampforwp_get_setting('ampforwp-sassy_social-switch') ){
 		add_filter('heateor_sss_disable_sharing','ampforwp_removing_sassy_social_share');
 	}
+	if(function_exists('defer_parsing_of_js')){
+		remove_filter( 'clean_url', 'defer_parsing_of_js', 11, 1 );
+	}
+	if(class_exists('gdlr_core_page_builder')){
+		add_filter('the_content','ampforwp_gdlr_core_page_builder_content',12);
+	}
+	if(function_exists('vicomi_feelbacks_template')){
+		remove_action('the_content', 'vicomi_feelbacks_template');
+	}
+	if(class_exists('FinalTiles_Gallery')){
+		add_filter('wp_is_mobile','ampforwp_final_tiles_grid_gallery');
+	}
+	$yoast_canonical = $yoast_canonical_post = $yoast_canonical_page = '';
+	$yoast_canonical = get_option( 'wpseo_titles' );
+	if(isset($yoast_canonical['noindex-post'])){
+		$yoast_canonical_post = $yoast_canonical['noindex-post'];
+	}
+	if(isset($yoast_canonical['noindex-page'])){
+		$yoast_canonical_page = $yoast_canonical['noindex-page'];
+	}
+	if (class_exists('WPSEO_Options') && 'yoast' == ampforwp_get_setting('ampforwp-seo-selection') && $yoast_canonical_post && $yoast_canonical_page && WPSEO_Meta::get_value( 'meta-robots-noindex', ampforwp_get_the_ID()) != 2) {
+		add_action( 'amp_post_template_head', 'AMPforWP\\AMPVendor\\amp_post_template_add_canonical' );
+	}elseif(class_exists('WPSEO_Options') && 'yoast' == ampforwp_get_setting('ampforwp-seo-selection') && is_page() && $yoast_canonical_page ){
+		add_action( 'amp_post_template_head', 'AMPforWP\\AMPVendor\\amp_post_template_add_canonical' );
+	}elseif(class_exists('WPSEO_Options') && 'yoast' == ampforwp_get_setting('ampforwp-seo-selection') && is_single() && $yoast_canonical_post ){
+		add_action( 'amp_post_template_head', 'AMPforWP\\AMPVendor\\amp_post_template_add_canonical' );
+	}elseif (class_exists('WPSEO_Options') && 'yoast' == ampforwp_get_setting('ampforwp-seo-selection') && WPSEO_Meta::get_value( 'meta-robots-noindex', ampforwp_get_the_ID()) == 1) {
+		add_action( 'amp_post_template_head', 'AMPforWP\\AMPVendor\\amp_post_template_add_canonical' );
+	}
 }
 function ampforwp_removing_sassy_social_share(){	
 	return 1;
@@ -1103,7 +1132,7 @@ if(!function_exists('ampforwp_mistape_plugin_compatibility')){
 	}
 }
 function ampforwp_valid_amp_componet_script(){
-	$ce_valid_scripts = array('amp-3d-gltf','amp-3q-player','amp-access','amp-analytics','amp-access-laterpay','amp-access-poool','amp-accordion','amp-action-macro','amp-ad-exit','amp-ad','amp-addthis','amp-anim','amp-animation','amp-apester-media','amp-app-banner','amp-audio','amp-auto-ads','amp-autocomplete','amp-base-carousel','amp-beopinion','amp-bind','amp-bodymovin-animation','amp-brid-player','amp-brightcove','amp-byside-content','amp-call-tracking','amp-carousel','amp-connatix-player','amp-consent','amp-dailymotion','amp-date-countdown','amp-date-picker','amp-delight-player','amp-dynamic-css-classes','amp-embedly-card','amp-experiment','amp-facebook-comments','amp-facebook-like','amp-facebook-page','amp-facebook','amp-fit-text','amp-font','amp-form','amp-fx-collection','amp-fx-flying-carpet','amp-geo','amp-gfycat','amp-gist','amp-google-document-embed','amp-google-vrview-image','amp-hulu','amp-iframe','amp-ima-video','amp-image-lightbox','amp-image-slider','amp-imgur','amp-inputmask','amp-instagram','amp-install-serviceworker','amp-izlesene','amp-jwplayer','amp-kaltura-player','amp-lightbox-gallery','amp-lightbox','amp-link-rewriter','amp-list','amp-live-list','amp-mathml','amp-mega-menu','amp-megaphone','amp-minute-media-player','amp-form','amp-mustache','amp-next-page','amp-nexxtv-player','amp-o2-player','amp-ooyala-player','amp-orientation-observer','amp-pan-zoom','amp-pinterest','amp-playbuzz','amp-position-observer','amp-powr-player','amp-reach-player','amp-recaptcha-input','amp-redbull-player','amp-reddit','amp-riddle-quiz','amp-script','amp-selector','amp-sidebar','amp-skimlinks','amp-smartlinks','amp-social-share','amp-soundcloud','amp-springboard-player','amp-sticky-ad','amp-story-auto-ads','amp-story','amp-subscriptions-google','amp-subscriptions','amp-timeago','amp-truncate-text','amp-twitter','amp-user-notification','amp-video-docking','amp-video-iframe','amp-video','amp-vimeo','amp-vine','amp-viqeo-player','amp-viz-vega','amp-vk','amp-web-push','amp-wistia-player','amp-yotpo','amp-youtube');
+	$ce_valid_scripts = array('amp-3d-gltf','amp-3q-player','amp-access','amp-analytics','amp-access-laterpay','amp-access-poool','amp-accordion','amp-action-macro','amp-ad-exit','amp-ad','amp-embed','amp-addthis','amp-anim','amp-animation','amp-apester-media','amp-app-banner','amp-audio','amp-auto-ads','amp-autocomplete','amp-base-carousel','amp-beopinion','amp-bind','amp-bodymovin-animation','amp-brid-player','amp-brightcove','amp-byside-content','amp-call-tracking','amp-carousel','amp-connatix-player','amp-consent','amp-dailymotion','amp-date-countdown','amp-date-picker','amp-delight-player','amp-dynamic-css-classes','amp-embedly-card','amp-experiment','amp-facebook-comments','amp-facebook-like','amp-facebook-page','amp-facebook','amp-fit-text','amp-font','amp-form','amp-fx-collection','amp-fx-flying-carpet','amp-geo','amp-gfycat','amp-gist','amp-google-document-embed','amp-google-vrview-image','amp-hulu','amp-iframe','amp-ima-video','amp-image-lightbox','amp-image-slider','amp-imgur','amp-inputmask','amp-instagram','amp-install-serviceworker','amp-izlesene','amp-jwplayer','amp-kaltura-player','amp-lightbox-gallery','amp-lightbox','amp-link-rewriter','amp-list','amp-live-list','amp-mathml','amp-mega-menu','amp-megaphone','amp-minute-media-player','amp-form','amp-mustache','amp-next-page','amp-nexxtv-player','amp-o2-player','amp-ooyala-player','amp-orientation-observer','amp-pan-zoom','amp-pinterest','amp-playbuzz','amp-position-observer','amp-powr-player','amp-reach-player','amp-recaptcha-input','amp-redbull-player','amp-reddit','amp-riddle-quiz','amp-script','amp-selector','amp-sidebar','amp-skimlinks','amp-smartlinks','amp-social-share','amp-soundcloud','amp-springboard-player','amp-sticky-ad','amp-story-auto-ads','amp-story','amp-subscriptions-google','amp-subscriptions','amp-timeago','amp-truncate-text','amp-twitter','amp-user-notification','amp-video-docking','amp-video-iframe','amp-video','amp-vimeo','amp-vine','amp-viqeo-player','amp-viz-vega','amp-vk','amp-web-push','amp-wistia-player','amp-yotpo','amp-youtube','amp-story-player');
 	$ce_valid_scripts = apply_filters('ampforwp_valid_amp_component_script',$ce_valid_scripts);
 	return $ce_valid_scripts;
 }
@@ -1117,4 +1146,140 @@ function ampforwp_wp_optimize_iframe($content){
 		unset($content['the_content']);
 	}
 	return $content;
+}
+add_action('init','ampforwp_include_required_yoast_files');
+function ampforwp_include_required_yoast_files(){
+	if(class_exists('WPSEO_Premium') && defined('WPSEO_VERSION') && version_compare(WPSEO_VERSION,'15.8', '>=') && !method_exists('WPSEO_Meta_Columns', 'get_context_for_post_id')){
+		return;
+	}
+	// Yoast SEO 14+ support helper class #4574
+	$include_file = $include_yoast_files = $include_yoast_premium_files= '';
+	$include_yoast_files = WP_PLUGIN_DIR . '/wordpress-seo/admin/class-meta-columns.php';
+	$include_yoast_premium_files = WP_PLUGIN_DIR . '/wordpress-seo-premium/admin/class-meta-columns.php';
+	if ( file_exists($include_yoast_files) && function_exists('wpseo_init') ) {
+		$include_file = $include_yoast_files;
+	}
+	if ( file_exists($include_yoast_premium_files) && class_exists('WPSEO_Premium')) {
+		$include_file = $include_yoast_premium_files;
+	}
+	if ( file_exists($include_file) ){
+		require_once($include_file);
+		class Ampforwp_Yoast_Data extends WPSEO_Meta_Columns {
+
+			 public function get_context_for_post_id($id) { 
+			 	if ( method_exists('WPSEO_Meta_Columns', 'get_context_for_post_id')) {
+			 		return parent::get_context_for_post_id($id); 
+			 	}
+			 	return false;
+			 }
+		}
+	}
+}
+// Load ampforwp markup prior to marfeel amp #4560
+add_action('plugin_loaded','ampforwp_execute_amp_prior_marfeel', 10);
+function ampforwp_execute_amp_prior_marfeel(){
+  global $wp_filter;
+  if(function_exists('mrfp_activate_marfeel_press') && isset($wp_filter['plugins_loaded']->callbacks[9])){
+     $current_url = filter_input(INPUT_SERVER, 'REQUEST_URI');
+     $amp_endpoint  = explode('/', $current_url);
+		foreach ($wp_filter['plugins_loaded']->callbacks[9] as $key => $value) {
+			   if((in_array('amp', $amp_endpoint ) || in_array('?amp', $amp_endpoint) || in_array('?amp=1', $amp_endpoint) ) && isset($value['function']['1']) && $value['function']['1'] == 'marfeel_press_init'){    
+				     unset($wp_filter['plugins_loaded']->callbacks[9][$key]);
+				}
+		}
+    }
+    //Removed OMGF Host Google Fonts Locally in AMP #4775
+    if(function_exists( 'omgf_pro_init' ) ){
+        $url_path = trim(parse_url(add_query_arg(array()), PHP_URL_PATH),'/' );
+        if( function_exists('ampforwp_is_amp_inURL') && ampforwp_is_amp_inURL($url_path)) {
+            remove_action( 'plugins_loaded', 'omgf_pro_init', 49 );
+        }
+    }
+}
+function ampforwp_is_amp_inURL($url){
+	if (ampforwp_get_setting('amp-core-end-point')) {
+		global $wp;
+		$url = home_url(add_query_arg(array($_GET), $wp->request));
+		$urlArray = explode("/", $url);
+		if( in_array( '?' . AMPFORWP_AMP_QUERY_VAR , $urlArray ) ) {
+        	return true;
+    	}
+	}
+	if (ampforwp_get_setting('ampforwp-amp-takeover')) {
+		return true;
+	}
+	if(get_option('permalink_structure') == '' && isset($_GET['amp'])){
+        return true;
+    }
+    $urlArray = explode("/", $url);
+    if( !in_array( AMPFORWP_AMP_QUERY_VAR , $urlArray ) ) {
+        return false;
+    }
+    return true;
+}
+function ampforwp_show_yoast_seo_local_map($content){
+	if(function_exists('wpseo_local_seo_init') && preg_match('/wpseo-map-canvas/', $content)){
+		$options = get_option( 'wpseo_local' );
+		$local_address = $options['location_address'];
+		$location_city = $options['location_city'];
+		$location_state = $options['location_state'];
+		$location_zipcode = $options['location_zipcode'];
+		$location_country = $options['location_country'];
+		$address = $local_address.", ".$location_city.", ".$location_state.", ".$location_zipcode.", ".$location_country;
+		$location_coords_lat = $options['location_coords_lat'];
+		$location_coords_long = $options['location_coords_long'];
+		$googlemaps_api_key = $options['googlemaps_api_key'];
+		$map_str = '<iframe width="350" height="250" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key='.esc_attr($googlemaps_api_key).'&q='.urlencode($address).'&center='.esc_attr($location_coords_lat).','.esc_attr($location_coords_long).'" allowfullscreen>
+				</iframe>';
+		$sanitizer = new AMPFORWP_Content( $map_str, array(), 
+		apply_filters( 'ampforwp_content_sanitizers',
+			array( 
+					'AMP_Style_Sanitizer' 		=> array(),
+					'AMP_Blacklist_Sanitizer' 	=> array(),
+					'AMP_Img_Sanitizer' 		=> array(),
+					'AMP_Video_Sanitizer' 		=> array(),
+					'AMP_Audio_Sanitizer' 		=> array(),
+					'AMP_Iframe_Sanitizer' 		=> array(
+						'add_placeholder' 		=> true,
+					)
+				) ) );
+		$map_str = $sanitizer->get_amp_content();
+		$content = preg_replace('/(<div\sid="(.*?)"(.*?)class="wpseo-map-canvas(.*?)">)(.*?)(<\/div>)/s', '$1'.$map_str.'$6', $content);
+		preg_match('/(<div\sid="(.*?)"(.*?)class="wpseo-map-canvas(.*?)">)(.*?)(<\/div>)/s', $content,$match);
+		if(isset($match[4])){
+			$content = str_replace($match[4], '', $content);
+		}
+		$content = preg_replace('/<div id="wpseo-directions-wrapper">(.*?)<\/div>/s','', $content);
+	}
+	return $content;
+}
+function ampforwp_final_tiles_grid_gallery($mobile){
+	$mobile = false;
+    return $mobile;
+}
+if(!function_exists('ampforwp_category_image_compatibility')){
+	function ampforwp_category_image_compatibility($type='',$class=''){
+		$cat_image = '';
+		if(function_exists('z_taxonomy_image_url')){
+			$cat_url 	= z_taxonomy_image_url();
+			$r_width 	= 220;
+			$r_height 	= 134;
+			if(function_exists('ampforwp_get_retina_image_settings')){
+				$ret_config = ampforwp_get_retina_image_settings(intval($r_width),intval($r_height));
+				$r_width  = intval($ret_config['width']);
+				$r_height = intval($ret_config['height']);
+			}
+			if (!empty($cat_url)) {
+				$cat_image = '<div class="'.esc_attr($class).'"><amp-img src="'.esc_url($cat_url).'" width="'.intval($r_width).'" height="'.intval($r_height).'" layout="fixed"></amp-img></div>';
+			}
+		}
+		if($type==''){
+			$type='echo';
+		}
+		if($type=='return'){
+			return $cat_image;
+		}else if($type=='echo'){
+			echo $cat_image;
+		}
+	}
 }

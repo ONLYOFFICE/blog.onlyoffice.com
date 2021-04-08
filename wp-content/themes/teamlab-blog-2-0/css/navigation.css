@@ -18,7 +18,7 @@
 .navitem_solutions_menu{
   left:0;
 }
-.pushy {
+/* .pushy {
   position: absolute;
   top: 0;
   right: 0;
@@ -27,6 +27,20 @@
   height: 71px;
   width: calc(100% - 541px);
   text-align: center;
+} */
+nav {
+  height: 71px;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 100%;
+}
+nav .pushy-content {
+  margin: 0 auto;
+  max-width: 768px;
+  width: 45vw;
 }
 nav > div{
   visibility: inherit;
@@ -34,7 +48,6 @@ nav > div{
 nav > div > ul,
 nav > div > ul > li {
   display: inline-block;
-  text-transform: uppercase;
   list-style-type: none;
 }
 nav > div > ul {
@@ -59,9 +72,10 @@ nav > div > ul > li {
   position: relative;
 }
 nav > div > ul > li > a {
-  padding: 5px;
+  padding: 21px 5px;
   display: inline-block;
   height: 29px;
+  text-transform: uppercase;
   border-bottom-color: #f94a0c;
 }
 nav > div > ul > li > a.fr_FR{
@@ -80,6 +94,14 @@ nav > div > ul a.singin {
 nav > div > ul a.singin:hover {
   color: #f94a0c;
 }
+nav > div > ul.all-menu-items {
+  box-sizing: border-box;
+  display: grid;
+  display: -ms-grid;
+  grid-template-columns: auto auto auto auto auto auto;
+  -ms-grid-columns: auto 32px auto 32px auto 32px auto 32px auto 32px auto;
+  width: 100%;
+}
 nav .nav-down-triangle {
   width: 0;
   height: 0;
@@ -89,6 +111,9 @@ nav .nav-down-triangle {
   display: inline-block;
   margin: 0 0 4px 6px;
 }
+.menuitem {
+  white-space: nowrap;
+}
 #navitem_features, 
 #navitem_download, 
 #navitem_partners, 
@@ -96,12 +121,13 @@ nav .nav-down-triangle {
 #navitem_blockchain, 
 #navitem_prices, 
 a.singin {
-  color: #333;
+  color: #444444;
   text-decoration: none;
   font-size: 12px;
-  line-height: 12px;
+  line-height: 29px;
   font-weight: 600;
   vertical-align: middle;
+  letter-spacing: 0.08em;
 }
 #navitem_about_menu .dropdown-content,
 #navitem_download_menu .dropdown-content,
@@ -111,7 +137,6 @@ a.singin {
 #navitem_features_menu .dropdown-content {
   list-style-type: none;
   margin: 0;
-  padding: 0;
   display: block;
   min-width: 200px;
   background: #fff;
@@ -131,31 +156,43 @@ a.singin {
   padding: 0;
   list-style-type: none;
 }
+#navitem_features_menu .dropdown-content > li.nowrap-link, 
+#navitem_about_menu .dropdown-content > li.nowrap-link, 
+#navitem_download_menu .dropdown-content > li.nowrap-link, 
+#navitem_partnership_menu .dropdown-content > li.nowrap-link, 
+#navitem_prices_menu .dropdown-content > li.nowrap-link, 
+#navitem_solutions_menu .dropdown-content > li.nowrap-link,
+#navitem_download_menu .dropdown-content > li > span.nowrap-link{
+  white-space: nowrap;
+}
 a.dropdown-item {
   display: block;
   background: none;
   border: 0;
-  color: #ff642e;
+  color: #444444;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   line-height: 36px;
   margin: 0;
-  padding: 0 25px;
+  padding: 0 32px;
   text-decoration: none;
   white-space: nowrap;
-  text-align: left;
 }
 a.dropdown-item:hover {
-  background-color: #F7F7F7;
+  color:#ff642e;;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  transition: none;
 }
-#navitem_about,
-#navitem_download,
-#navitem_partners,
-#navitem_solutions,
-#navitem_features,
-#navitem_prices {
-  border-bottom: 1px solid #d9d9d9;
+a.dropdown-item#navitem_download_signin {
+  display: inline-block;
+  padding-right: 4px;
+}
+a.dropdown-item#navitem_download_signup {
+  display: inline-block;
+  padding-left: 4px;
 }
 #navitem_about,
 #navitem_download,
@@ -381,21 +418,26 @@ ul.navitem_2nd_menu li a.nav_2nd_menu_link {
   text-transform: none;
   background: none;
   border: 0;
-  color: #333;
+  color: #444;
   font-size: 14px;
   cursor: pointer;
-  line-height: 1.4em;
+  line-height: 1.6em;
   margin: 0;
-  padding: 8px 25px;
+  padding: 4px 32px 4px 48px;
   text-decoration: none;
-  text-align:left;
 }
-
+ul.navitem_2nd_menu li a.nav_2nd_menu_link:hover, ul.navitem_2nd_menu li a.nav_2nd_menu_link.redirect {
+  color: #ff642e;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+ul.navitem_2nd_menu li a.nav_2nd_menu_link#navitem_solutions_signin {
+  color: #444;
+}
 ul.navitem_2nd_menu li a.nav_2nd_menu_link.signIn{
   color: #ff642e;
-}
-ul.navitem_2nd_menu li a.nav_2nd_menu_link:hover {
-    background-color: #F7F7F7;
 }
 #navitem_blockchain {
   color: #ff642e;
@@ -429,6 +471,73 @@ div.custom-select div.selector {
   color: #ff642e;
 }
 
+
+#latest_release_date {
+      color: #808080;
+      font-size: 13px;
+      line-height: 1.6em;
+      padding-bottom: 10px;
+  }
+
+  #security_header {
+      min-width: 180px;
+  }
+.menu_pic_div {
+  cursor: pointer;
+  margin: 12px 24px 0 32px;
+}
+
+.menu_pic_div .menu_pic_img {
+      background-repeat: no-repeat;
+      background-size: contain;
+      height: 88px;
+      margin-bottom: 16px;
+      width: 180px;
+  }
+
+.menu_pic_div .menu_pic_header {
+      color: #444444;
+      font-size: 14px;
+      line-height: 1.6em;
+      min-width: 192px;
+      padding-bottom: 10px;
+  }
+  .menu_pic_header:hover {
+    color: #ff6f3d;;
+  }
+
+  #customer_stories_img{
+    background-image: url('../images/img_for_header/vegan_in_leipzig_onlyoffice.jpg');
+  }
+
+  #security_img{
+    background-image: url('../images/img_for_header/menu_security.svg');
+  }
+
+  #reseller_img{
+    background-image: url('../images/img_for_header/menu_reseller.svg');
+  }
+  #compare_img{
+    background-image: url('../images/img_for_header/menu_compare_edition.svg');
+  }
+
+
+@media screen and (max-width: 1280px){
+  #navitem_features_menu, 
+  #navitem_partnership_menu, 
+  #navitem_prices_menu, 
+  #navitem_solutions_menu {
+      left: -30%;
+  }
+  #navitem_download_menu{
+      left: -200%;
+  }
+  #navitem_about_menu{
+      left: -60%;
+  }
+}
+
+
 @media screen and (min-width: 1024px){
   #navitem_features_menu .dropdown-content, 
   #navitem_about_menu .dropdown-content, 
@@ -438,10 +547,11 @@ div.custom-select div.selector {
   #navitem_solutions_menu .dropdown-content {
       list-style-type: none;
       margin: 0;
-      padding: 15px 0;
+      padding: 27px 0;
       display: block;
-      min-width: 200px;
+      min-width: 190px;
       background: #fff;
+      text-align: left;
   }
   #navitem_solutions_menu .dropdown-content>li {
       display: table-cell;
@@ -454,15 +564,6 @@ div.custom-select div.selector {
   #navitem_solutions_integration_mobile,
   #navitem_solutions_apps_comparison_overview {
       display: none;
-  }
-  #navitem_solutions_menu {
-      width: 1030px;
-      right: -30px;
-  }
-
-  #navitem_features_menu{
-    right: 0px;
-    min-width: 790px;
   }
   #navitem_features_menu:before, 
   #navitem_about_menu:before, 
@@ -517,35 +618,84 @@ div.custom-select div.selector {
       position: absolute;
       z-index: 1999;
       border: 0 none;
-      border-bottom: 1px solid #ff642e;
       top: 70px;
       box-shadow: 0 40px 40px rgba(0,0,0,.15);
       -moz-box-shadow: 0 40px 40px rgba(0,0,0,.15);
       -webkit-box-shadow: 0 40px 40px rgba(0,0,0,.15);
-      left:0;
       right: auto;
   }
 
-  nav > div > ul.all-menu-items > li:nth-child(1) {
-    padding-left: 15vw;
-}
-  #navitem_features_menu .dropdown-content>li {
+  #navitem_download_menu .dropdown-content>li,
+  #navitem_features_menu .dropdown-content>li,
+  #navitem_solutions_menu .dropdown-content>li,
+  #navitem_prices_menu .dropdown-content>li{
       display: table-cell;
-      width: 295px;
-      border-right: 1px solid #efefef;
+      border-right: 1px solid #CCCCCC;
+  }
+  #navitem_about_menu .dropdown-content > li {
+    min-width: 246px;
+  }
+  #navitem_download_menu .dropdown-content > li:first-of-type{
+    min-width: 330px;
+  }
+  #navitem_download_menu .dropdown-content > li:last-of-type{
+    min-width: 254px;
+    border-right: 0 none;
+  }
+  #navitem_features_menu .dropdown-content > li:first-of-type{
+    min-width: 246px;
+  }
+  #navitem_features_menu .dropdown-content > li:nth-of-type(2){
+    min-width: 272px;
+  }
+  #navitem_features_menu .dropdown-content > li:last-of-type,
+  #navitem_prices_menu .dropdown-content > li:last-of-type,
+  #navitem_solutions_menu .dropdown-content > li:last-of-type{
+    border-right: 0 none;
+  }
+
+  #navitem_solutions_menu .dropdown-content > li {
+    width: 25%;
+  }
+  #navitem_solutions_menu .dropdown-content > li:first-of-type{
+    min-width: 240px;
+  }
+  #navitem_solutions_menu .dropdown-content > li:nth-of-type(2){
+    min-width: 236px;
+  }
+  #navitem_prices_menu .dropdown-content > li{
+    min-width: 236px;
+  }
+
+  #navitem_prices_menu #navitem_prices_reseller{
+    line-height: 1.33em;
+    padding-top: 10px;
+    white-space: initial;
+  }
+
+  .all-menu-items > li:nth-of-type(3), 
+  .all-menu-items > li:nth-of-type(4), 
+  .all-menu-items > li:nth-of-type(5), 
+  .all-menu-items > li:nth-of-type(6){
+    position: relative;
+  }
+  .all-menu-items > li:nth-of-type(1), 
+  .all-menu-items > li:nth-of-type(2){
+    position: static;
   }
 }
 
   
-@media screen and (max-width: 1350px){
-  nav > div > ul.all-menu-items > li:nth-child(1) {
-    padding-left: 15vw;
-  }
-}
 @media screen and (max-width: 1024px){
-  nav > div > ul.all-menu-items > li:nth-child(1) {
-    padding-left: 0vw;
-}
+
+  nav > div > ul.all-menu-items{
+    display: block;
+    height: 100%;
+    padding-top: 8px;
+  }
+  nav .pushy-content {
+    width: 430px;
+  }
   header {
       width: 100%;
       padding: 0;
@@ -574,9 +724,9 @@ div.custom-select div.selector {
       height: 18px;
       left: 0;
       margin: 0;
-      padding: 17px 0 17px 21px;
+      padding: 16px;
       position: absolute;
-      top: 0;
+      top: 1px;
       width: 30px;
       z-index: 10000000;
   }
@@ -622,20 +772,11 @@ div.custom-select div.selector {
       text-align: left;
       margin: 0;
   }
-  #navitem_features, #navitem_blockchain, #navitem_download, #navitem_partners, #navitem_solutions, #navitem_prices, a.singin {
-      font-weight: 600;
-      font-size: 12px;
-      line-height: 10px;
-      border:none;
+
+  ul.navitem_2nd_menu li a.nav_2nd_menu_link {
+    padding: 6px 32px;
   }
-  nav>div ul li a.menuitem {
-      color: #666;
-      display: block;
-      height: auto;
-      padding: 15px 25px 15px 40px;
-      text-align: left;
-      margin: 0;
-  }
+
   .pushy-submenu>a, .pushy-submenu>button {
       position: relative;
   }
@@ -645,7 +786,6 @@ div.custom-select div.selector {
       outline: 0;
   }
   .menuitem {
-      border-bottom: 1px solid #f2f2f2;
       cursor: pointer;
   }
   .menuitem:before {
@@ -658,8 +798,8 @@ div.custom-select div.selector {
       background-repeat: no-repeat;
       background-size: auto 100%;
       position: absolute;
-      left: 17px;
-      top: 14px;
+      right: 14px;
+      top: 15px;
       -webkit-transition: .1s linear;
       -moz-transition: .1s linear;
       -o-transition: .1s linear;
@@ -678,45 +818,20 @@ div.custom-select div.selector {
       -moz-transition: 0.1s linear;
       -o-transition: 0.1s linear;
       transition: 0.1s linear;
+      background-image: url(../images/arrow-red.svg);
+      left: 14px;
+      top: 12px;
   }
 
+  nav a.dropdown-item{
+    line-height: 1.5em;
+    padding: 7px 18px;
+  }
   
-  .mobile_no_link:before {
-        display: block;
-        content: '';
-        width: 10px;
-        height: 10px;
-        background-image: url(../images/arrow-red.svg);
-        background-position: 50% 50%;
-        background-repeat: no-repeat;
-        background-size: auto 100%;
-        position: absolute;
-        left: 17px;
-        top: 14px;
-        -moz-transform: rotate( 90deg );
-        -ms-transform: rotate( 90deg );
-        -o-transform: rotate( 90deg );
-        -webkit-transform: rotate( 90deg );
-        transform: rotate( 90deg );
-        -webkit-transition: 0.1s linear;
-        -moz-transition: 0.1s linear;
-        -o-transition: 0.1s linear;
-        transition: 0.1s linear;
-  }
-  .mobile_no_link.active:before {
-      -moz-transform: rotate( -90deg );
-      -ms-transform: rotate( -90deg );
-      -o-transform: rotate( -90deg );
-      -webkit-transform: rotate( -90deg );
-      transform: rotate( -90deg );
-      -webkit-transition: 0.1s linear;
-      -moz-transition: 0.1s linear;
-      -o-transition: 0.1s linear;
-      transition: 0.1s linear;
-  }
-
-  nav a.dropdown-item, nav .navitem_description, nav ul.navitem_2nd_menu li a.nav_2nd_menu_link {
-      padding-left: 40px;
+  nav a.dropdown-item, 
+  nav .navitem_description, 
+  nav ul.navitem_2nd_menu li a.nav_2nd_menu_link {
+      font-size: 16px;
   }
   #navitem_features, 
   #navitem_download, 
@@ -733,10 +848,14 @@ div.custom-select div.selector {
   #navitem_partners,
   #navitem_solutions,
   #navitem_prices,
+  #navitem_about,
   a.singin {
-      font-weight: 600;
-      font-size: 12px;
-      line-height: 10px;
+    display: block;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.03em;
+    line-height: 1.33em;
+    padding: 12px 36px 12px 18px;
   }
   #navitem_features:hover, 
   #navitem_blockchain:hover, 
@@ -744,6 +863,7 @@ div.custom-select div.selector {
   #navitem_partners:hover, 
   #navitem_solutions:hover, 
   #navitem_prices:hover, 
+  #navitem_about:hover,
   a.singin:hover, 
   #navitem_features.active,
   #navitem_blockchain.active, 
@@ -751,6 +871,7 @@ div.custom-select div.selector {
   #navitem_partners.active, 
   #navitem_solutions.active, 
   #navitem_prices.active, 
+  #navitem_about.active,
   a.singin.active, 
   #navitem_features.active:hover, 
   #navitem_blockchain.active:hover,
@@ -758,16 +879,21 @@ div.custom-select div.selector {
   #navitem_partners.active:hover, 
   #navitem_solutions.active:hover, 
   #navitem_prices.active:hover, 
+  #navitem_about.active:hover,
   a.singin.active:hover {
-    border-color: #f2f2f2;
-    color: #333;
-
+    border-bottom: 1px solid #f2f2f2;
+    color: #ff6f3d;
+    padding: 6px 22px 12px 22px;
   }
   #navitem_solutions_saas_mobile,
   #navitem_solutions_server_enterprice_mobile,
   #navitem_solutions_connectors_mobile,
   #navitem_solutions_integration_mobile {
       display: block;
+  }
+  a.dropdown-item#navitem_download_signup{
+    padding-left: 18px;
+    padding-top: 0;
   }
   nav>div ul li a.menuitem.singin {
       color: #333333 !important;
@@ -792,9 +918,14 @@ div.custom-select div.selector {
       width: 100%;
   }
   .langselector {
-      margin-right: 10px;
+      position: absolute;
+      right: 29px;
+      top: 15px;
   }
   a.dropdown-item {
       white-space: normal;
+  }
+  #compare_div, #customer_stories_div, #latest_release_div, #reseller_div, #security_div {
+    display: none;
   }
 }

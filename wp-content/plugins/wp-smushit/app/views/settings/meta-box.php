@@ -100,10 +100,20 @@ if ( ! defined( 'WPINC' ) ) {
 
 				<div data-panes>
 					<div class="sui-notice sui-notice-info <?php echo ! $networkwide ? 'active' : ''; ?>">
-						<p><?php esc_html_e( "Subsite admins can't override any module settings and will always inherit your network settings.", 'wp-smushit' ); ?></p>
+						<div class="sui-notice-content">
+							<div class="sui-notice-message">
+								<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+								<p><?php esc_html_e( "Subsite admins can't override any module settings and will always inherit your network settings.", 'wp-smushit' ); ?></p>
+							</div>
+						</div>
 					</div>
 					<div class="sui-notice sui-notice-info <?php echo '1' === $networkwide ? 'active' : ''; ?>">
-						<p><?php esc_html_e( 'Subsite admins can override all module settings.', 'wp-smushit' ); ?></p>
+						<div class="sui-notice-content">
+							<div class="sui-notice-message">
+								<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+								<p><?php esc_html_e( 'Subsite admins can override all module settings.', 'wp-smushit' ); ?></p>
+							</div>
+						</div>
 					</div>
 					<div class="sui-tab-boxed <?php echo is_array( $networkwide ) ? 'active' : ''; ?>">
 						<p class="sui-description">
