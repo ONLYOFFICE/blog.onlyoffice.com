@@ -620,6 +620,7 @@ function language_selector($available_langs_keys) {
         'de' =>  array('de', 'de-DE', 'Deutsch'),
         'es' =>  array('es', 'es-ES', 'Espanol'),
         'pt' =>  array('pt-br', 'pt-BR', 'Brazil'),
+        'it' =>  array('it', 'it-IT', 'Italian'),
         'cs' =>  array('cs', 'cs-CZ', 'Česky')
     );
 
