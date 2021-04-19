@@ -47,7 +47,7 @@ global $current_language;
                                             </div>
                                             <div group-menu>
                                             <li class="footer-border">
-                                                <a id="footer_menu_integration" class="footer-button"><h6><?php _e('Integration', 'teamlab-blog-2-0'); ?></h6></a>
+                                                <a id="footer_menu_integration" class="footer-button"><h6><?php _e('Integrations', 'teamlab-blog-2-0'); ?></h6></a>
                                                 <div id="navitem_footer_integration">
                                                     <ul>
                                                         <li><p><a href="<?php echo $current_language?>/office-for-nextcloud.aspx"><?php _e('Nextcloud', 'teamlab-blog-2-0'); ?></a></p></li>
@@ -59,6 +59,7 @@ global $current_language;
                                                         <li><p><a href="<?php echo $current_language?>/office-for-humhub.aspx"><?php _e('HumHub', 'teamlab-blog-2-0'); ?></a></p></li>
                                                         <li><p><a href="<?php echo $current_language?>/office-for-plone.aspx"><?php _e('Plone', 'teamlab-blog-2-0'); ?></a></p></li>
                                                         <li><p><a href="<?php echo $current_language?>/office-for-nuxeo.aspx"><?php _e('Nuxeo', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo $current_language?>/office-for-chamilo.aspx"><?php _e('Chamilo', 'teamlab-blog-2-0'); ?></a></p></li>
                                                         <li><p><a href="<?php echo $current_language?>/all-connectors.aspx"><?php _e('Others', 'teamlab-blog-2-0'); ?></a></p></li>
                                                     </ul>
                                                 </div>
@@ -69,10 +70,10 @@ global $current_language;
                                                 <a id="footer_menu_support" class="footer-button"><h6><?php _e('Support', 'teamlab-blog-2-0'); ?></h6></a>
                                                 <div id="navitem_footer_support">
                                                     <ul>
-                                                        <li><p><a href="<?php echo $current_language?>/support.aspx"><?php _e('Premium Support', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a href="<?php echo $current_language?>/support-contact-form.aspx"><?php _e('Support Contact Form', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a target="_blank" href="https://cloud.onlyoffice.org/"><?php _e('SaaS Forum', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a target="_blank" href="https://dev.onlyoffice.org/"><?php _e('Server Forum', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo $current_language?>/support.aspx"><?php _e('Premium support', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo $current_language?>/support-contact-form.aspx"><?php _e('Support contact form', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a target="_blank" href="https://cloud.onlyoffice.org/"><?php _e('SaaS forum', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a target="_blank" href="https://dev.onlyoffice.org/"><?php _e('Server forum', 'teamlab-blog-2-0'); ?></a></p></li>
                                                         <li><p><a href="<?php echo $current_language?>/demo-order.aspx"><?php _e('Order demo', 'teamlab-blog-2-0'); ?></a></p></li>
                                                     </ul>
                                                 </div>
@@ -86,7 +87,7 @@ global $current_language;
                                                         <li><p><a  href="<?php echo $current_language?>/document-editor-comparison.aspx"><?php _e('Compare to other suites', 'teamlab-blog-2-0'); ?></a></p></li>
                                                         <li><p><a href="<?php echo $current_language?>/contribute.aspx"><?php _e('Contribute', 'teamlab-blog-2-0'); ?></a></p></li>
                                                         <li><p><a href="<?php echo $current_language?>/webinars.aspx"><?php _e('Webinars', 'teamlab-blog-2-0'); ?></a></p></li>
-                                                        <li><p><a href="<?php echo $current_language?>/legalterms.aspx"><?php _e('Legal Notice', 'teamlab-blog-2-0'); ?></a></p></li>
+                                                        <li><p><a href="<?php echo $current_language?>/legalterms.aspx"><?php _e('Legal notice', 'teamlab-blog-2-0'); ?></a></p></li>
                                                     </ul>
                                                 </div>
                                             </li>
@@ -97,20 +98,20 @@ global $current_language;
                                                 <div id="navitem_footer_contact">
                                                     <ul>
                                                         <li>
-                                                            <?php _e('Sales Questions', 'teamlab-blog-2-0'); ?>
+                                                            <?php _e('Sales questions', 'teamlab-blog-2-0'); ?>
                                                             <a class="emailus" href="mailto:sales@onlyoffice.com">sales@onlyoffice.com</a>
 
                                                         </li>
                                                         <li>
-                                                            <?php _e('Partner Inquiries', 'teamlab-blog-2-0'); ?>
+                                                            <?php _e('Partner inquiries', 'teamlab-blog-2-0'); ?>
                                                             <a class="emailus" href="mailto:partners@onlyoffice.com">partners@onlyoffice.com</a>
                                                         </li>
                                                         <li>
-                                                            <?php _e('Press Inquiries', 'teamlab-blog-2-0'); ?>
+                                                            <?php _e('Press inquiries', 'teamlab-blog-2-0'); ?>
                                                             <a class="emailus" href="mailto:press@onlyoffice.com">press@onlyoffice.com</a>
                                                         </li >
                                                         <li>
-                                                            <p><a href="<?php echo $current_language?>/call-back-form.aspx"><?php _e('Request a Call', 'teamlab-blog-2-0'); ?></a></p>
+                                                            <p><a href="<?php echo $current_language?>/call-back-form.aspx"><?php _e('Request a call', 'teamlab-blog-2-0'); ?></a></p>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -150,6 +151,7 @@ global $current_language;
                                 <label title="Fosstodon" class="social_grey_fosstodon"></label>
                             </a></li>
                         </ul>
+                        <div class="copyReserved">&copy; <?php _e('Ascensio System SIA', 'teamlab-blog-2-0'); ?> <?php echo date("Y"); ?>. <?php _e('All rights reserved', 'teamlab-blog-2-0'); ?></div>
                     </div>
                 </div>
 
@@ -162,7 +164,6 @@ global $current_language;
         </div>
     </div>	
 </footer>
-<div class="copyReserved">&copy; <?php _e('Ascensio System SIA', 'teamlab-blog-2-0'); ?> <?php echo date("Y"); ?>. <?php _e('All rights reserved', 'teamlab-blog-2-0'); ?></div>
 		<?php wp_footer();?>
 	</body>
 </html>

@@ -270,7 +270,7 @@ jQuery(document).ready(function ($) {
 }
 jQuery('.footer-button')
         .click(function () {
-            if (jQuery(window).width() < '592') {
+            if (jQuery(window).width() < '768') {
                 
         jQuery.dropdownToggle({
             dropdownID: "navitem_footer_features",
