@@ -133,7 +133,6 @@ global $current_language;
                                         <div id="navitem_features_menu">
                                             <ul class="dropdown-content akkordeon">
                                                 <li id="navitem_editors_third_level_menu">
-                                                    <span class="navitem_solutions"><a id="navitem_solutions_clients_workspace" class="dropdown-item" href="<?php echo $current_language ?>/workspace.aspx"><?php _e('ONLYOFFICE Workspace', 'teamlab-blog-2-0'); ?></a></span>
                                                         <a id="navitem_features_editors" class="dropdown-item mobile_no_link" href="<?php echo $current_language ?>/office-suite.aspx"><?php _e('ONLYOFFICE Docs', 'teamlab-blog-2-0'); ?></a>
                                                     <div>
                                                         <ul class="navitem_2nd_menu">
@@ -143,6 +142,7 @@ global $current_language;
                                                         </ul>
 
                                                     </div>
+                                                    <span class="navitem_solutions"><a id="navitem_solutions_clients_apps" class="dropdown-item" href="<?php echo $current_language ?>/all-connectors.aspx"><?php _e('ONLYOFFICE Connectors', 'teamlab-blog-2-0'); ?></a></span>
                                                     <span class="navitem_solutions"><a id="navitem_solutions_clients_apps" class="dropdown-item" href="<?php echo $current_language ?>/desktop.aspx"><?php _e('ONLYOFFICE for desktop', 'teamlab-blog-2-0'); ?></a></span>
                                                     <span class="navitem_solutions"><a id="navitem_solutions_clients_mobile_ios" class="dropdown-item" href="<?php echo $current_language ?>/office-for-ios.aspx"><?php _e('ONLYOFFICE for iOS', 'teamlab-blog-2-0'); ?></a></span>
                                                     <span class="navitem_solutions"><a id="navitem_solutions_clients_mobile_android" class="dropdown-item" href="<?php echo $current_language ?>/office-for-android.aspx"><?php _e('ONLYOFFICE for Android', 'teamlab-blog-2-0'); ?></a></span>
@@ -157,6 +157,12 @@ global $current_language;
                                                             <li><a class="nav_2nd_menu_link" id="navitem_features_projects" href="<?php echo $current_language ?>/projects.aspx"><?php _e('Projects', 'teamlab-blog-2-0'); ?></a></li>
                                                             <li><a class="nav_2nd_menu_link" id="navitem_features_calendar" href="<?php echo $current_language ?>/calendar.aspx"><?php _e('Calendar', 'teamlab-blog-2-0'); ?></a></li>
                                                             <li><a class="nav_2nd_menu_link" id="navitem_features_network" href="<?php echo $current_language ?>/community.aspx"><?php _e('Community', 'teamlab-blog-2-0'); ?></a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <span class="navitem_solutions"><a id="navitem_solutions_clients_workspace" class="dropdown-item" href="<?php echo $current_language ?>/workspace.aspx"><?php _e('ONLYOFFICE Workspace', 'teamlab-blog-2-0'); ?></a></span>
+                                                    <div>
+                                                        <ul class="navitem_2nd_menu">
+                                                            <li><a class="nav_2nd_menu_link" id="navitem_features_cloud_service" href="<?php echo $current_language ?>/cloud-office.aspx"><?php _e('Cloud Service', 'teamlab-blog-2-0'); ?></a></li>
                                                         </ul>
                                                     </div>
                                                 </li>
@@ -243,6 +249,7 @@ global $current_language;
                                                     <a id="navitem_about_awards" class="dropdown-item" href="<?php echo $current_language ?>/awards.aspx"><?php _e('Awards', 'teamlab-blog-2-0'); ?></a>
                                                     <a id="navitem_about_events" class="dropdown-item" href="<?php echo $current_language ?>/events.aspx"><?php _e('Events', 'teamlab-blog-2-0'); ?></a>
                                                     <a id="navitem_about_pressdownloads" class="dropdown-item" href="<?php echo $current_language ?>/press-downloads.aspx"><?php _e('Press downloads', 'teamlab-blog-2-0'); ?></a>
+                                                    <a id="navitem_about_whitepapers" class="dropdown-item" href="<?php echo $current_language ?>/whitepapers.aspx"><?php _e('White papers', 'teamlab-blog-2-0'); ?></a>
                                                     <a id="navitem_about_giftshop" class="dropdown-item" target="_blank" href="https://shop.spreadshirt.com/onlyoffice"><?php _e('Gift shop', 'teamlab-blog-2-0'); ?></a>
                                                     <a id="navitem_about_contacts" class="dropdown-item" href="<?php echo $current_language ?>/contacts.aspx"><?php _e('Contacts', 'teamlab-blog-2-0'); ?></a>
                                                 </li>
@@ -254,7 +261,7 @@ global $current_language;
                         </nav>
                         <div class="langselector push">
                             <div id="LanguageSelector" class="custom-select">
-                                <?php language_selector(array("en","engb","ru","fr","de","es","pt","cs")); ?>
+                                <?php language_selector(array("en","engb","ru","fr","de","es","pt","it","cs")); ?>
                             </div>
                         </div>
                     </div>
