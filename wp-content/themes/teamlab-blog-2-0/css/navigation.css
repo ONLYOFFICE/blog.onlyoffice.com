@@ -704,6 +704,10 @@ div.custom-select div.selector {
       align-items: center;
   }
 
+  #navitem_download_menu .dropdown-content > li > span.nowrap-link{
+    white-space: normal;
+  }
+
   .phone_wrapper{
     right: auto;
     left: 0;
