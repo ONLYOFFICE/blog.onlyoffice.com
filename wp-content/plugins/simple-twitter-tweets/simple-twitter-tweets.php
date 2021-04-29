@@ -616,7 +616,7 @@ class PI_SimpleTwitterTweets extends WP_Widget{
 		}
 
 }
-add_action( 'widgets_init', create_function('', 'return register_widget("PI_SimpleTwitterTweets");') );
+add_action( 'widgets_init', function() {return register_widget("PI_SimpleTwitterTweets");} );
 
 add_action( 'plugins_loaded', 'PI_SimpleTwitterTweets_load_plugin_textdomain' );
 // Now loads language files
