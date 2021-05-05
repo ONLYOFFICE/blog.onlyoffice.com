@@ -97,31 +97,31 @@ add_action('amp_post_template_footer','amp_custom_footer_extension');
 		<div class="SocialLinks">
                     <h6><?php _e('Follow us on:', 'teamlab-blog-2-0'); ?></h6>
                         <ul class="ListSocLink">
-                            <li><a target="_blank" href="https://www.facebook.com/pages/OnlyOffice/833032526736775" onmouseup="PageTrack('GoTo_facebook');" title="Follow us on Facebook" class="faceBook">
+                            <li><a target="_blank" href="https://www.facebook.com/pages/OnlyOffice/833032526736775" title="Follow us on Facebook" class="faceBook">
                                     <label class="social_grey_fb" title="Facebook"></label>
                                 </a></li>
-                            <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_twitter');" href="https://twitter.com/ONLY_OFFICE" title="Follow us on Twitter" class="twitter">
+                            <li><a rel="nofollow" target="_blank" href="https://twitter.com/ONLY_OFFICE" title="Follow us on Twitter" class="twitter">
                                     <label class="social_grey_twi" title="Twitter"></label>
                                 </a></li>
-                            <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_linkedin');" href="https://www.linkedin.com/groups/ONLYOFFICE-6726380" title="Follow us on LinkedIn" class="linkedin">
+                            <li><a rel="nofollow" target="_blank" href="https://www.linkedin.com/groups/ONLYOFFICE-6726380" title="Follow us on LinkedIn" class="linkedin">
                                     <label class="social_grey_in" title="LinkedIn"></label>
                                 </a></li>
-                            <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_youtube');" href="https://www.youtube.com/user/onlyofficeTV" title="Follow us on YouTube" class="youtube">
+                            <li><a rel="nofollow" target="_blank" href="https://www.youtube.com/user/onlyofficeTV" title="Follow us on YouTube" class="youtube">
                                     <label class="social_grey_tube" title="YouTube"></label>
                                 </a></li>  
-                            <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_blog');" href="https://www.onlyoffice.com/blog" title="Read our blog" class="blog">
+                            <li><a rel="nofollow" target="_blank" href="https://www.onlyoffice.com/blog" title="Read our blog" class="blog">
                                     <label title="Blog" class="social_grey_blog"></label>
                                 </a></li>
-                            <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_medium');" href="https://medium.com/onlyoffice" title="Follow us on Medium" class="medium">
+                            <li><a rel="nofollow" target="_blank" href="https://medium.com/onlyoffice" title="Follow us on Medium" class="medium">
                                     <label title="Medium" class="social_grey_medium"></label>
                                 </a></li>
-                            <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_instagram');" class="medium" title="Follow us on Instagram" href="https://www.instagram.com/the_onlyoffice/" >
+                            <li><a rel="nofollow" target="_blank" class="medium" title="Follow us on Instagram" href="https://www.instagram.com/the_onlyoffice/" >
                                 <label title="Instagram" class="social_grey_instagram"></label>
                             </a></li>
-                            <li><a class="github" title="Follow us on GitHub" href="https://github.com/ONLYOFFICE/" onmouseup="PageTrack('GoTo_medium');" target="_blank">
+                            <li><a class="github" title="Follow us on GitHub" href="https://github.com/ONLYOFFICE/" target="_blank">
                                 <label title="GitHub" class="social_grey_github"></label>
                             </a></li>
-                            <li><a class="fosstodon" title="Follow us on Fosstodon" href="https://fosstodon.org/@ONLYOFFICE" onmouseup="PageTrack('GoTo_medium');" target="_blank">
+                            <li><a class="fosstodon" title="Follow us on Fosstodon" href="https://fosstodon.org/@ONLYOFFICE" target="_blank">
                                 <label title="Fosstodon" class="social_grey_fosstodon"></label>
                             </a></li>
                         </ul>
