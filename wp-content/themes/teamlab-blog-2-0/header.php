@@ -57,6 +57,29 @@ global $current_language;
     <script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl=en'></script> -->
 	<?php wp_head() ?>
 </head>
+<div class="advent-announce push advent-mobile-hide">
+    <?php 
+    $banner_url = 'https://www.onlyoffice.com/blog/2021/05/cloud-computing-insider-award-2021-vote-for-onlyoffice/';
+    if($current_language == WEB_ROOT_URL.'/'.'de'){
+        $banner_url = 'https://www.cloudcomputing-insider.de/award/';
+    }else if($current_language == WEB_ROOT_URL.'/'.'fr'){
+        $banner_url = 'https://www.onlyoffice.com/blog/fr/2021/05/prix-computing-insider-2021-votez-pour-onlyoffice/';  
+    }else if($current_language == WEB_ROOT_URL.'/'.'es'){
+        $banner_url = 'https://www.onlyoffice.com/blog/es/2021/05/premio-cloud-computing-insider-2021-vota-por-onlyoffice/';
+    }else if($current_language == WEB_ROOT_URL.'/'.'it'){
+        $banner_url = 'https://www.onlyoffice.com/blog/it/2021/05/cloud-computing-insider-award-2021-vota-per-onlyoffice/';
+    }?>
+    <a href="<?php echo $banner_url ?>">
+        <div class="advent-announce-text">
+            <?php _e('<b>Cloud Computing Insider Award 2021:</b> Vote for ONLYOFFICE', 'teamlab-blog-2-0'); ?>
+        </div>
+    </a>
+</div>
+<div class="advent-announce push advent-desktop-hide">
+    <a class="advent-announce-text" href="<?php echo $banner_url ?>">
+        <?php _e('Vote for ONLYOFFICE', 'teamlab-blog-2-0'); ?>
+    </a>
+</div>
 <body <?php body_class(); ?>>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5NW47TX"  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>

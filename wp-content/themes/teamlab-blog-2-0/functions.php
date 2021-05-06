@@ -689,3 +689,157 @@ $current_language = $sitepress->get_current_language();
        $current_language = WEB_ROOT_URL;
     }
 }
+
+ /**
+ * Custom CSS for AMP Pages
+ */
+
+add_action('amp_post_template_css','ampforwp_add_custom_css_example', 11);
+function ampforwp_add_custom_css_example() { ?>
+	.m-menu .toggle {
+        float: right;
+        position: absolute;
+        left: 0;
+        top: 20px;
+        padding-left: 300px;
+        border: 1px solid transparent;
+    }
+    .f-w-f2{
+        display: none;
+    }
+    .bold{
+        font-weight: bold;
+    }
+    .margin-left{
+        margin-left:10px;
+    }
+    .uppercase{
+        text-transform: uppercase;
+    }
+    .amp-custom-banner-after-post {
+			text-align: center
+		}
+	#footer-accordion-1, #footer-accordion-2, #footer-accordion-3, #footer-accordion-4, #footer-accordion-5, #footer-accordion-6 {
+		margin-bottom: 0;
+		padding: 14px 0;
+		line-height: 1;
+		background-color: #fff;
+	}
+	.amp-custom-banner-after-post section ul li::marker,
+	.amp-custom-banner-after-post .SocialLinks ul li::marker{
+		content: none;
+	}
+	.amp-custom-banner-after-post section ul{
+		padding: 14px 0;
+	}
+	.amp-custom-banner-after-post section ul li,
+	.amp-custom-banner-after-post section ul li a,
+	.amp-custom-banner-after-post section ul li p,
+	.amp-custom-banner-after-post section ul li p a{
+		line-height: 18px;
+    	margin: 0 0 7px;
+	}
+	
+	.amp-custom-banner-after-post .SocialLinks h6{
+		padding: 14px 0;
+		line-height: 1;
+		margin-bottom: 0;
+	}
+	.amp-custom-banner-after-post .copyReserved{
+		padding: 50px 0;
+	}
+    .ListSocLink {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        justify-content: space-between;
+        -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        margin: 12px auto 10px;
+        max-width: 300px;
+    }
+    .ListSocLink li {
+        list-style-type: none;
+        display: inline-block;
+        width: 26px;
+        height: 42px;
+        margin: 0;
+        padding-right: 24px;
+        vertical-align: middle
+    }
+    .ListSocLink li label {
+        background-repeat: no-repeat;
+        background-image: url("<?php echo WEB_ROOT_URL ?>/blog/wp-content/themes/teamlab-blog-2-0/images/color_social_icons.svg");
+        -webkit-filter: grayscale(1);
+        filter: grayscale(1);
+        display: block;
+        height: 24px;
+        width: 32px;
+        margin: 0;
+        vertical-align: middle;
+        background-position-y: 0;
+    }
+    .ListSocLink li label:hover {
+        -webkit-filter: grayscale(0);
+        filter: grayscale(0)
+    }
+    .ListSocLink li label:active {
+        background-position-y: -41px
+    }
+
+    .ListSocLink li label.social_grey_subscribe{
+        background-position-x: -430px;
+    }
+
+    .ListSocLink li label.social_grey_fb {
+        background-position-x: 4px;
+    }
+
+
+    .ListSocLink li label.social_grey_twi {
+        background-position-x: -36px;
+    }
+
+
+    .ListSocLink li label.social_grey_in {
+        background-position-x: -76px;
+    }
+
+
+    .ListSocLink li label.social_grey_g {
+        background-position-x: -75px;
+    }
+
+
+    .ListSocLink li label.social_grey_tube {
+        background-position-x: -116px;
+    }
+
+
+    .ListSocLink li label.social_grey_blog {
+        background-position-x: -196px;
+    }
+
+    .ListSocLink li label.social_grey_medium {
+        background-position-x: -236px;
+    }
+
+    .ListSocLink li label.social_grey_instagram {
+        background-position-x: -276px;
+    }
+
+    .ListSocLink li label.social_grey_vk {
+        background-position-x: -156px;
+    }
+
+    .ListSocLink li label.social_grey_github {
+        background-position-x: -316px
+    }
+
+    .ListSocLink li label.social_grey_fosstodon {
+        background-position-x: -393px
+    }
+	<?php 
+}
