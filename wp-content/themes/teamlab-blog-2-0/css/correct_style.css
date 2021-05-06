@@ -388,7 +388,8 @@
     height: calc(100vw * 0.12);
     object-fit: cover;
 }
-.content img{
+.content img,
+.content figure{
     object-fit: contain;
     max-width: 100%;
     margin: 16px 0;
