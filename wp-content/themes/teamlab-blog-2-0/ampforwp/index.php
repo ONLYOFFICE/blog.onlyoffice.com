@@ -37,7 +37,6 @@ global $redux_builder_amp; ?>
 			    	<?php amp_loop_image($argsbig); ?>
 			    </div> <?php } ?>
 			    <div class="fbp-cnt fbp-c">
-			    	<?php amp_loop_category(); ?>
 				    <?php amp_loop_title(); ?>
 				    <div class="at-dt">
 					    <?php 
