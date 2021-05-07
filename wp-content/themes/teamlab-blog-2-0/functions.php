@@ -689,7 +689,19 @@ $current_language = $sitepress->get_current_language();
        $current_language = WEB_ROOT_URL;
     }
 }
-
+ /**
+ * AMP Analytic for AMP Pages
+ */
+add_action('amp_post_template_head','ampforwp_add_amp_analytics', 11);
+function ampforwp_add_amp_analytics() { ?>
+        <!-- AMP Analytics --><script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
+	<?php 
+}
+add_action('ampforwp_body_beginning','ampforwp_add_tag_manager', 11);
+function ampforwp_add_tag_manager() { ?>
+        <!-- Google Tag Manager --><amp-analytics config="https://www.googletagmanager.com/amp.json?id=GTM-55Q83SS&gtm.url=SOURCE_URL" data-credentials="include"></amp-analytics>
+	<?php 
+}
  /**
  * Custom CSS for AMP Pages
  */
