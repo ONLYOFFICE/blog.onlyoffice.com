@@ -702,6 +702,34 @@ div.custom-select div.selector {
       z-index: 10000;
       height: 48px;
       align-items: center;
+      top: 48px;
+  }
+  .advent-announce.push{
+    -webkit-display: flex;
+    -moz-display: flex;
+    -ms-display: flex;
+    -o-display: flex;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    background-position: calc(50% - 280px), calc(50% + 220px);
+  }
+  
+  .advent-announce.push .advent-announce-text {
+    font-size: 12px;
+    line-height: 16px;
+    padding: 8px 0;
+    white-space: normal;
+}
+  .advent-desktop-hide {
+    display: block;
+  }
+  .advent-mobile-hide {
+    display: none;
+  }
+
+  #navitem_download_menu .dropdown-content > li > span.nowrap-link{
+    white-space: normal;
   }
 
   .phone_wrapper{
@@ -927,5 +955,14 @@ div.custom-select div.selector {
   }
   #compare_div, #customer_stories_div, #latest_release_div, #reseller_div, #security_div {
     display: none;
+  }
+}
+
+@media screen and (max-width: 592px){
+  .advent-announce.push .advent-announce-text:before{
+    content: none;
+  }
+  .advent-announce.push{
+    background-position: calc(0% - 1px), calc(50% + 220px);
   }
 }

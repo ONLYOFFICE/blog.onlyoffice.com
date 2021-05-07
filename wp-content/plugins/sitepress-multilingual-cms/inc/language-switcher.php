@@ -933,7 +933,7 @@ class SitePressLanguageSwitcher {
         if(defined('ICL_DONT_LOAD_LANGUAGE_SELECTOR_CSS') && ICL_DONT_LOAD_LANGUAGE_SELECTOR_CSS){
             return '';
         }
-        $link_tag = '<link rel="stylesheet" href="'. ICL_PLUGIN_URL . '/res/css/language-selector.css?v='.ICL_SITEPRESS_VERSION.'" type="text/css" media="all" />';
+        // $link_tag = '<link rel="stylesheet" href="'. ICL_PLUGIN_URL . '/res/css/language-selector.css?v='.ICL_SITEPRESS_VERSION.'" type="text/css" media="all" />';
         if(!$show && (!isset($_GET['page']) || $_GET['page'] != ICL_PLUGIN_FOLDER . '/menu/languages.php')){
             return $link_tag;
         }else{

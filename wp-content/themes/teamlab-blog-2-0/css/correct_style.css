@@ -5,6 +5,78 @@
     margin-bottom: 0;
 }
 
+/*---------Top-banner-------*/
+.advent-announce.push{
+    background-color: #EFEFEF;
+    background-image: url(../images/top_banner/vote_for_onlyoffice/left-lines.svg), url(../images/top_banner/vote_for_onlyoffice/right-lines.svg);
+    background-position: calc(50% - 574px), calc(50% + 558px);
+    background-repeat: no-repeat;
+    left: 0;
+    top: 0;
+    padding: 0;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    z-index: 1001;
+}
+.advent-announce.push a{
+    text-decoration: none;
+}
+
+.advent-announce.push .advent-announce-text{
+    color: #333;
+    text-align: center;
+    margin: 0 auto;
+    position: relative;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none !important;
+    display: block;
+    letter-spacing: 0.01em;
+    line-height: 20px;
+    padding: 16px 0 20px;
+    white-space: nowrap;
+    position: relative;
+    display: inline-block;
+    width: auto;
+    box-sizing: content-box;
+}
+.advent-announce.push .advent-announce-text:before{
+    content: '';
+    background-image: url(../images/top_banner/vote_for_onlyoffice/banner_img.svg);
+    background-position: 0 50%;
+    background-repeat: no-repeat;
+    position: absolute;
+    height: 42px;
+    width: 120px;
+    background-color: #EFEFEF;
+    left: calc(0% - 152px);
+    top: calc(50% - 21px);
+    padding-right: 16px;
+    box-sizing: content-box;
+    border-right: 1px solid #CCCCCC;
+}
+
+.advent-announce.push .advent-announce-text:after{
+    content: '';
+    background-image: url(../images/top_banner/vote_for_onlyoffice/circle_arrow.svg);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    position: absolute;
+    height: 29px;
+    width: 32px;
+    background-color: #EFEFEF;
+    left: calc(100% + 14px);
+    top: calc(50% - 16px);
+}
+
+.advent-announce.push .advent-announce-text b{
+    color: #FF6F3D;
+}
+
+.advent-desktop-hide {
+    display: none;
+}
 /*--------------------------------Main page layout--------------------------------------*/
 
 
@@ -305,7 +377,7 @@
     max-width: 1120px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 70px 160px 82px;
+    padding: 126px 160px 82px;
 }
 #content{
     display: grid;
@@ -316,7 +388,8 @@
     height: calc(100vw * 0.12);
     object-fit: cover;
 }
-.content img{
+.content img,
+.content figure{
     object-fit: contain;
     max-width: 100%;
     margin: 16px 0;
@@ -594,7 +667,7 @@
     grid-template-columns: auto auto;
     grid-gap: 128px;
     position: relative;
-    padding: 134px 160px 80px;
+    padding: 190px 160px 80px;
 }
 .content-mail{
     width: 100%;
@@ -1469,7 +1542,7 @@ a.download:active{
     max-width: 1120px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 71px 160px 120px;
+    padding: 127px 160px 120px;
 }
 #post-content .content .entry-header{
     text-align: center;
@@ -1507,7 +1580,7 @@ a.download:active{
     max-width: 1120px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 71px 160px 82px;
+    padding: 127px 160px 82px;
 }
 .SingleContainer #content {
     grid-gap: 128px;
@@ -2140,7 +2213,7 @@ div#respond form#commentform p.submit {
     max-width: 1120px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 110px 160px 82px;
+    padding: 166px 160px 82px;
 }
 .SearchContainer #content {
     grid-gap: 128px;
@@ -2227,7 +2300,7 @@ div#respond form#commentform p.submit {
     max-width: 775px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 141px 160px 100px;
+    padding: 197px 160px 100px;
     text-align: center;
 }
 .ErrorContainer .bg{

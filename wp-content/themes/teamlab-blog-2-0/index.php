@@ -68,7 +68,17 @@ $queryNews = new WP_Query($argsNews);?>
 
 
 				<?php  endwhile;else: ?>
-					<p> <?php _e('Sorry, no posts'); ?></p> <?php  endif; ?>
+          <div id="content" role="main">
+            <div class="content">
+              <div class="no-results">
+                <h3><?php _e('No results matching your query could be found', 'teamlab-blog-2-0'); ?></h3>
+                <div class="bg"></div>
+              </div>
+            </div>
+            <?php get_sidebar(); ?>
+          </div>
+          <?php get_footer(); ?> 
+          <?php  endif; ?>
 			</div>
 		<?php get_sidebar(); ?>
 	</div>
@@ -133,7 +143,7 @@ $queryNews = new WP_Query($argsNews);?>
  <?php wp_reset_postdata(); ?>
 
 <?php else : ?>
- <p><?php pll_e('Sorry, no posts matched your query'); ?>.</p>
+ <p><?php _e('Sorry, no posts matched your query'); ?>.</p>
 <?php endif; ?>		
 </main>
 <div class="delimetr"></div>
