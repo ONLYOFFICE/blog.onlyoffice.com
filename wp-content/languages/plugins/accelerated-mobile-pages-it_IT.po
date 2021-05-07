@@ -995,7 +995,7 @@ msgstr ""
 
 #: includes/options/admin-config.php:1514
 msgid "Related Post"
-msgstr ""
+msgstr "Post relativo"
 
 #: includes/options/admin-config.php:1522
 msgid "Navigate"
