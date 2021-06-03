@@ -16,4 +16,4 @@ rmdir /s /q  %WORKSPACE%\wp-content\uploads
 
 rem del web.config /f
 
-%msdeployv2% -verb:sync -source:iisapp="%WORKSPACE%" -dest:iisapp="teamlab.info\blog",computerName="%ComputerName%",username="%username%",password="%password%" -skip:Directory=".jenkins" -skip:Directory="teamlab.info\blog\wp-content\uploads" -skip:Directory="teamlab.info\blog\wp-content\cache\autoptimize"
+%msdeployv2% -verb:sync -source:iisapp="%WORKSPACE%" -dest:iisapp="teamlab.info\blog",computerName="%ComputerName%",username="%username%",password="%password%" -skip:Directory=".jenkins" -skip:Directory="teamlab.info\\blog\\wp-content\\uploads" -skip:Directory="teamlab.info\\blog\\wp-content\\cache\\autoptimize"
