@@ -1272,6 +1272,10 @@ body.desktop .button.red.disabled:visited {
   div.post div.entry-utility span.googleplus-button{
     display: none;
   }
+
+  .content .button{
+    padding: 16px 20px;
+  }
 }
 @media screen and (max-width: 549px) {
   .ListSocLink {
