@@ -1271,15 +1271,16 @@ a.download:active{
     display: inline-block;
     vertical-align: top;
     width: 170px;
-    height: 64px;
+    height: 56px;
     background-color: #fff;
     border: 1px solid #CCCCCC;
     box-sizing: border-box;
     border-radius: 5px;
-    padding: 22px 0 28px 56px;
+    padding: 19px 0 19px 56px;
     font-size: 16px;
-    line-height: 24px;
+    line-height: 16px;
     background-repeat: no-repeat;
+    text-align: left;
 }
 .winodws:hover:before,
 .linux:hover:before,
@@ -1326,14 +1327,14 @@ a.download:active{
 .winodws:before {
     content:"";
     left: 16px;
-    top: 15px;
+    top: 10px;
     width: 36px;
     background-position:-2px 0;
 }
 .linux:before {
     content: "";
     left: 16px;
-    top: 15px;
+    top: 10px;
     width: 36px;
     background-position: -35px 0;
 }
@@ -1341,14 +1342,14 @@ a.download:active{
 .MacOs:before {
     content: "";
     left: 16px;
-    top: 14px;
+    top: 10px;
     width: 36px;
     background-position: -69px 0;
 }
 .GooglePlay:before {
     content: "";
     left: 16px;
-    top: 15px;
+    top: 10px;
     width: 140px;
     background-position: -233px 50%;
 }
@@ -1356,7 +1357,7 @@ a.download:active{
 .AppStore:before {
     content: "";
     left: 16px;
-    top: 15px;
+    top: 10px;
     width: 120px;
     background-position: -107px 50%;
 }
@@ -1386,7 +1387,7 @@ a.download:active{
     bottom: 25px;
     max-width: 240px;
     margin: auto;
-    padding: 20px;
+    padding: 18px 20px;
 }
 .PostContainer .cloud-block{
     max-width: 736px;
@@ -1633,9 +1634,9 @@ a.download:active{
     display: inline-block;
     font-family: Open Sans;
     font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 133%;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 160%;
     /* or 19px */
     text-decoration: none;
     align-items: center;
@@ -1652,6 +1653,28 @@ a.download:active{
 .content .button:hover{
     background: #FF865C;
 }
+
+.content .black.button{
+    background: #444444;
+}
+
+.content .black.button:hover{
+    background: #555555;
+}
+
+.content .white.button{
+    color: #444444;
+    background: #FFFFFF;
+    border: 1px solid #AAAAAA;
+    padding: 17px 20px;
+}
+
+.content .white.button:hover{
+    background: #FFFFFF;
+    color: #FF6F3D;
+    border: 1px solid #FF6F3D;
+}
+
 .useful-links{
     margin:64px 0;
     box-sizing: border-box;
@@ -1938,9 +1961,9 @@ div#comments .button{
     color: white;
     cursor: pointer;
     display: inline-block;
-    font-size: 14px;
+    font-size: 13px;
     vertical-align: middle;
-    padding: 17px 22px;
+    padding: 18px 20px;
     text-align: center;
     border-radius: 3px;
     -moz-border-radius: 3px;
@@ -2246,10 +2269,10 @@ div#respond form#commentform p.submit {
     padding: 18px 25px 19px 25px;
     font-family: Open Sans;
     font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
+    font-weight: 600;
+    font-size: 13px;
     letter-spacing: 0.02em;
-    line-height: 133%;
+    line-height: 160%;
     text-transform: uppercase;
     /* identical to box height */
     text-align: center;
@@ -2336,13 +2359,13 @@ div#respond form#commentform p.submit {
 
 .ErrorContainer a.go-home {
     display: inline-block;
-    padding: 18px 25px 19px;
+    padding: 18px 20px;
     margin-top: 40px;
     font-family: Open Sans;
     font-style: normal;
     font-weight: 600;
-    font-size: 12px;
-    line-height: 133%;
+    font-size: 13px;
+    line-height: 160%;
     align-items: center;
     text-align: center;
     letter-spacing: 0.08em;
