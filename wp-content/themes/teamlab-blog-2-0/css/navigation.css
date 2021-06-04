@@ -14,7 +14,10 @@
   text-align: left;
   font-family: "Open Sans", sans-serif, Arial;
 }
-
+.onscrolling {
+  position: fixed;
+  top: 0;
+}
 .navitem_solutions_menu{
   left:0;
 }
@@ -702,7 +705,7 @@ div.custom-select div.selector {
       z-index: 10000;
       height: 48px;
       align-items: center;
-      top: 48px;
+      top: 0;
   }
   .advent-announce.push{
     -webkit-display: flex;
@@ -724,7 +727,7 @@ div.custom-select div.selector {
   .advent-desktop-hide {
     display: block;
   }
-  .advent-mobile-hide {
+  .advent-announce.push.advent-mobile-hide {
     display: none;
   }
 

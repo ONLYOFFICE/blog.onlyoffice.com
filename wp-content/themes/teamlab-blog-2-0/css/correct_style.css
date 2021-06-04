@@ -5,19 +5,22 @@
     margin-bottom: 0;
 }
 
+main{
+    padding-top: 72px;
+    position: relative;
+    margin-top: -72px;
+}
+
 /*---------Top-banner-------*/
 .advent-announce.push{
     background-color: #EFEFEF;
     background-image: url(../images/top_banner/vote_for_onlyoffice/left-lines.svg), url(../images/top_banner/vote_for_onlyoffice/right-lines.svg);
     background-position: calc(50% - 574px), calc(50% + 558px);
     background-repeat: no-repeat;
-    left: 0;
-    top: 0;
     padding: 0;
     text-align: center;
-    position: fixed;
+    position: relative;
     width: 100%;
-    z-index: 1001;
 }
 .advent-announce.push a{
     text-decoration: none;
@@ -27,7 +30,6 @@
     color: #333;
     text-align: center;
     margin: 0 auto;
-    position: relative;
     font-size: 15px;
     font-weight: bold;
     text-decoration: none !important;
@@ -377,7 +379,7 @@
     max-width: 1120px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 126px 160px 82px;
+    padding: 0 160px 82px;
 }
 #content{
     display: grid;
@@ -667,7 +669,7 @@
     grid-template-columns: auto auto;
     grid-gap: 128px;
     position: relative;
-    padding: 190px 160px 80px;
+    padding: 64px 160px 80px;
 }
 .content-mail{
     width: 100%;
@@ -1543,7 +1545,7 @@ a.download:active{
     max-width: 1120px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 127px 160px 120px;
+    padding: 0 160px 120px;
 }
 #post-content .content .entry-header{
     text-align: center;
@@ -1581,7 +1583,7 @@ a.download:active{
     max-width: 1120px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 127px 160px 82px;
+    padding: 0 160px 82px;
 }
 .SingleContainer #content {
     grid-gap: 128px;
@@ -1608,7 +1610,8 @@ a.download:active{
     color: #333333;
 }
 
-.content li{
+.content ul li,
+.content ol li{
     list-style-type: none;
     font-family: Open Sans;
     font-style: normal;
@@ -1618,11 +1621,25 @@ a.download:active{
     text-align: justify;
     margin: 16px 0;
 }
-.content li:before {
-    color: #FF6F3D; /* Цвет маркера */
-    content: "\2666";/* Сам маркер */
+
+.content ol  {
+    counter-reset: wslist1;
+}
+
+.content ol > li::before {
+    color: #FF6F3D;
+    content: counter(wslist1)".";
+    counter-increment: wslist1;
+    padding-right: 15px;
+    font-weight: 600;
+    width: 5.73px;
+    height: 5.72px;
+}
+.content ul li:before {
+    color: #FF6F3D;
+    content: "\2666";
     transform: rotate(-45deg);
-    padding-right: 15px; /* Расстояние от маркера до текста */
+    padding-right: 15px; 
     width: 5.73px;
     height: 5.72px;
    }
@@ -2236,7 +2253,7 @@ div#respond form#commentform p.submit {
     max-width: 1120px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 166px 160px 82px;
+    padding: 40px 160px 82px;
 }
 .SearchContainer #content {
     grid-gap: 128px;
@@ -2323,7 +2340,7 @@ div#respond form#commentform p.submit {
     max-width: 775px;
     margin: 0 auto;
     overflow: hidden;
-    padding: 197px 160px 100px;
+    padding: 112px 160px 100px;
     text-align: center;
 }
 .ErrorContainer .bg{

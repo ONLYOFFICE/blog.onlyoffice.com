@@ -1,36 +1,36 @@
 /***** Page Tracker *****/
 function PageTrack(key) {
     try {
-        if (typeof(window.pageTracker) == "undefined") {
+        if (typeof (window.pageTracker) == "undefined") {
             window.pageTracker = _gat._getTracker("UA-12442749-5");
         }
 
         if (window.pageTracker != null) {
             window.pageTracker._trackPageview(key);
         }
-    } catch(err) { }
+    } catch (err) {}
 }
 
 function PageEvent(category, key) {
     try {
-        if (typeof(window.pageTracker) == "undefined") {
+        if (typeof (window.pageTracker) == "undefined") {
             window.pageTracker = _gat._getTracker("UA-12442749-5");
         }
         if (window.pageTracker != null) {
             window.pageTracker._trackEvent(category, key);
         }
-    } catch(err) { }
+    } catch (err) {}
 }
 
 function TrackEvent(category, action, label) {
     try {
-        if (typeof(window.pageTracker) == "undefined") {
+        if (typeof (window.pageTracker) == "undefined") {
             window.pageTracker = _gat._getTracker("UA-12442749-5");
         }
         if (window.pageTracker != null) {
             window.pageTracker._trackEvent(category, action, label);
         }
-    } catch(err) { }
+    } catch (err) {}
 };
 
 
@@ -67,7 +67,7 @@ $(".searchInput").focusout(function () {
     }
 });
 
-$(".searchInput").on('keyup', function() {
+$(".searchInput").on('keyup', function () {
     if ($(this).val() != "") {
         $(this).closest(".searchForm").addClass("hasValue");
     } else {
@@ -78,12 +78,12 @@ $(".searchInput").on('keyup', function() {
 $('#searchform').on('submit', function (event) {
     s = $('#headerInputSearch').val();
     s = s.replace(/^\s+|\s+$/g, '');
-    if (!s){
+    if (!s) {
         event.preventDefault();
     }
 });
 
-$(".clearButton").on('click', function(){
+$(".clearButton").on('click', function () {
     $(this).siblings(".searchInput").val("");
     $(this).closest(".searchForm").removeClass("focus").removeClass("hasValue");
 });
@@ -100,16 +100,16 @@ var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\
     $thisRecaptchaContainer = $(".recaptchaContainer");
 });*/
 
-function isValidEmail(value){
+function isValidEmail(value) {
     var valid = regex.test(value);
     return valid;
 };
 
-function SubmitSubEmail(inputValue){
+function SubmitSubEmail(inputValue) {
 
     /*var recaptchaResp = (typeof (window.grecaptcha) != "undefined") ? window.grecaptcha.getResponse(0) : ""; */
 
-    if(ValidateInput(inputValue/*, recaptchaResp*/)){
+    if (ValidateInput(inputValue /*, recaptchaResp*/ )) {
 
         var $thisInputContainer = $("#InputBox");
         var $urlImg = $(".inputButton").css("background-image");
@@ -120,16 +120,17 @@ function SubmitSubEmail(inputValue){
             "background-color": "#fda050",
             "background-image": "none"
         });
-        
+
         $.ajax({
             type: "POST",
             url: window.wp_data.ajax_url,
             data: {
-                action : 'send_confirmation_email', email : inputValue /*, recaptchaResp : recaptchaResp*/
+                action: 'send_confirmation_email',
+                email: inputValue /*, recaptchaResp : recaptchaResp*/
             },
             dataType: 'json',
             success: function (response) {
-                if(response.errorMsg == ""){
+                if (response.errorMsg == "") {
                     $loading.removeClass("change");
                     $loading.css({
                         "background-color": "#FF6F3D",
@@ -137,7 +138,7 @@ function SubmitSubEmail(inputValue){
                     });
                     $(".inputButton").text($ValForButton);
                     showMsg();
-                }  else {
+                } else {
                     $loading.removeClass("change");
                     $loading.css({
                         "background-color": "#FF6F3D",
@@ -151,21 +152,22 @@ function SubmitSubEmail(inputValue){
     }
 };
 
-function showErrors($thisInputContainer, errorMsg){
+function showErrors($thisInputContainer, errorMsg) {
     $thisInputContainer.addClass("error");
 
-    if(errorMsg == "Empty email"){
+    if (errorMsg == "Empty email") {
         $(".errorMessage.empty").show();
-    } else if(errorMsg == "Email incorrect"){
-       $(".errorMessage.incorrect").show();
-    } else if(errorMsg == "Email is used"){
+    } else if (errorMsg == "Email incorrect") {
+        $(".errorMessage.incorrect").show();
+    } else if (errorMsg == "Email is used") {
         $(".errorMessage.used").show();
-    }/* else if(errorMsg == "Incorrect recaptcha"){
-        $(".errorMessage.recaptcha").show();
-    }*/
+    }
+    /* else if(errorMsg == "Incorrect recaptcha"){
+            $(".errorMessage.recaptcha").show();
+        }*/
 };
 
-function showMsg(){    
+function showMsg() {
     $(".subscribe-blue").hide();
     $(".subscribe-white").show();
 };
@@ -182,7 +184,7 @@ $subEmailInput.focusout(function () {
     }
 });
 
-$subEmailInput.on('keyup', function() {
+$subEmailInput.on('keyup', function () {
     if ($(this).val() != "") {
         $inputBox.addClass("hasValue");
     } else {
@@ -190,13 +192,13 @@ $subEmailInput.on('keyup', function() {
     }
 });
 
-$subEmailInput.keydown(function(e) {
-    if(e.keyCode === 13) {
+$subEmailInput.keydown(function (e) {
+    if (e.keyCode === 13) {
         SubmitSubEmail($subEmailInput.val());
     }
 });
 
-$("#email-sub-button").on('click', function(){
+$("#email-sub-button").on('click', function () {
     SubmitSubEmail($subEmailInput.val());
 });
 
@@ -349,7 +351,7 @@ $("#email-sub-button2").on('click', function () {
 });
 
 /***** Popup for subcribe *****/
-$('#subscribelink').click(function() {
+$('#subscribelink').click(function () {
     var html = document.documentElement;
     var body = document.body;
 
@@ -361,7 +363,7 @@ $('#subscribelink').click(function() {
 });
 
 
-$('.close-popup').click(function() {
+$('.close-popup').click(function () {
     $('.hidden').hide();
 });
 
@@ -381,3 +383,29 @@ $("#reseller_div").on("click", function () {
 $("#security_div").on("click", function () {
     location.href = $("#navitem_features_security").attr('href');
 });
+
+
+window.onload = function () {
+    var $adventAnnounce = $('.advent-announce');
+    var $header = $("header");
+    var $body = $("main");
+    var top, bannerHeight;
+
+    $(window).on('scroll', function () {
+        top = $(window).scrollTop();
+        $adventAnnounce.each(function () {
+            if ($(this).css('display') != 'none') {
+                bannerHeight = $(this).outerHeight();
+            }
+        });
+        if (top >= bannerHeight) {
+            $header.addClass("onscrolling");
+            $body.css("top", $header.height() + 50);
+            $body.css("marginBottom", $header.height()+ 50);
+        } else {
+            $header.removeClass("onscrolling");
+            $body.css("top", "");
+            $body.css("marginBottom", "");
+        }
+    });
+};

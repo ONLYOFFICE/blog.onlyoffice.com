@@ -9,7 +9,7 @@
 
 get_header();
 ?>
-
+<main>
 <div class="PostContainer">
 	
 	<div class="breadcrumbs-single">
@@ -76,4 +76,5 @@ get_header();
         jQuery("#recent-posts").show();
     }
 </script>
+</main>
 <?php get_footer();
