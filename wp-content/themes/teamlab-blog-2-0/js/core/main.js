@@ -400,8 +400,8 @@ window.onload = function () {
         });
         if (top >= bannerHeight) {
             $header.addClass("onscrolling");
-            $body.css("top", $header.height() + 50);
-            $body.css("marginBottom", $header.height()+ 50);
+            $body.css("top", $header.height());
+            $body.css("marginBottom", $header.height());
         } else {
             $header.removeClass("onscrolling");
             $body.css("top", "");
