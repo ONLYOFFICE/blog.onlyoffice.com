@@ -32,7 +32,7 @@ if(!empty($_GET['code']) && isset($_GET['code']) && !empty($_GET['email']) && is
 
         if(!empty($count) && isset($count)){ ?>
 
-
+		<main>
 		<div class="MailContainer">
 
 			<div class="content-mail">
@@ -48,6 +48,7 @@ if(!empty($_GET['code']) && isset($_GET['code']) && !empty($_GET['email']) && is
 
 
 		</div><!-- #Single Container -->
+		<main>
 
 
         <?php }
@@ -61,7 +62,7 @@ if(!empty($_GET['code']) && isset($_GET['code']) && !empty($_GET['email']) && is
                 $HTMPMessage = getSecondEmail();
                 wp_mail($email, 'Welcome to ONLYOFFICE email list', $HTMPMessage, $headers);
             ?>
-
+			<main>
 			<div class="MailContainer">
 
 				<div class="content-mail">
@@ -74,9 +75,11 @@ if(!empty($_GET['code']) && isset($_GET['code']) && !empty($_GET['email']) && is
 					</div>
 				</div><!-- #content -->
 				<div class="letter-box"></div>
+			
 
 
 			</div><!-- Mail Container -->
+			</main>
 
         <?php } else {
             wp_redirect(site_url()); 
@@ -90,6 +93,5 @@ if(!empty($_GET['code']) && isset($_GET['code']) && !empty($_GET['email']) && is
 	}
 	
 	?>
-
 
 <?php get_footer();

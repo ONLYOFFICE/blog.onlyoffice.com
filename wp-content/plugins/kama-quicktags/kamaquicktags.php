@@ -33,6 +33,9 @@ function appthemes_add_quicktags(){
 	
     QTags.addButton( 'useful-link','Useful-link','<div class="useful-links">','</div>', 'p', '', 999 );
     QTags.addButton( 'code_to_html' , 'code to html', edInserthtmlcode, '', 'q', '', 999 );
+	QTags.addButton( 'red_button' , 'Red button', '<a class="red button" href="ссылка" target="_blank" rel="noopener">', '</a>', 'v', '', 999 );
+	QTags.addButton( 'black_button' , 'Grey button', '<a class="black button" href="ссылка" target="_blank" rel="noopener">', '</a>', 'v', '', 999 );
+	QTags.addButton( 'white_button' , 'White button', '<a class="white button" href="ссылка" target="_blank" rel="noopener">', '</a>', 'v', '', 999 );
 	
 	
 

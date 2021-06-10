@@ -79,9 +79,9 @@ header {
   background-position: 0 0;
   margin: 0;
   border-bottom: 1px solid #d9d9d9;
-  position: fixed;
-  z-index: 1000;
-  top: 56px;
+  position: relative;
+  z-index: 1001;
+  top: 0;
 }
 .logo {
   width: 180px;
@@ -686,6 +686,12 @@ body.desktop .button.red.disabled:visited {
 }
 
 @media screen and (max-width: 1024px){
+  main{
+    padding-top: 50px;
+    position: relative;
+    margin-top: -50px;
+}
+
   .all-menu-items{
     display: block;
     height: 100%;
@@ -699,7 +705,7 @@ body.desktop .button.red.disabled:visited {
   .MainContainer{
     width: auto;
     box-sizing: border-box;
-    padding: 96px 0 80px 0;
+    padding: 0 0 80px 0;
   }
   .pageContent{
     width: 100%;
@@ -712,27 +718,27 @@ body.desktop .button.red.disabled:visited {
     margin: auto;
     max-width: 736px;
     box-sizing: border-box;
-    padding: 128px 0 80px 0;
+    padding: 40px 0 80px 0;
   }
   .PostContainer {
     max-width: 736px;
     box-sizing: border-box;
     overflow: hidden;
-    padding: 96px 0 80px 0;
+    padding: 0 0 80px 0;
   }
   .SingleContainer {
     max-width: 736px;
     box-sizing: border-box;
-    padding: 96px 0 80px 0;
+    padding: 0 0 80px 0;
   }
   .ErrorContainer {
     max-width: 736px;
     overflow: hidden;
-    padding: 136px 0 80px 0;
+    padding: 112px 0 80px 0;
   }
 
   .MailContainer {
-    padding: 160px 0 80px 0;
+    padding: 64px 0 80px 0;
     max-width: 736px;
     box-sizing: border-box;
     display: flex;
@@ -857,19 +863,19 @@ body.desktop .button.red.disabled:visited {
 
 @media screen and (max-width: 768px){
   .MainContainer{
-  padding: 96px 40px 80px 40px;
+  padding: 0 40px 80px 40px;
   }
   .SingleContainer{
     width: auto;
-    padding: 96px 40px 80px 40px;
+    padding: 0 40px 80px 40px;
   }
   .MailContainer{
       width: auto;
-      padding: 128px 15px;
+      padding: 64px 15px 128px;
   }
    .SearchContainer{
     width: auto;
-    padding: 128px 40px 80px 40px;
+    padding: 40px 40px 80px 40px;
    }
    .SearchContainer .sidebar .recent-post h3 {
      font-size: 24px;
@@ -880,7 +886,7 @@ body.desktop .button.red.disabled:visited {
    }
    .PostContainer {
      width: auto;
-     padding: 96px 40px 80px 40px;
+     padding: 0 40px 80px 40px;
      margin: 0;
    }
    #post-content .content .entry-title {
@@ -1067,7 +1073,7 @@ body.desktop .button.red.disabled:visited {
 @media screen and (max-width: 592px){
 
   .MainContainer{
-    padding: 96px 0 64px 0;
+    padding: 0 0 64px 0;
   }
   .wrapperMain{
     display: block;
@@ -1082,11 +1088,11 @@ body.desktop .button.red.disabled:visited {
     padding-bottom: 56px;
   }
  .SingleContainer{
-    padding: 96px 0;
+    padding: 0 0 96px;
     width: 100%;
   }
   .PostContainer {
-    padding: 96px 0 60px;
+    padding: 0 0 60px;
   }
    .PostContainer .content img{
      height: 100%;
@@ -1103,7 +1109,7 @@ body.desktop .button.red.disabled:visited {
     }
     .SearchContainer{
     width: auto;
-    padding: 128px 0 48px;
+    padding: 40px 0 48px;
    } 
    .PostContainer #post-content .sidebar .wrapperMain .postwrapper:last-child,
    .SearchContainer #content .sidebar .recent-post .wrapperMain .postwrapper:last-child {
@@ -1120,7 +1126,7 @@ body.desktop .button.red.disabled:visited {
      margin-bottom: 48px;
    }
   .MailContainer{
-      padding: 128px 15px 40px;
+      padding: 32px 15px 40px;
   }
   .search-main{
     padding: 0 15px;
@@ -1148,7 +1154,7 @@ body.desktop .button.red.disabled:visited {
 }
   .ErrorContainer {
     width:  auto;
-    padding: 136px 16px 64px;
+    padding: 60px 16px 64px;
   }
   .ErrorContainer .bg{
     height: 235px;
@@ -1272,6 +1278,10 @@ body.desktop .button.red.disabled:visited {
   div.post div.entry-utility span.googleplus-button{
     display: none;
   }
+
+  .content .button{
+    padding: 16px 20px;
+  }
 }
 @media screen and (max-width: 549px) {
   .ListSocLink {
@@ -1308,7 +1318,7 @@ body.desktop .button.red.disabled:visited {
 }
 @media screen and (max-width: 320px){
   .PostContainer {
-    padding: 96px 0 20px 0;
+    padding: 0 0 20px 0;
     margin: 0;
   }
   #post-content .post {
