@@ -481,37 +481,6 @@ function send_confirmation_email()
     wp_die();
 }
 
-/* You must set thumbnail for every post
- */
-
-add_action('save_post', 'wpds_check_thumbnail');
-add_action('admin_notices', 'wpds_thumbnail_error');
-function wpds_check_thumbnail($post_id) {
-    // меняем на любой произвольный тип записи
-    if(get_post_type($post_id) != 'post')
-        return;
-    if ( !has_post_thumbnail( $post_id ) ) {
-        // устанавливаем блокировку для вывода ее пользователям в виде административного сообщения
-        set_transient( "has_post_thumbnail", "no" );
-        // делаем анхук функции, чтобы та не впала в бесконечный цикл
-        remove_action('save_post', 'wpds_check_thumbnail');
-        // обновляем запись, переводим ее в черновики
-        wp_update_post(array('ID' => $post_id, 'post_status' => 'draft'));
-        add_action('save_post', 'wpds_check_thumbnail');
-    } else {
-        delete_transient( "has_post_thumbnail" );
-    }
-}
-function wpds_thumbnail_error()
-{
-    // проверяем, установлена ли блокировка, и выводим сообщение об ошибке
-    if ( get_transient( "has_post_thumbnail" ) == "no" ) {
-        echo "<div id='message' class='error'><p><strong>Вы должны задать миниатюру записи. Ваша запись сохранена, но не может быть опубликована.</strong></p></div>";
-        delete_transient( "has_post_thumbnail" );
-    }
-}
-
-
 /************ Recaptcha 
 
             
