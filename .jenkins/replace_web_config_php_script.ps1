@@ -19,8 +19,8 @@ $REPLACE_STRING_8 = echo $REPLACE_STRING[7]
 
 (get-content $wpConfigPhpPath ) | %{$_ -replace "cache1",'D:\www.teamlab.info\Blog\wp-content\plugins\wp-super-cache/'} | set-content $wpConfigPhpPath
 (get-content $wpConfigPhpPath ) | %{$_ -replace "name-database","teamlab_blog2"} | set-content $wpConfigPhpPath
-(get-content $wpConfigPhpPath ) | %{$_ -replace "user-database","tm-site"} | set-content $wpConfigPhpPath
-(get-content $wpConfigPhpPath ) | %{$_ -replace "password-database","tm-site"} | set-content $wpConfigPhpPath
+(get-content $wpConfigPhpPath ) | %{$_ -replace "user-database","Env:testdbuser"} | set-content $wpConfigPhpPath
+(get-content $wpConfigPhpPath ) | %{$_ -replace "password-database","Env:testdbpass"} | set-content $wpConfigPhpPath
 (get-content $wpConfigPhpPath ) | %{$_ -replace "host1",'teamlab-4testing.cyxlgbdbuyvm.us-east-1.rds.amazonaws.com'} | set-content $wpConfigPhpPath
 (get-content $wpConfigPhpPath ) | %{$_ -replace "root1",'https://teamlab.info'} | set-content $wpConfigPhpPath
 (get-content $wpConfigPhpPath ) | %{$_ -replace "some_key1","$REPLACE_STRING_1"} | set-content $wpConfigPhpPath
