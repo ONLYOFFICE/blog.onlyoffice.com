@@ -1,0 +1,15 @@
+{
+	"name": "discourse-sidebar",
+	"version": "1.0.0",
+	"description": "Adds a Discourse Sidebar to the Block Editor",
+	"main": "build/index.js",
+	"scripts": {
+		"start": "wp-scripts start",
+		"build": "wp-scripts build"
+	},
+	"author": "Discourse",
+	"license": "GPL",
+	"devDependencies": {
+		"@wordpress/scripts": "^14.0.0"
+	}
+}
