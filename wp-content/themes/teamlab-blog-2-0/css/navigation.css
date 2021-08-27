@@ -180,6 +180,10 @@ a.dropdown-item:hover {
   -o-transition: none;
   transition: none;
 }
+a[href=''].dropdown-item:hover, 
+a:not([href]).dropdown-item:hover{
+  color: initial;
+}
 a.dropdown-item#navitem_download_signin {
   display: inline-block;
   padding-right: 4px;
@@ -206,6 +210,7 @@ a.singin {
   display: inline-flex;
   align-content: center;
   align-items: center;
+  letter-spacing: 0.08em;
   height: 100%;
   box-sizing: border-box;
 }
@@ -669,6 +674,14 @@ div.custom-select div.selector {
     margin: 0;
   }
 
+  ul.navitem_2nd_menu li:first-child{
+    white-space: nowrap;
+  }
+  ul.navitem_2nd_menu li a.nav_item_nowrap_link.second {
+    padding: 4px 48px 4px 8px;
+    white-space: nowrap;
+  }
+
   ul.navitem_2nd_menu li a.nav_2nd_menu_link {
     display: block;
     text-transform: none;
@@ -711,11 +724,6 @@ div.custom-select div.selector {
     -o-transition: none;
     transition: none;
   }
-
-  ul.navitem_2nd_menu li a.nav_item_nowrap_link.second {
-    padding: 4px 48px 4px 8px;
-    white-space: nowrap;
-  }
 }
 
   
@@ -756,7 +764,7 @@ div.custom-select div.selector {
     line-height: 16px;
     padding: 8px 0;
     white-space: normal;
-}
+  }
 .advent-announce.push .advent-announce-text:after{
   left: calc(100% - 3px);
   top: calc(50% - 15px);
@@ -955,6 +963,7 @@ div.custom-select div.selector {
     letter-spacing: 0.03em;
     line-height: 1.33em;
     padding: 12px 36px 12px 18px;
+    white-space: normal;
   }
   #navitem_features:hover, 
   #navitem_download:hover, 
@@ -983,6 +992,8 @@ div.custom-select div.selector {
     border-bottom: 1px solid #f2f2f2;
     color: #ff6f3d;
     padding: 6px 22px 12px 22px;
+    letter-spacing: 0.03em;
+    white-space: normal;
   }
   #navitem_solutions_saas_mobile,
   #navitem_solutions_server_enterprice_mobile,

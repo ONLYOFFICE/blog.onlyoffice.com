@@ -168,7 +168,7 @@ global $current_language;
                                             </ul>
                                         </div>
                                     </li><!--
-                                --><li class="pushy-submenu"><a class="menuitem" id="navitem_integrations">Integrations</a>
+                                --><li class="pushy-submenu"><a class="menuitem" id="navitem_integrations"><?php _e('Integrations', 'teamlab-blog-2-0'); ?></a>
                                     <div id="navitem_integrations_menu">
                                         <ul class="dropdown-content akkordeon">
                                             <li class="li_without_border">

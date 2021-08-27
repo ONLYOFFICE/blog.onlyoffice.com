@@ -367,6 +367,8 @@ $('.close-popup').click(function () {
     $('.hidden').hide();
 });
 
+$("a[href=''], a:not([href])").css('cursor', 'default'); 
+
 /***** Click for header *****/
 $("#customer_stories_div").on("click", function () {
     location.href = $("#navitem_features_customer_stories").attr('href');
