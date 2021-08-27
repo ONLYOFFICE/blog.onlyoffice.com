@@ -122,7 +122,8 @@ nav .nav-down-triangle {
 #navitem_partners, 
 #navitem_solutions, 
 #navitem_blockchain, 
-#navitem_prices, 
+#navitem_prices,
+#navitem_integrations 
 a.singin {
   color: #444444;
   text-decoration: none;
@@ -137,7 +138,8 @@ a.singin {
 #navitem_partnership_menu .dropdown-content,
 #navitem_prices_menu .dropdown-content,
 #navitem_solutions_menu .dropdown-content,
-#navitem_features_menu .dropdown-content {
+#navitem_features_menu .dropdown-content,
+#navitem_integrations_menu .dropdown-content{
   list-style-type: none;
   margin: 0;
   display: block;
@@ -145,29 +147,18 @@ a.singin {
   background: #fff;
 }
 
-#navitem_partnership_menu.navitem_partnership_menu, #navitem_download_menu.navitem_download_menu{
-  /*right: 0;*/
-}
-
 #navitem_about_menu .dropdown-content li,
 #navitem_download_menu .dropdown-content li,
 #navitem_partnership_menu .dropdown-content li,
 #navitem_prices_menu .dropdown-content li,
 #navitem_solutions_menu .dropdown-content li,
-#navitem_features_menu .dropdown-content li {
+#navitem_features_menu .dropdown-content li,
+#navitem_integrations_menu .dropdown-content li {
   margin: 0;
   padding: 0;
   list-style-type: none;
 }
-#navitem_features_menu .dropdown-content > li.nowrap-link, 
-#navitem_about_menu .dropdown-content > li.nowrap-link, 
-#navitem_download_menu .dropdown-content > li.nowrap-link, 
-#navitem_partnership_menu .dropdown-content > li.nowrap-link, 
-#navitem_prices_menu .dropdown-content > li.nowrap-link, 
-#navitem_solutions_menu .dropdown-content > li.nowrap-link,
-#navitem_download_menu .dropdown-content > li > span.nowrap-link{
-  white-space: nowrap;
-}
+
 a.dropdown-item {
   display: block;
   background: none;
@@ -203,6 +194,7 @@ a.dropdown-item#navitem_download_signup {
 #navitem_solutions,
 #navitem_features,
 #navitem_prices,
+#navitem_integrations,
 a.singin {
   color: #333333;
   text-decoration: none;
@@ -223,6 +215,7 @@ a.singin {
 #navitem_solutions:hover,
 #navitem_features:hover,
 #navitem_prices:hover,
+#navitem_integrations:hover
 a.singin:hover {
   border-color: #f94a0c;
   cursor: pointer;
@@ -233,6 +226,7 @@ a.singin:hover {
 #navitem_solutions.active,
 #navitem_features.active,
 #navitem_prices.active,
+#navitem_integrations.active,
 a.singin.active {
   border-color: #f94a0c;
   color: #f94a0c;
@@ -243,57 +237,11 @@ a.singin.active {
 #navitem_solutions.active:hover,
 #navitem_features.active:hover,
 #navitem_prices.active:hover,
+#navitem_integrations.active:hover,
 a.singin.active:hover {
   border-color: #f94a0c;
 }
-#whowearepage #navitem_about,
-#newspage #navitem_about,
-#casestudiespage #navitem_about,
-#contactuspage #navitem_about,
-#downloadenterprisepage #navitem_download,
-#downloadspage #navitem_download,
-#downloaddesktoppage #navitem_download,
-#integrationdownloadspage #navitem_download,
-#cloudofficepage #navitem_solutions,
-#serversolutionspage #navitem_solutions,
-#integrationeditionpage #navitem_solutions,
-#desktopmobileappspage #navitem_solutions,
-#mobileappspage #navitem_solutions,
-#saaspricespage #navitem_prices,
-#solutionspage #navitem_prices,
-#nonprofitpage #navitem_prices,
-#servereditorspricespage #navitem_prices,
-#amipricespage #navitem_prices,
-#desktoppricespage #navitem_prices,
-#integrationpricespage #navitem_prices,
-#partnerspage #navitem_partners,
-#partnerdeveloperspage #navitem_partners,
-#signinpage a.singin {
-  color: #f94a0c;
-  border-color: #f94a0c;
-}
-#whowearepage #navitem_about_about,
-#newspage #navitem_about_news,
-#casestudiespage #navitem_about_casestudies,
-#contactuspage #navitem_about_contacts,
-#downloadenterprisepage #navitem_download_enterprise,
-#downloadspage #navitem_download_community,
-#downloaddesktoppage #navitem_download_desktop,
-#integrationdownloadspage #navitem_download_integration,
-#partnerdeveloperspage #navitem_developers,
-#partnerspage #navitem_hosters,
-#mobileappspage #navitem_solutions_mobile,
-#desktopmobileappspage #navitem_solutions_apps,
-#integrationeditionpage #navitem_solutions_integration,
-#serversolutionspage #navitem_solutions_server_enterprice,
-#cloudofficepage #navitem_solutions_saas,
-#desktoppricespage #navitem_prices_desktop,
-#saaspricespage #navitem_prices_saas,
-#integrationpricespage #navitem_prices_integration,
-#servereditorspricespage #navitem_prices_server_enterprice {
-  background: #fa6e3d;
-  color: white;
-}
+
 .third-level-content {
   display: none;
   position: absolute;
@@ -524,6 +472,10 @@ div.custom-select div.selector {
     background-image: url('../images/img_for_header/menu_compare_edition.svg');
   }
 
+  #for_developers_img{
+    background-image: url('../images/img_for_header/menu_for_developers.png');
+  }
+
 
 @media screen and (max-width: 1280px){
   #navitem_features_menu, 
@@ -547,7 +499,8 @@ div.custom-select div.selector {
   #navitem_download_menu .dropdown-content, 
   #navitem_partnership_menu .dropdown-content, 
   #navitem_prices_menu .dropdown-content, 
-  #navitem_solutions_menu .dropdown-content {
+  #navitem_solutions_menu .dropdown-content,
+  #navitem_integrations_menu .dropdown-content{
       list-style-type: none;
       margin: 0;
       padding: 27px 0;
@@ -559,7 +512,7 @@ div.custom-select div.selector {
   #navitem_solutions_menu .dropdown-content>li {
       display: table-cell;
       width: 25%;
-      border-right: 1px solid #efefef;
+      border-right: 1px solid #ebebeb;
   }
   #navitem_solutions_saas_mobile, 
   #navitem_solutions_server_enterprice_mobile,
@@ -573,7 +526,8 @@ div.custom-select div.selector {
   #navitem_download_menu:before, 
   #navitem_partnership_menu:before, 
   #navitem_prices_menu:before, 
-  #navitem_solutions_menu:before {
+  #navitem_solutions_menu:before,
+  #navitem_integrations_menu:before {
       display: block;
       position: absolute;
       width: 0;
@@ -589,7 +543,8 @@ div.custom-select div.selector {
   #navitem_download_menu:after, 
   #navitem_partnership_menu:after, 
   #navitem_prices_menu:after, 
-  #navitem_solutions_menu:after {
+  #navitem_solutions_menu:after,
+  #navitem_integrations_menu:after {
     display: block; position: absolute;  width: 0; content: "";
     height: 1px; 
     background-color: #ff642e;
@@ -601,7 +556,8 @@ div.custom-select div.selector {
   #navitem_partnership_menu.top_border:before, 
   #navitem_prices_menu.top_border:before ,
   #navitem_solutions_menu.top_border:before, 
-  #navitem_features_menu.top_border:before  {
+  #navitem_features_menu.top_border:before,
+  #navitem_integrations_menu.top_border:before  {
     width:50%; left:0;
   }
   #navitem_about_menu.top_border:after, 
@@ -609,14 +565,16 @@ div.custom-select div.selector {
   #navitem_partnership_menu.top_border:after, 
   #navitem_prices_menu.top_border:after ,
   #navitem_solutions_menu.top_border:after, 
-  #navitem_features_menu.top_border:after  {
+  #navitem_features_menu.top_border:after,
+  #navitem_integrations_menu.top_border:after  {
     width:50%;
   }
   #navitem_features_menu, 
   #navitem_about_menu, #navitem_download_menu,
   #navitem_partnership_menu, 
   #navitem_prices_menu, 
-  #navitem_solutions_menu {
+  #navitem_solutions_menu,
+  #navitem_integrations_menu {
       display: none;
       position: absolute;
       z-index: 1999;
@@ -631,9 +589,10 @@ div.custom-select div.selector {
   #navitem_download_menu .dropdown-content>li,
   #navitem_features_menu .dropdown-content>li,
   #navitem_solutions_menu .dropdown-content>li,
-  #navitem_prices_menu .dropdown-content>li{
+  #navitem_prices_menu .dropdown-content>li,
+  #navitem_integrations_menu .dropdown-content>li{
       display: table-cell;
-      border-right: 1px solid #CCCCCC;
+      border-right: 1px solid #ebebeb;
   }
   #navitem_about_menu .dropdown-content > li {
     min-width: 246px;
@@ -653,38 +612,109 @@ div.custom-select div.selector {
   }
   #navitem_features_menu .dropdown-content > li:last-of-type,
   #navitem_prices_menu .dropdown-content > li:last-of-type,
-  #navitem_solutions_menu .dropdown-content > li:last-of-type{
+  #navitem_solutions_menu .dropdown-content > li:last-of-type,
+  #navitem_integrations_menu .dropdown-content > li:last-of-type{
+    border-right: 0 none;
+  }
+
+  #navitem_integrations_menu .dropdown-content > li.li_without_border{
     border-right: 0 none;
   }
 
   #navitem_solutions_menu .dropdown-content > li {
     width: 25%;
   }
-  #navitem_solutions_menu .dropdown-content > li:first-of-type{
+
+  #navitem_solutions_menu .dropdown-content>li:first-of-type {
     min-width: 240px;
   }
-  #navitem_solutions_menu .dropdown-content > li:nth-of-type(2){
-    min-width: 236px;
-  }
-  #navitem_prices_menu .dropdown-content > li{
+
+  #navitem_solutions_menu .dropdown-content>li:nth-of-type(2) {
     min-width: 236px;
   }
 
-  #navitem_prices_menu #navitem_prices_reseller{
+  #navitem_prices_menu .dropdown-content>li {
+    min-width: 236px;
+  }
+
+  #navitem_integrations_menu .dropdown-content>li:first-of-type,
+  #navitem_integrations_menu .dropdown-content>li:nth-of-type(2) {
+    min-width: 180px;
+  }
+
+  #navitem_integrations_menu .dropdown-content>li:last-of-type {
+    max-width: 264px;
+  }
+
+  #navitem_prices_menu #navitem_prices_reseller {
     line-height: 1.33em;
     padding-top: 10px;
     white-space: initial;
   }
 
-  .all-menu-items > li:nth-of-type(3), 
-  .all-menu-items > li:nth-of-type(4), 
-  .all-menu-items > li:nth-of-type(5), 
-  .all-menu-items > li:nth-of-type(6){
+  .all-menu-items>li:nth-of-type(3),
+  .all-menu-items>li:nth-of-type(4),
+  .all-menu-items>li:nth-of-type(5),
+  .all-menu-items>li:nth-of-type(6) {
     position: relative;
   }
-  .all-menu-items > li:nth-of-type(1), 
-  .all-menu-items > li:nth-of-type(2){
+
+  .all-menu-items>li:nth-of-type(1),
+  .all-menu-items>li:nth-of-type(2) {
     position: static;
+  }
+
+  ul.navitem_2nd_menu {
+    padding: 0 0 10px;
+    margin: 0;
+  }
+
+  ul.navitem_2nd_menu li a.nav_2nd_menu_link {
+    display: block;
+    text-transform: none;
+    background: none;
+    border: 0;
+    color: #444444;
+    font-size: 14px;
+    cursor: pointer;
+    line-height: 1.6em;
+    margin: 0;
+    padding: 4px 32px 4px 48px;
+    text-decoration: none;
+  }
+
+  ul.navitem_2nd_menu li a.nav_2nd_menu_link:hover {
+    color: #ff6f3d;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+  }
+
+  ul.navitem_2nd_menu li a.nav_item_nowrap_link {
+    text-transform: none;
+    background: none;
+    border: 0;
+    color: #444444;
+    font-size: 14px;
+    cursor: pointer;
+    line-height: 1.6em;
+    margin: 0;
+    padding: 4px 8px 4px 48px;
+    text-decoration: none;
+  }
+
+  ul.navitem_2nd_menu li a.nav_item_nowrap_link:hover {
+    color: #ff6f3d;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+  }
+
+  ul.navitem_2nd_menu li a.nav_item_nowrap_link.second {
+    padding: 4px 48px 4px 8px;
+    white-space: nowrap;
   }
 }
 
@@ -698,6 +728,8 @@ div.custom-select div.selector {
   }
   nav .pushy-content {
     width: 430px;
+    height: 100%;
+    min-height: 100%;
   }
   header {
       width: 100%;
@@ -715,24 +747,28 @@ div.custom-select div.selector {
     display: flex;
     align-items: center;
     height: 48px;
-    background-position: calc(50% - 280px), calc(50% + 220px);
+    background-image: url(../images/top_banner/banner-desktop-v6-4/left-icons-mob.svg), url(../images/top_banner/banner-desktop-v6-4/right-icons-mob.svg);
+    background-position: calc(50% - 144px) 8px, calc(50% + 144px) 6px;
   }
   
   .advent-announce.push .advent-announce-text {
-    font-size: 12px;
+    font-size: 13px;
     line-height: 16px;
     padding: 8px 0;
     white-space: normal;
+}
+.advent-announce.push .advent-announce-text:after{
+  left: calc(100% - 3px);
+  top: calc(50% - 15px);
+}
+.advent-announce.push .advent-announce-text:before{
+  content: none;
 }
   .advent-desktop-hide {
     display: block;
   }
   .advent-announce.push.advent-mobile-hide {
     display: none;
-  }
-
-  #navitem_download_menu .dropdown-content > li > span.nowrap-link{
-    white-space: normal;
   }
 
   .phone_wrapper{
@@ -764,6 +800,10 @@ div.custom-select div.selector {
   .pushy, .push {
       transition: transform .2s cubic-bezier(.16,.68,.43,.99);
   }
+
+  .pushy{
+    overflow: auto;
+  }
   .ham_menu span {
       background-color: #666;
       display: block;
@@ -775,7 +815,7 @@ div.custom-select div.selector {
       margin-left: 60px;
       z-index: 14;
       height: 48px;
-      background-size: auto 24px;
+      background-size: auto 28px;
       margin: auto;
       background-position: 50%;
   }
@@ -806,6 +846,34 @@ div.custom-select div.selector {
 
   ul.navitem_2nd_menu li a.nav_2nd_menu_link {
     padding: 6px 32px;
+  }
+
+  ul.navitem_2nd_menu li a.nav_2nd_menu_link, 
+  ul.navitem_2nd_menu li a.nav_item_nowrap_link {
+    font-size: 16px;
+  }
+
+  ul.navitem_2nd_menu {
+    padding-bottom: 11px;
+  }
+
+  ul.navitem_2nd_menu li a.nav_2nd_menu_link {
+        line-height: 1.6em;
+        padding: 6px 32px;
+  }
+
+  ul.navitem_2nd_menu li a.nav_item_nowrap_link {
+        line-height: 1.6em;
+        padding: 6px 8px 6px 32px;
+  }
+
+  ul.navitem_2nd_menu li a.nav_item_nowrap_link {
+    display: inline-block;
+    color: #444444;
+  }
+
+  ul.navitem_2nd_menu li a.nav_item_nowrap_link.second {
+    padding: 4px 48px 4px 8px;
   }
 
   .pushy-submenu>a, .pushy-submenu>button {
@@ -869,17 +937,17 @@ div.custom-select div.selector {
   #navitem_solutions,
   #navitem_prices, 
   #navitem_partners, 
-  #navitem_blockchain {
+  #navitem_integrations {
       border-color: #F2F2F2;
   }
 
   #navitem_features,
-  #navitem_blockchain,
   #navitem_download,
   #navitem_partners,
   #navitem_solutions,
   #navitem_prices,
   #navitem_about,
+  #navitem_integrations,
   a.singin {
     display: block;
     font-weight: 700;
@@ -889,28 +957,28 @@ div.custom-select div.selector {
     padding: 12px 36px 12px 18px;
   }
   #navitem_features:hover, 
-  #navitem_blockchain:hover, 
   #navitem_download:hover, 
   #navitem_partners:hover, 
   #navitem_solutions:hover, 
   #navitem_prices:hover, 
   #navitem_about:hover,
+  #navitem_integrations:hover,
   a.singin:hover, 
   #navitem_features.active,
-  #navitem_blockchain.active, 
   #navitem_download.active, 
   #navitem_partners.active, 
   #navitem_solutions.active, 
   #navitem_prices.active, 
   #navitem_about.active,
+  #navitem_integrations.active,
   a.singin.active, 
   #navitem_features.active:hover, 
-  #navitem_blockchain.active:hover,
   #navitem_download.active:hover, 
   #navitem_partners.active:hover, 
   #navitem_solutions.active:hover, 
   #navitem_prices.active:hover, 
   #navitem_about.active:hover,
+  #navitem_integrations.active:hover,
   a.singin.active:hover {
     border-bottom: 1px solid #f2f2f2;
     color: #ff6f3d;
@@ -939,11 +1007,8 @@ div.custom-select div.selector {
       left: 0;
       bottom: 80px;
   }
-  #navitem_blockchain:before, nav>div ul li a.menuitem.singin:before {
+  nav>div ul li a.menuitem.singin:before {
       display: none;
-  }
-  #navitem_blockchain {
-      border: 0 none;
   }
   .narrowheader {
       width: 100%;
@@ -956,7 +1021,7 @@ div.custom-select div.selector {
   a.dropdown-item {
       white-space: normal;
   }
-  #compare_div, #customer_stories_div, #latest_release_div, #reseller_div, #security_div {
+  #compare_div, #customer_stories_div, #latest_release_div, #reseller_div, #security_div, #for_developers_div {
     display: none;
   }
 }
@@ -965,7 +1030,8 @@ div.custom-select div.selector {
   .advent-announce.push .advent-announce-text:before{
     content: none;
   }
-  .advent-announce.push{
-    background-position: calc(0% - 1px), calc(50% + 220px);
+
+  ul.navitem_2nd_menu li a.nav_item_nowrap_link.second {
+    padding: 4px 16px 4px 32px;
   }
 }

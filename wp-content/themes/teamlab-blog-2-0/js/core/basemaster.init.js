@@ -220,6 +220,21 @@ jQuery(document).ready(function ($) {
             }
         });
         jQuery.dropdownToggle({
+            dropdownID: "navitem_integrations_menu",
+            switcherSelector: "#navitem_integrations",
+            simpleToggle: true,
+            showFunction: function (switcherObj, dropdownItem) {
+                if (dropdownItem.is(":hidden")) {
+                    switcherObj.addClass("active");
+                } else {
+                    switcherObj.removeClass("active");
+                }
+            },
+            hideFunction: function () {
+                $("#navitem_integrations").removeClass("active");
+            }
+        });
+        jQuery.dropdownToggle({
             dropdownID: "navitem_partnership_menu",
             switcherSelector: "#navitem_partners",
             simpleToggle: true,

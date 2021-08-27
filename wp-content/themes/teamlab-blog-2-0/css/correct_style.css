@@ -13,25 +13,26 @@ main{
 
 /*---------Top-banner-------*/
 .advent-announce.push{
-    background-color: #EFEFEF;
-    background-image: url(../images/top_banner/vote_for_onlyoffice/left-lines.svg), url(../images/top_banner/vote_for_onlyoffice/right-lines.svg);
-    background-position: calc(50% - 574px), calc(50% + 558px);
+    background-color: #4F698E;
+    background-image: url(../images/top_banner/banner-desktop-v6-4/left-icons.svg), url(../images/top_banner/banner-desktop-v6-4/right-icons.svg);
+    background-position: calc(50% - 551px) -8px, calc(50% + 560px) -16px;
     background-repeat: no-repeat;
     padding: 0;
     text-align: center;
     position: relative;
     width: 100%;
+    cursor: pointer;
 }
 .advent-announce.push a{
     text-decoration: none;
 }
 
 .advent-announce.push .advent-announce-text{
-    color: #333;
+    color: #FFFFFF;
     text-align: center;
     margin: 0 auto;
     font-size: 15px;
-    font-weight: bold;
+    font-weight: 400;
     text-decoration: none !important;
     display: block;
     letter-spacing: 0.01em;
@@ -45,35 +46,33 @@ main{
 }
 .advent-announce.push .advent-announce-text:before{
     content: '';
-    background-image: url(../images/top_banner/vote_for_onlyoffice/banner_img.svg);
+    background-image: url(../images/top_banner/banner-desktop-v6-4/logo.svg);
     background-position: 0 50%;
     background-repeat: no-repeat;
     position: absolute;
-    height: 42px;
-    width: 120px;
-    background-color: #EFEFEF;
-    left: calc(0% - 152px);
-    top: calc(50% - 21px);
-    padding-right: 16px;
+    height: 55px;
+    width: 56px;
+    left: calc(0% - 68px);
+    top: calc(50% - 30px);
+    padding-right: 10px;
     box-sizing: content-box;
-    border-right: 1px solid #CCCCCC;
 }
 
 .advent-announce.push .advent-announce-text:after{
     content: '';
-    background-image: url(../images/top_banner/vote_for_onlyoffice/circle_arrow.svg);
+    background-image: url(../images/top_banner/arrow_right_white.svg);
     background-position: 50% 50%;
     background-repeat: no-repeat;
     position: absolute;
     height: 29px;
     width: 32px;
-    background-color: #EFEFEF;
-    left: calc(100% + 14px);
+    left: calc(100% + 5px);
     top: calc(50% - 16px);
-}
+} 
 
 .advent-announce.push .advent-announce-text b{
-    color: #FF6F3D;
+    color: #FFFFFF;
+    font-weight: bold;
 }
 
 .advent-desktop-hide {
