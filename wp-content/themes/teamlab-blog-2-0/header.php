@@ -114,45 +114,8 @@ global $current_language;
                         <nav class="pushy pushy-left">
                        
                             <div class="pushy-content">
-                                <ul class="all-menu-items"><!--
-                                --><!--<li class="pushy-submenu"><a class="menuitem <?php echo get_locale();?>" id="navitem_solutions"><?php _e('Solutions', 'teamlab-blog-2-0'); ?></a>-->
-                                    <div id="navitem_solutions_menu">
-                                        <ul class="dropdown-content akkordeon">
-                                            <li>
-                                                <a id="navitem_solutions_by_size" class="dropdown-item mobile_no_link"><?php _e('By size', 'teamlab-blog-2-0'); ?></a>
-                                                <div>
-                                                    <ul class="navitem_2nd_menu">
-                                                        <li><a id="navitem_solutions_smbs" class="nav_2nd_menu_link" href="<?php echo $current_language ?>/for-small-business.aspx"><?php _e('SMBs', 'teamlab-blog-2-0'); ?></a></li>
-                                                        <li><a id="navitem_solutions_enterprises" class="nav_2nd_menu_link" href="<?php echo $current_language ?>/for-enterprises.aspx"><?php _e('Enterprises', 'teamlab-blog-2-0'); ?></a></li>
-                                                        <li><a id="navitem_solutions_home_use" class="nav_2nd_menu_link" href="<?php echo $current_language ?>/home-use.aspx"><?php _e('Home use', 'teamlab-blog-2-0'); ?></a></li>
-                                                    </ul>
-                                                </div>                          
-                                            </li>
-                                            <li>
-                                                <a id="navitem_solutions_by_industry" class="dropdown-item mobile_no_link"><?php _e('By industry', 'teamlab-blog-2-0'); ?></a>
-                                                <div>
-                                                    <ul class="navitem_2nd_menu">
-                                                        <li><a id="navitem_solutions_developers" class="nav_2nd_menu_link" href="<?php echo $current_language ?>/for-developers.aspx"><?php _e('Developers', 'teamlab-blog-2-0'); ?></a></li>
-                                                        <li><a id="navitem_solutions_hosting" class="nav_2nd_menu_link" href="<?php echo $current_language ?>/for-hosting-providers.aspx"><?php _e('Hosting providers', 'teamlab-blog-2-0'); ?></a></li>
-                                                        <li><a id="navitem_solutions_government" class="nav_2nd_menu_link" href="<?php echo $current_language ?>/for-government.aspx"><?php _e('Government', 'teamlab-blog-2-0'); ?></a></li>
-                                                        <li><a id="navitem_solutions_healthcare" class="nav_2nd_menu_link" href="<?php echo $current_language ?>/healthcare.aspx"><?php _e('Healthcare', 'teamlab-blog-2-0'); ?></a></li>
-                                                        <li><a id="navitem_solutions_research" class="nav_2nd_menu_link" href="<?php echo $current_language ?>/for-research.aspx"><?php _e('Research', 'teamlab-blog-2-0'); ?></a></li>
-                                                        <li><a id="navitem_solutions_education" class="nav_2nd_menu_link" href="<?php echo $current_language ?>/education.aspx"><?php _e('Education', 'teamlab-blog-2-0'); ?></a></li>
-                                                        <li><a id="navitem_solutions_nonprofit" class="nav_2nd_menu_link" href="<?php echo $current_language ?>/nonprofit-organizations.aspx"><?php _e('Nonprofits', 'teamlab-blog-2-0'); ?></a></li>
-                                                    </ul>
-                                                </div> 
-                                            </li>
-                                            <li id="navitem_customer_stories_third_level_menu">
-                                                <a id="navitem_features_customer_stories" class="dropdown-item" href="<?php echo $current_language ?>/customers.aspx"><?php _e('Customer stories', 'teamlab-blog-2-0'); ?></a>
-                                                <div id="customer_stories_div" class="menu_pic_div">
-                                                    <div id="customer_stories_img" class="menu_pic_img"></div>
-                                                    <p id="customer_stories_header" class="menu_pic_header"><?php _e('How ONLYOFFICE and Nextcloud ensure streamlined workflow at the Vegan in Leipzig project', 'teamlab-blog-2-0'); ?></p>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    </li><!--
-                                --><li class="pushy-submenu"><a class="menuitem <?php echo get_locale();?>" id="navitem_features"><?php _e('Products & Features', 'teamlab-blog-2-0'); ?></a>
+                                <ul class="all-menu-items">
+                                    <li class="pushy-submenu"><a class="menuitem <?php echo get_locale();?>" id="navitem_features"><?php _e('Products & Features', 'teamlab-blog-2-0'); ?></a>
                                         <div id="navitem_features_menu">
                                             <ul class="dropdown-content akkordeon">
                                                 <li id="navitem_editors_third_level_menu">
@@ -310,7 +273,7 @@ global $current_language;
                                                     <a id="navitem_about_pressdownloads" class="dropdown-item" href="<?php echo $current_language ?>/press-downloads.aspx"><?php _e('Press downloads', 'teamlab-blog-2-0'); ?></a>
                                                     <a id="navitem_about_whitepapers" class="dropdown-item" href="<?php echo $current_language ?>/whitepapers.aspx"><?php _e('White papers', 'teamlab-blog-2-0'); ?></a>
                                                     <a id="navitem_about_training_courses" class="dropdown-item" href="<?php echo $current_language ?>/training-courses.aspx"><?php _e('Training courses', 'teamlab-blog-2-0'); ?></a>
-                                                    <a id="navitem_about_giftshop" class="dropdown-item" target="_blank" href="https://shop.spreadshirt.com/onlyoffice"><?php _e('Gift shop', 'teamlab-blog-2-0'); ?></a>
+                                                    <a id="navitem_about_giftshop" class="dropdown-item" target="_blank" rel="noreferrer noopener" href="https://shop.spreadshirt.com/onlyoffice"><?php _e('Gift shop', 'teamlab-blog-2-0'); ?></a>
                                                     <a id="navitem_about_contacts" class="dropdown-item" href="<?php echo $current_language ?>/contacts.aspx"><?php _e('Contacts', 'teamlab-blog-2-0'); ?></a>
                                                 </li>
                                             </ul>

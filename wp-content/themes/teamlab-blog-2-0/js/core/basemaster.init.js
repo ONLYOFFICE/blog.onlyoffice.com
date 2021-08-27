@@ -189,22 +189,6 @@ jQuery(document).ready(function ($) {
         });
 
         jQuery.dropdownToggle({
-            dropdownID: "navitem_solutions_menu",
-            switcherSelector: "#navitem_solutions",
-            simpleToggle: true,
-            showFunction: function (switcherObj, dropdownItem) {
-                if (dropdownItem.is(":hidden")) {
-                    switcherObj.addClass("active");
-                } else {
-                    switcherObj.removeClass("active");
-                }
-            },
-            hideFunction: function () {
-                $("#navitem_solutions").removeClass("active");
-            }
-        });
-
-        jQuery.dropdownToggle({
             dropdownID: "navitem_features_menu",
             switcherSelector: "#navitem_features",
             simpleToggle: true,
@@ -331,6 +315,36 @@ jQuery('.footer-button')
             },
             hideFunction: function () {
                 $("#footer_menu_solutions").removeClass("active");
+            }
+        });
+        jQuery.dropdownToggle({
+            dropdownID: "navitem_footer_by_size",
+            switcherSelector: "#footer_menu_solutions_bsz",
+            simpleToggle: true,
+            showFunction: function (switcherObj, dropdownItem) {
+                if (dropdownItem.is(":hidden")) {
+                    switcherObj.addClass("active");
+                } else {
+                    switcherObj.removeClass("active");
+                }
+            },
+            hideFunction: function () {
+                $("#footer_menu_solutions_bsz").removeClass("active");
+            }
+        });
+        jQuery.dropdownToggle({
+            dropdownID: "navitem_footer_by_industry",
+            switcherSelector: "#footer_menu_solutions_bid",
+            simpleToggle: true,
+            showFunction: function (switcherObj, dropdownItem) {
+                if (dropdownItem.is(":hidden")) {
+                    switcherObj.addClass("active");
+                } else {
+                    switcherObj.removeClass("active");
+                }
+            },
+            hideFunction: function () {
+                $("#footer_menu_solutions_bid").removeClass("active");
             }
         });
         jQuery.dropdownToggle({

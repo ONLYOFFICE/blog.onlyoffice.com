@@ -657,6 +657,7 @@ main{
 }
 .post h2.entry-title.tags-page-title{
     margin-top: 15px;
+    font-size: 24px;
 }
 
 /*---------PAGE THANK YOU FOR SIGNING-------*/
@@ -777,8 +778,6 @@ main{
     line-height: 16px;
     display: flex;
     align-items: center;
-    /* icon+text */
-    color: #919192;
 }
 .post p{
     margin:24px 0;
