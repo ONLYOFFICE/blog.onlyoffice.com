@@ -908,9 +908,6 @@ body.desktop .button.red.disabled:visited {
    #post-content .sidebar {
      margin-top: 72px;
    }
-   #post-content .content h3 {
-     font-size: 24px !important;
-   }
    .tagsList {
      display: block;
      margin-bottom: 120px;
@@ -1067,6 +1064,34 @@ body.desktop .button.red.disabled:visited {
   }
   .ErrorContainer .bg{
     height: 300px;
+  }
+  #post-content .content h1,
+  #post-content .content h2,
+  #post-content .content h3,
+  #post-content .content h4,
+  #post-content .content h5,
+  #post-content .content h6{
+      letter-spacing: -0.01em;
+  }
+  #post-content .content h1 {
+      font-size: 36px;
+  }
+  #post-content .content h2 {
+      font-size: 30px;
+  }
+  #post-content .content h3 {
+      font-size: 22px;
+  }
+  #post-content .content h4 {
+      font-size: 18px;
+  }
+  #post-content .content h5 {
+      font-size: 14px;
+  }
+  #post-content .content h6 {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
   }
 }
 
@@ -1282,6 +1307,24 @@ body.desktop .button.red.disabled:visited {
 
   .content .button{
     padding: 16px 20px;
+  }
+  #post-content .content h1 {
+      font-size: 24px;
+  }
+  #post-content .content h2 {
+      font-size: 20px;
+  }
+  #post-content .content h3 {
+      font-size: 18px;
+  }
+  #post-content .content h4 {
+      font-size: 16px;
+  }
+  #post-content .content h5 {
+      font-size: 13px;
+  }
+  #post-content .content h6 {
+      font-size: 14px;
   }
 }
 @media screen and (max-width: 549px) {
