@@ -172,7 +172,8 @@
   #navitem_partners, 
   #navitem_solutions, 
   #navitem_prices, 
-  #navitem_about, 
+  #navitem_about,
+  #navitem_integrations,
   a.singin {
     font-size: 16px;
     padding: 9px 36px 9px 18px;
