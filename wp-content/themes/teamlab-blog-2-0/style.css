@@ -14,13 +14,35 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
 }
-#post-content .content h3 {
-    font-size: 26px;
-    line-height: 33px;
+#post-content .content h1,
+#post-content .content h2,
+#post-content .content h3,
+#post-content .content h4,
+#post-content .content h5,
+#post-content .content h6{
+    letter-spacing: -0.02em;
     font-style: normal;
     font-weight: 700;
-    margin-bottom: 24px;
     margin: 40px 0 23px;
+    line-height: 133%;
+}
+#post-content .content h1 {
+    font-size: 40px;
+}
+#post-content .content h2 {
+    font-size: 32px;
+}
+#post-content .content h3 {
+    font-size: 24px;
+}
+#post-content .content h4 {
+    font-size: 18px;
+}
+#post-content .content h5 {
+    font-size: 14px;
+}
+#post-content .content h6 {
+    font-size: 16px;
 }
 blockquote {
   border-left: 3px solid #FF6F3D;

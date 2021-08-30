@@ -367,6 +367,8 @@ $('.close-popup').click(function () {
     $('.hidden').hide();
 });
 
+$("a[href=''], a:not([href])").css('cursor', 'default'); 
+
 /***** Click for header *****/
 $("#customer_stories_div").on("click", function () {
     location.href = $("#navitem_features_customer_stories").attr('href');
@@ -382,6 +384,13 @@ $("#reseller_div").on("click", function () {
 
 $("#security_div").on("click", function () {
     location.href = $("#navitem_features_security").attr('href');
+});
+$("#for_developers_div").on("click", function () {
+    location.href = $("#navitem_integration_for_developers").attr('href');
+});
+
+$(".advent-announce").on("click", function () {
+    location.href = $("#banner_url").attr('href');
 });
 
 
