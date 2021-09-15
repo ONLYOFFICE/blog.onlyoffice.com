@@ -30,11 +30,16 @@ class Frontend {
 	 */
 	public function getBreadcrumbs() {
 		if ( ! empty( $this->breadcrumbs ) ) {
-			return $this->breadcrumbs;
+			return apply_filters( 'aioseo_breadcrumbs_trail', $this->breadcrumbs );
+		}
+
+		$queriedObject = get_queried_object();
+		if ( ! is_object( $queriedObject ) ) {
+			return;
 		}
 
 		$type      = '';
-		$reference = get_queried_object();
+		$reference = $queriedObject;
 
 		if ( is_single() ) {
 			$type = 'single';
@@ -95,7 +100,7 @@ class Frontend {
 			];
 		}
 
-		return aioseo()->breadcrumbs->buildBreadcrumbs( $type, $reference, $paged );
+		return apply_filters( 'aioseo_breadcrumbs_trail', aioseo()->breadcrumbs->buildBreadcrumbs( $type, $reference, $paged ) );
 	}
 
 	/**
@@ -123,7 +128,7 @@ class Frontend {
 	 * @return string|void       A html breadcrumb.
 	 */
 	public function display( $echo = true ) {
-		if ( ! is_object( get_queried_object() ) || ! aioseo()->options->breadcrumbs->enable ) {
+		if ( ! aioseo()->options->breadcrumbs->enable || ! apply_filters( 'aioseo_breadcrumbs_output', true ) ) {
 			return;
 		}
 
@@ -143,8 +148,8 @@ class Frontend {
 			// Strip link from Last crumb.
 			if (
 				0 === $breadcrumbsCount &&
-				aioseo()->options->breadcrumbs->showCurrentItem &&
-				! aioseo()->options->breadcrumbs->linkCurrentItem &&
+				aioseo()->breadcrumbs->showCurrentItem() &&
+				! $this->linkCurrentItem() &&
 				'default' === $breadcrumbDisplay['templateType']
 			) {
 				$breadcrumbDisplay['template'] = $this->stripLink( $breadcrumbDisplay['template'] );
@@ -266,6 +271,19 @@ TEMPLATE;
 	 * @return string The separator html.
 	 */
 	public function getSeparator() {
-		return apply_filters( 'aioseo_breadcrumbs_separator', '<span class="aioseo-breadcrumb-separator">' . esc_html( aioseo()->options->breadcrumbs->separator ) . '</span>' );
+		$separator = apply_filters( 'aioseo_breadcrumbs_separator_symbol', aioseo()->options->breadcrumbs->separator );
+
+		return apply_filters( 'aioseo_breadcrumbs_separator', '<span class="aioseo-breadcrumb-separator">' . esc_html( $separator ) . '</span>' );
+	}
+
+	/**
+	 * Function to filter the linkCurrentItem option.
+	 *
+	 * @since 4.1.3
+	 *
+	 * @return bool Link current item.
+	 */
+	public function linkCurrentItem() {
+		return apply_filters( 'aioseo_breadcrumbs_link_current_item', aioseo()->options->breadcrumbs->linkCurrentItem );
 	}
 }

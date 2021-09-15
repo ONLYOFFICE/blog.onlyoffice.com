@@ -49,4 +49,16 @@ trait ActionScheduler {
 		]);
 		return ! empty( $actions );
 	}
+
+	/**
+	 * Unschedule an action.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @param  string $actionName The action name to unschedule.
+	 * @return void
+	 */
+	public function unscheduleAction( $actionName ) {
+		as_unschedule_action( $actionName, [], 'aioseo' );
+	}
 }

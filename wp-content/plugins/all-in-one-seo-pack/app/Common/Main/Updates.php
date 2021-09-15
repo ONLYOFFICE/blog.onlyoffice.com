@@ -1,6 +1,8 @@
 <?php
 namespace AIOSEO\Plugin\Common\Main;
 
+use \AIOSEO\Plugin\Common\Models;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -43,7 +45,7 @@ class Updates {
 		aioseo()->access->addCapabilities();
 
 		$oldOptions = get_option( 'aioseop_options' );
-		if ( empty( $oldOptions ) && ( ! is_network_admin() || ! isset( $_GET['activate-multi'] ) ) ) {
+		if ( empty( $oldOptions ) && ! is_network_admin() && ! isset( $_GET['activate-multi'] ) ) {
 			// Sets 30 second transient for welcome screen redirect on activation.
 			aioseo()->transients->update( 'activation_redirect', true, 30 );
 		}
@@ -64,6 +66,9 @@ class Updates {
 	 * @return void
 	 */
 	public function runUpdates() {
+		// The dynamic options have not yet fully loaded, so let's refresh here to force that to happen.
+		aioseo()->dynamicOptions->refresh(); // TODO: Check if we still need this since it already runs on 999 in the main AIOSEO file.
+
 		$lastActiveVersion = aioseo()->internalOptions->internal->lastActiveVersion;
 		if ( version_compare( $lastActiveVersion, '4.0.5', '<' ) ) {
 			$this->addImageScanDateColumn();
@@ -86,7 +91,42 @@ class Updates {
 			$this->removeLocationColumn();
 		}
 
+		if ( version_compare( $lastActiveVersion, '4.1.2', '<' ) ) {
+			$this->clearProductImages();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.1.3', '<' ) ) {
+			$this->addNotificationsNewColumn();
+			$this->noindexWooCommercePages();
+			$this->accessControlNewCapabilities();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.1.3.3', '<' ) ) {
+			$this->accessControlNewCapabilities();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.1.4.3', '<' ) ) {
+			$this->migrateDynamicSettings();
+		}
+
 		do_action( 'aioseo_run_updates', $lastActiveVersion );
+	}
+
+	/**
+	 * Retrieve the raw options from the database for migration.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @return array An array of options.
+	 */
+	private function getRawOptions() {
+		// Options from the DB.
+		$commonOptions = json_decode( get_option( aioseo()->options->optionsName ), true );
+		if ( empty( $commonOptions ) ) {
+			$commonOptions = [];
+		}
+
+		return $commonOptions;
 	}
 
 	/**
@@ -97,7 +137,9 @@ class Updates {
 	 * @return void
 	 */
 	public function updateLatestVersion() {
-		aioseo()->internalOptions->internal->lastActiveVersion = aioseo()->version;
+		if ( aioseo()->version !== aioseo()->internalOptions->internal->lastActiveVersion ) {
+			aioseo()->internalOptions->internal->lastActiveVersion = aioseo()->version;
+		}
 	}
 
 	/**
@@ -327,6 +369,223 @@ class Updates {
 				"ALTER TABLE {$tableName}
 				DROP location"
 			);
+		}
+	}
+
+	/**
+	 * Clears the image data for WooCommerce Products so that we scan them again and include product gallery images.
+	 *
+	 * @since 4.1.2
+	 *
+	 * @return void
+	 */
+	public function clearProductImages() {
+		if ( ! aioseo()->helpers->isWooCommerceActive() ) {
+			return;
+		}
+
+		aioseo()->db->update( 'aioseo_posts as ap' )
+			->join( 'posts as p', 'ap.post_id = p.ID' )
+			->where( 'p.post_type', 'product' )
+			->set(
+				[
+					'images'          => null,
+					'image_scan_date' => null
+				]
+			)
+			->run();
+	}
+
+	/**
+	 * Adds the new flag to the notifications table.
+	 *
+	 * @since 4.1.3
+	 *
+	 * @return void
+	 */
+	public function addNotificationsNewColumn() {
+		if ( ! aioseo()->db->columnExists( 'aioseo_notifications', 'new' ) ) {
+			$tableName = aioseo()->db->db->prefix . 'aioseo_notifications';
+			aioseo()->db->execute(
+				"ALTER TABLE {$tableName}
+				ADD new tinyint(1) NOT NULL DEFAULT 1 AFTER dismissed"
+			);
+
+			aioseo()->db
+				->update( 'aioseo_notifications' )
+				->where( 'new', 1 )
+				->set( 'new', 0 )
+				->run();
+		}
+	}
+
+	/**
+	 * Noindexes the WooCommerce cart, checkout and account pages.
+	 *
+	 * @since 4.1.3
+	 *
+	 * @return void
+	 */
+	public function noindexWooCommercePages() {
+		if ( ! aioseo()->helpers->isWooCommerceActive() ) {
+			return;
+		}
+
+		$cartId     = (int) get_option( 'woocommerce_cart_page_id' );
+		$checkoutId = (int) get_option( 'woocommerce_checkout_page_id' );
+		$accountId  = (int) get_option( 'woocommerce_myaccount_page_id' );
+
+		$cartPage     = Models\Post::getPost( $cartId );
+		$checkoutPage = Models\Post::getPost( $checkoutId );
+		$accountPage  = Models\Post::getPost( $accountId );
+
+		$newMeta = [
+			'robots_default' => false,
+			'robots_noindex' => true
+		];
+
+		if ( $cartPage->exists() ) {
+			$cartPage->set( $newMeta );
+			$cartPage->save();
+		}
+		if ( $checkoutPage->exists() ) {
+			$checkoutPage->set( $newMeta );
+			$checkoutPage->save();
+		}
+		if ( $accountPage->exists() ) {
+			$accountPage->set( $newMeta );
+			$accountPage->save();
+		}
+	}
+
+	/**
+	 * Adds the new capabilities for all the roles.
+	 *
+	 * @since 4.1.3
+	 *
+	 * @return void
+	 */
+	public function accessControlNewCapabilities() {
+		aioseo()->access->addCapabilities();
+	}
+
+	/**
+	 * Migrate dynamic settings to a separate options structure.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @return void
+	 */
+	public function migrateDynamicSettings() {
+		$rawOptions = $this->getRawOptions();
+		$options    = aioseo()->dynamicOptions->noConflict();
+
+		// Sitemap post type priorities/frequencies.
+		if (
+			! empty( $rawOptions['sitemap']['dynamic']['priority']['postTypes'] )
+		) {
+			foreach ( $rawOptions['sitemap']['dynamic']['priority']['postTypes'] as $postTypeName => $data ) {
+				if ( $options->sitemap->priority->postTypes->has( $postTypeName ) ) {
+					$options->sitemap->priority->postTypes->$postTypeName->priority  = $data['priority'];
+					$options->sitemap->priority->postTypes->$postTypeName->frequency = $data['frequency'];
+				}
+			}
+		}
+
+		// Sitemap taxonomy priorities/frequencies.
+		if (
+			! empty( $rawOptions['sitemap']['dynamic']['priority']['taxonomies'] )
+		) {
+			foreach ( $rawOptions['sitemap']['dynamic']['priority']['taxonomies'] as $taxonomyName => $data ) {
+				if ( $options->sitemap->priority->taxonomies->has( $taxonomyName ) ) {
+					$options->sitemap->priority->taxonomies->$taxonomyName->priority  = $data['priority'];
+					$options->sitemap->priority->taxonomies->$taxonomyName->frequency = $data['frequency'];
+				}
+			}
+		}
+
+		// Facebook post type object types.
+		if (
+			! empty( $rawOptions['social']['facebook']['general']['dynamic']['postTypes'] )
+		) {
+			foreach ( $rawOptions['social']['facebook']['general']['dynamic']['postTypes'] as $postTypeName => $data ) {
+				if ( $options->social->facebook->general->postTypes->has( $postTypeName ) ) {
+					$options->social->facebook->general->postTypes->$postTypeName->objectType = $data['objectType'];
+				}
+			}
+		}
+
+		// Search appearance post type data.
+		if (
+			! empty( $rawOptions['searchAppearance']['dynamic']['postTypes'] )
+		) {
+			foreach ( $rawOptions['searchAppearance']['dynamic']['postTypes'] as $postTypeName => $data ) {
+				if ( $options->searchAppearance->postTypes->has( $postTypeName ) ) {
+					$options->searchAppearance->postTypes->$postTypeName->show            = $data['show'];
+					$options->searchAppearance->postTypes->$postTypeName->title           = $data['title'];
+					$options->searchAppearance->postTypes->$postTypeName->metaDescription = $data['metaDescription'];
+					$options->searchAppearance->postTypes->$postTypeName->schemaType      = $data['schemaType'];
+					$options->searchAppearance->postTypes->$postTypeName->webPageType     = $data['webPageType'];
+					$options->searchAppearance->postTypes->$postTypeName->articleType     = $data['articleType'];
+					$options->searchAppearance->postTypes->$postTypeName->customFields    = $data['customFields'];
+
+					// Advanced settings.
+					$advanced = ! empty( $data['advanced']['robotsMeta'] ) ? $data['advanced']['robotsMeta'] : null;
+					if ( ! empty( $advanced ) ) {
+						$options->searchAppearance->postTypes->$postTypeName->advanced->robotsMeta->default         = $data['advanced']['robotsMeta']['default'];
+						$options->searchAppearance->postTypes->$postTypeName->advanced->robotsMeta->noindex         = $data['advanced']['robotsMeta']['noindex'];
+						$options->searchAppearance->postTypes->$postTypeName->advanced->robotsMeta->nofollow        = $data['advanced']['robotsMeta']['nofollow'];
+						$options->searchAppearance->postTypes->$postTypeName->advanced->robotsMeta->noarchive       = $data['advanced']['robotsMeta']['noarchive'];
+						$options->searchAppearance->postTypes->$postTypeName->advanced->robotsMeta->noimageindex    = $data['advanced']['robotsMeta']['noimageindex'];
+						$options->searchAppearance->postTypes->$postTypeName->advanced->robotsMeta->notranslate     = $data['advanced']['robotsMeta']['notranslate'];
+						$options->searchAppearance->postTypes->$postTypeName->advanced->robotsMeta->nosnippet       = $data['advanced']['robotsMeta']['nosnippet'];
+						$options->searchAppearance->postTypes->$postTypeName->advanced->robotsMeta->noodp           = $data['advanced']['robotsMeta']['noodp'];
+						$options->searchAppearance->postTypes->$postTypeName->advanced->robotsMeta->maxSnippet      = $data['advanced']['robotsMeta']['maxSnippet'];
+						$options->searchAppearance->postTypes->$postTypeName->advanced->robotsMeta->maxVideoPreview = $data['advanced']['robotsMeta']['maxVideoPreview'];
+						$options->searchAppearance->postTypes->$postTypeName->advanced->robotsMeta->maxImagePreview = $data['advanced']['robotsMeta']['maxImagePreview'];
+						$options->searchAppearance->postTypes->$postTypeName->advanced->showDateInGooglePreview     = $data['advanced']['showDateInGooglePreview'];
+						$options->searchAppearance->postTypes->$postTypeName->advanced->showPostThumbnailInSearch   = $data['advanced']['showPostThumbnailInSearch'];
+						$options->searchAppearance->postTypes->$postTypeName->advanced->showMetaBox                 = $data['advanced']['showMetaBox'];
+						$options->searchAppearance->postTypes->$postTypeName->advanced->bulkEditing                 = $data['advanced']['bulkEditing'];
+					}
+
+					if ( 'attachment' === $postTypeName ) {
+						$options->searchAppearance->postTypes->$postTypeName->redirectAttachmentUrls = $data['redirectAttachmentUrls'];
+					}
+				}
+			}
+		}
+
+		// Search appearance taxonomy data.
+		if (
+			! empty( $rawOptions['searchAppearance']['dynamic']['taxonomies'] )
+		) {
+			foreach ( $rawOptions['searchAppearance']['dynamic']['taxonomies'] as $taxonomyName => $data ) {
+				if ( $options->searchAppearance->taxonomies->has( $taxonomyName ) ) {
+					$options->searchAppearance->taxonomies->$taxonomyName->show            = $data['show'];
+					$options->searchAppearance->taxonomies->$taxonomyName->title           = $data['title'];
+					$options->searchAppearance->taxonomies->$taxonomyName->metaDescription = $data['metaDescription'];
+
+					// Advanced settings.
+					$advanced = ! empty( $data['advanced']['robotsMeta'] ) ? $data['advanced']['robotsMeta'] : null;
+					if ( ! empty( $advanced ) ) {
+						$options->searchAppearance->taxonomies->$taxonomyName->advanced->robotsMeta->default         = $data['advanced']['robotsMeta']['default'];
+						$options->searchAppearance->taxonomies->$taxonomyName->advanced->robotsMeta->noindex         = $data['advanced']['robotsMeta']['noindex'];
+						$options->searchAppearance->taxonomies->$taxonomyName->advanced->robotsMeta->nofollow        = $data['advanced']['robotsMeta']['nofollow'];
+						$options->searchAppearance->taxonomies->$taxonomyName->advanced->robotsMeta->noarchive       = $data['advanced']['robotsMeta']['noarchive'];
+						$options->searchAppearance->taxonomies->$taxonomyName->advanced->robotsMeta->noimageindex    = $data['advanced']['robotsMeta']['noimageindex'];
+						$options->searchAppearance->taxonomies->$taxonomyName->advanced->robotsMeta->notranslate     = $data['advanced']['robotsMeta']['notranslate'];
+						$options->searchAppearance->taxonomies->$taxonomyName->advanced->robotsMeta->nosnippet       = $data['advanced']['robotsMeta']['nosnippet'];
+						$options->searchAppearance->taxonomies->$taxonomyName->advanced->robotsMeta->noodp           = $data['advanced']['robotsMeta']['noodp'];
+						$options->searchAppearance->taxonomies->$taxonomyName->advanced->robotsMeta->maxSnippet      = $data['advanced']['robotsMeta']['maxSnippet'];
+						$options->searchAppearance->taxonomies->$taxonomyName->advanced->robotsMeta->maxVideoPreview = $data['advanced']['robotsMeta']['maxVideoPreview'];
+						$options->searchAppearance->taxonomies->$taxonomyName->advanced->robotsMeta->maxImagePreview = $data['advanced']['robotsMeta']['maxImagePreview'];
+						$options->searchAppearance->taxonomies->$taxonomyName->advanced->showDateInGooglePreview     = $data['advanced']['showDateInGooglePreview'];
+						$options->searchAppearance->taxonomies->$taxonomyName->advanced->showPostThumbnailInSearch   = $data['advanced']['showPostThumbnailInSearch'];
+						$options->searchAppearance->taxonomies->$taxonomyName->advanced->showMetaBox                 = $data['advanced']['showMetaBox'];
+					}
+				}
+			}
 		}
 	}
 }

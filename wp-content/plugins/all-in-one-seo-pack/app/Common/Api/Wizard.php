@@ -23,9 +23,11 @@ class Wizard {
 	 * @return \WP_REST_Response          The response.
 	 */
 	public static function saveWizard( $request ) {
-		$body    = $request->get_json_params();
-		$section = ! empty( $body['section'] ) ? sanitize_text_field( $body['section'] ) : null;
-		$wizard  = ! empty( $body['wizard'] ) ? $body['wizard'] : null;
+		$body           = $request->get_json_params();
+		$section        = ! empty( $body['section'] ) ? sanitize_text_field( $body['section'] ) : null;
+		$wizard         = ! empty( $body['wizard'] ) ? $body['wizard'] : null;
+		$options        = aioseo()->options->noConflict();
+		$dynamicOptions = aioseo()->dynamicOptions->noConflict();
 
 		aioseo()->internalOptions->internal->wizard = wp_json_encode( $wizard );
 
@@ -77,21 +79,31 @@ class Wizard {
 			// If the home page is a static page, let's find and set that,
 			// otherwise set our home page settings.
 			$staticHomePage = 'page' === get_option( 'show_on_front' ) ? get_post( get_option( 'page_on_front' ) ) : null;
-			if ( ! empty( $category['siteTitle'] ) ) {
-				if ( $staticHomePage ) {
-					$page        = Models\Post::getPost( $staticHomePage->ID );
+			if ( ! empty( $staticHomePage ) ) {
+				$update = false;
+				$page   = Models\Post::getPost( $staticHomePage->ID );
+				if ( ! empty( $category['siteTitle'] ) ) {
+					$update      = true;
 					$page->title = $category['siteTitle'];
-				} else {
-					aioseo()->options->searchAppearance->global->siteTitle = $category['siteTitle'];
+				}
+
+				if ( ! empty( $category['metaDescription'] ) ) {
+					$update            = true;
+					$page->description = $category['metaDescription'];
+				}
+
+				if ( $update ) {
+					$page->save();
 				}
 			}
 
-			if ( ! empty( $category['metaDescription'] ) ) {
-				if ( $staticHomePage ) {
-					$page              = Models\Post::getPost( $staticHomePage->ID );
-					$page->description = $category['metaDescription'];
-				} else {
-					aioseo()->options->searchAppearance->global->metaDescription = $category['metaDescription'];
+			if ( empty( $staticHomePage ) ) {
+				if ( ! empty( $category['siteTitle'] ) ) {
+					$options->searchAppearance->global->siteTitle = $category['siteTitle'];
+				}
+
+				if ( ! empty( $category['metaDescription'] ) ) {
+					$options->searchAppearance->global->metaDescription = $category['metaDescription'];
 				}
 			}
 		}
@@ -100,44 +112,44 @@ class Wizard {
 		if ( 'additionalInformation' === $section && ! empty( $wizard['additionalInformation'] ) ) {
 			$additionalInformation = $wizard['additionalInformation'];
 			if ( ! empty( $additionalInformation['siteRepresents'] ) ) {
-				aioseo()->options->searchAppearance->global->schema->siteRepresents = $additionalInformation['siteRepresents'];
+				$options->searchAppearance->global->schema->siteRepresents = $additionalInformation['siteRepresents'];
 			}
 
 			if ( ! empty( $additionalInformation['person'] ) ) {
-				aioseo()->options->searchAppearance->global->schema->person = $additionalInformation['person'];
+				$options->searchAppearance->global->schema->person = $additionalInformation['person'];
 			}
 
 			if ( ! empty( $additionalInformation['organizationName'] ) ) {
-				aioseo()->options->searchAppearance->global->schema->organizationName = $additionalInformation['organizationName'];
+				$options->searchAppearance->global->schema->organizationName = $additionalInformation['organizationName'];
 			}
 
 			if ( ! empty( $additionalInformation['phone'] ) ) {
-				aioseo()->options->searchAppearance->global->schema->phone = $additionalInformation['phone'];
+				$options->searchAppearance->global->schema->phone = $additionalInformation['phone'];
 			}
 
 			if ( ! empty( $additionalInformation['organizationLogo'] ) ) {
-				aioseo()->options->searchAppearance->global->schema->organizationLogo = $additionalInformation['organizationLogo'];
+				$options->searchAppearance->global->schema->organizationLogo = $additionalInformation['organizationLogo'];
 			}
 
 			if ( ! empty( $additionalInformation['personName'] ) ) {
-				aioseo()->options->searchAppearance->global->schema->personName = $additionalInformation['personName'];
+				$options->searchAppearance->global->schema->personName = $additionalInformation['personName'];
 			}
 
 			if ( ! empty( $additionalInformation['personLogo'] ) ) {
-				aioseo()->options->searchAppearance->global->schema->personLogo = $additionalInformation['personLogo'];
+				$options->searchAppearance->global->schema->personLogo = $additionalInformation['personLogo'];
 			}
 
 			if ( ! empty( $additionalInformation['contactType'] ) ) {
-				aioseo()->options->searchAppearance->global->schema->contactType = $additionalInformation['contactType'];
+				$options->searchAppearance->global->schema->contactType = $additionalInformation['contactType'];
 			}
 
 			if ( ! empty( $additionalInformation['contactManual'] ) ) {
-				aioseo()->options->searchAppearance->global->schema->contactManual = $additionalInformation['contactManual'];
+				$options->searchAppearance->global->schema->contactManual = $additionalInformation['contactManual'];
 			}
 
 			if ( ! empty( $additionalInformation['socialShareImage'] ) ) {
-				aioseo()->options->social->facebook->general->defaultImagePosts = $additionalInformation['socialShareImage'];
-				aioseo()->options->social->twitter->general->defaultImagePosts  = $additionalInformation['socialShareImage'];
+				$options->social->facebook->general->defaultImagePosts = $additionalInformation['socialShareImage'];
+				$options->social->twitter->general->defaultImagePosts  = $additionalInformation['socialShareImage'];
 			}
 
 			if ( ! empty( $additionalInformation['social'] ) && ! empty( $additionalInformation['social']['profiles'] ) ) {
@@ -145,66 +157,66 @@ class Wizard {
 				if ( ! empty( $profiles['sameUsername'] ) ) {
 					$sameUsername = $profiles['sameUsername'];
 					if ( isset( $sameUsername['enable'] ) ) {
-						aioseo()->options->social->profiles->sameUsername->enable = $sameUsername['enable'];
+						$options->social->profiles->sameUsername->enable = $sameUsername['enable'];
 					}
 
 					if ( ! empty( $sameUsername['username'] ) ) {
-						aioseo()->options->social->profiles->sameUsername->username = $sameUsername['username'];
+						$options->social->profiles->sameUsername->username = $sameUsername['username'];
 					}
 
 					if ( ! empty( $sameUsername['included'] ) ) {
-						aioseo()->options->social->profiles->sameUsername->included = $sameUsername['included'];
+						$options->social->profiles->sameUsername->included = $sameUsername['included'];
 					}
 				}
 
 				if ( ! empty( $profiles['urls'] ) ) {
 					$urls = $profiles['urls'];
 					if ( ! empty( $urls['facebookPageUrl'] ) ) {
-						aioseo()->options->social->profiles->urls->facebookPageUrl = $urls['facebookPageUrl'];
+						$options->social->profiles->urls->facebookPageUrl = $urls['facebookPageUrl'];
 					}
 
 					if ( ! empty( $urls['twitterUrl'] ) ) {
-						aioseo()->options->social->profiles->urls->twitterUrl = $urls['twitterUrl'];
+						$options->social->profiles->urls->twitterUrl = $urls['twitterUrl'];
 					}
 
 					if ( ! empty( $urls['instagramUrl'] ) ) {
-						aioseo()->options->social->profiles->urls->instagramUrl = $urls['instagramUrl'];
+						$options->social->profiles->urls->instagramUrl = $urls['instagramUrl'];
 					}
 
 					if ( ! empty( $urls['pinterestUrl'] ) ) {
-						aioseo()->options->social->profiles->urls->pinterestUrl = $urls['pinterestUrl'];
+						$options->social->profiles->urls->pinterestUrl = $urls['pinterestUrl'];
 					}
 
 					if ( ! empty( $urls['youtubeUrl'] ) ) {
-						aioseo()->options->social->profiles->urls->youtubeUrl = $urls['youtubeUrl'];
+						$options->social->profiles->urls->youtubeUrl = $urls['youtubeUrl'];
 					}
 
 					if ( ! empty( $urls['linkedinUrl'] ) ) {
-						aioseo()->options->social->profiles->urls->linkedinUrl = $urls['linkedinUrl'];
+						$options->social->profiles->urls->linkedinUrl = $urls['linkedinUrl'];
 					}
 
 					if ( ! empty( $urls['tumblrUrl'] ) ) {
-						aioseo()->options->social->profiles->urls->tumblrUrl = $urls['tumblrUrl'];
+						$options->social->profiles->urls->tumblrUrl = $urls['tumblrUrl'];
 					}
 
 					if ( ! empty( $urls['yelpPageUrl'] ) ) {
-						aioseo()->options->social->profiles->urls->yelpPageUrl = $urls['yelpPageUrl'];
+						$options->social->profiles->urls->yelpPageUrl = $urls['yelpPageUrl'];
 					}
 
 					if ( ! empty( $urls['soundCloudUrl'] ) ) {
-						aioseo()->options->social->profiles->urls->soundCloudUrl = $urls['soundCloudUrl'];
+						$options->social->profiles->urls->soundCloudUrl = $urls['soundCloudUrl'];
 					}
 
 					if ( ! empty( $urls['wikipediaUrl'] ) ) {
-						aioseo()->options->social->profiles->urls->wikipediaUrl = $urls['wikipediaUrl'];
+						$options->social->profiles->urls->wikipediaUrl = $urls['wikipediaUrl'];
 					}
 
 					if ( ! empty( $urls['myspaceUrl'] ) ) {
-						aioseo()->options->social->profiles->urls->myspaceUrl = $urls['myspaceUrl'];
+						$options->social->profiles->urls->myspaceUrl = $urls['myspaceUrl'];
 					}
 
 					if ( ! empty( $urls['googlePlacesUrl'] ) ) {
-						aioseo()->options->social->profiles->urls->googlePlacesUrl = $urls['googlePlacesUrl'];
+						$options->social->profiles->urls->googlePlacesUrl = $urls['googlePlacesUrl'];
 					}
 				}
 			}
@@ -279,55 +291,47 @@ class Wizard {
 			) {
 				// Robots.
 				if ( ! empty( $searchAppearance['postTypes']['postTypes']['all'] ) ) {
-					$options = aioseo()->options->noConflict();
 					foreach ( aioseo()->helpers->getPublicPostTypes( true ) as $postType ) {
-						if ( $options->searchAppearance->dynamic->postTypes->has( $postType ) ) {
-							$options->searchAppearance->dynamic->postTypes->$postType->show                          = true;
-							$options->searchAppearance->dynamic->postTypes->$postType->advanced->robotsMeta->default = true;
-							$options->searchAppearance->dynamic->postTypes->$postType->advanced->robotsMeta->noindex = false;
+						if ( $dynamicOptions->searchAppearance->postTypes->has( $postType ) ) {
+							$dynamicOptions->searchAppearance->postTypes->$postType->show                          = true;
+							$dynamicOptions->searchAppearance->postTypes->$postType->advanced->robotsMeta->default = true;
+							$dynamicOptions->searchAppearance->postTypes->$postType->advanced->robotsMeta->noindex = false;
 						}
 					}
-
-					aioseo()->options->refresh();
 				} else {
-					$options = aioseo()->options->noConflict();
 					foreach ( aioseo()->helpers->getPublicPostTypes( true ) as $postType ) {
-						if ( $options->searchAppearance->dynamic->postTypes->has( $postType ) ) {
+						if ( $dynamicOptions->searchAppearance->postTypes->has( $postType ) ) {
 							if ( in_array( $postType, (array) $searchAppearance['postTypes']['postTypes']['included'], true ) ) {
-								$options->searchAppearance->dynamic->postTypes->$postType->show                          = true;
-								$options->searchAppearance->dynamic->postTypes->$postType->advanced->robotsMeta->default = true;
-								$options->searchAppearance->dynamic->postTypes->$postType->advanced->robotsMeta->noindex = false;
+								$dynamicOptions->searchAppearance->postTypes->$postType->show                          = true;
+								$dynamicOptions->searchAppearance->postTypes->$postType->advanced->robotsMeta->default = true;
+								$dynamicOptions->searchAppearance->postTypes->$postType->advanced->robotsMeta->noindex = false;
 							} else {
-								$options->searchAppearance->dynamic->postTypes->$postType->show                          = false;
-								$options->searchAppearance->dynamic->postTypes->$postType->advanced->robotsMeta->default = false;
-								$options->searchAppearance->dynamic->postTypes->$postType->advanced->robotsMeta->noindex = true;
+								$dynamicOptions->searchAppearance->postTypes->$postType->show                          = false;
+								$dynamicOptions->searchAppearance->postTypes->$postType->advanced->robotsMeta->default = false;
+								$dynamicOptions->searchAppearance->postTypes->$postType->advanced->robotsMeta->noindex = true;
 							}
 						}
 					}
-
-					aioseo()->options->refresh();
 				}
 
 				// Sitemaps.
 				if ( isset( $searchAppearance['postTypes']['postTypes']['all'] ) ) {
-					aioseo()->options->sitemap->general->postTypes->all = $searchAppearance['postTypes']['postTypes']['all'];
+					$options->sitemap->general->postTypes->all = $searchAppearance['postTypes']['postTypes']['all'];
 				}
 
 				if ( isset( $searchAppearance['postTypes']['postTypes']['included'] ) ) {
-					aioseo()->options->sitemap->general->postTypes->included = $searchAppearance['postTypes']['postTypes']['included'];
+					$options->sitemap->general->postTypes->included = $searchAppearance['postTypes']['postTypes']['included'];
 				}
 			}
 
 			if ( isset( $searchAppearance['multipleAuthors'] ) ) {
-				aioseo()->options->searchAppearance->archives->author->show                          = $searchAppearance['multipleAuthors'];
-				aioseo()->options->searchAppearance->archives->author->advanced->robotsMeta->default = $searchAppearance['multipleAuthors'];
-				aioseo()->options->searchAppearance->archives->author->advanced->robotsMeta->noindex = ! $searchAppearance['multipleAuthors'];
+				$options->searchAppearance->archives->author->show                          = $searchAppearance['multipleAuthors'];
+				$options->searchAppearance->archives->author->advanced->robotsMeta->default = $searchAppearance['multipleAuthors'];
+				$options->searchAppearance->archives->author->advanced->robotsMeta->noindex = ! $searchAppearance['multipleAuthors'];
 			}
 
-			$options = aioseo()->options->noConflict();
-			if ( isset( $searchAppearance['redirectAttachmentPages'] ) && $options->searchAppearance->dynamic->postTypes->has( 'attachment' ) ) {
-				$options->searchAppearance->dynamic->postTypes->attachment->redirectAttachmentUrls = $searchAppearance['redirectAttachmentPages'] ? 'attachment' : 'disabled';
-				aioseo()->options->refresh();
+			if ( isset( $searchAppearance['redirectAttachmentPages'] ) && $dynamicOptions->searchAppearance->postTypes->has( 'attachment' ) ) {
+				$dynamicOptions->searchAppearance->postTypes->attachment->redirectAttachmentUrls = $searchAppearance['redirectAttachmentPages'] ? 'attachment' : 'disabled';
 			}
 		}
 

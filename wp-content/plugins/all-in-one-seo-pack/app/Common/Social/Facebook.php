@@ -178,9 +178,9 @@ class Facebook {
 		}
 
 		$postType          = get_post_type();
-		$options           = aioseo()->options->noConflict();
-		$defaultObjectType = $options->social->facebook->general->dynamic->postTypes->has( $postType )
-			? $options->social->facebook->general->dynamic->postTypes->$postType->objectType
+		$dynamicOptions    = aioseo()->dynamicOptions->noConflict();
+		$defaultObjectType = $dynamicOptions->social->facebook->general->postTypes->has( $postType )
+			? $dynamicOptions->social->facebook->general->postTypes->$postType->objectType
 			: '';
 
 		return ! empty( $defaultObjectType ) ? $defaultObjectType : 'article';
@@ -196,7 +196,7 @@ class Facebook {
 	 */
 	public function getTitle( $post = null ) {
 		if ( is_home() && 'posts' === get_option( 'show_on_front' ) ) {
-			$title = aioseo()->meta->title->prepareTitle( aioseo()->options->social->facebook->homePage->title );
+			$title = aioseo()->meta->title->helpers->prepare( aioseo()->options->social->facebook->homePage->title );
 			return $title ? $title : aioseo()->meta->title->getTitle();
 		}
 
@@ -205,7 +205,7 @@ class Facebook {
 
 		$title = '';
 		if ( ! empty( $metaData->og_title ) ) {
-			$title = aioseo()->meta->title->prepareTitle( $metaData->og_title );
+			$title = aioseo()->meta->title->helpers->prepare( $metaData->og_title );
 		}
 		return $title ? $title : aioseo()->meta->title->getPostTitle( $post );
 	}
@@ -220,7 +220,7 @@ class Facebook {
 	 */
 	public function getDescription( $post = null ) {
 		if ( is_home() && 'posts' === get_option( 'show_on_front' ) ) {
-			$description = aioseo()->meta->description->prepareDescription( aioseo()->options->social->facebook->homePage->description );
+			$description = aioseo()->meta->description->helpers->prepare( aioseo()->options->social->facebook->homePage->description );
 			return $description ? $description : aioseo()->meta->description->getDescription();
 		}
 
@@ -229,7 +229,7 @@ class Facebook {
 
 		$description = '';
 		if ( ! empty( $metaData->og_description ) ) {
-			$description = aioseo()->meta->description->prepareDescription( $metaData->og_description );
+			$description = aioseo()->meta->description->helpers->prepare( $metaData->og_description );
 		}
 		return $description ? $description : aioseo()->meta->description->getPostDescription( $post );
 	}
@@ -273,7 +273,7 @@ class Facebook {
 	 */
 	public function getPublishedTime() {
 		$post = aioseo()->helpers->getPost();
-		return $post ? gmdate( 'Y-m-d\TH:i:s\Z', mysql2date( 'U', aioseo()->helpers->getPost()->post_date_gmt ) ) : '';
+		return $post ? aioseo()->helpers->formatDateTime( $post->post_date_gmt ) : '';
 	}
 
 	/**
@@ -285,7 +285,7 @@ class Facebook {
 	 */
 	public function getModifiedTime() {
 		$post = aioseo()->helpers->getPost();
-		return $post ? gmdate( 'Y-m-d\TH:i:s\Z', mysql2date( 'U', aioseo()->helpers->getPost()->post_modified_gmt ) ) : '';
+		return $post ? aioseo()->helpers->formatDateTime( $post->post_modified_gmt ) : '';
 	}
 
 
@@ -331,14 +331,216 @@ class Facebook {
 			}
 
 			if ( aioseo()->options->social->facebook->advanced->useCategoriesInTags ) {
-				$tags = array_merge( $tags, aioseo()->social->helpers->getAllCategories( $post->ID ) );
+				$tags = array_merge( $tags, aioseo()->helpers->getAllCategories( $post->ID ) );
 			}
 
 			if ( aioseo()->options->social->facebook->advanced->usePostTagsInTags ) {
-				$tags = array_merge( $tags, aioseo()->social->helpers->getAllTags( $post->ID ) );
+				$tags = array_merge( $tags, aioseo()->helpers->getAllTags( $post->ID ) );
 			}
 		}
 
 		return aioseo()->meta->keywords->getUniqueKeywords( $tags, false );
+	}
+
+	/**
+	 * Retreive the locale.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @return string The locale.
+	 */
+	public function getLocale() {
+		$locale = get_locale();
+
+		// These are the locales FB supports.
+		$validLocales = [
+			'af_ZA', // Afrikaans.
+			'ak_GH', // Akan.
+			'am_ET', // Amharic.
+			'ar_AR', // Arabic.
+			'as_IN', // Assamese.
+			'ay_BO', // Aymara.
+			'az_AZ', // Azerbaijani.
+			'be_BY', // Belarusian.
+			'bg_BG', // Bulgarian.
+			'bp_IN', // Bhojpuri.
+			'bn_IN', // Bengali.
+			'br_FR', // Breton.
+			'bs_BA', // Bosnian.
+			'ca_ES', // Catalan.
+			'cb_IQ', // Sorani Kurdish.
+			'ck_US', // Cherokee.
+			'co_FR', // Corsican.
+			'cs_CZ', // Czech.
+			'cx_PH', // Cebuano.
+			'cy_GB', // Welsh.
+			'da_DK', // Danish.
+			'de_DE', // German.
+			'el_GR', // Greek.
+			'en_GB', // English (UK).
+			'en_PI', // English (Pirate).
+			'en_UD', // English (Upside Down).
+			'en_US', // English (US).
+			'em_ZM',
+			'eo_EO', // Esperanto.
+			'es_ES', // Spanish (Spain).
+			'es_LA', // Spanish.
+			'es_MX', // Spanish (Mexico).
+			'et_EE', // Estonian.
+			'eu_ES', // Basque.
+			'fa_IR', // Persian.
+			'fb_LT', // Leet Speak.
+			'ff_NG', // Fulah.
+			'fi_FI', // Finnish.
+			'fo_FO', // Faroese.
+			'fr_CA', // French (Canada).
+			'fr_FR', // French (France).
+			'fy_NL', // Frisian.
+			'ga_IE', // Irish.
+			'gl_ES', // Galician.
+			'gn_PY', // Guarani.
+			'gu_IN', // Gujarati.
+			'gx_GR', // Classical Greek.
+			'ha_NG', // Hausa.
+			'he_IL', // Hebrew.
+			'hi_IN', // Hindi.
+			'hr_HR', // Croatian.
+			'hu_HU', // Hungarian.
+			'ht_HT', // Haitian Creole.
+			'hy_AM', // Armenian.
+			'id_ID', // Indonesian.
+			'ig_NG', // Igbo.
+			'is_IS', // Icelandic.
+			'it_IT', // Italian.
+			'ik_US',
+			'iu_CA',
+			'ja_JP', // Japanese.
+			'ja_KS', // Japanese (Kansai).
+			'jv_ID', // Javanese.
+			'ka_GE', // Georgian.
+			'kk_KZ', // Kazakh.
+			'km_KH', // Khmer.
+			'kn_IN', // Kannada.
+			'ko_KR', // Korean.
+			'ks_IN', // Kashmiri.
+			'ku_TR', // Kurdish (Kurmanji).
+			'ky_KG', // Kyrgyz.
+			'la_VA', // Latin.
+			'lg_UG', // Ganda.
+			'li_NL', // Limburgish.
+			'ln_CD', // Lingala.
+			'lo_LA', // Lao.
+			'lt_LT', // Lithuanian.
+			'lv_LV', // Latvian.
+			'mg_MG', // Malagasy.
+			'mi_NZ', // Maori.
+			'mk_MK', // Macedonian.
+			'ml_IN', // Malayalam.
+			'mn_MN', // Mongolian.
+			'mr_IN', // Marathi.
+			'ms_MY', // Malay.
+			'mt_MT', // Maltese.
+			'my_MM', // Burmese.
+			'nb_NO', // Norwegian (bokmal).
+			'nd_ZW', // Ndebele.
+			'ne_NP', // Nepali.
+			'nl_BE', // Dutch (Belgie).
+			'nl_NL', // Dutch.
+			'nn_NO', // Norwegian (nynorsk).
+			'nr_ZA', // Southern Ndebele.
+			'ns_ZA', // Northern Sotho.
+			'ny_MW', // Chewa.
+			'om_ET', // Oromo.
+			'or_IN', // Oriya.
+			'pa_IN', // Punjabi.
+			'pl_PL', // Polish.
+			'ps_AF', // Pashto.
+			'pt_BR', // Portuguese (Brazil).
+			'pt_PT', // Portuguese (Portugal).
+			'qc_GT', // Quiché.
+			'qu_PE', // Quechua.
+			'qr_GR',
+			'qz_MM', // Burmese (Zawgyi).
+			'rm_CH', // Romansh.
+			'ro_RO', // Romanian.
+			'ru_RU', // Russian.
+			'rw_RW', // Kinyarwanda.
+			'sa_IN', // Sanskrit.
+			'sc_IT', // Sardinian.
+			'se_NO', // Northern Sami.
+			'si_LK', // Sinhala.
+			'su_ID', // Sundanese.
+			'sk_SK', // Slovak.
+			'sl_SI', // Slovenian.
+			'sn_ZW', // Shona.
+			'so_SO', // Somali.
+			'sq_AL', // Albanian.
+			'sr_RS', // Serbian.
+			'ss_SZ', // Swazi.
+			'st_ZA', // Southern Sotho.
+			'sv_SE', // Swedish.
+			'sw_KE', // Swahili.
+			'sy_SY', // Syriac.
+			'sz_PL', // Silesian.
+			'ta_IN', // Tamil.
+			'te_IN', // Telugu.
+			'tg_TJ', // Tajik.
+			'th_TH', // Thai.
+			'tk_TM', // Turkmen.
+			'tl_PH', // Filipino.
+			'tl_ST', // Klingon.
+			'tn_BW', // Tswana.
+			'tr_TR', // Turkish.
+			'ts_ZA', // Tsonga.
+			'tt_RU', // Tatar.
+			'tz_MA', // Tamazight.
+			'uk_UA', // Ukrainian.
+			'ur_PK', // Urdu.
+			'uz_UZ', // Uzbek.
+			've_ZA', // Venda.
+			'vi_VN', // Vietnamese.
+			'wo_SN', // Wolof.
+			'xh_ZA', // Xhosa.
+			'yi_DE', // Yiddish.
+			'yo_NG', // Yoruba.
+			'zh_CN', // Simplified Chinese (China).
+			'zh_HK', // Traditional Chinese (Hong Kong).
+			'zh_TW', // Traditional Chinese (Taiwan).
+			'zu_ZA', // Zulu.
+			'zz_TR', // Zazaki.
+		];
+
+		// Catch some weird locales served out by WP that are not easily doubled up.
+		$fixLocales = [
+			'ca' => 'ca_ES',
+			'en' => 'en_US',
+			'el' => 'el_GR',
+			'et' => 'et_EE',
+			'ja' => 'ja_JP',
+			'sq' => 'sq_AL',
+			'uk' => 'uk_UA',
+			'vi' => 'vi_VN',
+			'zh' => 'zh_CN',
+		];
+
+		if ( isset( $fixLocales[ $locale ] ) ) {
+			$locale = $fixLocales[ $locale ];
+		}
+
+		// Convert locales like "es" to "es_ES", in case that works for the given locale (sometimes it does).
+		if ( 2 === strlen( $locale ) ) {
+			$locale = strtolower( $locale ) . '_' . strtoupper( $locale );
+		}
+
+		// Check to see if the locale is a valid FB one, if not, use en_US as a fallback.
+		if ( ! in_array( $locale, $validLocales, true ) ) {
+			$locale = strtolower( substr( $locale, 0, 2 ) ) . '_' . strtoupper( substr( $locale, 0, 2 ) );
+
+			if ( ! in_array( $locale, $validLocales, true ) ) {
+				$locale = 'en_US';
+			}
+		}
+
+		return apply_filters( 'aioseo_og_locale', $locale );
 	}
 }

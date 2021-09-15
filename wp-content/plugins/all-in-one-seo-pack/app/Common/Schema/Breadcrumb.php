@@ -56,7 +56,7 @@ class Breadcrumb {
 					'name'        => $post->post_title,
 					'description' => aioseo()->meta->description->getDescription( $post ),
 					'url'         => get_permalink( $post ),
-					'type'        => aioseo()->helpers->isWooCommerceShopPage() || is_home() ? 'CollectionPage' : $this->getPostGraph()
+					'type'        => aioseo()->helpers->isWooCommerceShopPage( $post->ID ) || is_home() ? 'CollectionPage' : $this->getPostGraph()
 				]
 			);
 
@@ -134,7 +134,7 @@ class Breadcrumb {
 				case '%author%':
 					$breadcrumb = [
 						'name'        => get_the_author_meta( 'display_name', $post->post_author ),
-						'description' => aioseo()->meta->description->prepareDescription( aioseo()->options->searchAppearance->archives->author->metaDescription ),
+						'description' => aioseo()->meta->description->helpers->prepare( aioseo()->options->searchAppearance->archives->author->metaDescription ),
 						'url'         => $url[0],
 						'type'        => 'ProfilePage'
 					];
@@ -160,7 +160,7 @@ class Breadcrumb {
 					}
 					$breadcrumb = [
 						'name'        => $dateName,
-						'description' => aioseo()->meta->description->prepareDescription( aioseo()->options->searchAppearance->archives->date->metaDescription ),
+						'description' => aioseo()->meta->description->helpers->prepare( aioseo()->options->searchAppearance->archives->date->metaDescription ),
 						'url'         => $url[0],
 						'type'        => 'CollectionPage'
 					];

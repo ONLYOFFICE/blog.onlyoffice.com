@@ -73,7 +73,8 @@ class Connect {
 		remove_action( 'admin_print_styles', 'gutenberg_block_editor_admin_print_styles' );
 
 		if ( 'aioseo-connect-pro' === wp_unslash( $_GET['page'] ) ) { // phpcs:ignore HM.Security.ValidatedSanitizedInput.InputNotSanitized
-			return $this->loadConnectPro();
+			$this->loadConnectPro();
+			return;
 		}
 
 		$this->loadConnect();

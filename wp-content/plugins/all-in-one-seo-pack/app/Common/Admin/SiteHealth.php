@@ -335,9 +335,9 @@ class SiteHealth {
 
 		foreach ( aioseo()->helpers->getPublicPostTypes() as $postType ) {
 			if (
-				aioseo()->options->searchAppearance->dynamic->postTypes->has( $postType['name'] ) &&
-				! aioseo()->options->searchAppearance->dynamic->postTypes->{ $postType['name'] }->advanced->robotsMeta->default &&
-				aioseo()->options->searchAppearance->dynamic->postTypes->{ $postType['name'] }->advanced->robotsMeta->noindex
+				aioseo()->dynamicOptions->searchAppearance->postTypes->has( $postType['name'] ) &&
+				! aioseo()->dynamicOptions->searchAppearance->postTypes->{ $postType['name'] }->advanced->robotsMeta->default &&
+				aioseo()->dynamicOptions->searchAppearance->postTypes->{ $postType['name'] }->advanced->robotsMeta->noindex
 			) {
 				$noindexed[] = $postType['label'] . ' (' . $postType['name'] . ')';
 			}
@@ -345,9 +345,9 @@ class SiteHealth {
 
 		foreach ( aioseo()->helpers->getPublicTaxonomies() as $taxonomy ) {
 			if (
-				aioseo()->options->searchAppearance->dynamic->taxonomies->has( $taxonomy['name'] ) &&
-				! aioseo()->options->searchAppearance->dynamic->taxonomies->{ $taxonomy['name'] }->advanced->robotsMeta->default &&
-				aioseo()->options->searchAppearance->dynamic->taxonomies->{ $taxonomy['name'] }->advanced->robotsMeta->noindex
+				aioseo()->dynamicOptions->searchAppearance->taxonomies->has( $taxonomy['name'] ) &&
+				! aioseo()->dynamicOptions->searchAppearance->taxonomies->{ $taxonomy['name'] }->advanced->robotsMeta->default &&
+				aioseo()->dynamicOptions->searchAppearance->taxonomies->{ $taxonomy['name'] }->advanced->robotsMeta->noindex
 			) {
 				$noindexed[] = $taxonomy['label'] . ' (' . $taxonomy['name'] . ')';
 			}
@@ -401,9 +401,9 @@ class SiteHealth {
 
 		foreach ( aioseo()->helpers->getPublicPostTypes() as $postType ) {
 			if (
-				aioseo()->options->searchAppearance->dynamic->postTypes->has( $postType['name'] ) &&
-				! aioseo()->options->searchAppearance->dynamic->postTypes->{ $postType['name'] }->advanced->robotsMeta->default &&
-				aioseo()->options->searchAppearance->dynamic->postTypes->{ $postType['name'] }->advanced->robotsMeta->nofollow
+				aioseo()->dynamicOptions->searchAppearance->postTypes->has( $postType['name'] ) &&
+				! aioseo()->dynamicOptions->searchAppearance->postTypes->{ $postType['name'] }->advanced->robotsMeta->default &&
+				aioseo()->dynamicOptions->searchAppearance->postTypes->{ $postType['name'] }->advanced->robotsMeta->nofollow
 			) {
 				$nofollowed[] = $postType['label'] . ' (' . $postType['name'] . ')';
 			}
@@ -411,9 +411,9 @@ class SiteHealth {
 
 		foreach ( aioseo()->helpers->getPublicTaxonomies() as $taxonomy ) {
 			if (
-				aioseo()->options->searchAppearance->dynamic->taxonomies->has( $taxonomy['name'] ) &&
-				! aioseo()->options->searchAppearance->dynamic->taxonomies->{ $taxonomy['name'] }->advanced->robotsMeta->default &&
-				aioseo()->options->searchAppearance->dynamic->taxonomies->{ $taxonomy['name'] }->advanced->robotsMeta->nofollow
+				aioseo()->dynamicOptions->searchAppearance->taxonomies->has( $taxonomy['name'] ) &&
+				! aioseo()->dynamicOptions->searchAppearance->taxonomies->{ $taxonomy['name'] }->advanced->robotsMeta->default &&
+				aioseo()->dynamicOptions->searchAppearance->taxonomies->{ $taxonomy['name'] }->advanced->robotsMeta->nofollow
 			) {
 				$nofollowed[] = $taxonomy['label'] . ' (' . $taxonomy['name'] . ')';
 			}
