@@ -2,10 +2,10 @@
 /**
  * Plugin Name: All in One SEO
  * Plugin URI:  https://aioseo.com/
- * Description: SEO for WordPress. Features like XML Sitemaps, SEO for custom post types, SEO for blogs, business sites, ecommerce sites, and much more. More than 75 million downloads since 2007.
+ * Description: SEO for WordPress. Features like XML Sitemaps, SEO for custom post types, SEO for blogs, business sites, ecommerce sites, and much more. More than 80 million downloads since 2007.
  * Author:      All in One SEO Team
  * Author URI:  https://aioseo.com/
- * Version:     4.1.1.1
+ * Version:     4.1.4.3
  * Text Domain: all-in-one-seo-pack
  * Domain Path: /i18n/
  *
@@ -44,6 +44,15 @@ require_once( dirname( __FILE__ ) . '/app/init/activation.php' );
 // We require PHP 5.4+ for the whole plugin to work.
 if ( version_compare( PHP_VERSION, '5.4', '<' ) ) {
 	add_action( 'admin_notices', 'aioseo_php_notice' );
+
+	// Do not process the plugin code further.
+	return;
+}
+
+// We require WP 4.9+ for the whole plugin to work.
+global $wp_version;
+if ( version_compare( $wp_version, '4.9', '<' ) ) {
+	add_action( 'admin_notices', 'aioseo_wordpress_notice' );
 
 	// Do not process the plugin code further.
 	return;

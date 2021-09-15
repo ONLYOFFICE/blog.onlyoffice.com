@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AIOSEO\Plugin\Common\Models;
+
 // phpcs:disable WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound
 
 /**
@@ -30,6 +32,9 @@ class SocialMeta {
 		$this->migrateFacebookSettings();
 		$this->migrateTwitterSettings();
 		$this->migrateFacebookAdminId();
+		$this->migrateSiteName();
+		$this->migrateArticleTags();
+		$this->migrateAdditionalTwitterData();
 
 		$settings = [
 			'pinterestverify' => [ 'type' => 'string', 'newOption' => [ 'webmasterTools', 'pinterest' ] ]
@@ -38,6 +43,13 @@ class SocialMeta {
 		aioseo()->importExport->yoastSeo->helpers->mapOldToNew( $settings, $this->options );
 	}
 
+	/**
+	 * Migrates the Social URLs.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @return void
+	 */
 	private function migrateSocialUrls() {
 		$settings = [
 			'facebook_site' => [ 'type' => 'string', 'newOption' => [ 'social', 'profiles', 'urls', 'facebookPageUrl' ] ],
@@ -82,6 +94,18 @@ class SocialMeta {
 		];
 
 		aioseo()->importExport->yoastSeo->helpers->mapOldToNew( $settings, $this->options, true );
+
+		// Migrate home page object type.
+		aioseo()->options->social->facebook->homePage->objectType = 'website';
+		if ( 'page' === get_option( 'show_on_front' ) ) {
+			$staticHomePageId = get_option( 'page_on_front' );
+
+			$aioseoPost = Models\Post::getPost( (int) $staticHomePageId );
+			$aioseoPost->set( [
+				'og_object_type' => 'website'
+			] );
+			$aioseoPost->save();
+		}
 	}
 
 	/**
@@ -112,5 +136,42 @@ class SocialMeta {
 			aioseo()->options->social->facebook->advanced->enable = true;
 			aioseo()->options->social->facebook->advanced->adminId = aioseo()->helpers->sanitizeOption( $this->options['fbadminapp'] );
 		}
+	}
+
+	/**
+	 * Yoast sets the og:site_name to '#site_title';
+	 *
+	 * @since 4.1.4
+	 *
+	 * @return void
+	 */
+	private function migrateSiteName() {
+		aioseo()->options->social->facebook->general->siteName = '#site_title';
+	}
+
+	/**
+	 * Yoast uses post tags by default, so we need to enable this.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @return void
+	 */
+	private function migrateArticleTags() {
+		aioseo()->options->social->facebook->advanced->enable              = true;
+		aioseo()->options->social->facebook->advanced->generateArticleTags = true;
+		aioseo()->options->social->facebook->advanced->usePostTagsInTags   = true;
+		aioseo()->options->social->facebook->advanced->useKeywordsInTags   = false;
+		aioseo()->options->social->facebook->advanced->useCategoriesInTags = false;
+	}
+
+	/**
+	 * Enable additional Twitter Data.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @return void
+	 */
+	private function migrateAdditionalTwitterData() {
+		aioseo()->options->social->twitter->general->additionalData = true;
 	}
 }

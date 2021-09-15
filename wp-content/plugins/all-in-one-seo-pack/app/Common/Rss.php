@@ -39,8 +39,8 @@ class Rss {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string $content The
-	 * @return void
+	 * @param  string $content The post content.
+	 * @return string          The post content with prepended/appended content.
 	 */
 	public function addRssContent( $content, $type = 'complete' ) {
 		$content = trim( $content );

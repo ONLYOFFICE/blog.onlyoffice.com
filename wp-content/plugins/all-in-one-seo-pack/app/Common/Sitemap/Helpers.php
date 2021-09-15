@@ -208,10 +208,11 @@ class Helpers {
 		}
 
 		$options         = aioseo()->options->noConflict();
+		$dynamicOptions  = aioseo()->dynamicOptions->noConflict();
 		$publicPostTypes = aioseo()->helpers->getPublicPostTypes( true, $hasArchivesOnly );
 		foreach ( $postTypes as $postType ) {
 			// Check if post type is no longer registered.
-			if ( ! in_array( $postType, $publicPostTypes, true ) || ! $options->searchAppearance->dynamic->postTypes->has( $postType ) ) {
+			if ( ! in_array( $postType, $publicPostTypes, true ) || ! $dynamicOptions->searchAppearance->postTypes->has( $postType ) ) {
 				$postTypes = aioseo()->helpers->unsetValue( $postTypes, $postType );
 				continue;
 			}
@@ -225,7 +226,7 @@ class Helpers {
 			}
 
 			if (
-				$options->searchAppearance->dynamic->postTypes->$postType->advanced->robotsMeta->default &&
+				$dynamicOptions->searchAppearance->postTypes->$postType->advanced->robotsMeta->default &&
 				! $options->searchAppearance->advanced->globalRobotsMeta->default &&
 				$options->searchAppearance->advanced->globalRobotsMeta->noindex
 			) {
@@ -284,10 +285,11 @@ class Helpers {
 		}
 
 		$options          = aioseo()->options->noConflict();
+		$dynamicOptions   = aioseo()->dynamicOptions->noConflict();
 		$publicTaxonomies = aioseo()->helpers->getPublicTaxonomies( true );
 		foreach ( $taxonomies as $taxonomy ) {
 			// Check if taxonomy is no longer registered.
-			if ( ! in_array( $taxonomy, $publicTaxonomies, true ) || ! $options->searchAppearance->dynamic->taxonomies->has( $taxonomy ) ) {
+			if ( ! in_array( $taxonomy, $publicTaxonomies, true ) || ! $dynamicOptions->searchAppearance->taxonomies->has( $taxonomy ) ) {
 				$taxonomies = aioseo()->helpers->unsetValue( $taxonomies, $taxonomy );
 				continue;
 			}
@@ -299,7 +301,7 @@ class Helpers {
 			}
 
 			if (
-				$options->searchAppearance->dynamic->taxonomies->$taxonomy->advanced->robotsMeta->default &&
+				$dynamicOptions->searchAppearance->taxonomies->$taxonomy->advanced->robotsMeta->default &&
 				! $options->searchAppearance->advanced->globalRobotsMeta->default &&
 				$options->searchAppearance->advanced->globalRobotsMeta->noindex
 			) {
@@ -373,9 +375,13 @@ class Helpers {
 			$type = 'general';
 		}
 
-		$advanced = aioseo()->options->sitemap->$type->advancedSettings->enable;
-		$excluded = aioseo()->options->sitemap->$type->advancedSettings->$option;
-		if ( ! $advanced || null === $excluded || ! count( $excluded ) ) {
+		$hasFilter = has_filter( 'aioseo_sitemap_' . aioseo()->helpers->toSnakeCase( $option ) );
+		$advanced  = aioseo()->options->sitemap->$type->advancedSettings->enable;
+		$excluded  = aioseo()->options->sitemap->$type->advancedSettings->$option;
+		if (
+			( ! $advanced || empty( $excluded ) ) &&
+			! $hasFilter
+		) {
 			return '';
 		}
 
@@ -386,6 +392,15 @@ class Helpers {
 				$ids[] = $object->value;
 			}
 		}
+
+		if ( 'excludePosts' === $option ) {
+			$ids = apply_filters( 'aioseo_sitemap_exclude_posts', $ids, $type );
+		}
+
+		if ( 'excludeTerms' === $option ) {
+			$ids = apply_filters( 'aioseo_sitemap_exclude_terms', $ids, $type );
+		}
+
 		return count( $ids ) ? esc_sql( implode( ', ', $ids ) ) : '';
 	}
 

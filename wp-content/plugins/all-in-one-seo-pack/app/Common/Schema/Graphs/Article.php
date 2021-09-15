@@ -40,6 +40,7 @@ class Article extends Graph {
 			'@id'              => aioseo()->schema->context['url'] . '#article',
 			'name'             => aioseo()->schema->context['name'],
 			'description'      => aioseo()->schema->context['description'],
+			'inLanguage'       => aioseo()->helpers->currentLanguageCodeBCP47(),
 			'headline'         => $post->post_title,
 			'author'           => [ '@id' => get_author_posts_url( $post->post_author ) . '#author' ],
 			'publisher'        => [ '@id' => trailingslashit( home_url() ) . '#' . aioseo()->options->searchAppearance->global->schema->siteRepresents ],

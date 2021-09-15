@@ -1,7 +1,7 @@
 ﻿# Changelog
 ## 1.0.9
 ### Новое
-* Добавлен плагин, который заменяет комментарии в новых записях на кнопку "Join the discussion". Кнопка ведёт на такую же запись на https://forum.onlyoffice.com/
+* Обновлён плагин All in One SEO до версии 4.1.4.3 для устранения возможных XSS атак по задаче  https://nct.onlyoffice.com/Products/Projects/Tasks.aspx?prjID=137&id=32098#
 
 ## 1.0.8
 ### Новое

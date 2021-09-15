@@ -1,6 +1,8 @@
 <?php
 namespace AIOSEO\Plugin\Common\Sitemap;
 
+use AIOSEO\Plugin\Common\Utils as CommonUtils;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -29,7 +31,7 @@ class Query {
 
 		if (
 			empty( $includedPostTypes ) ||
-			( 'attachment' === $includedPostTypes && 'disabled' !== aioseo()->options->searchAppearance->dynamic->postTypes->attachment->redirectAttachmentUrls )
+			( 'attachment' === $includedPostTypes && 'disabled' !== aioseo()->dynamicOptions->searchAppearance->postTypes->attachment->redirectAttachmentUrls )
 		) {
 			return [];
 		}
@@ -101,8 +103,10 @@ class Query {
 			$query->limit( aioseo()->sitemap->linksPerIndex, aioseo()->sitemap->offset );
 		}
 
-		$posts = $query->orderBy( $orderBy )
-			->run()
+		$query->orderBy( $orderBy );
+		$query = $this->filterPostQuery( $query, $postTypes );
+
+		$posts = $query->run()
 			->result();
 
 		// Convert ID from string to int.
@@ -114,6 +118,67 @@ class Query {
 	}
 
 	/**
+	 * Filters the post query.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @param  \AIOSEO\Plugin\Common\Utils\Database $query    The query.
+	 * @param  string                               $postType The post type.
+	 * @return \AIOSEO\Plugin\Common\Utils\Database           The filtered query.
+	 */
+	private function filterPostQuery( $query, $postType ) {
+		switch ( $postType ) {
+			case 'product':
+				return $this->excludeHiddenProducts( $query );
+			default:
+				break;
+		}
+		return $query;
+	}
+
+	/**
+	 * Adds a condition to the query to exclude hidden WooCommerce products.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @param  \AIOSEO\Plugin\Common\Utils\Database $query The query.
+	 * @return \AIOSEO\Plugin\Common\Utils\Database        The filtered query.
+	 */
+	private function excludeHiddenProducts( $query ) {
+		if (
+			! aioseo()->helpers->isWooCommerceActive() ||
+			! apply_filters( 'aioseo_sitemap_woocommerce_exclude_hidden_products', true )
+		) {
+			return $query;
+		}
+
+		static $hiddenProductIds = null;
+		if ( null === $hiddenProductIds ) {
+			$tempDb         = new CommonUtils\Database();
+			$hiddenProducts = $tempDb->start( 'term_relationships as tr' )
+				->select( 'tr.object_id' )
+				->join( 'term_taxonomy as tt', 'tr.term_taxonomy_id = tt.term_taxonomy_id' )
+				->join( 'terms as t', 'tt.term_id = t.term_id' )
+				->where( 't.name', 'exclude-from-catalog' )
+				->run()
+				->result();
+
+			$hiddenProductIds = [];
+			if ( empty( $hiddenProducts ) ) {
+				return $query;
+			}
+
+			foreach ( $hiddenProducts as $hiddenProduct ) {
+				$hiddenProductIds[] = (int) $hiddenProduct->object_id;
+			}
+			$hiddenProductIds = esc_sql( implode( ', ', $hiddenProductIds ) );
+		}
+
+		$query->whereRaw( "p.ID NOT IN ( $hiddenProductIds )" );
+		return $query;
+	}
+
+	/**
 	 * Filters the queried posts.
 	 *
 	 * @since 4.0.0
@@ -122,28 +187,9 @@ class Query {
 	 * @return array $remainingPosts The remaining posts.
 	 */
 	public function filterPosts( $posts ) {
-		$remainingPosts          = [];
-		$isWooCommerceActive     = aioseo()->helpers->isWooCommerceActive();
-		$isWooCommerceNoindexing = $isWooCommerceActive && has_action( 'wp_head', 'wc_page_noindex' );
-		$excludeHiddenProducts   = apply_filters( 'aioseo_sitemap_woocommerce_exclude_hidden_products', true );
-
+		$remainingPosts = [];
 		foreach ( $posts as $post ) {
-			if ( 'product' !== $post->post_type && is_numeric( $post ) ) {
-				$remainingPosts[] = $post;
-				continue;
-			}
-
 			switch ( $post->post_type ) {
-				case 'page':
-					if ( ! $isWooCommerceNoindexing || ! aioseo()->helpers->isWooCommercePage( $post->ID ) ) {
-						$remainingPosts[] = $post;
-					}
-					break;
-				case 'product':
-					if ( ! $isWooCommerceActive || ! $excludeHiddenProducts || ! $this->isHiddenProduct( $post ) ) {
-						$remainingPosts[] = $post;
-					}
-					break;
 				case 'attachment':
 					if ( ! $this->isInvalidAttachment( $post ) ) {
 						$remainingPosts[] = $post;
@@ -156,41 +202,6 @@ class Query {
 		}
 
 		return $remainingPosts;
-	}
-
-	/**
-	 * Whether the WooCommerce product is hidden.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @param  Object  $post The post.
-	 * @return boolean       Whether the post is a hidden product.
-	 */
-	private function isHiddenProduct( $post ) {
-		static $hiddenProductIds = null;
-		if ( null === $hiddenProductIds ) {
-			$hiddenProducts = aioseo()->db->start( 'term_relationships as tr' )
-				->select( 'tr.object_id' )
-				->join( 'term_taxonomy as tt', 'tr.term_taxonomy_id = tt.term_taxonomy_id' )
-				->join( 'terms as t', 'tt.term_id = t.term_id' )
-				->where( 't.name', 'exclude-from-catalog' )
-				->run()
-				->result();
-
-			$hiddenProductIds = [];
-			if ( ! empty( $hiddenProducts ) ) {
-				foreach ( $hiddenProducts as $hiddenProduct ) {
-					$hiddenProductIds[] = (int) $hiddenProduct->object_id;
-				}
-			}
-		}
-
-		$postId = $post;
-		if ( ! is_numeric( $post ) ) {
-			$postId = $post->ID;
-		}
-
-		return in_array( $postId, $hiddenProductIds, true );
 	}
 
 	/**

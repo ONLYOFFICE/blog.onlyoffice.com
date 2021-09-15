@@ -34,12 +34,12 @@ class Media {
 		}
 
 		if (
-			! aioseo()->options->searchAppearance->dynamic->postTypes->has( 'attachment' )
+			! aioseo()->dynamicOptions->searchAppearance->postTypes->has( 'attachment' )
 		) {
 			return;
 		}
 
-		$redirect = aioseo()->options->searchAppearance->dynamic->postTypes->attachment->redirectAttachmentUrls;
+		$redirect = aioseo()->dynamicOptions->searchAppearance->postTypes->attachment->redirectAttachmentUrls;
 		if ( 'disabled' === $redirect ) {
 			return;
 		}

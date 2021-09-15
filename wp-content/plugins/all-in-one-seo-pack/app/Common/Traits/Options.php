@@ -13,6 +13,24 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 trait Options {
 	/**
+	 * Whether or not this instance is a clone.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @var boolean
+	 */
+	public $isClone = false;
+
+	/**
+	 * Whether or not the options need to be saved to the DB.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @var string
+	 */
+	public $shouldSave = false;
+
+	/**
 	 * The name to lookup the options with.
 	 *
 	 * @since 4.0.0
@@ -20,15 +38,6 @@ trait Options {
 	 * @var string
 	 */
 	public $optionsName = '';
-
-	/**
-	 * The options array.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @var array
-	 */
-	protected $options = [];
 
 	/**
 	 * Holds the localized options.
@@ -121,7 +130,8 @@ trait Options {
 		}
 
 		// If we need to set a sub-group, do that now.
-		$defaults = $this->options[ $this->groupKey ];
+		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$defaults      = $cachedOptions[ $this->groupKey ];
 		if ( ! empty( $this->subGroups ) ) {
 			foreach ( $this->subGroups as $subGroup ) {
 				$defaults = $defaults[ $subGroup ];
@@ -139,8 +149,8 @@ trait Options {
 			return $this->setSubGroup( $name );
 		}
 
-		$value = isset( $this->options[ $this->groupKey ][ $name ]['value'] )
-			? $this->options[ $this->groupKey ][ $name ]['value']
+		$value = isset( $cachedOptions[ $this->groupKey ][ $name ]['value'] )
+			? $cachedOptions[ $this->groupKey ][ $name ]['value']
 			: (
 				! empty( $this->arguments[0] )
 					? $this->arguments[0]
@@ -170,7 +180,8 @@ trait Options {
 		}
 
 		// If we need to set a sub-group, do that now.
-		$defaults = $this->options[ $this->groupKey ];
+		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$defaults      = $cachedOptions[ $this->groupKey ];
 		if ( ! empty( $this->subGroups ) ) {
 			foreach ( $this->subGroups as $subGroup ) {
 				$defaults = $defaults[ $subGroup ];
@@ -252,7 +263,8 @@ trait Options {
 		}
 
 		// If we need to set a sub-group, do that now.
-		$defaults = $this->options[ $this->groupKey ];
+		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$defaults      = json_decode( wp_json_encode( $cachedOptions[ $this->groupKey ] ), true );
 		if ( ! empty( $this->subGroups ) ) {
 			foreach ( $this->subGroups as $subGroup ) {
 				$defaults = &$defaults[ $subGroup ];
@@ -298,14 +310,15 @@ trait Options {
 			update_option( $this->optionsName . '_localized', $this->localized );
 		}
 
-		$originalDefaults = $this->options[ $this->groupKey ];
+		$originalDefaults = json_decode( wp_json_encode( $cachedOptions[ $this->groupKey ] ), true );
 		$pointer          = &$originalDefaults;
 		foreach ( $this->subGroups as $subGroup ) {
 			$pointer = &$pointer[ $subGroup ];
 		}
 		$pointer = $defaults;
 
-		$this->options[ $this->groupKey ] = $originalDefaults;
+		$cachedOptions[ $this->groupKey ] = $originalDefaults;
+		aioseo()->optionsCache->setOptions( $this->optionsName, $cachedOptions );
 
 		$this->resetGroups();
 
@@ -326,7 +339,8 @@ trait Options {
 		}
 
 		// If we need to set a sub-group, do that now.
-		$defaults = $this->options[ $this->groupKey ];
+		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$defaults      = $cachedOptions[ $this->groupKey ];
 		if ( ! empty( $this->subGroups ) ) {
 			foreach ( $this->subGroups as $subGroup ) {
 				$defaults = &$defaults[ $subGroup ];
@@ -365,7 +379,8 @@ trait Options {
 		}
 
 		// If we need to set a sub-group, do that now.
-		$defaults = $this->options[ $this->groupKey ];
+		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$defaults      = json_decode( wp_json_encode( $cachedOptions[ $this->groupKey ] ), true );
 		if ( ! empty( $this->subGroups ) ) {
 			foreach ( $this->subGroups as $subGroup ) {
 				$defaults = &$defaults[ $subGroup ];
@@ -388,11 +403,12 @@ trait Options {
 
 		unset( $defaults[ $name ]['value'] );
 
-		$this->options[ $this->groupKey ] = $defaults;
-
-		$this->update();
+		$cachedOptions[ $this->groupKey ] = $defaults;
+		aioseo()->optionsCache->setOptions( $this->optionsName, $cachedOptions );
 
 		$this->resetGroups();
+
+		$this->update();
 	}
 
 	/**
@@ -405,13 +421,15 @@ trait Options {
 	 * @return array          An array of options.
 	 */
 	public function all( $include = [], $exclude = [] ) {
-		// Make sure our dynamic options have loaded.
-		$this->init( true );
+		$originalGroupKey  = $this->groupKey;
+		$originalSubGroups = $this->subGroups;
 
-		$originalGroupKey = $this->groupKey;
+		// Make sure our dynamic options have loaded.
+		$this->init();
 
 		// Refactor options.
-		$refactored = $this->convertOptionsToValues( $this->options );
+		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$refactored    = $this->convertOptionsToValues( $cachedOptions );
 
 		$this->groupKey = null;
 
@@ -419,13 +437,13 @@ trait Options {
 			return $this->allFiltered( $refactored, $include, $exclude );
 		}
 
-		if ( empty( $this->subGroups ) ) {
+		if ( empty( $originalSubGroups ) ) {
 			$all = $refactored[ $originalGroupKey ];
 			return $this->allFiltered( $all, $include, $exclude );
 		}
 
 		$returnable = &$refactored[ $originalGroupKey ];
-		foreach ( $this->subGroups as $subGroup ) {
+		foreach ( $originalSubGroups as $subGroup ) {
 			$returnable = &$returnable[ $subGroup ];
 		}
 
@@ -443,29 +461,48 @@ trait Options {
 	 * @return void
 	 */
 	public function reset( $include = [], $exclude = [] ) {
+		$originalGroupKey  = $this->groupKey;
+		$originalSubGroups = $this->subGroups;
+
 		// Make sure our dynamic options have loaded.
-		$this->init( true );
+		$this->init();
+
+		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+
+		// If we don't have a group key set, it means we want to reset everything.
+		if ( empty( $originalGroupKey ) ) {
+			$groupKeys = array_keys( $cachedOptions );
+			foreach ( $groupKeys as $groupKey ) {
+				$this->groupKey = $groupKey;
+				$this->reset();
+			}
+
+			// Since we just finished resetting everything, we can return early.
+			return;
+		}
 
 		// If we need to set a sub-group, do that now.
-		$keys     = array_merge( [ $this->groupKey ], $this->subGroups );
-		$defaults = $this->options[ $this->groupKey ];
-		if ( ! empty( $this->subGroups ) ) {
-			foreach ( $this->subGroups as $subGroup ) {
+		$keys     = array_merge( [ $originalGroupKey ], $originalSubGroups );
+		$defaults = json_decode( wp_json_encode( $cachedOptions[ $originalGroupKey ] ), true );
+		if ( ! empty( $originalSubGroups ) ) {
+			foreach ( $originalSubGroups as $subGroup ) {
 				$defaults = $defaults[ $subGroup ];
 			}
 		}
 
 		// Refactor options.
-		$defaults = $this->resetValues( $defaults, $this->defaultsMerged, $keys, $include, $exclude );
+		$resetValues = $this->resetValues( $defaults, $this->defaultsMerged, $keys, $include, $exclude );
+		$defaults    = array_replace_recursive( $defaults, $resetValues );
 
-		$originalDefaults = $this->options[ $this->groupKey ];
+		$originalDefaults = json_decode( wp_json_encode( $cachedOptions[ $originalGroupKey ] ), true );
 		$pointer          = &$originalDefaults;
-		foreach ( $this->subGroups as $subGroup ) {
+		foreach ( $originalSubGroups as $subGroup ) {
 			$pointer = &$pointer[ $subGroup ];
 		}
 		$pointer = $defaults;
 
-		$this->options[ $this->groupKey ] = $originalDefaults;
+		$cachedOptions[ $originalGroupKey ] = $originalDefaults;
+		aioseo()->optionsCache->setOptions( $this->optionsName, $cachedOptions );
 
 		$this->resetGroups();
 
@@ -515,13 +552,20 @@ trait Options {
 			$optionOrGroup = '_aioseo_type';
 		}
 
-		// Make sure our dynamic options have loaded.
-		$this->init( true );
+		$originalGroupKey  = $this->groupKey;
+		$originalSubGroups = $this->subGroups;
+
+		static $hasInitialized = false;
+		if ( ! $hasInitialized ) {
+			$hasInitialized = true;
+			$this->init();
+		}
 
 		// If we need to set a sub-group, do that now.
-		$defaults = $this->groupKey ? $this->options[ $this->groupKey ] : $this->options;
-		if ( ! empty( $this->subGroups ) ) {
-			foreach ( $this->subGroups as $subGroup ) {
+		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$defaults      = $originalGroupKey ? $cachedOptions[ $originalGroupKey ] : $cachedOptions;
+		if ( ! empty( $originalSubGroups ) ) {
+			foreach ( $originalSubGroups as $subGroup ) {
 				$defaults = $defaults[ $subGroup ];
 			}
 		}
@@ -535,17 +579,6 @@ trait Options {
 		}
 
 		return false;
-	}
-
-	/**
-	 * In order to not have a conflict, we need to return a clone.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @return Options The cloned Options object.
-	 */
-	public function noConflict() {
-		return clone $this;
 	}
 
 	/**
@@ -619,23 +652,78 @@ trait Options {
 	}
 
 	/**
+	 * Gets the defaults options.
+	 *
+	 * @since 4.1.3
+	 *
+	 * @return array An array of dafults.
+	 */
+	public function getDefaults() {
+		return $this->defaults;
+	}
+
+	/**
 	 * Updates the options in the database.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  array|null $options An optional options array.
+	 * @param  string     $optionsName An optional option name to update.
+	 * @param  string     $defaults    The defaults to filter the options by.
+	 * @param  array|null $options     An optional options array.
 	 * @return void
 	 */
-	public function update( $options = null ) {
+	public function update( $optionsName = null, $defaults = null, $options = null ) {
+		$optionsName = empty( $optionsName ) ? $this->optionsName : $optionsName;
+		$defaults    = empty( $defaults ) ? $this->defaults : $defaults;
+
 		// First, we need to filter our options.
-		$options = $this->filterOptions( $this->defaults, $options );
+		$options = $this->filterOptions( $defaults, $options );
 
 		// Refactor options.
 		$refactored = $this->convertOptionsToValues( $options );
 
 		$this->resetGroups();
 
-		update_option( $this->optionsName, wp_json_encode( $refactored ) );
+		// The following needs to happen here (possibly a clone) as well as in the main instance.
+		$originalInstance = $this->getOriginalInstance();
+
+		// Update the DB options.
+		aioseo()->optionsCache->setDb( $optionsName, $refactored );
+
+		// Force a save here and in the main class.
+		$this->shouldSave             = true;
+		$originalInstance->shouldSave = true;
+	}
+
+	/**
+	 * Updates the options in the database.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @param  boolean $force       Whether or not to force an immediate save.
+	 * @param  string  $optionsName An optional option name to update.
+	 * @param  string  $defaults    The defaults to filter the options by.
+	 * @return void
+	 */
+	public function save( $force = false, $optionsName = null, $defaults = null ) {
+		if ( ! $this->shouldSave && ! $force ) {
+			return;
+		}
+
+		$optionsName = empty( $optionsName ) ? $this->optionsName : $optionsName;
+		$defaults    = empty( $defaults ) ? $this->defaults : $defaults;
+
+		$this->update( $optionsName );
+
+		// First, we need to filter our options.
+		$options = $this->filterOptions( $defaults, null, $optionsName );
+
+		// Refactor options.
+		$refactored = $this->convertOptionsToValues( $options );
+
+		$this->resetGroups();
+
+		update_option( $optionsName, wp_json_encode( $refactored ) );
 	}
 
 	/**
@@ -648,7 +736,8 @@ trait Options {
 	 * @return array                An array of filtered options.
 	 */
 	public function filterOptions( $defaults, $options = null ) {
-		$options = ! empty( $options ) ? $options : $this->options;
+		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$options       = ! empty( $options ) ? $options : json_decode( wp_json_encode( $cachedOptions ), true );
 		return $this->filterRecursively( $options, $defaults );
 	}
 
@@ -662,6 +751,10 @@ trait Options {
 	 * @return array           A filtered array of options.
 	 */
 	public function filterRecursively( $options, $defaults ) {
+		if ( ! is_array( $options ) ) {
+			return $options;
+		}
+
 		foreach ( $options as $key => $value ) {
 			if ( ! isset( $defaults[ $key ] ) ) {
 				unset( $options[ $key ] );
@@ -702,6 +795,8 @@ trait Options {
 					$array[ $k ] = sanitize_text_field( $preserveHtml ? htmlspecialchars( $v, ENT_NOQUOTES, 'UTF-8' ) : $v );
 				}
 				return $array;
+			case 'float':
+				return floatval( $value );
 		}
 	}
 
@@ -824,9 +919,6 @@ trait Options {
 
 			// @TODO: See if we need this? could just eliminate.
 			if ( ! is_array( $value ) ) {
-				$values[ $key ] = [
-					'value' => $value
-				];
 				continue;
 			}
 
@@ -848,14 +940,14 @@ trait Options {
 	 * @param  array $options The options array.
 	 * @return array           The converted options array.
 	 */
-	protected function convertOptionsToValues( $options ) {
+	public function convertOptionsToValues( $options, $optionKey = 'type' ) {
 		foreach ( $options as $key => $value ) {
 			if ( ! is_array( $value ) ) {
 				continue;
 			}
 
-			if ( ! isset( $value['type'] ) ) {
-				$options[ $key ] = $this->convertOptionsToValues( $value );
+			if ( ! isset( $value[ $optionKey ] ) ) {
+				$options[ $key ] = $this->convertOptionsToValues( $value, $optionKey );
 				continue;
 			}
 
@@ -919,6 +1011,62 @@ trait Options {
 	 * @return void
 	 */
 	public function refresh() {
+		// Reset DB options to clear the cache.
+		aioseo()->optionsCache->resetDb();
 		$this->init();
+	}
+
+	/**
+	 * Returns the DB options.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @param  string $optionsName The options name.
+	 * @return array               The options.
+	 */
+	public function getDbOptions( $optionsName ) {
+		$cache = aioseo()->optionsCache->getDb( $optionsName );
+		if ( empty( $cache ) ) {
+			$options = json_decode( get_option( $optionsName ), true );
+			$options = ! empty( $options ) ? $options : [];
+
+			// Set the cache.
+			aioseo()->optionsCache->setDb( $optionsName, $options );
+		}
+
+		return aioseo()->optionsCache->getDb( $optionsName );
+	}
+
+	/**
+	 * In order to not have a conflict, we need to return a clone.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @return Options The cloned Options object.
+	 */
+	public function noConflict() {
+		$class          = clone $this;
+		$class->isClone = true;
+		return $class;
+	}
+
+	/**
+	 * Get original instance. Since this could be a cloned object, let's get the original instance.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @return self
+	 */
+	public function getOriginalInstance() {
+		if ( ! $this->isClone ) {
+			return $this;
+		}
+
+		$class      = new \ReflectionClass( get_called_class() );
+		$optionName = aioseo()->helpers->toCamelCase( $class->getShortName() );
+
+		if ( isset( aioseo()->{ $optionName } ) ) {
+			return aioseo()->{ $optionName };
+		}
 	}
 }

@@ -275,8 +275,8 @@ class Sitemap {
 			'aiosp_sitemap_freq_homepage'   => [ 'type' => 'string', 'newOption' => [ 'sitemap', 'general', 'advancedSettings', 'priority', 'homePage', 'frequency' ] ],
 			'aiosp_sitemap_prio_post'       => [ 'type' => 'float', 'newOption' => [ 'sitemap', 'general', 'advancedSettings', 'priority', 'postTypes', 'priority' ] ],
 			'aiosp_sitemap_freq_post'       => [ 'type' => 'string', 'newOption' => [ 'sitemap', 'general', 'advancedSettings', 'priority', 'postTypes', 'frequency' ] ],
-			'aiosp_sitemap_prio_post_post'  => [ 'type' => 'float', 'newOption' => [ 'sitemap', 'dynamic', 'priority', 'postTypes', 'post', 'priority' ] ],
-			'aiosp_sitemap_freq_post_post'  => [ 'type' => 'string', 'newOption' => [ 'sitemap', 'dynamic', 'priority', 'postTypes', 'post', 'frequency' ] ],
+			'aiosp_sitemap_prio_post_post'  => [ 'type' => 'float', 'newOption' => [ 'sitemap', 'priority', 'postTypes', 'post', 'priority' ], 'dynamic' => true ],
+			'aiosp_sitemap_freq_post_post'  => [ 'type' => 'string', 'newOption' => [ 'sitemap', 'priority', 'postTypes', 'post', 'frequency' ], 'dynamic' => true ],
 			'aiosp_sitemap_prio_taxonomies' => [ 'type' => 'float', 'newOption' => [ 'sitemap', 'general', 'advancedSettings', 'priority', 'taxonomies', 'priority' ] ],
 			'aiosp_sitemap_freq_taxonomies' => [ 'type' => 'string', 'newOption' => [ 'sitemap', 'general', 'advancedSettings', 'priority', 'taxonomies', 'frequency' ] ],
 			'aiosp_sitemap_prio_archive'    => [ 'type' => 'float', 'newOption' => [ 'sitemap', 'general', 'advancedSettings', 'priority', 'archive', 'priority' ] ],
@@ -308,7 +308,8 @@ class Sitemap {
 			if ( in_array( $objectSlug, aioseo()->helpers->getPublicPostTypes( true ), true ) ) {
 				$settings[ $name ] = [
 					'type'      => 'priority' === $type ? 'float' : 'string',
-					'newOption' => [ 'sitemap', 'dynamic', 'priority', 'postTypes', $objectSlug, $type ]
+					'newOption' => [ 'sitemap', 'priority', 'postTypes', $objectSlug, $type ],
+					'dynamic'   => true
 				];
 				continue;
 			}
@@ -316,11 +317,14 @@ class Sitemap {
 			if ( in_array( $objectSlug, aioseo()->helpers->getPublicTaxonomies( true ), true ) ) {
 				$settings[ $name ] = [
 					'type'      => 'priority' === $type ? 'float' : 'string',
-					'newOption' => [ 'sitemap', 'dynamic', 'priority', 'taxonomies', $objectSlug, $type ]
+					'newOption' => [ 'sitemap', 'priority', 'taxonomies', $objectSlug, $type ],
+					'dynamic'   => true
 				];
 			}
 		}
 
+		$mainOptions    = aioseo()->options->noConflict();
+		$dynamicOptions = aioseo()->dynamicOptions->noConflict();
 		foreach ( $settings as $name => $values ) {
 			// If setting is set to default, do nothing.
 			if (
@@ -347,7 +351,7 @@ class Sitemap {
 			$object->value = $value;
 
 			$error      = false;
-			$options    = aioseo()->options->noConflict();
+			$options    = ! empty( $values['dynamic'] ) ? $dynamicOptions : $mainOptions;
 			$lastOption = '';
 			for ( $i = 0; $i < count( $values['newOption'] ); $i++ ) {
 				$lastOption = $values['newOption'][ $i ];
@@ -365,11 +369,10 @@ class Sitemap {
 			}
 
 			$options->$lastOption = wp_json_encode( $object );
-			aioseo()->options->refresh();
 		}
 
 		if ( count( $settings ) ) {
-			aioseo()->options->sitemap->general->advancedSettings->enable = true;
+			$mainOptions->sitemap->general->advancedSettings->enable = true;
 		}
 	}
 

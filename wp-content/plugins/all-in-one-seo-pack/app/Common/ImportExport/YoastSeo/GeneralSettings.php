@@ -25,8 +25,6 @@ class GeneralSettings {
 			return;
 		}
 
-		$this->checkIfTrueSeoIsDisabled();
-
 		$settings = [
 			'googleverify'       => [ 'type' => 'string', 'newOption' => [ 'webmasterTools', 'google' ] ],
 			'msverify'           => [ 'type' => 'string', 'newOption' => [ 'webmasterTools', 'bing' ] ],
@@ -36,22 +34,5 @@ class GeneralSettings {
 		];
 
 		aioseo()->importExport->yoastSeo->helpers->mapOldToNew( $settings, $this->options );
-	}
-
-	/**
-	 * Checks if TrueSEO should be disabled.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @return void
-	 */
-	private function checkIfTrueSeoIsDisabled() {
-		if ( ! isset( $this->options['content_analysis_active'] ) || ! isset( $this->options['keyword_analysis_active'] ) ) {
-			return;
-		}
-
-		if ( ! $this->options['content_analysis_active'] && ! $this->options['keyword_analysis_active'] ) {
-			aioseo()->options->advanced->truSeo = false;
-		}
 	}
 }

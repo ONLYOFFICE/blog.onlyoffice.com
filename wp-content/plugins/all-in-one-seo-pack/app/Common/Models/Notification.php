@@ -92,6 +92,22 @@ class Notification extends Model {
 	];
 
 	/**
+	 * Get the list of notifications.
+	 *
+	 * @since 4.1.3
+	 *
+	 * @param  boolean $reset Whether or not to reset the new notifications.
+	 * @return array          An array of notifications.
+	 */
+	public static function getNotifications( $reset = true ) {
+		return [
+			'active'    => self::getAllActiveNotifications(),
+			'new'       => self::getNewNotifications( $reset ),
+			'dismissed' => self::getAllDismissedNotifications()
+		];
+	}
+
+	/**
 	 * Get an array of active notifications.
 	 *
 	 * @since 4.0.0
@@ -99,7 +115,115 @@ class Notification extends Model {
 	 * @return array An array of active notifications.
 	 */
 	public static function getAllActiveNotifications() {
-		return array_values( json_decode( wp_json_encode( self::getActiveNotifications() ), true ) );
+		$staticNotifications = self::getStaticNotifications();
+		$notifications       = array_values( json_decode( wp_json_encode( self::getActiveNotifications() ), true ) );
+		return ! empty( $staticNotifications ) ? array_merge( $staticNotifications, $notifications ) : $notifications;
+	}
+
+	/**
+	 * Get all new notifications. After retrieving them, this will reset them.
+	 * This means that calling this method twice will result in no results
+	 * the second time. The only exception is to pass false as a reset variable to prevent it.
+	 *
+	 * @since 4.1.3
+	 *
+	 * @param  boolean $reset Whether or not to reset the new notifications.
+	 * @return array          An array of new notifications if any exist.
+	 */
+	public static function getNewNotifications( $reset = true ) {
+		$notifications = self::filterNotifications(
+			aioseo()->db
+				->start( 'aioseo_notifications' )
+				->where( 'dismissed', 0 )
+				->where( 'new', 1 )
+				->whereRaw( "(start <= '" . gmdate( 'Y-m-d H:i:s' ) . "' OR start IS NULL)" )
+				->whereRaw( "(end >= '" . gmdate( 'Y-m-d H:i:s' ) . "' OR end IS NULL)" )
+				->orderBy( 'start DESC, created DESC' )
+				->run()
+				->models( 'AIOSEO\\Plugin\\Common\\Models\\Notification' )
+		);
+
+		if ( $reset ) {
+			self::resetNewNotifications();
+		}
+
+		return $notifications;
+	}
+
+	/**
+	 * Resets all new notifications.
+	 *
+	 * @since 4.1.3
+	 *
+	 * @return void
+	 */
+	public static function resetNewNotifications() {
+		aioseo()->db
+			->update( 'aioseo_notifications' )
+			->where( 'new', 1 )
+			->set( 'new', 0 )
+			->run();
+	}
+
+	/**
+	 * Returns all static notifications.
+	 *
+	 * @since 4.1.2
+	 *
+	 * @return array An array of static notifications.
+	 */
+	public static function getStaticNotifications() {
+		$staticNotifications = [];
+		$notifications       = [
+			'unlicensed-addons',
+			'review'
+		];
+
+		foreach ( $notifications as $notification ) {
+			switch ( $notification ) {
+				case 'review':
+					// If they intentionally dismissed the main notification, we don't show the repeat one.
+					$originalDismissed = get_user_meta( get_current_user_id(), '_aioseo_plugin_review_dismissed', true );
+					if ( '2' !== $originalDismissed ) {
+						break;
+					}
+
+					$dismissed = get_user_meta( get_current_user_id(), '_aioseo_notification_plugin_review_dismissed', true );
+					if ( '1' === $dismissed ) {
+						break;
+					}
+
+					if ( ! empty( $dismissed ) && $dismissed > time() ) {
+						break;
+					}
+
+					$activated = aioseo()->internalOptions->internal->firstActivated( time() );
+					if ( $activated > strtotime( '-30 days' ) ) {
+						break;
+					}
+
+					$staticNotifications[] = [
+						'slug'      => 'notification-' . $notification,
+						'component' => 'notifications-' . $notification
+					];
+					break;
+				case 'unlicensed-addons':
+					$unlicensedAddons = aioseo()->addons->unlicensedAddons();
+					if ( empty( $unlicensedAddons['addons'] ) ) {
+						break;
+					}
+
+					$staticNotifications[] = [
+						'slug'      => 'notification-' . $notification,
+						'component' => 'notifications-' . $notification,
+						'addons'    => $unlicensedAddons['addons'],
+						'message'   => $unlicensedAddons['message']
+					];
+					break;
+			}
+		}
+
+		return $staticNotifications;
 	}
 
 	/**
@@ -116,7 +240,7 @@ class Notification extends Model {
 				->where( 'dismissed', 0 )
 				->whereRaw( "(start <= '" . gmdate( 'Y-m-d H:i:s' ) . "' OR start IS NULL)" )
 				->whereRaw( "(end >= '" . gmdate( 'Y-m-d H:i:s' ) . "' OR end IS NULL)" )
-				->orderBy( 'start DESC' )
+				->orderBy( 'start DESC, created DESC' )
 				->run()
 				->models( 'AIOSEO\\Plugin\\Common\\Models\\Notification' )
 		);
