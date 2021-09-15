@@ -38,41 +38,51 @@ class PostsTerms {
 			], 400 );
 		}
 
-		$objects = [];
-		$options = aioseo()->options->noConflict();
+		$searchQuery = aioseo()->db->db->esc_like( $body['query'] );
+
+		$objects        = [];
+		$dynamicOptions = aioseo()->dynamicOptions->noConflict();
 		if ( 'posts' === $body['type'] ) {
 
 			$postTypes = aioseo()->helpers->getPublicPostTypes( true );
 			foreach ( $postTypes as $postType ) {
 				// Check if post type isn't noindexed.
-				if ( $options->searchAppearance->dynamic->postTypes->has( $postType ) && ! $options->searchAppearance->dynamic->postTypes->$postType->show ) {
+				if ( $dynamicOptions->searchAppearance->postTypes->has( $postType ) && ! $dynamicOptions->searchAppearance->postTypes->$postType->show ) {
 					$postTypes = aioseo()->helpers->unsetValue( $postTypes, $postType );
 				}
 			}
 
-			$objects = get_posts( [
-				's'           => $body['query'],
-				'numberposts' => 20,
-				'post_status' => [ 'publish', 'draft' ],
-				'post_type'   => $postTypes,
-				'orderby'     => 'post_title'
-			] );
+			$objects = aioseo()->db
+				->start( 'posts' )
+				->select( 'ID, post_type, post_title, post_name' )
+				->whereRaw( "( post_title LIKE '%{$searchQuery}%' OR post_name LIKE '%{$searchQuery}%' OR ID = '{$searchQuery}' )" )
+				->whereIn( 'post_type', $postTypes )
+				->whereIn( 'post_status', [ 'publish', 'draft', 'future', 'pending' ] )
+				->orderBy( 'post_title' )
+				->limit( 10 )
+				->run()
+				->result();
+
 		} elseif ( 'terms' === $body['type'] ) {
 
 			$taxonomies = aioseo()->helpers->getPublicTaxonomies( true );
 			foreach ( $taxonomies as $taxonomy ) {
 				// Check if taxonomy isn't noindexed.
-				if ( $options->searchAppearance->dynamic->taxonomies->has( $taxonomy ) && ! $options->searchAppearance->dynamic->taxonomies->$taxonomy->show ) {
+				if ( $dynamicOptions->searchAppearance->taxonomies->has( $taxonomy ) && ! $dynamicOptions->searchAppearance->taxonomies->$taxonomy->show ) {
 					$taxonomies = aioseo()->helpers->unsetValue( $taxonomies, $taxonomy );
 				}
 			}
 
-			$objects = get_terms( [
-				'name__like' => $body['query'],
-				'number'     => 20,
-				'taxonomy'   => $taxonomies,
-				'orderby'    => 'name'
-			] );
+			$objects = aioseo()->db
+				->start( 'terms as t' )
+				->select( 't.term_id as term_id, t.slug as slug, t.name as name, tt.taxonomy as taxonomy' )
+				->join( 'term_taxonomy as tt', 't.term_id = tt.term_id', 'INNER' )
+				->whereRaw( "( t.name LIKE '%{$searchQuery}%' OR t.slug LIKE '%{$searchQuery}%' OR t.term_id = '{$searchQuery}' )" )
+				->whereIn( 'tt.taxonomy', $taxonomies )
+				->orderBy( 't.name' )
+				->limit( 10 )
+				->run()
+				->result();
 		}
 
 		if ( empty( $objects ) ) {
@@ -87,14 +97,16 @@ class PostsTerms {
 			if ( 'posts' === $body['type'] ) {
 				$parsed[] = [
 					'type'  => $object->post_type,
-					'value' => $object->ID,
+					'value' => (int) $object->ID,
+					'slug'  => $object->post_name,
 					'label' => $object->post_title,
 					'link'  => get_permalink( $object->ID )
 				];
 			} elseif ( 'terms' === $body['type'] ) {
 				$parsed[] = [
 					'type'  => $object->taxonomy,
-					'value' => $object->term_id,
+					'value' => (int) $object->term_id,
+					'slug'  => $object->slug,
 					'label' => $object->name,
 					'link'  => get_term_link( $object->term_id )
 				];
@@ -125,11 +137,7 @@ class PostsTerms {
 			], 400 );
 		}
 
-		$thePost = aioseo()->db
-			->start( 'aioseo_posts' )
-			->where( 'post_id', $args['postId'] )
-			->run()
-			->model( 'AIOSEO\\Plugin\\Common\\Models\\Post' );
+		$thePost = Models\Post::getPost( $args['postId'] );
 
 		return new \WP_REST_Response( [
 			'success'  => true,
@@ -137,10 +145,33 @@ class PostsTerms {
 			'postData' => [
 				'parsedTitle'       => aioseo()->tags->replaceTags( $thePost->title, $args['postId'] ),
 				'parsedDescription' => aioseo()->tags->replaceTags( $thePost->description, $args['postId'] ),
-				'content'           => aioseo()->helpers->doShortcodes( aioseo()->helpers->getAnalysisContent( $args['postId'] ) ),
+				'content'           => aioseo()->helpers->doShortcodes( self::getAnalysisContent( $args['postId'] ) ),
 				'slug'              => get_post_field( 'post_name', $args['postId'] )
 			]
 		], 200 );
+	}
+
+	/**
+	 * Returns the posts custom fields.
+	 *
+	 * @since 4.0.6
+	 *
+	 * @param  WP_Post|int $post The post.
+	 * @return string            The custom field content.
+	 */
+	private static function getAnalysisContent( $post = null ) {
+		$post            = ( $post && is_object( $post ) ) ? $post : aioseo()->helpers->getPost( $post );
+		$customFieldKeys = aioseo()->dynamicOptions->searchAppearance->postTypes->{$post->post_type}->customFields;
+
+		if ( empty( $customFieldKeys ) ) {
+			return get_post_field( 'post_content', $post->ID );
+		}
+
+		$customFieldKeys    = explode( ' ', sanitize_text_field( $customFieldKeys ) );
+		$customFieldContent = aioseo()->helpers->getCustomFieldsContent( $post->ID, $customFieldKeys );
+		$analysisContent    = $post->post_content . apply_filters( 'aioseo_analysis_content', $customFieldContent );
+
+		return sanitize_post_field( 'post_content', $analysisContent, $post->ID, 'display' );
 	}
 
 	/**
@@ -173,12 +204,13 @@ class PostsTerms {
 		$body['twitter_title']       = ! empty( $body['twitter_title'] ) ? sanitize_text_field( $body['twitter_title'] ) : null;
 		$body['twitter_description'] = ! empty( $body['twitter_description'] ) ? sanitize_text_field( $body['twitter_description'] ) : null;
 
-		$saveStatus = Models\Post::savePost( $postId, $body );
+		// @TODO: Refactor this as it's not the best way to look for errors.
+		$error = Models\Post::savePost( $postId, $body );
 
-		if ( ! empty( $saveStatus ) ) {
+		if ( ! empty( $error ) ) {
 			return new \WP_REST_Response( [
 				'success' => false,
-				'message' => 'Failed update query: ' . $saveStatus
+				'message' => 'Failed update query: ' . $error
 			], 401 );
 		}
 
@@ -209,11 +241,7 @@ class PostsTerms {
 			], 400 );
 		}
 
-		$thePost = aioseo()->db
-			->start( 'aioseo_posts' )
-			->where( 'post_id', $postId )
-			->run()
-			->model( 'AIOSEO\\Plugin\\Common\\Models\\Post' );
+		$thePost = Models\Post::getPost( $postId );
 
 		if ( $thePost->exists() ) {
 			$metaTitle = aioseo()->meta->title->getPostTypeTitle( $post->post_type );
@@ -290,11 +318,7 @@ class PostsTerms {
 			], 400 );
 		}
 
-		$thePost = aioseo()->db
-			->start( 'aioseo_posts' )
-			->where( 'post_id', $postId )
-			->run()
-			->model( 'AIOSEO\\Plugin\\Common\\Models\\Post' );
+		$thePost = Models\Post::getPost( $postId );
 
 		$thePost->post_id = $postId;
 		if ( ! empty( $body['keyphrases'] ) ) {

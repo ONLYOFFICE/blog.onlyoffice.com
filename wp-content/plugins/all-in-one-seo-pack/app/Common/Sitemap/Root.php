@@ -70,10 +70,10 @@ class Root {
 
 				if (
 					get_post_type_archive_link( $postType ) &&
-					aioseo()->options->noConflict()->searchAppearance->dynamic->archives->has( $postType ) &&
+					aioseo()->dynamicOptions->noConflict()->searchAppearance->archives->has( $postType ) &&
 					(
-						aioseo()->options->searchAppearance->dynamic->archives->$postType->advanced->robotsMeta->default ||
-						! aioseo()->options->searchAppearance->dynamic->archives->$postType->advanced->robotsMeta->noindex
+						aioseo()->dynamicOptions->searchAppearance->archives->$postType->advanced->robotsMeta->default ||
+						! aioseo()->dynamicOptions->searchAppearance->archives->$postType->advanced->robotsMeta->noindex
 					)
 				) {
 					$hasPostArchive = true;

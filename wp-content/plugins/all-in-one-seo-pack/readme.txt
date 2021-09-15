@@ -1,9 +1,9 @@
-=== All in One SEO - Best WordPress SEO Plugin - Easily Improve Your SEO Rankings ===
+=== All in One SEO – Best WordPress SEO Plugin – Easily Improve SEO Rankings & Increase Traffic ===
 Contributors: aioseo, smub, benjaminprojas
 Tags: SEO, Google Search Console, XML Sitemap, meta description, schema, meta title, rich snippets, woocommerce seo, local seo, open graph, google news sitemap, video sitemap, robots.txt, seo audit, content analysis, seo plugin, redirection
 Requires at least: 4.9
-Tested up to: 5.7.2
-Stable tag: 4.1.1.1
+Tested up to: 5.8.1
+Stable tag: 4.1.4.3
 License: GPLv2 or later
 Requires PHP: 5.4
 
@@ -15,14 +15,14 @@ The original WordPress SEO plugin. Improve your WordPress SEO rankings and traff
 
 All in One SEO for WordPress is the original WordPress SEO plugin started in 2007. Over 2 million smart website owners use AIOSEO to properly setup WordPress SEO, so their websites can rank higher in search engines.
 
-We believe you shouldn't have to hire an SEO expert or developer to properly setup WordPress SEO. That's why we built <a href="https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin" rel="friend" title="All in One SEO for WordPress">AIOSEO</a> as the most comprehensive WordPress SEO plugin and toolkit, so you can improve your website's SEO rankings and uncover new growth opportunities in less than 10 minutes.
+We believe you shouldn't have to hire an SEO expert or developer to properly setup WordPress SEO. That's why we built <a href="https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin" rel="friend" title="All in One SEO for WordPress">AIOSEO</a> as the most comprehensive WordPress SEO plugin and marketing toolkit, so you can improve your website's SEO rankings and uncover new SEO growth opportunities in less than 10 minutes.
 
 At All in One SEO (AIOSEO), user experience is our #1 priority. From website SEO setup to ongoing SEO optimization, our team of SEO experts have created easy to follow SEO workflows that will help you outrank your competitors in search results. This is why many industry leaders award AIOSEO as the most beginner friendly WordPress SEO plugin that's both EASY and POWERFUL!
 
 AIOSEO's <a href="https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin" rel="friend" title="All in One SEO for WordPress">WordPress SEO plugin</a> features are highly optimized for Google and other popular search engine algorithm because we follow the most up to date SEO standards and SEO best practices. We can honestly say that AIOSEO is the best WordPress SEO plugin in the world.
 
 > <strong>AIOSEO Pro</strong><br />
-> This plugin is the lite version of the All in One WordPress SEO Pro plugin that comes with all the SEO features you will ever need to rank higher in search engines including smart schema markup, advanced SEO modules, powerful SEO sitemap suite, local SEO module, Google AMP SEO, WooCommerce SEO, and tons more. <a href="https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin" rel="friend" title="All in One SEO for WordPress">Click here to purchase the best premium WordPress SEO plugin now!</a>
+> This plugin is the lite version of the All in One WordPress SEO Pro plugin that comes with all the SEO features you will ever need to rank higher in search engines including smart SEO schema markup, advanced SEO modules, powerful SEO sitemap suite, local SEO module, Google AMP SEO, WooCommerce SEO, and tons more. <a href="https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin" rel="friend" title="All in One SEO for WordPress">Click here to purchase the best premium WordPress SEO plugin now!</a>
 
 We took the pain out of optimizing WordPress SEO and made it easy. Here's why smart business owners, SEO experts, marketers, and developers love AIOSEO, and you will too!
 
@@ -32,7 +32,7 @@ https://www.youtube.com/watch?v=OVJuc-xUslI
 
 AIOSEO makes it easy to setup WordPress SEO, the RIGHT WAY. Our smart WordPress SEO setup wizard helps you optimize your website's SEO settings based on your unique industry needs.
 
-In less than 10 minutes, you will be able to setup all the advanced WordPress SEO features like XML sitemaps, optimized search appearance, SEO meta title, SEO meta description, SEO keywords, Open Graph SEO Knowledge Panel information, social media integration, SEO search console / webmaster tool connections, local SEO, schema markup, and more.  
+In less than 10 minutes, you will be able to setup all the advanced WordPress SEO features like XML sitemaps, optimized search appearance, SEO meta title, SEO meta description, SEO keywords, Open Graph SEO Knowledge Panel information, social media integration, SEO search console / webmaster tool connections, local SEO, schema markup for SEO, and more.  
 
 But don't just take our word. See what another website owner like yourself is saying:
 
@@ -45,9 +45,9 @@ Creating SEO optimized content used to be hard. Why?
 
 Because most business owners aren't SEO experts. 
 
-That's why we created the TruSEO score. This gives you a more in-depth SEO optimization analysis and an actionable SEO checklist, so you can easily optimize each page on your website to unlock higher SEO rankings and maximum traffic.
+That's why we created the TruSEO score. This gives you a more in-depth SEO optimization analysis and an actionable SEO checklist, so you can easily optimize your website pages for any keyword to get higher SEO rankings and maximum traffic.
 
-Our SEO content analysis tool is enabled by default in both the Gutenberg block editor and Classic Editor, so you can quickly optimize your blog posts and pages to rank higher in search results.
+Our SEO content analysis tool is enabled by default in both the Gutenberg block editor and Classic Editor, so you can quickly optimize your blog posts and pages for your SEO keywords to get higher SEO rankings.
 
 Our SEO readability analysis gives you further insights on how to improve your content for maximum SEO benefits.
 
@@ -66,47 +66,59 @@ This helps you easily measure your SEO results and progress.
 > I’m a professional SEO and used many tools and extensions. Regarding simplicity, individuality and configurability All in One SEO Pro is by far the best SEO plugin out there for WordPress.<br>
 > Joel Steinmann
 
-= Smart XML Sitemaps and Rich Snippets (Schema Markup) =
+= Smart XML Sitemaps and Rich Snippets (SEO Schema Markup) =
 
 Proper website SEO markup plays an important role in improving SEO rankings. That's why smart SEO experts use AIOSEO for on-page SEO optimization.
 
-Aside from the comprehensive WordPress XML sitemap feature, we also offer news sitemap and video sitemap to help you improve your website's SEO ranking / traffic.
+Aside from the comprehensive WordPress XML sitemap feature, we also offer News SEO sitemap and Video SEO sitemap to help you improve your website's SEO ranking and get more traffic.
 
-AIOSEO comes with built-in smart schema makup features to help you get more traffic through SEO rich snippets, Google featured snippets, and image SEO search results.
+AIOSEO comes with built-in smart SEO schema markup feature to help you get more traffic through SEO rich snippets, Google featured snippets, breadcrumb site links in SEO, and image SEO search results.
 
 > The best SEO plugin. All in One SEO is the best SEO Plugin. I personally find it better than Yoast. This plugin offers so much freedom in configuration.<br>
 > hanapupu
 
 = Local SEO, WooCommerce SEO, Google AMP, and More =
 
-All in One SEO is the most comprehensive WordPress SEO plugin / toolkit in the market.
+All in One SEO is the most comprehensive WordPress SEO plugin / marketing toolkit in the world.
 
 We offer complete support for Google Knowledge Graph and Schema.org markup for local businesses. You can add multiple business locations, opening hours, contact info (business email, business phone, business address, etc) and more with our Local SEO module.
 
 AIOSEO also makes WooCommerce SEO easy. With our SEO plugin, you can optimize your product pages and product categories for better SEO rankings (with just a few clicks).
 
-Since AIOSEO is the original WordPress SEO plugin, we have SEO integrations with all popular WordPress plugins such as membership plugin SEO, landing page plugin SEO, etc. AIOSEO also offers Google AMP integration and works seamlessly with all popular speed / caching plugins.  
+Since AIOSEO is the original WordPress SEO plugin, we have SEO integrations with all popular WordPress plugins such as membership plugin SEO, landing page plugin SEO, Semrush SEO integration, etc. AIOSEO also offers Google AMP integration and works seamlessly with all popular speed & caching plugins.
 
 > Best SEO Plugin for WordPress. We continue to use All in One SEO on all our WordPress sites and Clients sites, and we recommend it too all other clients.<br>
 > MySEOGuy
 
 Since SEO is an essential feature, AIOSEO is a must have plugin for every website!
 
+= SEO Redirection Manager and 404 Monitoring = 
+
+AIOSEO Redirection manager helps you set up proper 301 redirects to improve your SEO rankings.
+
+We also support other advanced SEO redirects including 302 redirects, 307 redirects, 410 redirection, 404 redirects, REGEX redirects for advanced SEO needs, and more.
+
+We have an automatic 404 error monitor that helps you track and redirect 404 errors, so you can prevent losing SEO rankings.
+
+Since redirect speed is important for SEO, we built in both Apache / NGINX server level redirects to help you get maximum SEO benefit.
+
 = Full All in One SEO Feature List =
 
 * WordPress SEO Setup Wizard - Properly setup WordPress SEO in less than 10 minutes.
 * On-page SEO Optimization - optimize SEO code markup (without hiring a developer)
 * TruSEO score - detailed content & readability analysis to help you optimize your pages for higher SEO rankings.
-* Smart Meta Title & Description - Automatic SEO generation, dynamic smart tags, and more.
-* Unlimited SEO Keywords - our SEO content analyzer helps you optimize your pages for unlimited keywords.
-* XML Sitemap - Advanced SEO sitemaps for your site.
+* Smart Meta Title & Description - Automatic SEO generation, dynamic SEO smart tags, and more.
+* Unlimited SEO Keywords - our SEO content analyzer helps you optimize your pages for unlimited SEO keywords.
+* XML Sitemap - Advanced XML sitemaps to boost your SEO rankings.
 * Video SEO Sitemap - Improve your SEO rankings with video sitemap.
 * News SEO Sitemap - Increase your SEO traffic with Google News sitemap.
 * RSS SEO Sitemap - Improve SEO crawl frequency with RSS sitemap.
 * Automatic Image SEO - Our image SEO module helps your images rank higher.
 * Local Business SEO - Improve your local business SEO presence with our local SEO module.
+* Multiple location SEO - Great for SEO optimization for businesses with multiple local store locations. 
 * Rich Snippets Schema - Get better click through rate (CTR) and increase SEO rankings with rich snippets schema.
-* Knowledge Graph Support - Improve your website's search appearance with SEO Knowledge panel.
+* SEO Knowledge Graph Support - Improve your website's search appearance with SEO Knowledge panel.
+* Advanced SEO Schema - Easily add advanced SEO schema markups like FAQ schema, product schema, recipe schema (food blogger SEO), software application schema markup (SaaS SEO), online course schema (for course SEO), and more.
 * Sitelinks Search Box - Helps you get a search box in Google SEO rankings.
 * Google Site Links - Our SEO markup can help you get sitelinks for your brand.
 * Robots.txt Editor - Control what SEO robots can see with our easy SEO robots.txt editor.
@@ -119,32 +131,42 @@ Since SEO is an essential feature, AIOSEO is a must have plugin for every websit
 * RSS Content for SEO - Stop content theft from hurting your SEO rankings with our RSS Content tool.
 * User Access Control - Control who can manage your SEO settings with our advanced SEO access control.
 * Competitor Site SEO Analysis - Use our competitor SEO analysis to outrank them by improving your website's SEO optimization.
+* Smart Breadcrumbs - Add Breadcrumb navigation to improve user experience and boost your SEO rankings. Comes with full SEO JSON+LD support.
+* Smart SEO Redirects - Setup proper 301 redirects to improve your SEO rankings.
+* 404 Error Monitor for SEO - Monitor website 404 errors and set up proper SEO redirects to prevent losing SEO rankings.
+* Title and Nofollow for SEO - We make it easy for you to add title and nofollow to external links to improve SEO rankings.
+
 
 = WordPress SEO Integrations =
 
-* WooCommerce SEO - optimize your WooCommerce product pages and improve your store's SEO rankings.
+* WooCommerce SEO - optimize your WooCommerce product pages and improve your WooCommerce store's SEO rankings.
 * MemberPress SEO - optimize your MemberPress course pages and improve your membership site's SEO rankings.
-* Elementor SEO - add SEO optimization for your landing pages.
+* Elementor SEO - add SEO optimization for your Elementor landing pages.
 * LearnDash SEO - SEO optimization for LearnDash courses.
 * Facebook SEO - SEO optimize your website preview on Facebook.
 * Twitter SEO - SEO optimize your website preview on Twitter.
 * Pinterest SEO - SEO optimize your website preview on Pinterest.
 * Open Graph Support - improve your SEO with open graph meta data.
 * Knowledge Panel SEO - improve website SEO apperance by adding social media profile links for Facebook, Twitter, Wikpedia, Instagram, LinkedIn, Yelp, YouTube, and more.
-* Webmaster Tool Content - Connect your WordPress site with various webmaster tools to improve SEO rankings.
+* SEO Webmaster Tool Content - Connect your WordPress site with various webmaster tools to improve SEO rankings.
+* Semrush SEO integration - See additional SEO keywords and relevant SEO keyphrases with our Semrush SEO integration.
 
 = WordPress SEO Plugin Importer =
 
-* Yoast SEO Importer - easily switch from Yoast SEO to AIOSEO with our settings migrator.
-* RankMath SEO Importer - easily switch from RankMath SEO to AIOSEO with our settings migrator
+* Yoast SEO Importer - easily switch from Yoast SEO to AIOSEO with our full SEO migration wizard that includes SEO keywords, SEO title, meta description, XML sitemaps and more.
+* Yoast SEO Premium Importer - easily import Yoast SEO premium settings including SEO redirects to AIOSEO with our full SEO migration wizard.
+* RankMath SEO Importer - easily switch from RankMath SEO to AIOSEO with our SEO migration wizard.
 * SEO Settings Backup - create a backup of your AIOSEO settings.
 * Advanced SEO Import / Export - easily import / export AIOSEO settings from one site to another.
+* Redirection Importer - import your SEO redirects from the Redirection plugin with our SEO migration wizard.
+* Simple 301 Redirects Importer - import your SEO redirects from Simple 301 redirets with our SEO migration wizard.
+* Safe Redirection Manager - easily import SEO redirects from safe redirect manager with our SEO migration wizard.
 
 After reading this feature list, you can probably imagine why AIOSEO is the best WordPress SEO plugin in the market.
 
 Give AIOSEO a try.
 
-Want to unlock more features? <a href="https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin" rel="friend" title="All in One SEO for WordPress">Upgrade to AIOSEO Pro</a>.
+Want to unlock more SEO features? <a href="https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin" rel="friend" title="All in One SEO for WordPress">Upgrade to AIOSEO Pro</a>.
 
 = Credits =
 
@@ -158,6 +180,7 @@ AIOSEO&reg; is a registered trademark of Semper Plugins LLC. When writing about 
 * All in One SEO (correct)
 * AIO SEO (incorrect)
 * All in 1 SEO (incorrect)
+* AISEO (incorrect)
 
 = What's Next =
 
@@ -170,14 +193,411 @@ If you like our WordPress SEO plugin, then consider checking out our other proje
 * <a href="https://wpmailsmtp.com">WP Mail SMTP</a> - Improve email deliverability for your contact form with the most popular SMTP plugin for WordPress.
 * <a href="https://rafflepress.com/">RafflePress</a> - Best WordPress giveaway and contest plugin.
 * <a href="https://www.smashballoon.com">Smash Balloon</a> - #1 social feeds plugin for WordPress.
+* <a href="https://searchwp.com">SearchWP</a> - advanced WordPress search plugin.
+* <a href="https://pushengage.com">PushEngage</a> - best web push notification plugin.
 
 Visit <a href="http://www.wpbeginner.com/" rel="friend" title="WPBeginner">WPBeginner</a> to learn from our <a href="http://www.wpbeginner.com/category/wp-tutorials/" rel="friend" title="WordPress Tutorials">WordPress Tutorials</a> and find out about other <a href="http://www.wpbeginner.com/category/plugins/" rel="friend" title="Best WordPress Plugins">best WordPress plugins</a>.
 
 
-
 == Changelog ==
 
-All in One SEO [Changelog](https://aioseo.com/changelog/)
+**New in version 4.1.4.3 – Released on September 14, 2021**
+
+* Fixed: Some settings not carried over correctly in niche cases.
+
+**New in version 4.1.4.2 – Released on September 10, 2021**
+
+* Fixed: Console error after loading the Classic Editor because of a conflict with Lodash.
+* Fixed: PHP error in WordPress Core 4.9 because of a call to a function that was introduced in WordPress Core 5.0.
+* Fixed: PHP error on upgrading from AIOSEO Lite to AIOSEO Pro.
+* Fixed: Post/term data not always saving correctly.
+
+**New in version 4.1.4.1 – Released on August 31, 2021**
+
+* Fixed: Slower load time when HTML Sitemap dedicated page is enabled.
+
+**New in version 4.1.4 – Released on August 31, 2021**
+
+* New: Added support for Google Maps embeds in our Local Business addon. Embed maps directly on your location pages to allow your customers to easily find your location with driving directions and reviews.
+* New: AIOSEO now displays an overview of your posts’ most critical SEO settings before they are published and enables you to easily share them on social media (Block Editor only).
+* New: Added the ability to fully customize redirects from the 404 Log.
+* New: Added support for importing SEO settings and data from SEOPress.
+* New: Added support for WooCommerce’s product duplication.
+* Updated: Various improvements for the Yoast SEO importer.
+* Updated: Updated SearchAction schema (Google Sitelinks) based on new specifications.
+* Updated: WebPage/Article graphs and child graphs now include the language of the page.
+* Updated: Rating range for Review schema is now restricted to min 1 – max 5.
+* Updated: Removed WooCommerce Customer role from Access Control by default. Can be re-added by using a filter hook.
+* Updated: Optimized all images in the plugin, resulting in a large plugin size decrease.
+* Updated: AIOSEO is now able to detect local alt text added to images via the Image Block.
+* Fixed: AIOSEO now takes profile language preference into account when loading translations.
+* Fixed: nginx/.htaccess export files no longer include duplicate rules.
+* Fixed: AIOSEO now validates translations before they are used, preventing site errors in case a string contains illegal characters.
+* Fixed: WooCommerce product sitemap indexes are now paginated correctly and always contain the right amount of URLs when the site has hidden products.
+* Fixed: .htaccess File Editor no longer encodes special characters when writing to the file.
+* Fixed: WebPage schema now references the correct Person graph as the author of the page.
+* Fixed: Setup Wizard now correctly saves homepage title/description when using a static homepage.
+* Fixed: Static homepage now uses Website as default Open Graph object type.
+* Fixed: Support for MySQL servers that have ANSI_QUOTES SQL enabled.
+* Fixed: JWT Auth plugin no longer blocks AIOSEO from accessing the REST API.
+* Fixed: Headline Analyzer no longer throws a 404 error in the console when a new post without a title is created.
+* Fixed: Sitemap no longer adds a trailing slash to the homepage URL if the permalink structure does not have one.
+* Fixed: PHP errors when checking if the current request is from the REST API.
+* Fixed: AIOSEO no longer tries to build BreadcrumbList graph if no breadcrumbs were found.
+* Fixed: Styling issues when opening modals in the Block Editor.
+
+**New in version 4.1.3.3 – Released on August 16, 2021**
+
+* Fixed: Additional permissions related issues for Authors and Contributors.
+
+**New in version 4.1.3.2 – Released on August 11, 2021**
+
+* Fixed: AIOSEO Details column not appearing for Editor and other non-admin roles.
+
+**New in version 4.1.3.1 – Released on August 4, 2021**
+
+* Updated: Added caching to Access Control and the options to improve performance.
+* Fixed: HTML Sitemap widget options not always saving correctly.
+* Fixed: Links not appearing under Quick Links cards in the Dashboard.
+
+**New in version 4.1.3 – Released on July 28, 2021**
+
+* New: HTML sitemap using blocks, widgets or shortcodes.
+* Updated: Added support for custom roles to Access Control, along with various other improvements and bug fixes.
+* Updated: WooCommerce Cart, Checkout and Cart pages are now noindexed by default by AIOSEO for new users.
+* Updated: Image Sitemap now includes external URLs.
+* Updated: Posts/terms can now also be excluded from the sitemap by ID/slug.
+* Updated: Added a filter hook to exclude posts from the sitemap by ID.
+* Updated: Added various filter hooks to control the output of our visual breadcrumbs.
+* Updated: Added a filter hook to filter the output of our JSON schema.
+* Updated: Additional compatibility with third-party multi-lingual plugins.
+* Updated: Schema.org URLs for Opening Hours now use the HTTPS instead of the HTTP protocol.
+* Updated: Reordered currencies list so most traded currencies appear on top; others appear in alphabetical order.
+* Updated: Restoring/deleting a backup now first opens a modal that asks for confirmation.
+* Fixed: AggregateRating is now output for WooCommerce Products with new reviews disabled if they already have existing reviews.
+* Fixed: Added a line break underneath our robots.txt content to prevent conflicts with other plugins that filter the robots.txt file.
+* Fixed: Image Sitemap now includes large downscaled images.
+* Fixed: Social Network settings can now be exported.
+
+**New in version 4.1.2.2 – Released on July 14, 2021**
+
+* Updated: Compatibility with WordPress 5.8.
+
+**New in version 4.1.2.1 – Released on June 29, 2021**
+
+* Fixed: Image sitemap not including images embedded in NextGen galleries.
+
+**New in version 4.1.2 – Released on June 22, 2021**
+
+* New: Headline Analyzer to optimize post titles for better SEO and traffic.
+* New: Support for full site redirects and site aliases.
+* Updated: TruSEO no longer runs until the post title has been entered.
+* Updated: Added notice for unsupported WordPress Core versions.
+* Updated: Added support for WooCommerce galleries to Image Sitemap.
+* Updated: Added ability to export Breadcrumbs settings.
+* Updated: Added link to documentation when SEO Analysis fails.
+* Fixed: aioseo_description hook running twice.
+* Fixed: Emoji stripped from our metabox when using Classic Editor.
+* Fixed: Custom term columns sometimes not rendering.
+* Fixed: Shortcodes with parameters ignored when filtering conflicting shortcodes.
+* Fixed: PHP 8.0 compatibility.
+* Fixed: Invalid price date for generic products.
+* Fixed: Allow 0 as price for SoftwareApplication schema.
+* Fixed: Compatibility with sites using Snuffleupagus.
+* Fixed: WooCommerce Price smart tag output.
+
+**New in version 4.1.1.1 – Released on May 21, 2021**
+
+* Fixed: Dynamic post type/taxonomy settings backup triggering PHP errors
+* Fixed: Conflict with Create by Mediavine plugin where our metadata is wiped after saving
+
+**New in version 4.1.1 – Released on May 12, 2021**
+
+* New: Visual breadcrumb trails with block, widget and shortcode support
+* Updated: Added support for WooCommerce Variable Products to Product schema and WooCommerce smart tags
+* Updated: Added support for Duplicate Post plugin
+* Updated: Added new block to list Location Categories
+* Updated: Added support for additional macros when importing data from other SEO plugins
+* Updated: Added support (via filter hook) for using cover block images as the autogenerated social meta image
+* Updated: Added support for VideoPress shortcodes
+* Updated: Added support to control the business type for each Location
+* Fixed: TruSEO score shown on All Posts/Pages screen when metabox is disabled
+* Fixed: V3 migration now also stores migrated data as localized post/term data for WPML
+* Fixed: Phone/fax numbers in Local Business schema weren't stripped of formatting
+* Fixed: JavaScript console error when editing an ACF field group
+* Fixed: JavaScript console error when adding a Focus Keyphrase when there is no post content yet
+* Fixed: Text heart emoji stripped from title/description
+* Fixed: Missing server redirects notification is now automatically dismissed after adding the redirect files to the server configuration
+
+**New in version 4.1.0.2 – Released on April 27, 2021**
+
+* Updated: UI enhancements for Redirection Manager
+* Updated: Added support for searching for posts by slug when adding a redirect
+* Updated: Timestamps for redirect/404 hits are now localized to user's timezone
+* Updated: Added more caching for title/description
+* Updated: Added some security hardening recommended by Vincent Michel
+* Fixed: Redirect tables and Local SEO posts/terms not dropped when plugin is uninstalled
+* Fixed: Hide server exports when using PHP redirects
+* Fixed: All Posts/Pages screens time out when user has high post display count
+* Fixed: Conflicting REST API header
+* Fixed: Deleting redirect in paginated results refreshes back to first page
+* Fixed: Plugin sends requests to Semrush after user denied authorization
+* Fixed: Incorrect “plugin is already on the latest version” notice when bulk updating plugins
+
+**New in version 4.1.0.1 – Released on April 9, 2021**
+
+* Fixed: Redirection Manager strips double slashes from URLs
+* Fixed: AMP for WP pages trigger fatal error
+* Fixed: PHP notice when editing a private post type in the Classic Editor
+* Fixed: Social meta not output on term pages
+
+**New in version 4.1.0 – Released on April 6, 2021**
+
+* New: Redirection Manager to create and manage redirects for 404s or modified posts
+* Updated: Smoother UX when editing fields with smart tags
+* Updated: Added filter to disable shortcode parsing for title/description
+* Fixed: Twitter meta tags now use “name” attribute
+* Fixed: Titles for custom terms not always imported during v3 migration
+* Fixed: Metadata not always being output for “AMP for WP” homepage
+* Fixed: Incorrect autogenerated URL for Wikipedia social profile + LinkedIn group/school URLs flagged as invalid
+* Fixed: Setup wizard sometimes reappearing after exiting
+* Fixed: Software Application graph not outputting review headline and content
+* Fixed: Trailing slashes not removed for sitemap indexes with two or more digits
+* Fixed: Translated variants (WMPL) of static homepage not shown as alternative links in sitemap
+
+**New in version 4.0.17 – Released on March 11, 2021**
+
+* New: Support for noindexing RSS feed pages
+* Updated: Schema now uses author's public display name instead of first & last name
+* Fixed: Noindexed custom post archives are no longer included in the sitemap
+* Fixed: Default title/description format sometimes not populated on post/term creation
+* Fixed: Post Excerpt tag no longer is blank in the preview snippet
+* Fixed: Addons sometimes can't be installed after installing Pro
+* Fixed: Social Meta profile URLs fields sometimes show warning when valid URL is entered
+* Fixed: Social Meta profile URLs sometimes don't save
+* Fixed: Invalid data in v3 .ini export file stops entire import
+
+**New in version 4.0.16 – Released on February 25, 2021**
+
+* New: Semrush integration for keyphrase suggestions
+* Updated: Refactored TruSEO content analysis for performance
+* Updated: Change default meta description to Post Excerpt for post types that support it
+* Updated: Added support for importing CPT archive settings from competitor plugins
+* Updated: Output brand graph instead of plain text for Product schema
+* Updated: Added filter to disable our custom link format attributes
+* Updated: Added filter to prevent output buffering conflicts
+* Updated: Disabled new wp_robots filter in WP Core 5.7
+* Fixed: Paged format repeated in meta description
+* Fixed: Incorrect language code in multilingual WPML post sitemap
+* Fixed: Post descriptions not imported from competitor plugins
+* Fixed: Sitelinks schema markup output on other pages besides the homepage
+* Fixed: Organization logo not output in schema if set to an external URL
+* Fixed: RSS sitemap settings sometimes not saving correctly
+* Fixed: Deleting default title/description sometimes failed
+* Fixed: Dollar symbols in post titles not migrating correctly
+* Fixed: FAQ Page and Recipe textarea blocks not expanding in height
+* Fixed: Schema dropdown menu in editor sidebar opening in wrong direction
+
+**New in version 4.0.15 – Released on February 3, 2021**
+
+* Updated: Performance enhancements for sitemap integration with WooCommerce
+
+**New in version 4.0.14 – Released on February 1, 2021**
+
+* Fixed: PHP notices caused by plugin conflicts
+
+**New in version 4.0.13 – Released on January 28, 2021**
+
+* New: Schema Pro updates to include support for Products, FAQ Pages, Courses, Recipes and more!
+* New: Added a filter for schema aioseo_schema_graphs
+* Updated: Minimum capabilities on certain admin notices
+* Updated: Moved filter hook for title rewrites to wp to allow for accessing the query
+* Updated: Cache all references to attachment_url_to_postid functions
+* Updated: Refactored image scan interval for performance
+* Updated: Refactored the sitemap query to include post type
+* Updated: Add dismissible option to robots.txt alert
+* Fixed: Exporting settings including unnecessary data
+* Fixed: Transients not always being set correctly
+* Fixed: AIOSEO details column appearing on private post types/taxonomies
+* Fixed: Admin notice conflicts with plugins that disable admin notices
+* Fixed: Bug with title rewrites when multiple head tags exist in the page
+* Fixed: Unnecessary div element being added to the front-end of the site
+* Fixed: Issue with duplicate post records being inserted into custom tables
+* Fixed: Adding null entries to the custom tables
+* Fixed: Missing space in page format appended to titles/descriptions
+* Fixed: Output broken for keywords using languages that have multibyte characters
+* Fixed: Default settings for paged home pages not being set to noindex
+* Fixed: Shortcodes not being properly parsed on titles and descriptions
+* Fixed: Boolean values in database not being added in strict MySQL environments
+* Fixed: Breadcrumb labels for authors, archives, search, and 404 pages
+* Fixed: Adding additional pages now work even when we don't output a sitemap index by default
+* Fixed: rel=”next” links not always working
+* Fixed: Use fullsize image for OG image with filter to modify aioseo_thumbnail_size
+* Fixed: Remove OG HTML attribute if OG is disabled
+* Fixed: Default OG object type for home page is now ‘website' instead of ‘article'
+* Fixed: Undefined index error in apache in regards to $_SERVER[‘REMOTE_ADDR']
+* Fixed: Conflict with custom permalinks plugin
+* Fixed: Sitemap adding language=”” when not needed
+* Fixed: Page titles not always migrating properly
+* Fixed: Keywords not always migrating properly
+
+**New in version 4.0.12 – Released on January 6, 2021**
+
+* New: Add support for dashes in custom field names
+* Update: aioseo_disable filter now disables title rewrites
+* Fixed: Completely remove auto updates wrapper to let WordPress handle updates
+* Fixed: Refactor sitemap rewrite rules to account for WordPress sitemaps
+* Fixed: Support for taxonomies and custom post types that use ‘type' as the slug
+* Fixed: Options backup not always working for custom post types
+* Fixed: Console error related to WooCommerce tags
+* Fixed: Additional plugin conflicts
+
+**New in version 4.0.11 – Released on December 26, 2020**
+
+* Fixed: Issue with additional sitemap indexes returning 404
+
+**New in version 4.0.10 – Released on December 26, 2020**
+
+* New: Added task to cleanup all unnecessary action scheduler items to keep the DB trim
+* New: Filter to modify the home page schema breadcrumbs title aioseo_schema_breadcrumbs_home
+* Updated: Link to documentation for filters and hooks
+* Updated: Documentation regarding schema still being output for unlicensed users
+* Fixed: Performance issues when using TruSEO analysis on very long posts
+* Fixed: Event Espresso compatibility which didn't allow AIOSEO settings to load
+* Fixed: Suppressed continued errors with the WP FileSystem
+* Fixed: Schema breadcrumbs not using the proper post titles
+* Fixed: PHP error when install routine has not finished running
+* Fixed: Stripping of sitemap URL's in robots.txt
+* Fixed: Issue where static sitemaps were always being regenerated on save
+* Fixed: Issue where non-latin characters would cause the meta box to grow wider
+
+**New in version 4.0.9 – Released on December 22, 2020**
+
+* New: Added a filter to disable title rewrites via aioseo_disable_title_rewrites
+* New: Added a filter to modify the social network meta tags via aioseo_social_meta_tags
+* Updated: Performance enhancements for the V3 migration to prevent large sites from slowing down
+* Updated: Performance enhancements when loading any AIOSEO settings page as well as the post editor
+* Updated: The display of the archive title when on a CPT
+* Fixed: Bug that prevented editors and authors from editing SEO titles and descriptions
+* Fixed: TruSEO support in the classic editor URL not fully working on extra long URLs
+* Fixed: Issue where the closing head tag did not always display
+* Fixed: Issue on a few remaining sites where the title tag would strip out a $ and any numbers after it
+* Fixed: PHP error related to missing array during the migration
+* Fixed: Issue where AIOSEO would not remove the trailing /amp from canonical URLs
+* Fixed: Issue where notices would appear in the log when trying to access our log file
+* Fixed: Conflict with WP Shop plugin
+
+**New in version 4.0.8 – Released on December 21, 2020**
+
+* New: Added filter to allow altering meta box priority
+* Updated: Default options for auto updates
+* Fixed: Issue with regex escaping smart tags incorrectly
+* Fixed: CSS conflict with Revive Old Posts plugin
+
+**New in version 4.0.7 – Released on December 21, 2020**
+
+* New: Added aioseo_keywords filter
+* Fixed: Issue with a CSS file returning a 404
+* Fixed: Issue where not all GA scripts were being output to the page
+* Fixed: Conflict with Avada when using the Slider shortcode
+* Fixed: PHP Fatal error that affected a small subset of users during migration from version 3
+
+**New in version 4.0.6 – Released December 20, 2020**
+
+* New: integration with MonsterInsights for Google Analytics
+* New: Added Default Title/Description Meta for display in Page/Posts
+* New: Notice to inform users when title formats were broken in V3 after a migration
+* New: Smart tags (Categories, Parent Title, WooCommerce SKU/Price/Brand)
+* New: Option to display additional twitter meta (written by/reading time)
+* New: Dismissible notice to let inform users where they can find meta keywords
+* New: Notice to let give users info on adding keyphrases
+* Updated: Twitter meta does not default Open Graph any more
+* Updated: TruSEO tests to give more valuable information
+* Updated: Added “SEO” to test names in TruSEO to avoid confusion with Page Title
+* Updated: Added locale to TruSEO tests
+* Updated: SEO Analyzer error messages to give more helpful information
+* Fixed: Custom tables not always being created
+* Fixed: Invalid help docs URL
+* Fixed: Scheduled actions not always completing when importing from other SEO plugins
+* Fixed: Incorrect TruSEO test logic
+* Fixed: WooCommerce Products page only showing the shop page title/desc for all Products
+* Fixed: PHP errors on home page when no images are set
+* Fixed: GTM script not always being output in the source code
+* Fixed: Parsing of meta tag in the Pinterest section of the social networks page
+
+**New in version 4.0.5 – Released on December 15, 2020**
+
+* New: Added helpful notices when description format is used incorrectly
+* New: Added support for pasting in a string of keywords to automatically parse
+* New: Allow pasting in the entire meta tag in Webmaster Tools for Google/Bing/etc.
+* New: Post Excerpt Only smart tag
+* Updated: Improved UX when importing settings from other SEO plugins
+* Updated: Improved sitemap scanning of images with caching to increase performance
+* Updated: Competitor Site Analysis results content
+* Updated: Truncate post content in meta descriptions to WordPress default lengths
+* Updated: Allow other TLD's in social network URL's
+* Fixed: Performance issues on sites with millions of WordPress user accounts
+* Fixed: Setting SEO titles/descriptions from the all posts page not consistently working
+* Fixed: Sitemap compatibility issues with GoDaddy CDN
+* Fixed: Performance issues with static sitemaps being generated on large sites
+* Fixed: Static sitemap generating even when disabled
+* Fixed: Home Page Open Graph/Twitter images revert to the defaults if not set
+* Fixed: Properly display errors when an addon is not installed correctly
+* Fixed: Text editor in the Classic Editor now works with TruSEO
+* Fixed: URL's switching to http in Competitor Site Analysis
+* Fixed: PHP error when loading the help modal in the settings pages
+* Fixed: Missing import fields from other SEO plugins
+* Fixed: Page titles not displaying properly when themes hardcode titles
+* Fixed: White screen in settings when SSL is not configured properly on specific hosts
+* Fixed: Swapped options on the system status page
+* Fixed: Conflict with shortcodes that break meta description parsing
+* Fixed: Conflict with plugins and themes that reset the WP Query
+* Fixed: Issue with person graph not being displayed in the schema
+
+**New in version 4.0.4 – Released on November 22, 2020**
+
+* Fixed: Title formats not always migrating correctly
+
+**New in version 4.0.3 – Released on November 21, 2020**
+
+* Updated: Moved all action scheduler items into the aioseo group
+* Fixed: SEO data occasionally not saving while using the Classic Editor in Pages/Posts/Terms
+* Fixed: Migrations not fully completing when upgrading from V3
+* Fixed: Weglot injecting language switcher into sitemap stylesheets
+* Fixed: Genesis Theme outputting duplicate SEO data
+* Fixed: Paged numbers appearing in the AIOSEO Details column when navigating through the posts table
+* Fixed: Post/page titles not migrating with the proper format
+* Fixed: Social profile urls failing when they are valid
+* Fixed: Twitter and Facebook images not displaying in the preview
+* Fixed: Focus keywords not being added when first creating a page
+* Fixed: AIOSEO Settings section not always displaying on Edit Post screen in classic editor in WP 4.9 – 5.1
+
+**New in version 4.0.2 – Released on November 17, 2020**
+
+* Fixed: Display of Titles and Descriptions while migration is running
+* Fixed: Post/Term meta not always saving because of using PUT requests instead of POST
+* Fixed: Social Profile urls not validating with subdomains or trailing slashes
+* Fixed: Social Profile urls were not all being output if some were using the same username
+* Fixed: Memory leak on certain sites with thousands of transients
+* Fixed: PHP 5.2/5.3 notice compatibility
+
+**New in version 4.0.1 – Released on November 14, 2020**
+
+* Fixed: Issue with sites using different database engines
+
+**New in version 4.0.0 – Released on November 14, 2020**
+
+* NEW – Complete rebuild of the plugin for better performance and SEO enhancements
+* NEW – Onboarding wizard to streamline SEO setup for your site
+* NEW – Centralized dashboard to provide you with your current SEO status
+* NEW – TruSEO Analysis for posts and pages
+* NEW – SEO Analyzer with competitor site analysis
+* NEW – Customizable access control
+* NEW – Internal settings backup and restore
+* NEW – 100+ enhancements and bug fixes
+* Updated – Minimum PHP version compatibility to 5.4
+
+**See our <a href="https://aioseo.com/changelog/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin" target="_blank">changelog</a> for previous releases.**
 
 == Frequently Asked Questions ==
 
@@ -236,6 +656,6 @@ AIOSEO is the original WordPress SEO plugin, and it's trusted by over 2 million 
 
 == Upgrade Notice ==
 
-= 4.1.1.1 =
+= 4.1.4.3 =
 
 This update adds major improvements and bugfixes.

@@ -58,6 +58,15 @@ namespace AIOSEO\Plugin {
 		public $options = [];
 
 		/**
+		 * The AIOSEO dynamic options.
+		 *
+		 * @since 4.1.4
+		 *
+		 * @var array
+		 */
+		public $dynamicOptions = [];
+
+		/**
 		 * The WordPress filters to run.
 		 *
 		 * @since 4.0.0
@@ -200,7 +209,7 @@ namespace AIOSEO\Plugin {
 		private function includes() {
 			$dependencies = [
 				'/vendor/autoload.php',
-				'/vendor/woocommerce/action-scheduler/action-scheduler.php',
+				'/vendor/woocommerce/action-scheduler/action-scheduler.php'
 			];
 
 			foreach ( $dependencies as $path ) {
@@ -273,9 +282,13 @@ namespace AIOSEO\Plugin {
 			$this->addons             = $this->pro ? new Pro\Utils\Addons() : new Common\Utils\Addons();
 			$this->tags               = $this->pro ? new Pro\Utils\Tags() : new Common\Utils\Tags();
 			$this->badBotBlocker      = new Common\Tools\BadBotBlocker();
+			$this->headlineAnalyzer   = new Common\HeadlineAnalyzer\HeadlineAnalyzer();
 			$this->breadcrumbs        = $this->pro ? new Pro\Breadcrumbs\Breadcrumbs() : new Common\Breadcrumbs\Breadcrumbs();
-			$this->internalOptions    = $this->pro ? new Pro\Utils\InternalOptions() : new Lite\Utils\InternalOptions();
-			$this->options            = $this->pro ? new Pro\Utils\Options() : new Lite\Utils\Options();
+			$this->dynamicBackup      = $this->pro ? new Pro\Options\DynamicBackup() : new Common\Options\DynamicBackup();
+			$this->optionsCache       = new Common\Options\Cache();
+			$this->internalOptions    = $this->pro ? new Pro\Options\InternalOptions() : new Lite\Options\InternalOptions();
+			$this->options            = $this->pro ? new Pro\Options\Options() : new Lite\Options\Options();
+			$this->dynamicOptions     = $this->pro ? new Pro\Options\DynamicOptions() : new Common\Options\DynamicOptions();
 			$this->backup             = new Common\Utils\Backup();
 			$this->access             = $this->pro ? new Pro\Utils\Access() : new Common\Utils\Access();
 			$this->usage              = $this->pro ? new Pro\Admin\Usage() : new Lite\Admin\Usage();
@@ -294,6 +307,7 @@ namespace AIOSEO\Plugin {
 			$this->migration          = $this->pro ? new Pro\Migration\Migration() : new Common\Migration\Migration();
 			$this->importExport       = $this->pro ? new Pro\ImportExport\ImportExport() : new Common\ImportExport\ImportExport();
 			$this->sitemap            = $this->pro ? new Pro\Sitemap\Sitemap() : new Common\Sitemap\Sitemap();
+			$this->htmlSitemap        = new Common\Sitemap\Html\Sitemap();
 			$this->templates          = new Common\Utils\Templates();
 
 			if ( ! wp_doing_ajax() && ! wp_doing_cron() ) {
@@ -332,7 +346,7 @@ namespace AIOSEO\Plugin {
 			$this->badBotBlocker->init();
 
 			// We call this again to reset any post types/taxonomies that have not yet been set up.
-			$this->options->refresh();
+			$this->dynamicOptions->refresh();
 		}
 
 		/**

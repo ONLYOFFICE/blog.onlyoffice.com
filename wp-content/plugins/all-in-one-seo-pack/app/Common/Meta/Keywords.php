@@ -52,10 +52,10 @@ class Keywords {
 				return $this->prepareKeywords( $keywords );
 			}
 
-			$postType = get_queried_object();
-			$options  = aioseo()->options->noConflict();
-			if ( $postType && $options->searchAppearance->dynamic->archives->has( $postType->name ) ) {
-				$keywords = $this->extractMetaKeywords( aioseo()->options->searchAppearance->dynamic->archives->{ $postType->name }->advanced->keywords );
+			$postType       = get_queried_object();
+			$dynamicOptions = aioseo()->dynamicOptions->noConflict();
+			if ( $postType && $dynamicOptions->searchAppearance->archives->has( $postType->name ) ) {
+				$keywords = $this->extractMetaKeywords( aioseo()->dynamicOptions->searchAppearance->archives->{ $postType->name }->advanced->keywords );
 				return $this->prepareKeywords( $keywords );
 			}
 
@@ -136,11 +136,11 @@ class Keywords {
 
 		if ( $post ) {
 			if ( aioseo()->options->searchAppearance->advanced->useTagsForMetaKeywords ) {
-				$keywords = array_merge( $keywords, aioseo()->social->helpers->getAllTags( $post->ID ) );
+				$keywords = array_merge( $keywords, aioseo()->helpers->getAllTags( $post->ID ) );
 			}
 
 			if ( aioseo()->options->searchAppearance->advanced->useCategoriesForMetaKeywords && ! is_page() ) {
-				$keywords = array_merge( $keywords, aioseo()->social->helpers->getAllCategories( $post->ID ) );
+				$keywords = array_merge( $keywords, aioseo()->helpers->getAllCategories( $post->ID ) );
 			}
 		}
 

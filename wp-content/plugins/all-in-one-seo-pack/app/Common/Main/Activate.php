@@ -20,7 +20,17 @@ class Activate {
 	public function __construct() {
 		register_activation_hook( AIOSEO_FILE, [ $this, 'activate' ] );
 		register_deactivation_hook( AIOSEO_FILE, [ $this, 'deactivate' ] );
+		add_action( 'init', [ $this, 'init' ] );
+	}
 
+	/**
+	 * Initialize activation.
+	 *
+	 * @since 4.1.5
+	 *
+	 * @return void
+	 */
+	public function init() {
 		// If Pro just deactivated the lite version, we need to manually run the activation hook, because it doesn't run here.
 		$proDeactivatedLite = (bool) aioseo()->transients->get( 'pro_just_deactivated_lite' );
 		if ( $proDeactivatedLite ) {
@@ -52,6 +62,8 @@ class Activate {
 		}
 
 		aioseo()->transients->clearCache();
+
+		$this->maybeRunSetupWizard();
 	}
 
 	/**
@@ -64,5 +76,34 @@ class Activate {
 	public function deactivate() {
 		aioseo()->access->removeCapabilities();
 		\AIOSEO\Plugin\Common\Sitemap\Rewrite::removeRewriteRules( [], true );
+	}
+
+	/**
+	 * Check if we should redirect on activation.
+	 *
+	 * @since 4.1.2
+	 *
+	 * @return void
+	 */
+	private function maybeRunSetupWizard() {
+		if ( '0.0' !== aioseo()->internalOptions->internal->lastActiveVersion ) {
+			return;
+		}
+
+		$oldOptions = get_option( 'aioseop_options' );
+		if ( ! empty( $oldOptions ) ) {
+			return;
+		}
+
+		if ( is_network_admin() ) {
+			return;
+		}
+
+		if ( isset( $_GET['activate-multi'] ) ) {
+			return;
+		}
+
+		// Sets 30 second transient for welcome screen redirect on activation.
+		aioseo()->transients->update( 'activation_redirect', true, 30 );
 	}
 }

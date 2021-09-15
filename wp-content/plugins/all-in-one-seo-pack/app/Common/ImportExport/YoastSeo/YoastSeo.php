@@ -41,6 +41,15 @@ class YoastSeo extends ImportExport\Importer {
 	public $postActionName = 'aioseo_import_post_meta_yoast_seo';
 
 	/**
+	 * The user action name.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @var string
+	 */
+	public $userActionName = 'aioseo_import_user_meta_yoast_seo';
+
+	/**
 	 * The post action name.
 	 *
 	 * @since 4.0.0
@@ -50,7 +59,9 @@ class YoastSeo extends ImportExport\Importer {
 	public function __construct( $importer ) {
 		$this->helpers  = new Helpers();
 		$this->postMeta = new PostMeta();
+		$this->userMeta = new UserMeta();
 		add_action( $this->postActionName, [ $this->postMeta, 'importPostMeta' ] );
+		add_action( $this->userActionName, [ $this->userMeta, 'importUserMeta' ] );
 
 		$plugins = $this->plugins;
 		foreach ( $plugins as $key => $plugin ) {
@@ -70,5 +81,6 @@ class YoastSeo extends ImportExport\Importer {
 		new GeneralSettings();
 		new SearchAppearance();
 		new SocialMeta();
+		$this->userMeta->scheduleImport();
 	}
 }

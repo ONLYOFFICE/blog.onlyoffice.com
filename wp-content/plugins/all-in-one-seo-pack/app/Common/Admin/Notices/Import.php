@@ -20,22 +20,7 @@ class Import {
 	 * @return void
 	 */
 	public function maybeShowNotice() {
-		$transients = aioseo()->db
-			->start( 'options' )
-			->select( 'option_name as name' )
-			->whereRaw( "`option_name` LIKE '_aioseo_cache_%'" )
-			->run()
-			->result();
-
-		$foundImportTransient = false;
-		foreach ( $transients as $transient ) {
-			if ( preg_match( '#import_.*_meta_.*#', $transient->name ) ) {
-				$foundImportTransient = true;
-				break;
-			}
-		}
-
-		if ( ! $foundImportTransient ) {
+		if ( ! aioseo()->importExport->isImportRunning() ) {
 			return;
 		}
 

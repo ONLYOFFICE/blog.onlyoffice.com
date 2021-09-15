@@ -63,9 +63,9 @@ class GeneralSettings {
 	private function migrateRedirectAttachments() {
 		if ( isset( $this->options['attachment_redirect_urls'] ) ) {
 			if ( 'on' === $this->options['attachment_redirect_urls'] ) {
-				aioseo()->options->searchAppearance->dynamic->postTypes->attachment->redirectAttachmentUrls = 'attachment_parent';
+				aioseo()->dynamicOptions->searchAppearance->postTypes->attachment->redirectAttachmentUrls = 'attachment_parent';
 			} else {
-				aioseo()->options->searchAppearance->dynamic->postTypes->attachment->redirectAttachmentUrls = 'disabled';
+				aioseo()->dynamicOptions->searchAppearance->postTypes->attachment->redirectAttachmentUrls = 'disabled';
 			}
 		}
 	}

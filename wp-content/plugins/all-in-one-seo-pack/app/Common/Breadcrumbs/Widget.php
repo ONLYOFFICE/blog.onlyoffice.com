@@ -58,7 +58,9 @@ class Widget extends \WP_Widget {
 
 		// Title.
 		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped,Generic.Files.LineLength.MaxExceeded
+			echo $args['before_title'] . apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				'widget_title', $instance['title'], $instance, $this->id_base
+			) . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 
 		// Breadcrumb.

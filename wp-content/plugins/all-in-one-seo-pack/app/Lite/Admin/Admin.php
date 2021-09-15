@@ -36,7 +36,7 @@ class Admin extends CommonAdmin\Admin {
 	 */
 	protected function addAdminBarMenuItems() {
 		// Add an upsell to Pro.
-		if ( current_user_can( 'update_plugins' ) ) {
+		if ( current_user_can( $this->getPageRequiredCapability( '' ) ) ) {
 			$this->adminBarMenuItems['aioseo-pro-upgrade'] = [
 				'parent' => 'aioseo-main',
 				'title'  => '<span class="aioseo-menu-highlight">' . __( 'Upgrade to Pro', 'all-in-one-seo-pack' ) . '</span>',
@@ -59,12 +59,14 @@ class Admin extends CommonAdmin\Admin {
 	public function addMenu() {
 		parent::addMenu();
 
+		$capability = $this->getPageRequiredCapability( '' );
+
 		// We use the global submenu, because we are adding an external link here.
-		if ( current_user_can( 'aioseo_manage_seo' ) ) {
+		if ( current_user_can( $capability ) ) {
 			global $submenu;
 			$submenu[ $this->pageSlug ][] = [
 				'<span class="aioseo-menu-highlight">' . esc_html__( 'Upgrade to Pro', 'all-in-one-seo-pack' ) . '</span>',
-				apply_filters( 'aioseo_manage_seo', 'aioseo_manage_seo' ),
+				$capability,
 				apply_filters( 'aioseo_upgrade_link', aioseo()->helpers->utmUrl( AIOSEO_MARKETING_URL . 'lite-upgrade/', 'admin-menu', null, false ) )
 			];
 		}

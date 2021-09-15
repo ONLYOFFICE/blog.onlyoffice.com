@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AIOSEO\Plugin\Common\Models;
+
 /**
  * Abstract class that Pro and Lite both extend.
  *
@@ -34,10 +36,18 @@ class Main {
 	 */
 	public function enqueueAssets() {
 		// Scripts.
-		aioseo()->helpers->enqueueScript(
-			'aioseo-app',
-			'js/app.js'
-		);
+		$standalone = [
+			'app',
+			'notifications'
+		];
+
+		foreach ( $standalone as $key ) {
+			aioseo()->helpers->enqueueScript(
+				'aioseo-' . $key,
+				'js/' . $key . '.js'
+			);
+		}
+
 		aioseo()->helpers->enqueueScript(
 			'aioseo-vendors',
 			'js/chunk-vendors.js'
@@ -45,6 +55,22 @@ class Main {
 		aioseo()->helpers->enqueueScript(
 			'aioseo-common',
 			'js/chunk-common.js'
+		);
+
+		wp_localize_script(
+			'aioseo-app',
+			'aioseoTranslations',
+			[
+				'translations' => aioseo()->helpers->getJedLocaleData( 'all-in-one-seo-pack' )
+			]
+		);
+
+		wp_localize_script(
+			'aioseo-notifications',
+			'aioseoNotifications',
+			[
+				'newNotifications' => count( Models\Notification::getNewNotifications() )
+			]
 		);
 
 		// Styles.
@@ -57,10 +83,13 @@ class Main {
 			'aioseo-vendors',
 			"css/chunk-vendors$rtl.css"
 		);
-		aioseo()->helpers->enqueueStyle(
-			'aioseo-app-style',
-			"css/app$rtl.css"
-		);
+
+		foreach ( $standalone as $key ) {
+			aioseo()->helpers->enqueueStyle(
+				"aioseo-$key-style",
+				"css/$key$rtl.css"
+			);
+		}
 	}
 
 	/**
@@ -71,14 +100,19 @@ class Main {
 	 * @return void
 	 */
 	public function enqueueFrontEndAssets() {
-		if ( ! is_user_logged_in() || ! current_user_can( 'aioseo_manage_seo' ) ) {
+		$canManageSeo = apply_filters( 'aioseo_manage_seo', 'aioseo_manage_seo' );
+		if (
+			! is_user_logged_in() ||
+			! ( current_user_can( $canManageSeo ) || aioseo()->access->canManage() )
+		) {
 			return;
 		}
 
 		// Styles.
 		aioseo()->helpers->enqueueStyle(
 			'aioseo-admin-bar',
-			'css/aioseo-admin-bar.css'
+			'css/aioseo-admin-bar.css',
+			false
 		);
 	}
 
