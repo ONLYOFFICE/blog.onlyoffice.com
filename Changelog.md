@@ -1,4 +1,8 @@
 ﻿# Changelog
+## 1.0.9
+### Новое
+* Обновлён плагин All in One SEO до версии 4.1.4.3 для устранения возможных XSS атак по задаче  https://nct.onlyoffice.com/Products/Projects/Tasks.aspx?prjID=137&id=32098#
+
 ## 1.0.8
 ### Новое
 * Обновлено главное меню, как на https://www.onlyoffice.com/

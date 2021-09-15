@@ -376,9 +376,9 @@ class SocialMeta {
 				continue;
 			}
 
-			$options = aioseo()->options->noConflict();
-			if ( $options->social->facebook->general->dynamic->postTypes->has( $postType ) ) {
-				aioseo()->options->social->facebook->general->dynamic->postTypes->$postType->objectType =
+			$dynamicOptions = aioseo()->dynamicOptions->noConflict();
+			if ( $dynamicOptions->social->facebook->general->postTypes->has( $postType ) ) {
+				aioseo()->dynamicOptions->social->facebook->general->postTypes->$postType->objectType =
 					aioseo()->helpers->sanitizeOption( $this->oldOptions['modules']['aiosp_opengraph_options'][ $settingName ] );
 			}
 

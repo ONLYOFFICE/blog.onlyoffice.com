@@ -20,8 +20,8 @@ class BreadcrumbList extends Graph {
 	 * @return array $data The graph data.
 	 */
 	public function get() {
-		$breadcrumbs = aioseo()->schema->context['breadcrumb'];
-		if ( ! is_array( $breadcrumbs ) || ! count( $breadcrumbs ) ) {
+		$breadcrumbs = isset( aioseo()->schema->context['breadcrumb'] ) ? aioseo()->schema->context['breadcrumb'] : '';
+		if ( ! $breadcrumbs || ! count( $breadcrumbs ) ) {
 			return [];
 		}
 
@@ -38,16 +38,13 @@ class BreadcrumbList extends Graph {
 				'@id'      => $breadcrumb['url'] . '#listItem',
 				'position' => $breadcrumb['position'],
 				'item'     => [
-					// '@type'       => ! empty( $breadcrumb['type'] ) ? $breadcrumb['type'] : '', TODO: See if we can make this dynamic.
-					'@id'         => $breadcrumb['url'] . '#item',
+					'@type'       => 'WebPage',
+					'@id'         => $breadcrumb['url'],
 					'name'        => ! empty( $breadcrumb['name'] ) ? $breadcrumb['name'] : '',
 					'description' => ! empty( $breadcrumb['description'] ) ? $breadcrumb['description'] : '',
 					'url'         => $breadcrumb['url'],
 				]
 			];
-
-			// @TODO: Remove once we filter all graphs using recursion.
-			$listItem['item'] = array_filter( $listItem['item'] );
 
 			if ( 1 === $trailLength ) {
 				$data['itemListElement'][] = $listItem;

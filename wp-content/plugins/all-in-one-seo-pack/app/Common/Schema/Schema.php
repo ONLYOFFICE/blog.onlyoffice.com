@@ -54,6 +54,17 @@ class Schema {
 	];
 
 	/**
+	 * Fields that can be 0 or null, which shouldn't be stripped when cleaning the data.
+	 *
+	 * @since 4.1.2
+	 *
+	 * @var array
+	 */
+	public $nullableFields = [
+		'price' // Needs to be 0 if free for Software Application.
+	];
+
+	/**
 	 * Returns the JSON schema for the requested page.
 	 *
 	 * @since 4.0.0
@@ -93,6 +104,7 @@ class Schema {
 			}
 		}
 
+		$schema['@graph'] = apply_filters( 'aioseo_schema_output', $schema['@graph'] );
 		$schema['@graph'] = array_values( $this->cleanData( $schema['@graph'] ) );
 
 		return isset( $_GET['aioseo-dev'] ) ? wp_json_encode( $schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) : wp_json_encode( $schema );
@@ -193,8 +205,8 @@ class Schema {
 	 * @return string|array The graph name(s).
 	 */
 	public function getPostGraphs( $post = null ) {
-		$post    = is_object( $post ) ? $post : aioseo()->helpers->getPost();
-		$options = aioseo()->options->noConflict();
+		$post           = is_object( $post ) ? $post : aioseo()->helpers->getPost();
+		$dynamicOptions = aioseo()->dynamicOptions->noConflict();
 
 		$schemaType        = 'default';
 		$schemaTypeOptions = '';
@@ -207,18 +219,18 @@ class Schema {
 		}
 
 		// Get global settings if set to default.
-		if ( 'default' === $schemaType && $options->searchAppearance->dynamic->postTypes->has( $post->post_type ) ) {
-			$schemaType = $options->searchAppearance->dynamic->postTypes->{$post->post_type}->schemaType;
+		if ( 'default' === $schemaType && $dynamicOptions->searchAppearance->postTypes->has( $post->post_type ) ) {
+			$schemaType = $dynamicOptions->searchAppearance->postTypes->{$post->post_type}->schemaType;
 		}
 
 		switch ( $schemaType ) {
 			case 'WebPage':
 				$webPageGraph = ! empty( $metaData->schema_type ) && 'default' !== $metaData->schema_type ? $schemaTypeOptions->webPage->webPageType :
-					$options->searchAppearance->dynamic->postTypes->{$post->post_type}->webPageType;
+					$dynamicOptions->searchAppearance->postTypes->{$post->post_type}->webPageType;
 				return ucfirst( $webPageGraph );
 			case 'Article':
 				$articleGraph = ! empty( $metaData->schema_type ) && 'default' !== $metaData->schema_type ? $schemaTypeOptions->article->articleType :
-					$options->searchAppearance->dynamic->postTypes->{$post->post_type}->articleType;
+					$dynamicOptions->searchAppearance->postTypes->{$post->post_type}->articleType;
 				return [ 'WebPage', ucfirst( $articleGraph ) ];
 			case 'none':
 				return '';
@@ -248,10 +260,10 @@ class Schema {
 			if ( is_array( $v ) ) {
 				$v = $this->cleanData( $v );
 			} else {
-				$v = trim( wp_strip_all_tags( $v ) );
+				$v = is_int( $v ) ? $v : trim( wp_strip_all_tags( $v ) );
 			}
 
-			if ( empty( $v ) ) {
+			if ( empty( $v ) && ! in_array( $k, $this->nullableFields, true ) ) {
 				unset( $data[ $k ] );
 			} else {
 				$data[ $k ] = $v;

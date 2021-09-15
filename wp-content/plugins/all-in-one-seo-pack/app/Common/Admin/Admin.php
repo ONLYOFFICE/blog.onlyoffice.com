@@ -43,6 +43,15 @@ class Admin {
 	protected $pages = [];
 
 	/**
+	 * The current page we are enqueuing.
+	 *
+	 * @since 4.1.3
+	 *
+	 * @var string
+	 */
+	protected $currentPage;
+
+	/**
 	 * An array of items to add to the admin bar.
 	 *
 	 * @since 4.0.0
@@ -57,77 +66,11 @@ class Admin {
 	 * @since 4.0.0
 	 */
 	public function __construct() {
+		add_action( 'aioseo_unslash_escaped_data_posts', [ $this, 'unslashEscapedDataPosts' ] );
+
 		if ( wp_doing_ajax() || wp_doing_cron() ) {
 			return;
 		}
-
-		$this->pages = [
-			$this->pageSlug            => [
-				'menu_title' => esc_html__( 'Dashboard', 'all-in-one-seo-pack' ),
-				'capability' => apply_filters( 'aioseo_manage_seo', 'aioseo_manage_seo' ),
-				'parent'     => $this->pageSlug
-			],
-			'aioseo-settings'          => [
-				'menu_title' => esc_html__( 'General Settings', 'all-in-one-seo-pack' ),
-				'capability' => 'aioseo_general_settings',
-				'parent'     => $this->pageSlug
-			],
-			'aioseo-search-appearance' => [
-				'menu_title' => esc_html__( 'Search Appearance', 'all-in-one-seo-pack' ),
-				'capability' => 'aioseo_search_appearance_settings',
-				'parent'     => $this->pageSlug
-			],
-			'aioseo-social-networks'   => [
-				'menu_title' => esc_html__( 'Social Networks', 'all-in-one-seo-pack' ),
-				'capability' => 'aioseo_social_networks_settings',
-				'parent'     => $this->pageSlug
-			],
-			'aioseo-sitemaps'          => [
-				'menu_title' => esc_html__( 'Sitemaps', 'all-in-one-seo-pack' ),
-				'capability' => 'aioseo_sitemap_settings',
-				'parent'     => $this->pageSlug
-			],
-			// 'aioseo-internal-links'    => [
-			//  'menu_title' => esc_html__( 'Internal Links', 'all-in-one-seo-pack' ),
-			//  'capability' => 'aioseo_internal_links_settings',
-			//  'parent'     => $this->pageSlug
-			// ],
-			'aioseo-redirects'         => [
-				'menu_title' => esc_html__( 'Redirects', 'all-in-one-seo-pack' ),
-				'capability' => 'aioseo_redirects_settings',
-				'parent'     => $this->pageSlug
-			],
-			'aioseo-local-seo'         => [
-				'menu_title' => esc_html__( 'Local SEO', 'all-in-one-seo-pack' ),
-				'capability' => 'aioseo_local_seo_settings',
-				'parent'     => $this->pageSlug
-			],
-			'aioseo-seo-analysis'      => [
-				'menu_title' => esc_html__( 'SEO Analysis', 'all-in-one-seo-pack' ),
-				'capability' => 'aioseo_seo_analysis_settings',
-				'parent'     => $this->pageSlug
-			],
-			'aioseo-tools'             => [
-				'menu_title' => esc_html__( 'Tools', 'all-in-one-seo-pack' ),
-				'capability' => 'aioseo_tools_settings',
-				'parent'     => $this->pageSlug
-			],
-			'aioseo-feature-manager'   => [
-				'menu_title' => esc_html__( 'Feature Manager', 'all-in-one-seo-pack' ),
-				'capability' => 'aioseo_feature_manager_settings',
-				'parent'     => $this->pageSlug
-			],
-			'aioseo-monsterinsights'   => [
-				'menu_title' => esc_html__( 'Analytics', 'all-in-one-seo-pack' ),
-				'capability' => apply_filters( 'aioseo_manage_seo', 'aioseo_manage_seo' ),
-				'parent'     => 'aioseo-monsterinsights'
-			],
-			'aioseo-about'             => [
-				'menu_title' => esc_html__( 'About Us', 'all-in-one-seo-pack' ),
-				'capability' => apply_filters( 'aioseo_manage_seo', 'aioseo_manage_seo' ),
-				'parent'     => $this->pageSlug
-			]
-		];
 
 		add_action( 'sanitize_comment_cookies', [ $this, 'init' ], 20 );
 
@@ -143,13 +86,14 @@ class Admin {
 	 */
 	public function init() {
 		// Add the admin bar menu.
-		if ( is_user_logged_in() && current_user_can( 'aioseo_manage_seo' ) && ( ! is_multisite() || ! is_network_admin() ) ) {
+		if ( is_user_logged_in() && ( ! is_multisite() || ! is_network_admin() ) ) {
 			add_action( 'admin_bar_menu', [ $this, 'adminBarMenu' ], 1000 );
 		}
 
 		if ( is_admin() ) {
 			// Add the menu to the sidebar.
 			add_action( 'admin_menu', [ $this, 'addMenu' ] );
+			add_action( 'admin_menu', [ $this, 'hideScheduledActionsMenu' ], 99999 );
 			if ( is_multisite() ) {
 				add_action( 'network_admin_menu', [ $this, 'addRobotsMenu' ] );
 			}
@@ -162,8 +106,79 @@ class Admin {
 
 			add_action( 'admin_init', [ $this, 'addPluginScripts' ] );
 
+			// Add redirects messages to trashed posts.
+			add_filter( 'bulk_post_updated_messages', [ $this, 'appendTrashedMessage' ], 10, 2 );
+
 			$this->registerLinkFormatHooks();
 		}
+
+		$this->loadTextDomain();
+		$this->setPages();
+	}
+
+	/**
+	 * Sets our menu pages.
+	 * It is important this runs AFTER we've loaded the text domain.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @return void
+	 */
+	private function setPages() {
+		$this->pages = [
+			$this->pageSlug            => [
+				'menu_title' => esc_html__( 'Dashboard', 'all-in-one-seo-pack' ),
+				'parent'     => $this->pageSlug
+			],
+			'aioseo-settings'          => [
+				'menu_title' => esc_html__( 'General Settings', 'all-in-one-seo-pack' ),
+				'parent'     => $this->pageSlug
+			],
+			'aioseo-search-appearance' => [
+				'menu_title' => esc_html__( 'Search Appearance', 'all-in-one-seo-pack' ),
+				'parent'     => $this->pageSlug
+			],
+			'aioseo-social-networks'   => [
+				'menu_title' => esc_html__( 'Social Networks', 'all-in-one-seo-pack' ),
+				'parent'     => $this->pageSlug
+			],
+			'aioseo-sitemaps'          => [
+				'menu_title' => esc_html__( 'Sitemaps', 'all-in-one-seo-pack' ),
+				'parent'     => $this->pageSlug
+			],
+			// 'aioseo-internal-links'    => [
+			//  'menu_title' => esc_html__( 'Internal Links', 'all-in-one-seo-pack' ),
+			//  'parent'     => $this->pageSlug
+			// ],
+			'aioseo-redirects'         => [
+				'menu_title' => esc_html__( 'Redirects', 'all-in-one-seo-pack' ),
+				'parent'     => $this->pageSlug
+			],
+			'aioseo-local-seo'         => [
+				'menu_title' => esc_html__( 'Local SEO', 'all-in-one-seo-pack' ),
+				'parent'     => $this->pageSlug
+			],
+			'aioseo-seo-analysis'      => [
+				'menu_title' => esc_html__( 'SEO Analysis', 'all-in-one-seo-pack' ),
+				'parent'     => $this->pageSlug
+			],
+			'aioseo-tools'             => [
+				'menu_title' => esc_html__( 'Tools', 'all-in-one-seo-pack' ),
+				'parent'     => $this->pageSlug
+			],
+			'aioseo-feature-manager'   => [
+				'menu_title' => esc_html__( 'Feature Manager', 'all-in-one-seo-pack' ),
+				'parent'     => $this->pageSlug
+			],
+			'aioseo-monsterinsights'   => [
+				'menu_title' => esc_html__( 'Analytics', 'all-in-one-seo-pack' ),
+				'parent'     => 'aioseo-monsterinsights'
+			],
+			'aioseo-about'             => [
+				'menu_title' => esc_html__( 'About Us', 'all-in-one-seo-pack' ),
+				'parent'     => $this->pageSlug
+			]
+		];
 	}
 
 	/**
@@ -183,7 +198,7 @@ class Admin {
 		global $wp_version;
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		if ( version_compare( $wp_version, '5.3', '>=' ) || is_plugin_active( 'gutenberg/gutenberg.php' ) ) {
-			add_action( 'admin_init', [ $this, 'addGutenbergLinkFormatScript' ] );
+			add_action( 'current_screen', [ $this, 'addGutenbergLinkFormatScript' ] );
 			add_action( 'enqueue_block_editor_assets', function() {
 				wp_enqueue_script( 'aioseo-link-format' );
 			} );
@@ -265,6 +280,10 @@ class Admin {
 	 * @return void
 	 */
 	public function addGutenbergLinkFormatScript() {
+		if ( ! aioseo()->helpers->isScreenBase( 'post' ) ) {
+			return;
+		}
+
 		$linkFormat = 'block';
 		if ( is_plugin_active( 'gutenberg/gutenberg.php' ) ) {
 			$data = get_plugin_data( ABSPATH . 'wp-content/plugins/gutenberg/gutenberg.php', false, false );
@@ -310,14 +329,20 @@ class Admin {
 			return;
 		}
 
-		$count = count( Models\Notification::getAllActiveNotifications() );
-		$count = 10 > $count ? $count : '!';
-		$count = $count ? '<div class="aioseo-menu-notification-counter">' . $count . '</div>' : '';
+		$firstPageSlug = $this->getFirstAvailablePageSlug();
+		if ( ! $firstPageSlug ) {
+			return;
+		}
+
+		$count      = count( Models\Notification::getAllActiveNotifications() );
+		$htmlCount  = 10 > $count ? $count : '!';
+		$htmlCount  = $htmlCount ? '<div class="aioseo-menu-notification-counter">' . $htmlCount . '</div>' : '';
+		$htmlCount .= '<div id="aioseo-menu-new-notifications"></div>';
 
 		$this->adminBarMenuItems[] = [
 			'id'    => 'aioseo-main',
-			'title' => '<div class="ab-item aioseo-logo svg"></div><span class="text">' . esc_html__( 'SEO', 'all-in-one-seo-pack' ) . '</span>' . wp_kses_post( $count ),
-			'href'  => esc_url( admin_url( 'admin.php?page=aioseo' ) )
+			'title' => '<div class="ab-item aioseo-logo svg"></div><span class="text">' . esc_html__( 'SEO', 'all-in-one-seo-pack' ) . '</span>' . wp_kses_post( $htmlCount ),
+			'href'  => esc_url( admin_url( 'admin.php?page=' . $firstPageSlug ) )
 		];
 
 		if ( $count ) {
@@ -325,23 +350,29 @@ class Admin {
 				'parent' => 'aioseo-main',
 				'id'     => 'aioseo-notifications',
 				'title'  => esc_html__( 'Notifications', 'all-in-one-seo-pack' ) . ' <div class="aioseo-menu-notification-indicator"></div>',
-				'href'   => admin_url( 'admin.php?page=aioseo&notifications=true' ),
+				'href'   => admin_url( 'admin.php?page=' . $firstPageSlug . '&notifications=true' ),
 			];
 		}
 
-		if ( ! is_admin() ) {
+		$htmlSitemapRequested = aioseo()->htmlSitemap->isDedicatedPage;
+		if ( ! is_admin() && ! $htmlSitemapRequested ) {
 			$this->addPageAnalyzerMenuItems();
 		}
 
-		$this->addSettingsMenuItems();
-		$this->addPostMenuItems();
+		if ( $htmlSitemapRequested ) {
+			global $wp_admin_bar;
+			$wp_admin_bar->remove_node( 'edit' );
+		}
 
-		// Add the menu bar items.
+		$this->addSettingsMenuItems();
 		$this->addAdminBarMenuItems();
+		$this->addPostMenuItems();
 	}
 
 	/**
 	 * Actually adds the menu items to the admin bar.
+	 *
+	 * @since 4.0.0
 	 *
 	 * @return void
 	 */
@@ -487,6 +518,10 @@ class Admin {
 				continue;
 			}
 
+			if ( ! current_user_can( $this->getPageRequiredCapability( $id ) ) ) {
+				continue;
+			}
+
 			$this->adminBarMenuItems[] = [
 				'id'     => $id,
 				'parent' => $parent,
@@ -498,6 +533,7 @@ class Admin {
 
 	/**
 	 * Retreive data to build the admin bar.
+	 *
 	 * @since 4.0.0
 	 *
 	 * @param  WP_Post $post The post object.
@@ -529,6 +565,18 @@ class Admin {
 	}
 
 	/**
+	 * Get the required capability for given admin page.
+	 *
+	 * @since 4.1.3
+	 *
+	 * @param  string $pageSlug The slug of the page.
+	 * @return string           The required capability.
+	 */
+	public function getPageRequiredCapability( $pageSlug ) { // phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		return apply_filters( 'aioseo_manage_seo', 'aioseo_manage_seo' );
+	}
+
+	/**
 	 * Add the menu inside of WordPress.
 	 *
 	 * @since 4.0.0
@@ -543,23 +591,40 @@ class Admin {
 				$page['parent'],
 				! empty( $page['page_title'] ) ? $page['page_title'] : $page['menu_title'],
 				$page['menu_title'],
-				$page['capability'],
+				$this->getPageRequiredCapability( $slug ),
 				$slug,
 				[ $this, 'page' ]
 			);
 			add_action( "load-{$hook}", [ $this, 'hooks' ] );
+		}
 
-			if ( ! current_user_can( 'aioseo_admin' ) ) {
-				remove_submenu_page( 'aioseo', 'aioseo' );
-			}
+		if ( ! current_user_can( $this->getPageRequiredCapability( $this->pageSlug ) ) ) {
+			remove_submenu_page( $this->pageSlug, $this->pageSlug );
 		}
 
 		global $submenu;
-		$submenu['tools.php'][] = [
-			esc_html__( 'Redirection Manager', 'all-in-one-seo-pack' ),
-			apply_filters( 'aioseo_redirects_settings', 'aioseo_redirects_settings' ),
-			admin_url( '/admin.php?page=aioseo-redirects' )
-		];
+		if ( current_user_can( $this->getPageRequiredCapability( 'aioseo-redirects' ) ) ) {
+			$submenu['tools.php'][] = [
+				esc_html__( 'Redirection Manager', 'all-in-one-seo-pack' ),
+				$this->getPageRequiredCapability( 'aioseo-redirects' ),
+				admin_url( '/admin.php?page=aioseo-redirects' )
+			];
+		}
+
+		// We use the global submenu, because we are adding an external link here.
+		$count         = count( Models\Notification::getAllActiveNotifications() );
+		$firstPageSlug = $this->getFirstAvailablePageSlug();
+		if (
+			$count &&
+			! empty( $submenu[ $this->pageSlug ] ) &&
+			! empty( $firstPageSlug )
+		) {
+			array_unshift( $submenu[ $this->pageSlug ], [
+				esc_html__( 'Notifications', 'all-in-one-seo-pack' ) . '<div class="aioseo-menu-notification-indicator"></div>',
+				$this->getPageRequiredCapability( $firstPageSlug ),
+				admin_url( 'admin.php?page=' . $firstPageSlug . '&notifications=true' )
+			] );
+		}
 	}
 
 	/**
@@ -596,12 +661,38 @@ class Admin {
 		add_menu_page(
 			$this->menuName,
 			$this->menuName,
-			apply_filters( 'aioseo_manage_seo', 'aioseo_manage_seo' ),
+			$this->getPageRequiredCapability( $slug ),
 			$slug,
 			'__return_true',
 			'data:image/svg+xml;base64,' . base64_encode( aioseo()->helpers->logo( 16, 16, '#A0A5AA' ) ),
 			'80.01234567890'
 		);
+	}
+
+	/**
+	 * Hides the Scheduled Actions menu.
+	 *
+	 * @since 4.1.2
+	 *
+	 * @return void
+	 */
+	public function hideScheduledActionsMenu() {
+		if ( ! apply_filters( 'aioseo_hide_action_scheduler_menu', true ) ) {
+			return;
+		}
+
+		global $submenu;
+		if ( ! isset( $submenu['tools.php'] ) ) {
+			return;
+		}
+
+		foreach ( $submenu['tools.php'] as $index => $props ) {
+			if ( ! empty( $props[2] ) && 'action-scheduler' === $props[2] ) {
+				unset( $submenu['tools.php'][ $index ] );
+				return;
+			}
+		}
+
 	}
 
 	/**
@@ -707,44 +798,8 @@ class Admin {
 			remove_all_actions( 'admin_notices' );
 			remove_all_actions( 'all_admin_notices' );
 
-			// Scripts.
-			aioseo()->helpers->enqueueScript(
-				'aioseo-vendors',
-				'js/chunk-vendors.js'
-			);
-			aioseo()->helpers->enqueueScript(
-				'aioseo-common',
-				'js/chunk-common.js'
-			);
-			aioseo()->helpers->enqueueScript(
-				'aioseo-' . $page . '-script',
-				'js/' . $page . '.js'
-			);
-
-			// Styles.
-			$rtl = is_rtl() ? '.rtl' : '';
-			aioseo()->helpers->enqueueStyle(
-				'aioseo-vendors',
-				"css/chunk-vendors$rtl.css"
-			);
-			aioseo()->helpers->enqueueStyle(
-				'aioseo-common',
-				"css/chunk-common$rtl.css"
-			);
-			// aioseo()->helpers->enqueueStyle(
-			//  'aioseo-' . $page . '-style',
-			//  'css/' . $page . $rtl . '.css'
-			// );
-			// aioseo()->helpers->enqueueStyle(
-			//  'aioseo-' . $page . '-vendors-style',
-			//  'css/chunk-' . $page . $rtl . '-vendors.css'
-			// );
-
-			wp_localize_script(
-				'aioseo-' . $page . '-script',
-				'aioseo',
-				aioseo()->helpers->getVueData( $page )
-			);
+			$this->currentPage = $page;
+			add_action( 'admin_enqueue_scripts', [ $this, 'enqueueAssets' ], 11 );
 
 			add_action( 'admin_footer_text', [ $this, 'addFooterText' ] );
 
@@ -759,6 +814,55 @@ class Admin {
 
 			break;
 		}
+	}
+
+	/**
+	 * Enqueue admin assets for the current page.
+	 *
+	 * @since 4.1.3
+	 *
+	 * @return void
+	 */
+	public function enqueueAssets() {
+		// Scripts.
+		aioseo()->helpers->enqueueScript(
+			'aioseo-vendors',
+			'js/chunk-vendors.js'
+		);
+		aioseo()->helpers->enqueueScript(
+			'aioseo-common',
+			'js/chunk-common.js'
+		);
+		aioseo()->helpers->enqueueScript(
+			'aioseo-' . $this->currentPage . '-script',
+			'js/' . $this->currentPage . '.js'
+			// [ 'aioseo-common', 'aioseo-venders', 'aioseo-app' ]
+		);
+
+		// Styles.
+		$rtl = is_rtl() ? '.rtl' : '';
+		aioseo()->helpers->enqueueStyle(
+			'aioseo-vendors',
+			"css/chunk-vendors$rtl.css"
+		);
+		aioseo()->helpers->enqueueStyle(
+			'aioseo-common',
+			"css/chunk-common$rtl.css"
+		);
+		// aioseo()->helpers->enqueueStyle(
+		//  'aioseo-' . $this->currentPage . '-style',
+		//  'css/' . $this->currentPage . $rtl . '.css'
+		// );
+		// aioseo()->helpers->enqueueStyle(
+		//  'aioseo-' . $this->currentPage . '-vendors-style',
+		//  'css/chunk-' . $this->currentPage . $rtl . '-vendors.css'
+		// );
+
+		wp_localize_script(
+			'aioseo-' . $this->currentPage . '-script',
+			'aioseo',
+			aioseo()->helpers->getVueData( $this->currentPage )
+		);
 	}
 
 	/**
@@ -904,11 +1008,13 @@ class Admin {
 	 * @return array          The modified columns.
 	 */
 	public function postColumns( $columns ) {
-		$pageAnalysisCapability    = aioseo()->access->hasCapability( 'aioseo_page_analysis' );
-		$generalSettingsCapability = aioseo()->access->hasCapability( 'aioseo_page_general_settings' );
+		$canManageSeo = apply_filters( 'aioseo_manage_seo', 'aioseo_manage_seo' );
 		if (
-			! current_user_can( 'aioseo_manage_seo' ) ||
-			( empty( $pageAnalysisCapability ) && empty( $generalSettingsCapability ) )
+			! current_user_can( $canManageSeo ) &&
+			(
+				! current_user_can( 'aioseo_page_general_settings' ) &&
+				! current_user_can( 'aioseo_page_analysis' )
+			)
 		) {
 			return $columns;
 		}
@@ -932,6 +1038,7 @@ class Admin {
 		if ( ! current_user_can( 'edit_post', $postId ) && ! current_user_can( 'aioseo_manage_seo' ) ) {
 			return;
 		}
+
 		if ( 'aioseo-details' === $columnName ) {
 			// Add this column/post to the localized array.
 			global $wp_scripts;
@@ -945,7 +1052,7 @@ class Admin {
 			$nonce   = wp_create_nonce( "aioseo_meta_{$columnName}_{$postId}" );
 			$posts   = $data['posts'];
 			$thePost = Models\Post::getPost( $postId );
-			$posts[] = [
+			$postData = [
 				'id'                 => $postId,
 				'columnName'         => $columnName,
 				'nonce'              => $nonce,
@@ -960,6 +1067,13 @@ class Admin {
 				'isSpecialPage'      => aioseo()->helpers->isSpecialPage( $postId )
 			];
 
+			foreach ( aioseo()->addons->getLoadedAddons() as $loadedAddon ) {
+				if ( isset( $loadedAddon->admin ) && method_exists( $loadedAddon->admin, 'renderColumnData' ) ) {
+					$postData = array_merge( $postData, $loadedAddon->admin->renderColumnData( $columnName, $postId, $postData ) );
+				}
+			}
+
+			$posts[]       = $postData;
 			$data['posts'] = $posts;
 
 			$wp_scripts->add_data( 'aioseo-posts-table', 'data', '' );
@@ -1007,7 +1121,7 @@ class Admin {
 		$postTypes     = aioseo()->helpers->getPublicPostTypes();
 		$showTruSeo    = aioseo()->options->advanced->truSeo;
 		$isSpecialPage = aioseo()->helpers->isSpecialPage( $post->ID );
-		$showMetabox   = aioseo()->options->searchAppearance->dynamic->postTypes->{$post->post_type}->advanced->showMetaBox;
+		$showMetabox   = aioseo()->dynamicOptions->searchAppearance->postTypes->{$post->post_type}->advanced->showMetaBox;
 
 		$postTypesMB = [];
 		foreach ( $postTypes as $pt ) {
@@ -1041,7 +1155,7 @@ class Admin {
 						echo sprintf( esc_html__( '%1$s Score', 'all-in-one-seo-pack' ), esc_html( AIOSEO_PLUGIN_SHORT_NAME ) );
 					?>
 				</span>
-				<div id="aioseo-post-settings-sidebar-button" class="aioseo-score-button classic-editor <?php echo esc_attr( aioseo()->helpers->getScoreClass( $score ) ); ?>">
+				<div id="aioseo-post-settings-sidebar-button" class="aioseo-score-button classic-editor <?php echo esc_attr( $this->getScoreClass( $score ) ); ?>">
 					<span id="aioseo-post-score"><?php echo esc_attr( $score . '/100' ); ?></span>
 				</div>
 			</div>
@@ -1057,12 +1171,6 @@ class Admin {
 	 * @return void
 	 */
 	protected function checkAdminQueryArgs() {
-		// Migrate the post/term meta manually.
-		if ( isset( $_GET['aioseo-v3-migrate-now'] ) ) {
-			aioseo()->migration->oldOptions = ( new Migration\OldOptions() )->oldOptions;
-			aioseo()->migration->meta->migratePostMeta();
-		}
-
 		// Redo the migration from the beginning.
 		if ( isset( $_GET['aioseo-v3-migration'] ) && 'i-want-to-migrate' === wp_unslash( $_GET['aioseo-v3-migration'] ) ) { // phpcs:ignore HM.Security.ValidatedSanitizedInput.InputNotSanitized
 			Migration\Helpers::redoMigration();
@@ -1073,11 +1181,126 @@ class Admin {
 			aioseo()->transients->clearCache();
 		}
 
+		if ( isset( $_GET['aioseo-remove-duplicates'] ) ) {
+			aioseo()->updates->removeDuplicateRecords();
+		}
+
+		if ( isset( $_GET['aioseo-unslash-escaped-data'] ) ) {
+			$this->scheduleUnescapeData();
+		}
+
 		if ( isset( $_GET['aioseo-image-rescan'] ) ) {
 			aioseo()->sitemap->query->resetImages();
 		}
 
 		$this->updateDeprecatedOptions();
+	}
+
+	/**
+	 * Starts the cleaning procedure to fix escaped, corrupted data.
+	 *
+	 * @since 4.1.2
+	 *
+	 * @return void
+	 */
+	public function scheduleUnescapeData() {
+		aioseo()->transients->update( 'unslash_escaped_data_posts', time(), WEEK_IN_SECONDS );
+		aioseo()->helpers->scheduleSingleAction( 'aioseo_unslash_escaped_data_posts', 120 );
+	}
+
+	/**
+	 * Unlashes corrupted escaped data in posts.
+	 *
+	 * @since 4.1.2
+	 *
+	 * @return void
+	 */
+	public function unslashEscapedDataPosts() {
+		$postsToUnslash = 200;
+		$timeStarted    = gmdate( 'Y-m-d H:i:s', aioseo()->transients->get( 'unslash_escaped_data_posts' ) );
+
+		$posts = aioseo()->db->start( 'aioseo_posts' )
+			->select( '*' )
+			->whereRaw( "updated < '$timeStarted'" )
+			->orderBy( 'updated ASC' )
+			->limit( $postsToUnslash )
+			->run()
+			->result();
+
+		if ( empty( $posts ) ) {
+			aioseo()->transients->delete( 'unslash_escaped_data_posts' );
+			return;
+		}
+
+		aioseo()->helpers->scheduleSingleAction( 'aioseo_unslash_escaped_data_posts', 120 );
+
+		foreach ( $posts as $post ) {
+			$aioseoPost = Models\Post::getPost( $post->post_id );
+			foreach ( $this->getColumnsToUnslash() as $columnName ) {
+				// Remove backslashes but preserve encoded unicode characters in JSON data.
+				$aioseoPost->$columnName = aioseo()->helpers->pregReplace( '/\\\(?![uU][+]?[a-zA-Z0-9]{4})/', '', $post->$columnName );
+			}
+			$aioseoPost->images          = null;
+			$aioseoPost->image_scan_date = null;
+			$aioseoPost->videos          = null;
+			$aioseoPost->video_scan_date = null;
+			$aioseoPost->save();
+		}
+	}
+
+	/**
+	 * Returns a list of names of database columns that should be unslashed when cleaning the corrupted data.
+	 *
+	 * @since 4.1.2
+	 *
+	 * @return array The list of column names.
+	 */
+	protected function getColumnsToUnslash() {
+		return [
+			'title',
+			'description',
+			'keywords',
+			'keyphrases',
+			'page_analysis',
+			'canonical_url',
+			'og_title',
+			'og_description',
+			'og_image_custom_url',
+			'og_image_custom_fields',
+			'og_video',
+			'og_custom_url',
+			'og_article_section',
+			'og_article_tags',
+			'twitter_title',
+			'twitter_description',
+			'twitter_image_custom_url',
+			'twitter_image_custom_fields',
+			'schema_type_options',
+			'local_seo',
+			'tabs'
+		];
+	}
+
+	/**
+	 * Get the first available page item for the current user.
+	 *
+	 * @since 4.1.3
+	 *
+	 * @return bool|string The page slug.
+	 */
+	public function getFirstAvailablePageSlug() {
+		foreach ( $this->pages as $slug => $page ) {
+			// Ignore other pages.
+			if ( $this->pageSlug !== $page['parent'] ) {
+				continue;
+			}
+
+			if ( current_user_can( $this->getPageRequiredCapability( $slug ) ) ) {
+				return $slug;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -1119,5 +1342,85 @@ class Admin {
 				aioseo()->internalOptions->internal->deprecatedOptions = array_values( $deprecatedOptions );
 			}
 		}
+	}
+
+	/**
+	 * Appends a message to the default WordPress "trashed" message.
+	 *
+	 * @since 4.1.2
+	 *
+	 * @param  string $messages The original messages.
+	 * @return string           The modified messages.
+	 */
+	public function appendTrashedMessage( $messages, $counts ) {
+		if ( function_exists( 'aioseoRedirects' ) && aioseoRedirects()->options->monitor->trash ) {
+			return $messages;
+		}
+
+		if ( empty( $_GET['ids'] ) ) {
+			return $messages;
+		}
+
+		$posts = [];
+		$ids     = array_map( 'intval', explode( ',', wp_unslash( $_GET['ids'] ) ) ); // phpcs:ignore HM.Security.ValidatedSanitizedInput.InputNotSanitized
+		foreach ( $ids as $id ) {
+			// We need to clone the post here so we can get a real permalink for the post even if it is not published already.
+			$post              = aioseo()->helpers->getPost( $id );
+			$post->post_status = 'publish';
+			$post->post_name   = sanitize_title(
+				$post->post_name ? $post->post_name : $post->post_title,
+				$post->ID
+			);
+
+			if ( ! empty( $post ) ) {
+				$posts[] = [
+					'id'  => $id,
+					'url' => urlencode( str_replace( aioseo()->helpers->getSiteUrl(), '', str_replace( '__trashed', '', get_permalink( $post ) ) ) )
+				];
+			}
+		}
+
+		if ( empty( $posts ) ) {
+			return $messages;
+		}
+
+		$url         = add_query_arg( 'aioseo-add-urls', base64_encode( wp_json_encode( $posts ) ), admin_url( 'admin.php?page=aioseo-redirects' ) );
+		$addRedirect = _n( 'Add Redirect to improve SEO', 'Add Redirects to improve SEO', count( $posts ), 'all-in-one-seo-pack' );
+
+		$messages['post']['trashed'] = $messages['post']['trashed'] . '&nbsp;<a href="' . $url . '">' . $addRedirect . '</a> |';
+		$messages['page']['trashed'] = $messages['page']['trashed'] . '&nbsp;<a href="' . $url . '">' . $addRedirect . '</a> |';
+		return $messages;
+	}
+
+	/**
+	* Get the class name for the Score button.
+	* Depending on the score the button should have different color.
+	*
+	* @since 4.0.0
+	*
+	* @param int $score The content to retrieve from the remote URL.
+	*
+	* @return string The class name for Score button.
+	*/
+	private function getScoreClass( $score ) {
+		$scoreClass = 50 < $score ? 'score-orange' : 'score-red';
+		if ( 0 === $score ) {
+			$scoreClass = 'score-none';
+		}
+		if ( $score >= 80 ) {
+			$scoreClass = 'score-green';
+		}
+		return $scoreClass;
+	}
+
+	/**
+	 * Loads the plugin text domain.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @return void
+	 */
+	public function loadTextDomain() {
+		aioseo()->helpers->loadTextDomain( 'all-in-one-seo-pack' );
 	}
 }

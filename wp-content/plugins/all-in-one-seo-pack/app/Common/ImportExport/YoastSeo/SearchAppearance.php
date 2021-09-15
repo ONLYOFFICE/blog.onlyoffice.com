@@ -161,7 +161,7 @@ class SearchAppearance {
 							$value = aioseo()->helpers->pregReplace( '#%%primary_category%%#', '', $value );
 							$value = aioseo()->helpers->pregReplace( '#%%excerpt%%#', '', $value );
 						}
-						aioseo()->options->searchAppearance->dynamic->postTypes->$postType->title =
+						aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->title =
 							aioseo()->helpers->sanitizeOption( aioseo()->importExport->yoastSeo->helpers->macrosToSmartTags( $value, $postType ) );
 						break;
 					case 'metadesc':
@@ -169,17 +169,17 @@ class SearchAppearance {
 							$value = aioseo()->helpers->pregReplace( '#%%primary_category%%#', '', $value );
 							$value = aioseo()->helpers->pregReplace( '#%%excerpt%%#', '', $value );
 						}
-						aioseo()->options->searchAppearance->dynamic->postTypes->$postType->metaDescription =
+						aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->metaDescription =
 							aioseo()->helpers->sanitizeOption( aioseo()->importExport->yoastSeo->helpers->macrosToSmartTags( $value, $postType ) );
 						break;
 					case 'noindex':
-						aioseo()->options->searchAppearance->dynamic->postTypes->$postType->show = empty( $value ) ? true : false;
-						aioseo()->options->searchAppearance->dynamic->postTypes->$postType->advanced->robotsMeta->default = empty( $value ) ? true : false;
-						aioseo()->options->searchAppearance->dynamic->postTypes->$postType->advanced->robotsMeta->noindex = empty( $value ) ? false : true;
+						aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->show = empty( $value ) ? true : false;
+						aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->advanced->robotsMeta->default = empty( $value ) ? true : false;
+						aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->advanced->robotsMeta->noindex = empty( $value ) ? false : true;
 						break;
 					case 'display-metabox-pt':
 						if ( empty( $value ) ) {
-							aioseo()->options->searchAppearance->dynamic->postTypes->$postType->advanced->showMetaBox = false;
+							aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->advanced->showMetaBox = false;
 						}
 						break;
 					case 'schema-page-type':
@@ -187,25 +187,25 @@ class SearchAppearance {
 						if ( in_array( $postType, [ 'post', 'page', 'attachment' ], true ) ) {
 							break;
 						}
-						aioseo()->options->searchAppearance->dynamic->postTypes->$postType->schemaType = 'WebPage';
+						aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->schemaType = 'WebPage';
 						if ( in_array( $value, ImportExport\SearchAppearance::$supportedWebPageGraphs, true ) ) {
-							aioseo()->options->searchAppearance->dynamic->postTypes->$postType->webPageType = $value;
+							aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->webPageType = $value;
 						}
 						break;
 					case 'schema-article-type':
 						$value = aioseo()->helpers->pregReplace( '#\s#', '', $value );
 						if ( 'none' === lcfirst( $value ) ) {
-							aioseo()->options->searchAppearance->dynamic->postTypes->$postType->articleType = 'none';
+							aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->articleType = 'none';
 							break;
 						}
 
-						aioseo()->options->searchAppearance->dynamic->postTypes->$postType->articleType = 'Article';
+						aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->articleType = 'Article';
 						if ( in_array( $value, ImportExport\SearchAppearance::$supportedArticleGraphs, true ) ) {
 							if ( ! in_array( $postType, [ 'page', 'attachment' ], true ) ) {
-								aioseo()->options->searchAppearance->dynamic->postTypes->$postType->articleType = $value;
+								aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->articleType = $value;
 							}
 						} else {
-							aioseo()->options->searchAppearance->dynamic->postTypes->$postType->articleType = 'BlogPosting';
+							aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->articleType = 'BlogPosting';
 						}
 						break;
 					default:
@@ -237,17 +237,17 @@ class SearchAppearance {
 
 				switch ( $match[1] ) {
 					case 'title':
-						aioseo()->options->searchAppearance->dynamic->archives->$postType->title =
+						aioseo()->dynamicOptions->searchAppearance->archives->$postType->title =
 							aioseo()->helpers->sanitizeOption( aioseo()->importExport->yoastSeo->helpers->macrosToSmartTags( $value, $postType, 'archive' ) );
 						break;
 					case 'metadesc':
-						aioseo()->options->searchAppearance->dynamic->archives->$postType->metaDescription =
+						aioseo()->dynamicOptions->searchAppearance->archives->$postType->metaDescription =
 							aioseo()->helpers->sanitizeOption( aioseo()->importExport->yoastSeo->helpers->macrosToSmartTags( $value, $postType, 'archive' ) );
 						break;
 					case 'noindex':
-						aioseo()->options->searchAppearance->dynamic->archives->$postType->show = empty( $value ) ? true : false;
-						aioseo()->options->searchAppearance->dynamic->archives->$postType->advanced->robotsMeta->default = empty( $value ) ? true : false;
-						aioseo()->options->searchAppearance->dynamic->archives->$postType->advanced->robotsMeta->noindex = empty( $value ) ? false : true;
+						aioseo()->dynamicOptions->searchAppearance->archives->$postType->show = empty( $value ) ? true : false;
+						aioseo()->dynamicOptions->searchAppearance->archives->$postType->advanced->robotsMeta->default = empty( $value ) ? true : false;
+						aioseo()->dynamicOptions->searchAppearance->archives->$postType->advanced->robotsMeta->noindex = empty( $value ) ? false : true;
 						break;
 					default:
 						break;
@@ -305,6 +305,6 @@ class SearchAppearance {
 	 * @return void
 	 */
 	private function migrateRedirectAttachments() {
-		aioseo()->options->searchAppearance->dynamic->postTypes->attachment->redirectAttachmentUrls = empty( $this->options['disable-attachment'] ) ? 'disabled' : 'attachment';
+		aioseo()->dynamicOptions->searchAppearance->postTypes->attachment->redirectAttachmentUrls = empty( $this->options['disable-attachment'] ) ? 'disabled' : 'attachment';
 	}
 }

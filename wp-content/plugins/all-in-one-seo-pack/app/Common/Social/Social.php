@@ -30,7 +30,6 @@ class Social {
 		$this->facebook = new Facebook();
 		$this->twitter  = new Twitter();
 		$this->output   = new Output();
-		$this->helpers  = new Helpers();
 
 		$this->hooks();
 	}

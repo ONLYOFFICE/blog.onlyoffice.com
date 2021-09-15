@@ -104,8 +104,8 @@ class GeneralSettings {
 	 * @return void
 	 */
 	private function setDefaultArticleType() {
-		if ( aioseo()->options->searchAppearance->dynamic->postTypes->has( 'post' ) ) {
-			aioseo()->options->searchAppearance->dynamic->postTypes->post->articleType = 'Article';
+		if ( aioseo()->dynamicOptions->searchAppearance->postTypes->has( 'post' ) ) {
+			aioseo()->dynamicOptions->searchAppearance->postTypes->post->articleType = 'Article';
 		}
 	}
 
@@ -385,19 +385,19 @@ class GeneralSettings {
 	 */
 	private function migrateTitleFormats() {
 		if ( ! empty( $this->oldOptions['aiosp_archive_title_format'] ) ) {
-			$archives = array_keys( aioseo()->options->searchAppearance->dynamic->archives->all() );
+			$archives = array_keys( aioseo()->dynamicOptions->searchAppearance->archives->all() );
 			$format   = aioseo()->helpers->sanitizeOption( aioseo()->migration->helpers->macrosToSmartTags( $this->oldOptions['aiosp_archive_title_format'] ) );
 			foreach ( $archives as $archive ) {
-				aioseo()->options->searchAppearance->dynamic->archives->$archive->title = $format;
+				aioseo()->dynamicOptions->searchAppearance->archives->$archive->title = $format;
 			}
 		}
 
 		$settings = [
-			'aiosp_post_title_format'       => [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'dynamic', 'postTypes', 'post', 'title' ] ],
-			'aiosp_page_title_format'       => [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'dynamic', 'postTypes', 'page', 'title' ] ],
-			'aiosp_attachment_title_format' => [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'dynamic', 'postTypes', 'attachment', 'title' ] ],
-			'aiosp_category_title_format'   => [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'dynamic', 'taxonomies', 'category', 'title' ] ],
-			'aiosp_tag_title_format'        => [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'dynamic', 'taxonomies', 'post_tag', 'title' ] ],
+			'aiosp_post_title_format'       => [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'postTypes', 'post', 'title' ], 'dynamic' => true ],
+			'aiosp_page_title_format'       => [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'postTypes', 'page', 'title' ], 'dynamic' => true ],
+			'aiosp_attachment_title_format' => [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'postTypes', 'attachment', 'title' ], 'dynamic' => true ],
+			'aiosp_category_title_format'   => [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'taxonomies', 'category', 'title' ], 'dynamic' => true ],
+			'aiosp_tag_title_format'        => [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'taxonomies', 'post_tag', 'title' ], 'dynamic' => true ],
 			'aiosp_date_title_format'       => [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'archives', 'date', 'title' ] ],
 			'aiosp_author_title_format'     => [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'archives', 'author', 'title' ] ],
 			'aiosp_search_title_format'     => [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'archives', 'search', 'title' ] ],
@@ -415,11 +415,11 @@ class GeneralSettings {
 
 				$objectSlug = aioseo()->helpers->pregReplace( '#_tax#', '', $slug[1] );
 				if ( in_array( $objectSlug, aioseo()->helpers->getPublicPostTypes( true ), true ) ) {
-					$settings[ $name ] = [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'dynamic', 'postTypes', $objectSlug, 'title' ] ];
+					$settings[ $name ] = [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'postTypes', $objectSlug, 'title' ], 'dynamic' => true ];
 					continue;
 				}
 				if ( in_array( $objectSlug, aioseo()->helpers->getPublicTaxonomies( true ), true ) ) {
-					$settings[ $name ] = [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'dynamic', 'taxonomies', $objectSlug, 'title' ] ];
+					$settings[ $name ] = [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'taxonomies', $objectSlug, 'title' ], 'dynamic' => true ];
 				}
 			}
 		}
@@ -488,8 +488,8 @@ class GeneralSettings {
 					continue;
 				}
 
-				if ( aioseo()->options->searchAppearance->dynamic->postTypes->has( $postType['name'] ) ) {
-					aioseo()->options->searchAppearance->dynamic->postTypes->{$postType['name']}->metaDescription = '#post_excerpt';
+				if ( aioseo()->dynamicOptions->searchAppearance->postTypes->has( $postType['name'] ) ) {
+					aioseo()->dynamicOptions->searchAppearance->postTypes->{$postType['name']}->metaDescription = '#post_excerpt';
 				}
 			}
 		}
@@ -523,10 +523,10 @@ class GeneralSettings {
 
 		$noindexedPostTypes = is_array( $this->oldOptions['aiosp_cpostnoindex'] ) ? $this->oldOptions['aiosp_cpostnoindex'] : explode( ', ', $this->oldOptions['aiosp_cpostnoindex'] );
 		foreach ( array_intersect( aioseo()->helpers->getPublicPostTypes( true ), $noindexedPostTypes ) as $postType ) {
-			if ( aioseo()->options->noConflict()->searchAppearance->dynamic->postTypes->has( $postType ) ) {
-				aioseo()->options->searchAppearance->dynamic->postTypes->$postType->show = false;
-				aioseo()->options->searchAppearance->dynamic->postTypes->$postType->advanced->robotsMeta->default = false;
-				aioseo()->options->searchAppearance->dynamic->postTypes->$postType->advanced->robotsMeta->noindex = true;
+			if ( aioseo()->dynamicOptions->noConflict()->searchAppearance->postTypes->has( $postType ) ) {
+				aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->show = false;
+				aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->advanced->robotsMeta->default = false;
+				aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->advanced->robotsMeta->noindex = true;
 			}
 		}
 
@@ -541,10 +541,10 @@ class GeneralSettings {
 
 		if ( ! empty( $noindexedTaxonomies ) ) {
 			foreach ( array_intersect( aioseo()->helpers->getPublicTaxonomies( true ), $noindexedTaxonomies ) as $taxonomy ) {
-				if ( aioseo()->options->noConflict()->searchAppearance->dynamic->taxonomies->has( $taxonomy ) ) {
-					aioseo()->options->searchAppearance->dynamic->taxonomies->$taxonomy->show = false;
-					aioseo()->options->searchAppearance->dynamic->taxonomies->$taxonomy->advanced->robotsMeta->default = false;
-					aioseo()->options->searchAppearance->dynamic->taxonomies->$taxonomy->advanced->robotsMeta->noindex = true;
+				if ( aioseo()->dynamicOptions->noConflict()->searchAppearance->taxonomies->has( $taxonomy ) ) {
+					aioseo()->dynamicOptions->searchAppearance->taxonomies->$taxonomy->show = false;
+					aioseo()->dynamicOptions->searchAppearance->taxonomies->$taxonomy->advanced->robotsMeta->default = false;
+					aioseo()->dynamicOptions->searchAppearance->taxonomies->$taxonomy->advanced->robotsMeta->noindex = true;
 				}
 			}
 		}
@@ -588,9 +588,9 @@ class GeneralSettings {
 	private function migrateNofollowSettings() {
 		if ( ! empty( $this->oldOptions['aiosp_cpostnofollow'] ) ) {
 			foreach ( array_intersect( aioseo()->helpers->getPublicPostTypes( true ), $this->oldOptions['aiosp_cpostnofollow'] ) as $postType ) {
-				if ( aioseo()->options->noConflict()->searchAppearance->dynamic->postTypes->has( $postType ) ) {
-					aioseo()->options->searchAppearance->dynamic->postTypes->$postType->advanced->robotsMeta->default  = false;
-					aioseo()->options->searchAppearance->dynamic->postTypes->$postType->advanced->robotsMeta->nofollow = true;
+				if ( aioseo()->dynamicOptions->noConflict()->searchAppearance->postTypes->has( $postType ) ) {
+					aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->advanced->robotsMeta->default  = false;
+					aioseo()->dynamicOptions->searchAppearance->postTypes->$postType->advanced->robotsMeta->nofollow = true;
 				}
 			}
 		}
@@ -818,9 +818,9 @@ class GeneralSettings {
 	private function migrateRedirectToParent() {
 		if ( isset( $this->oldOptions['aiosp_redirect_attachement_parent'] ) ) {
 			if ( ! empty( $this->oldOptions['aiosp_redirect_attachement_parent'] ) ) {
-				aioseo()->options->searchAppearance->dynamic->postTypes->attachment->redirectAttachmentUrls = 'attachment_parent';
+				aioseo()->dynamicOptions->searchAppearance->postTypes->attachment->redirectAttachmentUrls = 'attachment_parent';
 			} else {
-				aioseo()->options->searchAppearance->dynamic->postTypes->attachment->redirectAttachmentUrls = 'disabled';
+				aioseo()->dynamicOptions->searchAppearance->postTypes->attachment->redirectAttachmentUrls = 'disabled';
 			}
 		}
 	}

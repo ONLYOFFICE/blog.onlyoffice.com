@@ -47,10 +47,7 @@ class Tools {
 
 		return new \WP_REST_Response( [
 			'success'       => true,
-			'notifications' => [
-				'active'    => Models\Notification::getAllActiveNotifications(),
-				'dismissed' => Models\Notification::getAllDismissedNotifications()
-			]
+			'notifications' => Models\Notification::getNotifications()
 		], 200 );
 	}
 
@@ -74,10 +71,7 @@ class Tools {
 
 		return new \WP_REST_Response( [
 			'success'       => true,
-			'notifications' => [
-				'active'    => Models\Notification::getAllActiveNotifications(),
-				'dismissed' => Models\Notification::getAllDismissedNotifications()
-			]
+			'notifications' => Models\Notification::getNotifications()
 		], 200 );
 	}
 
@@ -216,6 +210,14 @@ class Tools {
 		$body     = $request->get_json_params();
 		$htaccess = ! empty( $body['htaccess'] ) ? sanitize_textarea_field( $body['htaccess'] ) : '';
 
+		if ( empty( $htaccess ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => __( '.htaccess file is empty.', 'all-in-one-seo-pack' )
+			], 400 );
+		}
+
+		$htaccess = aioseo()->helpers->decodeHtmlEntities( $htaccess );
 		if ( ! aioseo()->htaccess->saveContents( $htaccess ) ) {
 			return new \WP_REST_Response( [
 				'success' => false,

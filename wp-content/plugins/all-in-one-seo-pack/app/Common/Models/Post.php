@@ -68,11 +68,46 @@ class Post extends Model {
 	 * @return Post         The Post object.
 	 */
 	public static function getPost( $postId ) {
-		return aioseo()->db
+		$post = aioseo()->db
 			->start( 'aioseo_posts' )
 			->where( 'post_id', $postId )
 			->run()
 			->model( 'AIOSEO\\Plugin\\Common\\Models\\Post' );
+
+		if ( ! $post->exists() ) {
+			$post = self::setDynamicDefaults( $post, $postId );
+		}
+
+		return $post;
+	}
+
+	/**
+	 * Sets the dynamic defaults on the post object if it doesn't exist in the DB yet.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @param  Post $post   The post object.
+	 * @param  int  $postId The post ID.
+	 * @return Post         The modified post object.
+	 */
+	private static function setDynamicDefaults( $post, $postId ) {
+		if (
+			'page' === get_post_type( $postId ) && // This check cannot be deleted and is required to prevent errors after WordPress cleans up the attachment it creates when a plugin is updated.
+			(
+				aioseo()->helpers->isWooCommerceCheckoutPage( $postId ) ||
+				aioseo()->helpers->isWooCommerceCartPage( $postId ) ||
+				aioseo()->helpers->isWooCommerceAccountPage( $postId )
+			)
+		) {
+			$post->robots_default = false;
+			$post->robots_noindex = true;
+		}
+
+		if ( aioseo()->helpers->isStaticHomePage( $postId ) ) {
+			$post->og_object_type = 'website';
+		}
+
+		return $post;
 	}
 
 	/**
@@ -80,16 +115,12 @@ class Post extends Model {
 	 *
 	 * @since 4.0.3
 	 *
-	 * @param  int   $postId         The Post ID.
-	 * @param  array $data           The post data to save.
-	 * @return bool|WP_REST_Response True if post saved or Response Error.
+	 * @param  int         $postId The Post ID.
+	 * @param  array       $data   The post data to save.
+	 * @return void|string         True if post data was saved or error response.
 	 */
 	public static function savePost( $postId, $data ) {
-		$thePost = aioseo()->db
-			->start( 'aioseo_posts' )
-			->where( 'post_id', $postId )
-			->run()
-			->model( 'AIOSEO\\Plugin\\Common\\Models\\Post' );
+		$thePost = self::getPost( $postId );
 
 		$post = aioseo()->helpers->getPost( $postId );
 
@@ -155,6 +186,7 @@ class Post extends Model {
 		if ( ! $thePost->exists() ) {
 			$thePost->created = gmdate( 'Y-m-d H:i:s' );
 		}
+
 		$thePost->save();
 		$thePost->reset();
 
@@ -178,8 +210,6 @@ class Post extends Model {
 		if ( ! empty( $lastError ) ) {
 			return $lastError;
 		}
-
-		return null;
 	}
 
 	/**
@@ -193,92 +223,34 @@ class Post extends Model {
 		$analysisDefaults = [
 			'analysis' => [
 				'basic'       => [
-					'metadescriptionLength' => [
+					'lengthContent' => [
 						'error'       => 1,
 						'maxScore'    => 9,
 						'score'       => 6,
-						'title'       => __( 'Meta description length', 'all-in-one-seo-pack' ),
-						'description' => __( 'The meta description is too short.', 'all-in-one-seo-pack' )
+						'title'       => __( 'Content', 'all-in-one-seo-pack' ),
+						'description' => __( 'Please add some content first.', 'all-in-one-seo-pack' )
 					],
-					'isInternalLink'        => [
-						'error'       => 1,
-						'maxScore'    => 9,
-						'score'       => 3,
-						'title'       => __( 'Internal links', 'all-in-one-seo-pack' ),
-						'description' => __( 'We couldn\'t find any internal links in your content. Add internal links in your content.', 'all-in-one-seo-pack' )
-					],
-					'isExternalLink'        => [
-						'error'       => 1,
-						'maxScore'    => 9,
-						'score'       => 3,
-						'title'       => __( 'External links', 'all-in-one-seo-pack' ),
-						'description' => __( 'No outbound links were found. Link out to external resources.', 'all-in-one-seo-pack' )
-					],
-					'errors'                => 3
 				],
 				'title'       => [
 					'titleLength' => [
 						'error'       => 1,
 						'maxScore'    => 9,
 						'score'       => 1,
-						'title'       => __( 'SEO Title length', 'all-in-one-seo-pack' ),
-						'description' => __( 'No title has been specified. Make sure to write one!', 'all-in-one-seo-pack' )
+						'title'       => __( 'Title', 'all-in-one-seo-pack' ),
+						'description' => __( 'Please add a title first.', 'all-in-one-seo-pack' )
 					],
-					// 'titleHasNumber'     => [
-					//  'error'       => 1,
-					//  'maxScore'    => 9,
-					//  'score'       => 5,
-					//  'title'       => __( 'Title has number', 'all-in-one-seo-pack' ),
-					//  'description' => __( 'Your SEO title doesn\'t contain a number. Add a number to your title to improve CTR.', 'all-in-one-seo-pack' )
-					// ],
-					// 'titleHasPowerWords' => [
-					//  'error'       => 1,
-					//  'maxScore'    => 9,
-					//  'score'       => 5,
-					//  'title'       => __( 'Title has Power Words', 'all-in-one-seo-pack' ),
-					//  'description' => __(
-					//      'Your SEO title doesn\'t contain a power word. Add at least one. Power Words are tried-and-true words that copywriters use to attract more clicks.',
-					//      'all-in-one-seo-pack'
-					//  ) // phpcs:ignore Generic.Files.LineLength.MaxExceeded
-					// ],
-					// 'titleSentiment'     => [
-					//  'error'       => 1,
-					//  'maxScore'    => 9,
-					//  'score'       => 5,
-					//  'title'       => __( 'Title Sentiment Words', 'all-in-one-seo-pack' ),
-					//  'description' => __(
-					//      'Your SEO title doesn\'t contain a sentiment word. Headlines with a strong emotional sentiment (positive or negative) tend to receive more clicks.',
-					//      'all-in-one-seo-pack'
-					//  ) // phpcs:ignore Generic.Files.LineLength.MaxExceeded
-					// ],
-					'errors'      => 1
 				],
 				'readability' => [
-					'contentHasAssets'        => [
+					'contentHasAssets' => [
 						'error'       => 1,
 						'maxScore'    => 5,
 						'score'       => 0,
 						'title'       => __( 'Images/Videos in content', 'all-in-one-seo-pack' ),
-						'description' => __( 'You are not using rich media like images or videos.', 'all-in-one-seo-pack' )
+						'description' => __( 'Please add some content first.', 'all-in-one-seo-pack' )
 					],
-					'passiveVoice'            => [
-						'error'       => 1,
-						'maxScore'    => 9,
-						'score'       => 3,
-						'title'       => __( 'Passive Voice', 'all-in-one-seo-pack' ),
-						'description' => __( 'Use active voice.', 'all-in-one-seo-pack' )
-					],
-					'subheadingsDistribution' => [
-						'error'       => 1,
-						'maxScore'    => 9,
-						'score'       => 2,
-						'title'       => __( 'Subheading distribution', 'all-in-one-seo-pack' ),
-						'description' => __( 'You are not using any subheadings, although your text is rather long. Try and add some subheadings.', 'all-in-one-seo-pack' )
-					],
-					'errors'                  => 3
 				]
 			]
 		];
-		return json_decode( wp_json_encode( $analysisDefaults ) );
+			return json_decode( wp_json_encode( $analysisDefaults ) );
 	}
 }

@@ -67,6 +67,7 @@ class Meta {
 			->leftJoin( 'aioseo_posts as ap', '`p`.`ID` = `ap`.`post_id`' )
 			->whereRaw( "( ap.post_id IS NULL OR ap.updated < '$timeStarted' )" )
 			->whereRaw( "( p.post_type IN ( '$publicPostTypes' ) )" )
+			->whereRaw( 'p.post_status NOT IN( \'auto-draft\' )' )
 			->orderBy( 'p.ID DESC' )
 			->limit( $postsPerAction )
 			->run()
@@ -327,8 +328,23 @@ class Meta {
 	 * @param  int  $postId The post ID.
 	 * @return void
 	 */
-	protected function migrateAdditionalPostMeta( $postId ) {
-		return $postId;
+	public function migrateAdditionalPostMeta( $postId ) {
+		static $disabled = null;
+
+		if ( null === $disabled ) {
+			$disabled = (
+				! aioseo()->options->sitemap->general->enable ||
+				(
+					aioseo()->options->sitemap->general->advancedSettings->enable &&
+					aioseo()->options->sitemap->general->advancedSettings->excludeImages
+				)
+			);
+		}
+		if ( $disabled ) {
+			return;
+		}
+
+		aioseo()->sitemap->image->scanPost( $postId );
 	}
 
 	/**

@@ -39,13 +39,13 @@ class Migration {
 			}
 
 			$objectName = $match[1];
-			if ( in_array( $objectName, $postTypes, true ) && aioseo()->options->searchAppearance->dynamic->postTypes->has( $objectName ) ) {
-				aioseo()->options->searchAppearance->dynamic->postTypes->$objectName->title = '#post_title #separator_sa #site_title';
+			if ( in_array( $objectName, $postTypes, true ) && aioseo()->dynamicOptions->searchAppearance->postTypes->has( $objectName ) ) {
+				aioseo()->dynamicOptions->searchAppearance->postTypes->$objectName->title = '#post_title #separator_sa #site_title';
 				continue;
 			}
 
-			if ( in_array( $objectName, $taxonomies, true ) && aioseo()->options->searchAppearance->dynamic->taxonomies->has( $objectName ) ) {
-				aioseo()->options->searchAppearance->dynamic->taxonomies->$objectName->title = '#taxonomy_title #separator_sa #site_title';
+			if ( in_array( $objectName, $taxonomies, true ) && aioseo()->dynamicOptions->searchAppearance->taxonomies->has( $objectName ) ) {
+				aioseo()->dynamicOptions->searchAppearance->taxonomies->$objectName->title = '#taxonomy_title #separator_sa #site_title';
 			}
 		}
 
@@ -56,10 +56,7 @@ class Migration {
 		return new \WP_REST_Response( [
 			'success'       => true,
 			'message'       => 'Title formats have been reset; post/term migration has been scheduled.',
-			'notifications' => [
-				'active'    => Models\Notification::getAllActiveNotifications(),
-				'dismissed' => Models\Notification::getAllDismissedNotifications()
-			]
+			'notifications' => Models\Notification::getNotifications()
 		], 200 );
 	}
 }

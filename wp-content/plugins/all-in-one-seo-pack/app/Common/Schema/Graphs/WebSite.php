@@ -27,13 +27,17 @@ class WebSite extends Graph {
 			'url'         => $homeUrl,
 			'name'        => aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'name' ) ),
 			'description' => aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'description' ) ),
+			'inLanguage'  => aioseo()->helpers->currentLanguageCodeBCP47(),
 			'publisher'   => [ '@id' => $homeUrl . '#' . aioseo()->options->searchAppearance->global->schema->siteRepresents ]
 		];
 
 		if ( is_front_page() && aioseo()->options->searchAppearance->advanced->sitelinks ) {
 			$data['potentialAction'] = [
 				'@type'       => 'SearchAction',
-				'target'      => $homeUrl . '?s={search_term_string}',
+				'target'      => [
+					'@type'       => 'EntryPoint',
+					'urlTemplate' => $homeUrl . '?s={search_term_string}'
+				],
 				'query-input' => 'required name=search_term_string',
 			];
 		}

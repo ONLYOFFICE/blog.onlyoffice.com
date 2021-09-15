@@ -6,28 +6,74 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class SeoPress {
+use AIOSEO\Plugin\Common\ImportExport;
+
+class SeoPress extends ImportExport\Importer {
 	/**
-	 * Starts the import.
+	 * A list of plugins to look for to import.
 	 *
-	 * @since 4.0.0
+	 * @since 4.1.4
 	 *
-	 * @return void
+	 * @var array
 	 */
-	public function doImport() {
-		// @TODO: [V4+] Write this once SEOPress is going in.
+	public $plugins = [
+		[
+			'name'     => 'SEOPress',
+			'version'  => '4.0',
+			'basename' => 'wp-seopress/seopress.php',
+			'slug'     => 'seopress'
+		],
+		[
+			'name'     => 'SEOPress PRO',
+			'version'  => '4.0',
+			'basename' => 'wp-seopress-pro/seopress-pro.php',
+			'slug'     => 'seopress-pro'
+		],
+	];
+
+	/**
+	 * The post action name.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @var string
+	 */
+	public $postActionName = 'aioseo_import_post_meta_seopress';
+
+	/**
+	 * The post action name.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @param ImportExport $importer The main importer class.
+	 */
+	public function __construct( $importer ) {
+		$this->helpers  = new Helpers();
+		$this->postMeta = new PostMeta();
+		add_action( $this->postActionName, [ $this->postMeta, 'importPostMeta' ] );
+
+		$plugins = $this->plugins;
+		foreach ( $plugins as $key => $plugin ) {
+			$plugins[ $key ]['class'] = $this;
+		}
+		$importer->addPlugins( $plugins );
 	}
 
 	/**
 	 * Imports the settings.
 	 *
-	 * @since 4.0.0
+	 * @since 4.1.4
 	 *
 	 * @return void
 	 */
-	public function migrateSettings() {
-		$this->helpers = new Helpers();
-
-		new SearchAppearance();
+	protected function importSettings() {
+		new GeneralSettings();
+		new Analytics();
+		new SocialMeta();
+		new Titles();
+		new Sitemap();
+		new RobotsTxt();
+		new Rss();
+		new Breadcrumbs();
 	}
 }
