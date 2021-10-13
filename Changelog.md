@@ -1,4 +1,8 @@
 ﻿# Changelog
+## 1.1.0
+### Новое
+* Добавлены стили для голосования в теле записи
+
 ## 1.0.9
 ### Новое
 * Обновлён плагин All in One SEO до версии 4.1.4.3 для устранения возможных XSS атак по задаче  https://nct.onlyoffice.com/Products/Projects/Tasks.aspx?prjID=137&id=32098#
