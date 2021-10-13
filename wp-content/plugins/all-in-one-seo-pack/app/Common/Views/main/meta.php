@@ -20,10 +20,10 @@ $canonical             = aioseo()->helpers->canonicalUrl();
 $links                 = $this->links->getLinks();
 ?>
 <?php if ( $description ) : ?>
-		<meta name="description" content="<?php echo esc_attr( $description ); ?>"/>
+		<meta name="description" content="<?php echo esc_attr( $description ); ?>" />
 <?php endif; ?>
 <?php if ( $robots ) : ?>
-		<meta name="robots" content="<?php echo esc_html( $robots ); ?>"/>
+		<meta name="robots" content="<?php echo esc_html( $robots ); ?>" />
 <?php endif; ?>
 <?php
 // Adds the site verification meta for webmaster tools.

@@ -19,7 +19,13 @@ class Blocks {
 	 */
 	public function __construct() {
 		add_action( 'init', [ $this, 'init' ] );
-		add_filter( 'block_categories', [ $this, 'blockCategories' ], 10 );
+
+		global $wp_version;
+		if ( version_compare( $wp_version, '5.8', '<' ) ) {
+			add_filter( 'block_categories', [ $this, 'blockCategories' ], 10 );
+			return;
+		}
+		add_filter( 'block_categories_all', [ $this, 'blockCategories' ], 10 );
 	}
 
 	/**

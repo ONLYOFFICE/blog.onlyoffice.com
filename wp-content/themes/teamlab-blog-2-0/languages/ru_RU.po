@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Twenty Ten 1.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/twentyten\n"
-"POT-Creation-Date: 2021-08-27 22:12+0300\n"
-"PO-Revision-Date: 2021-08-27 22:21+0300\n"
+"POT-Creation-Date: 2021-09-10 11:53+0300\n"
+"PO-Revision-Date: 2021-09-10 11:54+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -17,13 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 2.4.3\n"
+"X-Generator: Poedit 2.4.1\n"
 "X-Poedit-KeywordsList: _e;__\n"
 "X-Poedit-Basepath: ../../../..\n"
 "X-Poedit-SearchPath-0: wp-content/themes/teamlab-blog-2-0\n"
 "X-Poedit-SearchPath-1: wp-content/plugins/in-the-press\n"
 "X-Poedit-SearchPath-2: wp-includes/widgets/class-wp-widget-recent-posts.php\n"
 "X-Poedit-SearchPath-3: wp-content/themes/teamlab-blog-2-0/comments.php\n"
+"X-Poedit-SearchPath-4: wp-content/plugins/wp-discourse/lib/discourse-comment-"
+"formatter.php\n"
 
 #: wp-content/plugins/in-the-press/in-the-press.php:26
 msgid "Your site&#8217;s in the press."
@@ -67,6 +69,10 @@ msgstr ""
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:162
 msgid "Display post date?"
 msgstr ""
+
+#: wp-content/plugins/wp-discourse/lib/discourse-comment-formatter.php:187
+msgid "Join the Discussion"
+msgstr "Присоединиться к обсуждению"
 
 #: wp-content/themes/teamlab-blog-2-0/404.php:17
 msgid "404 Page not found"

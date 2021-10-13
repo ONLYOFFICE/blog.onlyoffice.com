@@ -82,10 +82,10 @@ class Templates {
 	 * Includes a template if the file exists.
 	 *
 	 * @param  string $templateName The template path/name.php to be included.
-	 * @param  null   $args         Args passed down to the template.
+	 * @param  null   $data         Data passed down to the template.
 	 * @return void
 	 */
-	public function getTemplate( $templateName, $args = null ) {
+	public function getTemplate( $templateName, $data = null ) {
 		$template = $this->locateTemplate( $templateName );
 		if ( ! empty( $template ) and file_exists( $template ) ) {
 			include $template;

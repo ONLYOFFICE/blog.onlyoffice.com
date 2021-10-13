@@ -31,6 +31,7 @@ class ImportExport {
 	public function __construct() {
 		$this->yoastSeo = new YoastSeo\YoastSeo( $this );
 		$this->rankMath = new RankMath\RankMath( $this );
+		$this->seoPress = new SeoPress\SeoPress( $this );
 	}
 
 	/**
@@ -297,12 +298,54 @@ class ImportExport {
 	 * @return void
 	 */
 	public function startImport( $plugin, $settings ) {
+		// First cancel any scans running that might interfere with our import.
+		$this->cancelScans();
+
 		foreach ( $this->plugins as $pluginData ) {
 			if ( $pluginData['slug'] === $plugin ) {
 				$pluginData['class']->doImport( $settings );
 				return;
 			}
 		}
+	}
+
+	/**
+	 * Cancel scans that are currently running and could conflict with our migration.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @return void
+	 */
+	private function cancelScans() {
+		// Figure out how to check if these addons are enabled and then get the action names that way.
+		aioseo()->helpers->unscheduleAction( 'aioseo_video_sitemap_scan' );
+		aioseo()->helpers->unscheduleAction( 'aioseo_image_sitemap_scan' );
+	}
+
+	/**
+	 * Checks if an import is currently running.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @return boolean True if an import is currently running.
+	 */
+	public function isImportRunning() {
+		$transients = aioseo()->db
+			->start( 'options' )
+			->select( 'option_name as name' )
+			->whereRaw( "`option_name` LIKE '_aioseo_cache_%'" )
+			->run()
+			->result();
+
+		$foundImportTransient = false;
+		foreach ( $transients as $transient ) {
+			if ( preg_match( '#import_.*_meta_.*#', $transient->name ) ) {
+				$foundImportTransient = true;
+				break;
+			}
+		}
+
+		return $foundImportTransient;
 	}
 
 	/**

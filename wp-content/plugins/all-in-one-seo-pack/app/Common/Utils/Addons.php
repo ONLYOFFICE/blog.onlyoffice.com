@@ -60,13 +60,74 @@ class Addons {
 		// The API request will tell us if we can activate a plugin, but let's check if its already active.
 		$installedPlugins = array_keys( get_plugins() );
 		foreach ( $addons as $key => $addon ) {
-			$addons[ $key ]->basename   = $this->getAddonBasename( $addon->sku );
-			$addons[ $key ]->installed  = in_array( $this->getAddonBasename( $addon->sku ), $installedPlugins, true );
-			$addons[ $key ]->isActive   = is_plugin_active( $addons[ $key ]->basename );
-			$addons[ $key ]->canInstall = $this->canInstall();
+			$addons[ $key ]->basename    = $this->getAddonBasename( $addon->sku );
+			$addons[ $key ]->installed   = in_array( $this->getAddonBasename( $addon->sku ), $installedPlugins, true );
+			$addons[ $key ]->isActive    = is_plugin_active( $addons[ $key ]->basename );
+			$addons[ $key ]->canInstall  = $this->canInstall();
+			$addons[ $key ]->canActivate = $this->canActivate();
+			$addons[ $key ]->capability  = $this->getManageCapability( $addon->sku );
 		}
 
 		return $addons;
+	}
+
+	/**
+	 * Returns the required capability to manage the addon.
+	 *
+	 * @since 4.1.3
+	 *
+	 * @param  string $sku The addon sku.
+	 * @return string      The required capability.
+	 */
+	protected function getManageCapability( $sku ) {
+		$capability = apply_filters( 'aioseo_manage_seo', 'aioseo_manage_seo' );
+
+		switch ( $sku ) {
+			case 'aioseo-image-seo':
+				$capability = 'aioseo_search_appearance_settings';
+				break;
+			case 'aioseo-video-sitemap':
+			case 'aioseo-news-sitemap':
+				$capability = 'aioseo_sitemap_settings';
+				break;
+			case 'aioseo-redirects':
+				$capability = 'aioseo_redirects_settings';
+				break;
+			case 'aioseo-local-business':
+				$capability = 'aioseo_local_seo_settings';
+				break;
+		}
+		return $capability;
+	}
+
+	/**
+	 * Check to see if there are unlicensed addons installed and activated.
+	 *
+	 * @since 4.1.3
+	 *
+	 * @return boolean True if there are unlicensed addons, false if not.
+	 */
+	public function unlicensedAddons() {
+		$unlicensed = [
+			'addons'  => [],
+			// Translators: 1 - Opening bold tag, 2 - Plugin short name ("AIOSEO"), 3 - "Pro", 4 - Closing bold tag.
+			'message' => sprintf(
+				__( 'The following addons cannot be used, because they require %1$s%2$s %3$s%4$s to work:', 'all-in-one-seo-pack' ),
+				'<strong>',
+				AIOSEO_PLUGIN_SHORT_NAME,
+				'Pro',
+				'</strong>'
+			)
+		];
+
+		$addons = $this->getAddons();
+		foreach ( $addons as $addon ) {
+			if ( $addon->isActive ) {
+				$unlicensed['addons'][] = $addon;
+			}
+		}
+
+		return $unlicensed;
 	}
 
 	/**
@@ -296,6 +357,21 @@ class Addons {
 
 		// Determine whether file modifications are allowed.
 		if ( ! wp_is_file_mod_allowed( 'aioseo_can_install' ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Determine if addons/plugins can be activated.
+	 *
+	 * @since 4.1.3
+	 *
+	 * @return bool True if yes, false if not.
+	 */
+	public function canActivate() {
+		if ( ! current_user_can( 'activate_plugins' ) ) {
 			return false;
 		}
 

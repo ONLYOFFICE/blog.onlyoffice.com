@@ -44,15 +44,32 @@ abstract class Graph {
 
 		$metaData = wp_get_attachment_metadata( $attachmentId );
 		if ( $metaData ) {
-			$data['width']  = $metaData['width'];
-			$data['height'] = $metaData['height'];
+			$data['width']  = (int) $metaData['width'];
+			$data['height'] = (int) $metaData['height'];
 		}
 
-		$caption = wp_get_attachment_caption( $attachmentId );
-		if ( false !== $caption || ! empty( $caption ) ) {
+		$caption = $this->getImageCaption( $attachmentId );
+		if ( ! empty( $caption ) ) {
 			$data['caption'] = $caption;
 		}
 		return $data;
+	}
+
+	/**
+	 * Get the image caption.
+	 *
+	 * @since 4.1.4
+	 *
+	 * @param  int    $attachmentId The attachment ID.
+	 * @return string               The caption.
+	 */
+	private function getImageCaption( $attachmentId ) {
+		$caption = wp_get_attachment_caption( $attachmentId );
+		if ( ! empty( $caption ) ) {
+			return $caption;
+		}
+
+		return get_post_meta( $attachmentId, '_wp_attachment_image_alt', true );
 	}
 
 	/**
@@ -177,7 +194,7 @@ abstract class Graph {
 			}
 
 			$value = $this->$f();
-			if ( $value ) {
+			if ( $value || in_array( $k, aioseo()->schema->nullableFields, true ) ) {
 				$data[ $k ] = $value;
 			}
 		}

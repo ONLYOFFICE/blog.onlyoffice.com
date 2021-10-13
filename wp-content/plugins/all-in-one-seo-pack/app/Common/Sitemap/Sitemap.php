@@ -287,7 +287,8 @@ class Sitemap {
 		}
 
 		if ( ! $entries ) {
-			return $this->notFoundPage();
+			$this->notFoundPage();
+			return;
 		}
 
 		$this->headers();

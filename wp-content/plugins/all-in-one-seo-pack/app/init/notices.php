@@ -138,6 +138,66 @@ if ( ! function_exists( 'aioseo_php_notice_deprecated' ) ) {
 	}
 }
 
+if ( ! function_exists( 'aioseo_wordpress_notice' ) ) {
+	/**
+	 * Display the notice after deactivation.
+	 *
+	 * @since 4.1.2
+	 */
+	function aioseo_wordpress_notice() {
+		$medium = false !== strpos( AIOSEO_PHP_VERSION_DIR, 'pro' ) ? 'proplugin' : 'liteplugin';
+		?>
+		<div class="notice notice-error">
+			<p>
+				<?php
+				echo
+					wp_kses(
+						sprintf(
+							// Translators: 1 - Opening HTML bold tag, 2 - Closing HTML bold tag, 3 - The plugin name ("All in One SEO").
+							__( 'Your site is running an %1$sinsecure version%2$s of WordPress that is no longer supported. Please update your site to the latest version of WordPress in order to continue using %3$s.', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
+							'<strong>',
+							'</strong>',
+							'All in One SEO'
+						),
+						array(
+							'strong' => array(),
+						)
+					);
+				?>
+				<br><br>
+				<?php
+				echo
+					wp_kses(
+						sprintf(
+							// Translators: 1 - Opening HTML bold tag, 2 - Closing HTML bold tag, 3 - The plugin name ("All in One SEO"), 4 - Opening HTML link tag, 5 - Closing HTML link tag.
+							__( '%1$sNote:%2$s %3$s will be discontinuing support for WordPress versions older than version 5.3 by the end of 2021. %4$sRead more for additional information.%5$s', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
+							'<strong>',
+							'</strong>',
+							'AIOSEO',
+							'<a href="https://aioseo.com/docs/update-wordpress/?utm_source=WordPress&utm_medium=' . $medium . '&utm_campaign=outdated-wordpress-notice" target="_blank" rel="noopener noreferrer">', // phpcs:ignore Generic.Files.LineLength.MaxExceeded
+							'</a>'
+						),
+						array(
+							'a'      => array(
+								'href'   => array(),
+								'target' => array(),
+								'rel'    => array(),
+							),
+							'strong' => array(),
+						)
+					);
+				?>
+			</p>
+		</div>
+
+		<?php
+		// In case this is on plugin activation.
+		if ( isset( $_GET['activate'] ) ) {
+			unset( $_GET['activate'] );
+		}
+	}
+}
+
 if ( ! function_exists( 'aioseo_lite_notice' ) ) {
 	/**
 	 * Display the notice after deactivation when Pro is still active
