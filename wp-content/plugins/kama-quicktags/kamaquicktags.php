@@ -26,7 +26,9 @@ function appthemes_add_quicktags(){
     QTags.addButton( 'html','HTML','<pre class="html">','</pre>', 'p', '', 999 );
     QTags.addButton( 'css','CSS','<pre class="css">','</pre>', 'p', '', 999 );
     QTags.addButton( 'js','JS','<pre class="js">','</pre>', 'p', '', 999 );
-	
+
+	QTags.addButton( 'h1','H1','<h1>','</h1>', 'p', '', 999 );
+	QTags.addButton( 'h2','H2','<h2>','</h2>', 'p', '', 999 );
     QTags.addButton( 'h3','H3','<h3>','</h3>', 'p', '', 999 );
     QTags.addButton( 'h4','H4','<h4>','</h4>', 'p', '', 999 );
     QTags.addButton( 'h5','H5','<h5>','</h5>', 'p', '', 999 );

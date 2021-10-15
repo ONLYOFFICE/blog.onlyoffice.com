@@ -1,0 +1,97 @@
+#adminmenu a.toplevel_page_poll-maker-ays div.wp-menu-image img {
+    width: 28px;
+    padding-top: 2px;
+}
+
+#adminmenu li.toplevel_page_poll-maker-ays ul.wp-submenu.wp-submenu-wrap li:last-child a {
+    color: #e14d43;
+}
+
+
+/*#adminmenu li.toplevel_page_poll-maker-ays ul.wp-submenu.wp-submenu-wrap li:last-child a:hover {
+    color: #f50057;
+}*/
+
+.apm-badge {
+    position: relative;
+    top: -1px;
+    right: -3px;
+}
+
+.apm-badge.badge-danger {
+    color: #fff;
+    background-color: #ca4a1f;
+}
+
+.apm-badge.badge {
+    display: inline-block;
+    vertical-align: top;
+    margin: 1px 0 0 2px;
+    padding: 0 5px;
+    min-width: 7px;
+    height: 17px;
+    border-radius: 11px;
+    font-size: 9px;
+    line-height: 17px;
+    text-align: center;
+    z-index: 26;
+}
+
+.wp-first-item .apm-badge {
+    display: none;
+}
+
+.apm-badge.badge.apm-no-results {
+    display: none;
+}
+
+.ays_fa_ays_fa_poll::before {
+  font-size: 40px;
+}
+.ays_fa_ays_fa_poll {
+    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
+    -webkit-transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
+    transform: rotate(135deg);
+    color: #e85011;
+}
+
+/* Admin notes */
+div#ays-poll-dicount-month-main,div.ays_poll_dicount_info{
+    border: 1px solid #E5E5E5;
+    background: #FFF;
+    border-radius: 6px;
+    box-shadow: 0 1px 1px 0 rgb(0 0 0 / 5%);
+    position: relative;
+    z-index: 1;
+    min-height: 80px;
+}
+.ays_poll_dicount_info button{
+    display: flex;
+    align-items: center;
+}
+
+div#ays-poll-dicount-month-main div#ays-poll-dicount-month a.ays-poll-sale-banner-link:focus{
+    outline: none;
+    box-shadow: 0;
+}
+
+#ays-poll-dicount-month-main .btn-link{
+    font-weight: 400;
+    color: #007bff;
+    background-color: transparent;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem
+}
