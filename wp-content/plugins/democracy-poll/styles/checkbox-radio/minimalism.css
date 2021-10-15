@@ -1,0 +1,87 @@
+/*
+	radio checkbox - minimalism
+
+	we have such structure:
+
+	label.dem__checkbox_label or label.dem__radio_label
+	   └── input.dem__checkbox or input.dem__radio
+	   └── input + .dem__spot
+
+	Don't use TAG names in selectors: use `.dem__checkbox_label` but not `label.dem__checkbox_label`
+*/
+
+
+.dem__checkbox,
+.dem__radio{ display:none !important; }
+
+.dem__checkbox_label,
+.dem__radio_label{ position: relative; box-sizing: content-box; }
+
+.dem__checkbox_label .dem__spot,
+.dem__radio_label .dem__spot {
+	position: relative;
+	display: inline-block;
+	vertical-align: baseline;
+	cursor: pointer;
+
+	width: 1.1em;
+	height: 1.1em;
+	margin-left: -1.6em;
+}
+
+.dem__checkbox_label{ padding-left: 1.7em; }
+.dem__radio_label{ padding-left: 1.5em; }
+
+.dem__checkbox_label .dem__spot:after,
+.dem__radio_label .dem__spot:after{
+	content: '';
+	position: absolute;
+	opacity: .2;
+}
+
+.dem__checkbox_label .dem__spot:after {
+	width: .6em;
+    height: .2em;
+    top: .45em;
+    left: .2em;
+	border:.2em solid #333;
+	border-top: none;
+	border-right: none;
+	background: transparent;
+	-webkit-transform: rotate(-45deg);
+	        transform: rotate(-45deg);
+}
+.dem__radio_label .dem__spot:after {
+	width: .5em;
+    height: .5em;
+	border-radius:50%;
+	top: 50%;
+    left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);
+
+	background: #333;
+}
+
+.dem__checkbox_label:hover .dem__spot::after,
+.dem__radio_label:hover .dem__spot::after {
+	opacity: .5;
+}
+
+.dem__checkbox:checked + .dem__spot,
+.dem__radio:checked + .dem__spot {
+	border-color:#999;
+}
+.dem__checkbox:checked + .dem__spot:after,
+.dem__radio:checked + .dem__spot:after {
+	opacity: 1;
+}
+.dem__checkbox:disabled + .dem__spot,
+.dem__radio:disabled + .dem__spot {
+	opacity: .5;
+}
+.dem__checkbox_label:disabled .dem__spot::after,
+.dem__radio_label:disabled .dem__spot::after {
+	opacity: .5;
+}
+
