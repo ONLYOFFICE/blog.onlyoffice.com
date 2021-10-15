@@ -65,6 +65,7 @@ $default_options = array(
 	"poll_show_social_ln"         => "on",
 	"poll_show_social_fb"         => "on",
 	"poll_show_social_tr"         => "on",
+	"poll_show_social_vk"         => "off",
 	"load_effect"                 => "load_gif",
 	"load_gif"                    => "plg_default",
 	'limit_users'                 => 0,
@@ -546,6 +547,7 @@ $poll_social_buttons = isset($options['show_social']) && $options['show_social']
 $poll_show_social_ln = isset($options['poll_show_social_ln']) && $options['poll_show_social_ln'] == "on" ? true : false;
 $poll_show_social_fb = isset($options['poll_show_social_fb']) && $options['poll_show_social_fb'] == "on" ? true : false;
 $poll_show_social_tr = isset($options['poll_show_social_tr']) && $options['poll_show_social_tr'] == "on" ? true : false;
+$poll_show_social_vk = isset($options['poll_show_social_vk']) && $options['poll_show_social_vk'] == "on" ? true : false;
 
 ?>
 <!--LIVE PREVIEW STYLES-->
@@ -5057,7 +5059,7 @@ $emoji = array(
 							<a 	class="ays_help"
 								data-toggle="tooltip"
 								data-placement="top"
-								title='<?= __("Enable to show social media share buttons on the result page of the poll. (Facebook, Twitter, Linkedin)", $this->plugin_name); ?>'>
+								title='<?= __("Enable to show social media share buttons on the result page of the poll. (Facebook, Twitter, Linkedin, VKontakte)", $this->plugin_name); ?>'>
                                 <i class="ays_poll_fas ays_poll_fa-info-circle"></i>
                             </a></label>
                     </div>
@@ -5110,21 +5112,21 @@ $emoji = array(
                                 <input type="checkbox" class="ays-enable-timer1" id="ays_poll_enable_twitter_share_button" name="ays_poll_enable_twitter_share_button" value="on" <?php echo ( $poll_show_social_tr ) ? "checked" : ""; ?>/>
                             </div>
                         </div>
-                        <!-- <hr/> -->
-                        <!-- <div class="form-group row">
+                        <hr/>
+                        <div class="form-group row">
                             <div class="col-sm-4">
-                                <label for="ays_survey_enable_vkontakte_share_button">
+                                <label for="ays_poll_enable_vkontakte_share_button">
                                     <i class="ays_fa ays_fa_vk"></i>
-                                    <?php //echo __('VKontakte button',$this->plugin_name)?>
-                                    <a class="ays_help" data-toggle="tooltip" title="<?php //echo __('Display VKontakte social button so that the users can share the page on which your survey is posted.',$this->plugin_name); ?>">
-                                        <i class="ays_fa ays_fa_info_circle"></i>
+                                    <?php echo __('VKontakte button',$this->plugin_name)?>
+                                    <a class="ays_help" data-toggle="tooltip" title="<?php echo __('Display VKontakte social button so that the users can share the page on which your poll is posted.',$this->plugin_name); ?>">
+                                        <i class="ays_poll_fas ays_poll_fa-info-circle"></i>
                                     </a>
                                 </label>
                             </div>
                             <div class="col-sm-8">
-                                <input type="checkbox" class="ays-enable-timer1" id="ays_survey_enable_vkontakte_share_button" name="ays_survey_enable_vkontakte_share_button" value="on" <?php //echo ( $survey_social_button_vk ); ?>/>
+                                <input type="checkbox" class="ays-enable-timer1" id="ays_poll_enable_vkontakte_share_button" name="ays_poll_enable_vkontakte_share_button" value="on" <?php echo ( $poll_show_social_vk ) ? "checked" : ""; ?>/>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
                 <hr>
