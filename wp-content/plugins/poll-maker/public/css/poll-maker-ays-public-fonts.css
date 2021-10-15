@@ -1,0 +1,40 @@
+@font-face {
+    font-family: "Font Awesome 5 Brands";
+    font-style: normal;
+    font-weight: normal;
+    src: url(../../../admin/webfonts/fa-brands-400.eot);
+    src: url(../../../admin/webfonts/fa-brands-400.eot?#iefix) format("embedded-opentype"), url(../../../admin/webfonts/fa-brands-400.woff2) format("woff2"), url(../../../admin/webfonts/fa-brands-400.woff) format("woff"), url(../../../admin/webfonts/fa-brands-400.ttf) format("truetype"),
+        url(../../../admin/webfonts/fa-brands-400.svg#fontawesome) format("svg");
+}
+[id^='ays-poll-container-'] .fab {
+    font-family: "Font Awesome 5 Brands";
+}
+@font-face {
+    font-family: "Font Awesome 5 Free";
+    font-style: normal;
+    font-weight: 400;
+    src: url(../../../admin/webfonts/fa-regular-400.eot);
+    src: url(../../../admin/webfonts/fa-regular-400.eot?#iefix) format("embedded-opentype"), url(../../../admin/webfonts/fa-regular-400.woff2) format("woff2"), url(../../../admin/webfonts/fa-regular-400.woff) format("woff"),
+        url(../../../admin/webfonts/fa-regular-400.ttf) format("truetype"), url(../../../admin/webfonts/fa-regular-400.svg#fontawesome) format("svg");
+}
+[id^='ays-poll-container-'] .far {
+    font-weight: 400;
+}
+@font-face {
+    font-family: "Font Awesome 5 Free";
+    font-style: normal;
+    font-weight: 900;
+    src: url(../../../admin/webfonts/fa-solid-900.eot);
+    src: url(../../../admin/webfonts/fa-solid-900.eot?#iefix) format("embedded-opentype"), url(../../../admin/webfonts/fa-solid-900.woff2) format("woff2"), url(../../../admin/webfonts/fa-solid-900.woff) format("woff"), url(../../../admin/webfonts/fa-solid-900.ttf) format("truetype"),
+        url(../../../admin/webfonts/fa-solid-900.svg#fontawesome) format("svg");
+}
+
+[id^='ays-poll-container-'] .fa,
+[id^='ays-poll-container-'] .far,
+[id^='ays-poll-container-'] .fas {
+    font-family: "Font Awesome 5 Free";
+}
+[id^='ays-poll-container-'] .fa,
+[id^='ays-poll-container-'] .fas {
+    font-weight: 900;
+}

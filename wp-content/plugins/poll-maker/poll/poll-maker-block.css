@@ -1,0 +1,38 @@
+select.ays_poll_maker_block_select {
+    text-align: center;
+    font-size: 18px;
+    width: 100%;
+    height: auto;
+    padding: 5px;
+}
+
+.components-panel__header.edit-post-sidebar-header button[aria-label="Unpin from toolbar"] {
+    display: none;
+}
+
+.poll-maker-sidebar-content select {
+    width: 95%;
+}
+
+.poll-maker-sidebar-content>div>div {
+    text-align: center;
+}
+
+.poll-maker-sidebar-content label {
+    width: 100%;
+    text-align: left;
+    padding: 4px;
+}
+
+
+/* div[data-type="poll-maker/poll"] .editor-block-toolbar {} */
+
+.ays_poll_maker_block_container {
+    /* padding: 10px; */
+    box-sizing: border-box;
+}
+
+div.ays_poll_maker_block_select select{
+    max-width: 100%;
+    padding: 0;
+}

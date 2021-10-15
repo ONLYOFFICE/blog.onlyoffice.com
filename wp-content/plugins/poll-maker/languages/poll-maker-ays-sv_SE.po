@@ -1,0 +1,3924 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Poll Maker\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-11-05 19:52+0400\n"
+"PO-Revision-Date: 2020-11-05 19:52+0400\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.3\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n_noop:1,2;_x\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../admin/class-poll-maker-ays-admin.php:200
+msgid "Clear"
+msgstr "Rensa"
+
+#: ../admin/class-poll-maker-ays-admin.php:201
+#, fuzzy
+#| msgid "Clear"
+msgid "Clear color"
+msgstr "Rensa"
+
+#: ../admin/class-poll-maker-ays-admin.php:202
+msgid "Default"
+msgstr "Standard"
+
+#: ../admin/class-poll-maker-ays-admin.php:203
+#, fuzzy
+#| msgid "Select versus icon"
+msgid "Select default color"
+msgstr "Ikonen för kontra"
+
+#: ../admin/class-poll-maker-ays-admin.php:204
+#, fuzzy
+#| msgid "Select Poll"
+msgid "Select Color"
+msgstr "Välj Omröstning"
+
+#: ../admin/class-poll-maker-ays-admin.php:205
+#, fuzzy
+#| msgid "Color 1"
+msgid "Color value"
+msgstr "Färg 1"
+
+#: ../admin/class-poll-maker-ays-admin.php:243
+#: ../admin/class-poll-maker-ays-admin.php:244
+#: ../admin/class-poll-maker-ays-admin.php:412
+#: ../includes/lists/class-poll-maker-polls-list-table.php:14
+msgid "Polls"
+msgstr "Frågor"
+
+#: ../admin/class-poll-maker-ays-admin.php:257
+#: ../admin/class-poll-maker-ays-admin.php:258
+#: ../admin/class-poll-maker-ays-admin.php:426
+#: ../admin/partials/poll-maker-ays-polls-actions.php:444
+#: ../includes/lists/class-poll-maker-categories-list-table.php:12
+#: ../includes/lists/class-poll-maker-polls-list-table.php:836
+msgid "Categories"
+msgstr "Kategorier"
+
+#: ../admin/class-poll-maker-ays-admin.php:280
+#: ../admin/class-poll-maker-ays-admin.php:281
+#: ../admin/class-poll-maker-ays-admin.php:438
+#: ../admin/partials/results/poll-maker-ays-results-display.php:10
+#: ../includes/lists/class-poll-maker-results-list-table.php:12
+msgid "Results"
+msgstr "Resultat"
+
+#: ../admin/class-poll-maker-ays-admin.php:293
+#: ../admin/class-poll-maker-ays-admin.php:294
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:106
+msgid "Custom Fields"
+msgstr "Egna anpassade fält"
+
+#: ../admin/class-poll-maker-ays-admin.php:303
+#: ../admin/class-poll-maker-ays-admin.php:304
+#: ../admin/partials/settings/poll-maker-settings.php:66
+msgid "General Settings"
+msgstr "Allmänna inställningar"
+
+#: ../admin/class-poll-maker-ays-admin.php:315
+#: ../admin/class-poll-maker-ays-admin.php:316
+msgid "How to use"
+msgstr ""
+
+#: ../admin/class-poll-maker-ays-admin.php:326
+#: ../admin/class-poll-maker-ays-admin.php:327
+msgid "PRO Features"
+msgstr ""
+
+#: ../admin/class-poll-maker-ays-admin.php:345
+#: ../admin/partials/poll-maker-ays-polls-actions.php:396
+#: ../admin/partials/settings/poll-maker-settings.php:37
+msgid "Settings"
+msgstr "Inställningar"
+
+#: ../admin/class-poll-maker-ays-admin.php:346
+msgid "BUY NOW"
+msgstr ""
+
+#: ../admin/partials/categories/actions/poll-maker-ays-categories-actions.php:16
+msgid "Add new category"
+msgstr "Lägg till kategori"
+
+#: ../admin/partials/categories/actions/poll-maker-ays-categories-actions.php:19
+msgid "Edit category"
+msgstr "Redigera kategori"
+
+#: ../admin/partials/categories/actions/poll-maker-ays-categories-actions.php:40
+#: ../admin/partials/poll-maker-ays-polls-actions.php:427
+#: ../includes/lists/class-poll-maker-categories-list-table.php:246
+#: ../includes/lists/class-poll-maker-polls-list-table.php:832
+msgid "Title"
+msgstr "Titel"
+
+#: ../admin/partials/categories/actions/poll-maker-ays-categories-actions.php:44
+#, fuzzy
+#| msgid "The name of category"
+msgid "Write the name of the category."
+msgstr "Kategorinamn"
+
+#: ../admin/partials/categories/actions/poll-maker-ays-categories-actions.php:57
+#: ../includes/lists/class-poll-maker-categories-list-table.php:247
+msgid "Description"
+msgstr "Beskrivning"
+
+#: ../admin/partials/categories/actions/poll-maker-ays-categories-actions.php:61
+msgid "Provide more information about the poll category."
+msgstr ""
+
+#: ../admin/partials/categories/actions/poll-maker-ays-categories-actions.php:80
+msgid "Allow to skip polls"
+msgstr "Tillåt att hoppa över frågor"
+
+#: ../admin/partials/categories/actions/poll-maker-ays-categories-actions.php:82
+msgid ""
+"If this option is enabled, the “Next” button will be available and the user "
+"can skip the poll and go forward."
+msgstr ""
+
+#: ../admin/partials/categories/actions/poll-maker-ays-categories-actions.php:95
+msgid "Next button text"
+msgstr "Text på knappen Nästa"
+
+#: ../admin/partials/categories/actions/poll-maker-ays-categories-actions.php:96
+msgid "Write your preferred text for the “Next” button."
+msgstr ""
+
+#: ../admin/partials/categories/actions/poll-maker-ays-categories-actions.php:111
+msgid "Save Category"
+msgstr "Spara kategori"
+
+#: ../admin/partials/categories/actions/poll-maker-ays-categories-actions.php:113
+msgid "Apply Category"
+msgstr "Tillämpa kategori"
+
+#: ../admin/partials/categories/poll-maker-ays-categories-display.php:5
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:19
+#: ../admin/partials/poll-maker-ays-admin-display.php:26
+msgid "Add New"
+msgstr "Lägg till ny"
+
+#: ../admin/partials/features/poll-maker-formfields_page-display.php:7
+#: ../admin/partials/poll-maker-ays-polls-actions.php:475
+#: ../admin/partials/poll-maker-ays-polls-actions.php:597
+#: ../admin/partials/poll-maker-ays-polls-actions.php:757
+#: ../admin/partials/poll-maker-ays-polls-actions.php:778
+#: ../admin/partials/poll-maker-ays-polls-actions.php:915
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1170
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1457
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1651
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1727
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2089
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2303
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2460
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2501
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2542
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2712
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2777
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2905
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2947
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2987
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3046
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3536
+#: ../admin/partials/results/poll-maker-ays-results-display.php:50
+#: ../admin/partials/settings/poll-maker-settings.php:198
+#: ../admin/partials/settings/poll-maker-settings.php:283
+#: ../admin/partials/settings/poll-maker-settings.php:340
+#: ../admin/partials/settings/poll-maker-settings.php:384
+#: ../admin/partials/settings/poll-maker-settings.php:441
+#: ../admin/partials/settings/poll-maker-settings.php:567
+#: ../admin/partials/settings/poll-maker-settings.php:613
+#: ../admin/partials/settings/poll-maker-settings.php:647
+msgid "This feature is available only in "
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-formfields_page-display.php:8
+#: ../admin/partials/poll-maker-ays-polls-actions.php:476
+#: ../admin/partials/poll-maker-ays-polls-actions.php:598
+#: ../admin/partials/poll-maker-ays-polls-actions.php:758
+#: ../admin/partials/poll-maker-ays-polls-actions.php:779
+#: ../admin/partials/poll-maker-ays-polls-actions.php:916
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1171
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1458
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1652
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1728
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2090
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2304
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2461
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2502
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2543
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2713
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2778
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2906
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2948
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2988
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3047
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3537
+#: ../admin/partials/results/poll-maker-ays-results-display.php:51
+#: ../admin/partials/settings/poll-maker-settings.php:199
+#: ../admin/partials/settings/poll-maker-settings.php:284
+#: ../admin/partials/settings/poll-maker-settings.php:341
+#: ../admin/partials/settings/poll-maker-settings.php:385
+#: ../admin/partials/settings/poll-maker-settings.php:442
+#: ../admin/partials/settings/poll-maker-settings.php:568
+#: ../admin/partials/settings/poll-maker-settings.php:614
+#: ../admin/partials/settings/poll-maker-settings.php:648
+msgid "PRO version!!!"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:14
+msgid ""
+"How to create a simple poll in 4 steps with the help of the Poll Maker "
+"plugin."
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:18
+msgid "Go to the"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:18
+#: ../includes/lists/class-poll-maker-polls-list-table.php:13
+#: ../includes/lists/class-poll-maker-results-list-table.php:393
+msgid "Poll"
+msgstr "Enkät"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:18
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2078
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2080
+msgid "page"
+msgstr "sida"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:19
+msgid "Create a new poll by clicking on the"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:19
+msgid "button"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:20
+#, fuzzy
+#| msgid "Please fill out the form:"
+msgid "Fill out the information."
+msgstr "Vänligen fyll i formuläret:"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:21
+msgid "Copy the"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:21
+#, fuzzy
+#| msgid "Shortcode"
+msgid "shortcode"
+msgstr "Shortcode"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:21
+msgid "of the poll and paste it into any post․"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:25
+msgid "Congrats! You have already created your first poll."
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:30
+msgid "FAQs"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:34
+#, fuzzy
+#| msgid "Show or hide the name of the poll"
+msgid "How do I change the design of the poll?"
+msgstr "Visa eller dölja namnet på omröstningen"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:40
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:75
+#, fuzzy
+#| msgid "For enabling this option, please go to "
+msgid "To do that, please go to the"
+msgstr "För att aktivera detta alternativ, gå till "
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:41
+#: ../admin/partials/poll-maker-ays-polls-actions.php:392
+msgid "Styles"
+msgstr "Stilar"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:42
+msgid ""
+"tab of the given poll. The plugin suggests you 7 awesome ready-to-use "
+"themes.  After choosing your preferred theme, you can customize it with 15+ "
+"style options to create attractive polls that people love to vote on, "
+"including"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:43
+msgid ""
+"main color, background image, background gradient, box-shadow, answers hover"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:44
+msgid "and etc. Moreover, you can use the"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:45
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1516
+#: ../admin/partials/settings/poll-maker-settings.php:738
+msgid "Custom CSS"
+msgstr "Anpassad CSS"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:46
+msgid ""
+"written field to fully match your preferred design for your website and "
+"brand."
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:53
+msgid "Can I organize anonymous polls?"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:59
+msgid "Yes!"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:60
+#, fuzzy
+#| msgid "The appearance of the rating type of the poll and scaling system"
+msgid "Please go to the Settings tab of the given poll, and find the "
+msgstr ""
+"Utseendet på klassificeringstypen för omröstnings- och skalningssystemet"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:61
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1735
+msgid "Allow anonymity"
+msgstr "Tillåt anonymitet (anonyma svar)"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:62
+#, fuzzy
+#| msgid ""
+#| "It allows participants to respond to your polls without ever revealing "
+#| "their identities, even if they are registered on your website. After "
+#| "enabling the option, the WP User and User IP will not be stored in the "
+#| "database."
+msgid ""
+"option there. Enable it, and it will allow participants to respond to your "
+"polls without ever revealing their identities, even if they are registered "
+"on your website. After enabling the option, the wp _user and User IP will "
+"not be stored in the database. A giant step toward democracy!"
+msgstr ""
+"Det gör det möjligt för deltagarna att svara på dina omröstningar anonymt, "
+"även om de är registrerade på din webbplats. Efter att du aktiverat "
+"alternativet kommer WP User och User IP inte att lagras i databasen."
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:69
+#, fuzzy
+#| msgid "Show or hide the name of the poll"
+msgid "How do I limit access to the poll?"
+msgstr "Visa eller dölja namnet på omröstningen"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:76
+#, fuzzy
+#| msgid "Limitations"
+msgid "Limitation"
+msgstr "Begränsningar"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:77
+msgid ""
+"tab of the given poll. The plugin suggests two methods to prevent repeat "
+"voting from the same person. Those are"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:78
+msgid "Limit the user to rate only once by IP"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:79
+#, fuzzy
+#| msgid "Port"
+msgid "or"
+msgstr "Port"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:80
+msgid "Limit the user to rate only once by User ID."
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:81
+msgid "The other awesome functionality that the plugin suggests is"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:82
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2330
+msgid "Only for logged in users"
+msgstr "Endast för inloggade användare"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:83
+msgid ""
+"to enable access to the poll those, who have logged in. This option will "
+"allow you to precisely target your respondents, and not receive unnecessary "
+"votes from others, who have not logged in. Moreover, with the help of the"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:84
+#, fuzzy
+#| msgid "Only for selected user role"
+msgid "Only selected user role"
+msgstr "Endast för vald användarroll"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:85
+msgid ""
+"option, you can select your preferred user role for example administrator, "
+"editor, subscriber, customer and etc."
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:92
+msgid "Can I know more about my respondents?"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:98
+msgid "You are in a right place!"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:99
+msgid "You just need to enable the"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:100
+#, fuzzy
+#| msgid "Enable Information Form"
+msgid "Information Form"
+msgstr "Aktivera informationsformulär"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:101
+msgid "from the"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:102
+#: ../admin/partials/poll-maker-ays-polls-actions.php:408
+msgid "User Data"
+msgstr "Användardata"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:103
+msgid "tab of the given poll, create your preferred"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:104
+#, fuzzy
+#| msgid "Add custom fields"
+msgid "custom fields"
+msgstr "Lägga till anpassade fält"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:105
+msgid "in the"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:107
+msgid ""
+"page from the plugin left navbar, and come up with a clear picture of who "
+"your poll participants are, where they live, what their lifestyle and "
+"personality are like, etc."
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:114
+msgid "Can I get notified every time a vote is submitted?"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:120
+msgid "You can!"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:121
+#, fuzzy
+#| msgid "For enabling this option, please go to "
+msgid "To enable it, please go to the"
+msgstr "För att aktivera detta alternativ, gå till "
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:122
+#: ../admin/partials/poll-maker-ays-polls-actions.php:180
+#: ../admin/partials/poll-maker-ays-polls-actions.php:412
+#: ../admin/partials/settings/poll-maker-settings.php:718
+msgid "Email"
+msgstr "E-post"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:123
+msgid "tab of the given poll. There you will find the"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:124
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2745
+#, fuzzy
+#| msgid "Results notification by e-mail"
+msgid "Results notification by email"
+msgstr "Resultat information via e-post"
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:125
+#, fuzzy
+#| msgid ""
+#| "If this option is on you will receive e-mail notification about votes."
+msgid ""
+"option. After enabling the option, the admin(or your provided email) will "
+"receive an email notification about votes at each time."
+msgstr ""
+"Om detta alternativ är aktiverat får du e-post meddelande om röstningar."
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:132
+msgid "Will I lose the data after the upgrade?"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:138
+msgid "Nope!"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:139
+msgid ""
+"All your content and assigned settings of the plugin will remain unchanged "
+"even after switching to the Pro version. You don’t need to redo what you "
+"have already built with the free version. For the detailed instruction, "
+"please take a look at our"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:140
+msgid "upgrade guide"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:146
+msgid "For more advanced needs, please take a look at our"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:147
+msgid "Poll Maker plugin User Manual."
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:149
+msgid "If none of these guides help you, ask your question by contacting our"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:150
+msgid "support specialists."
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-how-to-use-display.php:151
+msgid "and get a reply within a day."
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:14
+msgid "Personal"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:20
+msgid "Business"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:26
+msgid "Developer"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:36
+msgid "Free"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:52
+#: ../admin/partials/features/poll-maker-pro-features-display.php:57
+#: ../admin/partials/features/poll-maker-pro-features-display.php:92
+#: ../admin/partials/features/poll-maker-pro-features-display.php:97
+#, fuzzy
+#| msgid "Export to"
+msgid "Support for"
+msgstr "Exportera till CSV"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:60
+msgid "1 site"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:63
+msgid "5 sites"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:66
+msgid "Unlimited sites"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:72
+#: ../admin/partials/features/poll-maker-pro-features-display.php:77
+msgid "Upgrade for"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:80
+#: ../admin/partials/features/poll-maker-pro-features-display.php:100
+#, fuzzy
+#| msgid "Month(s)"
+msgid "3 months"
+msgstr "Månad(er)"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:83
+#: ../admin/partials/features/poll-maker-pro-features-display.php:103
+msgid "12 months"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:86
+#: ../admin/partials/features/poll-maker-pro-features-display.php:106
+msgid "Lifetime"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:112
+#: ../admin/partials/features/poll-maker-pro-features-display.php:117
+msgid "Install on unlimited sites"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:126
+#: ../admin/partials/features/poll-maker-pro-features-display.php:131
+msgid "Reports in dashboard"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:140
+#: ../admin/partials/features/poll-maker-pro-features-display.php:145
+msgid "VS type of poll (versus)"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:154
+#: ../admin/partials/features/poll-maker-pro-features-display.php:159
+#, fuzzy
+#| msgid "User Information"
+msgid "User information form"
+msgstr "Användar information"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:168
+#: ../admin/partials/features/poll-maker-pro-features-display.php:173
+msgid "Ability to add custom option"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:182
+#: ../admin/partials/features/poll-maker-pro-features-display.php:187
+msgid "Extra 4 themes"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:196
+#: ../admin/partials/features/poll-maker-pro-features-display.php:201
+#, fuzzy
+#| msgid "Results Settings"
+msgid "Results with charts"
+msgstr "Inställningar för resultat"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:210
+#: ../admin/partials/features/poll-maker-pro-features-display.php:215
+#, fuzzy
+#| msgid "Export to"
+msgid "Export results to CSV"
+msgstr "Exportera till CSV"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:224
+#: ../admin/partials/features/poll-maker-pro-features-display.php:229
+#, fuzzy
+#| msgid "Custom Fields"
+msgid "Custom Form Fields"
+msgstr "Egna anpassade fält"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:238
+#: ../admin/partials/features/poll-maker-pro-features-display.php:243
+#, fuzzy
+#| msgid "Vote Reason"
+msgid "Vote reason option"
+msgstr "Röstningskommentar / anledning till röst"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:252
+#: ../admin/partials/features/poll-maker-pro-features-display.php:257
+#, fuzzy
+#| msgid "Message instead of results"
+msgid "Text instead of results"
+msgstr "Meddelande i stället för resultat"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:266
+#: ../admin/partials/features/poll-maker-pro-features-display.php:271
+#, fuzzy
+#| msgid "Export all your polls into a CSV file."
+msgid "Import/Export polls with CSV file"
+msgstr "Exportera alla frågor till en CSV fil."
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:280
+#: ../admin/partials/features/poll-maker-pro-features-display.php:285
+#, fuzzy
+#| msgid "Enable Slack integration"
+msgid "Mailchimp integration"
+msgstr "Aktivera Slack-integrering"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:294
+#: ../admin/partials/features/poll-maker-pro-features-display.php:299
+#, fuzzy
+#| msgid "Campaign Monitor Settings"
+msgid "Campaign Monitor integration"
+msgstr "Inställningar för kampanjövervakare"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:308
+#: ../admin/partials/features/poll-maker-pro-features-display.php:313
+#, fuzzy
+#| msgid "Enable Zapier Integration"
+msgid "Zapier integration"
+msgstr "Aktivera Zapier-integrering"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:322
+#: ../admin/partials/features/poll-maker-pro-features-display.php:327
+#, fuzzy
+#| msgid "ActiveCampaign automation"
+msgid "ActiveCampaign integration"
+msgstr "ActiveCampaign-automatisering"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:336
+#: ../admin/partials/features/poll-maker-pro-features-display.php:341
+#, fuzzy
+#| msgid "Enable Slack integration"
+msgid "Slack integration"
+msgstr "Aktivera Slack-integrering"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:350
+#: ../admin/partials/features/poll-maker-pro-features-display.php:355
+msgid "Anonymous poll"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:364
+#: ../admin/partials/features/poll-maker-pro-features-display.php:369
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1659
+msgid "Allow multivote"
+msgstr "Tillåt multipla/flera svar på fråga"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:378
+#: ../admin/partials/features/poll-maker-pro-features-display.php:383
+#, fuzzy
+#| msgid "Password for passing Poll"
+msgid "Password protected poll"
+msgstr "Lösenord för att delta i omröstningen"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:392
+#: ../admin/partials/features/poll-maker-pro-features-display.php:397
+#, fuzzy
+#| msgid "Vote Reason"
+msgid "Vote session"
+msgstr "Röstningskommentar / anledning till röst"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:406
+#: ../admin/partials/features/poll-maker-pro-features-display.php:411
+#, fuzzy
+#| msgid "Send Mail to User"
+msgid "Send mail to user"
+msgstr "Skicka e-post till användare"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:420
+#: ../admin/partials/features/poll-maker-pro-features-display.php:425
+#, fuzzy
+#| msgid "Message instead of results"
+msgid "Messages based on answers"
+msgstr "Meddelande i stället för resultat"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:434
+#: ../admin/partials/features/poll-maker-pro-features-display.php:439
+#, fuzzy
+#| msgid "Poll category shortcode"
+msgid "Display category shortcode"
+msgstr "Omröstning - kategori shortcode"
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:448
+#: ../admin/partials/features/poll-maker-pro-features-display.php:453
+msgid "Leaderboard"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:465
+msgid "Download"
+msgstr ""
+
+#: ../admin/partials/features/poll-maker-pro-features-display.php:468
+#: ../admin/partials/features/poll-maker-pro-features-display.php:470
+msgid "Buy now"
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:5
+#: ../admin/partials/poll-maker-ays-polls-actions.php:6
+msgid "Add Image"
+msgstr "Lägg till bild"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:51
+#: ../public/class-poll-maker-ays-public.php:1281
+msgid "Vote"
+msgstr "Rösta"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:52
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1969
+#: ../public/class-poll-maker-ays-public.php:570
+#: ../public/class-poll-maker-ays-public.php:1274
+msgid "See Results"
+msgstr "Se resultat"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:59
+msgid "Thanks for your answer!"
+msgstr "Tack för ditt svar!"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:65
+#: ../public/class-poll-maker-ays-public.php:153
+msgid "You have already voted"
+msgstr "Du har redan röstat"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:70
+msgid "You don't have permissions for passing the poll"
+msgstr "Du har inte behörighet att delta i omröstningen"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:72
+msgid "You must sign in for passing the poll"
+msgstr "Du måste logga in för att delta i omröstningen"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:93
+msgid "The poll will be available soon!"
+msgstr "Denna omröstning öppnas snart!"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:94
+msgid "The poll has expired!"
+msgstr "Denna omröstning är slutförd!"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:103
+#: ../public/class-poll-maker-ays-public.php:406
+msgid "Please fill out the form:"
+msgstr "Vänligen fyll i formuläret:"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:113
+msgid "Add new poll"
+msgstr "Lägg till ny omröstning"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:117
+msgid "Edit poll"
+msgstr "Redigera omröstning"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:146
+#: ../admin/partials/poll-maker-ays-polls-actions.php:150
+msgid "Edit Image"
+msgstr "Redigera bild"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:176
+msgid "Name"
+msgstr "Namn"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:184
+msgid "Phone"
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:226
+msgid "There are no lists"
+msgstr "Det finns inga listor"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:359
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3661
+#, fuzzy
+#| msgid "Save changes"
+msgid "Save and close"
+msgstr "Spara ändringar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:360
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3662
+#, fuzzy
+#| msgid "Save Poll"
+msgid "Save"
+msgstr "Spara omröstning"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:372
+msgid "Shortcode text for editor"
+msgstr "Shortcode för redigerare"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:376
+msgid "To insert the Poll into a page, post or text widget, copy shortcode"
+msgstr ""
+"Om du vill infoga omröstning på en sida, ett inlägg eller text kopierar du "
+"shortcode"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:378
+msgid "and paste it at the desired place in the editor."
+msgstr "och klistra in den på önskad plats i redigeraren."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:388
+#: ../admin/partials/settings/poll-maker-settings.php:51
+msgid "General"
+msgstr "Allmänt"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:400
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3082
+#, fuzzy
+#| msgid "Results sorting"
+msgid "Results Settings"
+msgstr "Resultat sortering"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:404
+msgid "Limitations"
+msgstr "Begränsningar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:416
+#: ../admin/partials/settings/poll-maker-settings.php:55
+#: ../admin/partials/settings/poll-maker-settings.php:226
+msgid "Integrations"
+msgstr "Integrationer"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:421
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2078
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2080
+msgid "General options"
+msgstr "Allmäna inställningar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:430
+msgid ""
+"Define a name for your poll which will be shown as a headline inside the "
+"poll."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:447
+msgid ""
+"Choose the category your poll belongs to. For creating a category, go to the "
+"`Categories` page (find it on the Poll Maker left navbar)."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:455
+#, fuzzy
+#| msgid "Create category"
+msgid "Select category"
+msgstr "Skapa kategori"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:466
+msgid "Create category"
+msgstr "Skapa kategori"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:483
+msgid "Create post for poll"
+msgstr "Skapa inlägg för omröstning"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:484
+msgid ""
+"A new WordPress post will be created automatically and will include the "
+"shortcode of this poll. This function will be executed only once. You can "
+"find this post on Posts page, which will have the same title as the poll. "
+"The image of the poll will be the featured image of the post."
+msgstr ""
+"En ny WordPress post kommer att skapas automatiskt och kommer att innehålla "
+"shortcode för denna omröstning. Denna funktion kommer att utföras endast en "
+"gång. Du hittar det här inlägget på din Inläggsida, som kommer att ha samma "
+"titel som omröstningen. Bilden av omröstningen kommer att vara den "
+"presenterade bilden av inlägget."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:496
+msgid "Choose Post Categories"
+msgstr "Välj Inläggs Kategorier"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:497
+msgid ""
+"Choose the category of the new post. For creating a category, go to the "
+"Categories page of the Posts."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:517
+msgid "Question"
+msgstr "Fråga"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:517
+msgid "Write the main content/question, which will be shown inside the poll."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:521
+#, fuzzy
+#| msgid "Add image on the question"
+msgid "Add an image to the question."
+msgstr "Lägg till bild på frågan"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:553
+#: ../includes/lists/class-poll-maker-polls-list-table.php:833
+msgid "Type"
+msgstr "Typ"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:554
+#, fuzzy
+#| msgid "Choose your preferred icon for the answers"
+msgid "Choose your preferred type of poll."
+msgstr "Välj önskad ikon för svaren"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:555
+#: ../admin/partials/poll-maker-ays-polls-actions.php:567
+#: ../admin/partials/poll-maker-ays-polls-actions.php:569
+msgid "Choosing"
+msgstr "Välja"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:555
+msgid ""
+" - you write the possible answers in the field of “Answers” which are 2 by "
+"default."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:556
+#: ../admin/partials/poll-maker-ays-polls-actions.php:576
+#: ../admin/partials/poll-maker-ays-polls-actions.php:578
+msgid "Rating"
+msgstr "Betyg"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:556
+msgid ""
+"- you need to choose the appearance(Stars/Emoji) and the scale of "
+"assessment(3-5) and let the users rate."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:557
+#: ../admin/partials/poll-maker-ays-polls-actions.php:585
+#: ../admin/partials/poll-maker-ays-polls-actions.php:587
+msgid "Voting"
+msgstr "Röstning"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:557
+msgid ""
+"- you need to choose the appearance(Hand/Emoji) and let the users choose "
+"between those two opposing variants."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:558
+#: ../admin/partials/poll-maker-ays-polls-actions.php:604
+#: ../admin/partials/poll-maker-ays-polls-actions.php:606
+msgid "Versus"
+msgstr "Kontra"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:558
+msgid ""
+"- you need to choose two different answers and let the user compare and "
+"choose one of them.  Moreover, you can select the versus direction, icon and "
+"position."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:607
+#: ../admin/partials/poll-maker-ays-polls-actions.php:926
+#: ../admin/partials/poll-maker-ays-polls-actions.php:934
+#: ../admin/partials/poll-maker-ays-polls-actions.php:942
+#: ../admin/partials/poll-maker-ays-polls-actions.php:950
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3246
+msgid "It is PRO version feature"
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:617
+msgid "If you change the type, the number of counted answers will be annulled."
+msgstr "Om du ändrar typen kommer antalet inräknade svar att ogiltigförklaras."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:626
+#: ../admin/partials/poll-maker-ays-polls-actions.php:802
+#: ../admin/partials/poll-maker-ays-polls-actions.php:844
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3602
+msgid "Answers"
+msgstr "Svar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:626
+msgid ""
+"Add the possible answers to the question of the poll. For adding the "
+"additional variant(s) to it you need to click on the plus (+) button."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:638
+msgid "Add answer"
+msgstr "Lägg till svar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:650
+#, fuzzy
+#| msgid "Remove answer image"
+msgid "Remove answer"
+msgstr "Ta bort svarsbild"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:661
+#, fuzzy
+#| msgid "Answer 1"
+msgid "Answer "
+msgstr "Svar 1"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:679
+msgid "Redirect"
+msgstr "Omdirigera"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:680
+msgid ""
+"Enable redirection to the custom URL(s) after the user votes the poll. "
+"Assign different URLs to each answer separately."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:697
+#: ../admin/partials/poll-maker-ays-polls-actions.php:718
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2010
+msgid "URL"
+msgstr "URL"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:698
+#: ../admin/partials/poll-maker-ays-polls-actions.php:719
+msgid "The URL for redirecting after the user submits the form."
+msgstr "URL:en för omdirigering när användaren har skickat in omröstningen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:740
+#, fuzzy
+#| msgid "Answers"
+msgid "Answers view"
+msgstr "Svar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:740
+#, fuzzy
+#| msgid "Answers from which the choice is made"
+msgid "Answers from which the choice is made."
+msgstr "Svar som man ska välja emellan"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:750
+msgid "List view (Default)"
+msgstr "Listvy (Standard)"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:765
+msgid "Grid view"
+msgstr "Rutnätsvy"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:786
+#, fuzzy
+#| msgid "Allow add answer"
+msgid "Allow add custom answer"
+msgstr "Tillåt lägg till egna svar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:788
+msgid "Allow users to add their answer variant"
+msgstr "Tillåt användare att lägga till egna svarsalternativ"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:802
+#, fuzzy
+#| msgid "The categories of the poll"
+msgid "Select the appearance of the poll."
+msgstr "Kategorierna i omröstningen"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:809
+msgid "Hand"
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:812
+#: ../admin/partials/poll-maker-ays-polls-actions.php:854
+msgid "Emoji"
+msgstr "Emoji"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:844
+#, fuzzy
+#| msgid "The appearance of the voting type of the poll"
+msgid "Select the appearance and the scale of assessment of the poll."
+msgstr "Utseendet på röstningstypen för omröstningen"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:851
+#, fuzzy
+#| msgid "Start"
+msgid "Stars"
+msgstr "Start"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:869
+msgid "Styling options"
+msgstr "Styling/Stil alternativ"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:875
+msgid "Theme"
+msgstr "Tema"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:877
+msgid ""
+"Choose your preferred, ready to use template and customize it with the "
+"options below."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:885
+#: ../admin/partials/poll-maker-ays-polls-actions.php:887
+msgid "Minimal"
+msgstr "Minimal"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:894
+#: ../admin/partials/poll-maker-ays-polls-actions.php:896
+msgid "Classic Light"
+msgstr "Klassisk ljus"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:903
+#: ../admin/partials/poll-maker-ays-polls-actions.php:905
+msgid "Classic Dark"
+msgstr "Klassisk Mörk"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:947
+msgid "Aquamarine"
+msgstr "Aquamarine"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:965
+msgid "Main Color"
+msgstr "Huvudfärg"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:969
+#, fuzzy
+#| msgid ""
+#| "The central color of the poll (border color, the color of the rate "
+#| "percentage and the background color of sending button)"
+msgid ""
+"Specify the color of the poll's main attributes. It includes border color, "
+"the color of the rate percentage and the background color of the vote button."
+msgstr ""
+"Den centrala färgen i omröstningsytan (kantfärg, färgen på ränteprocenten "
+"och knappen för bakgrundsfärg för att skicka)"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:984
+msgid "Text Color"
+msgstr "Textfärg"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:988
+#, fuzzy
+#| msgid "The color of the text in the poll"
+msgid "Specify the color of the text written inside the poll."
+msgstr "Färgen på texten i omröstningen"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1003
+msgid "Icons Color"
+msgstr "Ikonfärg"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1007
+#, fuzzy
+#| msgid "The icons color in voting and rating types"
+msgid "Specify the icon color in voting and rating types."
+msgstr "Ikonernas färg i röstning och klassificeringstyper"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1022
+msgid "Background Color"
+msgstr "Bakgrundsfärg"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1023
+#, fuzzy
+#| msgid "The background of the title in the poll"
+msgid "Specify the background color of the poll."
+msgstr "Bakgrunden till titeln på omröstningen"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1038
+msgid "Background Image"
+msgstr "Bakgrundsbild"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1040
+msgid ""
+"Add a background image to the poll. If you add a background image, the "
+"background color will not be applied."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1064
+#, fuzzy
+#| msgid "Background image of the poll"
+msgid "Background image position"
+msgstr "Bakgrundsbild för omröstningen"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1065
+#, fuzzy
+#| msgid "Background image of the poll"
+msgid "The position of background image of the polls"
+msgstr "Bakgrundsbild för omröstningen"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1070
+#, fuzzy
+#| msgid "Left"
+msgid "Left Top"
+msgstr "Vänster"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1071
+#, fuzzy
+#| msgid "Center"
+msgid "Left Center"
+msgstr "Centrera"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1072
+#, fuzzy
+#| msgid "Bottom"
+msgid "Left Bottom"
+msgstr "Botten"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1073
+#, fuzzy
+#| msgid "Center"
+msgid "Center Top"
+msgstr "Centrera"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1074
+#, fuzzy
+#| msgid "Center"
+msgid "Center Center"
+msgstr "Centrera"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1075
+#, fuzzy
+#| msgid "Bottom"
+msgid "Center Bottom"
+msgstr "Botten"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1076
+#, fuzzy
+#| msgid "Right"
+msgid "Right Top"
+msgstr "Höger"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1077
+#, fuzzy
+#| msgid "Center"
+msgid "Right Center"
+msgstr "Centrera"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1078
+#, fuzzy
+#| msgid "Bottom"
+msgid "Right Bottom"
+msgstr "Botten"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1086
+#, fuzzy
+#| msgid "Background image of the poll"
+msgid "Hide background image on result page"
+msgstr "Bakgrundsbild för omröstningen"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1087
+msgid ""
+"If this option is enabled background image of poll will disappear on the "
+"result page."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1105
+msgid "Answer styles"
+msgstr "Styling/Stil på Svar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1107
+msgid ""
+"Highlight the background of the answers' boxes. The option works only with "
+"choosing type."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1120
+msgid "Answers Background Color"
+msgstr "Bakgrundsfärg för Svar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1122
+#, fuzzy
+#| msgid "Background color of the answers"
+msgid "Specify the background color of the answers' boxes."
+msgstr "Bakgrundsfärg för svaren"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1133
+msgid "Border side"
+msgstr "Kant för  sidan"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1137
+#, fuzzy
+#| msgid "Choose your preferred icon for the answers"
+msgid "Choose your preferred style for the border of the answers' boxes."
+msgstr "Välj önskad ikon för svaren"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1144
+msgid "All sides"
+msgstr "Alla sidor"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1147
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1338
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3182
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3191
+msgid "None"
+msgstr "Ingen"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1150
+msgid "Top"
+msgstr "Topp"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1153
+msgid "Bottom"
+msgstr "Botten"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1156
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1705
+msgid "Left"
+msgstr "Vänster"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1159
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1717
+msgid "Right"
+msgstr "Höger"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1178
+msgid "Answer icon"
+msgstr "Ikon för Svar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1179
+#, fuzzy
+#| msgid "Choose your preferred icon for the answers"
+msgid "Choose your preferred icon for the answers."
+msgstr "Välj önskad ikon för svaren"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1211
+msgid "Show answers caption"
+msgstr "Visa bildtext för svaret"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1212
+msgid ""
+"Show answers caption near the answer image. This option will be work only "
+"when answer has image."
+msgstr ""
+"Visa bildtext för svaret, nära svarsbilden. Det här alternativet kommer att "
+"fungera först när svaret har en bildinlagd."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1229
+msgid "Title Background Color"
+msgstr "Bakrungsfärg rubrik"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1233
+#, fuzzy
+#| msgid "Background color of the answers"
+msgid "Specify the background color of the title."
+msgstr "Bakgrundsfärg för svaren"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1249
+msgid "Icon size (px)"
+msgstr "Ikon storlek (px)"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1253
+#, fuzzy
+#| msgid ""
+#| "The size of the icons in rating and voting types of the poll (it should "
+#| "be 10 and more)"
+msgid ""
+"Specify the size of the icons in rating and voting types of the poll in "
+"pixels. It should be 10 and more."
+msgstr ""
+"Storleken på ikonerna i betyg- och frågetyper i omröstningen (det bör vara "
+"10 eller fler)"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1268
+msgid "Width (px)"
+msgstr "Bredd (px)"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1272
+msgid ""
+"Specify the width of the poll in pixels. If you put 0, the width will be "
+"100%."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1287
+msgid "Min-height"
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1288
+msgid "Set the poll minimum height by entering a numeric value."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1301
+msgid "Border style"
+msgstr "Ramstil"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1305
+#, fuzzy
+#| msgid "Choose your preferred icon for the answers"
+msgid "Choose your preferred style of the border."
+msgstr "Välj önskad ikon för svaren"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1314
+msgid "Solid"
+msgstr "Solid"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1317
+msgid "Dashed"
+msgstr "Streckad"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1320
+msgid "Dotted"
+msgstr "Prickad"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1323
+msgid "Double"
+msgstr "Dubbel"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1326
+msgid "Groove"
+msgstr "Räfflad"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1329
+msgid "Ridge"
+msgstr "Upphöjning"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1332
+msgid "Inset"
+msgstr "Infälld"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1335
+msgid "Outset"
+msgstr "Outset"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1346
+msgid "Border radius"
+msgstr "Kantradie"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1348
+msgid ""
+"Define the radius of the corners of the poll container. Allows adding "
+"rounded corners to it."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1363
+msgid "Border width"
+msgstr "Rambredd"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1365
+#, fuzzy
+#| msgid ""
+#| "The width of the border. For Coffee Fluid theme border-width will always "
+#| "be 1px."
+msgid ""
+"Specify the width of the border. For the Coffee Fluid theme, border-width "
+"will always be 1px."
+msgstr ""
+"Bredden på kantlinjen. För Coffe Fluid tema border-bredd kommer alltid att "
+"vara 1px."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1380
+msgid "Box shadow"
+msgstr "Ruta skuggad"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1382
+msgid ""
+"Add a shadow to your poll container. Moreover, you can choose the color of "
+"it."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1395
+msgid "Box shadow color"
+msgstr "Färg för ytskugga"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1397
+msgid "The shadow color of Poll container"
+msgstr "Skuggfärgen på Omröstnings-behållaren"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1412
+msgid "Background Gradient"
+msgstr "Bakgrundsgradient"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1413
+msgid ""
+"Add a color gradient background in the poll. Moreover, you can choose Color "
+"1, Color 2 and the direction of the gradient."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1427
+msgid "Color 1"
+msgstr "Färg 1"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1433
+msgid "Color 2"
+msgstr "Färg 2"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1439
+msgid "Gradient direction"
+msgstr "Riktning för övertoning"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1442
+msgid "Vertical"
+msgstr "Vertikal"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1443
+msgid "Horizontal"
+msgstr "Horisontell"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1444
+msgid "Diagonal left to right"
+msgstr "Diagonal vänster till höger"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1445
+msgid "Diagonal right to left"
+msgstr "Diagonal höger till vänster"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1465
+msgid "Answer image object fit"
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1466
+#, fuzzy
+#| msgid ""
+#| "This property is used to specify how an image should be resized to fit "
+#| "its container"
+msgid "Specify how an answers’ images should be resized to fit its container."
+msgstr ""
+"Den här egenskapen används för att ange hur en bild ska anpassas för att "
+"behållaren"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1473
+msgid "Cover"
+msgstr "Täck"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1482
+msgid "Disable answers hover"
+msgstr "Inaktivera hover för svar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1485
+#, fuzzy
+#| msgid "This option disables hover effect for answers"
+msgid "Disable the hover effect for answers."
+msgstr "Med det här alternativet inaktiveras hovringseffekten för svar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1502
+msgid "Custom class for poll container"
+msgstr "Anpassad klass för fråge-behållare"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1503
+msgid ""
+"Use your custom HTML class for adding your custom styles to the poll "
+"container."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1521
+msgid ""
+"In this field, you can write your own CSS code. For example: p{color:red !"
+"important}"
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1616
+msgid "Feature options"
+msgstr "Alternativ för funktioner"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1622
+#: ../includes/lists/class-poll-maker-polls-list-table.php:839
+msgid "Status"
+msgstr "Status"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1624
+msgid ""
+"Choose whether the poll is active or not. If you choose an unpublished "
+"option, the poll won’t be shown anywhere on your website. (You do not need "
+"to remove shortcodes)."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1635
+#: ../includes/lists/class-poll-maker-polls-list-table.php:821
+msgid "Published"
+msgstr "Publicerad"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1641
+#: ../includes/lists/class-poll-maker-polls-list-table.php:821
+msgid "Unpublished"
+msgstr "Ej publiserad"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1660
+msgid ""
+"Allow users to choose more than one answer. It will work with choosing type."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1675
+msgid "Show Title"
+msgstr "Visa rubrik"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1678
+msgid "Enable to show the title as a headline inside the poll."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1692
+#, fuzzy
+#| msgid "Title Alignment"
+msgid "Alignment"
+msgstr "Rubrikjustering"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1694
+#, fuzzy
+#| msgid "Choose the method of detection of the user. "
+msgid "Choose the alignment of the content of the poll."
+msgstr "Välj metod för identifiering av användaren. "
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1711
+msgid "Center"
+msgstr "Centrera"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1738
+msgid ""
+"It allows participants to respond to your polls without ever revealing their "
+"identities, even if they are registered on your website. After enabling the "
+"option, the WP User and User IP will not be stored in the database."
+msgstr ""
+"Det gör det möjligt för deltagarna att svara på dina omröstningar anonymt, "
+"även om de är registrerade på din webbplats. Efter att du aktiverat "
+"alternativet kommer WP User och User IP inte att lagras i databasen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1753
+msgid "Show creation date"
+msgstr "Visa skapandedatum"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1756
+#, fuzzy
+#| msgid "Show the countdown or end date time in the poll."
+msgid "Enable to show the creation date inside the poll."
+msgstr "Visa nedräkningen eller slutdatum i omröstningen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1770
+msgid "Show author"
+msgstr "Visa författare"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1773
+#, fuzzy
+#| msgid "The color of the text in the poll"
+msgid "Enable to show the author inside the poll."
+msgstr "Färgen på texten i omröstningen"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1787
+msgid "Schedule"
+msgstr "Schema"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1789
+msgid ""
+"Specify the period of time when the poll will be active. Choose the start "
+"and the end date and write the pre-start and expiration messages."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1807
+msgid "Start date:"
+msgstr "Startdatum:"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1824
+msgid "End date:"
+msgstr "Slutdatum:"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1843
+msgid "Show timer"
+msgstr "Visa timer"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1846
+#, fuzzy
+#| msgid "Show the countdown or end date time in the poll."
+msgid ""
+"Enable to show the countdown or the end date in the poll, when it is "
+"scheduled."
+msgstr "Visa nedräkningen eller slutdatum i omröstningen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1862
+msgid "Show countdown"
+msgstr "Visa nedräkning"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1868
+msgid "Show end date"
+msgstr "Visa slutdatum"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1878
+msgid "Pre start message:"
+msgstr "Före start meddelande:"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1901
+msgid "Expiration message:"
+msgstr "Meddelande om förfallodatum:"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1923
+msgid "Show result button"
+msgstr "Knappen Visa resultat"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1926
+#, fuzzy
+msgid "Enable to show the result button after the schedule."
+msgstr "Visa eller dölj resultatknappen efter schemat"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1944
+msgid "Allow not to vote"
+msgstr "Tillåt att inte rösta"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1948
+#, fuzzy
+#| msgid ""
+#| "Allow to abstain from voting and go directly to the results. If checked, "
+#| "it is impossible to hide the results."
+msgid ""
+"Allow the user to directly see the results without participating in the "
+"vote. If the option is checked, it is impossible to hide the results."
+msgstr ""
+"Låt avstå från att rösta och gå direkt till resultaten. Om markerad är det "
+"omöjligt att dölja resultaten."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1959
+msgid "Results button text"
+msgstr "Resultat knapptext"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1963
+#, fuzzy
+#| msgid "The text of the button, that shows results"
+msgid "Write the text of the button, which shows results."
+msgstr "Texten på knappen som visar resultat"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1978
+msgid "Show passed users count"
+msgstr "Visa antalet användare som genomfört"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1980
+msgid ""
+"Show how many users have passed the poll. It will be shown at the bottom "
+"right corner inside the poll."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1994
+msgid "Redirect after voting"
+msgstr "Omdirigering efter röstning"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:1996
+#, fuzzy
+#| msgid "Redirect to custom URL after user submit the form."
+msgid "Enable redirection to the custom URL after the user votes the poll."
+msgstr ""
+"Omdirigera till anpassad URL efter att användaren har skickat formuläret."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2011
+#, fuzzy
+#| msgid "The URL for redirecting after the user submits the form."
+msgid ""
+"Choose the Redirection URL for redirecting after the user takes the poll."
+msgstr "URL:en för omdirigering när användaren har skickat in omröstningen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2024
+msgid "Delay"
+msgstr "Fördröj"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2026
+#, fuzzy
+#| msgid "The URL for redirecting after the user submits the form."
+msgid "Choose the redirection delay in seconds after the user votes the poll."
+msgstr "URL:en för omdirigering när användaren har skickat in omröstningen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2044
+msgid "Randomize Answers"
+msgstr "Blanda svar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2047
+msgid "Enable to show the answers of the poll in a random sequence."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2065
+msgid "Enable answers sound"
+msgstr "Aktivera ljudsvar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2066
+msgid ""
+"Enable to play a sound when the user clicks on one of the answers. To select "
+"a sound, go to the Poll answers sound option in the General Settings page."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2078
+msgid "Sound are selected. For change sounds go to"
+msgstr "Ljud är valt. För förändring ljud gå till"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2080
+msgid "Sound are not selected. For selecting sounds go to"
+msgstr "Ljud är inte valt. För att välja ljud gå till"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2097
+msgid "Vote Reason"
+msgstr "Röstningskommentar / anledning till röst"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2099
+msgid "Allow users to add their vote reason"
+msgstr "Tillåt användare att lägga till anledning till att de röstat"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2113
+msgid "Enable Vote button"
+msgstr "Knappen Aktivera omröstning"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2115
+msgid ""
+"Show the vote button during the vote. If this option is disabled, then the "
+"user needs to click on the answer to vote without a chance of changing it."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2126
+msgid "Vote button text"
+msgstr "Text på knappen rösta"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2130
+#, fuzzy
+#| msgid "The text of the vote button"
+msgid "Write the text of the vote button."
+msgstr "Texten på knappen för röstning"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2145
+#, fuzzy
+#| msgid "Enable Vote button"
+msgid "Enable View more button"
+msgstr "Knappen Aktivera omröstning"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2147
+msgid ""
+"Show only part of the answers and show the rest of the answers only when the "
+"user clicks on this button. It works only with the choosing type of polls."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2160
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2482
+msgid "Count"
+msgstr "Antal"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2161
+msgid "Indicate the number of answers which will be shown in the first place."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2188
+msgid "Limitation of Users"
+msgstr "Begränsning av Användare"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2194
+msgid "Maximum number of attempts per user"
+msgstr "Maximalt antal försök per användare"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2196
+msgid "This option allows to block the users who have already voted."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2211
+#, fuzzy
+#| msgid "Detects users"
+msgid "Detects users"
+msgstr "Upptäcker användare"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2212
+#, fuzzy
+#| msgid "Choose the method of detection of the user. "
+msgid "Choose the method of detection of the user:"
+msgstr "Välj metod för identifiering av användaren. "
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2213
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2225
+msgid "By IP"
+msgstr "Genom IP"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2213
+msgid ""
+"- Detect the users by their IP addresses and limit them. It will work both "
+"for guests and registered users. Note: in general, IP is not a static "
+"variable, it is constantly changing when the user changes his location/ "
+"WIFI/ Internet provider."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2214
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2231
+msgid "By User ID"
+msgstr "Användar-ID"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2214
+msgid ""
+"- Detect the users by their WP User IDs and limit them. It will work only "
+"for registered users. Recommended using this method to get more reliable "
+"results."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2241
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2345
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2432
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2584
+msgid "Message"
+msgstr "Meddelande"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2243
+msgid ""
+"Write the message for those who have already passed the poll under the given "
+"conditions."
+msgstr ""
+"Skriv meddelandet för dem som redan har klarat omröstningen under givna "
+"villkor."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2267
+msgid "Redirect URL"
+msgstr "Redirect URL"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2269
+#, fuzzy
+#| msgid ""
+#| "Write the message for those who have already passed the poll under the "
+#| "given conditions."
+msgid ""
+"Enable redirection to the custom URL for those who have already passed the "
+"poll under the given conditions."
+msgstr ""
+"Skriv meddelandet för dem som redan har klarat omröstningen under givna "
+"villkor."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2285
+msgid "Redirect delay (sec)"
+msgstr "Omdirigera fördröjning i (sek)"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2287
+#, fuzzy
+#| msgid "If you set it to 0, redirection will be disabled"
+msgid ""
+"Choose the redirection delay in seconds. If you set it to 0, the redirection "
+"will be disabled."
+msgstr "Om du ställer in den på 0, kommer omdirigering att inaktiveras"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2311
+msgid "Attempts count"
+msgstr "Antalet försök"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2312
+msgid "Specify the count of the attempts per user for passing the poll."
+msgstr "Ange antalet försök per användare för att genomföra omröstningen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2332
+#, fuzzy
+#| msgid ""
+#| "After enabling this option, you can manage the counts of the attempts per "
+#| "user for passing the poll."
+msgid ""
+"After enabling this option, only logged-in users will be able to pass the "
+"poll."
+msgstr ""
+"När du har aktiverat det här alternativet kan du hantera antalet försök per "
+"användare för att genomföra omröstningen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2347
+#, fuzzy
+#| msgid "Message for unauthorized users."
+msgid "Write the message for unauthorized users."
+msgstr "Meddelande till obehöriga användare."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2370
+msgid "Show Login form"
+msgstr "Visa inloggningsformulär"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2371
+msgid "Enable to show the login form."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2386
+msgid "Only for selected user role"
+msgstr "Endast för vald användarroll"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2388
+#, fuzzy
+#| msgid ""
+#| "After enabling this option, you can manage the counts of the attempts per "
+#| "user for passing the poll."
+msgid ""
+"After enabling this option, only the user roles mentioned in the list will "
+"be able to pass the poll."
+msgstr ""
+"När du har aktiverat det här alternativet kan du hantera antalet försök per "
+"användare för att genomföra omröstningen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2402
+msgid "User role"
+msgstr "Användarroller"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2434
+#, fuzzy
+#| msgid ""
+#| "Write the message for those who have already passed the poll under the "
+#| "given conditions."
+msgid "Write the message for those who aren’t included in the list."
+msgstr ""
+"Skriv meddelandet för dem som redan har klarat omröstningen under givna "
+"villkor."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2468
+msgid "Limitation count of takers"
+msgstr "Begränsningsräkning av \"takers\""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2469
+msgid "You can choose how many users can pass the poll."
+msgstr "Du kan välja hur många användare som får genomföra omröstningen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2483
+msgid "The number of users who can pass the poll."
+msgstr "Antalet användare som kan genomföra omröstningen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2509
+msgid "Password for passing Poll"
+msgstr "Lösenord för att delta i omröstningen"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2510
+msgid "Choose a password for users to pass the poll."
+msgstr "Välj ett lösenord för användare för att delta i omröstningen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2523
+msgid "Password"
+msgstr "Lösenord"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2524
+#, fuzzy
+#| msgid "Write your password"
+msgid "Write your password."
+msgstr "Skriv ditt lösenord"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2550
+msgid "Allow to vote once per session"
+msgstr "Tillåt att rösta endast en gång per session"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2551
+msgid ""
+"If you enable this feature, you can select the frequency the users can have "
+"access to the poll after the first attempt. For example, if you give a 1-day "
+"value to the session period, the user will have access to the poll once in 1-"
+"day."
+msgstr ""
+"Om du aktiverar den här funktionen kan du välja den frekvens användarna kan "
+"ha tillgång till omröstningen efter det första försöket. Om du till exempel "
+"ger ett 1-dagarsvärde till sessionsperioden får användaren tillgång till "
+"omröstningen en gång på 1-dag."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2564
+msgid "Session Period"
+msgstr "Session Period"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2565
+msgid "Specify the time for one session."
+msgstr "Ange tid för en session."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2586
+msgid ""
+"Write the message, which will be shown during the restricted time, when the "
+"user has already passed his/her limit for the session."
+msgstr ""
+"Skriv meddelandet, som kommer att visas under den begränsade tiden, när "
+"användaren redan har passerat sin gräns för sessionen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2611
+msgid "User Data Settings"
+msgstr "Inställningar för användardata"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2617
+msgid "Information form title"
+msgstr "Informationsformulärets rubrik"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2619
+msgid ""
+"Write the title of the Information Form which will be shown at the top of "
+"the Form Fields."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2642
+msgid "Enable Information Form"
+msgstr "Aktivera informationsformulär"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2645
+msgid ""
+"After enabling this option, the user will have to fill out the information "
+"form (data form for the user’s personal information) after submitting the "
+"poll."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2656
+#, fuzzy
+#| msgid "Formfields"
+msgid "Form Fields"
+msgstr "Formfält"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2657
+msgid "Select which fields the user should fill out."
+msgstr "Välj vilka fält användaren ska fylla i."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2678
+#, fuzzy
+#| msgid "Select required fields"
+msgid "Required Fields"
+msgstr "Välj obligatoriska fält"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2680
+msgid "Select which fields are required."
+msgstr "Välj vilka fält som är obligatoriska."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2720
+msgid "Add custom fields"
+msgstr "Lägga till anpassade fält"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2721
+msgid ""
+"You can create custom fields with the following types: text, textarea, "
+"number, telephone, date, e-mail, URL, color, checkbox."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2728
+msgid "For creating custom fields click "
+msgstr "För att skapa anpassade fält klicka "
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2729
+msgid "here"
+msgstr "här"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2739
+msgid "Email settings"
+msgstr "E-postinställningar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2747
+#, fuzzy
+#| msgid ""
+#| "If this option is on you will receive e-mail notification about votes."
+msgid ""
+"If the option is enabled, the admin(or your provided email) will receive an "
+"email notification about votes at each time."
+msgstr ""
+"Om detta alternativ är aktiverat får du e-post meddelande om röstningar."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2759
+msgid "Email address"
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2761
+#, fuzzy
+#| msgid ""
+#| "If you want set another e-mail, enter it here. Or leave blank for apply "
+#| "admin e-mail."
+msgid ""
+"If you want to set another email, enter it here. Leave it blank for an admin "
+"email."
+msgstr ""
+"Om du vill ha en annan e-post, ange det här. Eller lämna tomt för tillämpa "
+"admin e-post."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2785
+msgid "Send Mail to User"
+msgstr "Skicka e-post till användare"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2787
+msgid ""
+"Send the message to the emails of the users after the submission of the poll."
+msgstr ""
+"Skicka meddelandet till e-postmeddelandena för användarna efter "
+"genomförandet av omröstningen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2804
+#, fuzzy
+#| msgid "Integrations Settings"
+msgid "Integrations settings"
+msgstr "Inställningar för integreringar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2810
+msgid "MailChimp Settings"
+msgstr "MailChimp-inställningar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2821
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2884
+msgid "For enabling this option, please go to "
+msgstr "För att aktivera detta alternativ, gå till "
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2821
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2884
+msgid "page and fill all options."
+msgstr "sidan och alla ifyllnads alternativ."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2822
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2885
+msgid "this"
+msgstr "denna"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2833
+msgid "Enable MailChimp"
+msgstr "Aktivera MailChimp"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2853
+msgid "MailChimp list"
+msgstr "MailChimp-lista"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2898
+msgid "Campaign Monitor Settings"
+msgstr "Inställningar för kampanjövervakare"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2913
+msgid "Enable Campaign Monitor"
+msgstr "Aktivera kampanjövervakaren"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2924
+msgid "Campaign Monitor list"
+msgstr "Listan Kampanjövervakare"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2929
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3012
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3027
+msgid "Select List"
+msgstr "Välj lista"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2940
+msgid "Zapier Integration Settings"
+msgstr "Zapier Integrationsinställningar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2955
+msgid "Enable Zapier Integration"
+msgstr "Aktivera Zapier-integrering"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2965
+msgid "Send test data"
+msgstr "Skicka testdata"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2968
+msgid ""
+"We will send you a test data, and you can catch it in your ZAP for configure "
+"it."
+msgstr ""
+"Vi kommer att skicka en testdata, och du kan fånga den i din ZAP för "
+"konfigurera den."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2980
+#, fuzzy
+#| msgid "ActiveCampaign Settings"
+msgid "Active Campaign Settings"
+msgstr "ActiveCampaign-inställningar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:2995
+msgid "Enable ActiveCampaign"
+msgstr "Aktivera ActiveCampaign"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3006
+msgid "ActiveCampaign list"
+msgstr "ActiveCampaign-lista"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3013
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3028
+msgid "Just create contact"
+msgstr "Skapa bara kontakt"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3021
+msgid "ActiveCampaign automation"
+msgstr "ActiveCampaign-automatisering"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3039
+msgid "Slack Settings"
+msgstr "Slack Inställningar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3054
+msgid "Enable Slack integration"
+msgstr "Aktivera Slack-integrering"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3065
+msgid "Slack conversation"
+msgstr "Slack konversation"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3071
+msgid "Select Channel"
+msgstr "Välj kanal"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3088
+msgid "Show answer percent"
+msgstr "Visa svarsprocent"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3091
+#, fuzzy
+#| msgid ""
+#| "Select the way of arrangement of the results on the finishing page of the "
+#| "poll."
+msgid ""
+"Enable to show the percentage of each question on the progressbar on the "
+"result page of the poll."
+msgstr "Välj sätt att arrangera resultaten på sista sidan av omröstningen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3105
+msgid "Hide results"
+msgstr "Dölj resultat"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3109
+#, fuzzy
+#| msgid ""
+#| "Select the way of arrangement of the results on the finishing page of the "
+#| "poll."
+msgid ""
+"Disable to show voting results to the users on the result page of the poll."
+msgstr "Välj sätt att arrangera resultaten på sista sidan av omröstningen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3123
+msgid "Message instead of results"
+msgstr "Meddelande i stället för resultat"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3127
+#, fuzzy
+#| msgid ""
+#| "Message that will appear instead of the voting results after the poll"
+msgid "Message that will appear instead of the votting results after the poll"
+msgstr ""
+"Meddelande som kommer att visas i stället för omröstningsresultaten efter "
+"omröstningen"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3149
+msgid "Result Message"
+msgstr "Resultatmeddelande"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3150
+#, fuzzy
+#| msgid ""
+#| "Write the message, which will be shown during the restricted time, when "
+#| "the user has already passed his/her limit for the session."
+msgid "Write the message, which will be shown on the result page of the poll."
+msgstr ""
+"Skriv meddelandet, som kommer att visas under den begränsade tiden, när "
+"användaren redan har passerat sin gräns för sessionen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3176
+msgid "Results sorting"
+msgstr "Resultat sortering"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3178
+#, fuzzy
+#| msgid ""
+#| "Select the way of arrangement of the results on the finishing page of the "
+#| "poll."
+msgid ""
+"Select the way of arrangement of the results on the result page of the poll."
+msgstr "Välj sätt att arrangera resultaten på sista sidan av omröstningen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3180
+msgid "Ascending – the smallest to largest"
+msgstr "Stigande – den minsta till det största"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3181
+msgid "Descending – the largest to smallest"
+msgstr "Fallande – den största till den minsta"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3194
+msgid "Ascending"
+msgstr "Stigande"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3197
+msgid "Descending"
+msgstr "Fallande"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3206
+msgid "Show votes count"
+msgstr "Visa antal röster"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3209
+msgid ""
+"Enable to show the total number of votes of each answer on the result page "
+"of the poll."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3226
+msgid "Loading effect"
+msgstr "Inläsningseffekt"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3229
+#, fuzzy
+#| msgid "Loading effect before displaying poll results."
+msgid "Choose the loading effect of the displaying poll results."
+msgstr "Inläsningseffekt innan omröstningsresultat visas."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3237
+msgid "Loading GIF"
+msgstr "Läsa in GIF"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3240
+msgid "Opacity"
+msgstr "Opacitet"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3243
+msgid "Blur"
+msgstr "Suddighet"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3247
+msgid "Custom GIF"
+msgstr "Anpassad GIF"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3429
+msgid "It is PRO feature"
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3484
+msgid "Enable restart button"
+msgstr "Aktivera omstartsknapp"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3486
+msgid ""
+"Show the restart button on the result page of the poll for restarting the "
+"poll and taking it again."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3501
+msgid "Social share buttons"
+msgstr "Sociala delningsknappar"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3505
+msgid ""
+"Enable to show social media share buttons on the result page of the poll. "
+"(Facebook, Twitter, Linkedin)"
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3518
+msgid "Results bar in RGBA"
+msgstr "Resultat stapel i RGBA"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3521
+#, fuzzy
+#| msgid ""
+#| "The opacity of the result bar color will depend on the number of votes. "
+#| "Not work for 'Coffee Fluid' theme choosing list view poll."
+msgid ""
+"If the option is enabled, the opacity of the result bar color will depend on "
+"the number of votes."
+msgstr ""
+"Resultatlistfärgens opacitet beror på antalet röster. Fungerar inte för "
+"\"Coffee Fluid\" tema när man väljer lista för att visa omröstning."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3544
+#: ../admin/partials/settings/poll-maker-settings.php:575
+msgid "Show results by"
+msgstr "Visa resultat efter"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3546
+#, fuzzy
+#| msgid ""
+#| "Select the way of arrangement of the results on the finishing page of the "
+#| "poll."
+msgid ""
+"Select the way of displaying the results on the result page of the poll."
+msgstr "Välj sätt att arrangera resultaten på sista sidan av omröstningen."
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3557
+#, fuzzy
+#| msgid "Poll chart"
+msgid "Bar chart"
+msgstr "Diagram över omröstning"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3563
+#: ../admin/partials/settings/poll-maker-settings.php:591
+msgid "Pie Chart"
+msgstr "Cirkeldiagram"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3572
+msgid "Show Answer message"
+msgstr "Visa Svars-meddelande"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3575
+msgid "Show different messages based on the answer."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3592
+msgid ""
+"RRefresh the below answers table after adding or removing answer(s) in the "
+"General tab."
+msgstr ""
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3603
+msgid "Text"
+msgstr "Text"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3604
+msgid "Image"
+msgstr "Bild"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3610
+msgid "Answer 1"
+msgstr "Svar 1"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3619
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3641
+msgid "Add"
+msgstr "Lägg till"
+
+#: ../admin/partials/poll-maker-ays-polls-actions.php:3632
+msgid "Answer 2"
+msgstr "Svar 2"
+
+#: ../admin/partials/results/poll-maker-ays-results-display.php:8
+#: ../admin/partials/results/poll-maker-ays-results-display.php:55
+msgid "This property available only in PRO version"
+msgstr ""
+
+#: ../admin/partials/results/poll-maker-ays-results-display.php:8
+msgid "Export"
+msgstr "Exportera"
+
+#: ../admin/partials/results/poll-maker-ays-results-display.php:11
+msgid "Statistics"
+msgstr "Statistik"
+
+#: ../admin/partials/results/poll-maker-ays-results-display.php:22
+#, fuzzy
+#| msgid "Export Filter"
+msgid "No Filtering"
+msgstr "Exportera filter"
+
+#: ../admin/partials/results/poll-maker-ays-results-display.php:29
+#, fuzzy
+#| msgid "Export Filter"
+msgid "Filter"
+msgstr "Exportera filter"
+
+#: ../admin/partials/settings/poll-maker-settings-actions.php:199
+msgid "Changes saved."
+msgstr "Ändringar sparade."
+
+#: ../admin/partials/settings/poll-maker-settings-actions.php:201
+msgid "Poll attribute ."
+msgstr "Omröstning-attribut ."
+
+#: ../admin/partials/settings/poll-maker-settings-actions.php:203
+msgid "Poll attribute deleted."
+msgstr "Omröstning - attribut borttaget."
+
+#: ../admin/partials/settings/poll-maker-settings.php:59
+#: ../admin/partials/settings/poll-maker-settings.php:524
+msgid "Shortcodes"
+msgstr "Shortcodes"
+
+#: ../admin/partials/settings/poll-maker-settings.php:71
+msgid "Default parameters for Poll"
+msgstr "Standardparametrar för Omröstning"
+
+#: ../admin/partials/settings/poll-maker-settings.php:76
+msgid "Disable IP Storing"
+msgstr "Inaktivera IP-lagring"
+
+#: ../admin/partials/settings/poll-maker-settings.php:79
+#, fuzzy
+#| msgid ""
+#| "After enabling this option, IP address of the users will not be stored in "
+#| "database.  Note: If this option is enabled, then the Limit users to rate "
+#| "only once option will not work."
+msgid ""
+"After enabling this option, the IP address of the users will not be stored "
+"in the database.  Note: If this option is enabled, then the Limitation "
+"options connected with IP will not work."
+msgstr ""
+"Efter att ha aktiverat det här alternativet kommer INTE IP-adressen för "
+"användarna att lagras i databasen. OBS: Om den här valen är aktiverat, då "
+"fungerar inte alternativet: Användare får endast rösta en gång."
+
+#: ../admin/partials/settings/poll-maker-settings.php:95
+#, fuzzy
+#| msgid "Answer Datetime"
+msgid "Answer Default Count"
+msgstr "Datum för svar"
+
+#: ../admin/partials/settings/poll-maker-settings.php:98
+msgid ""
+"Define the default count for the answers which will be displayed in the Add "
+"new poll page. (This will work only with choosing type.)"
+msgstr ""
+
+#: ../admin/partials/settings/poll-maker-settings.php:118
+msgid "Poll answers sound"
+msgstr "Omröstning - ljud vid svar"
+
+#: ../admin/partials/settings/poll-maker-settings.php:123
+msgid "Sound for answers"
+msgstr "Ljud för svar"
+
+#: ../admin/partials/settings/poll-maker-settings.php:124
+msgid ""
+"The selected sound will be played in the poll if the Enable answers sound "
+"option is enabled from the particular poll settings."
+msgstr ""
+
+#: ../admin/partials/settings/poll-maker-settings.php:131
+msgid "Select sound"
+msgstr "Välj ljud"
+
+#: ../admin/partials/settings/poll-maker-settings.php:142
+msgid "Excerpt words count in list tables"
+msgstr ""
+
+#: ../admin/partials/settings/poll-maker-settings.php:147
+#, fuzzy
+#| msgid "Poll Title"
+msgid "Polls list table"
+msgstr "Titel Fråga"
+
+#: ../admin/partials/settings/poll-maker-settings.php:148
+msgid ""
+"Determine the length of the polls to be shown in the Polls List Table by "
+"putting your preferred count of words in the following field. For example: "
+"if you put 10,  you will see the first 10 words of each poll in the Polls "
+"page of your dashboard."
+msgstr ""
+
+#: ../admin/partials/settings/poll-maker-settings.php:162
+msgid "Erase Poll data"
+msgstr ""
+
+#: ../admin/partials/settings/poll-maker-settings.php:166
+#, fuzzy
+#| msgid "Results per poll"
+msgid "Results up to a "
+msgstr "Resultat per fråga"
+
+#: ../admin/partials/settings/poll-maker-settings.php:173
+msgid "Delete results older then 'X' the month"
+msgstr ""
+
+#: ../admin/partials/settings/poll-maker-settings.php:174
+msgid ""
+"Specify count of months and save changes. Attention! it will remove "
+"submissions older than specified months permanently."
+msgstr ""
+
+#: ../admin/partials/settings/poll-maker-settings.php:192
+#, fuzzy
+#| msgid "You not have permissions for voting."
+msgid "Who will have permission to Poll menu"
+msgstr "Du har inte behörighet för att röstning."
+
+#: ../admin/partials/settings/poll-maker-settings.php:206
+msgid "Select user role"
+msgstr "Välj användarroll"
+
+#: ../admin/partials/settings/poll-maker-settings.php:207
+msgid ""
+"Control and manage who can have access to the plugin from the dashboard."
+msgstr ""
+
+#: ../admin/partials/settings/poll-maker-settings.php:218
+#, fuzzy
+#| msgid "Ability to manage Poll Maker plugin for selected user roles."
+msgid "Ability to manage Poll Maker plugin only for selected user roles."
+msgstr "Möjlighet att hantera Poll Maker plugin för utvalda användarroller."
+
+#: ../admin/partials/settings/poll-maker-settings.php:231
+msgid "MailChimp"
+msgstr "MailChimp (för eget nyhetsbrev)"
+
+#: ../admin/partials/settings/poll-maker-settings.php:238
+msgid "MailChimp Username"
+msgstr "Användarnamn för MailChimp"
+
+#: ../admin/partials/settings/poll-maker-settings.php:254
+msgid "MailChimp API Key"
+msgstr "MailChimp API-nyckel"
+
+#: ../admin/partials/settings/poll-maker-settings.php:267
+msgid "You can get your API key from your "
+msgstr "Du kan få din API-nyckel från din "
+
+#: ../admin/partials/settings/poll-maker-settings.php:267
+msgid "Account Extras menu"
+msgstr ""
+
+#: ../admin/partials/settings/poll-maker-settings.php:276
+msgid "Campaign Monitor"
+msgstr "Campaign Monitor"
+
+#: ../admin/partials/settings/poll-maker-settings.php:293
+msgid "Client ID"
+msgstr "Klient ID"
+
+#: ../admin/partials/settings/poll-maker-settings.php:309
+msgid "API Key"
+msgstr "API-nyckel"
+
+#: ../admin/partials/settings/poll-maker-settings.php:322
+msgid "You can get your API key and Client ID from your Account Settings page"
+msgstr ""
+"Du kan hämta DIN API-nyckel och Klient-ID från sidan Kontoinställningar"
+
+#: ../admin/partials/settings/poll-maker-settings.php:333
+msgid "Zapier"
+msgstr "Zapier"
+
+#: ../admin/partials/settings/poll-maker-settings.php:350
+msgid "Zapier Webhook URL"
+msgstr "Zapier Webhook URL"
+
+#: ../admin/partials/settings/poll-maker-settings.php:363
+#, php-format
+msgid ""
+"If you do not have any ZAP created, go <a href='%s' target='_blank'>%s</a>. "
+"Remember to choose Webhooks by Zapier as Trigger App."
+msgstr ""
+"Om du inte har någon ZAP skapat, gå <a href='%s' target='_blank'>%s</a>. Kom "
+"ihåg att välja Webhooks av Zapier som Trigger App."
+
+#: ../admin/partials/settings/poll-maker-settings.php:366
+msgid ""
+"We will send you all data from poll information form with \"AysPoll\" key by "
+"POST method"
+msgstr ""
+"Vi skickar alla data från omröstningens informationsformulär med \"AysPoll\" "
+"nyckel genom POST metod"
+
+#: ../admin/partials/settings/poll-maker-settings.php:377
+msgid "ActiveCampaign"
+msgstr "ActiveCampaign"
+
+#: ../admin/partials/settings/poll-maker-settings.php:394
+msgid "API Access URL"
+msgstr "URL för API-åtkomst"
+
+#: ../admin/partials/settings/poll-maker-settings.php:410
+msgid "API Access Key"
+msgstr "Åtkomstnyckel för API"
+
+#: ../admin/partials/settings/poll-maker-settings.php:423
+msgid ""
+"Your API URL and Key can be found in your account on the My Settings page "
+"under the \"Developer\" tab"
+msgstr ""
+"Din API-URL och nyckel finns i ditt konto på sidan Mina inställningar under "
+"fliken \"Utvecklare\""
+
+#: ../admin/partials/settings/poll-maker-settings.php:434
+msgid "Slack"
+msgstr "Slack"
+
+#: ../admin/partials/settings/poll-maker-settings.php:452
+msgid "Slack Integration Setup Instructions"
+msgstr "Anvisningar för slack-integreringsinställningar"
+
+#: ../admin/partials/settings/poll-maker-settings.php:452
+msgid "Instructions"
+msgstr "Instruktioner"
+
+#: ../admin/partials/settings/poll-maker-settings.php:459
+msgid "App Client ID"
+msgstr "Klient-ID för appar"
+
+#: ../admin/partials/settings/poll-maker-settings.php:475
+msgid "Slack Authorization"
+msgstr "Slack auktorisering"
+
+#: ../admin/partials/settings/poll-maker-settings.php:481
+msgid "Authorized"
+msgstr "Auktoriserad"
+
+#: ../admin/partials/settings/poll-maker-settings.php:488
+msgid "App Client Secret"
+msgstr "App klient-lösen"
+
+#: ../admin/partials/settings/poll-maker-settings.php:503
+msgid "App Access Token"
+msgstr "Appåtkomst token"
+
+#: ../admin/partials/settings/poll-maker-settings.php:508
+msgid "Need Authorization"
+msgstr "Behöver Auktorisering"
+
+#: ../admin/partials/settings/poll-maker-settings.php:514
+msgid ""
+"You can get your App Client ID and Client Secret from your App's the Basic "
+"Information page"
+msgstr ""
+"Du kan få ditt App Client ID och Client Secret från din App- sidan "
+"Grundläggande information"
+
+#: ../admin/partials/settings/poll-maker-settings.php:529
+msgid "Shortcode for all polls"
+msgstr "Shortcode för alla omröstningar"
+
+#: ../admin/partials/settings/poll-maker-settings.php:534
+#, fuzzy
+#| msgid "Shortcode for all polls"
+msgid "Shortcode for all polls "
+msgstr "Shortcode för alla omröstningar"
+
+#: ../admin/partials/settings/poll-maker-settings.php:543
+msgid ""
+"Paste the shortcode into any of your posts to show all polls together. Note: "
+"Expired and unpublished polls will not be included in the list."
+msgstr ""
+
+#: ../admin/partials/settings/poll-maker-settings.php:550
+msgid "Shortcode result by ID"
+msgstr "Shortkode resultat efter ID"
+
+#: ../admin/partials/settings/poll-maker-settings.php:555
+#, fuzzy
+#| msgid "Shortcode result by ID"
+msgid "Shortcode result by ID "
+msgstr "Shortkode resultat efter ID"
+
+#: ../admin/partials/settings/poll-maker-settings.php:576
+#, fuzzy
+#| msgid ""
+#| "Select the way of displaying the results on the finishing page: Standard "
+#| "or Pie chart."
+msgid "Select the way of displaying the results: Bar chart or Pie chart."
+msgstr ""
+"Välj sättet att visa resultaten på avslutningssidan: Standard- eller "
+"cirkeldiagram."
+
+#: ../admin/partials/settings/poll-maker-settings.php:585
+#, fuzzy
+#| msgid "Pie Chart"
+msgid "Bar Chart"
+msgstr "Cirkeldiagram"
+
+#: ../admin/partials/settings/poll-maker-settings.php:600
+msgid ""
+"Paste the shortcode into any of your posts to show only the result page of "
+"the particular poll."
+msgstr ""
+
+#: ../admin/partials/settings/poll-maker-settings.php:607
+msgid "Poll Categories"
+msgstr "Omröstnings kategorier"
+
+#: ../admin/partials/settings/poll-maker-settings.php:619
+msgid ""
+"Paste the shortcode into any of your posts to show all/random polls from the "
+"given category by list/grid view."
+msgstr ""
+
+#: ../admin/partials/settings/poll-maker-settings.php:625
+msgid "Poll category shortcode"
+msgstr "Omröstning - kategori shortcode"
+
+#: ../admin/partials/settings/poll-maker-settings.php:626
+msgid ""
+"Copy the following shortcode, configure it based on your preferences and "
+"paste it into the post. Put the shortcode of your preferred category,  "
+"choose the method of displaying (all/random), and the design of the "
+"layout(list/grid). If you set the method as All, it will show all polls from "
+"the given category, if you set the method as Random, please give a value to "
+"count option too, and it will randomly display that given amount of polls "
+"from the given category."
+msgstr ""
+"Kopiera följande shortcode, konfigurera den baserat på dina önskemål och "
+"klistra in den i inlägget. Sätt shortcode för din föredragna kategori, välj "
+"metod för visning (alla / slumpmässiga), och utformningen av "
+"layouten(lista / rutnät). Om du ställer in metoden som Alla, kommer det att "
+"visa alla omröstningar från den givna kategorin, om du ställer in metoden "
+"som Random, vänligen ge ett värde att räkna alternativet för, och det kommer "
+"slumpmässigt visa att givet belopp av omröstningar från den givna kategorin."
+
+#: ../admin/partials/settings/poll-maker-settings.php:641
+msgid "Global Leaderboard Settings"
+msgstr "Inställningar för global topplista"
+
+#: ../admin/partials/settings/poll-maker-settings.php:653
+#, fuzzy
+#| msgid ""
+#| "You can copy the shortcode and paste it to any post/page to see the list "
+#| "of the top user’s who passed any poll."
+msgid ""
+"Paste the shortcode into any of your posts to show the list of the top users "
+"who have passed your polls."
+msgstr ""
+"Du kan kopiera shortcode och klistra in den till alla inlägg / sida för att "
+"se listan över den översta användarens som klarat någon omröstning."
+
+#: ../admin/partials/settings/poll-maker-settings.php:659
+msgid "Global Leaderboard shortcode"
+msgstr "Global Leaderboard shortcode"
+
+#: ../admin/partials/settings/poll-maker-settings.php:660
+msgid ""
+"You can copy the shortcode and paste it to any post/page to see the list of "
+"the top user’s who passed any poll."
+msgstr ""
+"Du kan kopiera shortcode och klistra in den till alla inlägg / sida för att "
+"se listan över den översta användarens som klarat någon omröstning."
+
+#: ../admin/partials/settings/poll-maker-settings.php:672
+msgid "Users count"
+msgstr "Antal användare"
+
+#: ../admin/partials/settings/poll-maker-settings.php:673
+msgid "How many users’ results will be shown in the leaderboard."
+msgstr "Hur många användarresultat kommer att visas i leaderboarden."
+
+#: ../admin/partials/settings/poll-maker-settings.php:688
+msgid "Width"
+msgstr "Bredd"
+
+#: ../admin/partials/settings/poll-maker-settings.php:689
+#, fuzzy, php-format
+msgid ""
+"The width of the Leaderboard box. It accepts only numeric values. For "
+"100% leave it blank."
+msgstr ""
+"The width of the Leaderboard box. It accepts only numeric values. For "
+"100% leave it blank."
+
+#: ../admin/partials/settings/poll-maker-settings.php:699
+#, fuzzy, php-format
+msgid "For 100% leave blank"
+msgstr "For 100% leave blank"
+
+#: ../admin/partials/settings/poll-maker-settings.php:705
+msgid "Users group by"
+msgstr "Användare grupperas efter"
+
+#: ../admin/partials/settings/poll-maker-settings.php:706
+#, fuzzy
+msgid ""
+"Select the way for grouping the results. If you want to make Leaderboard for "
+"logged in users, then choose ID. It will collect results by WP user ID. If "
+"you want to make Leaderboard for guests, then you need to choose Email and "
+"enable Information Form and Email, Name options from poll settings. It will "
+"group results by emails and display guests Names."
+msgstr ""
+"Välj sätt för gruppering av resultaten. Om du vill göra Leaderboard för "
+"inloggade användare, välj sedan ID. Det kommer att samla in resultat av WP "
+"användar-ID. Om du vill göra Leaderboard för gäster, då måste du välja E-"
+"post och aktivera Information Form och E-post, Namn alternativ från "
+"omröstning inställningar. Det kommer att gruppera resultat genom e-post och "
+"visa gäster Namn."
+
+#: ../admin/partials/settings/poll-maker-settings.php:714
+#: ../includes/lists/class-poll-maker-categories-list-table.php:249
+#: ../includes/lists/class-poll-maker-polls-list-table.php:840
+msgid "ID"
+msgstr "ID"
+
+#: ../admin/partials/settings/poll-maker-settings.php:725
+msgid "Color"
+msgstr "Färg"
+
+#: ../admin/partials/settings/poll-maker-settings.php:726
+msgid "Top color of the leaderboard"
+msgstr "Toppfärg på topplistan"
+
+#: ../admin/partials/settings/poll-maker-settings.php:739
+msgid "Field for entering your own CSS code"
+msgstr "Fält för att ange din egen CSS-kod"
+
+#: ../admin/partials/settings/poll-maker-settings.php:758
+msgid "Save changes"
+msgstr "Spara ändringar"
+
+#: ../includes/lists/class-poll-maker-categories-list-table.php:11
+msgid "Category"
+msgstr "Kategori"
+
+#: ../includes/lists/class-poll-maker-categories-list-table.php:176
+msgid "There are no poll categories yet."
+msgstr "Det finns inga frågekategorier ännu."
+
+#: ../includes/lists/class-poll-maker-categories-list-table.php:231
+#: ../includes/lists/class-poll-maker-polls-list-table.php:732
+msgid "Edit"
+msgstr "Redigera"
+
+#: ../includes/lists/class-poll-maker-categories-list-table.php:232
+#: ../includes/lists/class-poll-maker-categories-list-table.php:276
+#: ../includes/lists/class-poll-maker-polls-list-table.php:735
+#: ../includes/lists/class-poll-maker-polls-list-table.php:868
+msgid "Delete"
+msgstr "Ta bort"
+
+#: ../includes/lists/class-poll-maker-categories-list-table.php:248
+#: ../includes/lists/class-poll-maker-polls-list-table.php:834
+msgid "Shortcode"
+msgstr "Shortcode"
+
+#: ../includes/lists/class-poll-maker-categories-list-table.php:353
+msgid "Poll category created."
+msgstr "Omröstning - kategori skapad."
+
+#: ../includes/lists/class-poll-maker-categories-list-table.php:355
+msgid "Poll category saved."
+msgstr "Omröstning - kategori sparad."
+
+#: ../includes/lists/class-poll-maker-categories-list-table.php:357
+msgid "Poll category deleted."
+msgstr "Omröstning - kategori borttagen."
+
+#: ../includes/lists/class-poll-maker-polls-list-table.php:670
+msgid "There are no polls yet."
+msgstr "Det finns inga omröstningar ännu."
+
+#: ../includes/lists/class-poll-maker-polls-list-table.php:733
+msgid "Duplicate"
+msgstr "Duplicera"
+
+#: ../includes/lists/class-poll-maker-polls-list-table.php:734
+#, fuzzy
+#| msgid "See Results"
+msgid "View Results"
+msgstr "Se resultat"
+
+#: ../includes/lists/class-poll-maker-polls-list-table.php:835
+msgid "Code Include"
+msgstr "Inkludera shortcode"
+
+#: ../includes/lists/class-poll-maker-polls-list-table.php:837
+msgid "Created"
+msgstr "Skapad"
+
+#: ../includes/lists/class-poll-maker-polls-list-table.php:838
+msgid "Completed count"
+msgstr "Antal avslutade"
+
+#: ../includes/lists/class-poll-maker-polls-list-table.php:1046
+msgid "Poll created."
+msgstr "Omröstning skapad."
+
+#: ../includes/lists/class-poll-maker-polls-list-table.php:1048
+msgid "Poll saved."
+msgstr "Omröstning sparad."
+
+#: ../includes/lists/class-poll-maker-polls-list-table.php:1050
+#, fuzzy
+#| msgid "Poll created."
+msgid "Poll duplicated."
+msgstr "Omröstning skapad."
+
+#: ../includes/lists/class-poll-maker-polls-list-table.php:1052
+#, fuzzy
+#| msgid "Poll(s) deleted."
+msgid "Poll deleted."
+msgstr "Omröstning (ar) borttagen."
+
+#: ../includes/lists/class-poll-maker-results-list-table.php:11
+msgid "Result"
+msgstr "Resultat"
+
+#: ../includes/lists/class-poll-maker-results-list-table.php:232
+msgid "There are no results yet."
+msgstr "Det finns inga resultat ännu."
+
+#: ../includes/lists/class-poll-maker-results-list-table.php:255
+msgid "Guest"
+msgstr "Gäst"
+
+#: ../includes/lists/class-poll-maker-results-list-table.php:392
+#, fuzzy
+#| msgid "Poll"
+msgid "Poll ID"
+msgstr "Enkät"
+
+#: ../includes/lists/class-poll-maker-results-list-table.php:394
+msgid "User IP"
+msgstr "Användar-IP"
+
+#: ../includes/lists/class-poll-maker-results-list-table.php:395
+msgid "WP User"
+msgstr "WP-användare"
+
+#: ../includes/lists/class-poll-maker-results-list-table.php:396
+msgid "User Name"
+msgstr "Användarnamn"
+
+#: ../includes/lists/class-poll-maker-results-list-table.php:397
+msgid "User Email"
+msgstr "Användarens e-post"
+
+#: ../includes/lists/class-poll-maker-results-list-table.php:398
+#, fuzzy
+#| msgid "User role"
+msgid "User Phone"
+msgstr "Användarroller"
+
+#: ../includes/lists/class-poll-maker-results-list-table.php:399
+msgid "Answer"
+msgstr "Svar"
+
+#: ../includes/lists/class-poll-maker-results-list-table.php:400
+msgid "Vote Datetime"
+msgstr "Datum för omröstning"
+
+#: ../includes/lists/class-poll-maker-results-list-table.php:401
+msgid "Read Status"
+msgstr "Läs status"
+
+#: ../includes/lists/class-poll-maker-results-list-table.php:515
+#, fuzzy
+#| msgid "Result(s) deleted."
+msgid "Result deleted."
+msgstr "Resultat borttaget."
+
+#: ../pb_templates/poll_maker_elementor.php:17 ../poll/poll-maker-block.js:114
+msgid "Poll Maker"
+msgstr "Poll Maker"
+
+#: ../pb_templates/poll_maker_elementor.php:45
+msgid "Poll Title"
+msgstr "Titel Fråga"
+
+#: ../pb_templates/poll_maker_elementor.php:48
+#: ../pb_templates/poll_maker_elementor.php:49
+msgid "Enter the poll title"
+msgstr "Ange rubrik för omröstning"
+
+#: ../pb_templates/poll_maker_elementor.php:55
+msgid "Title Alignment"
+msgstr "Rubrikjustering"
+
+#: ../pb_templates/poll_maker_elementor.php:68 ../poll/poll-maker-block.js:175
+msgid "Select Poll"
+msgstr "Välj Omröstning"
+
+#: ../poll/poll-maker-block.js:41 ../poll/poll-maker-block.js:140
+msgid "Something went wrong please reload page"
+msgstr "Något gick fel vänligen ladda om sidan"
+
+#: ../poll/poll-maker-block.js:48 ../poll/poll-maker-block.js:145
+msgid "Loading..."
+msgstr "Laddar..."
+
+#: ../poll/poll-maker-block.js:55 ../poll/poll-maker-block.js:152
+msgid "There are no polls yet"
+msgstr "Det finns inga omröstningar ännu"
+
+#: ../poll/poll-maker-block.js:59 ../poll/poll-maker-block.js:162
+msgid "-Select Poll-"
+msgstr "-Välj Omröstning-"
+
+#: ../poll/poll-maker-block.php:74
+msgid "Please select poll"
+msgstr "Vänligen välj omröstning"
+
+#: ../public/class-poll-maker-ays-public.php:154
+msgid "day"
+msgstr ""
+
+#: ../public/class-poll-maker-ays-public.php:155
+msgid "days"
+msgstr ""
+
+#: ../public/class-poll-maker-ays-public.php:156
+msgid "hour"
+msgstr ""
+
+#: ../public/class-poll-maker-ays-public.php:157
+msgid "hours"
+msgstr ""
+
+#: ../public/class-poll-maker-ays-public.php:158
+#, fuzzy
+#| msgid "Minute(s)"
+msgid "minute"
+msgstr "Minut(er)"
+
+#: ../public/class-poll-maker-ays-public.php:159
+#, fuzzy
+#| msgid "Minute(s)"
+msgid "minutes"
+msgstr "Minut(er)"
+
+#: ../public/class-poll-maker-ays-public.php:160
+msgid "second"
+msgstr ""
+
+#: ../public/class-poll-maker-ays-public.php:161
+msgid "seconds"
+msgstr ""
+
+#: ../public/class-poll-maker-ays-public.php:480
+#, fuzzy
+#| msgid "Thanks for your answer!"
+msgid "Thanks for your answer"
+msgstr "Tack för ditt svar!"
+
+#: ../public/class-poll-maker-ays-public.php:499
+#: ../public/class-poll-maker-ays-public.php:506
+msgid "You will be redirected "
+msgstr "Du kommer att omdirigeras "
+
+#: ../public/class-poll-maker-ays-public.php:936
+msgid "This Poll active until "
+msgstr "Denna omröstning är aktiv tills "
+
+#: ../public/class-poll-maker-ays-public.php:946
+msgid "This Poll will start "
+msgstr "Denna omröstning kommer att starta "
+
+#: ../public/class-poll-maker-ays-public.php:956
+msgid "Created on"
+msgstr "Skapad den"
+
+#: ../public/class-poll-maker-ays-public.php:979
+msgid "By"
+msgstr "Av"
+
+#: ../public/class-poll-maker-ays-public.php:981
+msgid "Created by"
+msgstr "Skapat av"
+
+#: ../public/class-poll-maker-ays-public.php:1044
+msgid "You must sign in for voting."
+msgstr "Du måste logga in för att röstning."
+
+#: ../public/class-poll-maker-ays-public.php:1060
+msgid "You not have permissions for voting."
+msgstr "Du har inte behörighet för att röstning."
+
+#: ../public/class-poll-maker-ays-public.php:1216
+#, fuzzy
+#| msgid "View Post"
+msgid "View more"
+msgstr "Visa inlägg"
+
+#: ../public/class-poll-maker-ays-public.php:1230
+msgid "Send"
+msgstr "Skicka"
+
+#: ../public/class-poll-maker-ays-public.php:1257
+msgid "You have already voted."
+msgstr "Du har redan röstat."
+
+#: ../public/class-poll-maker-ays-public.php:1260
+msgid "Redirecting after"
+msgstr "Omdirigering efter"
+
+#: ../public/class-poll-maker-ays-public.php:1301
+msgid "The poll will be available soon."
+msgstr "Denna omröstning öppnas snart."
+
+#: ../public/class-poll-maker-ays-public.php:1308
+msgid "The poll has expired."
+msgstr "Denna omröstning är slutförd."
+
+#: ../public/class-poll-maker-ays-public.php:1365
+msgid "Next"
+msgstr "Nästa"
+
+#~ msgid "The description of category"
+#~ msgstr "Beskrivningen av kategorin"
+
+#, fuzzy
+#~| msgid ""
+#~| "If you allow, the 'Next' button will always be enabled, and if not, only "
+#~| "after polling"
+#~ msgid ""
+#~ "If you allow, the \"Next\" button will always be enabled, and if not, "
+#~ "only after polling"
+#~ msgstr ""
+#~ "Om du tillåter det kommer 'Nästa'-knappen alltid att aktiveras, och om "
+#~ "inte, så visas den först efter röstning"
+
+#~ msgid "Next poll button text"
+#~ msgstr ""
+#~ "Text för knappen n\n"
+#~ "ästa fråga"
+
+#, fuzzy
+#~| msgid "Integrations"
+#~ msgid "SMTP integration"
+#~ msgstr "Integrationer"
+
+#~ msgid "Status of the poll"
+#~ msgstr "Omröstningens status"
+
+#~ msgid "The name of the poll"
+#~ msgstr "Namnet på omröstningen"
+
+#~ msgid ""
+#~ "You can choose one or several categories. These categories are WordPress "
+#~ "default post categories. There is no connection with poll categories."
+#~ msgstr ""
+#~ "Du kan välja en eller flera kategorier. Dessa kategorier är WordPress "
+#~ "standard kategorier för inlägg. Det finns inget samband med "
+#~ "omröstningskategorier."
+
+#~ msgid "The question of the poll"
+#~ msgstr "Anledningen för omröstningen (x)"
+
+#~ msgid "The type of the poll"
+#~ msgstr "Typ av omröstning"
+
+#~ msgid "The color theme of the poll"
+#~ msgstr "Färgtemat för omröstningen"
+
+#~ msgid ""
+#~ "\n"
+#~ "                                            Background color of the poll"
+#~ msgstr ""
+#~ "\n"
+#~ "                                            Omröstningsytans bakgrundsfärg"
+
+#~ msgid "Background image of the poll"
+#~ msgstr "Bakgrundsbild för omröstningen"
+
+#, fuzzy
+#~| msgid ""
+#~| "If you add background image, background color not be applied. Remove "
+#~| "image or don't add it, if you want background color will be apply"
+#~ msgid ""
+#~ "\n"
+#~ "                                            If you add background image, "
+#~ "background color not be applied. Remove image or don't add it, if you "
+#~ "want background color will be apply"
+#~ msgstr ""
+#~ "Om du lägger till bakgrundsbild, används inte bakgrundsfärg. Ta bort bild "
+#~ "eller lägg inte in en bild så kommer bakgrundsfärgen att visas"
+
+#~ msgid "The styles of answer"
+#~ msgstr "Stilarna på svaret"
+
+#~ msgid "The side of the border"
+#~ msgstr "Sida av kant"
+
+#, fuzzy
+#~| msgid "The width of the poll (in case of 0 it will be 100%)"
+#~ msgid ""
+#~ "The width of the poll (in case of 0 it\n"
+#~ "                                            will be 100%)"
+#~ msgstr "Bredden på ytan för omröstningen (vid 0 blir det 100%)"
+
+#~ msgid "The style of the border"
+#~ msgstr "Stilen på kanten"
+
+#~ msgid "The radius of the border"
+#~ msgstr "Radien på kant"
+
+#, fuzzy
+#~| msgid "The side of the border"
+#~ msgid "The width of the border"
+#~ msgstr "Sida av kant"
+
+#~ msgid "The style of box shadow"
+#~ msgstr "Stilen på ruta med skugga"
+
+#~ msgid "Color gradient of the poll background"
+#~ msgstr "Färgövertoning av omröstningsytan-bakgrunden"
+
+#~ msgid "Color 1 of the poll background gradient"
+#~ msgstr "Färg 1 av bakgrundstoningen för omröstningsytan"
+
+#~ msgid "Color 2 of the poll background gradient"
+#~ msgstr "Färg 2 av omröstnings-bakgrundsgradienten"
+
+#~ msgid "The direction of the color gradient."
+#~ msgstr "Färggradientens riktning."
+
+#~ msgid "Object fit"
+#~ msgstr "Objektpassning"
+
+#~ msgid ""
+#~ "Custom HTML class for poll container. You can use your class for adding "
+#~ "your custom styles for poll container. Example: p{color:red !important}"
+#~ msgstr ""
+#~ "Anpassad HTML-klass för fråge-behållare. Du kan använda din klass för att "
+#~ "lägga till dina anpassade formatmallar för poll-behållare. Exempel: "
+#~ "p{color:röd !important}"
+
+#~ msgid "You can add your css"
+#~ msgstr "Du kan lägga till egen css"
+
+#~ msgid "Allow to vote for more then one answer"
+#~ msgstr "Tillåt att rösta på mer än ett svar"
+
+#~ msgid "Direction"
+#~ msgstr "Riktning"
+
+#~ msgid "Content direction of the poll"
+#~ msgstr "Innehållets riktning i omröstningen"
+
+#~ msgid "Left to right"
+#~ msgstr "Vänster till höger"
+
+#~ msgid "Right to left"
+#~ msgstr "Höger till vänster"
+
+#~ msgid "Show or hide finish page votes count"
+#~ msgstr "Visa eller dölj avslutningssida med räknade röster"
+
+#, fuzzy
+#~| msgid "Show poll creation date in poll start page"
+#~ msgid "Show creation date in poll start page"
+#~ msgstr "Visa datum för att skapa omröstning på startsidan för omröstning"
+
+#, fuzzy
+#~| msgid "Show poll author in poll start page"
+#~ msgid "Show author in poll start page"
+#~ msgstr "Visa omröstningsförfattare på startsidan för omröstning"
+
+#~ msgid "Show or hide finish page answer percent"
+#~ msgstr "Visa eller dölj avslutningssida med svar i procent"
+
+#~ msgid "The period of time when poll will be active"
+#~ msgstr "Den tidsperiod då omröstningen kommer att vara aktiv"
+
+#~ msgid "Do not show voting results after the poll"
+#~ msgstr "Visa inte röstningsresultat efter omröstningen"
+
+#~ msgid "The message will be displayed after submitting the poll."
+#~ msgstr ""
+#~ "Meddelandet kommer att visas efter att man har skickat in omröstningen."
+
+#~ msgid "Show the number of users who passed the poll."
+#~ msgstr "Visa antalet användare som har genomfört omröstningen."
+
+#~ msgid "If you want to redirect users after voting."
+#~ msgstr "Om du vill omdirigera användare efter röstning."
+
+#~ msgid "Redirection URL"
+#~ msgstr "URL omdirigering"
+
+#~ msgid "Redirection delay (sec)"
+#~ msgstr "Omdirigeringsfördröjning (sek)"
+
+#~ msgid "Randomize answers of the poll"
+#~ msgstr "Randomisera svar i omröstningen"
+
+#~ msgid ""
+#~ "This option will work only when Enable sounds are selected from the "
+#~ "General options page."
+#~ msgstr ""
+#~ "Det här alternativet fungerar bara när Aktivera ljud väljs från sidan "
+#~ "Allmänna alternativ."
+
+#~ msgid "Show the results by Standard or Pie Chart views."
+#~ msgstr "Visa resultaten efter vyer med Standard- eller Cirkeldiagram."
+
+#~ msgid "Standart"
+#~ msgstr "Standard"
+
+#~ msgid "For restarting poll and pass it again."
+#~ msgstr "För omstart av omröstning och att genomföra den igen."
+
+#~ msgid "Poll submit button."
+#~ msgstr "Knappen för skicka in omröstnings."
+
+#~ msgid "Show an answer message after poll completion in the finish page."
+#~ msgstr ""
+#~ "Visa ett svarsmeddelande efter att omröstning har slutförts på målsidan."
+
+#~ msgid "Reset page to see answers table"
+#~ msgstr "Återställ sida för att se tabellen svar"
+
+#, fuzzy
+#~| msgid "Message for unauthorized users."
+#~ msgid "Message for voted users."
+#~ msgstr "Meddelande till obehöriga användare."
+
+#~ msgid ""
+#~ "In case of switching this option the poll can be passed only by logged in "
+#~ "users."
+#~ msgstr ""
+#~ "Vid byte av detta alternativ kan omröstningen bara genomföras av "
+#~ "inloggade användare."
+
+#~ msgid "Show the Login form bottom of the message for not logged in users."
+#~ msgstr ""
+#~ "Visa formuläret för Logga in längst ned i meddelandet för ej inloggade "
+#~ "användare."
+
+#~ msgid ""
+#~ "In case of switching this option the poll can be passed only by users "
+#~ "with selected role."
+#~ msgstr ""
+#~ "Vid byte av det här alternativet kan omröstningen bara genomföras av "
+#~ "användare med vald roll."
+
+#~ msgid "Message for users with not allowed role."
+#~ msgstr "Meddelande för användare med inte tillåten användarroll."
+
+#~ msgid "The information form heading text"
+#~ msgstr "Rubriktexten i informationsformulär"
+
+#~ msgid ""
+#~ "If you enable information form then after the poll, the user will have to "
+#~ "fill out the form"
+#~ msgstr ""
+#~ "Om du aktiverar informationsformulär sedan efter omröstningen, måste "
+#~ "användaren fylla i formuläret"
+
+#~ msgid "E-mail"
+#~ msgstr "E-post"
+
+#~ msgid "This option will work with Enable answers sound option."
+#~ msgstr ""
+#~ "Det här alternativet kommer att fungera med Aktivera svar ljud alternativ."
+
+#~ msgid "Ability to show all Polls."
+#~ msgstr "Möjlighet att visa alla Omröstningar."
+
+#~ msgid "Ability to show Polls results by ID."
+#~ msgstr "Möjlighet att visa Omröstningar resultat efter ID."
+
+#~ msgid "Ability to show polls by categories."
+#~ msgstr "Möjlighet att visa omröstningar efter kategorier."
+
+#~ msgid "It is designed for all polls results."
+#~ msgstr "Den är utformad för alla resultat av omröstningar."
+
+#~ msgid "Poll Information"
+#~ msgstr "Omröstningsinformation"
+
+#~ msgid "Poll Type"
+#~ msgstr "Typ av fråga"
+
+#~ msgid "User E-mail"
+#~ msgstr "E-post för användare"
+
+#~ msgid "Add new Attribute"
+#~ msgstr "Lägg till nytt attribut"
+
+#~ msgid "Edit Attribute"
+#~ msgstr "Redigera attribut"
+
+#~ msgid "The name of form custom field"
+#~ msgstr "Namnet på anpassat fält"
+
+#~ msgid "Slug"
+#~ msgstr "Slug"
+
+#~ msgid "The slug of form custom field"
+#~ msgstr "Slug för anpassat fält"
+
+#~ msgid "The type of form custom field"
+#~ msgstr "Typen av anpassat fält"
+
+#~ msgid "Select field type"
+#~ msgstr "Välj fälttyp"
+
+#~ msgid "Textarea"
+#~ msgstr "Textområde"
+
+#~ msgid "E-Mail"
+#~ msgstr "E-post"
+
+#~ msgid "Number"
+#~ msgstr "Nummer"
+
+#~ msgid "Telephone"
+#~ msgstr "Telefon"
+
+#~ msgid "Date"
+#~ msgstr "Datum"
+
+#~ msgid "Checkbox"
+#~ msgstr "Kryssruta"
+
+#~ msgid "Attribute status"
+#~ msgstr "Attributstatus"
+
+#~ msgid "The publication status of form custom field"
+#~ msgstr "Publiceringsstatus för anpassat fält"
+
+#~ msgid "Save Attribute"
+#~ msgstr "Spara attribut"
+
+#~ msgid "Apply Attribute"
+#~ msgstr "Tillämpa attribut"
+
+#~ msgid "Export poll(s)"
+#~ msgstr "Exportera omröstningar/frågor"
+
+#~ msgid ""
+#~ "Select CSV file from your computer. You can export your polls for get "
+#~ "example CSV file."
+#~ msgstr ""
+#~ "Välj CSV-fil från datorn. Du kan exportera dina omröstningar för att få "
+#~ "ett exempel på CSV fil."
+
+#~ msgid "Import poll(s)"
+#~ msgstr "Imprortera omröstningar/frågor"
+
+#~ msgid "There are no conversations"
+#~ msgstr "Det finns inga konversationer"
+
+#~ msgid "There are no automations"
+#~ msgstr "Det finns inga automatiseringar"
+
+#~ msgid "Hour(s)"
+#~ msgstr "Timme/timmar"
+
+#~ msgid "Day(s)"
+#~ msgstr "Dag(ar)"
+
+#~ msgid "Week(s)"
+#~ msgstr "Vecka/veckor"
+
+#~ msgid "Apply Poll"
+#~ msgstr "Tillämpa omröstning"
+
+#~ msgid "WP Post"
+#~ msgstr "WP Inlägg"
+
+#~ msgid ""
+#~ "Via these two links you can see the connected post in front end and make "
+#~ "changes in the dashboard."
+#~ msgstr ""
+#~ "Via dessa två länkar kan du se den anslutna inlägget i front end och göra "
+#~ "ändringar i adminpanelen."
+
+#~ msgid "Edit Post"
+#~ msgstr "Redigera inlägg"
+
+#~ msgid "Edit answer image"
+#~ msgstr "Redigera svarsbild"
+
+#~ msgid "Add image for answer"
+#~ msgstr "Lägg till bild för svar"
+
+#~ msgid "Select view of answers"
+#~ msgstr "Välj vy för att visa svar"
+
+#~ msgid "Show up on the poll"
+#~ msgstr "Visa uppknapp på enkäten"
+
+#~ msgid "Require admin approval"
+#~ msgstr "Kräv administratörsgodkännande"
+
+#~ msgid "Hand (Default)"
+#~ msgstr "Hand (Standard)"
+
+#~ msgid "Stars (Default)"
+#~ msgstr "Stjärnor (Standard)"
+
+#~ msgid "Show Labels"
+#~ msgstr "Visa etiketter"
+
+#~ msgid ""
+#~ "Show text of answers toggle. If answer image is not set, it automatically "
+#~ "toggled on. "
+#~ msgstr ""
+#~ "Visa text av svar med \"toggle\". Om svarsbild inte är inställd, \"toggled"
+#~ "\" det automatiskt på. "
+
+#, fuzzy
+#~ msgid "Select versus direction"
+#~ msgstr "Välj kontra riktning"
+
+#~ msgid "Horizontal (Default)"
+#~ msgstr "Vågrät (Standard)"
+
+#~ msgid "Times"
+#~ msgstr "Gånger"
+
+#~ msgid "Battle"
+#~ msgstr "Battle"
+
+#~ msgid "Classic"
+#~ msgstr "Klassisk"
+
+#~ msgid "Graffiti"
+#~ msgstr "Graffiti"
+
+#~ msgid "Material"
+#~ msgstr "Material"
+
+#~ msgid "Simple"
+#~ msgstr "Enkel"
+
+#~ msgid "Select icon position"
+#~ msgstr "Välj ikonposition"
+
+#~ msgid "Center (Default)"
+#~ msgstr "Center (Standard)"
+
+#~ msgid "End"
+#~ msgstr "Slut"
+
+#~ msgid "Contain"
+#~ msgstr "Innehåll"
+
+#~ msgid "Specify the message text of the email."
+#~ msgstr "Ange meddelandetexten i e-postmeddelandet."
+
+#~ msgid "Select fields"
+#~ msgstr "Välj fält"
+
+#~ msgid "You can upload custom GIF."
+#~ msgstr "Du kan ladda upp anpassade GIF."
+
+#~ msgid "Poll rate count"
+#~ msgstr "Betygräknare - fråga"
+
+#~ msgid "Result details"
+#~ msgstr "Resultat detaljer"
+
+#~ msgid "Statistics Diagram"
+#~ msgstr "Statistik Diagram"
+
+#~ msgid "Statistics Signboard"
+#~ msgstr "Statistik Signboard"
+
+#~ msgid "Your MOST popular poll"
+#~ msgstr "Din mest populära omröstning"
+
+#~ msgid "Your LEAST popular poll"
+#~ msgstr "Din minst populära omröstning"
+
+#~ msgid "CSV"
+#~ msgstr "CSV"
+
+#, php-format
+#~ msgid ""
+#~ "1. You will need to <a href='%s' target='_blank'>%s</a> new Slack App."
+#~ msgstr ""
+#~ "1. Du kommer att behöva <a href='%s' target='_blank'>%s</a> nya Slack App."
+
+#~ msgid "2. Complete Project creation for get App credentials."
+#~ msgstr "2. Slutföra Project skapande för få Appens autentiseringsuppgifter."
+
+#~ msgid ""
+#~ "3. Next, go to the Features > OAuth & Permissions > Redirect URLs section."
+#~ msgstr ""
+#~ "3. Gå sedan till avsnittet Funktioner > OAuth & Behörighet > Omdirigera "
+#~ "webbadresser."
+
+#~ msgid "4. Click Add a new Redirect URL."
+#~ msgstr "4. Klicka på Lägg till en ny omdirigerings-URL."
+
+#~ msgid "5. In the shown input field, put this value below"
+#~ msgstr "5. I det visade inmatningsfältet, lägg detta värde under"
+
+#~ msgid "6. Then click the Add button."
+#~ msgstr "6. Klicka sedan på knappen Lägg till."
+
+#~ msgid "7. Then click the Save URLs button."
+#~ msgstr "7. Klicka sedan på knappen Spara webbadresser."
+
+#~ msgid "Authorize"
+#~ msgstr "Auktorisera"
+
+#~ msgid "Access granted"
+#~ msgstr "Åtkomst beviljad"
+
+#~ msgid "Get it"
+#~ msgstr "Skaffa det"
+
+#~ msgid "ShortCode"
+#~ msgstr "Shortcode"
+
+#~ msgid "Each result"
+#~ msgstr "Varje resultat"
+
+#~ msgid "Each results"
+#~ msgstr "Varje resultat"
+
+#~ msgid "Mark as read"
+#~ msgstr "Markera alla som lästa"
+
+#~ msgid "Result(s) marked as readed."
+#~ msgstr "Resultat som markerats som lästa."
+
+#~ msgid "Poll Formfield"
+#~ msgstr "Omröstning - Formulärfält"
+
+#~ msgid "Poll Formfields"
+#~ msgstr "Omröstning - Formulärfält"
+
+#~ msgid "There are no Form Custom Fields yet."
+#~ msgstr "Det finns inga egna anpassade fält ännu."
+
+#~ msgid "Poll Formfield created."
+#~ msgstr "Omröstning - Formulärfält skapat."
+
+#~ msgid "Poll Formfield saved."
+#~ msgstr "Omröstning - Formulärfält sparat."
+
+#~ msgid "Poll Formfield deleted."
+#~ msgstr "Omröstning - Formulärfält borttaget."
+
+#~ msgid "You selected wrong file. Select *.csv file, please."
+#~ msgstr "Du valde fel fil. Välj *.csv fil, tack."
+
+#~ msgid "Selected file is invalid. Select correct *.csv file, please."
+#~ msgstr "Markerad fil är ogiltig. Välj korrekt *.csv fil, tack."
+
+#~ msgid "Nothing for export."
+#~ msgstr "Inget att exportera."
+
+#~ msgid ""
+#~ "Something wents wrong. May be your *.csv file is open, please close it"
+#~ msgstr ""
+#~ "Något gick fel. Kan vara att din *.csv fil är öppen, vänligen stäng den"
+
+#~ msgid " poll(s) were exported."
+#~ msgstr " omröstning(ar) exporterades."
+
+#~ msgid "Voters count"
+#~ msgstr "Väljarna räknas"
+
+#~ msgid "New results count"
+#~ msgstr "Nya resultat räknas/räknade"
+
+#~ msgid "Answer text"
+#~ msgstr "Svarstext"
+
+#~ msgid "Poll title can't be empty"
+#~ msgstr "Omröstningsrubrik kan inte vara tom"
+
+#~ msgid "Question can't be empty"
+#~ msgstr "Frågan kan inte vara tom"
+
+#~ msgid "You must fill all answers"
+#~ msgstr "Du måste fylla alla svar"
+
+#~ msgid "Sorry minimum count of answers should be 2"
+#~ msgstr "Tyvärr minsta antal svar bör vara 2"
+
+#~ msgid "Wrong shortcode initialized"
+#~ msgstr "Fel shortcode initieras"
+
+#~ msgid "Pos."
+#~ msgstr "Plats."
+
+#~ msgid "Attempts"
+#~ msgstr "Försök"
+
+#~ msgid "Please enter password"
+#~ msgstr "Ange lösenord"
+
+#~ msgid "Submit"
+#~ msgstr "Skicka"
+
+#~ msgid "Please add vote reason"
+#~ msgstr "Vänligen - skriv kommentar för ditt/dina val"
+
+#~ msgid "The permitted amount of votes have been already completed."
+#~ msgstr "Antalet tillåtna röster är redan lämnade. "
+
+#~ msgid "Other - please specify"
+#~ msgstr "Övrigt - ange"
+
+#~ msgid " passed the `"
+#~ msgstr " passerade den '"
+
+#~ msgid ":"
+#~ msgstr ":"
+
+#~ msgid "Use SMTP"
+#~ msgstr "Använd SMTP"
+
+#~ msgid "Recommended"
+#~ msgstr "Rekommenderad"
+
+#~ msgid "SMTP Username"
+#~ msgstr "Utgående SMTP-server"
+
+#~ msgid "SMTP Password"
+#~ msgstr "SMTP Lösenord"
+
+#~ msgid "Host"
+#~ msgstr "Uthyrare"
+
+#~ msgid "SMTP Secure"
+#~ msgstr "SMTP säkra"
+
+#~ msgid "SSL"
+#~ msgstr "SSL"
+
+#~ msgid "TLS"
+#~ msgstr "TLS"
