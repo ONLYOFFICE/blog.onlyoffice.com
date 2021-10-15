@@ -4,7 +4,7 @@ Donate link: https://ays-pro.com/wordpress/poll-maker
 Tags:  poll maker, WordPress Poll, vote, rating, elections
 Requires at least: 4.0
 Tested up to: 5.8.1
-Stable tag: 3.5.1
+Stable tag: 3.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -312,6 +312,10 @@ can say that it is a widget poll.
 
 
 == Changelog ==
+
+= 3.5.2 =
+* Added: VKontakte Social share button
+* Updated: POT and PO files
 
 = 3.5.1 =
 * Improved: Social share buttons option

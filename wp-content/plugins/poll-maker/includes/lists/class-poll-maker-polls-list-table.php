@@ -142,9 +142,10 @@ class Polls_List_Table extends WP_List_Table {
 			$ays_result_message        = stripcslashes($data['ays_result_message']);
 			$allow_not_vote            = isset($data['ays-poll-allow-not-vote']) && 'allow' == $data['ays-poll-allow-not-vote'] ? 1 : 0;
 			$show_social               = isset($data['ays-poll-show-social']) && 'show' == $data['ays-poll-show-social'] ? 1 : 0;
-			$poll_show_social_ln       = isset($data['ays_poll_enable_linkedin_share_button']) && $data['ays_poll_enable_linkedin_share_button'] == "on" ? "on" : "off";
-			$poll_show_social_fb	   = isset($data['ays_poll_enable_facebook_share_button']) && $data['ays_poll_enable_facebook_share_button'] == "on" ? "on" : "off";
-			$poll_show_social_tr	   = isset($data['ays_poll_enable_twitter_share_button'])  && $data['ays_poll_enable_twitter_share_button']  == "on" ? "on" : "off";
+			$poll_show_social_ln       = isset($data['ays_poll_enable_linkedin_share_button'])  && $data['ays_poll_enable_linkedin_share_button']  == "on" ? "on" : "off";
+			$poll_show_social_fb	   = isset($data['ays_poll_enable_facebook_share_button'])  && $data['ays_poll_enable_facebook_share_button']  == "on" ? "on" : "off";
+			$poll_show_social_tr	   = isset($data['ays_poll_enable_twitter_share_button'])   && $data['ays_poll_enable_twitter_share_button']   == "on" ? "on" : "off";
+			$poll_show_social_vk	   = isset($data['ays_poll_enable_vkontakte_share_button']) && $data['ays_poll_enable_vkontakte_share_button'] == "on" ? "on" : "off";
 			$categories                = isset($data['ays-poll-categories']) ? ',' . implode(',', $data['ays-poll-categories']) . ',' : ',1,';
 			$description               = isset($data['ays-poll-description']) && $data['ays-poll-description'] != '' ? sanitize_textarea_field($data['ays-poll-description']) : "";
 			$type                      = isset($data['ays-poll-type']) ? sanitize_text_field($data['ays-poll-type']) : "";
@@ -488,6 +489,7 @@ class Polls_List_Table extends WP_List_Table {
 				'poll_show_social_ln'               => $poll_show_social_ln,
 				'poll_show_social_fb'				=> $poll_show_social_fb,
 				'poll_show_social_tr'				=> $poll_show_social_tr,
+				'poll_show_social_vk'				=> $poll_show_social_vk,
 				'load_effect'                       => $load_effect,
 				'load_gif'                          => $load_gif,
 				'limit_users'                       => $limit_users,

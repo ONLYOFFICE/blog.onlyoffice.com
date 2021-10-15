@@ -385,6 +385,29 @@ div.ays-poll-main .voting-poll {
     content: "\eac8";
 }
 
+/* VK */
+.apm-social-btn .ays-share-btn-vkontaktee {
+	background: #0976b4;
+	color: #fff;
+	border-color: #08669c;
+}
+
+.apm-social-btn .ays-share-btn-vkontakte {
+	background: #486c91;
+	border-color: #4b719a;
+}
+
+.apm-social-btn .ays-share-btn-vkontakte:hover,
+.apm-social-btn .ays-share-btn-vkontakte:focus {
+	background: #2a6098;
+	border-color: #4b719a;
+}
+
+.apm-social-btn .ays-share-btn-vkontakte:active {
+	background: #4b719a;
+	border-color: #4b719a;
+}
+
 /*.ays-share-btn,*/
 /*.ays-share-btn *,*/
 /*.ays-share-btn *:before,*/

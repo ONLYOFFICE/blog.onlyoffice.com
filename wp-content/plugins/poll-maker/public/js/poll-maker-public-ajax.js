@@ -71,6 +71,13 @@
                                     "<span class='ays-share-btn-text'>LinkedIn</span>"+
                                 "</a>");
         }
+        if(buttons.vkontakte){
+            socialDiv.append("<a class='vkontakte-share-button ays-share-btn ays-share-btn-branded ays-share-btn-vkontakte'"+
+                                    "title='Share on VKontakte'>"+
+                                    "<span class='ays-survey-share-btn-icon'></span>"+
+                                    "<span class='ays-share-btn-text'>VKontakte</span>"+
+                                "</a>");
+        }
         $("#"+formId).append(socialDiv);
         $(document).on('click', '.fb-share-button', function (e) {
             window.open('https://www.facebook.com/sharer/sharer.php?u=' + window.location.href,
@@ -89,6 +96,13 @@
         $(document).on('click', '.linkedin-share-button', function (e) {
             window.open('https://www.linkedin.com/shareArticle?mini=true&url=' + window.location.href,
                 'linkedin-share-dialog',
+                'width=650,height=450'
+            );
+            return false;
+        })
+        $(document).on('click', '.vkontakte-share-button', function (e) {
+            window.open('https://vk.com/share.php?url=' + window.location.href,
+                'vkontakte-share-dialog',
                 'width=650,height=450'
             );
             return false;
@@ -443,10 +457,12 @@
         var pollEnableLn = typeof pollOptions.poll_show_social_ln != "undefined" && pollOptions.poll_show_social_ln.length > 0 && pollOptions.poll_show_social_ln == "on" ? true : false;
         var pollEnableFb = typeof pollOptions.poll_show_social_fb != "undefined" && pollOptions.poll_show_social_fb.length > 0 && pollOptions.poll_show_social_fb == "on" ? true : false;
         var pollEnableTr = typeof pollOptions.poll_show_social_tr != "undefined" && pollOptions.poll_show_social_tr.length > 0 && pollOptions.poll_show_social_tr == "on" ? true : false;
+        var pollEnableVk = typeof pollOptions.poll_show_social_vk != "undefined" && pollOptions.poll_show_social_vk.length > 0 && pollOptions.poll_show_social_vk == "on" ? true : false;
         var pollSocialButtons = {
-            linkedIn: pollEnableLn,
-            faceBook: pollEnableFb,
-            twitter: pollEnableTr
+            linkedIn  : pollEnableLn,
+            faceBook  : pollEnableFb,
+            twitter   : pollEnableTr,
+            vkontakte : pollEnableVk
         };
         var data = form.parent().serializeFormJSON();
         if (infoForm) {
