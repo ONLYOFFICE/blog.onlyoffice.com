@@ -1616,7 +1616,6 @@ a.download:active{
     font-weight: normal;
     font-size: 16px;
     line-height: 160%;
-    text-align: justify;
     margin: 16px 0;
 }
 
@@ -1792,19 +1791,18 @@ a.download:active{
     margin-right: 45px;
 }
 
-/* для элемента input c type="radio" */
 .wp-polls-form .custom-radio {
     position: absolute;
     z-index: -1;
     opacity: 0;
 }
-  /* для элемента label связанного с .custom-radio */
+
 .wp-polls-form .custom-radio+label {
     display: inline-flex;
     align-items: center;
     user-select: none;
 }
-  /* создание в label псевдоэлемента  before со следующими стилями */
+
 .wp-polls-form  .custom-radio+label::before {
     content: '';
     display: inline-block;
@@ -1822,27 +1820,27 @@ a.download:active{
     font-size: 16px;
     line-height: 160%;
 }
-  /* стили при наведении курсора на радио */
+
 .wp-polls-form  .custom-radio:not(:disabled):not(:checked)+label:hover::before {
     border-color: #666666;
 }
-  /* стили для активной радиокнопки (при нажатии на неё) */
+
 .wp-polls-form .custom-radio:not(:disabled):active+label::before {
     background-color: #F9F9F9;
     border-color: #666666;
 }
 
-  /* стили для радиокнопки, находящейся в фокусе и не находящейся в состоянии checked */
+
 .wp-polls-form .custom-radio:focus:not(:checked)+label::before {
     border-color: #80bdff;
 }
-  /* стили для радиокнопки, находящейся в состоянии checked */
+
 .wp-polls-form .custom-radio:checked+label::before {
     border-color: #8BB825;
     background-color: #8BB825;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
 }
-  /* стили для радиокнопки, находящейся в состоянии disabled */
+
 .wp-polls-form .custom-radio:disabled+label::before {
     border-color: #F5F5F5;
     background-color: #E5E5E5;
