@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Democracy\n"
 "POT-Creation-Date: 2021-10-18 14:39+0300\n"
-"PO-Revision-Date: 2021-10-18 14:40+0300\n"
+"PO-Revision-Date: 2021-10-18 16:33+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -1001,7 +1001,7 @@ msgstr "Скачать Опрос Democracy"
 #: class-DemPoll.php:258
 msgctxt "front"
 msgid "Others (please specify)"
-msgstr "Altre (per favore specifica)"
+msgstr "Otras (por favor, especifica)"
 
 #: class-DemPoll.php:266
 msgctxt "front"
