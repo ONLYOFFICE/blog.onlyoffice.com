@@ -255,7 +255,7 @@ class DemPoll {
 				}
 
 				if( $poll->democratic && ! $this->blockVoting ){
-					$html .= '<li class="dem-add-answer"><a href="javascript:void(0);" rel="nofollow" data-dem-act="newAnswer" class="dem-link">'. _x('Add your answer','front','democracy-poll') .'</a></li>';
+					$html .= '<li class="dem-add-answer"><a href="javascript:void(0);" rel="nofollow" data-dem-act="newAnswer" class="dem-link">'. _x('Others (please specify)','front','democracy-poll') .'</a></li>';
 				}
 			$html .= "</ul>";
 
