@@ -1,0 +1,988 @@
+@font-face {
+  font-family: MontserratBlack;
+  src: url("../assets/fonts/Montserrat-Black.ttf");
+}
+@font-face {
+  font-family: MontserratBold;
+  src: url("../assets/fonts/Montserrat-Bold.ttf");
+}
+@font-face {
+  font-family: MontserratRegular;
+  src: url("../assets/fonts/Montserrat-Regular.ttf");
+}
+@font-face {
+  font-family: MontserratMedium;
+  src: url("../assets/fonts/Montserrat-Medium.ttf");
+}
+@font-face {
+  font-family: MontserratBlackItalic;
+  src: url("../assets/fonts/Montserrat-BlackItalic.ttf");
+}
+@font-face {
+  font-family: MontserratLight;
+  src: url("../assets/fonts/Montserrat-Light.ttf");
+}
+@font-face {
+  font-family: MontserratSemiBold;
+  src: url("../assets/fonts/Montserrat-SemiBold.ttf");
+}
+.trinity-page .custom-checkbox {
+  cursor: pointer;
+  color: #777777 !important;
+  position: relative;
+  padding: 8px;
+  border: 1px solid #d8d8d8d8;
+  background: white;
+  width: 250px;
+  margin-bottom: 9px;
+  line-height: 19px;
+  border-radius: 3px;
+  display: flex;
+  border-width: 0.5px !important;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding-right: 8px;
+}
+.trinity-page .custom-checkbox.powered-by-inline-flex {
+  display: inline-flex;
+  width: auto;
+}
+.trinity-page .custom-checkbox.powered-by-inline-flex > .text-label {
+  margin-right: 16px;
+}
+.trinity-page .custom-checkbox .text-label {
+  user-select: none;
+  font-size: 16px;
+  line-height: 19px;
+}
+.trinity-page .custom-checkbox div.custom-hitbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #000033;
+  box-sizing: border-box;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.trinity-page .custom-checkbox > input[type=checkbox] {
+  display: none;
+}
+.trinity-page .custom-checkbox > input[type=checkbox].trinity-custom-required ~ .custom-hitbox {
+  border-color: red;
+}
+.trinity-page .custom-checkbox > input[type=checkbox]:checked + .custom-hitbox {
+  background: #000033;
+  transition: background 200ms ease-in-out;
+  border-color: #000033;
+  background-image: url("../assets/icons/check.svg");
+  background-repeat: no-repeat;
+  background-size: 15px 11px;
+  background-position: center;
+}
+
+.trinity-page .trinity-custom-select {
+  cursor: pointer;
+  color: #777777 !important;
+  position: relative;
+  padding: 8px;
+  border: 1px solid #d8d8d8d8;
+  background: white;
+  width: 250px;
+  margin-bottom: 9px;
+  line-height: 19px;
+  border-radius: 3px;
+  display: flex;
+  border-width: 0.5px !important;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.trinity-page .value-text, .trinity-page .line, .trinity-page .description, .trinity-page .text-label, .trinity-page .custom-input {
+  line-height: 19px;
+  font-family: MontserratLight;
+  font-size: 16px;
+}
+.trinity-page .options {
+  z-index: 2;
+  position: absolute;
+  max-height: 0;
+  visibility: hidden;
+  overflow: hidden;
+  overflow-y: auto;
+  border: 1px solid #C8C8C8;
+  background: white;
+  min-width: 266px;
+  left: -1px;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+.trinity-page .options::-webkit-scrollbar {
+  width: 5px;
+}
+.trinity-page .options::-webkit-scrollbar-thumb {
+  background: lightgrey;
+  transition: background 200ms ease;
+  border-radius: 3px;
+}
+.trinity-page .options::-webkit-scrollbar-thumb:hover {
+  transition: background 200ms ease;
+  background: grey;
+}
+.trinity-page .custom-select-arrow {
+  transition: transform 200ms linear;
+  width: 20px;
+  height: 20px;
+  background-image: url("../assets/icons/down-arrow-small.svg");
+  background-repeat: no-repeat;
+  background-size: 15px 11px;
+  background-position: center;
+  display: inline-block;
+}
+.trinity-page .trinity-custom-select.opened {
+  border-bottom: 1px solid white !important;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.trinity-page .trinity-custom-select.opened .custom-select-arrow {
+  transform: rotateZ(180deg);
+  transition: transform 200ms linear;
+}
+.trinity-page .trinity-custom-select.opened .options {
+  visibility: visible;
+  max-height: 200px;
+  overflow-y: scroll;
+  top: 32px;
+  border-top: none;
+  transition: max-height 330ms ease-in;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.trinity-page .trinity-custom-select.opened .options .line {
+  transition: background-color 180ms ease-in;
+  width: 261px;
+  left: 0;
+  box-sizing: border-box;
+  padding: 8px 8px;
+  font-size: 16px;
+  line-height: 19px;
+}
+.trinity-page .trinity-custom-select.opened .options .line:hover {
+  background: lightgrey;
+  transition: background-color 180ms ease-in;
+}
+
+.trinity-page .custom-input {
+  font-family: MontserratLight;
+  font-size: 16px;
+  cursor: pointer;
+  color: #777777 !important;
+  position: relative;
+  padding: 8px;
+  border: 1px solid #d8d8d8d8;
+  background: white;
+  width: 250px;
+  margin-bottom: 9px;
+  line-height: 19px;
+  border-radius: 3px;
+  display: flex;
+  border-width: 0.5px !important;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 30px !important;
+  padding: 3px 10px;
+  min-width: 250px;
+  width: 66%;
+  min-width: 268px;
+}
+.trinity-page .custom-textarea {
+  font-family: MontserratLight;
+  font-size: 16px;
+  cursor: pointer;
+  color: #777777 !important;
+  position: relative;
+  padding: 8px;
+  border: 1px solid #d8d8d8d8;
+  background: white;
+  width: 250px;
+  margin-bottom: 9px;
+  line-height: 19px;
+  border-radius: 3px;
+  display: flex;
+  border-width: 0.5px !important;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 250px;
+  width: 100%;
+  color: #C8C8C8;
+}
+
+#trinity-admin-info {
+  max-width: 1500px;
+}
+#trinity-admin-info .flex-grid {
+  align-items: stretch !important;
+}
+#trinity-admin-info .notice {
+  margin: 0 25px;
+}
+
+.info-text {
+  font-family: MontserratLight;
+}
+
+.form-table td {
+  padding: 5px 0;
+}
+
+.trinity-inner {
+  width: 100%;
+}
+.trinity-inner td {
+  padding: 5px 0 !important;
+}
+
+#trinity-admin-contact-us .flex-grid {
+  align-items: flex-start !important;
+}
+
+.trinity-custom-contact-input {
+  cursor: pointer;
+  color: #777777 !important;
+  position: relative;
+  padding: 8px;
+  border: 1px solid #d8d8d8d8;
+  background: white;
+  width: 250px;
+  margin-bottom: 9px;
+  line-height: 19px;
+  border-radius: 3px;
+  display: flex;
+  border-width: 0.5px !important;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+  font-family: MontserratLight;
+  font-size: 16px;
+  width: 100%;
+  line-height: 36px !important;
+  border-color: #d8d8d8d8 !important;
+  border-width: 0.5px !important;
+}
+
+.trinity-custom-contact-textarea {
+  font-family: MontserratLight;
+  width: 66%;
+  font-size: 16px;
+  line-height: 24px !important;
+}
+
+.trinity-contact-us-button {
+  line-height: 40px;
+  font-weight: 300;
+  font-size: 14px;
+  color: #fff !important;
+  background: #FF0066;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  border: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0 20px;
+  font-family: MontserratMedium;
+  max-width: 100%;
+  border-radius: 4px;
+  transition: all 200ms ease-out;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  width: 100px;
+  justify-content: center;
+  align-items: center;
+  float: right;
+}
+.trinity-contact-us-button:hover {
+  background: #951d51;
+  transition: all 200ms ease-out;
+}
+
+.trinity-send-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.trinity-feedback-button {
+  line-height: 40px;
+  font-weight: 300;
+  font-size: 14px;
+  color: #fff !important;
+  background: #FF0066;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  border: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0 20px;
+  font-family: MontserratMedium;
+  max-width: 100%;
+  border-radius: 4px;
+  transition: all 200ms ease-out;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  background: #000030;
+  width: 100px;
+  float: right;
+  margin-top: 17px;
+  margin-bottom: 15px;
+  justify-content: center;
+  align-items: center;
+}
+.trinity-feedback-button:hover {
+  background: #951d51;
+  transition: all 200ms ease-out;
+}
+.trinity-feedback-button:hover {
+  background: #414674;
+  transition: all 200ms ease-out;
+}
+
+.trinity-feedback-background {
+  background: white url("../assets/images/banner-review-background.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  height: fit-content;
+}
+
+.trinity-stars {
+  margin-bottom: 20px;
+  display: inline-block;
+}
+.trinity-stars:hover > .star {
+  background: url("../assets/icons/star-selected.svg");
+  background-repeat: no-repeat;
+}
+.trinity-stars .star {
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  background: url("../assets/icons/star-unselected.svg");
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+.trinity-stars .star:not(:first-child) {
+  margin-left: -5px;
+}
+.trinity-stars .star:hover ~ .star {
+  background: url("../assets/icons/star-unselected.svg");
+  background-repeat: no-repeat;
+}
+
+.trinity-page {
+  max-width: 1500px;
+  clear: none;
+}
+.trinity-page .flex-grid {
+  display: flex;
+  flex-flow: column wrap;
+}
+.trinity-page .flex-grid .row {
+  display: flex;
+  flex-flow: row wrap;
+}
+.trinity-page .flex-grid .row.trinity-hide {
+  display: none;
+}
+.trinity-page .flex-grid .column {
+  display: flex;
+  flex: 1 500px;
+  flex-flow: column wrap;
+  margin-bottom: 30px;
+}
+.trinity-page .flex-grid .column section {
+  display: flex;
+  flex-flow: column;
+  padding: 25px;
+  flex-grow: inherit;
+}
+.trinity-page .flex-grid .column .section-title {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-family: MontserratBold;
+  color: #000033;
+}
+.trinity-page .inline-block {
+  display: inline-block !important;
+  height: 40px !important;
+  vertical-align: top;
+  margin-right: 10px;
+}
+.trinity-page .bottom-space-10 {
+  margin-bottom: 10px;
+}
+
+.trinity-page .register {
+  align-items: flex-start;
+}
+.trinity-page .register .description {
+  font-size: 16px;
+  font-family: MontserratLight;
+}
+.trinity-page .register .description .bold-text {
+  color: #777777;
+  font-family: "MontserratMedium";
+}
+.trinity-page .register .custom-input {
+  margin-top: 8px;
+}
+.trinity-page .register .custom-checkbox {
+  border: none;
+  padding-left: 0;
+  padding-right: 0;
+  width: auto;
+  margin-bottom: 0px;
+  display: inline-flex;
+}
+.trinity-page .register .text-label {
+  margin-right: 0;
+  margin-left: 12px;
+  font-family: "MontserratRegular";
+  font-weight: 700;
+}
+.trinity-page .register a {
+  text-decoration: none;
+  color: #0077ff;
+}
+.trinity-page .register button.button.button-primary {
+  line-height: 40px;
+  font-weight: 300;
+  font-size: 14px;
+  color: #fff !important;
+  background: #FF0066;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  border: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0 20px;
+  font-family: MontserratMedium;
+  max-width: 100%;
+  border-radius: 4px;
+  transition: all 200ms ease-out;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  float: right;
+}
+.trinity-page .register button.button.button-primary:hover {
+  background: #951d51;
+  transition: all 200ms ease-out;
+}
+
+.trinity-page .save-and-odds .save-and-odds-positioning {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.trinity-page .save-and-odds .save-and-odds-positioning .premium-banner {
+  padding: 32px;
+  margin-top: 20px;
+  text-decoration: none;
+  background: #FFFFFF;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  align-items: flex-start;
+}
+.trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-button {
+  line-height: 40px;
+  font-weight: 300;
+  font-size: 14px;
+  color: #fff !important;
+  background: #FF0066;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  border: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0 20px;
+  font-family: MontserratMedium;
+  max-width: 100%;
+  border-radius: 4px;
+  transition: all 200ms ease-out;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  background: #010031;
+  text-decoration: none;
+}
+.trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-button:hover {
+  background: #951d51;
+  transition: all 200ms ease-out;
+}
+@media (max-width: 1366px) {
+  .trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-button {
+    font-size: 12px;
+  }
+}
+.trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  font-size: 16px;
+  font-family: MontserratSemiBold;
+  color: #000033;
+}
+.trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds ul {
+  width: 50%;
+  list-style: disc;
+  list-style-position: inside;
+}
+@media (max-width: 680px) {
+  .trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds ul {
+    width: 100%;
+  }
+}
+.trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds ul li {
+  font-family: MontserratMedium;
+  margin-bottom: 18px;
+  padding-left: 13px;
+  position: relative;
+  list-style: none;
+}
+@media (max-width: 1330px) {
+  .trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds ul li {
+    margin-bottom: 13px;
+  }
+}
+.trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds ul li::before {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  top: 50%;
+  left: 0;
+  transform: translate(0, -50%);
+  background: #FF0066;
+}
+@media (max-width: 1500px) {
+  .trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds {
+    font-size: 14px;
+    margin: 10px 0;
+  }
+}
+@media (max-width: 1330px) {
+  .trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds {
+    margin: 6px 0;
+    font-size: 12px;
+  }
+}
+@media (max-width: 1200px) {
+  .trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds {
+    font-size: 14px;
+  }
+}
+.trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-plan {
+  color: #000033;
+  width: 100%;
+  font-size: 30px;
+  line-height: 30px;
+  font-family: MontserratBold;
+}
+@media (max-width: 1700px) {
+  .trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-plan {
+    font-size: 20px;
+    line-height: 22px;
+  }
+}
+.trinity-page .trinity-head {
+  font-family: MontserratBlack;
+  padding: 9px 25px 4px;
+  text-align: left;
+  font-size: 30px;
+  font-weight: 900;
+  color: #000033;
+  display: flex;
+  text-transform: uppercase;
+  font-weight: 900 !important;
+  font-size: 30px;
+}
+.trinity-page .existing-account {
+  font-family: "MontserratRegular";
+}
+.trinity-page .existing-account a {
+  font-family: "MontserratBold";
+}
+.trinity-page .notice {
+  margin: 5px 25px 5px 25px !important;
+}
+.trinity-page .trinity-section-body {
+  padding: 17px 24px;
+  font-size: 16px;
+  line-height: 19px;
+  font-family: MontserratLight, sans-serif;
+  background: #FFFFFF 0 0 no-repeat padding-box;
+  box-shadow: 0 2px 6px #0000000A;
+  box-sizing: border-box;
+  height: 100%;
+}
+.trinity-page .trinity-section-body .description {
+  color: #B7B6B6;
+  font-weight: 300;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+.trinity-page .trinity-section-body.plan-section {
+  user-select: none;
+  font-size: 16px;
+  height: auto;
+}
+.trinity-page .trinity-section-body.plan-section .plan-description {
+  width: 50%;
+}
+.trinity-page .trinity-section-body.plan-section a {
+  color: #FF0066;
+  text-decoration: none;
+  font-family: "MontserratRegular";
+}
+.trinity-page .trinity-section-body.plan-section .token-label {
+  margin-top: 25px;
+}
+.trinity-page .trinity-section-body.plan-section .curr-plan,
+.trinity-page .trinity-section-body.plan-section .token-label {
+  height: 31px;
+  font-family: MontserratRegular;
+  font-size: 16px;
+}
+.trinity-page .trinity-section-body.plan-section .plan-name {
+  margin-top: 10px;
+  font-family: MontserratBold;
+  font-size: 18px;
+  height: 31px;
+  color: #7f7f97;
+}
+.trinity-page .trinity-section-body.plan-section .feature-title {
+  font-family: MontserratSemiBold;
+}
+.trinity-page .trinity-section-body.plan-section .feature-title.large-title {
+  line-height: 50px;
+}
+.trinity-page .trinity-section-body.plan-section .feature-title.large-title span {
+  font-family: MontserratBlack;
+  font-size: 40px;
+}
+.trinity-page .trinity-section-body.plan-section .feature-description {
+  font-size: 14px;
+  font-family: MontserratMedium;
+}
+.trinity-page .trinity-section-body.plan-section .bright {
+  font-size: 50px;
+  color: #FFCC00;
+  color: #777777;
+}
+.trinity-page .trinity-section-body.plan-section .bright + span.articles-limit {
+  color: #777777;
+  font-size: 20px;
+}
+.trinity-page .trinity-section-body.plan-section .verified-message {
+  color: #00cc66;
+}
+.trinity-page .trinity-section-body.plan-section .verified-message:before {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  content: "";
+  background: #00cc66;
+  background-repeat: no-repeat;
+  background-position: 2px 4px;
+  vertical-align: middle;
+  border-radius: 50%;
+  margin-right: 6px;
+  background-image: url("../assets/icons/check.svg");
+}
+.trinity-page .trinity-section-body.plan-section .verified-message ~ div {
+  margin-top: 15px;
+  font-family: MontserratSemiBold;
+}
+.trinity-page .trinity-section-body.plan-section .verified-message ~ div a {
+  text-decoration: underline;
+  font-family: MontserratSemiBold;
+}
+.trinity-page .trinity-section-body .section-form-group {
+  margin-bottom: 20px;
+  font-family: MontserratLight;
+}
+.trinity-page .trinity-section-body .section-form-group b {
+  font-family: MontserratMedium;
+}
+.trinity-page .trinity-section-body .section-form-group input.hidden {
+  display: none;
+}
+.trinity-page .trinity-section-body .section-form-group > .section-form-title {
+  font-family: MontserratRegular;
+  margin-bottom: 10px;
+  display: inline-block;
+  color: #000033;
+  font-size: 16px;
+}
+.trinity-page .publisher-token-notification div {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.trinity-page .save-button {
+  line-height: 40px;
+  font-weight: 300;
+  font-size: 14px;
+  color: #fff !important;
+  background: #FF0066;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  border: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0 20px;
+  font-family: MontserratMedium;
+  max-width: 100%;
+  border-radius: 4px;
+  transition: all 200ms ease-out;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  width: 266px;
+}
+.trinity-page .save-button:hover {
+  background: #951d51;
+  transition: all 200ms ease-out;
+}
+.trinity-page .trinity-save-account {
+  display: flex;
+  align-items: flex-start;
+}
+.trinity-page .trinity-save-account .use-account-key-button {
+  line-height: 40px;
+  font-weight: 300;
+  font-size: 14px;
+  color: #fff !important;
+  background: #FF0066;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  border: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0 20px;
+  font-family: MontserratMedium;
+  max-width: 100%;
+  border-radius: 4px;
+  transition: all 200ms ease-out;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  min-width: 115px;
+  background: transparent;
+  color: #FF0066 !important;
+  border: #FF0066 solid 1px;
+}
+.trinity-page .trinity-save-account .use-account-key-button:hover {
+  background: #951d51;
+  transition: all 200ms ease-out;
+}
+.trinity-page .trinity-save-account .use-account-key-button:hover {
+  color: white !important;
+  background: #FF0066;
+}
+.trinity-page .trinity-save-account .use-account-key-button + p.description {
+  margin-left: 25px;
+}
+.trinity-page .trinity-save-account .use-account-key-button.trinity-loader {
+  cursor: progress;
+  color: #6b6b6b;
+  background: #bfbebe;
+}
+.trinity-page ::placeholder {
+  color: #C8C8C8 !important;
+}
+.trinity-page .install-key {
+  font-size: 18px;
+}
+
+.trinity-notification {
+  margin-left: -20px;
+  background: #FF2C2C;
+  text-align: center;
+  box-sizing: border-box;
+  width: calc(100% + 20px);
+  color: white;
+  font-family: MontserratRegular;
+  font-size: 14px;
+  line-height: 28px;
+  padding: 5px 10px 5px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.trinity-notification > span {
+  display: inline-block;
+}
+.trinity-notification .trinity-notification-close {
+  cursor: pointer;
+  position: absolute;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(../assets/icons/icon-close.svg);
+}
+.trinity-notification a {
+  color: white;
+  white-space: nowrap;
+}
+
+.components-tab-panel__tabs {
+  background: #f3f4f5;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  height: 50px;
+  border-top: 1px solid #e2e4e7;
+  border-bottom: 1px solid #e2e4e7;
+}
+.components-tab-panel__tabs .components-button {
+  height: 100%;
+  outline: none !important;
+  box-shadow: none !important;
+  background: inherit !important;
+  transition: none !important;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 0 15px;
+}
+.components-tab-panel__tabs .components-button.is-active {
+  border-bottom: 3px solid #007cba;
+  font-weight: bold;
+}
+
+.trinity-hide,
+.trinity-phpinfo iframe {
+  display: none;
+}
+
+#trinity-metabox .components-tab-panel__tab-content select {
+  min-width: 130px;
+}
+#trinity-metabox .components-tab-panel__tab-content .content {
+  display: none;
+}
+#trinity-metabox .components-tab-panel__tab-content .content.is-active {
+  display: block;
+}
+#trinity-metabox .components-tab-panel__tab-content .content[data-id=advanced] ul li {
+  padding: 10px 0;
+}
+#trinity-metabox .components-tab-panel__tab-content .content[data-id=advanced] ul label {
+  width: 180px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.trinity-submit-wrapper {
+  font-family: MontserratLight;
+  display: flex;
+  align-items: center;
+}
+
+.trinity-status-wrapper .status {
+  display: none;
+}
+.trinity-status-wrapper .status.show {
+  display: inline-block;
+}
+
+#trinity-admin .note {
+  color: #BD522E;
+}
+#trinity-admin .trinity-status-wrapper {
+  margin: 0;
+}
+#trinity-admin .activate-plugin .message {
+  color: red;
+  font-size: 15px;
+}
+
+#trinity-admin-logs table,
+#trinity-admin-logs tr,
+#trinity-admin-logs td {
+  padding: 10px;
+  border-collapse: collapse;
+  vertical-align: top;
+}
+#trinity-admin-logs .header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#trinity-admin-info .header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#trinity-admin-logs table {
+  width: 100%;
+}
+#trinity-admin-logs table thead {
+  font-weight: bold;
+}
+#trinity-admin-logs table thead .date {
+  width: 15%;
+}
+#trinity-admin-logs table thead .user-error {
+  width: 35%;
+}
+#trinity-admin-logs table tbody td:nth-child(3) {
+  word-break: break-all;
+  white-space: pre-line;
+}
+#trinity-admin-logs table tbody .info {
+  background: #c7e2f7;
+}
+#trinity-admin-logs table tbody .warn {
+  background: #ffffe5;
+}
+#trinity-admin-logs table tbody .error {
+  background: #ffcdcd;
+}
+
+#trinity-admin .advanced {
+  margin: 20px 0;
+  border: 1px solid red;
+  padding: 20px;
+  display: inline-block;
+}
+
+#trinity-save-publisher-token input.regular-text {
+  margin-right: 15px;
+}
+
+.bold-text {
+  font-family: "MontserratBold";
+}
