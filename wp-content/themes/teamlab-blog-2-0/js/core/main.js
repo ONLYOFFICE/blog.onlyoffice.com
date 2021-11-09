@@ -393,6 +393,29 @@ $(".advent-announce").on("click", function () {
     location.href = $("#banner_url").attr('href');
 });
 
+$('.overlay-trigger').click(function(event){
+    event.preventDefault(); 
+    $('#expose-mask').fadeIn(100, function(){
+        $('.overlay-box').css({'display':'block'});
+    });
+});
+
+$(".img-popup").on('click', function() {
+    $src = $(this).attr('src');
+    $(".overlay-dark").css('display', 'block');
+    $('.overlay-padding').css('opacity', 1);
+    $('.img-overlay').attr('src', $src);
+    $('.overlay-padding').css('transform', 'translate(-50%, -50%) scale(1, 1)');
+});
+
+$(".overlay-dark, .close-overlay").on('click', function() {
+    $(".overlay-dark").css('display', 'none');
+    $('.overlay-padding').css('opacity', 0);
+    setTimeout(function() {
+        $('.overlay-padding').css('transform', 'translate(-50%, 0) scale(0, 0)');
+    }, 100);
+});
+
 
 window.onload = function () {
     var $adventAnnounce = $('.advent-announce');

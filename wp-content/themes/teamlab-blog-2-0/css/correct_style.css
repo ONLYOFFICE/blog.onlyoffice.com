@@ -984,7 +984,8 @@ main{
 .popup .subscribe-white{
     z-index: 1003;
 }
-.close-popup{
+.close-popup,
+.close-overlay{
     position: absolute;
     top: 15px;
     right: 15px;
@@ -993,7 +994,8 @@ main{
     cursor: pointer;
     z-index: 1003;
 }
-.close-popup:before{
+.close-popup:before,
+.close-overlay:before{
     content:'';
     background-color: #ffffff;
     position: absolute;
@@ -1004,7 +1006,8 @@ main{
     left: -4px;
     z-index: 1004;
 }
-.close-popup:after {
+.close-popup:after,
+.close-overlay:after {
     content: '';
     background-color: #ffffff;
     position: absolute;
@@ -2710,3 +2713,36 @@ a img.aligncenter {
     margin: 0;
     padding: 0 4px 5px;
 }
+.img-popup{
+    cursor: pointer;
+}
+.img-overlay {
+    max-width: 80vw;
+    max-height: 80vh;
+}
+  
+  .overlay-dark {
+    top: 0;
+    position: fixed;
+    background-color: rgb(119, 119, 119);
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+    z-index: 150;
+    display: none;
+  }
+
+  .overlay-padding{
+    position: fixed;
+    top: 50%;
+    max-height: 80%;
+    left: 50%;
+    transform: translate(-50%, 0) scale(0, 0);
+    z-index: 151;
+    transition: all .1s ease;
+  }
+
+  .close-overlay{
+      top: -30px;
+      right: -30px;
+  }
