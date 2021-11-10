@@ -1326,6 +1326,14 @@ body.desktop .button.red.disabled:visited {
   #post-content .content h6 {
       font-size: 14px;
   }
+  .img-overlay {
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+  .close-overlay{
+    top: -30px;
+    right: 0;
+  }
 }
 @media screen and (max-width: 549px) {
   .ListSocLink {

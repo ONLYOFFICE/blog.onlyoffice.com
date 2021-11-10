@@ -313,6 +313,12 @@ global $current_language;
                                 <div class="close-popup"></div>
                             </div>
                         </div>
+                        <div class="overlay-dark"></div>
+                        <div class="overlay-padding">
+                            <img class="img-overlay">
+                            <div class="close-overlay"></div>
+                        </div>
+                        
                 </header>
             </div>
         </div>
