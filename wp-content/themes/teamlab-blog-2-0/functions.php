@@ -481,6 +481,14 @@ function send_confirmation_email()
     wp_die();
 }
 
+/**********************Added class for image popup*************************/
+
+function add_image_class($class){
+    $class .= ' img-popup';
+    return $class;
+}
+add_filter('get_image_tag_class','add_image_class');
+
 /************ Recaptcha 
 
             
