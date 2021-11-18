@@ -492,9 +492,17 @@ add_filter('get_image_tag_class','add_image_class');
 /**********************Filter for import Posts in Forum *************************/
 
 function wpdc_custom_publish_format_html( $input, $post_id ) {
-	$permalink = get_the_permalink( $post_id );
 	ob_start();
-	echo $permalink;
+	?>
+    <noindex>
+	<small>
+        <?php echo esc_html( Vars::Vget_text_options( 'published-at-text' ) ); ?>
+		{blogurl}
+	</small>
+    <br>
+    {excerpt}
+    </noindex>
+	<?php
 	$output = ob_get_clean();
 
 	return $output;
