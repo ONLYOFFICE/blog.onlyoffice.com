@@ -489,26 +489,6 @@ function add_image_class($class){
 }
 add_filter('get_image_tag_class','add_image_class');
 
-/**********************Filter for import Posts in Forum *************************/
-
-function wpdc_custom_publish_format_html( $input, $post_id ) {
-	ob_start();
-	?>
-    <noindex>
-	<small>
-        <?php echo esc_html( $self::Vget_text_options( 'published-at-text' ) ); ?>
-		{blogurl}
-	</small>
-    <br>
-    {excerpt}
-    </noindex>
-	<?php
-	$output = ob_get_clean();
-
-	return $output;
-}
-add_filter( 'discourse_publish_format_html', 'wpdc_custom_publish_format_html', 10, 2 );
-
 /************ Recaptcha 
 
             
