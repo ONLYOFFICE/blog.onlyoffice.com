@@ -491,15 +491,17 @@ add_filter('get_image_tag_class','add_image_class');
 
 /**********************Filter for import Posts in Forum *************************/
 
-function wpdc_custom_publish_format_html( $post_id = null ) {
+function wpdc_custom_publish_format_html( $input, $post_id ) {
 	ob_start();
 	?>
-	<small><?php echo esc_html( $self::get_text_options( 'published-at-text' ) ); ?>
+    <noindex>
+	<small>
+        <?php echo esc_html( $self::Vget_text_options( 'published-at-text' ) ); ?>
 		{blogurl}
-	</small><br><noindex>
-        {excerpt}
+	</small>
+    <br>
+    {excerpt}
     </noindex>
-    
 	<?php
 	$output = ob_get_clean();
 
