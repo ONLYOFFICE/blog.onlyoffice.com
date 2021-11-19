@@ -489,6 +489,21 @@ function add_image_class($class){
 }
 add_filter('get_image_tag_class','add_image_class');
 
+/**********************Added noindex tag for forum content*************************/
+function forum_publish_format_html( $input, $post_id ) {
+    $post = get_post( $post_id );
+    ob_start();
+    ?>
+    <noindex>
+    <small>Originally published at: {blogurl}</small><br>
+    {excerpt}
+    </noindex>
+    <?php
+    $output = ob_get_clean();
+    return $output;
+}
+add_filter( 'discourse_publish_format_html', 'forum_publish_format_html', 10, 2 );
+
 /************ Recaptcha 
 
             
