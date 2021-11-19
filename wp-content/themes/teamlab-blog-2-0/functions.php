@@ -496,7 +496,6 @@ function forum_publish_format_html( $input, $post_id ) {
     ?>
     <noindex>
     <small>Originally published at: {blogurl}</small><br>
-    {excerpt}
     </noindex>
     <?php
     $output = ob_get_clean();
