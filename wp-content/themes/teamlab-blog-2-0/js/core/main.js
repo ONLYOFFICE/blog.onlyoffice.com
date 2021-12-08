@@ -389,10 +389,6 @@ $("#for_developers_div").on("click", function () {
     location.href = $("#navitem_integration_for_developers").attr('href');
 });
 
-$(".advent-announce").on("click", function () {
-    location.href = $("#banner_url").attr('href');
-});
-
 $('.overlay-trigger').click(function(event){
     event.preventDefault(); 
     $('#expose-mask').fadeIn(100, function(){

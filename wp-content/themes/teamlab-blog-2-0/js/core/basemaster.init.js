@@ -11,10 +11,10 @@ var mobileMenu = function() {
     jQuery('ul.akkordeon > li > a').unbind('click');
     jQuery('ul.akkordeon > li > a').click(function (event) {
         if (!jQuery(this).hasClass('active')) {
-            jQuery('ul.akkordeon > li > a').removeClass('active').next('div').slideUp();
+            jQuery('ul.akkordeon > li > a').removeClass('active');
             jQuery(this).addClass('active');
         } else {
-            jQuery(this).removeClass('active').next('div').slideUp();
+            jQuery(this).removeClass('active');
         }
         event.stopPropagation();
     });
@@ -31,7 +31,6 @@ var mouseleaveCloseMenu = function() {
     }
 };
 jQuery(document).ready(function ($) {
-    jQuery('.navitem_description').click(function () { return false; });
     if (jQuery(window).width() < 1024) {
         jQuery(".mobile_no_link").removeAttr("href");
     }
@@ -49,7 +48,7 @@ jQuery(document).ready(function ($) {
                 }
             }
         } 
-    });
+    })
     //init Top Navigation Menu events
     if (jQuery(window).width() >= '1024') {
         desktopMenu();
@@ -158,7 +157,6 @@ jQuery(document).ready(function ($) {
 
     });
     if (typeof(jQuery.dropdownToggle) === "function") {
-
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min)) + min;
         }
