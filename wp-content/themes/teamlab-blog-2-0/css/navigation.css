@@ -18,8 +18,8 @@
   position: fixed;
   top: 0;
 }
-.navitem_solutions_menu{
-  left:0;
+.navitem_solutions_menu {
+  left: 0;
 }
 /* .pushy {
   position: absolute;
@@ -45,7 +45,7 @@ nav .pushy-content {
   max-width: 768px;
   width: 45vw;
 }
-nav > div{
+nav > div {
   visibility: inherit;
 }
 nav > div > ul,
@@ -65,9 +65,8 @@ nav > div > ul > li {
   padding: 0;
   margin: 0;
   height: 55px;
-
 }
-nav > div > ul, 
+nav > div > ul,
 nav > div > ul > li {
   display: inline-block;
   list-style-type: none;
@@ -81,7 +80,7 @@ nav > div > ul > li > a {
   text-transform: uppercase;
   border-bottom-color: #f94a0c;
 }
-nav > div > ul > li > a.fr_FR{
+nav > div > ul > li > a.fr_FR {
   padding-left: 7px;
   padding-right: 7px;
 }
@@ -117,14 +116,13 @@ nav .nav-down-triangle {
 .menuitem {
   white-space: nowrap;
 }
-#navitem_features, 
-#navitem_download, 
-#navitem_partners, 
-#navitem_solutions, 
-#navitem_blockchain, 
+#navitem_features,
+#navitem_download,
+#navitem_partners,
+#navitem_solutions,
+#navitem_blockchain,
 #navitem_prices,
-#navitem_integrations 
-a.singin {
+#navitem_integrations a.singin {
   color: #444444;
   text-decoration: none;
   font-size: 12px;
@@ -139,7 +137,7 @@ a.singin {
 #navitem_prices_menu .dropdown-content,
 #navitem_solutions_menu .dropdown-content,
 #navitem_features_menu .dropdown-content,
-#navitem_integrations_menu .dropdown-content{
+#navitem_integrations_menu .dropdown-content {
   list-style-type: none;
   margin: 0;
   display: block;
@@ -174,14 +172,14 @@ a.dropdown-item {
   white-space: nowrap;
 }
 a.dropdown-item:hover {
-  color:#ff642e;;
+  color: #ff642e;
   -webkit-transition: none;
   -moz-transition: none;
   -o-transition: none;
   transition: none;
 }
-a[href=''].dropdown-item:hover, 
-a:not([href]).dropdown-item:hover{
+a[href=""].dropdown-item:hover,
+a:not([href]).dropdown-item:hover {
   color: initial;
 }
 a.dropdown-item#navitem_download_signin {
@@ -204,7 +202,7 @@ a.singin {
   text-decoration: none;
   font-size: 12px;
   line-height: 12px;
-  font-family: 'Open Sans', sans-serif, Arial;
+  font-family: "Open Sans", sans-serif, Arial;
   font-weight: 600;
   vertical-align: middle;
   display: inline-flex;
@@ -220,8 +218,7 @@ a.singin {
 #navitem_solutions:hover,
 #navitem_features:hover,
 #navitem_prices:hover,
-#navitem_integrations:hover
-a.singin:hover {
+#navitem_integrations:hover a.singin:hover {
   border-color: #f94a0c;
   cursor: pointer;
 }
@@ -265,28 +262,26 @@ a.singin.active:hover {
   padding: 0;
 }
 
-.latestReleasesBox{
+.latestReleasesBox {
   width: 100%;
   margin: 0;
   padding: 0;
-  background-color:white;
+  background-color: white;
 }
-.latestReleasesBox:before{
+.latestReleasesBox:before {
   width: 95%;
   height: 0;
   margin: 0 auto;
-  border-top: 1px solid
-  #efefef;
+  border-top: 1px solid #efefef;
   display: block;
-  content: '';
+  content: "";
 }
 
-.latestReleasesBox a{
+.latestReleasesBox a {
   display: block;
   background: none;
   border: 0;
-  color:
-  #ff642e;
+  color: #ff642e;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -297,32 +292,27 @@ a.singin.active:hover {
   white-space: nowrap;
 }
 
-.latestReleasesBox a:hover{
+.latestReleasesBox a:hover {
   background-color: #f7f7f7;
 }
 
 .third-level-content li a {
-        display: block;
-        background: none;
-        border: 0;
-        color: #333;
-        font-family: "Open Sans",sans-serif,Arial;
-        font-size: 12px;
-        font-weight: 400;
-        cursor: pointer;
-        line-height: 36px;
-        margin: 0;
-        padding: 0 25px;
-        text-decoration: none;
-        white-space: nowrap;
+  display: block;
+  background: none;
+  border: 0;
+  color: #333;
+  font-family: "Open Sans", sans-serif, Arial;
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  line-height: 36px;
+  margin: 0;
+  padding: 0 25px;
+  text-decoration: none;
+  white-space: nowrap;
 }
 .third-level-content li a:hover {
   background-color: #dcdcdc;
-}
-#navitem_connectors_third_level_menu:hover .third-level-content,
-#navitem_comserver_third_level_menu:hover .third-level-content,
-#navitem_compare_third_level_menu:hover .third-level-content {
-  display:block;
 }
 a#banners {
   display: none;
@@ -348,7 +338,7 @@ a#banners {
 .nav_free_for_np .top_free_button {
   display: inline-block;
   background-color: #f94a0c;
-  text-transform:uppercase;
+  text-transform: uppercase;
   color: #fff;
   font-weight: 600;
   font-size: 18px;
@@ -358,16 +348,16 @@ a#banners {
 }
 /*NEW MENU*/
 .navitem_description {
-    color: #999;
-    font-size: 13px;
-    line-height: 1.4em;
-    text-transform: none;
-    padding: 0 25px 20px;
-    text-align:left;
+  color: #999;
+  font-size: 13px;
+  line-height: 1.4em;
+  text-transform: none;
+  padding: 0 25px 20px;
+  text-align: left;
 }
 ul.navitem_2nd_menu {
-    padding: 0 0 10px;
-    margin: 0;
+  padding: 0 0 10px;
+  margin: 0;
 }
 ul.navitem_2nd_menu li a.nav_2nd_menu_link {
   display: block;
@@ -382,7 +372,8 @@ ul.navitem_2nd_menu li a.nav_2nd_menu_link {
   padding: 4px 32px 4px 48px;
   text-decoration: none;
 }
-ul.navitem_2nd_menu li a.nav_2nd_menu_link:hover, ul.navitem_2nd_menu li a.nav_2nd_menu_link.redirect {
+ul.navitem_2nd_menu li a.nav_2nd_menu_link:hover,
+ul.navitem_2nd_menu li a.nav_2nd_menu_link.redirect {
   color: #ff642e;
   -webkit-transition: none;
   -moz-transition: none;
@@ -392,7 +383,7 @@ ul.navitem_2nd_menu li a.nav_2nd_menu_link:hover, ul.navitem_2nd_menu li a.nav_2
 ul.navitem_2nd_menu li a.nav_2nd_menu_link#navitem_solutions_signin {
   color: #444;
 }
-ul.navitem_2nd_menu li a.nav_2nd_menu_link.signIn{
+ul.navitem_2nd_menu li a.nav_2nd_menu_link.signIn {
   color: #ff642e;
 }
 #navitem_blockchain {
@@ -406,7 +397,7 @@ ul.navitem_2nd_menu li a.nav_2nd_menu_link.signIn{
 }
 div.custom-select {
   background: none;
-  font-family: "Open Sans",sans-serif,"Arial";
+  font-family: "Open Sans", sans-serif, "Arial";
   font-size: 12px;
   font-weight: 400;
   position: relative;
@@ -423,206 +414,205 @@ div.custom-select div.selector {
   z-index: 0;
   cursor: pointer;
 }
-.accented{
+.accented {
   color: #ff642e;
 }
 
-
 #latest_release_date {
-      color: #808080;
-      font-size: 13px;
-      line-height: 1.6em;
-      padding-bottom: 10px;
-  }
+  color: #808080;
+  font-size: 13px;
+  line-height: 1.6em;
+  padding-bottom: 10px;
+}
 
-  #security_header {
-      min-width: 180px;
-  }
+#security_header {
+  min-width: 180px;
+}
 .menu_pic_div {
   cursor: pointer;
-  margin: 12px 24px 0 32px;
+  margin: 16px 32px 0;
 }
 
 .menu_pic_div .menu_pic_img {
-      background-repeat: no-repeat;
-      background-size: contain;
-      height: 88px;
-      margin-bottom: 16px;
-      width: 180px;
-  }
-
-.menu_pic_div .menu_pic_header {
-      color: #444444;
-      font-size: 14px;
-      line-height: 1.6em;
-      min-width: 192px;
-      padding-bottom: 10px;
-  }
-  .menu_pic_header:hover {
-    color: #ff6f3d;;
-  }
-
-  #customer_stories_img{
-    background-image: url('../images/img_for_header/vegan_in_leipzig_onlyoffice.jpg');
-  }
-
-  #security_img{
-    background-image: url('../images/img_for_header/menu_security.svg');
-  }
-
-  #reseller_img{
-    background-image: url('../images/img_for_header/menu_reseller.svg');
-  }
-  #compare_img{
-    background-image: url('../images/img_for_header/menu_compare_edition.svg');
-  }
-
-  #for_developers_img{
-    background-image: url('../images/img_for_header/menu_for_developers.png');
-  }
-
-
-@media screen and (max-width: 1280px){
-  #navitem_features_menu, 
-  #navitem_partnership_menu, 
-  #navitem_prices_menu, 
-  #navitem_solutions_menu {
-      left: -30%;
-  }
-  #navitem_download_menu{
-      left: -200%;
-  }
-  #navitem_about_menu{
-      left: -60%;
-  }
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 88px;
+  margin-bottom: 16px;
+  width: 180px;
 }
 
+.menu_pic_div .menu_pic_header {
+  color: #444444;
+  font-size: 14px;
+  line-height: 1.6em;
+  min-width: 192px;
+}
+.menu_pic_header:hover {
+  color: #ff6f3d;
+}
 
-@media screen and (min-width: 1024px){
-  #navitem_features_menu .dropdown-content, 
-  #navitem_about_menu .dropdown-content, 
-  #navitem_download_menu .dropdown-content, 
-  #navitem_partnership_menu .dropdown-content, 
-  #navitem_prices_menu .dropdown-content, 
+#customer_stories_img {
+  background-image: url("../images/img_for_header/vegan_in_leipzig_onlyoffice.jpg");
+}
+
+#security_img {
+  background-image: url("../images/img_for_header/menu_security.svg");
+}
+
+#reseller_img {
+  background-image: url("../images/img_for_header/menu_reseller.svg");
+}
+#compare_img {
+  background-image: url("../images/img_for_header/menu_compare_edition.svg");
+}
+
+#for_developers_img {
+  background-image: url("../images/img_for_header/menu_for_developers.png");
+}
+#latest_events_img{
+  background-image: url("../images/img_for_header/onlyoffice_linux_foundation.svg")
+}
+
+@media screen and (min-width: 1024px) {
+  #navitem_features_menu .dropdown-content,
+  #navitem_about_menu .dropdown-content,
+  #navitem_download_menu .dropdown-content,
+  #navitem_partnership_menu .dropdown-content,
+  #navitem_prices_menu .dropdown-content,
   #navitem_solutions_menu .dropdown-content,
-  #navitem_integrations_menu .dropdown-content{
-      list-style-type: none;
-      margin: 0;
-      padding: 27px 0;
-      display: block;
-      min-width: 190px;
-      background: #fff;
-      text-align: left;
+  #navitem_integrations_menu .dropdown-content {
+    list-style-type: none;
+    margin: 0;
+    display: block;
+    min-width: 190px;
+    background: #fff;
+    text-align: left;
   }
-  #navitem_solutions_menu .dropdown-content>li {
-      display: table-cell;
-      width: 25%;
-      border-right: 1px solid #ebebeb;
+  #navitem_solutions_menu .dropdown-content > li {
+    display: table-cell;
+    width: 25%;
   }
-  #navitem_solutions_saas_mobile, 
+  #navitem_solutions_saas_mobile,
   #navitem_solutions_server_enterprice_mobile,
-  #navitem_solutions_connectors_mobile, 
+  #navitem_solutions_connectors_mobile,
   #navitem_solutions_integration_mobile,
   #navitem_solutions_apps_comparison_overview {
-      display: none;
+    display: none;
   }
-  #navitem_features_menu:before, 
-  #navitem_about_menu:before, 
-  #navitem_download_menu:before, 
-  #navitem_partnership_menu:before, 
-  #navitem_prices_menu:before, 
+  #navitem_features_menu:before,
+  #navitem_about_menu:before,
+  #navitem_download_menu:before,
+  #navitem_partnership_menu:before,
+  #navitem_prices_menu:before,
   #navitem_solutions_menu:before,
   #navitem_integrations_menu:before {
-      display: block;
-      position: absolute;
-      width: 0;
-      content: "";
-      height: 1px;
-      background-color: #ff642e;
-      transition: width .2s ease-in-out,left .2s ease-in-out;
-      left: 50%;
-      top: 0;
+    display: block;
+    position: absolute;
+    width: 0;
+    content: "";
+    height: 1px;
+    background-color: #ff642e;
+    transition: width 0.2s ease-in-out, left 0.2s ease-in-out;
+    left: 50%;
+    top: 0;
   }
-  #navitem_features_menu:after, 
-  #navitem_about_menu:after, 
-  #navitem_download_menu:after, 
-  #navitem_partnership_menu:after, 
-  #navitem_prices_menu:after, 
+  #navitem_features_menu:after,
+  #navitem_about_menu:after,
+  #navitem_download_menu:after,
+  #navitem_partnership_menu:after,
+  #navitem_prices_menu:after,
   #navitem_solutions_menu:after,
   #navitem_integrations_menu:after {
-    display: block; position: absolute;  width: 0; content: "";
-    height: 1px; 
+    display: block;
+    position: absolute;
+    width: 0;
+    content: "";
+    height: 1px;
     background-color: #ff642e;
-    transition: width .2s ease-in-out; 
-    left: 50%; top: 0;
+    transition: width 0.2s ease-in-out;
+    left: 50%;
+    top: 0;
   }
-  #navitem_about_menu.top_border:before, 
-  #navitem_download_menu.top_border:before ,
-  #navitem_partnership_menu.top_border:before, 
-  #navitem_prices_menu.top_border:before ,
-  #navitem_solutions_menu.top_border:before, 
+  #navitem_about_menu.top_border:before,
+  #navitem_download_menu.top_border:before,
+  #navitem_partnership_menu.top_border:before,
+  #navitem_prices_menu.top_border:before,
+  #navitem_solutions_menu.top_border:before,
   #navitem_features_menu.top_border:before,
-  #navitem_integrations_menu.top_border:before  {
-    width:50%; left:0;
+  #navitem_integrations_menu.top_border:before {
+    width: 50%;
+    left: 0;
   }
-  #navitem_about_menu.top_border:after, 
-  #navitem_download_menu.top_border:after ,
-  #navitem_partnership_menu.top_border:after, 
-  #navitem_prices_menu.top_border:after ,
-  #navitem_solutions_menu.top_border:after, 
+  #navitem_about_menu.top_border:after,
+  #navitem_download_menu.top_border:after,
+  #navitem_partnership_menu.top_border:after,
+  #navitem_prices_menu.top_border:after,
+  #navitem_solutions_menu.top_border:after,
   #navitem_features_menu.top_border:after,
-  #navitem_integrations_menu.top_border:after  {
-    width:50%;
+  #navitem_integrations_menu.top_border:after {
+    width: 50%;
   }
-  #navitem_features_menu, 
-  #navitem_about_menu, #navitem_download_menu,
-  #navitem_partnership_menu, 
-  #navitem_prices_menu, 
+  #navitem_features_menu,
+  #navitem_about_menu,
+  #navitem_download_menu,
+  #navitem_partnership_menu,
+  #navitem_prices_menu,
   #navitem_solutions_menu,
   #navitem_integrations_menu {
-      display: none;
-      position: absolute;
-      z-index: 1999;
-      border: 0 none;
-      top: 70px;
-      box-shadow: 0 40px 40px rgba(0,0,0,.15);
-      -moz-box-shadow: 0 40px 40px rgba(0,0,0,.15);
-      -webkit-box-shadow: 0 40px 40px rgba(0,0,0,.15);
-      right: auto;
+    display: none;
+    position: absolute;
+    z-index: 1999;
+    border: 0 none;
+    top: 70px;
+    box-shadow: 0px 20px 50px rgba(85, 85, 85, 0.15);
+    -moz-box-shadow: 0px 20px 50px rgba(85, 85, 85, 0.15);
+    -webkit-box-shadow: 0px 20px 50px rgba(85, 85, 85, 0.15);
+    border-radius: 0px 0px 9px 9px;
+    right: auto;
+    overflow: hidden;
   }
 
-  #navitem_download_menu .dropdown-content>li,
-  #navitem_features_menu .dropdown-content>li,
-  #navitem_solutions_menu .dropdown-content>li,
-  #navitem_prices_menu .dropdown-content>li,
-  #navitem_integrations_menu .dropdown-content>li{
-      display: table-cell;
-      border-right: 1px solid #ebebeb;
+  #navitem_download_menu .dropdown-content > li,
+  #navitem_features_menu .dropdown-content > li,
+  #navitem_solutions_menu .dropdown-content > li,
+  #navitem_prices_menu .dropdown-content > li,
+  #navitem_integrations_menu .dropdown-content > li,
+  #navitem_partnership_menu .dropdown-content > li,
+  #navitem_about_menu .dropdown-content > li{
+    display: table-cell;
+    padding: 27px 0;
   }
   #navitem_about_menu .dropdown-content > li {
-    min-width: 246px;
+    min-width: 312px;
   }
-  #navitem_download_menu .dropdown-content > li:first-of-type{
+  #navitem_download_menu .dropdown-content > li:first-of-type {
     min-width: 330px;
   }
-  #navitem_download_menu .dropdown-content > li:last-of-type{
-    min-width: 254px;
+  #navitem_download_menu .dropdown-content > li:last-of-type {
+    min-width: 272px;
     border-right: 0 none;
   }
-  #navitem_features_menu .dropdown-content > li:first-of-type{
-    min-width: 246px;
+  #navitem_features_menu .dropdown-content > li:first-of-type {
+    min-width: 280px;
   }
-  #navitem_features_menu .dropdown-content > li:nth-of-type(2){
+  #navitem_features_menu .dropdown-content > li:nth-of-type(2) {
+    min-width: 280px;
+  }
+  #navitem_features_menu .dropdown-content > li:last-of-type {
     min-width: 272px;
+  }
+  #navitem_partnership_menu .dropdown-content > li:first-of-type,
+  #navitem_partnership_menu .dropdown-content > li:last-of-type{
+    min-width: 312px;
   }
   #navitem_features_menu .dropdown-content > li:last-of-type,
   #navitem_prices_menu .dropdown-content > li:last-of-type,
   #navitem_solutions_menu .dropdown-content > li:last-of-type,
-  #navitem_integrations_menu .dropdown-content > li:last-of-type{
+  #navitem_integrations_menu .dropdown-content > li:last-of-type {
     border-right: 0 none;
   }
 
-  #navitem_integrations_menu .dropdown-content > li.li_without_border{
+  #navitem_integrations_menu .dropdown-content > li.li_without_border {
     border-right: 0 none;
   }
 
@@ -630,55 +620,56 @@ div.custom-select div.selector {
     width: 25%;
   }
 
-  #navitem_solutions_menu .dropdown-content>li:first-of-type {
+  #navitem_solutions_menu .dropdown-content > li:first-of-type {
     min-width: 240px;
   }
 
-  #navitem_solutions_menu .dropdown-content>li:nth-of-type(2) {
+  #navitem_solutions_menu .dropdown-content > li:nth-of-type(2) {
     min-width: 236px;
   }
 
-  #navitem_prices_menu .dropdown-content>li {
-    min-width: 236px;
+  #navitem_prices_menu .dropdown-content > li {
+    min-width: 312px;
+  }
+  #navitem_prices_menu .dropdown-content > li:last-of-type{
+    min-width: 272px;
   }
 
-  #navitem_integrations_menu .dropdown-content>li:first-of-type,
-  #navitem_integrations_menu .dropdown-content>li:nth-of-type(2) {
-    min-width: 180px;
+  #navitem_integrations_menu .dropdown-content > li:first-of-type,
+  #navitem_integrations_menu .dropdown-content > li:nth-of-type(2) {
+    min-width: 244px;
   }
 
-  #navitem_integrations_menu .dropdown-content>li:last-of-type {
+  #navitem_integrations_menu .dropdown-content > li:last-of-type {
     max-width: 264px;
   }
 
   #navitem_prices_menu #navitem_prices_reseller {
-    line-height: 1.33em;
-    padding-top: 10px;
     white-space: initial;
   }
 
-  .all-menu-items>li:nth-of-type(3),
-  .all-menu-items>li:nth-of-type(4),
-  .all-menu-items>li:nth-of-type(5),
-  .all-menu-items>li:nth-of-type(6) {
+  .all-menu-items > li:nth-of-type(3),
+  .all-menu-items > li:nth-of-type(4),
+  .all-menu-items > li:nth-of-type(5),
+  .all-menu-items > li:nth-of-type(6) {
     position: relative;
   }
 
-  .all-menu-items>li:nth-of-type(1),
-  .all-menu-items>li:nth-of-type(2) {
+  .all-menu-items > li:nth-of-type(1),
+  .all-menu-items > li:nth-of-type(2) {
     position: static;
   }
 
   ul.navitem_2nd_menu {
-    padding: 0 0 10px;
+    padding: 16px 0 24px;
     margin: 0;
   }
 
-  ul.navitem_2nd_menu li:first-child{
+  ul.navitem_2nd_menu li:first-child {
     white-space: nowrap;
   }
   ul.navitem_2nd_menu li a.nav_item_nowrap_link.second {
-    padding: 4px 48px 4px 8px;
+    padding: 4px 48px 4px 0px;
     white-space: nowrap;
   }
 
@@ -690,10 +681,13 @@ div.custom-select div.selector {
     color: #444444;
     font-size: 14px;
     cursor: pointer;
-    line-height: 1.6em;
-    margin: 0;
-    padding: 4px 32px 4px 48px;
+    line-height: 23px;
+    margin-bottom: 12px;
+    padding: 0 0 0 72px;
     text-decoration: none;
+  }
+  ul.navitem_2nd_menu li:last-child a.nav_2nd_menu_link  {
+    margin-bottom: 0;
   }
 
   ul.navitem_2nd_menu li a.nav_2nd_menu_link:hover {
@@ -705,6 +699,7 @@ div.custom-select div.selector {
   }
 
   ul.navitem_2nd_menu li a.nav_item_nowrap_link {
+    display: inline-block;
     text-transform: none;
     background: none;
     border: 0;
@@ -712,8 +707,8 @@ div.custom-select div.selector {
     font-size: 14px;
     cursor: pointer;
     line-height: 1.6em;
-    margin: 0;
-    padding: 4px 8px 4px 48px;
+    padding: 4px 0 4px 72px;
+    margin-bottom: 12px;
     text-decoration: none;
   }
 
@@ -724,12 +719,202 @@ div.custom-select div.selector {
     -o-transition: none;
     transition: none;
   }
+  a.dropdown-item {
+    display: block;
+    border: 0;
+    color: #444444;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    line-height: 24px;
+    margin: 0;
+    padding: 0 32px 0 68px;
+    text-decoration: none;
+    white-space: nowrap;
+    position: relative;
+  }
+  a.dropdown-item:before {
+    content: "";
+    display: block;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    left: 32px;
+    top: 0;
+    background-image: url("../images/img_for_header/icons.svg");
+    background-repeat: no-repeat;
+  }
+  #navitem_solutions_clients_apps:before {
+    background-position-y: -52px;
+  }
+  #navitem_solutions_clients_mobile_ios:before {
+    background-position-y: -78px;
+  }
+  #navitem_solutions_clients_mobile_android:before {
+    background-position-y: -104px;
+  }
+  #navitem_features_workspace:before {
+    background-position-y: -25px;
+  }
+  #navitem_link_personal:before{
+    background-position-y: -572px;
+  }
+  #navitem_download_desktop:before{
+    background-position-y: -156px;
+  }
+  #navitem_download_products:before{
+    background-position-y: -130px;
+  }
+  #navitem_hosters:before{
+    background-position-y: -182px;
+  }
+  #navitem_resellers:before{
+    background-position-y: -208px;
+  }
+  #navitem_find_partners:before{
+    background-position-y: -234px;
+  }
+  #navitem_submit_request:before{
+    background-position-y: -260px;
+  }
+  #navitem_about_about:before{
+    background-position-y: -286px;
+  }
+  #navitem_about_contribute:before{
+    background-position-y: -338px;
+  }
+  #navitem_about_customers:before{
+    background-position-y: -364px;
+  }
+  #navitem_about_awards:before{
+    background-position-y: -390px;
+  }
+  #navitem_about_events:before{
+    background-position-y: -468px;
+  }
+  #navitem_about_giftshop:before{
+    background-position-y: -520px;
+  }
+  #navitem_about_contacts:before{
+    background-position-y: -546px;
+  }
+  #navitem_about_blog:before{
+    background-position-y: -312px;
+  }
+  #navitem_about_pressdownloads:before{
+    background-position-y: -416px;
+  }
+  #navitem_about_helpcenter:before{
+    background-position-y: -625px;
+  }
+  #navitem_about_whitepapers:before{
+    background-position-y: -442px;
+  }
+  #navitem_about_webinars:before{
+    background-position-y: -598px;
+  }
+  #navitem_about_training_courses:before{
+    background-position-y: -494px;
+  }
+  #navitem_features_docs_editions,
+  #navitem_solutions_clients_workspace,
+  #navitem_prices_docs,
+  #navitem_prices_workspace,
+  #navitem_download_docs,
+  #navitem_download_workspace,
+  #navitem_about_resources {
+    background-color: #f5f5f5;
+    padding-left: 12px;
+    margin: 0 32px;
+    color: #666666;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    line-height: 32px;
+    letter-spacing: 0.04em;
+  }
+  #navitem_features_docs_editions:before,
+  #navitem_solutions_clients_workspace:before,
+  #navitem_prices_docs:before,
+  #navitem_prices_workspace:before,
+  #navitem_download_docs:before,
+  #navitem_download_workspace:before,
+  #navitem_features_security:before,
+  #navitem_integrations_menu a.dropdown-item:before,
+  #navitem_prices_menu a.dropdown-item:before,
+  #navitem_compare_third_level_menu a.dropdown-item:before,
+  #navitem_latest_events_third_level_menu a.dropdown-item:before,
+  #navitem_about_resources:before{
+    content: none;
+  }
+  #navitem_solutions_clients_apps,
+  #navitem_solutions_clients_mobile_ios,
+  #navitem_link_personal,
+  #navitem_download_desktop,
+  #navitem_partnership_menu a.dropdown-item,
+  #navitem_about_menu a.dropdown-item{
+    margin-bottom: 24px;
+  }
+  #navitem_features_menu .dropdown-content > li:last-of-type,
+  #navitem_integrations_menu .dropdown-content > li:last-of-type,
+  #navitem_prices_menu .dropdown-content > li:last-of-type,
+  #navitem_download_menu .dropdown-content > li:last-of-type,
+  #navitem_partnership_menu .dropdown-content > li:last-of-type{
+    background: #f9f9f9;
+  }
+  #navitem_features_security {
+    padding: 0 32px;
+  }
+  #navitem_security_third_level_menu a.dropdown-item,
+  #navitem_integrations_menu a.dropdown-item,
+  #navitem_reseller_third_level_menu a.dropdown-item,
+  #navitem_compare_third_level_menu a.dropdown-item,
+  #navitem_latest_events_third_level_menu a.dropdown-item{
+    padding: 0 32px;
+    margin-bottom: 24px;
+  }
+  #navitem_integrations_menu a.dropdown-item:last-child,
+  #navitem_about_menu a.dropdown-item:last-child {
+    margin-bottom: 0;
+  }
+  #navitem_features_menu .dropdown-content > li:first-of-type:before,
+  #navitem_about_menu .dropdown-content > li:first-of-type:before{
+    content: "";
+    display: block;
+    height: 410px;
+    width: 1px;
+    background-color: #ebebeb;
+    position: absolute;
+    top: 27px;
+    left: 295px;
+  }
+  #navitem_about_menu .dropdown-content > li:first-of-type:before{
+    left: 312px;
+    height: 322px;
+  }
+  #navitem_features_menu {
+    left: calc(50% - 480px);
+  }
+  #navitem_integrations_menu {
+    left: calc(50% - 480px);
+  }
+  #navitem_prices_menu {
+    left: calc(50% - 310px);
+  }
+  #navitem_about_menu{
+    left: calc(50% - 510px);
+  }
+  #navitem_download_menu{
+    left: calc(50% - 400px);
+  }
+  #navitem_partnership_menu{
+    left: calc(50% - 500px);
+  }
 }
 
-  
-@media screen and (max-width: 1024px){
-
-  nav > div > ul.all-menu-items{
+@media screen and (max-width: 1024px) {
+  nav > div > ul.all-menu-items {
     display: block;
     height: 100%;
     padding-top: 8px;
@@ -740,14 +925,14 @@ div.custom-select div.selector {
     min-height: 100%;
   }
   header {
-      width: 100%;
-      padding: 0;
-      z-index: 10000;
-      height: 48px;
-      align-items: center;
-      top: 0;
+    width: 100%;
+    padding: 0;
+    z-index: 10000;
+    height: 48px;
+    align-items: center;
+    top: 0;
   }
-  .advent-announce.push{
+  .advent-announce.push {
     -webkit-display: flex;
     -moz-display: flex;
     -ms-display: flex;
@@ -755,23 +940,27 @@ div.custom-select div.selector {
     display: flex;
     align-items: center;
     height: 48px;
-    background-image: url(../images/top_banner/banner-desktop-v6-4/left-icons-mob.svg), url(../images/top_banner/banner-desktop-v6-4/right-icons-mob.svg);
-    background-position: calc(50% - 144px) 8px, calc(50% + 144px) 6px;
+    background-image: url(../images/top_banner/advent_calendar/trees_mobile.svg);
+    background-position: 50% 0px;
   }
-  
+
   .advent-announce.push .advent-announce-text {
-    font-size: 13px;
+    font-size: 12px;
     line-height: 16px;
     padding: 8px 0;
     white-space: normal;
   }
-.advent-announce.push .advent-announce-text:after{
-  left: calc(100% - 3px);
-  top: calc(50% - 15px);
-}
-.advent-announce.push .advent-announce-text:before{
-  content: none;
-}
+  .advent-announce.push .advent-announce-text:after {
+    left: calc(100% - 3px);
+    top: calc(50% - 15px);
+  }
+  .advent-announce.push .advent-announce-text:before {
+    content: none;
+  }
+  .advent-announce.push .advent-announce-text b {
+    color: #ffffff;
+    font-weight: bold;
+  }
   .advent-desktop-hide {
     display: block;
   }
@@ -779,7 +968,7 @@ div.custom-select div.selector {
     display: none;
   }
 
-  .phone_wrapper{
+  .phone_wrapper {
     right: auto;
     left: 0;
     bottom: 0;
@@ -789,90 +978,94 @@ div.custom-select div.selector {
     height: 140px;
     background-color: white;
   }
-  
-  #navitem_about{
-    border:none;
+
+  #navitem_about {
+    border: none;
   }
   .ham_menu {
-      cursor: pointer;
-      display: block;
-      height: 18px;
-      left: 0;
-      margin: 0;
-      padding: 16px;
-      position: absolute;
-      top: 1px;
-      width: 30px;
-      z-index: 10000000;
+    cursor: pointer;
+    display: block;
+    height: 18px;
+    left: 0;
+    margin: 0;
+    padding: 16px;
+    position: absolute;
+    top: 1px;
+    width: 30px;
+    z-index: 10000000;
   }
-  .pushy, .push {
-      transition: transform .2s cubic-bezier(.16,.68,.43,.99);
+  .pushy,
+  .push {
+    transition: transform 0.2s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   }
 
-  .pushy{
+  .pushy {
     overflow: auto;
   }
   .ham_menu span {
-      background-color: #666;
-      display: block;
-      height: 2px;
-      margin: 0 0 4px;
-      width: 18px;
+    background-color: #666;
+    display: block;
+    height: 2px;
+    margin: 0 0 4px;
+    width: 18px;
   }
   .narrowheader .logo {
-      margin-left: 60px;
-      z-index: 14;
-      height: 48px;
-      background-size: auto 28px;
-      margin: auto;
-      background-position: 50%;
+    margin-left: 60px;
+    z-index: 14;
+    height: 48px;
+    background-size: auto 28px;
+    margin: auto;
+    background-position: 50%;
   }
-  nav>div ul li ul {
+  nav > div ul li ul {
     color: #666;
     margin: 0;
     width: auto;
   }
-  nav>div>ul {
-      width: 100%;
-      padding-top: 0;
+  nav > div > ul {
+    width: 100%;
+    padding-top: 0;
   }
-  nav>div ul li {
-      display: block;
-      width: auto;
-      height: auto;
-      position: relative;
-      font-size: 15px;
+  nav > div ul li {
+    display: block;
+    width: auto;
+    height: auto;
+    position: relative;
+    font-size: 15px;
   }
-  nav>div ul li a.menuitem {
-      color: #666;
-      display: block;
-      height: auto;
-      padding: 15px 25px 15px 40px;
-      text-align: left;
-      margin: 0;
+  nav > div ul li a.menuitem {
+    color: #666;
+    display: block;
+    height: auto;
+    padding: 15px 25px 15px 40px;
+    text-align: left;
+    margin: 0;
   }
 
   ul.navitem_2nd_menu li a.nav_2nd_menu_link {
-    padding: 6px 32px;
+    padding: 0px 32px;
   }
 
-  ul.navitem_2nd_menu li a.nav_2nd_menu_link, 
+  ul.navitem_2nd_menu li a.nav_2nd_menu_link,
   ul.navitem_2nd_menu li a.nav_item_nowrap_link {
     font-size: 16px;
   }
 
   ul.navitem_2nd_menu {
-    padding-bottom: 11px;
+    padding: 16px 0 24px;
+  }
+  ul.navitem_2nd_menu li a.nav_2nd_menu_link{
+    line-height: 26px;
+    padding-bottom: 10px;
   }
 
-  ul.navitem_2nd_menu li a.nav_2nd_menu_link {
-        line-height: 1.6em;
-        padding: 6px 32px;
+  ul.navitem_2nd_menu li:last-child a.nav_2nd_menu_link{
+    padding-bottom: 0;
   }
 
   ul.navitem_2nd_menu li a.nav_item_nowrap_link {
-        line-height: 1.6em;
-        padding: 6px 8px 6px 32px;
+    line-height: 1.6em;
+    padding: 6px 8px 6px 32px;
   }
 
   ul.navitem_2nd_menu li a.nav_item_nowrap_link {
@@ -884,69 +1077,70 @@ div.custom-select div.selector {
     padding: 4px 48px 4px 8px;
   }
 
-  .pushy-submenu>a, .pushy-submenu>button {
-      position: relative;
+  .pushy-submenu > a,
+  .pushy-submenu > button {
+    position: relative;
   }
   .pushy a {
-      display: block;
-      text-decoration: none;
-      outline: 0;
+    display: block;
+    text-decoration: none;
+    outline: 0;
   }
   .menuitem {
-      cursor: pointer;
+    cursor: pointer;
   }
   .menuitem:before {
-      display: block;
-      content: '';
-      width: 10px;
-      height: 10px;
-      background-image: url(../images/arrow-gray.svg);
-      background-position: 50% 50%;
-      background-repeat: no-repeat;
-      background-size: auto 100%;
-      position: absolute;
-      right: 14px;
-      top: 15px;
-      -webkit-transition: .1s linear;
-      -moz-transition: .1s linear;
-      -o-transition: .1s linear;
-      transition: .1s linear;
+    display: block;
+    content: "";
+    width: 10px;
+    height: 10px;
+    background-image: url(../images/arrow-gray.svg);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    position: absolute;
+    right: 14px;
+    top: 15px;
+    -webkit-transition: 0.1s linear;
+    -moz-transition: 0.1s linear;
+    -o-transition: 0.1s linear;
+    transition: 0.1s linear;
   }
   .menuitem.active {
     text-align: center;
   }
   .menuitem.active:before {
-      -moz-transform: rotate( 180deg );
-      -ms-transform: rotate( 180deg );
-      -o-transform: rotate( 180deg );
-      -webkit-transform: rotate( 180deg );
-      transform: rotate( 180deg );
-      -webkit-transition: 0.1s linear;
-      -moz-transition: 0.1s linear;
-      -o-transition: 0.1s linear;
-      transition: 0.1s linear;
-      background-image: url(../images/arrow-red.svg);
-      left: 14px;
-      top: 12px;
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    -webkit-transition: 0.1s linear;
+    -moz-transition: 0.1s linear;
+    -o-transition: 0.1s linear;
+    transition: 0.1s linear;
+    background-image: url(../images/arrow-red.svg);
+    left: 14px;
+    top: 12px;
   }
 
-  nav a.dropdown-item{
-    line-height: 1.5em;
-    padding: 7px 18px;
+  nav a.dropdown-item {
+    line-height: 21px;
+    padding: 0 16px;
   }
-  
-  nav a.dropdown-item, 
-  nav .navitem_description, 
+
+  nav a.dropdown-item,
+  nav .navitem_description,
   nav ul.navitem_2nd_menu li a.nav_2nd_menu_link {
-      font-size: 16px;
+    font-size: 16px;
   }
-  #navitem_features, 
-  #navitem_download, 
+  #navitem_features,
+  #navitem_download,
   #navitem_solutions,
-  #navitem_prices, 
-  #navitem_partners, 
+  #navitem_prices,
+  #navitem_partners,
   #navitem_integrations {
-      border-color: #F2F2F2;
+    border-color: #f2f2f2;
   }
 
   #navitem_features,
@@ -965,27 +1159,27 @@ div.custom-select div.selector {
     padding: 12px 36px 12px 18px;
     white-space: normal;
   }
-  #navitem_features:hover, 
-  #navitem_download:hover, 
-  #navitem_partners:hover, 
-  #navitem_solutions:hover, 
-  #navitem_prices:hover, 
+  #navitem_features:hover,
+  #navitem_download:hover,
+  #navitem_partners:hover,
+  #navitem_solutions:hover,
+  #navitem_prices:hover,
   #navitem_about:hover,
   #navitem_integrations:hover,
-  a.singin:hover, 
+  a.singin:hover,
   #navitem_features.active,
-  #navitem_download.active, 
-  #navitem_partners.active, 
-  #navitem_solutions.active, 
-  #navitem_prices.active, 
+  #navitem_download.active,
+  #navitem_partners.active,
+  #navitem_solutions.active,
+  #navitem_prices.active,
   #navitem_about.active,
   #navitem_integrations.active,
-  a.singin.active, 
-  #navitem_features.active:hover, 
-  #navitem_download.active:hover, 
-  #navitem_partners.active:hover, 
-  #navitem_solutions.active:hover, 
-  #navitem_prices.active:hover, 
+  a.singin.active,
+  #navitem_features.active:hover,
+  #navitem_download.active:hover,
+  #navitem_partners.active:hover,
+  #navitem_solutions.active:hover,
+  #navitem_prices.active:hover,
   #navitem_about.active:hover,
   #navitem_integrations.active:hover,
   a.singin.active:hover {
@@ -999,46 +1193,81 @@ div.custom-select div.selector {
   #navitem_solutions_server_enterprice_mobile,
   #navitem_solutions_connectors_mobile,
   #navitem_solutions_integration_mobile {
-      display: block;
+    display: block;
   }
-  a.dropdown-item#navitem_download_signup{
+  a.dropdown-item#navitem_download_signup {
     padding-left: 18px;
     padding-top: 0;
   }
-  nav>div ul li a.menuitem.singin {
-      color: #333333 !important;
-      font-weight: 600 !important;
-      margin: 15px;
-      padding: 15px 24px;
-      display: inline-block;
-      border-color: #333333 !important;
-      float: none;
-      margin: 0 0 0 19px;
-      position: absolute;
-      left: 0;
-      bottom: 80px;
+  nav > div ul li a.menuitem.singin {
+    color: #333333 !important;
+    font-weight: 600 !important;
+    margin: 15px;
+    padding: 15px 24px;
+    display: inline-block;
+    border-color: #333333 !important;
+    float: none;
+    margin: 0 0 0 19px;
+    position: absolute;
+    left: 0;
+    bottom: 80px;
   }
-  nav>div ul li a.menuitem.singin:before {
-      display: none;
+  nav > div ul li a.menuitem.singin:before {
+    display: none;
   }
   .narrowheader {
-      width: 100%;
+    width: 100%;
   }
   .langselector {
-      position: absolute;
-      right: 29px;
-      top: 15px;
+    position: absolute;
+    right: 29px;
+    top: 15px;
   }
   a.dropdown-item {
-      white-space: normal;
+    white-space: normal;
   }
-  #compare_div, #customer_stories_div, #latest_release_div, #reseller_div, #security_div, #for_developers_div {
+  #compare_div,
+  #customer_stories_div,
+  #latest_release_div,
+  #reseller_div,
+  #security_div,
+  #for_developers_div,
+  #latest_events_div,
+  #navitem_about_resources {
     display: none;
+  }
+  #navitem_features_docs_editions,
+  #navitem_solutions_clients_workspace,
+  #navitem_prices_docs,
+  #navitem_prices_workspace,
+  #navitem_download_docs,
+  #navitem_download_workspace,
+  #navitem_about_resources {
+    background-color: #f5f5f5;
+    padding:0 0 0 8px;
+    margin: 0 16px;
+    color: #666666;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    line-height: 32px;
+    letter-spacing: 0.04em;
+  }
+  .navitem_solutions a.dropdown-item,
+  #navitem_integrations_menu a.dropdown-item,
+  #navitem_link_personal,
+  #navitem_download_desktop,
+  #navitem_download_products,
+  #navitem_partnership_menu a.dropdown-item,
+  #navitem_about_menu a.dropdown-item{
+    line-height: 21px;
+    margin-bottom: 24px;
   }
 }
 
-@media screen and (max-width: 592px){
-  .advent-announce.push .advent-announce-text:before{
+@media screen and (max-width: 592px) {
+  .advent-announce.push .advent-announce-text:before {
     content: none;
   }
 

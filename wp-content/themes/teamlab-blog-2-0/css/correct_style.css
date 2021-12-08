@@ -13,9 +13,9 @@ main{
 
 /*---------Top-banner-------*/
 .advent-announce.push{
-    background-color: #4F698E;
-    background-image: url(../images/top_banner/banner-desktop-v6-4/left-icons.svg), url(../images/top_banner/banner-desktop-v6-4/right-icons.svg);
-    background-position: calc(50% - 551px) -8px, calc(50% + 560px) -16px;
+    background-color: #042D36;
+    background-image: url(../images/top_banner/advent_calendar/trees_left.svg), url(../images/top_banner/advent_calendar/trees_right.svg);
+    background-position: calc(50% - 456px) 0, calc(50% + 428px) 0;
     background-repeat: no-repeat;
     padding: 0;
     text-align: center;
@@ -31,13 +31,13 @@ main{
     color: #FFFFFF;
     text-align: center;
     margin: 0 auto;
-    font-size: 15px;
-    font-weight: 400;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
     text-decoration: none !important;
     display: block;
     letter-spacing: 0.01em;
-    line-height: 20px;
-    padding: 16px 0 20px;
+    padding: 15px 0 19px;
     white-space: nowrap;
     position: relative;
     display: inline-block;
@@ -45,7 +45,7 @@ main{
     box-sizing: content-box;
 }
 .advent-announce.push .advent-announce-text:before{
-    content: '';
+    content: none;
     background-image: url(../images/top_banner/banner-desktop-v6-4/logo.svg);
     background-position: 0 50%;
     background-repeat: no-repeat;
@@ -59,7 +59,7 @@ main{
 }
 
 .advent-announce.push .advent-announce-text:after{
-    content: '';
+    content: none;
     background-image: url(../images/top_banner/arrow_right_white.svg);
     background-position: 50% 50%;
     background-repeat: no-repeat;
@@ -71,8 +71,8 @@ main{
 } 
 
 .advent-announce.push .advent-announce-text b{
-    color: #FFFFFF;
-    font-weight: bold;
+    color: #FFDB85;
+    font-weight: 600;
 }
 
 .advent-desktop-hide {
