@@ -31,6 +31,7 @@
     left: 0;
     padding: 0;
     text-align: left;
+    height: 100%;
   }
   .pushy.pushy-right {
     right: 0;
@@ -93,7 +94,7 @@
   .pushy-open-left .site-overlay,
   .pushy-open-right .site-overlay {
     display: block;
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
@@ -105,8 +106,7 @@
     touch-action: manipulation;
     -ms-touch-action: manipulation;
     -moz-touch-action: manipulation;
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
+    height: 100%;
   }
   /* Submenu Appearance */
   .pushy-submenu ul {
