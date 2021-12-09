@@ -46,6 +46,7 @@
   }
   .pushy-open-left{
     overflow-x: hidden;
+    min-height: -webkit-fill-available;
   }
   
   .pushy-open-left .push {
@@ -103,6 +104,7 @@
     touch-action: manipulation;
     -ms-touch-action: manipulation;
     -moz-touch-action: manipulation;
+    min-height: -webkit-fill-available;
     height: 100%;
     width: 100%;
   }
