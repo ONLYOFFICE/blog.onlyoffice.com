@@ -529,10 +529,13 @@ html {
   min-height: 100%;
   position: relative;
   overflow-x: hidden;
+  height: -webkit-fill-available;
 }
 
 body{
   overflow-x: hidden;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
 body.desktop .mainpart {
