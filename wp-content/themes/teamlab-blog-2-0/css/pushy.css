@@ -105,9 +105,8 @@
     touch-action: manipulation;
     -ms-touch-action: manipulation;
     -moz-touch-action: manipulation;
+    min-height: 100vh;
     min-height: -webkit-fill-available;
-    height: 100%;
-    width: 100%;
   }
   /* Submenu Appearance */
   .pushy-submenu ul {
