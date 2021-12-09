@@ -707,7 +707,6 @@ body.desktop .button.red.disabled:visited {
 }
 
   .all-menu-items{
-    position: absolute;
     display: block;
     height: 100%;
   }
