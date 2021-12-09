@@ -219,7 +219,6 @@ a.singin {
 #navitem_features:hover,
 #navitem_prices:hover,
 #navitem_integrations:hover a.singin:hover {
-  border-color: #f94a0c;
   cursor: pointer;
 }
 #navitem_about.active,
@@ -230,7 +229,6 @@ a.singin {
 #navitem_prices.active,
 #navitem_integrations.active,
 a.singin.active {
-  border-color: #f94a0c;
   color: #f94a0c;
 }
 #navitem_about.active:hover,
@@ -241,7 +239,6 @@ a.singin.active {
 #navitem_prices.active:hover,
 #navitem_integrations.active:hover,
 a.singin.active:hover {
-  border-color: #f94a0c;
 }
 
 .third-level-content {
@@ -917,7 +914,7 @@ div.custom-select div.selector {
   nav > div > ul.all-menu-items {
     display: block;
     height: 100%;
-    padding-top: 8px;
+    padding-top: 0;
   }
   nav .pushy-content {
     width: 430px;
@@ -1100,7 +1097,7 @@ div.custom-select div.selector {
     background-size: auto 100%;
     position: absolute;
     right: 14px;
-    top: 15px;
+    top: 18px;
     -webkit-transition: 0.1s linear;
     -moz-transition: 0.1s linear;
     -o-transition: 0.1s linear;
@@ -1121,7 +1118,10 @@ div.custom-select div.selector {
     transition: 0.1s linear;
     background-image: url(../images/arrow-red.svg);
     left: 14px;
-    top: 12px;
+    top: 18px;
+  }
+  .menuitem:hover:before {
+    background-image: url(../images/arrow-red.svg);
   }
 
   nav a.dropdown-item {
@@ -1183,9 +1183,8 @@ div.custom-select div.selector {
   #navitem_about.active:hover,
   #navitem_integrations.active:hover,
   a.singin.active:hover {
-    border-bottom: 1px solid #f2f2f2;
     color: #ff6f3d;
-    padding: 6px 22px 12px 22px;
+    padding: 12px 36px 12px 18px;
     letter-spacing: 0.03em;
     white-space: normal;
   }
@@ -1194,6 +1193,10 @@ div.custom-select div.selector {
   #navitem_solutions_connectors_mobile,
   #navitem_solutions_integration_mobile {
     display: block;
+  }
+  .menuitem.active{
+    border-bottom: 1px solid #f2f2f2;
+    padding: 6px 22px 12px 22px;
   }
   a.dropdown-item#navitem_download_signup {
     padding-left: 18px;

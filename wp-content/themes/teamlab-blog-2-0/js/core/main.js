@@ -388,6 +388,9 @@ $("#security_div").on("click", function () {
 $("#for_developers_div").on("click", function () {
     location.href = $("#navitem_integration_for_developers").attr('href');
 });
+$("#latest_events_div").on("click", function () {
+    location.href = $("#navitem_latest_events").attr('href');
+});
 
 $('.overlay-trigger').click(function(event){
     event.preventDefault(); 
