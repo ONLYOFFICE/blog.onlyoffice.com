@@ -31,7 +31,7 @@
     left: 0;
     padding: 0;
     text-align: left;
-    height: 100%;
+    height: calc(100vh - calc(100vh - 100%));
   }
   .pushy.pushy-right {
     right: 0;
@@ -77,7 +77,6 @@
   .pushy-open-right .pushy-content {
     width: 100%;
     visibility: visible;
-    height: calc(100vh - calc(100vh - 100%));
   }
   /* Menu Transitions */
 
