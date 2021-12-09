@@ -919,7 +919,7 @@ div.custom-select div.selector {
   nav .pushy-content {
     width: 430px;
     height: 100%;
-    min-height: 100%;
+    position: absolute;
   }
   header {
     width: 100%;
