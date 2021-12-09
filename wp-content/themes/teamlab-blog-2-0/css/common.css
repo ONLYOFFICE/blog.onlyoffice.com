@@ -526,7 +526,6 @@ body > div.loadingBanner div {
 *************************************************************/
 
 html {
-  min-height: 100%;
   position: relative;
   overflow-x: hidden;
   height: -webkit-fill-available;
@@ -534,13 +533,14 @@ html {
 
 body{
   overflow-x: hidden;
-  min-height: 100%;
+  min-height: 100vh;
   min-height: -webkit-fill-available;
 }
 
 body.desktop .mainpart {
   padding: 0;
   overflow-x: hidden;
+  min-height: 100vh;
 }
 body.desktop header,
 body.desktop .basement {

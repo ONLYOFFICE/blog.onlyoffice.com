@@ -47,6 +47,7 @@
   .pushy-open-left{
     overflow-x: hidden;
     min-height: -webkit-fill-available;
+    min-height: 100vh;
   }
   
   .pushy-open-left .push {
