@@ -44,7 +44,10 @@
     -ms-transform: translate3d(-430px, 0, 0);
     transform: translate3d(-430px, 0, 0);
   }
- 
+  .pushy-open-left{
+    overflow-x: hidden;
+  }
+  
   .pushy-open-left .push {
     -webkit-transform: translate3d(430px, 0, 0);
     -ms-transform: translate3d(430px, 0, 0);
@@ -97,6 +100,11 @@
     background-color: rgba(0, 0, 0, 0.5);
     -webkit-animation: fade 500ms;
     animation: fade 500ms;
+    touch-action: manipulation;
+    -ms-touch-action: manipulation;
+    -moz-touch-action: manipulation;
+    height: 100%;
+    width: 100%;
   }
   /* Submenu Appearance */
   .pushy-submenu ul {
