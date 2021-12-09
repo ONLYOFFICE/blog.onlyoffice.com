@@ -77,6 +77,7 @@
   .pushy-open-right .pushy-content {
     width: 100%;
     visibility: visible;
+    height: calc(100vh - calc(100vh - 100%));
   }
   /* Menu Transitions */
 
