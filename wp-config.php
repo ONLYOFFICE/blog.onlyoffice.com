@@ -18,30 +18,26 @@
  * @package WordPress
  */
 
-// ** MySQL settings - You can get this info from your web host ** //
-/** The name of the database for WordPress */
-define('WP_CACHE', true); //Added by WP-Cache Manager
-define( 'WPCACHEHOME', 'cache1' ); //Added by WP-Cache Manager
-define('DB_NAME', 'name-database');
+// ** Параметры MySQL: Эту информацию можно получить у вашего хостинг-провайдера ** //
+/** Имя базы данных для WordPress */
+define('WP_CACHE', true);
+define( 'WPCACHEHOME', 'D:\Sites\blog.onlyoffice.com\wp-content\plugins\wp-super-cache/' );
+define( 'DB_NAME', 'prod' );
 
-/** MySQL database username */
-define('DB_USER', 'user-database');
+/** Имя пользователя MySQL */
+define( 'DB_USER', 'root' );
 
-/** MySQL database password */
-define('DB_PASSWORD', 'password-database');
+/** Пароль к базе данных MySQL */
+define( 'DB_PASSWORD', '123456' );
 
-/** MySQL hostname */
-define('DB_HOST', 'host1');
+/** Имя сервера MySQL */
+define( 'DB_HOST', 'localhost' );
 
-/** Database Charset to use in creating database tables. */
-define('DB_CHARSET', 'utf8');
+/** Кодировка базы данных для создания таблиц. */
+define( 'DB_CHARSET', 'utf8mb4' );
 
-/** The Database Collate type. Don't change this if in doubt. */
-define('DB_COLLATE', '');
-
-define('WEB_ROOT_URL', 'root1');
-
-$GLOBALS['WEB_BLOG_FOLDER_URL'] = '/blog';
+/** Схема сопоставления. Не меняйте, если не уверены. */
+define( 'DB_COLLATE', '' );
 
 /**#@+
  * Уникальные ключи и соли для аутентификации.
@@ -52,14 +48,14 @@ $GLOBALS['WEB_BLOG_FOLDER_URL'] = '/blog';
  *
  * @since 2.6.0
  */
-define( 'AUTH_KEY',         'some_key1' );
-define( 'SECURE_AUTH_KEY',  'some_key2' );
-define( 'LOGGED_IN_KEY',    'some_key3' );
-define( 'NONCE_KEY',        'some_key4' );
-define( 'AUTH_SALT',        'some_key5' );
-define( 'SECURE_AUTH_SALT', 'some_key6' );
-define( 'LOGGED_IN_SALT',   'some_key7' );
-define( 'NONCE_SALT',       'some_key8' );
+define( 'AUTH_KEY',         'some_key' );
+define( 'SECURE_AUTH_KEY',  'some_key' );
+define( 'LOGGED_IN_KEY',    'some_key' );
+define( 'NONCE_KEY',        'some_key' );
+define( 'AUTH_SALT',        'some_key' );
+define( 'SECURE_AUTH_SALT', 'some_key' );
+define( 'LOGGED_IN_SALT',   'some_key' );
+define( 'NONCE_SALT',       'some_key' );
 
 /**#@-*/
 
@@ -82,9 +78,11 @@ $table_prefix = 'tm_';
  *
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
-define( 'WP_DEBUG', false );
-define('WP_TEMP_DIR', dirname(__FILE__) . '/wp-content/temp/');
+define( 'WP_DEBUG', false);
 define ('WPLANG', '');
+
+define('WEB_ROOT_URL', 'http://qwerty');
+$GLOBALS['WEB_BLOG_FOLDER_URL'] = '/blog';
 
 /* Это всё, дальше не редактируем. Успехов! */
 
@@ -95,4 +93,3 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /** Инициализирует переменные WordPress и подключает файлы. */
 require_once( ABSPATH . 'wp-settings.php' );
-add_filter('xmlrpc_enabled', '__return_false');
