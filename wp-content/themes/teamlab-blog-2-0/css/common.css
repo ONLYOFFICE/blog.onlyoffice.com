@@ -528,7 +528,6 @@ body > div.loadingBanner div {
 html {
   position: relative;
   overflow-x: hidden;
-  height: -webkit-fill-available;
 }
 
 body{
