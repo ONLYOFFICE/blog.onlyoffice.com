@@ -31,7 +31,6 @@
     left: 0;
     padding: 0;
     text-align: left;
-    height: calc(100vh - calc(100vh - 100%));
   }
   .pushy.pushy-right {
     right: 0;
