@@ -1,7 +1,7 @@
 @media screen and (max-width: 1024px) {
   .pushy {
     position: fixed;
-    height: 100%;
+    height: 100vh;
     top: 0;
     z-index: 9999;
     background: #fff;
@@ -9,6 +9,8 @@
     border-right: 1px solid #e5e5e5;
     -webkit-overflow-scrolling: touch;
     width: 429px;
+    min-height: 100vh;
+  min-height: -webkit-fill-available;
     /* enables momentum scrolling in iOS overflow elements */
   
   }
@@ -44,7 +46,12 @@
     -ms-transform: translate3d(-430px, 0, 0);
     transform: translate3d(-430px, 0, 0);
   }
- 
+  .pushy-open-left{
+    overflow-x: hidden;
+    min-height: -webkit-fill-available;
+    min-height: 100vh;
+  }
+  
   .pushy-open-left .push {
     -webkit-transform: translate3d(430px, 0, 0);
     -ms-transform: translate3d(430px, 0, 0);
@@ -88,7 +95,7 @@
   .pushy-open-left .site-overlay,
   .pushy-open-right .site-overlay {
     display: block;
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
@@ -97,14 +104,12 @@
     background-color: rgba(0, 0, 0, 0.5);
     -webkit-animation: fade 500ms;
     animation: fade 500ms;
+    touch-action: manipulation;
+    -ms-touch-action: manipulation;
+    -moz-touch-action: manipulation;
+    height: 100%;
   }
   /* Submenu Appearance */
-  .pushy-submenu {
-    /* Submenu Buttons */
-  
-    /* Submenu Icon */
-  
-  }
   .pushy-submenu ul {
     transition: max-height 0.2s ease-in-out, visibility 0.2s ease-in-out;
   }
@@ -135,12 +140,8 @@
   .pushy-submenu-closed .pushy-link {
     opacity: 0;
   }
-  .pushy-submenu-open {
-    /* Submenu Icon */
-  
-  }
   .pushy-submenu-open > div > ul {
-    padding-top: 8px;
+    padding-top: 16px;
     visibility: visible;
   }
   .pushy-submenu-open .pushy-link {
@@ -176,6 +177,6 @@
   #navitem_integrations,
   a.singin {
     font-size: 16px;
-    padding: 9px 36px 9px 18px;
+    padding: 12px 36px 12px 18px;
   }
 }
