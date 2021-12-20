@@ -2658,21 +2658,25 @@ div.aligncenter {
     margin: 5px auto 5px auto;
 }
 
-a img.alignright {
+a img.alignright,
+p img.alignright {
     float: right;
     margin: 5px 0 20px 20px;
 }
 
-a img.alignnone {
+a img.alignnone,
+p img.alignnone {
     margin: 5px 20px 20px 0;
 }
 
-a img.alignleft {
+a img.alignleft,
+p img.alignleft {
     float: left;
     margin: 5px 20px 20px 0;
 }
 
-a img.aligncenter {
+a img.aligncenter,
+p img.aligncenter {
     display: block;
     margin-left: auto;
     margin-right: auto
