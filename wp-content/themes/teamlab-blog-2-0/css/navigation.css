@@ -656,7 +656,7 @@ div.custom-select div.selector {
     white-space: nowrap;
   }
   ul.navitem_2nd_menu li a.nav_item_nowrap_link.second {
-    padding: 4px 48px 4px 0px;
+    padding: 0 48px 0 0px;
     white-space: nowrap;
   }
 
@@ -693,8 +693,8 @@ div.custom-select div.selector {
     color: #444444;
     font-size: 14px;
     cursor: pointer;
-    line-height: 1.6em;
-    padding: 4px 0 4px 72px;
+    line-height: 23px;
+    padding: 0 0 0 72px;
     margin-bottom: 12px;
     text-decoration: none;
   }
