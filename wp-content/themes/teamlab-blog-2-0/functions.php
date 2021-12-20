@@ -630,7 +630,8 @@ function language_selector($available_langs_keys) {
         'es' =>  array('es', 'es-ES', 'Espanol'),
         'pt' =>  array('pt-br', 'pt-BR', 'Brazil'),
         'it' =>  array('it', 'it-IT', 'Italian'),
-        'cs' =>  array('cs', 'cs-CZ', 'Česky')
+        'cs' =>  array('cs', 'cs-CZ', 'Česky'),
+        'zh' =>  array('zh-hans', 'zh-CN', '中文')
     );
 
     $available_langs  = array();
@@ -692,7 +693,9 @@ $current_language = $sitepress->get_current_language();
         $current_language = WEB_ROOT_URL.'/'.$current_language;
     if($current_language == WEB_ROOT_URL.'/'.'pt-br'){
          $current_language = WEB_ROOT_URL.'/'.'pt';
-    }else if($current_language == WEB_ROOT_URL.'/'.'uk'){
+    }if($current_language == WEB_ROOT_URL.'/'.'zh-hans'){
+        $current_language = WEB_ROOT_URL.'/'.'zh';
+   }else if($current_language == WEB_ROOT_URL.'/'.'uk'){
          $current_language = WEB_ROOT_URL.'/'.'en';
     }else if($current_language == WEB_ROOT_URL.'/'.'en'){
        $current_language = WEB_ROOT_URL;
