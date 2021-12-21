@@ -3,6 +3,12 @@
 ### Исправления
 * Добавлены недостающие переводы на китайский язык для всего блога
 * Поправлена ссылка у кнопки "Try ONLYOFFICE in the cloud" в конце каждой записи. При переходе, сохраняет язык, с которого переходят
+* Добавлен редирект с https://www.onlyoffice.com/blog/2021/07/7-best-asana-alternatives/ на https://www.onlyoffice.com/blog/2021/07/8-best-asana-alternatives/
+* Добавлен редирект с https://www.onlyoffice.com/blog/fr/2021/07/7-meilleures-alternatives-a-asana/ на https://www.onlyoffice.com/blog/fr/2021/07/8-meilleures-alternatives-a-asana/
+* Добавлен редирект с https://www.onlyoffice.com/blog/de/2021/07/7-beste-alternativen-zu-asana/ на https://www.onlyoffice.com/blog/de/2021/07/8-beste-alternativen-zu-asana/
+* Добавлен редирект с https://www.onlyoffice.com/blog/es/2021/07/7-mejores-alternativas-a-asana/ на https://www.onlyoffice.com/blog/es/2021/07/8-mejores-alternativas-a-asana/
+* Добавлен редирект с https://www.onlyoffice.com/blog/it/2021/07/le-7-migliori-alternative-a-asana/ на https://www.onlyoffice.com/blog/it/2021/07/8-migliori-alternative-a-asana/
+* Добавлен редирект с https://www.onlyoffice.com/blog/de/2021/10/content-erstellung-und-zusammenarbeit-in-einem-team-verbessern/ на https://www.onlyoffice.com/blog/de/2021/10/content-erstellung/
 
 ## 1.1.4
 ### Новое
