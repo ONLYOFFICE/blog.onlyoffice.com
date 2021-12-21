@@ -111,7 +111,13 @@ class WP_Widget_Recent_Posts extends WP_Widget {
 					<a href="<?php the_permalink( $recent_post->ID ); ?>"<?php echo $aria_current; ?>><?php echo $title; ?></a>
 					<?php if ( $show_date ) : ?>
 						<div class="meta press-recent">
-							<span class="date"><?php echo get_the_date( '', $recent_post->ID ); ?></span>
+							<span class="date">
+								<?php global $current_language; ?>
+							<?php if ($current_language == WEB_ROOT_URL . '/' . 'zh') {
+										echo get_the_date( 'Y日m月d日', $recent_post->ID );
+									} else {
+										echo get_the_date( 'j F Y', $recent_post->ID );
+									} ?></span>
 						</div>
 					<?php endif; ?>
 				</li>
