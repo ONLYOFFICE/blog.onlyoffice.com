@@ -212,7 +212,7 @@ function bloggood_ru_image() {
         function tmblog_posted_by() {
             printf(
             __( ( count( get_the_category() ) ) ? '<span class="%2$s">By %3$s</span>'
-                    : '<span class="%1$s">By %3$s</span>', 'teamlab-blog-2-0' ),
+                    : '<span class="%2$s">By %3$s</span>', 'teamlab-blog-2-0' ),
                 'meta-prep meta-prep-author',
                 'entry-utility-prep entry-utility-prep-cat-links',
                 sprintf( '<a href="%1$s" title="%2$s">%3$s</a>',

@@ -293,7 +293,7 @@ class CWS_STC {
 			$checked_status = (bool) ( !empty( $_COOKIE['subscribe_checkbox_'.COOKIEHASH] ) && 'checked' == $_COOKIE['subscribe_checkbox_'.COOKIEHASH] );
 			$text .= "<p " . ( ( _stc()->clear_both ) ? 'style="clear: both;" ' : '' ) . 'class="subscribe-to-comments">
 			<input type="checkbox" name="subscribe" id="subscribe" value="subscribe" style="width: auto;" ' . ( ( $checked_status ) ? 'checked="checked" ' : '' ) . '/>
-			<label for="subscribe">' . _stc()->not_subscribed_text . '</label>
+			<label for="subscribe">' . __( 'Notify me of followup comments via e-mail', 'subscribe-to-comments' ) . '</label>
 			</p>';
 		} elseif ( $email == 'admin' && current_user_can( 'manage_options' ) ) {
 			$text .= '<p ' . ( ( _stc()->clear_both ) ? 'style="clear: both;" ' : '' ) . 'class="subscribe-to-comments">
