@@ -382,8 +382,8 @@ $("#reseller_div").on("click", function () {
     location.href = $("#navitem_prices_reseller").attr('href');
 });
 
-$("#security_div").on("click", function () {
-    location.href = $("#navitem_features_security").attr('href');
+$("#oforms_div").on("click", function () {
+    location.href = $("#navitem_features_oforms").attr('href');
 });
 $("#for_developers_div").on("click", function () {
     location.href = $("#navitem_integration_for_developers").attr('href');

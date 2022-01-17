@@ -141,7 +141,7 @@
     opacity: 0;
   }
   .pushy-submenu-open > div > ul {
-    padding-top: 16px;
+    padding: 16px 0;
     visibility: visible;
   }
   .pushy-submenu-open .pushy-link {
