@@ -13,9 +13,9 @@ main{
 
 /*---------Top-banner-------*/
 .advent-announce.push{
-    background-color: #042D36;
-    background-image: url(../images/top_banner/advent_calendar/trees_left.svg), url(../images/top_banner/advent_calendar/trees_right.svg);
-    background-position: calc(50% - 456px) 0, calc(50% + 428px) 0;
+    background-color: #27ABA3;
+    /* background-image: url(../images/top_banner/onlyoffice_7.0/desktop_left.svg), url(../images/top_banner/onlyoffice_7.0/desktop_right.svg);
+    background-position: calc(50% - 456px) 0, calc(50% + 428px) 0; */
     background-repeat: no-repeat;
     padding: 0;
     text-align: center;
@@ -25,6 +25,7 @@ main{
 }
 .advent-announce.push a{
     text-decoration: none;
+    display: block;
 }
 
 .advent-announce.push .advent-announce-text{
@@ -32,47 +33,43 @@ main{
     text-align: center;
     margin: 0 auto;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 22px;
     text-decoration: none !important;
-    display: block;
     letter-spacing: 0.01em;
     padding: 15px 0 19px;
     white-space: nowrap;
     position: relative;
     display: inline-block;
-    width: auto;
     box-sizing: content-box;
 }
 .advent-announce.push .advent-announce-text:before{
-    content: none;
-    background-image: url(../images/top_banner/banner-desktop-v6-4/logo.svg);
+    content: '';
+    background-image: url(../images/top_banner/onlyoffice_7.0/desktop_left.svg);
     background-position: 0 50%;
     background-repeat: no-repeat;
     position: absolute;
-    height: 55px;
-    width: 56px;
-    left: calc(0% - 68px);
-    top: calc(50% - 30px);
-    padding-right: 10px;
+    height: 56px;
+    width: 260px;
+    left: -306px;
+    top: 0px;
     box-sizing: content-box;
 }
 
 .advent-announce.push .advent-announce-text:after{
-    content: none;
-    background-image: url(../images/top_banner/arrow_right_white.svg);
-    background-position: 50% 50%;
+    content: '';
+    background-image: url(../images/top_banner/onlyoffice_7.0/desktop_right.svg);
+    background-position: center -28px;
     background-repeat: no-repeat;
     position: absolute;
-    height: 29px;
-    width: 32px;
-    left: calc(100% + 5px);
-    top: calc(50% - 16px);
+    height: 56px;
+    width: 246px;
+    right: -286px;
+    top: 0px;
 } 
 
 .advent-announce.push .advent-announce-text b{
-    color: #FFDB85;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .advent-desktop-hide {

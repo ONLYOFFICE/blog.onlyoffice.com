@@ -96,15 +96,17 @@ global $current_language;
     <?php wp_head() ?>
 </head>
 <div class="advent-announce push advent-mobile-hide">
-    <a href="<?php echo $current_language ?>/advent-calendar.aspx">
+    <a href="https://www.onlyoffice.com/blog/2022/01/onlyoffice-docs-7-0/">
         <div class="advent-announce-text">
-            <?php _e('<b>ONLYOFFICE Advent Calendar</b>. Get new gifts and discounts each day!', 'teamlab-blog-2-0'); ?>
+            <?php _e('<b>ONLYOFFICE 7.0:</b> online forms, password protection in sheets, collaboration improvements and much more', 'teamlab-blog-2-0'); ?>
         </div>
     </a>
 </div>
 <div class="advent-announce push advent-desktop-hide">
-    <a class="advent-announce-text" href="<?php echo $current_language ?>/advent-calendar.aspx">
-        <?php _e('<b>ONLYOFFICE Advent Calendar</b>', 'teamlab-blog-2-0'); ?>
+    <a  href="https://www.onlyoffice.com/blog/2022/01/onlyoffice-docs-7-0/">
+        <div class="advent-announce-text">
+            <?php _e('ONLYOFFICE 7.0 released', 'teamlab-blog-2-0'); ?>
+        </div>
     </a>
 </div>
 
