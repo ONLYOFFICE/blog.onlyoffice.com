@@ -915,33 +915,38 @@ div.custom-select div.selector {
     top: 0;
   }
   .advent-announce.push {
-    -webkit-display: flex;
-    -moz-display: flex;
-    -ms-display: flex;
-    -o-display: flex;
-    display: flex;
-    align-items: center;
     height: 48px;
-    background-image: url(../images/top_banner/advent_calendar/trees_mobile.svg);
-    background-position: 50% 0px;
+    /* background-image: url(../images/top_banner/advent_calendar/trees_mobile.svg);
+    background-position: 50% 0px; */
   }
 
   .advent-announce.push .advent-announce-text {
+    padding: 0;
     font-size: 12px;
-    line-height: 16px;
-    padding: 8px 0;
+    line-height: 48px;
     white-space: normal;
+    font-weight: 700;
   }
+  
   .advent-announce.push .advent-announce-text:after {
-    left: calc(100% - 3px);
-    top: calc(50% - 15px);
+    content: '';
+    background-image: url(../images/top_banner/onlyoffice_7.0/mob_right.svg);
+		background-position: center -18px;
+		right: -90px;
+		width: 64px;
+    height: 48px;
   }
   .advent-announce.push .advent-announce-text:before {
-    content: none;
+    content: '';
+    background-image: url(../images/top_banner/onlyoffice_7.0/mob_left.svg);
+    background-position: center -18px;
+		left: -85px;
+		width: 63px;
+    height: 48px;
   }
   .advent-announce.push .advent-announce-text b {
     color: #ffffff;
-    font-weight: bold;
+    font-weight: 700;
   }
   .advent-desktop-hide {
     display: block;
@@ -1254,10 +1259,6 @@ div.custom-select div.selector {
 }
 
 @media screen and (max-width: 592px) {
-  .advent-announce.push .advent-announce-text:before {
-    content: none;
-  }
-
   ul.navitem_2nd_menu li a.nav_item_nowrap_link.second {
     padding: 4px 16px 4px 32px;
   }
