@@ -412,7 +412,7 @@ div.custom-select div.selector {
   padding-bottom: 10px;
 }
 
-#security_header {
+#oforms_header {
   min-width: 180px;
 }
 .menu_pic_div {
@@ -442,8 +442,8 @@ div.custom-select div.selector {
   background-image: url("../images/img_for_header/vegan_in_leipzig_onlyoffice.jpg");
 }
 
-#security_img {
-  background-image: url("../images/img_for_header/menu_security.svg");
+#oforms_img {
+  background-image: url("../images/img_for_header/oforms.svg");
 }
 
 #reseller_img {
@@ -586,7 +586,7 @@ div.custom-select div.selector {
     min-width: 280px;
   }
   #navitem_features_menu .dropdown-content > li:last-of-type {
-    min-width: 272px;
+    max-width: 272px;
   }
   #navitem_partnership_menu .dropdown-content > li:first-of-type,
   #navitem_partnership_menu .dropdown-content > li:last-of-type{
@@ -803,6 +803,9 @@ div.custom-select div.selector {
   #navitem_about_training_courses:before{
     background-position-y: -494px;
   }
+  #navitem_features_security:before{
+    background-position-y: -650px;
+  }
   #navitem_features_docs_editions,
   #navitem_solutions_clients_workspace,
   #navitem_prices_docs,
@@ -827,7 +830,7 @@ div.custom-select div.selector {
   #navitem_prices_workspace:before,
   #navitem_download_docs:before,
   #navitem_download_workspace:before,
-  #navitem_features_security:before,
+  #navitem_features_oforms:before,
   #navitem_integrations_menu a.dropdown-item:before,
   #navitem_prices_menu a.dropdown-item:before,
   #navitem_compare_third_level_menu a.dropdown-item:before,
@@ -850,10 +853,8 @@ div.custom-select div.selector {
   #navitem_partnership_menu .dropdown-content > li:last-of-type{
     background: #f9f9f9;
   }
-  #navitem_features_security {
-    padding: 0 32px;
-  }
-  #navitem_security_third_level_menu a.dropdown-item,
+
+  #navitem_oforms_third_level_menu a.dropdown-item,
   #navitem_integrations_menu a.dropdown-item,
   #navitem_reseller_third_level_menu a.dropdown-item,
   #navitem_compare_third_level_menu a.dropdown-item,
@@ -915,33 +916,38 @@ div.custom-select div.selector {
     top: 0;
   }
   .advent-announce.push {
-    -webkit-display: flex;
-    -moz-display: flex;
-    -ms-display: flex;
-    -o-display: flex;
-    display: flex;
-    align-items: center;
     height: 48px;
-    background-image: url(../images/top_banner/advent_calendar/trees_mobile.svg);
-    background-position: 50% 0px;
+    /* background-image: url(../images/top_banner/advent_calendar/trees_mobile.svg);
+    background-position: 50% 0px; */
   }
 
   .advent-announce.push .advent-announce-text {
+    padding: 0;
     font-size: 12px;
-    line-height: 16px;
-    padding: 8px 0;
+    line-height: 48px;
     white-space: normal;
+    font-weight: 700;
   }
+  
   .advent-announce.push .advent-announce-text:after {
-    left: calc(100% - 3px);
-    top: calc(50% - 15px);
+    content: '';
+    background-image: url(../images/top_banner/onlyoffice_7.0/mob_right.svg);
+		background-position: center -18px;
+		right: -90px;
+		width: 64px;
+    height: 48px;
   }
   .advent-announce.push .advent-announce-text:before {
-    content: none;
+    content: '';
+    background-image: url(../images/top_banner/onlyoffice_7.0/mob_left.svg);
+    background-position: center -18px;
+		left: -85px;
+		width: 63px;
+    height: 48px;
   }
   .advent-announce.push .advent-announce-text b {
     color: #ffffff;
-    font-weight: bold;
+    font-weight: 700;
   }
   .advent-desktop-hide {
     display: block;
@@ -1217,7 +1223,7 @@ div.custom-select div.selector {
   #customer_stories_div,
   #latest_release_div,
   #reseller_div,
-  #security_div,
+  #oforms_div,
   #for_developers_div,
   #latest_events_div,
   #navitem_about_resources {
@@ -1247,17 +1253,15 @@ div.custom-select div.selector {
   #navitem_download_desktop,
   #navitem_download_products,
   #navitem_partnership_menu a.dropdown-item,
-  #navitem_about_menu a.dropdown-item{
+  #navitem_about_menu a.dropdown-item,
+  #navitem_features_security,
+  #navitem_features_oforms{
     line-height: 21px;
     margin-bottom: 24px;
   }
 }
 
 @media screen and (max-width: 592px) {
-  .advent-announce.push .advent-announce-text:before {
-    content: none;
-  }
-
   ul.navitem_2nd_menu li a.nav_item_nowrap_link.second {
     padding: 4px 16px 4px 32px;
   }

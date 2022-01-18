@@ -96,15 +96,17 @@ global $current_language;
     <?php wp_head() ?>
 </head>
 <div class="advent-announce push advent-mobile-hide">
-    <a href="<?php echo $current_language ?>/advent-calendar.aspx">
+    <a href="https://www.onlyoffice.com/blog/2022/01/onlyoffice-docs-7-0/">
         <div class="advent-announce-text">
-            <?php _e('<b>ONLYOFFICE Advent Calendar</b>. Get new gifts and discounts each day!', 'teamlab-blog-2-0'); ?>
+            <?php _e('<b>ONLYOFFICE 7.0:</b> online forms, password protection in sheets, collaboration improvements and much more', 'teamlab-blog-2-0'); ?>
         </div>
     </a>
 </div>
 <div class="advent-announce push advent-desktop-hide">
-    <a class="advent-announce-text" href="<?php echo $current_language ?>/advent-calendar.aspx">
-        <?php _e('<b>ONLYOFFICE Advent Calendar</b>', 'teamlab-blog-2-0'); ?>
+    <a  href="https://www.onlyoffice.com/blog/2022/01/onlyoffice-docs-7-0/">
+        <div class="advent-announce-text">
+            <?php _e('ONLYOFFICE 7.0 released', 'teamlab-blog-2-0'); ?>
+        </div>
     </a>
 </div>
 
@@ -152,6 +154,8 @@ global $current_language;
                                                         </li>
                                                         <li><a class="nav_2nd_menu_link" id="navitem_features_presentation_editor" href="<?php echo $current_language ?>/presentation-editor.aspx"><?php _e('Presentation Editor', 'teamlab-blog-2-0'); ?></a>
                                                         </li>
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_features_form_creator" href="<?php echo $current_language ?>/form-creator.aspx"><?php _e('Form creator', 'teamlab-blog-2-0'); ?></a>
+                                                        </li>
                                                     </ul>
 
                                                 <a id="navitem_features_docs_editions" class="dropdown-item mobile_no_link"><?php _e('Docs Editions', 'teamlab-blog-2-0'); ?></a>
@@ -188,13 +192,14 @@ global $current_language;
                                                         <li><a class="nav_2nd_menu_link" id="navitem_features_cloud_service" href="<?php echo $current_language ?>/workspace-enterprise.aspx"><?php _e('Enterprise Edition', 'teamlab-blog-2-0'); ?></a>
                                                         </li>
                                                     </ul>
+                                                    <a id="navitem_features_security" class="dropdown-item" href="<?php echo $current_language ?>/security.aspx"><?php _e('Security', 'teamlab-blog-2-0'); ?></a>
                                             </li>
-                                            <li id="navitem_security_third_level_menu">
-                                                <a id="navitem_features_security" class="dropdown-item" href="<?php echo $current_language ?>/security.aspx"><?php _e('Security', 'teamlab-blog-2-0'); ?></a>
-                                                <div id="security_div" class="menu_pic_div">
-                                                    <div id="security_img" class="menu_pic_img"></div>
-                                                    <p id="security_header" class="menu_pic_header">
-                                                        <?php _e('Meet ONLYOFFICE Private Rooms where every symbol you type is encrypted <span class="nowrap">end-to-end</span>', 'teamlab-blog-2-0'); ?>
+                                            <li id="navitem_oforms_third_level_menu">
+                                                <a id="navitem_features_oforms" class="dropdown-item" href="https://oforms.onlyoffice.com/"><?php _e('OFORMS', 'teamlab-blog-2-0'); ?></a>
+                                                <div id="oforms_div" class="menu_pic_div">
+                                                    <div id="oforms_img" class="menu_pic_img"></div>
+                                                    <p id="oforms_header" class="menu_pic_header">
+                                                        <?php _e('OFORMS, free <span class="nowrap">ready-to-fill</span> out online document forms', 'teamlab-blog-2-0'); ?>
                                                     </p>
                                                 </div>
                                             </li>
@@ -291,7 +296,7 @@ global $current_language;
                                                     </li>
                                                 </ul>
                                                 <a id="navitem_link_personal" class="dropdown-item" href="https://personal.onlyoffice.com/"><?php _e('ONLYOFFICE Personal', 'teamlab-blog-2-0'); ?></a>
-                                                <a id="navitem_download_desktop" class="dropdown-item" href="<?php echo $current_language ?>/download-desktop.aspx"><?php _e('Desktop and mobile apps', 'teamlab-blog-2-0'); ?></a>
+                                                <a id="navitem_download_desktop" class="dropdown-item" href="<?php echo $current_language ?>/download-desktop.aspx"><?php _e('ONLYOFFICE desktop and mobile apps', 'teamlab-blog-2-0'); ?></a>
                                                 <a class="dropdown-item" id="navitem_download_products" href="<?php echo $current_language ?>/download.aspx"><?php _e('Other products', 'teamlab-blog-2-0'); ?></a>
                                             </li>
                                             <li id="navitem_compare_third_level_menu">
