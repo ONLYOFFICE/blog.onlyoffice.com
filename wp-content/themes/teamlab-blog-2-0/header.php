@@ -111,7 +111,7 @@ global $current_language;
     }?>
     <a href="<?php echo $banner_url ?>">
         <div class="advent-announce-text">
-            <?php _e('<b>ONLYOFFICE 7.0:</b> online forms, password protection in sheets, collaboration improvements and much more', 'teamlab-blog-2-0'); ?>
+            <?php _e('<b>ONLYOFFICE 7.0:</b> <span>online forms</span>, password protection in sheets, collaboration improvements and much more', 'teamlab-blog-2-0'); ?>
         </div>
     </a>
 </div>
