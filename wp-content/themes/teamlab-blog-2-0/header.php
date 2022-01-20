@@ -96,14 +96,27 @@ global $current_language;
     <?php wp_head() ?>
 </head>
 <div class="advent-announce push advent-mobile-hide">
-    <a href="https://www.onlyoffice.com/blog/2022/01/onlyoffice-docs-7-0/">
+    <?php 
+    $banner_url = 'https://www.onlyoffice.com/blog/2022/01/onlyoffice-docs-7-0/';
+    if($current_language == WEB_ROOT_URL.'/'.'de'){
+        $banner_url = 'https://www.onlyoffice.com/blog/de/2022/01/onlyoffice-docs-7-0-online-formulare-passwortschutz-in-tabellenkalkulationen-verbesserungen-der-zusammenarbeit-und-vieles-mehr/';
+    }else if($current_language == WEB_ROOT_URL.'/'.'fr'){
+        $banner_url = 'https://www.onlyoffice.com/blog/fr/2022/01/onlyoffice-docs-7-0/';  
+    }else if($current_language == WEB_ROOT_URL.'/'.'es'){
+        $banner_url = 'https://www.onlyoffice.com/blog/es/2022/01/onlyoffice-docs-7-0/';
+    }else if($current_language == WEB_ROOT_URL.'/'.'it'){
+        $banner_url = 'https://www.onlyoffice.com/blog/it/2022/01/onlyoffice-docs-7-0/';
+    }else if($current_language == WEB_ROOT_URL.'/'.'zh'){
+        $banner_url = 'https://www.onlyoffice.com/blog/zh-hans/2022/01/onlyoffice-docs-7-0/';
+    }?>
+    <a href="<?php echo $banner_url ?>">
         <div class="advent-announce-text">
             <?php _e('<b>ONLYOFFICE 7.0:</b> online forms, password protection in sheets, collaboration improvements and much more', 'teamlab-blog-2-0'); ?>
         </div>
     </a>
 </div>
 <div class="advent-announce push advent-desktop-hide">
-    <a  href="https://www.onlyoffice.com/blog/2022/01/onlyoffice-docs-7-0/">
+    <a  href="<?php echo $banner_url ?>">
         <div class="advent-announce-text">
             <?php _e('ONLYOFFICE 7.0 released', 'teamlab-blog-2-0'); ?>
         </div>
