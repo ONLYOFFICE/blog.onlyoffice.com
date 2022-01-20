@@ -36,7 +36,7 @@ main{
     font-size: 15px;
     line-height: 22px;
     text-decoration: none !important;
-    letter-spacing: 0.01em;
+    letter-spacing: -0.01em;
     padding: 15px 0 19px;
     white-space: nowrap;
     position: relative;
