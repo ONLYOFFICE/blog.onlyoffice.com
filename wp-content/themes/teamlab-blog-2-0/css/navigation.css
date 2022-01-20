@@ -931,18 +931,18 @@ div.custom-select div.selector {
   
   .advent-announce.push .advent-announce-text:after {
     content: '';
-    background-image: url(../images/top_banner/onlyoffice_7.0/mob_right.svg);
-		background-position: center -18px;
-		right: -90px;
-		width: 64px;
+    background-image: url(../images/top_banner/onlyoffice_7.0/mob_right_1.svg);
+		background-position: center -10px;
+		right: -86px;
+		width: 73px;
     height: 48px;
   }
   .advent-announce.push .advent-announce-text:before {
     content: '';
-    background-image: url(../images/top_banner/onlyoffice_7.0/mob_left.svg);
-    background-position: center -18px;
-		left: -85px;
-		width: 63px;
+    background-image: url(../images/top_banner/onlyoffice_7.0/mob_left_1.svg);
+    background-position: center 0;
+		left: -72px;
+		width: 72px;
     height: 48px;
   }
   .advent-announce.push .advent-announce-text b {
