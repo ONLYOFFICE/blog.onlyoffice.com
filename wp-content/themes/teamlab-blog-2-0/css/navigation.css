@@ -586,7 +586,7 @@ div.custom-select div.selector {
     min-width: 280px;
   }
   #navitem_features_menu .dropdown-content > li:last-of-type {
-    max-width: 272px;
+    min-width: 272px;
   }
   #navitem_partnership_menu .dropdown-content > li:first-of-type,
   #navitem_partnership_menu .dropdown-content > li:last-of-type{
