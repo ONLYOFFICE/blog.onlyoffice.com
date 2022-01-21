@@ -1,4 +1,11 @@
 ﻿# Changelog
+## 1.1.9
+### Новое
+* Добавлен плагин Autoptimize для минификации CSS и JS файлов
+
+### Исправления
+* Удалены неиспользуемые плагины "WP Super Cache", "JS & CSS Script Optimizer", "WP-Minify", "AWS CDN By WP-Admin"
+
 ## 1.1.8
 ### Исправления
 * Изменён дизайн верхнего баннера
