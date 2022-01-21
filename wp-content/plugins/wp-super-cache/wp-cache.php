@@ -3,7 +3,7 @@
 Plugin Name: WP Super Cache
 Plugin URI: https://wordpress.org/plugins/wp-super-cache/
 Description: Very fast caching plugin for WordPress.
-Version: 1.7.1
+Version: 1.7.4
 Author: Automattic
 Author URI: https://automattic.com/
 License: GPL2+
@@ -43,7 +43,11 @@ if ( ! defined( 'PHP_VERSION_ID' ) ) {
 function wpsc_init() {
 	global $wp_cache_config_file, $wp_cache_config_file_sample, $wpsc_advanced_cache_dist_filename, $wp_cache_check_wp_config, $wpsc_advanced_cache_filename;
 
-	$wp_cache_config_file = WP_CONTENT_DIR . '/wp-cache-config.php';
+  if ( !defined( 'WPCACHECONFIGPATH' ) ) {
+    define( 'WPCACHECONFIGPATH', WP_CONTENT_DIR );
+  } 
+
+	$wp_cache_config_file = WPCACHECONFIGPATH . '/wp-cache-config.php';
 
 	if ( !defined( 'WPCACHEHOME' ) ) {
 		define( 'WPCACHEHOME', dirname( __FILE__ ) . '/' );
@@ -128,7 +132,7 @@ function get_wpcachehome() {
 		} elseif ( is_file( dirname( __FILE__ ) . '/wp-super-cache/wp-cache-config-sample.php' ) ) {
 			define( 'WPCACHEHOME', dirname( __FILE__ ) . '/wp-super-cache/' );
 		} else {
-			die( sprintf( esc_html__( 'Please create %s /wp-cache-config.php from wp-super-cache/wp-cache-config-sample.php', 'wp-super-cache' ), esc_attr( WP_CONTENT_DIR ) ) );
+			die( sprintf( esc_html__( 'Please create %s/wp-cache-config.php from wp-super-cache/wp-cache-config-sample.php', 'wp-super-cache' ), esc_attr( WPCACHECONFIGPATH ) ) );
 		}
 	}
 }
@@ -350,11 +354,11 @@ function wp_cache_manager_error_checks() {
 		if ( !defined( 'SUBMITDISABLED' ) )
 			define( "SUBMITDISABLED", 'disabled style="color: #aaa" ' );
 		?><div class="notice notice-error"><h4><?php _e( 'Read Only Mode. Configuration cannot be changed.', 'wp-super-cache' ); ?></h4>
-		<p><?php printf( __( 'The WP Super Cache configuration file is <code>%s/wp-cache-config.php</code> and cannot be modified. That file must be writeable by the web server to make any changes.', 'wp-super-cache' ), WP_CONTENT_DIR ); ?>
+		<p><?php printf( __( 'The WP Super Cache configuration file is <code>%s/wp-cache-config.php</code> and cannot be modified. That file must be writeable by the web server to make any changes.', 'wp-super-cache' ), WPCACHECONFIGPATH ); ?>
 		<?php _e( 'A simple way of doing that is by changing the permissions temporarily using the CHMOD command or through your ftp client. Make sure it&#8217;s globally writeable and it should be fine.', 'wp-super-cache' ); ?></p>
 		<p><?php _e( '<a href="https://codex.wordpress.org/Changing_File_Permissions">This page</a> explains how to change file permissions.', 'wp-super-cache' ); ?></p>
-		<?php _e( 'Writeable:', 'wp-super-cache' ); ?> <code>chmod 666 <?php echo WP_CONTENT_DIR; ?>/wp-cache-config.php</code><br />
-		<?php _e( 'Read-only:', 'wp-super-cache' ); ?> <code>chmod 644 <?php echo WP_CONTENT_DIR; ?>/wp-cache-config.php</code></p>
+		<?php _e( 'Writeable:', 'wp-super-cache' ); ?> <code>chmod 666 <?php echo WPCACHECONFIGPATH; ?>/wp-cache-config.php</code><br />
+		<?php _e( 'Read-only:', 'wp-super-cache' ); ?> <code>chmod 644 <?php echo WPCACHECONFIGPATH; ?>/wp-cache-config.php</code></p>
 		</div><?php
 	} elseif ( !defined( 'SUBMITDISABLED' ) ) {
 		define( "SUBMITDISABLED", ' ' );
@@ -586,10 +590,11 @@ function wp_cache_manager_updates() {
 	if( isset( $_POST[ 'action' ] ) && $_POST[ 'action' ] == 'scupdates' ) {
 		if( isset( $_POST[ 'wp_cache_location' ] ) && $_POST[ 'wp_cache_location' ] != '' ) {
 			$dir = realpath( trailingslashit( dirname( $_POST[ 'wp_cache_location' ] ) ) );
-			if ( $dir == false )
+			if ( $dir === realpath( '.' ) || false === $dir ) {
 				$dir = WP_CONTENT_DIR . '/cache/';
-			else
+			} else {
 				$dir = trailingslashit( $dir ) . trailingslashit(wpsc_deep_replace( array( '..', '\\' ), basename( $_POST[ 'wp_cache_location' ] ) ) );
+			}
 			$new_cache_path = $dir;
 		} else {
 			$new_cache_path = WP_CONTENT_DIR . '/cache/';
@@ -597,8 +602,8 @@ function wp_cache_manager_updates() {
 		if ( $new_cache_path != $cache_path ) {
 			if ( file_exists( $new_cache_path ) == false )
 				rename( $cache_path, $new_cache_path );
-			$cache_path = $new_cache_path;
-			wp_cache_replace_line('^ *\$cache_path', "\$cache_path = '" . $cache_path . "';", $wp_cache_config_file);
+			$cache_path = preg_replace('/[ <>\'\"\r\n\t\(\)\$\[\];#]/', '', $new_cache_path );
+			wp_cache_replace_line('^ *\$cache_path', "\$cache_path = " . var_export( $cache_path, true ) . ";", $wp_cache_config_file);
 		}
 
 		if( isset( $_POST[ 'wp_super_cache_late_init' ] ) ) {
@@ -1141,7 +1146,9 @@ table.wpsc-settings-table {
 					<legend class="hidden">Cache Location</legend>
 					<input type='text' size=80 name='wp_cache_location' value='<?php echo esc_attr( $cache_path ); ?>' />
 					<p><?php printf( __( 'Change the location of your cache files. The default is WP_CONTENT_DIR . /cache/ which translates to %s.', 'wp-super-cache' ), WP_CONTENT_DIR . '/cache/' ); ?></p>
-					<ol><li><?php _e( 'You must give the full path to the directory.', 'wp-super-cache' ); ?></li>
+					<ol>
+						<li><?php _e( 'Warning: do not use a shared directory like /tmp/ where other users on this server can modify files. Your cache files could be modified to deface your website.', 'wp-super-cache' ); ?></li>
+						<li><?php _e( 'You must give the full path to the directory.', 'wp-super-cache' ); ?></li>
 						<li><?php _e( 'If the directory does not exist, it will be created. Please make sure your web server user has write access to the parent directory. The parent directory must exist.', 'wp-super-cache' ); ?></li>
 						<li><?php _e( 'If the new cache directory does not exist, it will be created and the contents of the old cache directory will be moved there. Otherwise, the old cache directory will be left where it is.', 'wp-super-cache' ); ?></li>
 						<li><?php _e( 'Submit a blank entry to set it to the default directory, WP_CONTENT_DIR . /cache/.', 'wp-super-cache' ); ?></li>
@@ -1171,6 +1178,7 @@ table.wpsc-settings-table {
 				<li><?php printf( __( 'If uninstalling this plugin, make sure the directory <em>%s</em> is writeable by the webserver so the files <em>advanced-cache.php</em> and <em>cache-config.php</em> can be deleted automatically. (Making sure those files are writeable is probably a good idea!)', 'wp-super-cache' ), esc_attr( WP_CONTENT_DIR ) ); ?></li>
 				<li><?php printf( __( 'Please see the <a href="%1$s/wp-super-cache/readme.txt">readme.txt</a> for instructions on uninstalling this script. Look for the heading, "How to uninstall WP Super Cache".', 'wp-super-cache' ), plugins_url() ); ?></li>
 				<li><?php echo '<em>' . sprintf( __( 'Need help? Check the <a href="%1$s">Super Cache readme file</a>. It includes installation documentation, a FAQ and Troubleshooting tips. The <a href="%2$s">support forum</a> is also available. Your question may already have been answered.', 'wp-super-cache' ), 'https://wordpress.org/plugins/wp-super-cache/', 'https://wordpress.org/support/topic-tag/wp-super-cache/?forum_id=10' ) . '</em>'; ?></li>
+				<li><?php _e( 'The location of the plugin configuration file can be changed by defining the WPCACHECONFIGPATH constant in wp-config.php. If not defined it will be set to WP_CONTENT_DIR.', 'wp-super-cache' ); ?></li>
 			</ol>
 
 			<?php
@@ -1188,8 +1196,12 @@ table.wpsc-settings-table {
 			echo "\n";
 			wp_cache_edit_rejected();
 			echo "\n";
+			wp_cache_edit_rejected_cookies();
+			echo "\n";
 			wp_cache_edit_accepted();
 			echo '</fieldset>';
+
+			wpsc_edit_tracking_parameters();
 
 			wp_cache_edit_rejected_ua();
 
@@ -1552,7 +1564,7 @@ function wpsc_update_direct_pages() {
 		$expiredfiles = array_diff( $cached_direct_pages, $_POST[ 'direct_pages' ] );
 		unset( $cached_direct_pages );
 		foreach( $_POST[ 'direct_pages' ] as $page ) {
-			$page = str_replace( '..', '', preg_replace('/[ <>\'\"\r\n\t\(\)]/', '', $page ) );
+			$page = str_replace( '..', '', preg_replace( '/[ <>\'\"\r\n\t\(\)\$\[\];#]/', '', $page ) );
 			if ( $page != '' ) {
 				$cached_direct_pages[] = $page;
 				$out .= "'$page', ";
@@ -1563,7 +1575,7 @@ function wpsc_update_direct_pages() {
 	}
 	if ( $valid_nonce && array_key_exists('new_direct_page', $_POST) && $_POST[ 'new_direct_page' ] && '' != $_POST[ 'new_direct_page' ] ) {
 		$page = str_replace( get_option( 'siteurl' ), '', $_POST[ 'new_direct_page' ] );
-		$page = str_replace( '..', '', preg_replace('/[ <>\'\"\r\n\t\(\)]/', '', $page ) );
+		$page = str_replace( '..', '', preg_replace( '/[ <>\'\"\r\n\t\(\)\$\[\];#]/', '', $page ) );
 		if ( substr( $page, 0, 1 ) != '/' )
 			$page = '/' . $page;
 		if ( $page != '/' || false == is_array( $cached_direct_pages ) || in_array( $page, $cached_direct_pages ) == false ) {
@@ -1692,7 +1704,7 @@ function wp_lock_down() {
 	) . '</p>';
 	if ( 'READONLY' !== $readonly ) {
 		echo '<p>' . sprintf( __( 'For example: to cache <em>%1$sabout/</em>, you would enter %1$sabout/ or /about/. The cached file will be generated the next time an anonymous user visits that page.', 'wp-super-cache' ),
-			esc_attr( trailingslashit( get_option( 'siteurl' ) ) )
+			esc_attr( trailingslashit( get_option( 'home' ) ) )
 		) . '</p>';
 		echo '<p>' . esc_html__( 'Make the textbox blank to remove it from the list of direct pages and delete the cached file.', 'wp-super-cache' ) . '</p>';
 
@@ -1785,7 +1797,12 @@ function wp_cache_time_update() {
 				":" != substr( $_POST[ 'cache_scheduled_time' ], 2, 1 )
 			)
 				$_POST[ 'cache_scheduled_time' ] = '00:00';
+
 			$cache_scheduled_time = $_POST[ 'cache_scheduled_time' ];
+
+			if ( ! preg_match( '/[0-9][0-9]:[0-9][0-9]/', $cache_scheduled_time ) ) {
+				$cache_scheduled_time = '00:00';
+			}
 			$schedules = wp_get_schedules();
 			if ( !isset( $cache_schedule_interval ) )
 				$cache_schedule_interval = 'daily';
@@ -1973,6 +1990,72 @@ function wp_cache_edit_rejected_pages() {
 
 }
 
+function wpsc_update_tracking_parameters() {
+	global $wpsc_tracking_parameters, $valid_nonce, $wp_cache_config_file;
+
+	if ( isset( $_POST['tracking_parameters'] ) && $valid_nonce ) {
+		$text = wp_cache_sanitize_value( str_replace( '\\\\', '\\', $_POST['tracking_parameters'] ), $wpsc_tracking_parameters );
+		wp_cache_replace_line( '^ *\$wpsc_tracking_parameters', "\$wpsc_tracking_parameters = $text;", $wp_cache_config_file );
+		wp_cache_setting( 'wpsc_ignore_tracking_parameters', isset( $_POST['wpsc_ignore_tracking_parameters'] ) ? 1 : 0 );
+	}
+}
+
+function wpsc_edit_tracking_parameters() {
+	global $wpsc_tracking_parameters, $wpsc_ignore_tracking_parameters;
+
+	$admin_url = admin_url( 'options-general.php?page=wpsupercache' );
+	wpsc_update_tracking_parameters();
+
+	if ( ! isset( $wpsc_tracking_parameters ) ) {
+		$wpsc_tracking_parameters = array( 'fbclid', 'ref', 'gclid', 'fb_source', 'mc_cid', 'mc_eid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'utm_expid', 'mtm_source', 'mtm_medium', 'mtm_campaign', 'mtm_keyword', 'mtm_content', 'mtm_cid', 'mtm_group', 'mtm_placement' );
+	}
+
+	if ( ! isset( $wpsc_ignore_tracking_parameters ) ) {
+		$wpsc_ignore_tracking_parameters = 0;
+	}
+
+	echo '<a name="trackingparameters"></a><fieldset class="options"><h4>' . __( 'Tracking Parameters', 'wp-super-cache' ) . '</h4>';
+	echo '<form name="edit_tracking_parameters" action="' . esc_url_raw( add_query_arg( 'tab', 'settings', $admin_url ) . '#trackingparameters' ) . '" method="post">';
+	echo "<p>" . __( 'Tracking parameters to ignore when caching. Visitors from Facebook, Twitter and elsewhere to your website will go to a URL with tracking parameters added. This setting allows the plugin to ignore those parameters and show an already cached page. Any actual tracking by Google Analytics or other Javascript based code should still work as the URL of the page is not modified.', 'wp-super-cache' ) . "</p>\n";
+	echo '<textarea name="tracking_parameters" cols="20" rows="10" style="width: 50%; font-size: 12px;" class="code">';
+	foreach ( $wpsc_tracking_parameters as $parameter) {
+		echo esc_html( $parameter ) . "\n";
+	}
+	echo '</textarea> ';
+	echo "<p><label><input type='checkbox' name='wpsc_ignore_tracking_parameters' value='1' " . checked( 1, $wpsc_ignore_tracking_parameters, false ) . " /> " . __( 'Enable', 'wp-super-cache' ) . "</label></p>";
+	echo '<div class="submit"><input class="button-primary" type="submit" ' . SUBMITDISABLED . 'value="' . __( 'Save', 'wp-super-cache' ) . '" /></div>';
+	wp_nonce_field('wp-cache');
+	echo "</form>\n";
+}
+
+function wp_cache_update_rejected_cookies() {
+	global $wpsc_rejected_cookies, $wp_cache_config_file, $valid_nonce;
+
+	if ( isset( $_POST['wp_rejected_cookies'] ) && $valid_nonce ) {
+		$text = wp_cache_sanitize_value( str_replace( '\\\\', '\\', $_POST['wp_rejected_cookies'] ), $wpsc_rejected_cookies );
+		wp_cache_replace_line( '^ *\$wpsc_rejected_cookies', "\$wpsc_rejected_cookies = $text;", $wp_cache_config_file );
+	}
+}
+
+function wp_cache_edit_rejected_cookies() {
+	global $wpsc_rejected_cookies;
+
+	$admin_url = admin_url( 'options-general.php?page=wpsupercache' );
+	wp_cache_update_rejected_cookies();
+
+	echo '<a name="rejectcookies"></a><fieldset class="options"><h4>' . __( 'Rejected Cookies', 'wp-super-cache' ) . '</h4>';
+	echo '<form name="wp_edit_rejected_cookies" action="' . esc_url_raw( add_query_arg( 'tab', 'settings', $admin_url ) . '#rejectcookies' ) . '" method="post">';
+	echo "<p>" . __( 'Do not cache pages when these cookies are set. Add the cookie names here, one per line. Matches on fragments, so "test" will match "WordPress_test_cookie". (Simple caching only)', 'wp-super-cache' ) . "</p>\n";
+	echo '<textarea name="wp_rejected_cookies" cols="40" rows="4" style="width: 50%; font-size: 12px;" class="code">';
+	foreach ( $wpsc_rejected_cookies as $file) {
+		echo esc_html( $file ) . "\n";
+	}
+	echo '</textarea> ';
+	echo '<div class="submit"><input class="button-primary" type="submit" ' . SUBMITDISABLED . 'value="' . __( 'Save', 'wp-super-cache' ) . '" /></div>';
+	wp_nonce_field('wp-cache');
+	echo "</form>\n";
+}
+
 function wp_cache_update_rejected_strings() {
 	global $cache_rejected_uri, $wp_cache_config_file, $valid_nonce;
 
@@ -1989,7 +2072,7 @@ function wp_cache_edit_rejected() {
 	$admin_url = admin_url( 'options-general.php?page=wpsupercache' );
 	wp_cache_update_rejected_strings();
 
-	echo '<a name="rejecturi"></a>';
+	echo '<a name="rejecturi"></a><fieldset class="options"><h4>' . __( 'Rejected URL Strings', 'wp-super-cache' ) . '</h4>';
 	echo '<form name="wp_edit_rejected" action="' . esc_url_raw( add_query_arg( 'tab', 'settings', $admin_url ) . '#rejecturi' ) . '" method="post">';
 	echo "<p>" . __( 'Add here strings (not a filename) that forces a page not to be cached. For example, if your URLs include year and you dont want to cache last year posts, it&#8217;s enough to specify the year, i.e. &#8217;/2004/&#8217;. WP-Cache will search if that string is part of the URI and if so, it will not cache that page.', 'wp-super-cache' ) . "</p>\n";
 	echo '<textarea name="wp_rejected_uri" cols="40" rows="4" style="width: 50%; font-size: 12px;" class="code">';
@@ -2017,7 +2100,7 @@ function wp_cache_edit_accepted() {
 	wp_cache_update_accepted_strings();
 	$admin_url = admin_url( 'options-general.php?page=wpsupercache' );
 
-	echo '<a name="cancache"></a>';
+	echo '<a name="cancache"></a><fieldset class="options"><h4>' . __( 'Always Cache Filenames', 'wp-super-cache' ) . '</h4>';
 	echo '<div style="clear:both"></div><form name="wp_edit_accepted" action="' . esc_url_raw( add_query_arg( 'tab', 'settings', $admin_url ) . '#cancache' ) . '" method="post">';
 	echo "<p>" . __( 'Add here those filenames that can be cached, even if they match one of the rejected substring specified above.', 'wp-super-cache' ) . "</p>\n";
 	echo '<textarea name="wp_accepted_files" cols="40" rows="8" style="width: 50%; font-size: 12px;" class="code">';
@@ -2073,8 +2156,8 @@ function wpsc_update_debug_settings() {
 		wp_cache_setting( 'wp_cache_debug_log', $wp_cache_debug_log );
 		$wp_super_cache_comments = isset( $_POST[ 'wp_super_cache_comments' ] ) ? 1 : 0;
 		wp_cache_setting( 'wp_super_cache_comments', $wp_super_cache_comments );
-		if ( isset( $_POST[ 'wp_cache_debug_ip' ] ) ) {
-			$wp_cache_debug_ip = esc_html( $_POST[ 'wp_cache_debug_ip' ] );
+		if ( isset( $_POST[ 'wp_cache_debug_ip' ] ) && filter_var( $_POST[ 'wp_cache_debug_ip' ], FILTER_VALIDATE_IP ) ) {
+			$wp_cache_debug_ip = esc_html( preg_replace( '/[ <>\'\"\r\n\t\(\)\$\[\];#]/', '', $_POST[ 'wp_cache_debug_ip' ] ) );
 		} else {
 			$wp_cache_debug_ip = '';
 		}
@@ -2084,7 +2167,7 @@ function wpsc_update_debug_settings() {
 		$wp_super_cache_front_page_clear = isset( $_POST[ 'wp_super_cache_front_page_clear' ] ) ? 1 : 0;
 		wp_cache_setting( 'wp_super_cache_front_page_clear', $wp_super_cache_front_page_clear );
 		if ( isset( $_POST[ 'wp_super_cache_front_page_text' ] ) ) {
-			$wp_super_cache_front_page_text = esc_html( $_POST[ 'wp_super_cache_front_page_text' ] );
+			$wp_super_cache_front_page_text = esc_html( preg_replace( '/[ <>\'\"\r\n\t\(\)\$\[\];#]/', '', $_POST[ 'wp_super_cache_front_page_text' ] ) );
 		} else {
 			$wp_super_cache_front_page_text = '';
 		}
@@ -2567,8 +2650,12 @@ function wp_cache_create_advanced_cache() {
 	global $wpsc_advanced_cache_filename, $wpsc_advanced_cache_dist_filename;
 	if ( file_exists( ABSPATH . 'wp-config.php') ) {
 		$global_config_file = ABSPATH . 'wp-config.php';
+	} elseif ( file_exists( dirname( ABSPATH ) . '/wp-config.php' ) ) {
+		$global_config_file = dirname( ABSPATH ) . '/wp-config.php';
+	} elseif ( defined( 'DEBIAN_FILE' ) && file_exists( DEBIAN_FILE ) ) {
+		$global_config_file = DEBIAN_FILE;
 	} else {
-		$global_config_file = dirname(ABSPATH) . '/wp-config.php';
+		die('Cannot locate wp-config.php');
 	}
 
 	$line = 'define( \'WPCACHEHOME\', \'' . dirname( __FILE__ ) . '/\' );';
@@ -2607,7 +2694,7 @@ function wp_cache_create_advanced_cache() {
 			! strpos( $file, "WP SUPER CACHE 0.8.9.1" ) &&
 			! strpos( $file, "WP SUPER CACHE 1.2" )
 		) {
-			wp_die( '<div class="notice notice-error"><h4>' . __( 'Warning!', 'wp-super-cache' ) . "</h4><p>" . sprintf( __( 'The file %s already exists. Please manually delete it before using this plugin. If you continue to see this message after deleting it please contact your hosting support.', 'wp-super-cache' ), $wpsc_advanced_cache_filename ) . "</p></div>" );
+			return false;
 		}
 	}
 
@@ -2626,24 +2713,47 @@ function wpsc_check_advanced_cache() {
 	global $wpsc_advanced_cache_filename;
 
 	$ret = true;
+	$other_advanced_cache = false;
 	if ( file_exists( $wpsc_advanced_cache_filename ) ) {
 		$file = file_get_contents( $wpsc_advanced_cache_filename );
-		if( strpos( $file, "WP SUPER CACHE 0.8.9.1" ) || strpos( $file, "WP SUPER CACHE 1.2" ) ) {
+		if ( strpos( $file, "WP SUPER CACHE 0.8.9.1" ) || strpos( $file, "WP SUPER CACHE 1.2" ) ) {
 			return true;
 		} else {
+			$other_advanced_cache = true;
 			$ret = wp_cache_create_advanced_cache();
 		}
 	} else {
 		$ret = wp_cache_create_advanced_cache();
 	}
 
-	if( false == $ret ) {
-		echo '<div class="notice notice-error"><h4>' . __( 'Warning', 'wp-super-cache' ) . "! <em>" . sprintf( __( '%s/advanced-cache.php</em> does not exist or cannot be updated.', 'wp-super-cache' ), WP_CONTENT_DIR ) . "</h4>";
-		echo "<p><ol><li>" . __( 'If it already exists, please delete the file first.', 'wp-super-cache' ) . "</li>";
-		echo "<li>" . sprintf( __( 'Make %1$s writable using the chmod command through your ftp or server software. (<em>chmod 777 %1$s</em>) and refresh this page. This is only a temporary measure and you&#8217;ll have to make it read only afterwards again. (Change 777 to 755 in the previous command)', 'wp-super-cache' ), WP_CONTENT_DIR ) . "</li>";
-		echo "<li>" . sprintf( __( 'Refresh this page to update <em>%s/advanced-cache.php</em>', 'wp-super-cache' ), WP_CONTENT_DIR ) . "</li></ol>";
-		echo sprintf( __( 'If that doesn&#8217;t work, make sure the file <em>%s/advanced-cache.php</em> doesn&#8217;t exist:', 'wp-super-cache' ), WP_CONTENT_DIR ) . "<ol>";
-		echo "</ol>";
+	if ( false == $ret ) {
+		if ( $other_advanced_cache ) {
+			echo '<div style="width: 50%" class="notice notice-error"><h2>' . __( 'Warning! You may not be allowed to use this plugin on your site.', 'wp-super-cache' ) . "</h2>";
+			echo '<p>' .
+				sprintf(
+					__( 'The file %s was created by another plugin or by your system administrator. Please examine the file carefully by FTP or SSH and consult your hosting documentation. ', 'wp-super-cache' ),
+					$wpsc_advanced_cache_filename
+				) .
+				'</p>';
+			echo '<p>' .
+				__( 'If it was created by another caching plugin please uninstall that plugin first before activating WP Super Cache. If the file is not removed by that action you should delete the file manually.', 'wp-super-cache' ),
+				'</p>';
+			echo '<p><strong>' .
+				__( 'If you need support for this problem contact your hosting provider.', 'wp-super-cache' ),
+				'</strong></p>';
+		} elseif ( ! is_writeable_ACLSafe( $wpsc_advanced_cache_filename ) ) {
+			echo '<div class="notice notice-error"><h2>' . __( 'Warning', 'wp-super-cache' ) . "! <em>" . sprintf( __( '%s/advanced-cache.php</em> cannot be updated.', 'wp-super-cache' ), WP_CONTENT_DIR ) . "</h2>";
+			echo '<ol>';
+			echo "<li>" .
+				sprintf(
+					__( 'Make %1$s writable using the chmod command through your ftp or server software. (<em>chmod 777 %1$s</em>) and refresh this page. This is only a temporary measure and you&#8217;ll have to make it read only afterwards again. (Change 777 to 755 in the previous command)', 'wp-super-cache' ),
+					WP_CONTENT_DIR
+				) .
+				"</li>";
+			echo "<li>" . sprintf( __( 'Refresh this page to update <em>%s/advanced-cache.php</em>', 'wp-super-cache' ), WP_CONTENT_DIR ) . "</li></ol>";
+			echo sprintf( __( 'If that doesn&#8217;t work, make sure the file <em>%s/advanced-cache.php</em> doesn&#8217;t exist:', 'wp-super-cache' ), WP_CONTENT_DIR ) . "<ol>";
+			echo "</ol>";
+		}
 		echo "</div>";
 		return false;
 	}
@@ -3442,6 +3552,9 @@ function wpsc_get_htaccess_info() {
 
 	$gziprules =  "<IfModule mod_mime.c>\n  <FilesMatch \"\\.html\\.gz\$\">\n    ForceType text/html\n    FileETag None\n  </FilesMatch>\n  AddEncoding gzip .gz\n  AddType text/html .gz\n</IfModule>\n";
 	$gziprules .= "<IfModule mod_deflate.c>\n  SetEnvIfNoCase Request_URI \.gz$ no-gzip\n</IfModule>\n";
+
+	$vary_header = $cache_control_header = '';
+
 	if ( defined( 'WPSC_VARY_HEADER' ) ) {
 		if ( WPSC_VARY_HEADER != '' ) {
 			$vary_header = WPSC_VARY_HEADER;
@@ -3771,18 +3884,18 @@ function wp_cache_disable_plugin( $delete_config_file = true ) {
 
 	uninstall_supercache( WP_CONTENT_DIR . '/cache' );
 	$file_not_deleted = false;
+	wpsc_remove_advanced_cache();
 	if ( @file_exists( WP_CONTENT_DIR . "/advanced-cache.php" ) ) {
-		if ( false == @unlink( WP_CONTENT_DIR . "/advanced-cache.php" ) )
-			$file_not_deleted[] = 'advanced-cache.php';
+		$file_not_deleted[] = WP_CONTENT_DIR . '/advanced-cache.php';
 	}
-	if ( $delete_config_file && @file_exists( WP_CONTENT_DIR . "/wp-cache-config.php" ) ) {
-		if ( false == unlink( WP_CONTENT_DIR . "/wp-cache-config.php" ) )
-			$file_not_deleted[] = 'wp-cache-config.php';
+	if ( $delete_config_file && @file_exists( WPCACHECONFIGPATH . "/wp-cache-config.php" ) ) {
+		if ( false == unlink( WPCACHECONFIGPATH . "/wp-cache-config.php" ) )
+			$file_not_deleted[] = WPCACHECONFIGPATH . '/wp-cache-config.php';
 	}
 	if ( $file_not_deleted ) {
 		$msg = __( "Dear User,\n\nWP Super Cache was removed from your blog or deactivated but some files could\nnot be deleted.\n\n", 'wp-super-cache' );
-		foreach( (array)$file_not_deleted as $filename ) {
-			$msg .=  WP_CONTENT_DIR . "/{$filename}\n";
+		foreach( (array)$file_not_deleted as $path ) {
+			$msg .=  "{$path}\n";
 		}
 		$msg .= "\n";
 		$msg .= sprintf( __( "You should delete these files manually.\nYou may need to change the permissions of the files or parent directory.\nYou can read more about this in the Codex at\n%s\n\nThank you.", 'wp-super-cache' ), 'https://codex.wordpress.org/Changing_File_Permissions#About_Chmod' );
