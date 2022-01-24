@@ -13,7 +13,7 @@ main{
 
 /*---------Top-banner-------*/
 .advent-announce.push{
-    background-color: #27ABA3;
+    background-color: #333333;
     /* background-image: url(../images/top_banner/onlyoffice_7.0/desktop_left.svg), url(../images/top_banner/onlyoffice_7.0/desktop_right.svg);
     background-position: calc(50% - 456px) 0, calc(50% + 428px) 0; */
     background-repeat: no-repeat;
@@ -36,7 +36,7 @@ main{
     font-size: 15px;
     line-height: 22px;
     text-decoration: none !important;
-    letter-spacing: 0.01em;
+    letter-spacing: -0.01em;
     padding: 15px 0 19px;
     white-space: nowrap;
     position: relative;
@@ -45,31 +45,34 @@ main{
 }
 .advent-announce.push .advent-announce-text:before{
     content: '';
-    background-image: url(../images/top_banner/onlyoffice_7.0/desktop_left.svg);
-    background-position: 0 50%;
+    background-image: url(../images/top_banner/onlyoffice_7.0/desktop_left_1.svg), url(../images/top_banner/onlyoffice_7.0/desktop_left_2.svg);
+    background-position: 0 10px, 100% 5px;
     background-repeat: no-repeat;
     position: absolute;
     height: 56px;
-    width: 260px;
-    left: -306px;
+    width: 307px;
+    left: -327px;
     top: 0px;
     box-sizing: content-box;
 }
 
 .advent-announce.push .advent-announce-text:after{
     content: '';
-    background-image: url(../images/top_banner/onlyoffice_7.0/desktop_right.svg);
-    background-position: center -28px;
+    background-image: url(../images/top_banner/onlyoffice_7.0/arrow_right.svg), url(../images/top_banner/onlyoffice_7.0/desktop_right_1.svg);
+    background-position: 0 14px, 100% -5px;
     background-repeat: no-repeat;
     position: absolute;
     height: 56px;
-    width: 246px;
-    right: -286px;
+    width: 301px;
+    right: -305px;
     top: 0px;
 } 
 
 .advent-announce.push .advent-announce-text b{
     font-weight: 700;
+}
+.advent-announce.push .advent-announce-text span{
+    color: #00CDC1;
 }
 
 .advent-desktop-hide {
@@ -1183,7 +1186,6 @@ main{
     position: relative;
     box-sizing: border-box;
     padding: 43px 26px 67px;
-    height: 100%;
     width: 100%;
     background-color: #FFFFFF;
     color: #333333;

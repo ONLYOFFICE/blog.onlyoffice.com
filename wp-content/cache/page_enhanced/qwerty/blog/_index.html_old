@@ -1,0 +1,982 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US"
+	prefix="og: https://ogp.me/ns#" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Google Tag Manager -->
+    <script>
+        (function(a, s, y, n, c, h, i, d, e) {
+            s.className += ' ' + y;
+            h.start = 1 * new Date;
+            h.end = i = function() {
+                s.className = s.className.replace(RegExp(' ?' + y), '')
+            };
+            (a[n] = a[n] || []).hide = h;
+            setTimeout(function() {
+                i();
+                h.end = null
+            }, c);
+            h.timeout = c;
+        })(window, document.documentElement, 'async-hide', 'dataLayer', 4000, {
+            'GTM-PMBZ8H3': true
+        });
+    </script>
+    <script>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-5NW47TX');
+    </script>
+    <!-- End Google Tag Manager -->
+    <script>
+        (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function() {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-12442749-5', 'auto', {
+            'name': 'www',
+            'allowLinker': true
+        });
+        ga('require', 'linker');
+        ga('www.linker:autoLink', ['onlyoffice.com', 'onlyoffice.eu', 'onlyoffice.sg', 'avangate.com']);
+        ga('www.send', 'pageview');
+
+        ga('create', 'UA-12442749-21', 'auto', {
+            'name': 'testTracker',
+            'allowLinker': true
+        });
+        ga('require', 'linker');
+        ga('testTracker.linker:autoLink', ['onlyoffice.com', 'onlyoffice.eu', 'onlyoffice.sg', 'avangate.com']);
+        ga('testTracker.send', 'pageview');
+    </script>
+    <meta content="text/html; charset=UTF-8" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <link rel="icon" href="http://qwerty/blog/wp-content/themes/teamlab-blog-2-0/images/favicon.ico" type="image/x-icon" />
+    <!-- <script type="text/javascript">
+
+		// var onloadCallback = function() {
+		// 	grecaptcha.render('popupCaptcha', {'sitekey' : '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'});  // test public key
+		// };
+
+	</script>
+    <script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl=en'></script> -->
+    <link media="all" href="http://qwerty/blog/wp-content/cache/autoptimize/css/autoptimize_f550c3d6c58a1e8d7f002172f932368d.css" rel="stylesheet" /><link media="screen" href="http://qwerty/blog/wp-content/cache/autoptimize/css/autoptimize_9e8b764c90435470fd0231a58a5a9a70.css" rel="stylesheet" /><title>ONLYOFFICE blog</title>
+
+
+
+		<!-- All in One SEO 4.1.4.3 -->
+		<meta name="description" content="The official source of latest ONLYOFFICE news, tips, ideas, and promos." />
+		<meta name="robots" content="max-image-preview:large" />
+		<link rel="canonical" href="http://qwerty/blog/" />
+		<link rel="next" href="http://qwerty/blog/page/2/" />
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:site_name" content="ONLYOFFICE Blog" />
+		<meta property="og:type" content="article" />
+		<meta property="og:title" content="ONLYOFFICE blog" />
+		<meta property="og:description" content="The official source of latest ONLYOFFICE news, tips, ideas, and promos." />
+		<meta property="og:url" content="http://qwerty/blog/" />
+		<meta property="og:image" content="http://static-www.onlyoffice.com/v9.5.0/images/fb_icon_325x325_transparent.png" />
+		<meta property="article:published_time" content="2021-10-19T07:37:54+00:00" />
+		<meta property="article:modified_time" content="2021-12-20T11:35:32+00:00" />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:domain" content="qwerty" />
+		<meta name="twitter:title" content="ONLYOFFICE blog" />
+		<meta name="twitter:description" content="The official source of latest ONLYOFFICE news, tips, ideas, and promos." />
+		<meta name="twitter:image" content="https://static-www.onlyoffice.com/v9.5.0/images/fb_icon_325x325_transparent.png" />
+		<meta name="google" content="nositelinkssearchbox" />
+		<script type="application/ld+json" class="aioseo-schema">
+			{"@context":"https:\/\/schema.org","@graph":[{"@type":"WebSite","@id":"http:\/\/qwerty\/blog\/#website","url":"http:\/\/qwerty\/blog\/","name":"ONLYOFFICE blog","inLanguage":"en-US","publisher":{"@id":"http:\/\/qwerty\/blog\/#organization"}},{"@type":"Organization","@id":"http:\/\/qwerty\/blog\/#organization","name":"ONLYOFFICE blog","url":"http:\/\/qwerty\/blog\/"},{"@type":"BreadcrumbList","@id":"http:\/\/qwerty\/blog\/#breadcrumblist","itemListElement":[{"@type":"ListItem","@id":"http:\/\/qwerty\/blog\/#listItem","position":1,"item":{"@type":"WebPage","@id":"http:\/\/qwerty\/blog\/","name":"Home","description":"The official source of latest ONLYOFFICE news, tips, ideas, and promos.","url":"http:\/\/qwerty\/blog\/"}}]},{"@type":"CollectionPage","@id":"http:\/\/qwerty\/blog\/#collectionpage","url":"http:\/\/qwerty\/blog\/","name":"ONLYOFFICE blog","description":"The official source of latest ONLYOFFICE news, tips, ideas, and promos.","inLanguage":"en-US","isPartOf":{"@id":"http:\/\/qwerty\/blog\/#website"},"breadcrumb":{"@id":"http:\/\/qwerty\/blog\/#breadcrumblist"},"about":{"@id":"http:\/\/qwerty\/blog\/#organization"}}]}
+		</script>
+		<!-- All in One SEO -->
+
+<link rel="amphtml" href="http://qwerty/blog/amp/" /><meta name="generator" content="AMP for WP 1.0.76.6"/><link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="ONLYOFFICE blog &raquo; Feed" href="http://qwerty/blog/feed/" />
+<link rel="alternate" type="application/rss+xml" title="ONLYOFFICE blog &raquo; Comments Feed" href="http://qwerty/blog/comments/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.0.1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.0.1\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/qwerty\/blog\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.6"}};
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,8205,55356,57212],[55357,56424,8203,55356,57212])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type='text/javascript' src='http://qwerty/blog/wp-includes/js/jquery/jquery.min.js?ver=3.5.1' id='jquery-core-js'></script>
+
+<script type='text/javascript' id='urvanov_syntax_highlighter_js-js-extra'>
+/* <![CDATA[ */
+var UrvanovSyntaxHighlighterSyntaxSettings = {"version":"2.8.10","is_admin":"0","ajaxurl":"http:\/\/qwerty\/blog\/wp-admin\/admin-ajax.php","prefix":"urvanov-syntax-highlighter-","setting":"urvanov-syntax-highlighter-setting","selected":"urvanov-syntax-highlighter-setting-selected","changed":"urvanov-syntax-highlighter-setting-changed","special":"urvanov-syntax-highlighter-setting-special","orig_value":"data-orig-value","debug":""};
+var UrvanovSyntaxHighlighterSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+
+
+
+
+<script type='text/javascript' id='wpml-browser-redirect-js-extra'>
+/* <![CDATA[ */
+var wpml_browser_redirect_params = {"pageLanguage":"en","languageUrls":{"en_US":"http:\/\/qwerty\/blog\/","en":"http:\/\/qwerty\/blog\/","US":"http:\/\/qwerty\/blog\/","de_DE":"http:\/\/qwerty\/blog\/de\/","de":"http:\/\/qwerty\/blog\/de\/","DE":"http:\/\/qwerty\/blog\/de\/","ru_RU":"http:\/\/qwerty\/blog\/ru\/","ru":"http:\/\/qwerty\/blog\/ru\/","RU":"http:\/\/qwerty\/blog\/ru\/","zh_CN":"http:\/\/qwerty\/blog\/zh-hans\/","zh":"http:\/\/qwerty\/blog\/zh-hans\/","CN":"http:\/\/qwerty\/blog\/zh-hans\/","zh-hans":"http:\/\/qwerty\/blog\/zh-hans\/","fr_FR":"http:\/\/qwerty\/blog\/fr\/","fr":"http:\/\/qwerty\/blog\/fr\/","FR":"http:\/\/qwerty\/blog\/fr\/","it_IT":"http:\/\/qwerty\/blog\/it\/","it":"http:\/\/qwerty\/blog\/it\/","IT":"http:\/\/qwerty\/blog\/it\/","es_ES":"http:\/\/qwerty\/blog\/es\/","es":"http:\/\/qwerty\/blog\/es\/","ES":"http:\/\/qwerty\/blog\/es\/","cs_CZ":"http:\/\/qwerty\/blog\/cs\/","cs":"http:\/\/qwerty\/blog\/cs\/","CZ":"http:\/\/qwerty\/blog\/cs\/","pt_BR":"http:\/\/qwerty\/blog\/pt-br\/","pt":"http:\/\/qwerty\/blog\/pt-br\/","BR":"http:\/\/qwerty\/blog\/pt-br\/","pt-br":"http:\/\/qwerty\/blog\/pt-br\/","en-GB":"http:\/\/qwerty\/blog\/uk\/","uk":"http:\/\/qwerty\/blog\/uk\/"},"cookie":{"name":"_icl_visitor_lang_js","domain":"qwerty","path":"\/blog\/","expiration":24}};
+/* ]]> */
+</script>
+
+<link rel="https://api.w.org/" href="http://qwerty/blog/wp-json/" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://qwerty/blog/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://qwerty/blog/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 5.6" />
+
+<script data-cfasync="false">
+window.a2a_config=window.a2a_config||{};a2a_config.callbacks=[];a2a_config.overlays=[];a2a_config.templates={};
+a2a_config.icon_color="transparent,#444444";
+a2a_config . num_services = 3; 
+a2a_config.prioritize = ["reddit", "telegram", "mastodon"];
+a2a_config.orientation = "down";
+(function(d,s,a,b){a=d.createElement(s);b=d.getElementsByTagName(s)[0];a.async=1;a.src="/blog/wp-content/plugins/add-to-any/page.js";b.parentNode.insertBefore(a,b);})(document,"script");
+</script>
+<meta name="generator" content="WPML ver:3.1.9.4 stt:1,61,4,3,27,47,2,9,44,56;0" />
+<link rel="alternate" hreflang="en-US" href="http://qwerty/blog/" />
+<link rel="alternate" hreflang="de-DE" href="http://qwerty/blog/de/" />
+<link rel="alternate" hreflang="ru-RU" href="http://qwerty/blog/ru/" />
+<link rel="alternate" hreflang="zh-CN" href="http://qwerty/blog/zh-hans/" />
+<link rel="alternate" hreflang="fr-FR" href="http://qwerty/blog/fr/" />
+<link rel="alternate" hreflang="it-IT" href="http://qwerty/blog/it/" />
+<link rel="alternate" hreflang="es-ES" href="http://qwerty/blog/es/" />
+<link rel="alternate" hreflang="cs-CZ" href="http://qwerty/blog/cs/" />
+<link rel="alternate" hreflang="pt-BR" href="http://qwerty/blog/pt-br/" />
+<link rel="alternate" hreflang="en-GB" href="http://qwerty/blog/uk/" />
+<link href="https://trinitymedia.ai/" rel="preconnect" crossorigin="anonymous" />
+<link href="https://vd.trinitymedia.ai/" rel="preconnect" crossorigin="anonymous" />
+<script type="text/javascript">window.wp_data = {"ajax_url":"http:\/\/qwerty\/blog\/wp-admin\/admin-ajax.php","is_mobile":false};</script></head>
+<div class="advent-announce push advent-mobile-hide">
+        <a href="https://www.onlyoffice.com/blog/2022/01/onlyoffice-docs-7-0/">
+        <div class="advent-announce-text">
+            <b>ONLYOFFICE 7.0:</b> <span>online forms</span>, password protection in sheets, collaboration improvements and much more        </div>
+    </a>
+</div>
+<div class="advent-announce push advent-desktop-hide">
+    <a  href="https://www.onlyoffice.com/blog/2022/01/onlyoffice-docs-7-0/">
+        <div class="advent-announce-text">
+            ONLYOFFICE 7.0 released        </div>
+    </a>
+</div>
+
+<body class="home blog hfeed">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5NW47TX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div class="BaseSide">
+        <div class="mainpart">
+            <div class="site-overlay"></div>
+            <header>
+                <div class="narrowheader">
+                    <div class="logo push">
+                        <a href="http://qwerty"></a>
+                    </div>
+                    <div class="ham_menu push menu-btn pushy-link">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div>
+                                            </div>
+                    <nav class="pushy pushy-left">
+
+                        <div class="pushy-content">
+                            <ul class="all-menu-items">
+                                <li class="pushy-submenu"><a class="menuitem en_US" id="navitem_features">Products & Features</a>
+                                    <div id="navitem_features_menu">
+                                        <ul class="dropdown-content akkordeon">
+                                            <li id="navitem_editors_third_level_menu">
+                                                <a id="navitem_features_editors" class="dropdown-item mobile_no_link" href="http://qwerty/office-suite.aspx">ONLYOFFICE Docs</a>
+                                                    <ul class="navitem_2nd_menu">
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_features_document_editor" href="http://qwerty/document-editor.aspx">Document Editor</a>
+                                                        </li>
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_features_spreadsheet_editor" href="http://qwerty/spreadsheet-editor.aspx">Spreadsheet Editor</a>
+                                                        </li>
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_features_presentation_editor" href="http://qwerty/presentation-editor.aspx">Presentation Editor</a>
+                                                        </li>
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_features_form_creator" href="http://qwerty/form-creator.aspx">Form creator</a>
+                                                        </li>
+                                                    </ul>
+
+                                                <a id="navitem_features_docs_editions" class="dropdown-item mobile_no_link">Docs Editions</a>
+                                                    <ul class="navitem_2nd_menu">
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_features_docs_cloud" href="http://qwerty/docs-cloud.aspx">Cloud Edition</a>
+                                                        </li>
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_features_docs_ee" href="http://qwerty/docs-enterprise.aspx">Enterprise Edition</a>
+                                                        </li>
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_features_docs_de" href="http://qwerty/developer-edition.aspx">Developer Edition</a>
+                                                        </li>
+                                                    </ul>
+                                                <span class="navitem_solutions"><a id="navitem_solutions_clients_apps" class="dropdown-item" href="http://qwerty/desktop.aspx">ONLYOFFICE for desktop</a></span>
+                                                <span class="navitem_solutions"><a id="navitem_solutions_clients_mobile_ios" class="dropdown-item" href="http://qwerty/office-for-ios.aspx">ONLYOFFICE for iOS</a></span>
+                                                <span class="navitem_solutions"><a id="navitem_solutions_clients_mobile_android" class="dropdown-item" href="http://qwerty/office-for-android.aspx">ONLYOFFICE for Android</a></span>
+                                            </li>
+                                            <li id="navitem_comserver_third_level_menu">
+                                                <a id="navitem_features_workspace" class="dropdown-item mobile_no_link" href="http://qwerty/workspace.aspx">ONLYOFFICE Workspace</a>
+                                                    <ul class="navitem_2nd_menu">
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_features_documents" href="http://qwerty/document-management.aspx">Documents</a>
+                                                        </li>
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_features_mail" href="http://qwerty/mail.aspx">Mail</a>
+                                                        </li>
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_features_crm" href="http://qwerty/crm.aspx">CRM</a>
+                                                        </li>
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_features_projects" href="http://qwerty/projects.aspx">Projects</a>
+                                                        </li>
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_features_calendar" href="http://qwerty/calendar.aspx">Calendar</a>
+                                                        </li>
+                                                    </ul>
+                                                <a id="navitem_solutions_clients_workspace" class="dropdown-item mobile_no_link">Workspace Editions</a>
+                                                    <ul class="navitem_2nd_menu">
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_features_cloud_service" href="http://qwerty/cloud-office.aspx">Cloud Edition</a>
+                                                        </li>
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_features_cloud_service" href="http://qwerty/workspace-enterprise.aspx">Enterprise Edition</a>
+                                                        </li>
+                                                    </ul>
+                                                    <a id="navitem_features_security" class="dropdown-item" href="http://qwerty/security.aspx">Security</a>
+                                            </li>
+                                            <li id="navitem_oforms_third_level_menu">
+                                                <a id="navitem_features_oforms" class="dropdown-item" href="https://oforms.onlyoffice.com/">OFORMS</a>
+                                                <div id="oforms_div" class="menu_pic_div">
+                                                    <div id="oforms_img" class="menu_pic_img"></div>
+                                                    <p id="oforms_header" class="menu_pic_header">
+                                                        OFORMS, free <span class="nowrap">ready-to-fill</span> out online document forms                                                    </p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <!--
+                                -->
+                                <li class="pushy-submenu"><a class="menuitem" id="navitem_integrations">Integrations</a>
+                                    <div id="navitem_integrations_menu">
+                                        <ul class="dropdown-content akkordeon">
+                                            <li class="li_without_border">
+                                                <a id="navitem_integrations_nextcloud" class="dropdown-item" href="http://qwerty/office-for-nextcloud.aspx">Nextcloud</a>
+                                                <a id="navitem_integrations_owncloud" class="dropdown-item" href="http://qwerty/office-for-owncloud.aspx">ownCloud</a>
+                                                <a id="navitem_integrations_confluence" class="dropdown-item" href="http://qwerty/office-for-confluence.aspx">Confluence</a>
+                                                <a id="navitem_integrations_alfresco" class="dropdown-item" href="http://qwerty/office-for-alfresco.aspx">Alfresco</a>
+                                                <a id="navitem_integrations_sharepoint" class="dropdown-item" href="http://qwerty/office-for-sharepoint.aspx">SharePoint</a>
+                                                <a id="navitem_integrations_liferay" class="dropdown-item" href="http://qwerty/office-for-liferay.aspx">Liferay</a>
+                                                <a id="navitem_integrations_humhub" class="dropdown-item" href="http://qwerty/office-for-humhub.aspx">HumHub</a>
+                                            </li>
+                                            <li>
+                                                <a id="navitem_integrations_plone" class="dropdown-item" href="http://qwerty/office-for-plone.aspx">Plone</a>
+                                                <a id="navitem_integrations_nuxeo" class="dropdown-item" href="http://qwerty/office-for-nuxeo.aspx">Nuxeo</a>
+                                                <a id="navitem_integrations_chamilo" class="dropdown-item" href="http://qwerty/office-for-chamilo.aspx">Chamilo</a>
+                                                <a id="navitem_integrations_redmine" class="dropdown-item" href="http://qwerty/office-for-redmine.aspx">Redmine</a>
+                                                <a id="navitem_integrations_jira" class="dropdown-item" href="http://qwerty/office-for-jira.aspx">Jira</a>
+                                                <a id="navitem_integrations_others" class="dropdown-item" href="http://qwerty/all-connectors.aspx">Others</a>
+                                            </li>
+                                            <li id="navitem_integration_third_level_menu">
+                                                <a id="navitem_integration_for_developers" class="dropdown-item" href="http://qwerty/developer-edition.aspx">For developers</a>
+                                                <div id="for_developers_div" class="menu_pic_div">
+                                                    <div id="for_developers_img" class="menu_pic_img"></div>
+                                                    <p id="for_developers_header" class="menu_pic_header">
+                                                        Integrate ONLYOFFICE Docs to bring document editing to your app users                                                    </p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <!--
+                                -->
+                                <li class="pushy-submenu"><a class="menuitem en_US" id="navitem_prices">Pricing</a>
+                                    <div id="navitem_prices_menu">
+                                        <ul class="dropdown-content">
+                                            <li id="navitem_docs_third_level_menu">
+                                                <a id="navitem_prices_docs" class="dropdown-item mobile_no_link">ONLYOFFICE Docs</a>
+                                                    <ul class="navitem_2nd_menu">
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_prices_server_enterprice" href="http://qwerty/docs-enterprise-prices.aspx">Enterprise Edition</a>
+                                                        </li>
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_prices_integration" href="http://qwerty/developer-edition-prices.aspx">Developer Edition</a>
+                                                        </li>
+                                                    </ul>
+                                                <a id="navitem_prices_workspace" class="dropdown-item mobile_no_link">ONLYOFFICE Workspace</a>
+                                                    <ul class="navitem_2nd_menu">
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_prices_saas" href="http://qwerty/saas.aspx">Cloud Service</a>
+                                                        </li>
+                                                        <li><a class="nav_2nd_menu_link" id="navitem_prices_enterprise" href="http://qwerty/workspace-enterprise-prices.aspx">Server Enterprise</a>
+                                                        </li>
+                                                    </ul>
+                                            </li>
+                                            <li id="navitem_reseller_third_level_menu">
+                                                <a id="navitem_prices_reseller" class="dropdown-item" href="http://qwerty/find-partners.aspx">Buy from an ONLYOFFICE reseller</a>
+                                                <div id="reseller_div" class="menu_pic_div">
+                                                    <div id="reseller_img" class="menu_pic_img"></div>
+                                                    <p id="reseller_header" class="menu_pic_header">
+                                                        Find out the list of all the authorized ONLYOFFICE resellers in your area</a>
+                                                    </p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <!--
+                                -->
+                                <li class="pushy-submenu"><a class="menuitem en_US" id="navitem_download">Get ONLYOFFICE</a>
+                                    <div id="navitem_download_menu">
+                                        <ul class="dropdown-content">
+                                            <li class="pushy-link">
+                                                <a id="navitem_download_docs" class="dropdown-item mobile_no_link">ONLYOFFICE Docs</a>
+                                                <ul class="navitem_2nd_menu">
+                                                    <li><a class="nav_2nd_menu_link" id="navitem_download_signup_docs" href="http://qwerty/docs-registration.aspx">Sign up for cloud</a>
+                                                    </li>
+                                                    <li><a class="nav_2nd_menu_link" id="navitem_download_onpremises_docs" href="http://qwerty/download-docs.aspx?from=downloadintegrationmenu">Install on-premises</a>
+                                                    </li>
+                                                </ul>
+                                                <a  id="navitem_download_workspace" class="dropdown-item mobile_no_link">ONLYOFFICE Workspace</a>
+                                                <ul class="navitem_2nd_menu">
+                                                    <li><a class="nav_item_nowrap_link" id="navitem_download_signin" href="http://qwerty/signin.aspx">Sign in</a>
+                                                        /
+                                                        <a class="nav_item_nowrap_link second" id="navitem_download_signup" href="http://qwerty/registration.aspx">Sign up for cloud</a>
+                                                    </li>
+                                                    <li><a class="nav_2nd_menu_link" id="navitem_download_onpremises" href="http://qwerty/download-workspace.aspx">Install on-premises</a>
+                                                    </li>
+                                                </ul>
+                                                <a id="navitem_link_personal" class="dropdown-item" href="https://personal.onlyoffice.com/">ONLYOFFICE Personal</a>
+                                                <a id="navitem_download_desktop" class="dropdown-item" href="http://qwerty/download-desktop.aspx">ONLYOFFICE desktop and mobile apps</a>
+                                                <a class="dropdown-item" id="navitem_download_products" href="http://qwerty/download.aspx">Other products</a>
+                                            </li>
+                                            <li id="navitem_compare_third_level_menu">
+                                                <a id="navitem_download_compare" class="dropdown-item" href="http://qwerty/compare-editions.aspx">Compare editions</a>
+                                                <div id="compare_div" class="menu_pic_div">
+                                                    <div id="compare_img" class="menu_pic_img"></div>
+                                                    <p id="compare_header" class="menu_pic_header">
+                                                        Choose the ONLYOFFICE edition that suits you best.                                                    </p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <!--
+                                -->
+                                <li class="pushy-submenu partnership_menu_item"><a class="menuitem en_US" id="navitem_partners">Partners</a>
+                                    <div id="navitem_partnership_menu">
+                                        <ul class="dropdown-content">
+                                            <li class="pushy-link">
+                                                <a id="navitem_hosters" class="dropdown-item" href="http://qwerty/affiliates.aspx">Affiliates</a>
+                                                <a id="navitem_resellers" class="dropdown-item" href="http://qwerty/resellers.aspx">Resellers</a>
+                                                <a id="navitem_find_partners" class="dropdown-item" href="http://qwerty/find-partners.aspx">Find partners</a>
+                                                <a id="navitem_submit_request" class="dropdown-item" href="http://qwerty/partnership-request.aspx">Submit request</a>
+                                            </li>
+                                            <li id="navitem_latest_events_third_level_menu">
+                                                <a id="navitem_latest_events" class="dropdown-item" href="https://www.onlyoffice.com/blog/2021/03/onlyoffice-joins-the-linux-foundation-as-a-silver-member/">Latest events</a>
+                                                <div id="latest_events_div" class="menu_pic_div">
+                                                    <div id="latest_events_img" class="menu_pic_img"></div>
+                                                    <p id="latest_events_header" class="menu_pic_header">ONLYOFFICE joins the Linux Foundation as a silver member</p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <!--
+                                -->
+                                <li class="pushy-submenu about_menu_item"><a class="menuitem" id="navitem_about">About</a>
+                                    <div id="navitem_about_menu">
+                                        <ul class="dropdown-content">
+                                            <li class="pushy-link">
+                                                <a id="navitem_about_about" class="dropdown-item" href="http://qwerty/about.aspx">About ONLYOFFICE</a>
+                                                <a id="navitem_about_contribute" class="dropdown-item" href="http://qwerty/contribute.aspx">Contribute</a>
+                                                <a id="navitem_about_customers" class="dropdown-item" href="http://qwerty/customers.aspx">Customers</a>
+                                                <a id="navitem_about_awards" class="dropdown-item" href="http://qwerty/awards.aspx">Awards</a>
+                                                <a id="navitem_about_events" class="dropdown-item" href="http://qwerty/events.aspx">Events</a>
+                                                <a id="navitem_about_giftshop" class="dropdown-item" target="_blank" rel="noreferrer noopener" href="https://shop.spreadshirt.com/onlyoffice">Gift shop</a>
+                                                <a id="navitem_about_contacts" class="dropdown-item" href="http://qwerty/contacts.aspx">Contacts</a>
+                                            </li>
+                                            <li id="navitem_about_third_level_menu">
+                                                <a id="navitem_about_resources" class="dropdown-item mobile_no_link">Resources</a>
+                                                <a id="navitem_about_blog" class="dropdown-item" href="http://qwerty/blog/">Blog</a>
+                                                <a id="navitem_about_pressdownloads" class="dropdown-item" href="http://qwerty/press-downloads.aspx">Press downloads</a>
+                                                <a id="navitem_about_helpcenter" class="dropdown-item" href="https://helpcenter.onlyoffice.com/">Help Center</a>
+                                                <a id="navitem_about_whitepapers" class="dropdown-item" href="http://qwerty/whitepapers.aspx">White papers</a>
+                                                <a id="navitem_about_webinars" class="dropdown-item" href="http://qwerty/webinars.aspx">Webinars</a>
+                                                <a id="navitem_about_training_courses" class="dropdown-item" href="http://qwerty/training-courses.aspx">Training courses</a>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <div class="langselector push">
+                        <div id="LanguageSelector" class="custom-select">
+                            <div class="selector en" onclick="LanguageSelectorManager.openLngSelector();"></div><div class="title en-US" onclick="LanguageSelectorManager.openLngSelector();"></div><ul class="options" style="display: none;"><li class="option en-US"><a href=" http://qwerty/blog"></a></li><li class="option en-GB"><a href=" http://qwerty/blog/uk"></a></li><li class="option ru-RU"><a href=" http://qwerty/blog/ru"></a></li><li class="option fr-FR"><a href=" http://qwerty/blog/fr"></a></li><li class="option de-DE"><a href=" http://qwerty/blog/de"></a></li><li class="option es-ES"><a href=" http://qwerty/blog/es"></a></li><li class="option pt-BR"><a href=" http://qwerty/blog/pt-br"></a></li><li class="option it-IT"><a href=" http://qwerty/blog/it"></a></li><li class="option cs-CZ"><a href=" http://qwerty/blog/cs"></a></li><li class="option zh-CN"><a href=" http://qwerty/blog/zh-hans"></a></li></ul>                        </div>
+                    </div>
+                </div>
+                <div class="hidden">
+                    <div class="overlay"></div>
+                    <div class="popup">
+                        <div class="subscribe-blue">
+                            <h3>Newsletter</h3>
+                            <p>Get the latest ONLYOFFICE news</p>
+                            <div id="InputBox2" class="inputBox forPressPage">
+                                <input id="subscribe-email-input2" class="main-input" placeholder="Your email" />
+                                <div id="email-sub-button2" class="inputButton pressPage">
+                                    Subscribe                                    <div class="loader"></div>
+                                </div>
+                                <p class="errorMessage empty">Email is empty</p>
+                                <p class="errorMessage incorrect">Email is incorrect                                </p>
+                                <p class="errorMessage used">Email is used</p>
+                                <p class="errorMessage recaptcha">Incorrect recaptcha                                </p>
+                            </div>
+                            <span><a href="https://help.onlyoffice.com/products/files/doceditor.aspx?fileid=5048502&doc=SXhWMEVzSEYxNlVVaXJJeUVtS0kyYk14YWdXTEFUQmRWL250NllHNUFGbz0_IjUwNDg1MDIi0" target="_blank">By clicking “Subscribe”, you understand and agree to <u>our Privacy statement</u></a></span>
+                        </div>
+                        <div class="subscribe-white">
+                            <h4>Confirm your subscription</h4>
+                            <p>We sent an email message with confirmation to your email address                            </p>
+                        </div>
+                        <div class="close-popup"></div>
+                    </div>
+                </div>
+                <div class="overlay-dark"></div>
+                <div class="overlay-padding">
+                    <img class="img-overlay">
+                    <div class="close-overlay"></div>
+                </div>
+
+            </header>
+        </div>
+    </div>
+
+
+<main>
+  <div class="MainContainer">
+
+
+    <div id="container" class="pageContent">
+      <div class="search-main">
+        
+<form role="search" method="get" id="searchform" class="searchForm " action="http://qwerty/blog/">
+  <input id="headerInputSearch" class="searchInput" type="text" value="" name="s"/>
+  <label id="searchLabel" class="searchLabel" for="headerInputSearch">Find news, tips and how-tos</label>
+  <div class="searhButton"></div>
+  <div class="clearButton"></div>
+<input type='hidden' name='lang' value='en' /></form>
+      </div>
+              <div id="content" role="main">
+          <div class="content">
+            
+              <article class="post">
+                                  <a href="http://qwerty/blog/2021/10/how-to-boost-content-collaboration-in-your-team-a-big-guide/" alt="How to boost content collaboration in your team: a big guide"><img src="http://qwerty/blog/wp-content/uploads/2018/12/onlyoffice_connector_owncloud_updated.jpg" alt="How to boost content collaboration in your team: a big guide" /></a>
+                                <h2 class="entry-title"><a href="http://qwerty/blog/2021/10/how-to-boost-content-collaboration-in-your-team-a-big-guide/" title="Permalink to How to boost content collaboration in your team: a big guide" rel="bookmark">How to boost content collaboration in your team: a big guide</a></h2>
+                <div class="meta head">
+                  <span class="date">
+                    19 October 2021</span>
+                  <span class="autor"><span class="entry-utility-prep entry-utility-prep-cat-links">By <a href="http://qwerty/blog/author/alexeykostenko/" title="View all posts by Алексей Костенко">Алексей Костенко</a></span></span>
+                </div>
+                <p><p>The digital era with all benefits of cloud technology is allowing (and forcing) all of us to collaborate. One of the most common products of collaboration is content. Here, we are going to explore how&#8230;</p>
+</p>
+              </article>
+
+
+                      </div>
+          <div class="sidebar">
+			<div class="widget in_the_press_entries">		<div class="press-all">
+		<h4 class="widget-title">ONLYOFFICE IN THE PRESS</h4>		<div class="view-all"><a href="http://qwerty/blog/onlyoffice-in-the-press">View all <div class="no-wrap">news&nbsp;<div class="grey-arrow"></div></div></a></div>
+		</div>
+		<ul>
+											<li>
+					<a href="https://www.forbes.com/sites/jasonevangelho/2020/01/17/nextcloud-hub-launches-to-compete-with-google-docs-and-office-365/#1963cf2d5598"  target="_blank" rel="bookmark">What are the key features of your software that makes it stand apart from your competitor products in the market?</a>
+				</li>
+											<div class="meta press">
+							<span class="date">29 Sep 2021</span>
+						</div>
+																<li>
+					<a href="https://tecrobust.com/techniques-to-install-onlyoffice-for-ubuntu-20-04-lts/"  target="_blank" rel="bookmark">Techniques to Install {OnlyOffice} for Ubuntu 20.04 LTS!!</a>
+				</li>
+											<div class="meta press">
+							<span class="date">2 May 2020</span>
+						</div>
+										</ul>
+		</div><div class="widget PI_SimpleTwitterTweets"><h4 class="widget-title">TWITTER POSTS</h4>
+			<ul class="tweets">
+															<li>
+																We are working hard to create a comprehensive library that everyone can use for free: <a href="https://t.co/OLc3zJ8FTl" target="_blank" rel="nofollow">https://t.co/OLc3zJ8FTl</a>
+
+Now… <a href="https://t.co/WOQeIjyX1x" target="_blank" rel="nofollow">https://t.co/WOQeIjyX1x</a>					
+
+							</li>
+										<div class="meta twitter">
+									
+								
+									<span class="stt-em date">
+						
+							4 hours ago							
+									</span>
+									</div>
+
+																		<li>
+																With ONLYOFFICE Form Library, you can create a variety legal, financial, sales, and other documents just by filling… <a href="https://t.co/fXWK6wGe7s" target="_blank" rel="nofollow">https://t.co/fXWK6wGe7s</a>					
+
+							</li>
+										<div class="meta twitter">
+									
+								
+									<span class="stt-em date">
+						
+							4 hours ago							
+									</span>
+									</div>
+
+											
+						</ul>
+
+			</div></div>        </div>
+
+                  <div class="wrapperMain">
+
+                        
+                                      
+              
+                <div class="postwrapper">
+
+			<a href="http://qwerty/blog/2021/10/onlyoffice-survey-which-keyboard-apps-do-you-use/" alt="ONLYOFFICE survey: which keyboard apps do you use?"><img src="http://qwerty/blog/wp-content/uploads/2019/11/ONLYOFFICE-email-templates.jpg" alt="ONLYOFFICE survey: which keyboard apps do you use?" /></a>
+	
+	<div class="postThemeGridBox">
+
+		<h4 class="entry-title"><a href="http://qwerty/blog/2021/10/onlyoffice-survey-which-keyboard-apps-do-you-use/" title="Permalink to ONLYOFFICE survey: which keyboard apps do you use?" rel="bookmark" alt="ONLYOFFICE survey: which keyboard apps do you use?">ONLYOFFICE survey: which keyboard apps do you use?</a></h4>
+
+		<div class="meta grid">
+			<span class="date">
+				13 October 2021</span>
+			<span class="autor"><span class="entry-utility-prep entry-utility-prep-cat-links">By <a href="http://qwerty/blog/author/alexeykostenko/" title="View all posts by Алексей Костенко">Алексей Костенко</a></span></span>
+		</div>
+	</div>
+</div>
+                
+
+                
+              
+              
+                <div class="postwrapper">
+
+			<a href="http://qwerty/blog/2021/04/seven-robust-alternatives-to-office-365/" alt="Seven robust alternatives to Office 365"><img src="http://qwerty/blog/wp-content/uploads/2020/02/Blog_Sussecc_template.jpg" alt="Seven robust alternatives to Office 365" /></a>
+	
+	<div class="postThemeGridBox">
+
+		<h4 class="entry-title"><a href="http://qwerty/blog/2021/04/seven-robust-alternatives-to-office-365/" title="Permalink to Seven robust alternatives to Office 365" rel="bookmark" alt="Seven robust alternatives to Office 365">Seven robust alternatives to Office 365</a></h4>
+
+		<div class="meta grid">
+			<span class="date">
+				29 April 2021</span>
+			<span class="autor"><span class="entry-utility-prep entry-utility-prep-cat-links">By <a href="http://qwerty/blog/author/alexeykostenko/" title="View all posts by Алексей Костенко">Алексей Костенко</a></span></span>
+		</div>
+	</div>
+</div>
+                
+
+                
+              
+              
+                <div class="postwrapper">
+
+			<a href="http://qwerty/blog/2020/08/back-to-school-with-onlyoffice-solutions-special-terms-and-discounts-for-education/" alt="Back to school with ONLYOFFICE: solutions, special terms and discounts for education"><img src="http://qwerty/blog/wp-content/uploads/2020/08/ONLYOFFICE-back-to-school.jpg" alt="Back to school with ONLYOFFICE: solutions, special terms and discounts for education" /></a>
+	
+	<div class="postThemeGridBox">
+
+		<h4 class="entry-title"><a href="http://qwerty/blog/2020/08/back-to-school-with-onlyoffice-solutions-special-terms-and-discounts-for-education/" title="Permalink to Back to school with ONLYOFFICE: solutions, special terms and discounts for education" rel="bookmark" alt="Back to school with ONLYOFFICE: solutions, special terms and discounts for education">Back to school with ONLYOFFICE: solutions, special terms and discounts for education</a></h4>
+
+		<div class="meta grid">
+			<span class="date">
+				13 August 2020</span>
+			<span class="autor"><span class="entry-utility-prep entry-utility-prep-cat-links">By <a href="http://qwerty/blog/author/alexeykostenko/" title="View all posts by Алексей Костенко">Алексей Костенко</a></span></span>
+		</div>
+	</div>
+</div>
+                
+
+                
+              
+              
+                <div class="postwrapper">
+
+			<a href="http://qwerty/blog/2020/08/go-to-the-alkjdlw-kjd-ads/" alt="Nextcloud VM: an easy way to deploy ONLYOFFICE on Nextcloud Server"><img src="http://qwerty/blog/wp-content/uploads/2020/08/ONLYOFFICE-in-Nextcloud-VM.jpg" alt="Nextcloud VM: an easy way to deploy ONLYOFFICE on Nextcloud Server" /></a>
+	
+	<div class="postThemeGridBox">
+
+		<h4 class="entry-title"><a href="http://qwerty/blog/2020/08/go-to-the-alkjdlw-kjd-ads/" title="Permalink to Nextcloud VM: an easy way to deploy ONLYOFFICE on Nextcloud Server" rel="bookmark" alt="Nextcloud VM: an easy way to deploy ONLYOFFICE on Nextcloud Server">Nextcloud VM: an easy way to deploy ONLYOFFICE on Nextcloud Server</a></h4>
+
+		<div class="meta grid">
+			<span class="date">
+				10 August 2020</span>
+			<span class="autor"><span class="entry-utility-prep entry-utility-prep-cat-links">By <a href="http://qwerty/blog/author/alexeykostenko/" title="View all posts by Алексей Костенко">Алексей Костенко</a></span></span>
+		</div>
+	</div>
+</div>
+                
+
+                
+              
+              
+                <div class="postwrapper">
+
+			<a href="http://qwerty/blog/2020/03/call-for-testing-native-onlyoffice-documents-4-0-for-android/" alt="Call for testing: Native ONLYOFFICE Documents 4.0 for Android"><img src="http://qwerty/blog/wp-content/uploads/2020/03/Call-for-testing-ONLYOFFICE-4.png" alt="Call for testing: Native ONLYOFFICE Documents 4.0 for Android" /></a>
+	
+	<div class="postThemeGridBox">
+
+		<h4 class="entry-title"><a href="http://qwerty/blog/2020/03/call-for-testing-native-onlyoffice-documents-4-0-for-android/" title="Permalink to Call for testing: Native ONLYOFFICE Documents 4.0 for Android" rel="bookmark" alt="Call for testing: Native ONLYOFFICE Documents 4.0 for Android">Call for testing: Native ONLYOFFICE Documents 4.0 for Android</a></h4>
+
+		<div class="meta grid">
+			<span class="date">
+				27 March 2020</span>
+			<span class="autor"><span class="entry-utility-prep entry-utility-prep-cat-links">By <a href="http://qwerty/blog/author/mihail/" title="View all posts by Michael">Michael</a></span></span>
+		</div>
+	</div>
+</div>
+                                  <div class="subscribe-blue">
+	<h3>Newsletter</h3>
+	<p>Get the latest ONLYOFFICE news</p>
+
+		<div id="InputBox" class="inputBox">
+		<input id="subscribe-email-input" class="main-input" placeholder="Your email" />
+		<div id="email-sub-button" class="inputButton">
+			<div class="loader"></div>
+		</div>
+
+					<p class="errorMessage empty">Email is empty</p>
+			<p class="errorMessage incorrect">Email is incorrect</p>
+			<p class="errorMessage used">Email is used</p>
+			<p class="errorMessage recaptcha">Incorrect recaptcha</p>
+		</div>
+		<div class="recaptchaContainer">
+			<div class="gRecaptcha" id="popupCaptcha"></div>
+		</div>
+
+		<span><a
+				href="https://help.onlyoffice.com/products/files/doceditor.aspx?fileid=5048502&doc=SXhWMEVzSEYxNlVVaXJJeUVtS0kyYk14YWdXTEFUQmRWL250NllHNUFGbz0_IjUwNDg1MDIi0"
+				target="_blank">By clicking “Subscribe”, you understand and agree to <u>our Privacy statement</u></a></span>
+	</div>
+
+	<div class="subscribe-white">
+		<h4>Confirm your subscription</h4>
+		<p>We sent an email message with confirmation to your email address</p>
+	</div>                                  
+
+                          </div>
+          <div class="download-block">
+	<div class="download-top">
+		<h3>Download ONLYOFFICE desktop and mobile apps for&#160;<em class="free">FREE</em></h3>
+	</div>
+	<div class="download-button">
+		<a class="download winodws" href="https://www.onlyoffice.com/download-desktop.aspx" target="_blank">For Windows</a>
+		<a class="download linux" href="https://www.onlyoffice.com/download-desktop.aspx" target="_blank">For Linux</a>
+		<a class="download MacOs" href="https://www.onlyoffice.com/download-desktop.aspx" target="_blank">For Mac OS</a>
+		<a class="download GooglePlay" href="https://play.google.com/store/apps/details?id=com.onlyoffice.documents" target="_blank"></a>
+		<a class="download AppStore" href="https://apps.apple.com/app/onlyoffice-documents/id944896972" target="_blank"></a>
+	</div>
+</div>                    <div class="wrapperMain bottomWrapper">
+          
+              
+              
+                <div class="postwrapper">
+
+			<a href="http://qwerty/blog/2020/03/onlyoffice-releases-official-connector-for-plone/" alt="ONLYOFFICE releases official connector for Plone"><img src="http://qwerty/blog/wp-content/uploads/2020/03/onlyoffice_connector_for_plone.jpg" alt="ONLYOFFICE releases official connector for Plone" /></a>
+	
+	<div class="postThemeGridBox">
+
+		<h4 class="entry-title"><a href="http://qwerty/blog/2020/03/onlyoffice-releases-official-connector-for-plone/" title="Permalink to ONLYOFFICE releases official connector for Plone" rel="bookmark" alt="ONLYOFFICE releases official connector for Plone">ONLYOFFICE releases official connector for Plone</a></h4>
+
+		<div class="meta grid">
+			<span class="date">
+				26 March 2020</span>
+			<span class="autor"><span class="entry-utility-prep entry-utility-prep-cat-links">By <a href="http://qwerty/blog/author/ksenija/" title="View all posts by Ksenija">Ksenija</a></span></span>
+		</div>
+	</div>
+</div>
+                
+
+                
+              
+              
+                <div class="postwrapper">
+
+			<a href="http://qwerty/blog/2020/03/onlyoffice-and-elasticsearch-better-and-faster-navigation-through-documents-emails-and-other-content/" alt="ONLYOFFICE and Elasticsearch: better and faster navigation through documents, emails and other content"><img src="http://qwerty/blog/wp-content/uploads/2020/02/Blog_elasticsearch.jpg" alt="ONLYOFFICE and Elasticsearch: better and faster navigation through documents, emails and other content" /></a>
+	
+	<div class="postThemeGridBox">
+
+		<h4 class="entry-title"><a href="http://qwerty/blog/2020/03/onlyoffice-and-elasticsearch-better-and-faster-navigation-through-documents-emails-and-other-content/" title="Permalink to ONLYOFFICE and Elasticsearch: better and faster navigation through documents, emails and other content" rel="bookmark" alt="ONLYOFFICE and Elasticsearch: better and faster navigation through documents, emails and other content">ONLYOFFICE and Elasticsearch: better and faster navigation through documents, emails and other content</a></h4>
+
+		<div class="meta grid">
+			<span class="date">
+				24 March 2020</span>
+			<span class="autor"><span class="entry-utility-prep entry-utility-prep-cat-links">By <a href="http://qwerty/blog/author/sergey/" title="View all posts by Sergey">Sergey</a></span></span>
+		</div>
+	</div>
+</div>
+                
+
+                
+              
+              
+                <div class="postwrapper">
+
+			<a href="http://qwerty/blog/2020/03/integration-edition-at-home-10-users-for-99/" alt="Integration Edition at home: 10 users for $99"><img src="http://qwerty/blog/wp-content/uploads/2020/03/ONLYOFFICE-Integration-Edition-99-Home-Server.jpg" alt="Integration Edition at home: 10 users for $99" /></a>
+	
+	<div class="postThemeGridBox">
+
+		<h4 class="entry-title"><a href="http://qwerty/blog/2020/03/integration-edition-at-home-10-users-for-99/" title="Permalink to Integration Edition at home: 10 users for $99" rel="bookmark" alt="Integration Edition at home: 10 users for $99">Integration Edition at home: 10 users for $99</a></h4>
+
+		<div class="meta grid">
+			<span class="date">
+				20 March 2020</span>
+			<span class="autor"><span class="entry-utility-prep entry-utility-prep-cat-links">By <a href="http://qwerty/blog/author/nadya/" title="View all posts by Nadya">Nadya</a></span></span>
+		</div>
+	</div>
+</div>
+                
+
+                
+              
+              <script>
+          var ajaxurl = 'http://qwerty/blog/wp-admin/admin-ajax.php';
+          var true_posts = 'a:64:{s:9:"post_type";s:4:"post";s:11:"post_status";s:7:"publish";s:14:"posts_per_page";i:9;s:16:"category__not_in";i:0;s:5:"error";s:0:"";s:1:"m";s:0:"";s:1:"p";i:0;s:11:"post_parent";s:0:"";s:7:"subpost";s:0:"";s:10:"subpost_id";s:0:"";s:10:"attachment";s:0:"";s:13:"attachment_id";i:0;s:4:"name";s:0:"";s:8:"pagename";s:0:"";s:7:"page_id";i:0;s:6:"second";s:0:"";s:6:"minute";s:0:"";s:4:"hour";s:0:"";s:3:"day";i:0;s:8:"monthnum";i:0;s:4:"year";i:0;s:1:"w";i:0;s:13:"category_name";s:0:"";s:3:"tag";s:0:"";s:3:"cat";s:0:"";s:6:"tag_id";s:0:"";s:6:"author";s:0:"";s:11:"author_name";s:0:"";s:4:"feed";s:0:"";s:2:"tb";s:0:"";s:5:"paged";i:0;s:8:"meta_key";s:0:"";s:10:"meta_value";s:0:"";s:7:"preview";s:0:"";s:1:"s";s:0:"";s:8:"sentence";s:0:"";s:5:"title";s:0:"";s:6:"fields";s:0:"";s:10:"menu_order";s:0:"";s:5:"embed";s:0:"";s:12:"category__in";a:0:{}s:13:"category__and";a:0:{}s:8:"post__in";a:0:{}s:12:"post__not_in";a:0:{}s:13:"post_name__in";a:0:{}s:7:"tag__in";a:0:{}s:11:"tag__not_in";a:0:{}s:8:"tag__and";a:0:{}s:12:"tag_slug__in";a:0:{}s:13:"tag_slug__and";a:0:{}s:15:"post_parent__in";a:0:{}s:19:"post_parent__not_in";a:0:{}s:10:"author__in";a:0:{}s:14:"author__not_in";a:0:{}s:19:"ignore_sticky_posts";b:0;s:16:"suppress_filters";b:0;s:13:"cache_results";b:1;s:22:"update_post_term_cache";b:1;s:19:"lazy_load_term_meta";b:1;s:22:"update_post_meta_cache";b:1;s:8:"nopaging";b:0;s:17:"comments_per_page";s:2:"50";s:13:"no_found_rows";b:0;s:5:"order";s:4:"DESC";}';
+          var current_page = '1';
+          var max_pages = '43';
+        </script>
+
+        <div class="main_button" id="true_loadmore">Load more</div>
+          </div>
+        
+
+
+        
+      </main>
+<div class="delimetr"></div>
+		</div><!-- #content -->
+	</div><!-- #pageContent -->
+</div><!-- #MainContainer -->
+		<footer>
+<div class="footercolor">
+        <div class="narrowfooter">
+            <div class="bottomlines">
+                 <ul class="footer_menu">
+                                            <div group-menu>
+                                            <li class="footer-border">
+                                                <a id="footer_menu_developers" class="footer-button"><h6>Developers</h6></a>
+                                                <div id="navitem_footer_developers">
+                                                    <ul>
+                                                        <li><p><a href="http://qwerty/developer-edition.aspx">Developer Edition</a></p></li>
+                                                        <li><p><a href="http://qwerty/document-builder.aspx">Document Builder</a></p></li>
+                                                        <li><p><a href="http://qwerty/groups.aspx">Groups</a></p></li>
+                                                        <li><p><a target="_blank" rel="noreferrer noopener" id="navitem_api" href="https://api.onlyoffice.com/">API</a></p></li>
+                                                        <li><p><a target="_blank" rel="noreferrer noopener" href="https://github.com/ONLYOFFICE/">Code on GitHub</a></p></li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li class="footer-border">
+                                                <a id="footer_menu_solutions" class="footer-button"><h6>Security</h6></a>
+                                                <div id="navitem_footer_solutions">
+                                                    <ul>
+                                                        <li><p><a href="http://qwerty/security.aspx#access_control">Authentication and access control</a></p></li>
+                                                        <li><p><a href="http://qwerty/security.aspx#data_protection">Data protection</a></p></li>
+                                                        <li><p><a href="http://qwerty/security.aspx#data_encryption">Data encryption</a></p></li>
+                                                        <li><p><a href="http://qwerty/private-rooms.aspx">Private rooms</a></p></li>
+                                                        <li><p><a href="https://www.onlyoffice.com/blog/2018/05/how-onlyoffice-complies-with-gdpr/">GDPR compliance</a></p></li>
+                                                        <li><p><a href="https://www.onlyoffice.com/blog/2020/10/how-onlyoffice-complies-with-hipaa/">HIPAA compliance</a></p></li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            </div>
+                                            <div group-menu>
+                                            <li class="footer-border">
+                                                <a id="footer_menu_solutions_bsz" class="footer-button"><h6>By size</h6></a>
+                                                <div id="navitem_footer_by_size">
+                                                    <ul>
+                                                        <li><p><a href="http://qwerty/for-small-business.aspx">SMBs</a></p></li>
+                                                        <li><p><a href="http://qwerty/for-enterprises.aspx">Enterprises</a></p></li>
+                                                        <li><p><a href="http://qwerty/home-use.aspx">Home use</a></p><li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li class="footer-border">
+                                                <a id="footer_menu_solutions_bid" class="footer-button"><h6>By industry</h6></a>
+                                                <div id="navitem_footer_by_industry">
+                                                    <ul>
+                                                        <li><p><a href="http://qwerty/for-developers.aspx">Developers</a></p></li>
+                                                        <li><p><a href="http://qwerty/for-hosting-providers.aspx">Hosting providers</a></p></li>
+                                                        <li><p><a href="http://qwerty/for-government.aspx">Government</a></p><li>
+                                                        <li><p><a href="http://qwerty/healthcare.aspx">Healthcare</a></p></li>
+                                                        <li><p><a href="http://qwerty/for-research.aspx">Research</a></p></li>
+                                                        <li><p><a href="http://qwerty/education.aspx">Education</a></p></li>
+                                                        <li><p><a href="http://qwerty/nonprofit-organizations.aspx">Nonprofits</a></p></li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            </div>
+                                            <div group-menu>
+                                            <li class="footer-border">
+                                                <a id="footer_menu_support" class="footer-button"><h6>Support</h6></a>
+                                                <div id="navitem_footer_support">
+                                                    <ul>
+                                                        <li><p><a href="http://qwerty/support-contact-form.aspx">Support contact form</a></p></li>
+                                                        <li><p><a target="_blank" rel="noreferrer noopener" href="https://forum.onlyoffice.com/">Forum</a></p></li>
+                                                        <li><p><a href="http://qwerty/demo-order.aspx">Order demo</a></p></li>
+                                                        <li><p><a href="http://qwerty/webinars.aspx">Webinars</a></p></li>
+                                                        <li><p><a href="http://qwerty/training-courses.aspx">Training courses</a></p></li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li class="footer-border">
+                                                <a id="footer_menu_GetInfo" class="footer-button"><h6>Resources</h6></a>
+                                                <div id="navitem_footer_GetInfo">
+                                                    <ul>
+                                                        <li><p><a target="_blank" rel="noreferrer noopener" href="https://helpcenter.onlyoffice.com/index.aspx">Help Center</a></p></li>
+                                                        <li><p><a href="http://qwerty/app-directory.aspx">App Directory</a></p></li>
+                                                        <li><p><a  href="http://qwerty/document-editor-comparison.aspx">Compare to other suites</a></p></li>
+                                                        <li><p><a href="http://qwerty/contribute.aspx">Contribute</a></p></li>
+                                                        <li><p><a href="http://qwerty/legalterms.aspx">Legal notice</a></p></li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            </div>
+                                            <div group-menu>
+                                            <li class="footer-border">
+                                                <a id="footer_menu_contact" class="footer-button"><h6>Contact Us</h6></a>
+                                                <div id="navitem_footer_contact">
+                                                    <ul>
+                                                        <li>
+                                                            Sales questions                                                            <a class="emailus" href="mailto:sales@onlyoffice.com">sales@onlyoffice.com</a>
+
+                                                        </li>
+                                                        <li>
+                                                            Partner inquiries                                                            <a class="emailus" href="mailto:partners@onlyoffice.com">partners@onlyoffice.com</a>
+                                                        </li>
+                                                        <li>
+                                                            Press inquiries                                                            <a class="emailus" href="mailto:press@onlyoffice.com">press@onlyoffice.com</a>
+                                                        </li >
+                                                        <li>
+                                                            <p><a href="http://qwerty/call-back-form.aspx">Request a call</a></p>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+
+                    <div class="SocialLinks">
+                    <h6>follow us on:</h6>
+                        <ul class="ListSocLink">
+                            <li><a class="subscribe-mail" title="Subscribe to our newsletters" id="subscribelink">
+                                <label title="Subscribe to our newsletters" class="social_grey_subscribe"></label>
+                            </a></li>
+                            <li><a target="_blank" href="https://www.facebook.com/pages/OnlyOffice/833032526736775" onmouseup="PageTrack('GoTo_facebook');" rel="noreferrer noopener" title="Follow us on Facebook" class="faceBook">
+                                    <label class="social_grey_fb" title="Facebook"></label>
+                                </a></li>
+                            <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_twitter');" href="https://twitter.com/ONLY_OFFICE" title="Follow us on Twitter" class="twitter" rel="noreferrer noopener">
+                                    <label class="social_grey_twi" title="Twitter"></label>
+                                </a></li>
+                            <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_linkedin');" href="https://www.linkedin.com/groups/ONLYOFFICE-6726380" title="Follow us on LinkedIn" class="linkedin" rel="noreferrer noopener">
+                                    <label class="social_grey_in" title="LinkedIn"></label>
+                                </a></li>
+                            <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_youtube');" href="https://www.youtube.com/user/onlyofficeTV" title="Follow us on YouTube" class="youtube" rel="noreferrer noopener">
+                                    <label class="social_grey_tube" title="YouTube"></label>
+                                </a></li>  
+                            <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_blog');" href="https://www.onlyoffice.com/blog" title="Read our blog" class="blog" rel="noreferrer noopener">
+                                    <label title="Blog" class="social_grey_blog"></label>
+                                </a></li>
+                            <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_medium');" href="https://medium.com/onlyoffice" title="Follow us on Medium" class="medium" rel="noreferrer noopener">
+                                    <label title="Medium" class="social_grey_medium"></label>
+                                </a></li>
+                            <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_instagram');" class="medium" title="Follow us on Instagram" href="https://www.instagram.com/the_onlyoffice/" rel="noreferrer noopener">
+                                <label title="Instagram" class="social_grey_instagram"></label>
+                            </a></li>
+                            <li><a class="github" title="Follow us on GitHub" href="https://github.com/ONLYOFFICE/" onmouseup="PageTrack('GoTo_medium');" target="_blank" rel="noreferrer noopener">
+                                <label title="GitHub" class="social_grey_github"></label>
+                            </a></li>
+                            <li><a class="fosstodon" title="Follow us on Fosstodon" href="https://fosstodon.org/@ONLYOFFICE" onmouseup="PageTrack('GoTo_medium');" target="_blank" rel="noreferrer noopener">
+                                <label title="Fosstodon" class="social_grey_fosstodon"></label>
+                            </a></li>
+                        </ul>
+                        <div class="copyReserved">&copy; Ascensio System SIA 2022. All rights reserved</div>
+                    </div>
+                </div>
+
+                                    </ul>
+                  
+                    
+                </div>
+                
+            </div>
+        </div>
+    </div>	
+</footer>
+		<script type='text/javascript' id='wp-polls-js-extra'>
+/* <![CDATA[ */
+var pollsL10n = {"ajax_url":"http:\/\/qwerty\/blog\/wp-admin\/admin-ajax.php","text_wait":"Your last request is still being processed. Please wait a while ...","text_valid":"Please choose a valid poll answer.","text_multiple":"Maximum number of choices allowed: ","show_loading":"1","show_fading":"1"};
+/* ]]> */
+</script>
+
+
+
+<script type='text/javascript' id='jquery-fancybox-js-after'>
+var fb_timeout, fb_opts={'overlayShow':true,'hideOnOverlayClick':true,'overlayOpacity':0.5,'showCloseButton':true,'padding':0,'margin':20,'centerOnScroll':false,'enableEscapeButton':true,'autoScale':true };
+if(typeof easy_fancybox_handler==='undefined'){
+var easy_fancybox_handler=function(){
+jQuery('.nofancybox,a.wp-block-file__button,a.pin-it-button,a[href*="pinterest.com/pin/create"],a[href*="facebook.com/share"],a[href*="twitter.com/share"]').addClass('nolightbox');
+/* IMG */
+var fb_IMG_select='a[href*=".jpg"]:not(.nolightbox,li.nolightbox>a),area[href*=".jpg"]:not(.nolightbox),a[href*=".jpeg"]:not(.nolightbox,li.nolightbox>a),area[href*=".jpeg"]:not(.nolightbox),a[href*=".png"]:not(.nolightbox,li.nolightbox>a),area[href*=".png"]:not(.nolightbox),a[href*=".webp"]:not(.nolightbox,li.nolightbox>a),area[href*=".webp"]:not(.nolightbox)';
+jQuery(fb_IMG_select).addClass('fancybox image');
+var fb_IMG_sections=jQuery('.gallery,.wp-block-gallery,.tiled-gallery,.wp-block-jetpack-tiled-gallery');
+fb_IMG_sections.each(function(){jQuery(this).find(fb_IMG_select).attr('rel','gallery-'+fb_IMG_sections.index(this));});
+jQuery('a.fancybox,area.fancybox,li.fancybox a').each(function(){jQuery(this).fancybox(jQuery.extend({},fb_opts,{'transitionIn':'elastic','easingIn':'easeOutBack','transitionOut':'elastic','easingOut':'easeInBack','opacity':false,'hideOnContentClick':false,'titleShow':false,'titlePosition':'over','titleFromAlt':false,'showNavArrows':false,'enableKeyboardNav':false,'cyclic':false}))});};
+jQuery('a.fancybox-close').on('click',function(e){e.preventDefault();jQuery.fancybox.close()});
+};
+var easy_fancybox_auto=function(){setTimeout(function(){jQuery('#fancybox-auto').trigger('click')},1000);};
+jQuery(easy_fancybox_handler);jQuery(document).on('post-load',easy_fancybox_handler);
+jQuery(easy_fancybox_auto);
+</script>
+
+
+<script type='text/javascript' id='sitepress-js-extra'>
+/* <![CDATA[ */
+var icl_vars = {"current_language":"en","icl_home":"http:\/\/qwerty\/blog\/"};
+/* ]]> */
+</script>
+
+
+
+
+
+	<script defer src="http://qwerty/blog/wp-content/cache/autoptimize/js/autoptimize_78146e55a996952c75905d45fcc6016d.js"></script></body>
+</html>
+
+<!--
+Performance optimized by W3 Total Cache. Learn more: https://www.boldgrid.com/w3-total-cache/
+
+Page Caching using disk: enhanced 
+
+Served from: qwerty @ 2022-01-21 15:34:28 by W3 Total Cache
+-->
