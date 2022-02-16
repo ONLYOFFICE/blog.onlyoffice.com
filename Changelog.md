@@ -102,14 +102,14 @@
 * Fixed the "Sign in" button in the mobile menu in the "Get ONLYOFFICE" item
 * Replaced favicon.ico
 
-##1.0.4
+## 1.0.4
 * Added Italian to the language selector
 * Added translations to Italian
 * Added the "Chamilo" link to the footer
 * Menu: "Cloud Service" sub-item added to Products >> Workspace, "White papers" added to About, "ONLYOFFICE Connectors" added to Products
 * Changed the basement of the site, styles as on https://www.onlyoffice.com/
 
-##1.0.3
+## 1.0.3
 * Removed unused default themes
 * The unused events-calendar plugin has been removed
 
