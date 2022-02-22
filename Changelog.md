@@ -1,140 +1,147 @@
 ﻿# Changelog
+## 1.1.9
+### New
+* Added Autoptimize plugin for CSS and JS files minification
+
+### Fixes
+* Removed unused plugins "WP Super Cache", "JS & CSS Script Optimizer", "WP-Minify", "AWS CDN By WP-Admin"
+
 ## 1.1.8
-### Исправления
-* Изменён дизайн верхнего баннера
+### Fixes
+* Changed the design of the top banner
 
 ## 1.1.7
-### Исправления
-* Изменены ссылки для FR, ES, IT, DE, и ZH языков, при клике на верхний баннер
+### Fixes
+* Changed the links for FR, ES, IT, DE, and ZH languages when clicking on the top banner
 
 ## 1.1.6
-### Новое
-* Изменён верхний баннер
-* В разделе меню Products&Features
-  - Добавлен Form creator в ONLYOFFICE Docs
-  - Security перенесено во вторую колонку
-  - OFORMS добавлено в третью колонку
+### New
+* Changed the top banner
+* In the Products&Features menu section
+- Added Form creator to ONLYOFFICE Docs
+- Security moved to the second column
+- OFORMS added to the third column
 
 ## 1.1.5
-### Исправления
-* Добавлены недостающие переводы на китайский язык для всего блога
-* Поправлена ссылка у кнопки "Try ONLYOFFICE in the cloud" в конце каждой записи. При переходе, сохраняет язык, с которого переходят
+### Fixes
+* Added missing Chinese translations for the entire blog
+* Corrected the link at the "Try ONLYOFFICE in the cloud" button at the end of each entry. When switching, saves the language from which the user is switching
 
 ## 1.1.4
-### Новое
-* Добавлен китайский язык
-* Добавлены переводы на китайский язык для всего блога
-* Меню: в Products >> Docs Editions добавлен подпункт "Cloud Edition", в Integrations добавлен "Redmine" и "Jira"
+### New
+* Added Chinese language
+* Added Chinese translations for the entire blog
+* Menu: the "Cloud Edition" sub-item has been added to Products >> Docs Editions, "Redmine" and "Jira" have been added to Integrations
 
 
 ## 1.1.3
-### Новое
-* Изменён верхний баннер
-* Изменено главное меню
-* Изменено мобильное меню
-* Добавлены переводы для главного меню и верхнего баннера
-* Исправлен баг 54105 https://bugzilla.onlyoffice.com/show_bug.cgi?id=54105
+### New
+* Changed the top banner
+* Changed the main menu
+* The mobile menu has been changed
+* Added translations for the main menu and the top banner
+* Fixed bug 54105 https://bugzilla.onlyoffice.com/show_bug.cgi?id=54105
 
 ## 1.1.2
-### Новое
-* Добавлен плагин WP-Discourse, который дублирует записи на https://forum.onlyoffice.com/ в категорию News. Кроме того, плагин изменяет комментирование новых постов. Плагин добавляет кнопку "Join the Discussion" в конце записи, которая ведёт на тестовый форум для обсуждения
+### New
+* Added a WP-Discourse plugin that duplicates entries on https://forum.onlyoffice.com / to the News category. In addition, the plugin changes the commenting of new posts. The plugin adds a "Join the Discussion" button at the end of the entry, which leads to a test forum for discussion
 
-### Исправления
-* Изменены метод и стили для открытия картинки внутри записи в всплывающем окне
+### Fixes
+* Changed the method and styles for opening an image inside an entry in a pop-up window
 
 ## 1.1.1
-### Новое
-* Добавлен плагин Trinity Audio для озвучивания текста в теле записи
+### New
+* Added the Trinity Audio plugin for voicing text in the body of the recording
 
 ## 1.1.0
-### Новое
-* Добавлены стили для голосования в теле записи
-* Добавлены переводы для голосования в теле записи
-* Добавлены стили для выравнивания элементов в теле записи
-* Добавлены кнопки в панель текстового редактора для создания заголовков H1 и H2 в теле записи
+### New
+* Added styles for voting in the body of the record
+* Added translations for voting in the body of the record
+* Added styles to align elements in the body of the record
+* Added buttons to the text editor panel to create H1 and H2 headers in the body of the entry
 
 ## 1.0.9
-### Новое
-* Обновлён плагин All in One SEO до версии 4.1.4.3 для устранения возможных XSS атак по задаче  https://nct.onlyoffice.com/Products/Projects/Tasks.aspx?prjID=137&id=32098#
+### New
+* Updated the All in One SEO plugin to version 4.1.4.3 to eliminate possible XSS attacks on the task https://nct.onlyoffice.com/Products/Projects/Tasks.aspx?prjID=137&id=32098#
 
 ## 1.0.8
-### Новое
-* Обновлено главное меню, как на https://www.onlyoffice.com/
-* Обновлён футер как, на https://www.onlyoffice.com/
-* Обновлён верхний баннер, как на https://www.onlyoffice.com/
-* Добавлена стили для заголовков H1-H6 в теле записи
-* Добавлены переводы для футера, главного меню, и баннера
+### New
+* Updated the main menu as on https://www.onlyoffice.com/
+* Updated footer as, on https://www.onlyoffice.com/
+* Updated the top banner as on https://www.onlyoffice.com/
+* Added styles for H1-H6 headers in the body of the record
+* Added translations for footer, main menu, and banner
 
 ## 1.0.7
-### Исправления
-* Удалены неиспользуемые плагины Yop Poll, AMP, Yoast Breadcrumbs
-* Обновлён плагин All In One SEO Pack
+### Fixes
+* Removed unused plugins Yop Poll, AMP, Yoast Breadcrumbs
+* Updated All In One SEO Pack plugin
 
 ## 1.0.6
-### Новое
-* Для администраторов
-    * Добавлены кнопки в панель текстового редактора для создания кнопок в теле записи
-    * Добавлена возможность добавления нумерованного списка в теле записи
-    * Добавлено условие, при котором невозможно публиковать записи, без установленной Featured Image
-* Для всех
-    * Изменён верхний баннер. При прокрутке скрывается за главным меню
-    * Удалены дублирующие теги для amp страниц с результатами поиска
+### New
+* For administrators
+* Added buttons to the text editor panel to create buttons in the body of the record
+* Added the ability to add a numbered list in the body of the record
+* Added a condition under which it is impossible to publish records without the Featured Image installed
+* For everyone
+* The top banner has been changed. When scrolling, it hides behind the main menu
+* Removed duplicate tags for amp pages with search results
 
-### Исправления
-* Изменены размеры кнопок скачивания мобильных приложений
-* Изменены размеры всех кнопок на сайте
+### Fixes
+* Changed the size of the mobile app download buttons
+* Changed the size of all buttons on the site
 
 ## 1.0.5
-### Новое
-* Добавлен верхний баннер "Cloud Computing Insider Award 2021: Vote for ONLYOFFICE" как на https://www.onlyoffice.com/
-* Добавлены amp страницы для главной и для каждой записи по адресу /amp
-* Добавлены переводы для amp страниц
-* Добавлены переводы кнопок для скачивания мобильных приложений
+### New
+* Added the top banner "Cloud Computing Insider Award 2021: Vote for ONLYOFFICE" as on https://www.onlyoffice.com/
+* Added amp pages for the main and for each entry at /amp
+* Added translations for amp pages
+* Added translations of buttons for downloading mobile applications
 
-### Исправления
-* Поправлена кнопка "Sign in" в мобильном меню в пункте "Get ONLYOFFICE"
-* Заменена favicon.ico
+### Fixes
+* Fixed the "Sign in" button in the mobile menu in the "Get ONLYOFFICE" item
+* Replaced favicon.ico
 
 ## 1.0.4
-* Добавлен итальянский язык в селектор выбора языка
-* Добавлены переводы на итальянский язык
-* Добавлена ссылка "Chamilo" в футер
-* Меню: в Products >> Workspace добавлен подпункт "Cloud Service", в About добавлен "White papers", в Products добавлен "ONLYOFFICE Connectors"
-* Изменён подвал сайта, стили как на https://www.onlyoffice.com/
+* Added Italian to the language selector
+* Added translations to Italian
+* Added the "Chamilo" link to the footer
+* Menu: "Cloud Service" sub-item added to Products >> Workspace, "White papers" added to About, "ONLYOFFICE Connectors" added to Products
+* Changed the basement of the site, styles as on https://www.onlyoffice.com/
 
 ## 1.0.3
-* Удалены неиспользуемые темы по умолчанию
-* Удален неисползуемый плагин events-calendar
+* Removed unused default themes
+* The unused events-calendar plugin has been removed
 
 ## 1.0.2
-### Новое
-* Картинки внутри записи открываются в всплывающем окне
-* Изменена страница 404
-* Изменена страница с отсутствием результатов поиска
-* Обновлена новость в блоке "Customer stories" в главном меню на вкладке "Solutions"
+### New
+* Pictures inside the record open in a pop-up window
+* Changed page 404
+* Changed the page with no search results
+* Updated the news in the "Customer stories" block in the main menu on the "Solutions" tab
 
-### Исправления
-* Поправлена ссылка у кнопки "Blog" в главном меню. При переходе, сохраняет язык, с которого переходят
-* Поправлена ссылка у кнопки "Go back home" на странице 404. При переходе, сохраняет язык, с которого переходят
-* Поправлена ссылка по клику на логотип "Onlyoffice" в главном меню
+### Fixes
+* Fixed the link at the "Blog" button in the main menu. When switching, saves the language from which the user is switching
+* Corrected the link at the "Go back home" button on page 404. When switching, saves the language from which the user is switching
+* Fixed the link by clicking on the "Onlyoffice" logo in the main menu
 
 ## 1.0.1
-### Новое
-* Добавлен бразильский-португальский язык по адресу https://www.onlyoffice.com/blog/pt-br/
-* Добавлен виджет в бразильский язык "Onlyoffice-in-the-press"
-* Изменён подвал сайта, стили как на https://www.onlyoffice.com/
-* Изменены ссылки в главном меню и подвале сайта. При переходе, ссылки сохраняют язык, с которого переходят
-* Новости из блока «Onlyoffice-in-the-press» не имеют своих страниц, ссылок, и не индексириются в поиске
+### New
+* Added Brazilian-Portuguese at https://www.onlyoffice.com/blog/pt-br/
+* Added a widget to the Brazilian language "Onlyoffice-in-the-press"
+* Changed the basement of the site, styles as on https://www.onlyoffice.com/
+* Changed the links in the main menu and the basement of the site. When navigating, links retain the language they are navigating from
+* News from the "Onlyoffice-in-the-press" block does not have its own pages, links, and is not indexed in the search
 
-### Исправления
-* Поправлено мобильное меню
-* В строке поиска сокращён текст подсказки
-* Попправлена ссылка в логотипе
-* Поправлено отображение комментариев
+### Fixes
+* Fixed the mobile menu
+* The text of the hint has been shortened in the search bar
+* The link in the logo has been corrected
+* Fixed the display of comments
 
 ## 1.0.0
-* Изменено главное меню, стиль как на https://www.onlyoffice.com/
-* Изменено мобильное меню, стиль как на https://www.onlyoffice.com/
-* Заменена картинка внутри записи, в блоке "try Onlyoffice in the cloud"
-* Добавлены переводы меню на всех языках (de, fr, es, ru)
-* Заменёна картинка логотипа на новую
+* Changed the main menu, style as on https://www.onlyoffice.com/
+* Changed the mobile menu, style as on https://www.onlyoffice.com/
+* Replaced the picture inside the record, in the "try Onlyoffice in the cloud" block
+* Added menu translations in all languages (de, fr, es, ru)
+* The logo image has been replaced with a new one

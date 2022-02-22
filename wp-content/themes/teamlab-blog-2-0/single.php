@@ -10,24 +10,24 @@
 get_header();
 ?>
 <main>
-<div class="PostContainer">
-	
-	<div class="breadcrumbs-single">
-          <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
-              <?php
+    <div class="PostContainer">
+
+        <div class="breadcrumbs-single">
+            <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
+                <?php
             if(function_exists('bcn_display'))
                {
             bcn_display();
                 }?>
-          </div>
-      </div>
-	<div id="post-content" role="main">
-			<div class="content">
+            </div>
+        </div>
+        <div id="post-content" role="main">
+            <div class="content">
 
 
-		
 
-		<?php		
+
+                <?php		
 				
 		while ( have_posts() ) :
 			the_post();
@@ -38,12 +38,12 @@ get_header();
 		
 		endwhile; // End of the loop.
 			
-		?>			
+		?>
 
-		</div><!-- #content -->
-		<div class="sidebar">
-            <h3><?php _e( 'Recent posts', 'teamlab-blog-2-0' ); ?></h3>
-            <?php 
+            </div><!-- #content -->
+            <div class="sidebar">
+                <h3><?php _e( 'Recent posts', 'teamlab-blog-2-0' ); ?></h3>
+                <?php 
              $args = [
             'post_type' => 'post',
             'post_status' => 'publish',
@@ -52,29 +52,32 @@ get_header();
         ];
          $wp_query = new WP_Query($args); 
             if ($wp_query->have_posts()) : ?>
-            <div class="wrapperMain">
-
-           
-            <?php while ($wp_query->have_posts()) : $wp_query->the_post(); ?>
+                <div class="wrapperMain">
 
 
-            <?php include get_template_directory() . '/' . 'cicle-wrapper.php' ?>
-            
-            <?php endwhile; ?>
-            <?php endif; ?>
+                    <?php while ($wp_query->have_posts()) : $wp_query->the_post(); ?>
+
+
+                    <?php include get_template_directory() . '/' . 'cicle-wrapper.php' ?>
+
+                    <?php endwhile; ?>
+                    <?php endif; ?>
+                </div>
             </div>
-	</div>
-	</div><!-- .content -->
-	
+        </div><!-- .content -->
 
-</div><!-- #Single Container -->
-<script type="text/javascript">
-    jQuery("#comments .comment-wrap:first").css("border-top", "none");
-    jQuery("#comments .comment.depth-1:last").css("border-bottom", "1px solid #E0E0E0");
-    if (jQuery("#comments").length) {
-        jQuery("#comments").after(jQuery("<ul style='list-style: none;padding:0;'></ul>").append(jQuery("#recent-posts")));
-        jQuery("#recent-posts").show();
+
+    </div><!-- #Single Container -->
+    <script type="text/javascript">
+    if ($("#comments").length) {
+        jQuery("#comments .comment-wrap:first").css("border-top", "none");
+        jQuery("#comments .comment.depth-1:last").css("border-bottom", "1px solid #E0E0E0");
+        if (jQuery("#comments").length) {
+            jQuery("#comments").after(jQuery("<ul style='list-style: none;padding:0;'></ul>").append(jQuery(
+                "#recent-posts")));
+            jQuery("#recent-posts").show();
+        }
     }
-</script>
+    </script>
 </main>
 <?php get_footer();
