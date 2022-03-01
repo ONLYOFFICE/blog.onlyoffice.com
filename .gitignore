@@ -1,4 +1,4 @@
 \web.config
 \wp-config.php
-/wp-content/cache/autoptimize
-/wp-content/uploads/
+\wp-content\cache\
+\wp-content\uploads\
