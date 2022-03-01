@@ -164,11 +164,6 @@ add_filter( 'excerpt_length', function(){
 add_filter('excerpt_more', function($more) {
     return '...';
 });
-add_filter( 'jpeg_quality', function(){
-    return 100;
-}); //не сжимать больше JPG 
-
-add_filter( 'big_image_size_threshold', '__return_false' ); // не ограничивать размер изображения
 
 
 /**
@@ -554,7 +549,8 @@ if ( ! function_exists( 'tmblog_comment' ) ) :
                 <span class="sep">-</span>
                 <?php comment_reply_link( array_merge( $args, array( 'depth' => $depth ) ) ); ?>
             </div>
-            <span class="meta"><?php printf( __( '%1$s at %2$s', 'teamlab-blog-2-0' ), get_comment_date(),  get_comment_time() ); ?><?php edit_comment_link( __( 'Edit', 'teamlab-blog-2-0' ), ' ' ); ?></span>
+            <span
+                class="meta"><?php printf( __( '%1$s at %2$s', 'teamlab-blog-2-0' ), get_comment_date(),  get_comment_time() ); ?><?php edit_comment_link( __( 'Edit', 'teamlab-blog-2-0' ), ' ' ); ?></span>
         </div><!-- .comment-author .vcard -->
         <?php if ( $comment->comment_approved == '0' ) : ?>
         <em><?php _e( 'Your comment is awaiting moderation.', 'teamlab-blog-2-0' ); ?></em>
@@ -568,7 +564,8 @@ if ( ! function_exists( 'tmblog_comment' ) ) :
         case 'trackback' :
     ?>
 <li class="post pingback">
-    <p><?php _e( 'Pingback:', 'teamlab-blog-2-0' ); ?> <?php comment_author_link(); ?><?php edit_comment_link( __('(Edit)', 'teamlab-blog-2-0'), ' ' ); ?></p>
+    <p><?php _e( 'Pingback:', 'teamlab-blog-2-0' ); ?>
+        <?php comment_author_link(); ?><?php edit_comment_link( __('(Edit)', 'teamlab-blog-2-0'), ' ' ); ?></p>
     <?php
                     break;
             endswitch;
@@ -706,13 +703,16 @@ $current_language = $sitepress->get_current_language();
  */
 add_action('amp_post_template_head','ampforwp_add_amp_analytics', 11);
 function ampforwp_add_amp_analytics() { ?>
-        <!-- AMP Analytics --><script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
-	<?php 
+    <!-- AMP Analytics -->
+    <script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
+    <?php 
 }
 add_action('ampforwp_body_beginning','ampforwp_add_tag_manager', 11);
 function ampforwp_add_tag_manager() { ?>
-        <!-- Google Tag Manager --><amp-analytics config="https://www.googletagmanager.com/amp.json?id=GTM-55Q83SS&gtm.url=SOURCE_URL" data-credentials="include"></amp-analytics>
-	<?php 
+    <!-- Google Tag Manager -->
+    <amp-analytics config="https://www.googletagmanager.com/amp.json?id=GTM-55Q83SS&gtm.url=SOURCE_URL"
+        data-credentials="include"></amp-analytics>
+    <?php 
 }
  /**
  * Custom CSS for AMP Pages
@@ -720,150 +720,152 @@ function ampforwp_add_tag_manager() { ?>
 
 add_action('amp_post_template_css','ampforwp_add_custom_css_example', 11);
 function ampforwp_add_custom_css_example() { ?>
-	.m-menu .toggle {
-        float: right;
-        position: absolute;
-        left: 0;
-        top: 20px;
-        padding-left: 300px;
-        border: 1px solid transparent;
+    .m-menu .toggle {
+    float: right;
+    position: absolute;
+    left: 0;
+    top: 20px;
+    padding-left: 300px;
+    border: 1px solid transparent;
     }
     .f-w-f2{
-        display: none;
+    display: none;
     }
     .bold{
-        font-weight: bold;
+    font-weight: bold;
     }
     .margin-left{
-        margin-left:10px;
+    margin-left:10px;
     }
     .uppercase{
-        text-transform: uppercase;
+    text-transform: uppercase;
     }
     .amp-custom-banner-after-post {
-			text-align: center
-		}
-	#footer-accordion-1, #footer-accordion-2, #footer-accordion-3, #footer-accordion-4, #footer-accordion-5, #footer-accordion-6 {
-		margin-bottom: 0;
-		padding: 14px 0;
-		line-height: 1;
-		background-color: #fff;
-	}
-	.amp-custom-banner-after-post section ul li::marker,
-	.amp-custom-banner-after-post .SocialLinks ul li::marker{
-		content: none;
-	}
-	.amp-custom-banner-after-post section ul{
-		padding: 14px 0;
-	}
-	.amp-custom-banner-after-post section ul li,
-	.amp-custom-banner-after-post section ul li a,
-	.amp-custom-banner-after-post section ul li p,
-	.amp-custom-banner-after-post section ul li p a{
-		line-height: 18px;
-    	margin: 0 0 7px;
-	}
-	
-	.amp-custom-banner-after-post .SocialLinks h6{
-		padding: 14px 0;
-		line-height: 1;
-		margin-bottom: 0;
-	}
-	.amp-custom-banner-after-post .copyReserved{
-		padding: 50px 0;
-	}
+    text-align: center
+    }
+    #footer-accordion-1, #footer-accordion-2, #footer-accordion-3, #footer-accordion-4, #footer-accordion-5,
+    #footer-accordion-6 {
+    margin-bottom: 0;
+    padding: 14px 0;
+    line-height: 1;
+    background-color: #fff;
+    }
+    .amp-custom-banner-after-post section ul li::marker,
+    .amp-custom-banner-after-post .SocialLinks ul li::marker{
+    content: none;
+    }
+    .amp-custom-banner-after-post section ul{
+    padding: 14px 0;
+    }
+    .amp-custom-banner-after-post section ul li,
+    .amp-custom-banner-after-post section ul li a,
+    .amp-custom-banner-after-post section ul li p,
+    .amp-custom-banner-after-post section ul li p a{
+    line-height: 18px;
+    margin: 0 0 7px;
+    }
+
+    .amp-custom-banner-after-post .SocialLinks h6{
+    padding: 14px 0;
+    line-height: 1;
+    margin-bottom: 0;
+    }
+    .amp-custom-banner-after-post .copyReserved{
+    padding: 50px 0;
+    }
     .ListSocLink {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        justify-content: space-between;
-        -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
-        margin: 12px auto 10px;
-        max-width: 300px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: space-between;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin: 12px auto 10px;
+    max-width: 300px;
     }
     .ListSocLink li {
-        list-style-type: none;
-        display: inline-block;
-        width: 26px;
-        height: 42px;
-        margin: 0;
-        padding-right: 24px;
-        vertical-align: middle
+    list-style-type: none;
+    display: inline-block;
+    width: 26px;
+    height: 42px;
+    margin: 0;
+    padding-right: 24px;
+    vertical-align: middle
     }
     .ListSocLink li label {
-        background-repeat: no-repeat;
-        background-image: url("<?php echo WEB_ROOT_URL ?>/blog/wp-content/themes/teamlab-blog-2-0/images/color_social_icons.svg");
-        -webkit-filter: grayscale(1);
-        filter: grayscale(1);
-        display: block;
-        height: 24px;
-        width: 32px;
-        margin: 0;
-        vertical-align: middle;
-        background-position-y: 0;
+    background-repeat: no-repeat;
+    background-image:
+    url("<?php echo WEB_ROOT_URL ?>/blog/wp-content/themes/teamlab-blog-2-0/images/color_social_icons.svg");
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+    display: block;
+    height: 24px;
+    width: 32px;
+    margin: 0;
+    vertical-align: middle;
+    background-position-y: 0;
     }
     .ListSocLink li label:hover {
-        -webkit-filter: grayscale(0);
-        filter: grayscale(0)
+    -webkit-filter: grayscale(0);
+    filter: grayscale(0)
     }
     .ListSocLink li label:active {
-        background-position-y: -41px
+    background-position-y: -41px
     }
 
     .ListSocLink li label.social_grey_subscribe{
-        background-position-x: -430px;
+    background-position-x: -430px;
     }
 
     .ListSocLink li label.social_grey_fb {
-        background-position-x: 4px;
+    background-position-x: 4px;
     }
 
 
     .ListSocLink li label.social_grey_twi {
-        background-position-x: -36px;
+    background-position-x: -36px;
     }
 
 
     .ListSocLink li label.social_grey_in {
-        background-position-x: -76px;
+    background-position-x: -76px;
     }
 
 
     .ListSocLink li label.social_grey_g {
-        background-position-x: -75px;
+    background-position-x: -75px;
     }
 
 
     .ListSocLink li label.social_grey_tube {
-        background-position-x: -116px;
+    background-position-x: -116px;
     }
 
 
     .ListSocLink li label.social_grey_blog {
-        background-position-x: -196px;
+    background-position-x: -196px;
     }
 
     .ListSocLink li label.social_grey_medium {
-        background-position-x: -236px;
+    background-position-x: -236px;
     }
 
     .ListSocLink li label.social_grey_instagram {
-        background-position-x: -276px;
+    background-position-x: -276px;
     }
 
     .ListSocLink li label.social_grey_vk {
-        background-position-x: -156px;
+    background-position-x: -156px;
     }
 
     .ListSocLink li label.social_grey_github {
-        background-position-x: -316px
+    background-position-x: -316px
     }
 
     .ListSocLink li label.social_grey_fosstodon {
-        background-position-x: -393px
+    background-position-x: -393px
     }
-	<?php 
+    <?php 
 }
