@@ -1,4 +1,12 @@
 ﻿# Changelog
+## 1.2.0
+### New
+* Added plugin WP Super Cache for caching pages
+* Removed plugin "Easy FancyBox", which opened images in a pop-up window. Now images are opened through a function and not through a plugin
+
+### Fixes
+* Removed unused plugins: "CDN Sync Tool", "CRED Frontend Translation", "Google Analytics for WordPress by MonsterInsights", "Heartbeat Control by WP Rocket", "Hello Dolly", "Internal Link Juicer", "Newpost Catch", "reCaptcha by BestWebSoft", "Subscribe Sidebar", "Twitter for Wordpress"
+
 ## 1.1.9
 ### New
 * Added Autoptimize plugin for CSS and JS files minification
