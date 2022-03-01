@@ -69,7 +69,7 @@ get_header();
 
     </div><!-- #Single Container -->
     <script type="text/javascript">
-    if ($("#comments").length) {
+    if (jQuery("#comments").length) {
         jQuery("#comments .comment-wrap:first").css("border-top", "none");
         jQuery("#comments .comment.depth-1:last").css("border-bottom", "1px solid #E0E0E0");
         if (jQuery("#comments").length) {
