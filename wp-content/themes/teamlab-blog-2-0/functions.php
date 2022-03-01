@@ -164,11 +164,6 @@ add_filter( 'excerpt_length', function(){
 add_filter('excerpt_more', function($more) {
     return '...';
 });
-add_filter( 'jpeg_quality', function(){
-    return 100;
-}); //не сжимать больше JPG 
-
-add_filter( 'big_image_size_threshold', '__return_false' ); // не ограничивать размер изображения
 
 
 /**
