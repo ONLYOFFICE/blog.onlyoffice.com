@@ -65,19 +65,6 @@ get_header();
                 </div>
             </div>
         </div><!-- .content -->
-
-
     </div><!-- #Single Container -->
-    <script type="text/javascript">
-    if (jQuery("#comments").length) {
-        jQuery("#comments .comment-wrap:first").css("border-top", "none");
-        jQuery("#comments .comment.depth-1:last").css("border-bottom", "1px solid #E0E0E0");
-        if (jQuery("#comments").length) {
-            jQuery("#comments").after(jQuery("<ul style='list-style: none;padding:0;'></ul>").append(jQuery(
-                "#recent-posts")));
-            jQuery("#recent-posts").show();
-        }
-    }
-    </script>
 </main>
 <?php get_footer();
