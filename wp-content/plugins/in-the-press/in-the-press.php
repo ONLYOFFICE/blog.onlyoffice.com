@@ -115,7 +115,17 @@ class in_the_press extends WP_Widget {
 				</li>
 					<?php if ( $show_date ) : ?>
 						<div class="meta press">
-							<span class="date"><?php echo $dateNews->format('j M Y'); ?></span>
+							<span class="date">
+							<?php 
+								global $sitepress;
+								$current_language = $sitepress->get_current_language();
+								if ($current_language == 'zh-hans') {
+									echo $dateNews->format('Y日m月d日');
+								} else {
+									echo $dateNews->format('j M Y');
+								} 
+							?>
+							</span>
 						</div>
 					<?php endif; ?>
 			<?php endforeach; ?>

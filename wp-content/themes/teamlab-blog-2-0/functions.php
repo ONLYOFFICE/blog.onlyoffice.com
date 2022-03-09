@@ -249,8 +249,21 @@ function register_my_widgets() {
     ) );
 }
 
+function register_zh_widgets() {
+    register_sidebar( array(
+        'name'          => esc_html__( 'zh-sidebar', 'teamlab-blog-2-0' ),
+        'id'            => 'zh-sidebar',
+        'description'   => esc_html__( 'Add widgets on zh-page.', 'teamlab-blog-2-0' ),
+        'before_widget' => '<div class="widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4 class="widget-title">',
+        'after_title'   => '</h4>',
+    ) );
+}
+
 add_action( 'widgets_init', 'teamlab_blog_2_0_widgets_init' );
 add_action( 'widgets_init', 'register_my_widgets' );
+add_action( 'widgets_init', 'register_zh_widgets' );
 
 /**
  * Enqueue scripts and styles.
