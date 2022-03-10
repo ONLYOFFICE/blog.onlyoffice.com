@@ -1,4 +1,12 @@
 ﻿# Changelog
+## 1.2.1
+### New
+* Added plugin "Form Maker" for creating form in posts
+* Added block with WeChat for China language
+
+### Fixes
+* Moved the js code of comments to a file main.js
+
 ## 1.2.0
 ### New
 * Added plugin WP Super Cache for caching pages
