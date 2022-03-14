@@ -83,12 +83,28 @@ $queryNews = new WP_Query($argsNews); ?>
                   <div class="bg"></div>
                 </div>
               </div>
-              <?php get_sidebar(); ?>
+              <?php if ($current_language == WEB_ROOT_URL . '/' . 'zh') {?>
+              <div class="sidebar">
+                <?php dynamic_sidebar('zh-sidebar'); ?>
+              </div>
+               <?php 
+              }else{
+                get_sidebar();
+              }
+              ?>
             </div>
             <?php get_footer(); ?>
           <?php endif; ?>
           </div>
-          <?php get_sidebar(); ?>
+          <?php if ($current_language == WEB_ROOT_URL . '/' . 'zh') { ?>
+            <div class="sidebar">
+              <?php dynamic_sidebar('zh-sidebar'); ?>
+            </div>
+               <?php 
+              }else{
+                get_sidebar();
+              }
+              ?>
         </div>
 
         <?php

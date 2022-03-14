@@ -405,6 +405,16 @@ $(".overlay-dark, .close-overlay").on("click", function () {
   }, 100);
 });
 
+if ($("#comments").length) {
+  $("#comments .comment-wrap:first").css("border-top", "none");
+  $("#comments .comment.depth-1:last").css("border-bottom", "1px solid #E0E0E0");
+  if ($("#comments").length) {
+      $("#comments").after($("<ul style='list-style: none;padding:0;'></ul>").append($(
+          "#recent-posts")));
+      $("#recent-posts").show();
+  }
+}
+
 window.onload = function () {
   var $adventAnnounce = $(".advent-announce");
   var $header = $("header");
