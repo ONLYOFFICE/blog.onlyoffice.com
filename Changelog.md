@@ -1,4 +1,12 @@
 ﻿# Changelog
+## 1.2.2
+### New
+* Delete plugin "Form Maker" for creating form in posts
+* Added the "Comparison" section to the footer
+
+### Fixes
+* Updated styles of "Social networks" in the footer
+
 ## 1.2.1
 ### New
 * Added plugin "Form Maker" for creating form in posts
