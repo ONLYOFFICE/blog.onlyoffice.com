@@ -3,6 +3,7 @@
 ### New
 * Delete plugin "Form Maker" for creating form in posts
 * Added the "Comparison" section to the footer
+* Added plugin "WPForms" for creating form in posts
 
 ### Fixes
 * Updated styles of "Social networks" in the footer
