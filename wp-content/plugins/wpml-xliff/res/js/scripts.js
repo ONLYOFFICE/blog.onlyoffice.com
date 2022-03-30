@@ -2,6 +2,16 @@
 
 jQuery(document).ready(function(){
 
+    jQuery.browser = {};
+    (function () {
+        jQuery.browser.msie = false;
+        jQuery.browser.version = 0;
+        if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+            jQuery.browser.msie = true;
+            jQuery.browser.version = RegExp.$1;
+        }
+    })();
+
 	/** @namespace jQuery.browser.msie */
 	if(jQuery.browser.msie){ // TODO: jQuery.browser.msie: version deprecated: 1.3, removed: 1.9
 			jQuery('#icl_xliff_newlines_form').submit(icl_xliff_set_newlines);
