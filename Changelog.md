@@ -1,7 +1,7 @@
 ﻿# Changelog
 ## 1.2.2
 ### New
-* Delete plugin "Form Maker" for creating form in posts
+* Deleted plugin "Form Maker" for creating form in posts
 * Added the "Comparison" section to the footer
 * Added plugin "WP Fluent Form" for creating form in posts
 
