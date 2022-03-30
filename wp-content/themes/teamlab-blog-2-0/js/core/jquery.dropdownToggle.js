@@ -80,7 +80,7 @@
             var _registerAutoHide = function(event, switcherSelector, dropdownSelector, hideFunction) {
                 if ($(dropdownSelector).is(":visible")) {
                     var $targetElement = $((event.target) ? event.target : event.srcElement);
-                    if (!$targetElement.parents().andSelf().is(switcherSelector + ", " + dropdownSelector)) {
+                    if (!$targetElement.parents().addBack().is(switcherSelector + ", " + dropdownSelector)) {
                         if (typeof hideFunction === "function")
                             hideFunction($targetElement);
                         $(dropdownSelector).hide();

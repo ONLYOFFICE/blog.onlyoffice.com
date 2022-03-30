@@ -174,7 +174,7 @@ header {
 .bottomlines {
   padding-top: 56px;
   height: auto;
-  padding-bottom: 25px;
+  padding-bottom: 92px;
 }
 
 
@@ -220,7 +220,7 @@ footer h6.second_h {
   font-weight: normal;
   font-size: 13px;
   line-height: 18px;
-  color: #666;
+  color: #AAAAAA;
 }
 span.underline {
   border-bottom: 1px dotted #838383;
@@ -304,7 +304,8 @@ input.vertical-bottom {
 }
 .SocialLinks {
   align-items: center;
-  margin-top: 2px;
+  margin-top: 72px;
+  text-align: center;
 }
 #navitem_footer_contact ul li{
   margin: 0 0 7px;
@@ -318,19 +319,17 @@ input.vertical-bottom {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  margin: 12px 0 7px 10px;
-  max-width: 300px;
+  margin: 0 auto 32px;
+  justify-content: center;
+  align-items: center;
 }
 .ListSocLink li {
   list-style-type: none;
   display: inline-block;
-  width: 26px;
-  height: 42px;
+  width: 24px;
+  height: 24px;
   margin: 0;
-  padding-right: 24px;
+  padding-right: 32px;
   vertical-align: middle
 }
 .ListSocLink li label {
@@ -960,6 +959,7 @@ body.desktop .button.red.disabled:visited {
   }
   .bottomlines{
     padding-top: 0;
+    padding-bottom: 0;
   }
   .footer_menu {
     display: block;
@@ -968,7 +968,7 @@ body.desktop .button.red.disabled:visited {
     font-size: 12px;
 }
 .narrowfooter {
-  padding: 0 17px 50px;
+  padding: 0 17px 16px;
 }
 .footer_menu p a {
   font-size: 13px;
@@ -1042,7 +1042,7 @@ body.desktop .button.red.disabled:visited {
     margin-top: -30px;
 }
   .SocialLinks {
-    margin-top: 0;
+    margin-top: 32px;
   }
   .SocialLinks h6{
     display: block;
@@ -1058,6 +1058,7 @@ body.desktop .button.red.disabled:visited {
   .ListSocLink {
     max-width: 102%;
     justify-content: space-between;
+    margin-bottom: 52px;
   }
   .ListSocLink li {
     padding-right: 24px;
@@ -1347,10 +1348,15 @@ body.desktop .button.red.disabled:visited {
     top: -30px;
     right: 0;
   }
-}
-@media screen and (max-width: 549px) {
-  .ListSocLink {
-    justify-content: normal;
+  .ListSocLink{
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .ListSocLink li{
+    padding-top: 22px;
+  }
+  .SocialLinks{
+    margin-top: 10px;
   }
 }
 
