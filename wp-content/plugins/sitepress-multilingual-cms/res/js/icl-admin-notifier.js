@@ -1,6 +1,6 @@
 /* <![CDATA[*/
 jQuery(document).ready(function () {
-    jQuery('a.icl-admin-message-hide').live('click', function (event) {
+    jQuery('a.icl-admin-message-hide').on('click', function (event) {
 
 		if (typeof(event.preventDefault) !== 'undefined' ) {
 			event.preventDefault();
@@ -34,7 +34,7 @@ jQuery(document).ready(function () {
             }
         });
     });
-	jQuery('a.icl-admin-message-link').live('click', function (event) {
+	jQuery('a.icl-admin-message-link').on('click', function (event) {
 
 		if (typeof(event.preventDefault) !== 'undefined' ) {
 			event.preventDefault();

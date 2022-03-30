@@ -4,6 +4,7 @@
 * Deleted plugin "Form Maker" for creating form in posts
 * Added the "Comparison" section to the footer
 * Added plugin "WP Fluent Form" for creating form in posts
+* Updated jQuery version from v1.7.1 to v3.6.0
 
 ### Fixes
 * Updated styles of "Social networks" in the footer
