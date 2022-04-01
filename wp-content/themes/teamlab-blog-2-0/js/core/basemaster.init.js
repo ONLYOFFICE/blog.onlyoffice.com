@@ -265,148 +265,32 @@ jQuery(document).ready(function ($) {
             }
         });
 }
-jQuery('.footer-button')
-        .click(function () {
-            if (jQuery(window).width() < '768') {
-                
-        jQuery.dropdownToggle({
-            dropdownID: "navitem_footer_features",
-            switcherSelector: "#footer_menu_features",
-            simpleToggle: true,
-            showFunction: function (switcherObj, dropdownItem) {
-                if (dropdownItem.is(":hidden")) {
-                    switcherObj.addClass("active");
-                } else {
-                    switcherObj.removeClass("active");
-                }
-            },
-            hideFunction: function () {
-                $("#footer_menu_features").removeClass("active");
-            }
-        });
-
-        jQuery.dropdownToggle({
-            dropdownID: "navitem_footer_integration",
-            switcherSelector: "#footer_menu_integration",
-            simpleToggle: true,
-            showFunction: function (switcherObj, dropdownItem) {
-                if (dropdownItem.is(":hidden")) {
-                    switcherObj.addClass("active");
-                } else {
-                    switcherObj.removeClass("active");
-                }
-            },
-            hideFunction: function () {
-                $("#footer_menu_integration").removeClass("active");
-            }
-        });
-        jQuery.dropdownToggle({
-            dropdownID: "navitem_footer_solutions",
-            switcherSelector: "#footer_menu_solutions",
-            simpleToggle: true,
-            showFunction: function (switcherObj, dropdownItem) {
-                if (dropdownItem.is(":hidden")) {
-                    switcherObj.addClass("active");
-                } else {
-                    switcherObj.removeClass("active");
-                }
-            },
-            hideFunction: function () {
-                $("#footer_menu_solutions").removeClass("active");
-            }
-        });
-        jQuery.dropdownToggle({
-            dropdownID: "navitem_footer_by_size",
-            switcherSelector: "#footer_menu_solutions_bsz",
-            simpleToggle: true,
-            showFunction: function (switcherObj, dropdownItem) {
-                if (dropdownItem.is(":hidden")) {
-                    switcherObj.addClass("active");
-                } else {
-                    switcherObj.removeClass("active");
-                }
-            },
-            hideFunction: function () {
-                $("#footer_menu_solutions_bsz").removeClass("active");
-            }
-        });
-        jQuery.dropdownToggle({
-            dropdownID: "navitem_footer_by_industry",
-            switcherSelector: "#footer_menu_solutions_bid",
-            simpleToggle: true,
-            showFunction: function (switcherObj, dropdownItem) {
-                if (dropdownItem.is(":hidden")) {
-                    switcherObj.addClass("active");
-                } else {
-                    switcherObj.removeClass("active");
-                }
-            },
-            hideFunction: function () {
-                $("#footer_menu_solutions_bid").removeClass("active");
-            }
-        });
-        jQuery.dropdownToggle({
-            dropdownID: "navitem_footer_support",
-            switcherSelector: "#footer_menu_support",
-            simpleToggle: true,
-            showFunction: function (switcherObj, dropdownItem) {
-                if (dropdownItem.is(":hidden")) {
-                    switcherObj.addClass("active");
-                } else {
-                    switcherObj.removeClass("active");
-                }
-            },
-            hideFunction: function () {
-                $("#footer_menu_support").removeClass("active");
-            }
-        });
-        jQuery.dropdownToggle({
-            dropdownID: "navitem_footer_developers",
-            switcherSelector: "#footer_menu_developers",
-            simpleToggle: true,
-            showFunction: function (switcherObj, dropdownItem) {
-                if (dropdownItem.is(":hidden")) {
-                    switcherObj.addClass("active");
-                } else {
-                    switcherObj.removeClass("active");
-                }
-            },
-            hideFunction: function () {
-                $("#footer_menu_developers").removeClass("active");
-            }
-        });
-        jQuery.dropdownToggle({
-            dropdownID: "navitem_footer_GetInfo",
-            switcherSelector: "#footer_menu_GetInfo",
-            simpleToggle: true,
-            showFunction: function (switcherObj, dropdownItem) {
-                if (dropdownItem.is(":hidden")) {
-                    switcherObj.addClass("active");
-                } else {
-                    switcherObj.removeClass("active");
-                }
-            },
-            hideFunction: function () {
-                $("#footer_menu_GetInfo").removeClass("active");
-            }
-        });
-        jQuery.dropdownToggle({
-            dropdownID: "navitem_footer_contact",
-            switcherSelector: "#footer_menu_contact",
-            simpleToggle: true,
-            showFunction: function (switcherObj, dropdownItem) {
-                if (dropdownItem.is(":hidden")) {
-                    switcherObj.addClass("active");
-                } else {
-                    switcherObj.removeClass("active");
-                }
-            },
-            hideFunction: function () {
-                $("#footer_menu_contact").removeClass("active");
-            }
-        });
+jQuery(function () {
+    var footerBreakpoint = '768';
+    function footerRestoreDesktop() {
+        if (window.innerWidth > footerBreakpoint) {
+            jQuery(".footer-button").siblings(".footer-border > div").children("ul").children("li").show();
+        } else {
+            jQuery(".footer-button").removeClass("expanded").addClass("collapsed").siblings(".footer-border > div").children("ul").children("li").hide();
+        }
     }
-        });
+    jQuery(".footer-button").on("click", function(){
+        if (window.innerWidth < footerBreakpoint) {
+            if(jQuery(this).hasClass("expanded")){
+                jQuery(this).removeClass("expanded").addClass("collapsed").siblings(".footer-border > div").children("ul").children("li").slideUp();
+            } else {
+                jQuery(".footer-button").not("expanded").removeClass("expanded").addClass("collapsed").siblings(".footer-border > div").children("ul").children("li").slideUp();
+                jQuery(this).removeClass("collapsed").addClass("expanded").siblings(".footer-border > div").children("ul").children("li").slideDown();
+            }
+        }
+    });
+    jQuery(document).ready(function(){
+        footerRestoreDesktop();
+    });
+    jQuery(window).on('resize', function(){
+        footerRestoreDesktop();
+    });
+});
 
     if (jQuery(".polls-content").length > 0 && jQuery(".yop_poll_vote_button_summary").length == 1) {
         jQuery("button.yop_poll_vote_button").parent().addClass("display-none");
