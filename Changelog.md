@@ -8,6 +8,7 @@
 
 ### Fixes
 * Updated styles of "Social networks" in the footer
+* Update styles mobile footer
 
 ## 1.2.1
 ### New

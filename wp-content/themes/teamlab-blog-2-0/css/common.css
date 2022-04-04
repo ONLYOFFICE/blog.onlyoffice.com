@@ -981,17 +981,6 @@ body.desktop .button.red.disabled:visited {
   .footer_menu div {
     margin-bottom: 0;
 }
-  #navitem_footer_features,
-  #navitem_footer_solutions,
-  #navitem_footer_support,
-  #navitem_footer_developers,
-  #navitem_footer_GetInfo,
-  #navitem_footer_contact,
-  #navitem_footer_by_size,
-  #navitem_footer_by_industry {
-    display: none;
-    transition: max-height 0.2s ease-in-out, visibility 0.2s ease-in-out;
-  }
   #navitem_footer_contact li{
     font-size: 13px;
   }
@@ -1005,7 +994,8 @@ body.desktop .button.red.disabled:visited {
       cursor: pointer;
       padding: 3px 0;
   }
-  .footer-button:before {
+  .footer-button:before,
+  .footer-button.collapsed:before{
       display: block;
       content: '';
       width: 10px;
@@ -1027,7 +1017,7 @@ body.desktop .button.red.disabled:visited {
       -o-transition: .1s linear;
       transition: .1s linear;
   }
-  .footer-button.active:before {
+  .footer-button.expanded:before {
       -moz-transform: rotate( 270deg );
       -ms-transform: rotate( 270deg );
       -o-transform: rotate( 270deg );

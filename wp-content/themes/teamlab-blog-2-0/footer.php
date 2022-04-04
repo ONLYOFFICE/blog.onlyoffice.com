@@ -175,10 +175,10 @@ global $current_language;
                     </div>
                     <div group-menu>
                         <li class="footer-border">
-                            <a id="footer_menu_compare" class="footer-button">
+                            <a id="footer_menu_comparison" class="footer-button">
                                 <h6><?php _e('Comparison', 'teamlab-blog-2-0'); ?></h6>
                             </a>
-                            <div id="navitem_footer_by_industry">
+                            <div id="navitem_footer_comparison">
                                 <ul>
                                     <li>
                                         <p><a href="<?php echo $current_language ?>/best-microsoft-office-alternative.aspx"><?php _e('ONLYOFFICE Docs vs MS Office Online', 'teamlab-blog-2-0'); ?></a></p>
