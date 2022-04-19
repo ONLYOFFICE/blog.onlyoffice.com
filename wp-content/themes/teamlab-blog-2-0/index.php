@@ -167,7 +167,6 @@ $queryNews = new WP_Query($argsNews); ?>
         <?php wp_reset_postdata(); ?>
 
       <?php else : ?>
-        <p><?php _e('Sorry, no posts matched your query'); ?>.</p>
       <?php endif; ?>
 </main>
 <div class="delimetr"></div>

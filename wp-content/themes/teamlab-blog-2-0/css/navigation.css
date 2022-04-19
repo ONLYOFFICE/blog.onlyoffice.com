@@ -457,7 +457,7 @@ div.custom-select div.selector {
   background-image: url("../images/img_for_header/menu_for_developers.png");
 }
 #latest_events_img{
-  background-image: url("../images/img_for_header/onlyoffice_linux_foundation.svg")
+  background-image: url("../images/img_for_header/univention_may_2022_@2x-01.png")
 }
 
 @media screen and (min-width: 1024px) {
@@ -759,7 +759,7 @@ div.custom-select div.selector {
     background-position-y: -208px;
   }
   #navitem_find_partners:before{
-    background-position-y: -234px;
+    background-position-y: -702px;
   }
   #navitem_submit_request:before{
     background-position-y: -260px;
@@ -767,11 +767,14 @@ div.custom-select div.selector {
   #navitem_about_about:before{
     background-position-y: -286px;
   }
+  #navitem_about_customers:before{
+    background-position-y: -364px;
+  }
   #navitem_about_contribute:before{
     background-position-y: -338px;
   }
-  #navitem_about_customers:before{
-    background-position-y: -364px;
+  #navitem_about_vacancies:before{
+    background-position-y: -676px;
   }
   #navitem_about_awards:before{
     background-position-y: -390px;
