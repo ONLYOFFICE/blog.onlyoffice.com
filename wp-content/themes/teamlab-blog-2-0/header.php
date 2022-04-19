@@ -377,7 +377,7 @@ global $current_language;
                     </nav>
                     <div class="langselector push">
                         <div id="LanguageSelector" class="custom-select">
-                            <?php language_selector(array("en", "engb", "ru", "fr", "de", "es", "pt", "it", "cs", "zh")); ?>
+                            <?php language_selector(array("en", "engb", "ru", "fr", "de", "es", "pt", "it", "cs", "ja", "zh")); ?>
                         </div>
                     </div>
                 </div>

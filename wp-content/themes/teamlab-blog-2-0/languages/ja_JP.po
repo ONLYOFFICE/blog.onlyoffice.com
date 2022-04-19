@@ -1,20 +1,21 @@
 # Copyright (C) 2017 Automattic
 # This file is distributed under the GNU General Public License v2 or later.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: _s 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/tags/_s\n"
-"POT-Creation-Date: 2022-04-18 17:29+0300\n"
+"POT-Creation-Date: 2022-04-19 12:48+0300\n"
+"PO-Revision-Date: 2022-04-19 13:15+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
-"Last-Translator: \n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
 "X-Generator: Poedit 2.4.3\n"
 "X-Poedit-KeywordsList: _e;__\n"
 "X-Poedit-Basepath: ../../../..\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SearchPath-0: wp-content/themes/teamlab-blog-2-0\n"
 "X-Poedit-SearchPath-1: wp-content/plugins/in-the-press\n"
 "X-Poedit-SearchPath-2: wp-includes/widgets/class-wp-widget-recent-posts.php\n"
@@ -30,19 +31,20 @@ msgstr ""
 #: wp-content/plugins/in-the-press/in-the-press.php:29
 #: wp-content/themes/teamlab-blog-2-0/in-the-press.php:34
 msgid "ONLYOFFICE IN THE PRESS"
-msgstr ""
+msgstr "ONLYOFFICEについての記事"
 
 #: wp-content/plugins/in-the-press/in-the-press.php:47
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:30
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:48
 msgid "Recent Posts"
-msgstr ""
+msgstr "最新情報"
 
 #: wp-content/plugins/in-the-press/in-the-press.php:97
 msgid ""
 "View all <div class=\"no-wrap\">news&nbsp;<div class=\"grey-arrow\"></div></"
 "div>"
 msgstr ""
+"<div class=\"no-wrap\">もっと見る&nbsp;<div class=\"grey-arrow\"></div></div>"
 
 #: wp-content/plugins/in-the-press/in-the-press.php:103
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:102
@@ -74,13 +76,13 @@ msgstr ""
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:56
 msgid "E-Mail:"
-msgstr ""
+msgstr "メールアドレス"
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:58
 #: wp-content/themes/teamlab-blog-2-0/header.php:393
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:17
 msgid "Subscribe"
-msgstr ""
+msgstr "登録"
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:206
 msgid "Comment Manager"
@@ -96,7 +98,7 @@ msgstr ""
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:296
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:901
 msgid "Notify me of followup comments via e-mail"
-msgstr ""
+msgstr "最新コメントをメールで通知する"
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:431
 msgid "Please provide a valid e-mail address."
@@ -500,7 +502,7 @@ msgstr ""
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1439
 msgid "Search &raquo;"
-msgstr ""
+msgstr "検索 &raquo;"
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1445
 msgid "Top Subscriber List"
@@ -587,28 +589,30 @@ msgstr ""
 
 #: wp-content/plugins/wp-discourse/lib/discourse-comment-formatter.php:187
 msgid "Join the Discussion"
-msgstr ""
+msgstr "ディスカッションに参加"
 
 #: wp-content/themes/teamlab-blog-2-0/404.php:17
 msgid "404 Page not found"
-msgstr ""
+msgstr "404 ページは見つかりません"
 
 #: wp-content/themes/teamlab-blog-2-0/404.php:18
 msgid ""
 "The page you were looking for doesn't exist, isn't available, or was loading "
 "incorrectly."
 msgstr ""
+"お探しのページは存在しないか、利用できないか、または正しく読み込まれていませ"
+"ん。"
 
 #: wp-content/themes/teamlab-blog-2-0/404.php:19
 msgid "Go back to Home"
-msgstr ""
+msgstr "ホームページに戻る"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:17
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:65
 #: wp-content/themes/teamlab-blog-2-0/footer.php:26
 #: wp-content/themes/teamlab-blog-2-0/footer.php:102
 msgid "Developers"
-msgstr ""
+msgstr "開発者"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:19
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:166
@@ -638,42 +642,42 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/footer.php:50
 #: wp-content/themes/teamlab-blog-2-0/header.php:208
 msgid "Security"
-msgstr ""
+msgstr "安全"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:28
 #: wp-content/themes/teamlab-blog-2-0/footer.php:55
 msgid "Authentication and access control"
-msgstr ""
+msgstr "認証とアクセス制御"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:29
 #: wp-content/themes/teamlab-blog-2-0/footer.php:58
 msgid "Data protection"
-msgstr ""
+msgstr "データ保護"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:30
 #: wp-content/themes/teamlab-blog-2-0/footer.php:61
 msgid "Data encryption"
-msgstr ""
+msgstr "データ暗号化"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:31
 #: wp-content/themes/teamlab-blog-2-0/footer.php:64
 msgid "Private rooms"
-msgstr ""
+msgstr "個室"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:32
 #: wp-content/themes/teamlab-blog-2-0/footer.php:67
 msgid "GDPR compliance"
-msgstr ""
+msgstr "GDPRコンプライアンス"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:33
 #: wp-content/themes/teamlab-blog-2-0/footer.php:70
 msgid "HIPAA compliance"
-msgstr ""
+msgstr "HIPAAコンプライアンス"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:37
 #: wp-content/themes/teamlab-blog-2-0/header.php:224
 msgid "Integrations"
-msgstr ""
+msgstr "統合"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:39
 #: wp-content/themes/teamlab-blog-2-0/header.php:228
@@ -728,21 +732,21 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:49
 #: wp-content/themes/teamlab-blog-2-0/header.php:242
 msgid "Others"
-msgstr ""
+msgstr "その他"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:53
 #: wp-content/themes/teamlab-blog-2-0/footer.php:129
 msgid "Support"
-msgstr ""
+msgstr "サポート"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:55
 msgid "Premium support"
-msgstr ""
+msgstr "プレミアムサポート"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:56
 #: wp-content/themes/teamlab-blog-2-0/footer.php:134
 msgid "Support contact form"
-msgstr ""
+msgstr "サポートお問い合わせフォーム"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:57
 msgid "SaaS forum"
@@ -755,76 +759,76 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:59
 #: wp-content/themes/teamlab-blog-2-0/footer.php:140
 msgid "Order demo"
-msgstr ""
+msgstr "デモ注文"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:63
 #: wp-content/themes/teamlab-blog-2-0/footer.php:153
 #: wp-content/themes/teamlab-blog-2-0/header.php:363
 msgid "Resources"
-msgstr ""
+msgstr "リソース"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:65
 #: wp-content/themes/teamlab-blog-2-0/footer.php:158
 #: wp-content/themes/teamlab-blog-2-0/header.php:366
 msgid "Help Center"
-msgstr ""
+msgstr "ヘルプ・センター"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:66
 #: wp-content/themes/teamlab-blog-2-0/footer.php:161
 msgid "App Directory"
-msgstr ""
+msgstr "App ディレクトリ"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:67
 #: wp-content/themes/teamlab-blog-2-0/footer.php:164
 msgid "Compare to other suites"
-msgstr ""
+msgstr "他のスイートと比較する"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:68
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:238
 #: wp-content/themes/teamlab-blog-2-0/footer.php:167
 #: wp-content/themes/teamlab-blog-2-0/header.php:355
 msgid "Contribute"
-msgstr ""
+msgstr "貢献"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:69
 #: wp-content/themes/teamlab-blog-2-0/footer.php:143
 #: wp-content/themes/teamlab-blog-2-0/header.php:368
 msgid "Webinars"
-msgstr ""
+msgstr "ウェビナー"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:70
 #: wp-content/themes/teamlab-blog-2-0/footer.php:170
 msgid "Legal notice"
-msgstr ""
+msgstr "法律情報"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:74
 #: wp-content/themes/teamlab-blog-2-0/footer.php:206
 msgid "Contact Us"
-msgstr ""
+msgstr "当社に連絡"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:77
 #: wp-content/themes/teamlab-blog-2-0/footer.php:211
 msgid "Sales questions"
-msgstr ""
+msgstr "販売に関する質問"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:81
 #: wp-content/themes/teamlab-blog-2-0/footer.php:216
 msgid "Partner inquiries"
-msgstr ""
+msgstr "パートナー事業に関する質問"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:85
 #: wp-content/themes/teamlab-blog-2-0/footer.php:220
 msgid "Press inquiries"
-msgstr ""
+msgstr "プレスリリースに関する質問"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:89
 #: wp-content/themes/teamlab-blog-2-0/footer.php:224
 msgid "Request a call"
-msgstr ""
+msgstr "折返し電話をリクエスト"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:95
 msgid "Follow us on:"
-msgstr ""
+msgstr "をフォローしてください"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:125
 #: wp-content/themes/teamlab-blog-2-0/footer.php:264
@@ -834,66 +838,66 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:125
 #: wp-content/themes/teamlab-blog-2-0/footer.php:264
 msgid "All rights reserved"
-msgstr ""
+msgstr "著作権"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:39
 msgid "Solutions"
-msgstr ""
+msgstr "ソリューション"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:44
 #: wp-content/themes/teamlab-blog-2-0/footer.php:79
 msgid "By size"
-msgstr ""
+msgstr "規模により"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:49
 #: wp-content/themes/teamlab-blog-2-0/footer.php:84
 msgid "SMBs"
-msgstr ""
+msgstr "中小企業"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:52
 #: wp-content/themes/teamlab-blog-2-0/footer.php:87
 msgid "Enterprises"
-msgstr ""
+msgstr "企業"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:55
 #: wp-content/themes/teamlab-blog-2-0/footer.php:90
 msgid "Home use"
-msgstr ""
+msgstr "家庭用"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:60
 #: wp-content/themes/teamlab-blog-2-0/footer.php:97
 msgid "By industry"
-msgstr ""
+msgstr "業界により"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:68
 #: wp-content/themes/teamlab-blog-2-0/footer.php:105
 msgid "Hosting providers"
-msgstr ""
+msgstr "ホスティングプロバイダー"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:71
 #: wp-content/themes/teamlab-blog-2-0/footer.php:108
 msgid "Government"
-msgstr ""
+msgstr "政府"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:74
 #: wp-content/themes/teamlab-blog-2-0/footer.php:111
 msgid "Healthcare"
-msgstr ""
+msgstr "保健"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:77
 #: wp-content/themes/teamlab-blog-2-0/footer.php:114
 msgid "Research"
-msgstr ""
+msgstr "研究"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:80
 #: wp-content/themes/teamlab-blog-2-0/footer.php:117
 msgid "Education"
-msgstr ""
+msgstr "教育"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:83
 #: wp-content/themes/teamlab-blog-2-0/footer.php:120
 msgid "Nonprofits"
-msgstr ""
+msgstr "非営利組織"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:88
 msgid "Customer stories"
@@ -902,7 +906,7 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:94
 #: wp-content/themes/teamlab-blog-2-0/header.php:158
 msgid "Products & Features"
-msgstr ""
+msgstr "製品と機能"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:99
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:160
@@ -915,17 +919,17 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:102
 #: wp-content/themes/teamlab-blog-2-0/header.php:164
 msgid "Document Editor"
-msgstr ""
+msgstr "ドキュメント・エディター"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:105
 #: wp-content/themes/teamlab-blog-2-0/header.php:166
 msgid "Spreadsheet Editor"
-msgstr ""
+msgstr "スプレッドシート・エディタ"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:108
 #: wp-content/themes/teamlab-blog-2-0/header.php:168
 msgid "Presentation Editor"
-msgstr ""
+msgstr "プレゼンテーション・エディター"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:111
 msgid "ONLYOFFICE Connectors"
@@ -934,17 +938,17 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:114
 #: wp-content/themes/teamlab-blog-2-0/header.php:183
 msgid "ONLYOFFICE for desktop"
-msgstr ""
+msgstr "デスクトップ用ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:117
 #: wp-content/themes/teamlab-blog-2-0/header.php:184
 msgid "ONLYOFFICE for iOS"
-msgstr ""
+msgstr "IOS用ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:120
 #: wp-content/themes/teamlab-blog-2-0/header.php:185
 msgid "ONLYOFFICE for Android"
-msgstr ""
+msgstr "Android用ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:123
 msgid "ONLYOFFICE Groups"
@@ -953,12 +957,12 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:126
 #: wp-content/themes/teamlab-blog-2-0/header.php:190
 msgid "Documents"
-msgstr ""
+msgstr "ドキュメント"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:129
 #: wp-content/themes/teamlab-blog-2-0/header.php:192
 msgid "Mail"
-msgstr ""
+msgstr "メール"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:132
 #: wp-content/themes/teamlab-blog-2-0/header.php:194
@@ -968,12 +972,12 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:135
 #: wp-content/themes/teamlab-blog-2-0/header.php:196
 msgid "Projects"
-msgstr ""
+msgstr "プロジェクト"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:138
 #: wp-content/themes/teamlab-blog-2-0/header.php:198
 msgid "Calendar"
-msgstr ""
+msgstr "カレンダー"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:141
 msgid "Community"
@@ -996,7 +1000,7 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:155
 #: wp-content/themes/teamlab-blog-2-0/header.php:258
 msgid "Pricing"
-msgstr ""
+msgstr "価格"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:163
 #: wp-content/themes/teamlab-blog-2-0/header.php:178
@@ -1013,17 +1017,17 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:178
 #: wp-content/themes/teamlab-blog-2-0/header.php:278
 msgid "Buy from an ONLYOFFICE reseller"
-msgstr ""
+msgstr " ONLYOFFICEの再販業者にご購入ください"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:183
 #: wp-content/themes/teamlab-blog-2-0/header.php:291
 msgid "Get ONLYOFFICE"
-msgstr ""
+msgstr "ONLYOFFICEを入手する"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:188
 #: wp-content/themes/teamlab-blog-2-0/header.php:304
 msgid "Sign in"
-msgstr ""
+msgstr "Cloudにサインイン"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:191
 msgid "Sign up for ONLYOFFICE Cloud"
@@ -1044,108 +1048,108 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:203
 #: wp-content/themes/teamlab-blog-2-0/header.php:316
 msgid "Compare editions"
-msgstr ""
+msgstr "エディションを比較"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:208
 #: wp-content/themes/teamlab-blog-2-0/header.php:329
 msgid "Partners"
-msgstr ""
+msgstr "パートナー"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:213
 #: wp-content/themes/teamlab-blog-2-0/header.php:333
 msgid "Affiliates"
-msgstr ""
+msgstr "アフィリエイト"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:216
 #: wp-content/themes/teamlab-blog-2-0/header.php:334
 msgid "Resellers"
-msgstr ""
+msgstr "再販業者"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:219
 #: wp-content/themes/teamlab-blog-2-0/header.php:335
 msgid "Find partners"
-msgstr ""
+msgstr "パートナーを探す"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:222
 #: wp-content/themes/teamlab-blog-2-0/header.php:336
 msgid "Submit request"
-msgstr ""
+msgstr "要求を発行する"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:227
 #: wp-content/themes/teamlab-blog-2-0/header.php:350
 msgid "About"
-msgstr ""
+msgstr "会社案内"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:232
 #: wp-content/themes/teamlab-blog-2-0/header.php:354
 msgid "About ONLYOFFICE"
-msgstr ""
+msgstr "ONLYOFFICEについて"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:235
 #: wp-content/themes/teamlab-blog-2-0/header.php:364
 msgid "Blog"
-msgstr ""
+msgstr "ブログ"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:241
 #: wp-content/themes/teamlab-blog-2-0/header.php:356
 msgid "Customers"
-msgstr ""
+msgstr "お客様"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:244
 #: wp-content/themes/teamlab-blog-2-0/header.php:357
 msgid "Awards"
-msgstr ""
+msgstr "受賞"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:247
 #: wp-content/themes/teamlab-blog-2-0/header.php:358
 msgid "Events"
-msgstr ""
+msgstr "イベント"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:250
 #: wp-content/themes/teamlab-blog-2-0/header.php:365
 msgid "Press downloads"
-msgstr ""
+msgstr "メディア・ダウンロード用"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:253
 #: wp-content/themes/teamlab-blog-2-0/header.php:367
 msgid "White papers"
-msgstr ""
+msgstr "ホワイト ペーパー"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:256
 #: wp-content/themes/teamlab-blog-2-0/header.php:359
 msgid "Gift shop"
-msgstr ""
+msgstr "ギフト・ショップ"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:259
 #: wp-content/themes/teamlab-blog-2-0/header.php:360
 msgid "Contacts"
-msgstr ""
+msgstr "お問い合わせ"
 
 #: wp-content/themes/teamlab-blog-2-0/archive.php:37
 msgid "Tag Archives:"
-msgstr ""
+msgstr "タグアーカイブ"
 
 #: wp-content/themes/teamlab-blog-2-0/archive.php:42
 msgid "Author Archives:"
-msgstr ""
+msgstr "記者のアーカイブ"
 
 #: wp-content/themes/teamlab-blog-2-0/archive.php:70
 #: wp-content/themes/teamlab-blog-2-0/in-the-press.php:90
 #: wp-content/themes/teamlab-blog-2-0/index.php:161
 #: wp-content/themes/teamlab-blog-2-0/search.php:62
 msgid "Load more"
-msgstr ""
+msgstr "もっと見る"
 
 #: wp-content/themes/teamlab-blog-2-0/archive.php:76
 #: wp-content/themes/teamlab-blog-2-0/in-the-press.php:96
 #: wp-content/themes/teamlab-blog-2-0/index.php:82
 #: wp-content/themes/teamlab-blog-2-0/search.php:68
 msgid "No results matching your query could be found"
-msgstr ""
+msgstr "一致する情報は見つかりませんでした"
 
 #: wp-content/themes/teamlab-blog-2-0/cloud-block.php:3
 msgid "Try ONLYOFFICE in the cloud"
-msgstr ""
+msgstr "ONLYOFFICEをクラウドでお試しください"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:17
 msgid ""
@@ -1162,11 +1166,11 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:38
 msgid "1 comment"
-msgstr ""
+msgstr "１コメント"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:38
 msgid "Comments (%)"
-msgstr ""
+msgstr "コメント(%)"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:52
 msgid "Comments are closed."
@@ -1174,7 +1178,7 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:58
 msgid "Add a comment"
-msgstr ""
+msgstr "コメントを書く"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:58
 #, php-format
@@ -1190,10 +1194,11 @@ msgstr ""
 #, php-format
 msgid "Logged in as <a class=\"account-name\" href=\"%1$s\">%2$s</a>"
 msgstr ""
+"<a class=\"account-name\" href=\"%1$s\">%2$s</a>としてログインしています"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:68
 msgid "Log out of this account"
-msgstr ""
+msgstr "ログアウト"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:68
 msgid "Log out &raquo;"
@@ -1201,7 +1206,7 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:71
 msgid "Name:"
-msgstr ""
+msgstr "名前"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:71
 #: wp-content/themes/teamlab-blog-2-0/comments.php:75
@@ -1210,7 +1215,7 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:75
 msgid "E-mail (will not be published):"
-msgstr ""
+msgstr "メールアドレス（表示されない）"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:79
 msgid "Website:"
@@ -1218,19 +1223,19 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:84
 msgid "Message:"
-msgstr ""
+msgstr "本文"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:90
 msgid "Add comment"
-msgstr ""
+msgstr "配信"
 
 #: wp-content/themes/teamlab-blog-2-0/download-block.php:3
 msgid "Download ONLYOFFICE desktop and mobile apps for"
-msgstr ""
+msgstr "無料で ONLYOFFICEのデスクトップ版・モバイル版アプリをダウンロード"
 
 #: wp-content/themes/teamlab-blog-2-0/download-block.php:3
 msgid "FREE"
-msgstr ""
+msgstr "  "
 
 #: wp-content/themes/teamlab-blog-2-0/download-block.php:6
 msgid "For Windows"
@@ -1250,16 +1255,16 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:137
 msgid "Forum"
-msgstr ""
+msgstr "フォーラム"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:146
 #: wp-content/themes/teamlab-blog-2-0/header.php:369
 msgid "Training courses"
-msgstr ""
+msgstr "トレーニング コース"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:179
 msgid "Comparison"
-msgstr ""
+msgstr "比較"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:184
 msgid "ONLYOFFICE Docs vs MS Office Online"
@@ -1306,7 +1311,7 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/functions.php:569
 msgid "Your comment is awaiting moderation."
-msgstr ""
+msgstr "コメントは確認中です。"
 
 #: wp-content/themes/teamlab-blog-2-0/functions.php:580
 msgid "Pingback:"
@@ -1314,7 +1319,7 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/functions.php:581
 msgid "(Edit)"
-msgstr ""
+msgstr "（編集）"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:114
 msgid ""
@@ -1329,24 +1334,24 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/header.php:149
 #: wp-content/themes/teamlab-blog-2-0/searchform.php:9
 msgid "Find news, tips and how-tos"
-msgstr ""
+msgstr "ニュース、ヒント、使い方を検索"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:170
 msgid "Form creator"
-msgstr ""
+msgstr "フォーム作成"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:174
 msgid "Docs Editions"
-msgstr ""
+msgstr "Docs エディション"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:176
 #: wp-content/themes/teamlab-blog-2-0/header.php:203
 msgid "Cloud Edition"
-msgstr ""
+msgstr "クラウドサービス"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:201
 msgid "Workspace Editions"
-msgstr ""
+msgstr "Workspace エディション"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:211
 msgid "OFORMS"
@@ -1356,7 +1361,7 @@ msgstr ""
 msgid ""
 "OFORMS, free <span class=\"nowrap\">ready-to-fill</span> out online document "
 "forms"
-msgstr ""
+msgstr "OFORMS、無料ですぐに記入できるオンライン ドキュメント フォーム"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:240
 msgid "Redmine"
@@ -1368,26 +1373,28 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:245
 msgid "For developers"
-msgstr ""
+msgstr "開発者向け"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:249
 msgid "Integrate ONLYOFFICE Docs to bring document editing to your app users"
 msgstr ""
+"ONLYOFFICE Docsを統合して、アプリのユーザーにドキュメントを編集する機能を提供"
+"する"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:282
 msgid ""
 "Find out the list of all the authorized ONLYOFFICE resellers in your area"
-msgstr ""
+msgstr "最寄りの認定 ONLYOFFICE パートナー 一覧表を御覧ください。"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:297
 #: wp-content/themes/teamlab-blog-2-0/header.php:306
 msgid "Sign up for cloud"
-msgstr ""
+msgstr "サインアップ"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:299
 #: wp-content/themes/teamlab-blog-2-0/header.php:308
 msgid "Install on-premises"
-msgstr ""
+msgstr "オンプレミスでインストール"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:311
 msgid "ONLYOFFICE Personal"
@@ -1395,59 +1402,59 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:312
 msgid "ONLYOFFICE desktop and mobile apps"
-msgstr ""
+msgstr "デスクトップ及びモバイルアプリ"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:313
 msgid "Other products"
-msgstr ""
+msgstr "その他の製品"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:320
 msgid "Choose the ONLYOFFICE edition that suits you best."
-msgstr ""
+msgstr "最適な ONLYOFFICE エディションをお選びください。"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:339
 msgid "Latest events"
-msgstr ""
+msgstr "最新イベント"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:342
 msgid "ONLYOFFICE joins the Linux Foundation as a silver member"
-msgstr ""
+msgstr "Univention Summit 2022にぜひご参加ください。"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:388
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:2
 msgid "Newsletter"
-msgstr ""
+msgstr "メールマガジン"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:389
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:3
 msgid "Get the latest ONLYOFFICE news"
-msgstr ""
+msgstr "ONLYOFFICEの最新情報を入手"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:391
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:7
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:15
 msgid "Your email"
-msgstr ""
+msgstr "メールアドレスを入力してください"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:396
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:22
 msgid "Email is empty"
-msgstr ""
+msgstr "メールアドレスは記入されていません"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:397
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:23
 msgid "Email is incorrect"
-msgstr ""
+msgstr "メールアドレスを正しくご入力ください"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:399
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:24
 msgid "Email is used"
-msgstr ""
+msgstr "メールアドレスはもう使用されています"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:400
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:25
 msgid "Incorrect recaptcha"
-msgstr ""
+msgstr "reCAPTCHAをもう一度ご確認ください"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:403
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:33
@@ -1459,12 +1466,12 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/header.php:406
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:37
 msgid "Confirm your subscription"
-msgstr ""
+msgstr "サブスクリプションをご確認ください"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:407
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:38
 msgid "We sent an email message with confirmation to your email address"
-msgstr ""
+msgstr "確認メールを配信いたしました"
 
 #: wp-content/themes/teamlab-blog-2-0/in-the-press.php:30
 msgid "BLOG"
@@ -1488,11 +1495,11 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/search.php:79
 #: wp-content/themes/teamlab-blog-2-0/single.php:45
 msgid "Recent posts"
-msgstr ""
+msgstr "最新情報"
 
 #: wp-content/themes/teamlab-blog-2-0/social-icons.php:2
 msgid "Follow us"
-msgstr ""
+msgstr "フォロー"
 
 #: wp-content/themes/teamlab-blog-2-0/template-parts/content-none.php:24
 #, php-format
@@ -1516,15 +1523,17 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/templates/activation.php:44
 #: wp-content/themes/teamlab-blog-2-0/templates/activation.php:74
 msgid "Explore blog"
-msgstr ""
+msgstr "ブログを見る"
 
 #: wp-content/themes/teamlab-blog-2-0/templates/activation.php:70
 msgid "Thank you </em>for signing up for ONLYOFFICE newsletter!"
-msgstr ""
+msgstr "</em>登録していただき、ありがとうございます。"
 
 #: wp-content/themes/teamlab-blog-2-0/templates/activation.php:72
 msgid "Check your inbox for your first email and stay updated from now on!"
 msgstr ""
+"これからは最新情報をお届けいたします。最初のメールをお送りいたしましたので、"
+"受信箱でチェックしてください。"
 
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:27
 msgid "Your site&#8217;s most recent Posts."
