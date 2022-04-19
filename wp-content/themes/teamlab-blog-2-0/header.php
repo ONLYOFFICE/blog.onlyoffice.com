@@ -259,7 +259,7 @@ global $current_language;
                                     <div id="navitem_prices_menu">
                                         <ul class="dropdown-content">
                                             <li id="navitem_docs_third_level_menu">
-                                                <a id="navitem_prices_docs" class="dropdown-item mobile_no_link"><?php _e('ONLYOFFICE Docs', 'teamlab-blog-2-0'); ?></a>
+                                                <a id="navitem_prices_docs" class="dropdown-item mobile_no_link"><?php _e('Pricing', 'teamlab-blog-2-0'); ?></a>
                                                     <ul class="navitem_2nd_menu">
                                                         <li><a class="nav_2nd_menu_link" id="navitem_prices_server_enterprice" href="<?php echo $current_language ?>/docs-enterprise-prices.aspx"><?php _e('Enterprise Edition', 'teamlab-blog-2-0'); ?></a>
                                                         </li>
@@ -336,10 +336,10 @@ global $current_language;
                                                 <a id="navitem_submit_request" class="dropdown-item" href="<?php echo $current_language ?>/partnership-request.aspx"><?php _e('Submit request', 'teamlab-blog-2-0'); ?></a>
                                             </li>
                                             <li id="navitem_latest_events_third_level_menu">
-                                                <a id="navitem_latest_events" class="dropdown-item" href="https://www.onlyoffice.com/blog/2021/03/onlyoffice-joins-the-linux-foundation-as-a-silver-member/"><?php _e('Latest events', 'teamlab-blog-2-0'); ?></a>
+                                                <a id="navitem_latest_events" class="dropdown-item" href="<?php echo $current_language ?>/events.aspx"><?php _e('Latest events', 'teamlab-blog-2-0'); ?></a>
                                                 <div id="latest_events_div" class="menu_pic_div">
                                                     <div id="latest_events_img" class="menu_pic_img"></div>
-                                                    <p id="latest_events_header" class="menu_pic_header"><?php _e('ONLYOFFICE joins the Linux Foundation as a silver member', 'teamlab-blog-2-0'); ?></p>
+                                                    <p id="latest_events_header" class="menu_pic_header"><?php _e('Join us at Univention Summit 2022', 'teamlab-blog-2-0'); ?></p>
                                                 </div>
                                             </li>
                                         </ul>
@@ -352,8 +352,9 @@ global $current_language;
                                         <ul class="dropdown-content">
                                             <li class="pushy-link">
                                                 <a id="navitem_about_about" class="dropdown-item" href="<?php echo $current_language ?>/about.aspx"><?php _e('About ONLYOFFICE', 'teamlab-blog-2-0'); ?></a>
-                                                <a id="navitem_about_contribute" class="dropdown-item" href="<?php echo $current_language ?>/contribute.aspx"><?php _e('Contribute', 'teamlab-blog-2-0'); ?></a>
                                                 <a id="navitem_about_customers" class="dropdown-item" href="<?php echo $current_language ?>/customers.aspx"><?php _e('Customers', 'teamlab-blog-2-0'); ?></a>
+                                                <a id="navitem_about_contribute" class="dropdown-item" href="<?php echo $current_language ?>/contribute.aspx"><?php _e('Contribute', 'teamlab-blog-2-0'); ?></a>
+                                                <a id="navitem_about_vacancies" class="dropdown-item" href="<?php echo $current_language ?>/vacancies.aspx"><?php _e('Jobs', 'teamlab-blog-2-0'); ?></a>
                                                 <a id="navitem_about_awards" class="dropdown-item" href="<?php echo $current_language ?>/awards.aspx"><?php _e('Awards', 'teamlab-blog-2-0'); ?></a>
                                                 <a id="navitem_about_events" class="dropdown-item" href="<?php echo $current_language ?>/events.aspx"><?php _e('Events', 'teamlab-blog-2-0'); ?></a>
                                                 <a id="navitem_about_giftshop" class="dropdown-item" target="_blank" rel="noreferrer noopener" href="https://shop.spreadshirt.com/onlyoffice"><?php _e('Gift shop', 'teamlab-blog-2-0'); ?></a>
@@ -377,7 +378,7 @@ global $current_language;
                     </nav>
                     <div class="langselector push">
                         <div id="LanguageSelector" class="custom-select">
-                            <?php language_selector(array("en", "engb", "ru", "fr", "de", "es", "pt", "it", "cs", "zh")); ?>
+                            <?php language_selector(array("en", "engb", "ru", "fr", "de", "es", "pt", "it", "cs", "ja", "zh")); ?>
                         </div>
                     </div>
                 </div>

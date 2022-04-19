@@ -1,4 +1,12 @@
 ﻿# Changelog
+
+## 1.2.3
+### New
+* Added Japanese language and translations
+* Added the "Jobs" link in the main menu to the "About" section and added translations
+* Changed the event in the "Partners" section of the main menu and added translations
+
+
 ## 1.2.2
 ### New
 * Deleted plugin "Form Maker" for creating form in posts

@@ -263,7 +263,7 @@ class DemPoll {
 				$html .= '<input type="hidden" name="dem_act" value="vote">';
 				$html .= '<input type="hidden" name="dem_pid" value="'. $this->id .'">';
 
-				$btnVoted  = '<div class="dem-voted-button"><input class="dem-button '. democr()->opt('btn_class') .'" type="submit" value="'. _x('Already voted...','front','democracy-poll') .'" disabled="disabled"></div>';
+				$btnVoted  = '<div class="dem-voted-button"><input class="dem-button '. democr()->opt('btn_class') .'" type="submit" value="'. _x('Thanks for your feedback','front','democracy-poll') .'" disabled="disabled"></div>';
 				$btnVote   = '<div class="dem-vote-button"><input class="dem-button '. democr()->opt('btn_class') .'" type="submit" value="'. _x('Vote','front','democracy-poll') .'" data-dem-act="vote"></div>';
 
 				if( $auto_vote_on_select )

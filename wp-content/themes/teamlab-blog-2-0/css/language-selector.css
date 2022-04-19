@@ -173,6 +173,11 @@ div.custom-select ul.options li.option.zh-CN a {
   background-image: url("../images/flags/flags_1x.png");
   background-position-y: -172px;
 }
+div.custom-select div.title.ja-JP,
+div.custom-select ul.options li.option.ja-JP a {
+  background-image: url("../images/flags/japan.png");
+  background-position-y: 50%;
+}
 div.custom-select ul.options li.option.uk-UA {
   display: none;
 }
