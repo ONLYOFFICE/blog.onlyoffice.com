@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: _s 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/tags/_s\n"
 "POT-Creation-Date: 2022-04-19 14:26+0300\n"
-"PO-Revision-Date: 2022-04-19 14:31+0300\n"
+"PO-Revision-Date: 2022-04-21 13:16+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja\n"
@@ -1440,7 +1440,7 @@ msgstr "ONLYOFFICEの最新情報を入手"
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:7
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:15
 msgid "Your email"
-msgstr "メールアドレスを入力してください"
+msgstr "メールアドレス"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:397
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:22
@@ -1468,6 +1468,8 @@ msgid ""
 "By clicking “Subscribe”, you understand and agree to <u>our Privacy "
 "statement</u>"
 msgstr ""
+"「確認する」を押すと、<u>プライバシーポリシ</u>ーに同意したものとみなされま"
+"す。"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:407
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:37
@@ -1550,6 +1552,7 @@ msgid ""
 "View all <div class=\"no-wrap\">posts&nbsp;<div class=\"grey-arrow\"></div></"
 "div>"
 msgstr ""
+"<div class=\"no-wrap\">もっと見る&nbsp;<div class=\"grey-arrow\"></div></div>"
 
 #~ msgid "ONLYOFFICE joins the Linux Foundation as a silver member"
 #~ msgstr "Univention Summit 2022にぜひご参加ください。"
