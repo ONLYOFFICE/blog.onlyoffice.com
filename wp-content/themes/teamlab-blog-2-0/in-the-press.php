@@ -54,7 +54,10 @@ get_header();
 						<?php if ($current_language == WEB_ROOT_URL . '/' . 'zh') {
 							$dateNews = strval(get_field('dateNews','', false));
 							echo date("Y日m月d日", strtotime($dateNews));
-						} else {
+						} else if ($current_language == WEB_ROOT_URL . '/' . 'ja'){
+							$dateNews = strval(get_field('dateNews','', false));
+							echo date("Y年m月d日", strtotime($dateNews));
+						  }else {
 							echo get_field('dateNews');
 						} ?></span>
 				</div>

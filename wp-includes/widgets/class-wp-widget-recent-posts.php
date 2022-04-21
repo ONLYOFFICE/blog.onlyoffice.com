@@ -115,6 +115,8 @@ class WP_Widget_Recent_Posts extends WP_Widget {
 								<?php global $current_language; ?>
 							<?php if ($current_language == WEB_ROOT_URL . '/' . 'zh') {
 										echo get_the_date( 'Y日m月d日', $recent_post->ID );
+									} else if ($current_language == WEB_ROOT_URL . '/' . 'ja'){
+										echo get_the_date('Y年m月d日 ');
 									} else {
 										echo get_the_date( 'j F Y', $recent_post->ID );
 									} ?></span>
