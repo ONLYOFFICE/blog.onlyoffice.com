@@ -5,6 +5,8 @@
 * Added Japanese language and translations
 * Added the "Jobs" link in the main menu to the "About" section and added translations
 * Changed the event in the "Partners" section of the main menu and added translations
+* Changed size search input in post on Japanese language
+* Added date format for Japanese language
 
 
 ## 1.2.2
