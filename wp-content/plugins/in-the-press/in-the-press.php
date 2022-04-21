@@ -121,7 +121,9 @@ class in_the_press extends WP_Widget {
 								$current_language = $sitepress->get_current_language();
 								if ($current_language == 'zh-hans') {
 									echo $dateNews->format('Y日m月d日');
-								} else {
+								}  else if ($current_language == 'ja'){
+									echo $dateNews->format('Y年m月d日');
+								}	else {
 									echo $dateNews->format('j M Y');
 								} 
 							?>
