@@ -10,6 +10,8 @@
  * @package Teamlab_Blog_2.0
  */
 global $current_language;
+global $sitepress;
+$lang = $sitepress->get_current_language();
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -131,7 +133,7 @@ global $current_language;
         <div class="mainpart">
             <div class="site-overlay"></div>
             <header>
-                <div class="narrowheader">
+                <div class="narrowheader <?php echo $lang ?>">
                     <div class="logo push">
                         <a href="<?php echo $current_language ?>"></a>
                     </div>

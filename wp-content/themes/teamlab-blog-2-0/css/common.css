@@ -657,6 +657,10 @@ body.desktop .button.red.disabled:visited {
     cursor: pointer;
     background-position: 99% center;
   }
+  .ja .input-header .search-field{
+      box-sizing: border-box;
+      width: 0;
+  }
   .input-header .search-field:focus{
     background-color: #F9F9F9;
     border: 1px solid #E0E0E0;

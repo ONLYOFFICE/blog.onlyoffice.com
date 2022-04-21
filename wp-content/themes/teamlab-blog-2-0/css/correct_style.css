@@ -294,7 +294,7 @@ main{
     cursor: text;
     height: 40px;
     width: 241px;
-    padding: 0 0 0 16px;
+    padding: 0 33px 0 16px;
     -webkit-transition: width 100ms ease, background 100ms ease;
     transition: width 100ms ease, background 100ms ease;
     border: 1px solid #E0E0E0;
@@ -305,6 +305,11 @@ main{
     font-size: 14px;
     line-height: 160%;
     color: #666666;
+}
+
+.ja .input-header .search-field{
+    box-sizing: content-box;
+    width: 220px;
 }
 
 .input-header .search-field::placeholder { 
