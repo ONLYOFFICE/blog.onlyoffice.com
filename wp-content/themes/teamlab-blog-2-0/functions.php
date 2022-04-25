@@ -633,8 +633,6 @@ function language_selector($available_langs_keys) {
     $default_lang = get_default_language_key();
     $available_langs_full = array(
         'en' =>  array('en', 'en-US', 'English'),
-        'engb' =>  array('uk', 'en-GB', 'English'),
-        'ru' =>  array('ru', 'ru-RU', 'Русский'),
         'fr' =>  array('fr', 'fr-FR', 'Francais'),
         'de' =>  array('de', 'de-DE', 'Deutsch'),
         'es' =>  array('es', 'es-ES', 'Espanol'),
