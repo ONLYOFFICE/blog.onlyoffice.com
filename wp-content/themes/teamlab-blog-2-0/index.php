@@ -65,6 +65,8 @@ $queryNews = new WP_Query($argsNews); ?>
                   <span class="date">
                     <?php if ($current_language == WEB_ROOT_URL . '/' . 'zh') {
                       echo get_the_date('Y日m月d日');
+                    } else if ($current_language == WEB_ROOT_URL . '/' . 'ja'){
+                      echo get_the_date('Y年m月d日 ');
                     } else {
                       echo get_the_date('j F Y');
                     } ?></span>
@@ -167,7 +169,6 @@ $queryNews = new WP_Query($argsNews); ?>
         <?php wp_reset_postdata(); ?>
 
       <?php else : ?>
-        <p><?php _e('Sorry, no posts matched your query'); ?>.</p>
       <?php endif; ?>
 </main>
 <div class="delimetr"></div>

@@ -1,29 +1,28 @@
-# Translation of the WordPress theme Twenty Ten 1.0 by the WordPress team.
-# Copyright (C) 2010 the WordPress team
-# This file is distributed under the same license as the Twenty Ten package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#
+# Copyright (C) 2017 Automattic
+# This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Twenty Ten 1.0\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/tag/twentyten\n"
-"POT-Creation-Date: 2022-04-19 14:38+0300\n"
-"PO-Revision-Date: 2022-04-19 14:38+0300\n"
+"Project-Id-Version: _s 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/tags/_s\n"
+"POT-Creation-Date: 2022-04-19 14:26+0300\n"
+"PO-Revision-Date: 2022-04-22 10:55+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: es_ES\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.4.3\n"
 "X-Poedit-KeywordsList: _e;__\n"
 "X-Poedit-Basepath: ../../../..\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SearchPath-0: wp-content/themes/teamlab-blog-2-0\n"
 "X-Poedit-SearchPath-1: wp-content/plugins/in-the-press\n"
 "X-Poedit-SearchPath-2: wp-includes/widgets/class-wp-widget-recent-posts.php\n"
 "X-Poedit-SearchPath-3: wp-content/plugins/wp-discourse/lib/discourse-comment-"
 "formatter.php\n"
+"X-Poedit-SearchPath-4: wp-content/plugins/subscribe-to-comments/subscribe-to-"
+"comments.php\n"
 
 #: wp-content/plugins/in-the-press/in-the-press.php:26
 msgid "Your site&#8217;s in the press."
@@ -32,21 +31,20 @@ msgstr ""
 #: wp-content/plugins/in-the-press/in-the-press.php:29
 #: wp-content/themes/teamlab-blog-2-0/in-the-press.php:34
 msgid "ONLYOFFICE IN THE PRESS"
-msgstr "ONLYOFFICE EN LA PRENSA"
+msgstr "ONLYOFFICEについての記事"
 
 #: wp-content/plugins/in-the-press/in-the-press.php:47
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:30
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:48
 msgid "Recent Posts"
-msgstr "ENTRADAS RECIENTES"
+msgstr "最新情報"
 
 #: wp-content/plugins/in-the-press/in-the-press.php:97
 msgid ""
 "View all <div class=\"no-wrap\">news&nbsp;<div class=\"grey-arrow\"></div></"
 "div>"
 msgstr ""
-"Ver todas las <div class=\"no-wrap\">noticias&nbsp;<div class=\"grey-arrow"
-"\"></div></div>"
+"<div class=\"no-wrap\">もっと見る&nbsp;<div class=\"grey-arrow\"></div></div>"
 
 #: wp-content/plugins/in-the-press/in-the-press.php:103
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:102
@@ -68,32 +66,553 @@ msgstr ""
 msgid "Display post date?"
 msgstr ""
 
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:43
+msgid "<strong>Error: </strong>"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:54
+msgid "Subscribe without commenting"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:56
+msgid "E-Mail:"
+msgstr "メールアドレス"
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:58
+#: wp-content/themes/teamlab-blog-2-0/header.php:394
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:17
+msgid "Subscribe"
+msgstr "登録"
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:206
+msgid "Comment Manager"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:221
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:223
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1068
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1363
+msgid "Comment Subscription Manager"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:296
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:901
+msgid "Notify me of followup comments via e-mail"
+msgstr "最新コメントをメールで通知する"
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:431
+msgid "Please provide a valid e-mail address."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:435
+msgid "This e-mail address may not be subscribed"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:440
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:455
+msgid "You appear to be already subscribed to this entry."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:445
+msgid "Comments are not allowed on this entry."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:773
+#, php-format
+msgid "There is a new comment on the post \"%s\""
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:774
+#, php-format
+msgid "Author: %s\n"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:775
+msgid "Comment:\n"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:776
+msgid "See all comments on this post here:\n"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:779
+msgid ""
+"To manage your subscriptions or to block all notifications from this site, "
+"click the link below:\n"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:782
+#, php-format
+msgid "New Comment On: %s"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:800
+msgid "Subscription Confirmation"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:801
+#, php-format
+msgid ""
+"You are receiving this message to confirm your comment subscription at \"%s"
+"\"\n"
+"\n"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:802
+msgid ""
+"To confirm your subscription, click this link:\n"
+"\n"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:804
+msgid ""
+"If you did not request this subscription, please disregard this message."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:813
+msgid "E-mail change confirmation"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:814
+#, php-format
+msgid ""
+"You are receiving this message to confirm a change of e-mail address for "
+"your subscriptions at \"%s\"\n"
+"\n"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:815
+#, php-format
+msgid ""
+"To change your e-mail address to %s, click this link:\n"
+"\n"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:817
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:829
+msgid "If you did not request this action, please disregard this message."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:825
+msgid "E-mail block confirmation"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:826
+#, php-format
+msgid ""
+"You are receiving this message to confirm that you no longer wish to receive "
+"e-mail comment notifications from \"%s\"\n"
+"\n"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:827
+msgid ""
+"To cancel all future notifications for this address, click this link:\n"
+"\n"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:875
+msgid "click here"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:901
+msgid ""
+"You are subscribed to this entry.  <a href=\"[manager_link]\">Manage your "
+"subscriptions</a>."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:901
+msgid ""
+"You are the author of this entry.  <a href=\"[manager_link]\">Manage "
+"subscriptions</a>."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1068
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1537
+msgid "Subscriptions"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1069
+msgid "Subscribe to Comments"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1100
+msgid "Settings saved."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1107
+msgid "Subscribe to Comments Settings"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1110
+msgid "Notification e-mails"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1112
+msgid "\"From\" name"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1113
+msgid "\"From\" address"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1113
+msgid ""
+"You may want this to be a special account that you set up for this purpose, "
+"as it will go out to everyone who subscribes"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1114
+msgid "Double opt-in"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1114
+msgid ""
+"Require verification of first-time subscription e-mails (this is known as "
+"\"double opt-in\" and is required by law in some countries)"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1117
+msgid "Subscriber name formatting"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1119
+msgid "Subscribed format"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1119
+msgid ""
+"e.g. <code>%NAME% (subscribed)</code> will display <code>John Smith "
+"(subscribed)</code>"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1123
+msgid "Comment form layout"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1125
+msgid ""
+"Do a CSS \"clear\" on the subscription checkbox/message (uncheck this if the "
+"checkbox/message appears in a strange location in your theme)"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1128
+msgid "Comment form text"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1129
+msgid ""
+"Customize the messages shown to different people.  Use <code>[manager_link]</"
+"code> to insert the URI to the Subscription Manager."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1131
+msgid "Not subscribed text"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1132
+msgid "Subscribed text"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1133
+msgid "Entry author text"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1136
+msgid "Subscription manager"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1138
+msgid "Custom style"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1138
+msgid "Use custom style for Subscription Manager"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1142
+msgid ""
+"These settings only matter if you are using a custom style.  "
+"<code>[theme_path]</code> will be replaced with the path to your current "
+"theme."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1144
+msgid "Path to header"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1145
+msgid "Path to sidebar"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1146
+msgid "Path to footer"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1147
+msgid "HTML for before the subscription manager"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1148
+msgid "HTML for after the subscription manager"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1193
+msgid "Save Changes"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1290
+msgid "You may not access this page without a valid key."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1298
+#, php-format
+msgid ""
+"Thank you! <strong>%1$s</strong> has been confirmed, and is now subscribed "
+"to comments."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1304
+#, php-format
+msgid ""
+"All notifications that were formerly sent to <strong>%1$s</strong> will now "
+"be sent to <strong>%2$s</strong>!"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1316
+#, php-format
+msgid "<strong>%1$s</strong> %2$s removed successfully."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1316
+msgid "subscriptions"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1316
+msgid "subscription"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1321
+#, php-format
+msgid "The block on <strong>%s</strong> has been successfully removed."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1323
+#, php-format
+msgid "<strong>%s</strong> isn't blocked!"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1328
+#, php-format
+msgid ""
+"<strong>%s</strong> has been blocked from receiving notifications.  You will "
+"have to have the administrator remove the block before you will be able to "
+"change your notification address."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1331
+#, php-format
+msgid ""
+"Your change of e-mail request was successfully received.  Please check your "
+"old account (<strong>%s</strong>) in order to confirm the change."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1336
+#, php-format
+msgid ""
+"Your request to block <strong>%s</strong> from receiving any further "
+"notifications has been received.  In order for you to complete the block, "
+"please check your e-mail and click on the link in the message that has been "
+"sent to you."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1340
+#, php-format
+msgid "<strong>%1$s</strong> has been successfully subscribed to %2$s"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1345
+#, php-format
+msgid ""
+"<strong>%1$s</strong> has been added to the \"do not mail\" list. You will "
+"no longer receive any notifications from this site. If this was done in "
+"error, please contact the <a href=\"mailto:%2$s\">site administrator</a> to "
+"remove this block."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1347
+#, php-format
+msgid "<strong>%s</strong> has already been blocked!"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1367
+#, php-format
+msgid "Return to the page you were viewing: %s"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1377
+msgid "Remove Block"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1380
+#, php-format
+msgid ""
+"Click the button below to remove the block on <strong>%s</strong>.  This "
+"should only be done if the user has specifically requested it."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1388
+msgid "Remove Block &raquo;"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1394
+msgid "Blocked"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1397
+#, php-format
+msgid ""
+"You have indicated that you do not wish to receive any notifications at "
+"<strong>%1$s</strong> from this site. If this is incorrect, or if you wish "
+"to have the block removed, please contact the <a href=\"mailto:%2$s\">site "
+"administrator</a>."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1411
+#, php-format
+msgid "<strong>%s</strong> is not subscribed to any posts on this site."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1413
+#, php-format
+msgid "<strong>%s</strong> is not a valid e-mail address."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1425
+msgid "&laquo; Back"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1428
+msgid "Find Subscriptions"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1431
+msgid "Enter an e-mail address to view its subscriptions or undo a block."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1439
+msgid "Search &raquo;"
+msgstr "検索 &raquo;"
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1445
+msgid "Top Subscriber List"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1447
+msgid "Subscriber List"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1467
+msgid "Show all subscribers"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1470
+msgid ""
+"Show list of subscribers in <code>CC:</code>-field format (for bulk e-"
+"mailing)"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1472
+msgid "&laquo; Back to regular view"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1488
+msgid "Top Subscribed Posts"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1540
+#, php-format
+msgid ""
+"<strong>%s</strong> is subscribed to the posts listed below. To unsubscribe "
+"to one or more posts, click the checkbox next to the title, then click "
+"\"Remove Selected Subscription(s)\" at the bottom of the list."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1555
+msgid "Invert Checkbox Selection"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1559
+msgid "Remove Selected Subscription(s) &raquo;"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1566
+msgid "Advanced Options"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1568
+msgid "Block All Notifications"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1575
+#, php-format
+msgid ""
+"If you would like <strong>%s</strong> to be blocked from receiving any "
+"notifications from this site, click the button below.  This should be "
+"reserved for cases where someone is signing you up for notifications without "
+"your consent."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1579
+msgid "Block Notifications &raquo;"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1585
+msgid "Change E-mail Address"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1592
+#, php-format
+msgid ""
+"If you would like to change the e-mail address for your subscriptions, enter "
+"the new address below.  You will be required to verify this request by "
+"clicking a special link sent to your current address (<strong>%s</strong>)."
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1596
+msgid "New E-mail Address:"
+msgstr ""
+
+#: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1598
+msgid "Change E-mail Address &raquo;"
+msgstr ""
+
 #: wp-content/plugins/wp-discourse/lib/discourse-comment-formatter.php:187
 msgid "Join the Discussion"
-msgstr "Únete a la discusión"
+msgstr "ディスカッションに参加"
 
 #: wp-content/themes/teamlab-blog-2-0/404.php:17
 msgid "404 Page not found"
-msgstr "404 Página no encontrada"
+msgstr "404 ページは見つかりません"
 
 #: wp-content/themes/teamlab-blog-2-0/404.php:18
 msgid ""
 "The page you were looking for doesn't exist, isn't available, or was loading "
 "incorrectly."
 msgstr ""
-"La página que usted está buscando no existe, no está disponible o fue "
-"cargada incorrectamente."
+"お探しのページは存在しないか、利用できないか、または正しく読み込まれていませ"
+"ん。"
 
 #: wp-content/themes/teamlab-blog-2-0/404.php:19
 msgid "Go back to Home"
-msgstr "Volver a la página principal"
+msgstr "ホームページに戻る"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:17
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:65
 #: wp-content/themes/teamlab-blog-2-0/footer.php:28
 #: wp-content/themes/teamlab-blog-2-0/footer.php:104
 msgid "Developers"
-msgstr "Desarrolladores"
+msgstr "開発者"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:19
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:166
@@ -101,94 +620,94 @@ msgstr "Desarrolladores"
 #: wp-content/themes/teamlab-blog-2-0/header.php:180
 #: wp-content/themes/teamlab-blog-2-0/header.php:266
 msgid "Developer Edition"
-msgstr "Developer Edition"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:20
 #: wp-content/themes/teamlab-blog-2-0/footer.php:36
 msgid "Document Builder"
-msgstr "Document Builder"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:21
 #: wp-content/themes/teamlab-blog-2-0/footer.php:42
 msgid "API"
-msgstr "API"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:22
 #: wp-content/themes/teamlab-blog-2-0/footer.php:45
 msgid "Code on GitHub"
-msgstr "GitHub"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:26
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:150
 #: wp-content/themes/teamlab-blog-2-0/footer.php:52
 #: wp-content/themes/teamlab-blog-2-0/header.php:208
 msgid "Security"
-msgstr "Seguridad"
+msgstr "安全"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:28
 #: wp-content/themes/teamlab-blog-2-0/footer.php:57
 msgid "Authentication and access control"
-msgstr "Autenticación y control de acceso"
+msgstr "認証とアクセス制御"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:29
 #: wp-content/themes/teamlab-blog-2-0/footer.php:60
 msgid "Data protection"
-msgstr "Protección de datos"
+msgstr "データ保護"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:30
 #: wp-content/themes/teamlab-blog-2-0/footer.php:63
 msgid "Data encryption"
-msgstr "Cifrado de datos"
+msgstr "データ暗号化"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:31
 #: wp-content/themes/teamlab-blog-2-0/footer.php:66
 msgid "Private rooms"
-msgstr "Salas privadas"
+msgstr "個室"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:32
 #: wp-content/themes/teamlab-blog-2-0/footer.php:69
 msgid "GDPR compliance"
-msgstr "Conformidad con el RGPD"
+msgstr "GDPRコンプライアンス"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:33
 #: wp-content/themes/teamlab-blog-2-0/footer.php:72
 msgid "HIPAA compliance"
-msgstr "Conformidad con la HIPAA"
+msgstr "HIPAAコンプライアンス"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:37
 #: wp-content/themes/teamlab-blog-2-0/header.php:224
 msgid "Integrations"
-msgstr "Integraciones"
+msgstr "統合"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:39
 #: wp-content/themes/teamlab-blog-2-0/header.php:228
 msgid "Nextcloud"
-msgstr "Nextcloud"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:40
 #: wp-content/themes/teamlab-blog-2-0/header.php:229
 msgid "ownCloud"
-msgstr "ownCloud"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:41
 #: wp-content/themes/teamlab-blog-2-0/header.php:230
 msgid "Confluence"
-msgstr "Confluence"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:42
 #: wp-content/themes/teamlab-blog-2-0/header.php:231
 msgid "Alfresco"
-msgstr "Alfresco"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:43
 #: wp-content/themes/teamlab-blog-2-0/header.php:232
 msgid "SharePoint"
-msgstr "SharePoint"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:44
 #: wp-content/themes/teamlab-blog-2-0/header.php:233
 msgid "Liferay"
-msgstr "Liferay"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:45
 #: wp-content/themes/teamlab-blog-2-0/header.php:234
@@ -213,255 +732,255 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:49
 #: wp-content/themes/teamlab-blog-2-0/header.php:242
 msgid "Others"
-msgstr "Otros"
+msgstr "その他"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:53
 #: wp-content/themes/teamlab-blog-2-0/footer.php:131
 msgid "Support"
-msgstr "Soporte"
+msgstr "サポート"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:55
 msgid "Premium support"
-msgstr "Soporte premium"
+msgstr "プレミアムサポート"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:56
 #: wp-content/themes/teamlab-blog-2-0/footer.php:136
 msgid "Support contact form"
-msgstr "Soporte"
+msgstr "サポートお問い合わせフォーム"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:57
 msgid "SaaS forum"
-msgstr "Foro de SaaS"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:58
 msgid "Server forum"
-msgstr "Foro de Servidor"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:59
 #: wp-content/themes/teamlab-blog-2-0/footer.php:142
 msgid "Order demo"
-msgstr "Solicitar demostración"
+msgstr "デモ注文"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:63
 #: wp-content/themes/teamlab-blog-2-0/footer.php:155
 #: wp-content/themes/teamlab-blog-2-0/header.php:364
 msgid "Resources"
-msgstr "Recursos"
+msgstr "リソース"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:65
 #: wp-content/themes/teamlab-blog-2-0/footer.php:160
 #: wp-content/themes/teamlab-blog-2-0/header.php:367
 msgid "Help Center"
-msgstr "Centro de Ayuda"
+msgstr "ヘルプ・センター"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:66
 #: wp-content/themes/teamlab-blog-2-0/footer.php:163
 msgid "App Directory"
-msgstr "Directorio de Apps"
+msgstr "App ディレクトリ"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:67
 #: wp-content/themes/teamlab-blog-2-0/footer.php:166
 msgid "Compare to other suites"
-msgstr "Comparar con otras suites"
+msgstr "他のスイートと比較する"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:68
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:238
 #: wp-content/themes/teamlab-blog-2-0/footer.php:169
 #: wp-content/themes/teamlab-blog-2-0/header.php:356
 msgid "Contribute"
-msgstr "Contribuir"
+msgstr "貢献"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:69
 #: wp-content/themes/teamlab-blog-2-0/footer.php:145
 #: wp-content/themes/teamlab-blog-2-0/header.php:369
 msgid "Webinars"
-msgstr "Webinarios"
+msgstr "ウェビナー"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:70
 #: wp-content/themes/teamlab-blog-2-0/footer.php:172
 msgid "Legal notice"
-msgstr "Aviso legal"
+msgstr "法律情報"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:74
 #: wp-content/themes/teamlab-blog-2-0/footer.php:208
 msgid "Contact Us"
-msgstr "Contáctenos"
+msgstr "当社に連絡"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:77
 #: wp-content/themes/teamlab-blog-2-0/footer.php:213
 msgid "Sales questions"
-msgstr "Preguntas de ventas"
+msgstr "販売に関する質問"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:81
 #: wp-content/themes/teamlab-blog-2-0/footer.php:218
 msgid "Partner inquiries"
-msgstr " Solicitudes de socios"
+msgstr "パートナー事業に関する質問"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:85
 #: wp-content/themes/teamlab-blog-2-0/footer.php:222
 msgid "Press inquiries"
-msgstr "Solicitudes de prensa"
+msgstr "プレスリリースに関する質問"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:89
 #: wp-content/themes/teamlab-blog-2-0/footer.php:226
 msgid "Request a call"
-msgstr "Solicitar llamada"
+msgstr "折返し電話をリクエスト"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:95
 msgid "Follow us on:"
-msgstr "Síganos en:"
+msgstr "をフォローしてください"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:125
 #: wp-content/themes/teamlab-blog-2-0/footer.php:266
 msgid "Ascensio System SIA"
-msgstr "Ascensio System SIA"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:125
 #: wp-content/themes/teamlab-blog-2-0/footer.php:266
 msgid "All rights reserved"
-msgstr "Todos los derechos reservados"
+msgstr "著作権"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:39
 msgid "Solutions"
-msgstr "Soluciones"
+msgstr "ソリューション"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:44
 #: wp-content/themes/teamlab-blog-2-0/footer.php:81
 msgid "By size"
-msgstr "Por tamaño"
+msgstr "規模により"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:49
 #: wp-content/themes/teamlab-blog-2-0/footer.php:86
 msgid "SMBs"
-msgstr "PYMEs"
+msgstr "中小企業"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:52
 #: wp-content/themes/teamlab-blog-2-0/footer.php:89
 msgid "Enterprises"
-msgstr "Empresas"
+msgstr "企業"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:55
 #: wp-content/themes/teamlab-blog-2-0/footer.php:92
 msgid "Home use"
-msgstr "Uso doméstico"
+msgstr "家庭用"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:60
 #: wp-content/themes/teamlab-blog-2-0/footer.php:99
 msgid "By industry"
-msgstr "Por industria"
+msgstr "業界により"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:68
 #: wp-content/themes/teamlab-blog-2-0/footer.php:107
 msgid "Hosting providers"
-msgstr "Proveedores de hosting"
+msgstr "ホスティングプロバイダー"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:71
 #: wp-content/themes/teamlab-blog-2-0/footer.php:110
 msgid "Government"
-msgstr "Gobierno"
+msgstr "政府"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:74
 #: wp-content/themes/teamlab-blog-2-0/footer.php:113
 msgid "Healthcare"
-msgstr "Sanidad"
+msgstr "保健"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:77
 #: wp-content/themes/teamlab-blog-2-0/footer.php:116
 msgid "Research"
-msgstr "Investigación"
+msgstr "研究"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:80
 #: wp-content/themes/teamlab-blog-2-0/footer.php:119
 msgid "Education"
-msgstr "Educación"
+msgstr "教育"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:83
 #: wp-content/themes/teamlab-blog-2-0/footer.php:122
 msgid "Nonprofits"
-msgstr "Organizaciones sin ánimo de lucro"
+msgstr "非営利組織"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:88
 msgid "Customer stories"
-msgstr "Historias de clientes"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:94
 #: wp-content/themes/teamlab-blog-2-0/header.php:158
 msgid "Products & Features"
-msgstr "Productos"
+msgstr "製品と機能"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:99
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:160
 #: wp-content/themes/teamlab-blog-2-0/header.php:162
 #: wp-content/themes/teamlab-blog-2-0/header.php:295
 msgid "ONLYOFFICE Docs"
-msgstr "ONLYOFFICE Docs"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:102
 #: wp-content/themes/teamlab-blog-2-0/header.php:164
 msgid "Document Editor"
-msgstr "Editor de documentos"
+msgstr "ドキュメント・エディター"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:105
 #: wp-content/themes/teamlab-blog-2-0/header.php:166
 msgid "Spreadsheet Editor"
-msgstr "Editor de hojas de cálculo"
+msgstr "スプレッドシート・エディタ"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:108
 #: wp-content/themes/teamlab-blog-2-0/header.php:168
 msgid "Presentation Editor"
-msgstr "Editor de presentaciones"
+msgstr "プレゼンテーション・エディター"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:111
 msgid "ONLYOFFICE Connectors"
-msgstr "Conectores de ONLYOFFICE"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:114
 #: wp-content/themes/teamlab-blog-2-0/header.php:183
 msgid "ONLYOFFICE for desktop"
-msgstr "ONLYOFFICE para escritorio"
+msgstr "デスクトップ用ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:117
 #: wp-content/themes/teamlab-blog-2-0/header.php:184
 msgid "ONLYOFFICE for iOS"
-msgstr "ONLYOFFICE para iOS"
+msgstr "IOS用ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:120
 #: wp-content/themes/teamlab-blog-2-0/header.php:185
 msgid "ONLYOFFICE for Android"
-msgstr "ONLYOFFICE para Android"
+msgstr "Android用ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:123
 msgid "ONLYOFFICE Groups"
-msgstr "ONLYOFFICE Groups"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:126
 #: wp-content/themes/teamlab-blog-2-0/header.php:190
 msgid "Documents"
-msgstr "Documentos"
+msgstr "ドキュメント"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:129
 #: wp-content/themes/teamlab-blog-2-0/header.php:192
 msgid "Mail"
-msgstr "E-mail"
+msgstr "メール"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:132
 #: wp-content/themes/teamlab-blog-2-0/header.php:194
 msgid "CRM"
-msgstr "CRM"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:135
 #: wp-content/themes/teamlab-blog-2-0/header.php:196
 msgid "Projects"
-msgstr "Proyectos"
+msgstr "プロジェクト"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:138
 #: wp-content/themes/teamlab-blog-2-0/header.php:198
 msgid "Calendar"
-msgstr "Calendario"
+msgstr "カレンダー"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:141
 msgid "Community"
-msgstr "Comunidad"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:144
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:169
@@ -469,170 +988,168 @@ msgstr "Comunidad"
 #: wp-content/themes/teamlab-blog-2-0/header.php:269
 #: wp-content/themes/teamlab-blog-2-0/header.php:302
 msgid "ONLYOFFICE Workspace"
-msgstr "ONLYOFFICE Workspace"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:147
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:172
 #: wp-content/themes/teamlab-blog-2-0/header.php:271
 msgid "Cloud Service"
-msgstr "Servicio en la nube"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:155
 #: wp-content/themes/teamlab-blog-2-0/header.php:258
 #: wp-content/themes/teamlab-blog-2-0/header.php:262
 msgid "Pricing"
-msgstr "Precios"
+msgstr "価格"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:163
 #: wp-content/themes/teamlab-blog-2-0/header.php:178
 #: wp-content/themes/teamlab-blog-2-0/header.php:205
 #: wp-content/themes/teamlab-blog-2-0/header.php:264
 msgid "Enterprise Edition"
-msgstr "Enterprise Edition"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:175
 #: wp-content/themes/teamlab-blog-2-0/header.php:273
 msgid "Server Enterprise"
-msgstr "Server Enterprise"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:178
 #: wp-content/themes/teamlab-blog-2-0/header.php:278
 msgid "Buy from an ONLYOFFICE reseller"
-msgstr "Compra a través de un revendedor de ONLYOFFICE"
+msgstr " ONLYOFFICEの再販業者にご購入ください"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:183
 #: wp-content/themes/teamlab-blog-2-0/header.php:291
 msgid "Get ONLYOFFICE"
-msgstr "Obtener ONLYOFFICE"
+msgstr "ONLYOFFICEを入手する"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:188
 #: wp-content/themes/teamlab-blog-2-0/header.php:304
 msgid "Sign in"
-msgstr "Iniciar sesión"
+msgstr "Cloudにサインイン"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:191
 msgid "Sign up for ONLYOFFICE Cloud"
-msgstr "Registrarse en ONLYOFFICE Cloud"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:194
 msgid "Open source packages"
-msgstr "Paquetes de código abierto"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:197
 msgid "Commercial packages"
-msgstr "Paquetes comerciales"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:200
 msgid "Desktop and mobile apps"
-msgstr "Apps de escritorio y para móviles"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:203
 #: wp-content/themes/teamlab-blog-2-0/header.php:316
 msgid "Compare editions"
-msgstr "Comparación de las ediciones"
+msgstr "エディションを比較"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:208
 #: wp-content/themes/teamlab-blog-2-0/header.php:329
 msgid "Partners"
-msgstr "Socios"
+msgstr "パートナー"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:213
 #: wp-content/themes/teamlab-blog-2-0/header.php:333
 msgid "Affiliates"
-msgstr "Afiliados"
+msgstr "アフィリエイト"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:216
 #: wp-content/themes/teamlab-blog-2-0/header.php:334
 msgid "Resellers"
-msgstr "Revendedores"
+msgstr "再販業者"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:219
 #: wp-content/themes/teamlab-blog-2-0/header.php:335
 msgid "Find partners"
-msgstr "Encontrar socios"
+msgstr "パートナーを探す"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:222
 #: wp-content/themes/teamlab-blog-2-0/header.php:336
 msgid "Submit request"
-msgstr "Enviar solicitud"
+msgstr "要求を発行する"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:227
 #: wp-content/themes/teamlab-blog-2-0/header.php:350
 msgid "About"
-msgstr "Sobre servicio"
+msgstr "会社案内"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:232
 #: wp-content/themes/teamlab-blog-2-0/header.php:354
 msgid "About ONLYOFFICE"
-msgstr "Acerca de ONLYOFFICE"
+msgstr "ONLYOFFICEについて"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:235
 #: wp-content/themes/teamlab-blog-2-0/header.php:365
 msgid "Blog"
-msgstr "Blog"
+msgstr "ブログ"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:241
 #: wp-content/themes/teamlab-blog-2-0/header.php:355
 msgid "Customers"
-msgstr "Clientes"
+msgstr "お客様"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:244
 #: wp-content/themes/teamlab-blog-2-0/header.php:358
 msgid "Awards"
-msgstr "Premios"
+msgstr "受賞"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:247
 #: wp-content/themes/teamlab-blog-2-0/header.php:359
 msgid "Events"
-msgstr "Eventos"
+msgstr "イベント"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:250
 #: wp-content/themes/teamlab-blog-2-0/header.php:366
 msgid "Press downloads"
-msgstr "Descargas de prensa"
+msgstr "メディア・ダウンロード用"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:253
 #: wp-content/themes/teamlab-blog-2-0/header.php:368
 msgid "White papers"
-msgstr "Papeles blancos"
+msgstr "ホワイト ペーパー"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:256
 #: wp-content/themes/teamlab-blog-2-0/header.php:360
 msgid "Gift shop"
-msgstr "Tienda de regalos"
+msgstr "ギフト・ショップ"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:259
 #: wp-content/themes/teamlab-blog-2-0/header.php:361
 msgid "Contacts"
-msgstr "Contactos"
+msgstr "お問い合わせ"
 
 #: wp-content/themes/teamlab-blog-2-0/archive.php:37
 msgid "Tag Archives:"
-msgstr "Archivos de etiquetas:"
+msgstr "タグアーカイブ"
 
 #: wp-content/themes/teamlab-blog-2-0/archive.php:42
 msgid "Author Archives:"
-msgstr "Archivos del autor:"
+msgstr "記者のアーカイブ"
 
 #: wp-content/themes/teamlab-blog-2-0/archive.php:70
 #: wp-content/themes/teamlab-blog-2-0/in-the-press.php:90
 #: wp-content/themes/teamlab-blog-2-0/index.php:161
 #: wp-content/themes/teamlab-blog-2-0/search.php:62
 msgid "Load more"
-msgstr "Cargar más"
+msgstr "もっと見る"
 
 #: wp-content/themes/teamlab-blog-2-0/archive.php:76
 #: wp-content/themes/teamlab-blog-2-0/in-the-press.php:96
 #: wp-content/themes/teamlab-blog-2-0/index.php:82
 #: wp-content/themes/teamlab-blog-2-0/search.php:68
 msgid "No results matching your query could be found"
-msgstr ""
-"No se han encontrado resultados \n"
-"que coincidan con su búsqueda"
+msgstr "一致する情報は見つかりませんでした"
 
 #: wp-content/themes/teamlab-blog-2-0/cloud-block.php:3
 msgid "Try ONLYOFFICE in the cloud"
-msgstr "Probar ONLYOFFICE en la nube"
+msgstr "ONLYOFFICEをクラウドでお試しください"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:17
 msgid ""
@@ -649,11 +1166,11 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:38
 msgid "1 comment"
-msgstr "1 comentario"
+msgstr "１コメント"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:38
 msgid "Comments (%)"
-msgstr "Comentarios (%)"
+msgstr "コメント(%)"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:52
 msgid "Comments are closed."
@@ -661,12 +1178,12 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:58
 msgid "Add a comment"
-msgstr "Añadir un comentario"
+msgstr "コメントを書く"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:58
 #, php-format
 msgid "Add a comment to %s"
-msgstr "Añadir un comentario %s"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:64
 #, php-format
@@ -676,19 +1193,20 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/comments.php:68
 #, php-format
 msgid "Logged in as <a class=\"account-name\" href=\"%1$s\">%2$s</a>"
-msgstr "Conectado como <a class=\"account-name\" href=\"%1$s\">%2$s</a>"
+msgstr ""
+"<a class=\"account-name\" href=\"%1$s\">%2$s</a>としてログインしています"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:68
 msgid "Log out of this account"
-msgstr "Cerrar sesión"
+msgstr "ログアウト"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:68
 msgid "Log out &raquo;"
-msgstr "Cerrar sesión &raquo;"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:71
 msgid "Name:"
-msgstr "Nombre:"
+msgstr "名前"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:71
 #: wp-content/themes/teamlab-blog-2-0/comments.php:75
@@ -697,7 +1215,7 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:75
 msgid "E-mail (will not be published):"
-msgstr "Correo electrónico (no se publicará):"
+msgstr "メールアドレス（表示されない）"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:79
 msgid "Website:"
@@ -705,31 +1223,31 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:84
 msgid "Message:"
-msgstr "Mensaje:"
+msgstr "本文"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:90
 msgid "Add comment"
-msgstr "Añadir comentario"
+msgstr "配信"
 
 #: wp-content/themes/teamlab-blog-2-0/download-block.php:3
 msgid "Download ONLYOFFICE desktop and mobile apps for"
-msgstr "Descargar las aplicaciones móviles y de escritorio ONLYOFFICE"
+msgstr "無料で ONLYOFFICEのデスクトップ版・モバイル版アプリをダウンロード"
 
 #: wp-content/themes/teamlab-blog-2-0/download-block.php:3
 msgid "FREE"
-msgstr "GRATIS"
+msgstr "  "
 
 #: wp-content/themes/teamlab-blog-2-0/download-block.php:6
 msgid "For Windows"
-msgstr "Para Windows"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/download-block.php:7
 msgid "For Linux"
-msgstr "Para Linux"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/download-block.php:8
 msgid "For Mac OS"
-msgstr "Para Mac OS"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:39
 msgid "Groups"
@@ -737,16 +1255,16 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:139
 msgid "Forum"
-msgstr "Foro"
+msgstr "フォーラム"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:148
 #: wp-content/themes/teamlab-blog-2-0/header.php:370
 msgid "Training courses"
-msgstr "Cursos de formación"
+msgstr "トレーニング コース"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:181
 msgid "Comparison"
-msgstr "Comparación"
+msgstr "比較"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:186
 msgid "ONLYOFFICE Docs vs MS Office Online"
@@ -775,7 +1293,7 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/functions.php:209
 #, php-format
 msgid "<span class=\"%2$s\">By %3$s</span>"
-msgstr ""
+msgstr "<span class=\"%2$s\">著者： %3$s</span>"
 
 #: wp-content/themes/teamlab-blog-2-0/functions.php:561
 #, php-format
@@ -789,11 +1307,11 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/functions.php:566
 msgid "Edit"
-msgstr "Editar"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/functions.php:569
 msgid "Your comment is awaiting moderation."
-msgstr "Su comentario espera que sea moderado."
+msgstr "コメントは確認中です。"
 
 #: wp-content/themes/teamlab-blog-2-0/functions.php:580
 msgid "Pingback:"
@@ -801,41 +1319,41 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/functions.php:581
 msgid "(Edit)"
-msgstr "(Editar)"
+msgstr "（編集）"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:114
 msgid ""
 "<b>ONLYOFFICE 7.0:</b> <span>online forms</span>, password protection in "
 "sheets, collaboration improvements and much more"
 msgstr ""
-"<b>ONLYOFFICE 7.0:</b> <span>formularios en línea</span>, protección con "
-"contraseña en las hojas de cálculo, mejoras en la colaboración y mucho más"
+"<b>ONLYOFFICE 7.0版：</b> <span>オンライン フォーム</span>、スプレッドシート"
+"のパスワード保護、コラボレーションの改善など"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:121
 msgid "ONLYOFFICE 7.0 released"
-msgstr "Se ha lanzado ONLYOFFICE 7.0"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:149
 #: wp-content/themes/teamlab-blog-2-0/searchform.php:9
 msgid "Find news, tips and how-tos"
-msgstr "Encontrar noticias e consejos"
+msgstr "ニュース、ヒント、使い方を検索"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:170
 msgid "Form creator"
-msgstr "Creador de formularios"
+msgstr "フォーム作成"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:174
 msgid "Docs Editions"
-msgstr "Ediciones de Docs"
+msgstr "Docs エディション"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:176
 #: wp-content/themes/teamlab-blog-2-0/header.php:203
 msgid "Cloud Edition"
-msgstr "Servicio en la nube"
+msgstr "クラウドサービス"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:201
 msgid "Workspace Editions"
-msgstr "Ediciones de Workspace"
+msgstr "Workspace エディション"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:211
 msgid "OFORMS"
@@ -845,8 +1363,7 @@ msgstr ""
 msgid ""
 "OFORMS, free <span class=\"nowrap\">ready-to-fill</span> out online document "
 "forms"
-msgstr ""
-"OFORMS, formularios gratuitos de documentos listos para rellenar en línea"
+msgstr "OFORMS、無料ですぐに記入できるオンライン ドキュメント フォーム"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:240
 msgid "Redmine"
@@ -858,29 +1375,28 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:245
 msgid "For developers"
-msgstr "Para desarrolladores"
+msgstr "開発者向け"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:249
 msgid "Integrate ONLYOFFICE Docs to bring document editing to your app users"
 msgstr ""
-"Integra ONLYOFFICE Docs para ofrecer la edición de documentos a los usuarios "
-"de tu aplicación"
+"ONLYOFFICE Docsを統合して、アプリのユーザーにドキュメントを編集する機能を提供"
+"する"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:282
 msgid ""
 "Find out the list of all the authorized ONLYOFFICE resellers in your area"
-msgstr ""
-"Consulta la lista de todos los socios autorizados de ONLYOFFICE en tu zona"
+msgstr "最寄りの認定 ONLYOFFICE パートナー 一覧表を御覧ください。"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:297
 #: wp-content/themes/teamlab-blog-2-0/header.php:306
 msgid "Sign up for cloud"
-msgstr "Registrarse en Cloud"
+msgstr "サインアップ"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:299
 #: wp-content/themes/teamlab-blog-2-0/header.php:308
 msgid "Install on-premises"
-msgstr "Instala en el entorno local"
+msgstr "オンプレミスでインストール"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:311
 msgid "ONLYOFFICE Personal"
@@ -888,68 +1404,63 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:312
 msgid "ONLYOFFICE desktop and mobile apps"
-msgstr "Apps de escritorio y para móviles"
+msgstr "デスクトップ及びモバイルアプリ"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:313
 msgid "Other products"
-msgstr "Otros productos"
+msgstr "その他の製品"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:320
 msgid "Choose the ONLYOFFICE edition that suits you best."
-msgstr "Elige la edición de ONLYOFFICE que mejor se adapte a tus necesidades."
+msgstr "最適な ONLYOFFICE エディションをお選びください。"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:339
 msgid "Latest events"
-msgstr "Últimos eventos"
+msgstr "最新イベント"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:342
 msgid "Join us at Univention Summit 2022"
-msgstr "Únete a nosotros en la Cumbre de Univention 2022"
+msgstr "Univention Summit 2022にぜひご参加ください。"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:357
 msgid "Jobs"
-msgstr "Empleos"
+msgstr "採用情報"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:389
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:2
 msgid "Newsletter"
-msgstr "Newsletter"
+msgstr "メールマガジン"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:390
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:3
 msgid "Get the latest ONLYOFFICE news"
-msgstr "Obtenga las últimas noticias sobre ONLYOFFICE"
+msgstr "ONLYOFFICEの最新情報を入手"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:392
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:7
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:15
 msgid "Your email"
-msgstr "Su dirección de correo electrónico"
-
-#: wp-content/themes/teamlab-blog-2-0/header.php:394
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:17
-msgid "Subscribe"
-msgstr "Suscríbase"
+msgstr "メールアドレス"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:397
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:22
 msgid "Email is empty"
-msgstr "El correo electrónico está vacío"
+msgstr "メールアドレスは記入されていません"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:398
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:23
 msgid "Email is incorrect"
-msgstr "El correo electrónico es incorrecto"
+msgstr "メールアドレスを正しくご入力ください"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:400
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:24
 msgid "Email is used"
-msgstr "Este correo electrónico ya está registrado"
+msgstr "メールアドレスはもう使用されています"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:401
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:25
 msgid "Incorrect recaptcha"
-msgstr "Recaptcha incorrecta"
+msgstr "reCAPTCHAをもう一度ご確認ください"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:404
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:33
@@ -957,20 +1468,18 @@ msgid ""
 "By clicking “Subscribe”, you understand and agree to <u>our Privacy "
 "statement</u>"
 msgstr ""
-"Al hacer clic en \"Suscribirse\", usted entiende y acepta <u>nuestra "
-"Política de privacidad</u>"
+"「確認する」を押すと、<u>プライバシーポリシ</u>ーに同意したものとみなされま"
+"す。"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:407
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:37
 msgid "Confirm your subscription"
-msgstr "Confirme su suscripción"
+msgstr "サブスクリプションをご確認ください"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:408
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:38
 msgid "We sent an email message with confirmation to your email address"
-msgstr ""
-"Hemos enviado un correo electrónico con la confirmación a su dirección de "
-"correo electrónico"
+msgstr "確認メールを配信いたしました"
 
 #: wp-content/themes/teamlab-blog-2-0/in-the-press.php:30
 msgid "BLOG"
@@ -987,14 +1496,18 @@ msgstr ""
 msgid "Edit <span class=\"screen-reader-text\">%s</span>"
 msgstr ""
 
+#: wp-content/themes/teamlab-blog-2-0/index.php:170
+msgid "Sorry, no posts matched your query"
+msgstr ""
+
 #: wp-content/themes/teamlab-blog-2-0/search.php:79
 #: wp-content/themes/teamlab-blog-2-0/single.php:45
 msgid "Recent posts"
-msgstr "Entradas recientes"
+msgstr "最新情報"
 
 #: wp-content/themes/teamlab-blog-2-0/social-icons.php:2
 msgid "Follow us"
-msgstr "Síganos en"
+msgstr "フォロー"
 
 #: wp-content/themes/teamlab-blog-2-0/template-parts/content-none.php:24
 #, php-format
@@ -1004,11 +1517,11 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/templates/activation.php:40
 msgid "You are already subscribed. Please check your spam folder"
-msgstr "Usted ya está suscrito. Por favor, compruebe su carpeta de spam"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/templates/activation.php:42
 msgid "Enjoy reading ONLYOFFICE blog!"
-msgstr "¡Qué disfrute de la lectura del blog de ONLYOFFICE!"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/templates/activation.php:44
 #: wp-content/themes/teamlab-blog-2-0/templates/activation.php:74
@@ -1018,19 +1531,17 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/templates/activation.php:44
 #: wp-content/themes/teamlab-blog-2-0/templates/activation.php:74
 msgid "Explore blog"
-msgstr "Explorar el blog"
+msgstr "ブログを見る"
 
 #: wp-content/themes/teamlab-blog-2-0/templates/activation.php:70
 msgid "Thank you </em>for signing up for ONLYOFFICE newsletter!"
-msgstr "¡Gracias</em> por suscribirse a la newsletter de ONLYOFFICE!"
+msgstr "</em>登録していただき、ありがとうございます。"
 
 #: wp-content/themes/teamlab-blog-2-0/templates/activation.php:72
 msgid "Check your inbox for your first email and stay updated from now on!"
 msgstr ""
-"¡Revise su bandeja de entrada para \n"
-"su primer correo electrónico y \n"
-"manténgase actualizado a partir de \n"
-"ahora!"
+"これからは最新情報をお届けいたします。最初のメールをお送りいたしましたので、"
+"受信箱でチェックしてください。"
 
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:27
 msgid "Your site&#8217;s most recent Posts."
@@ -1041,250 +1552,7 @@ msgid ""
 "View all <div class=\"no-wrap\">posts&nbsp;<div class=\"grey-arrow\"></div></"
 "div>"
 msgstr ""
-"Ver todos los <div class=\"no-wrap\">entradas&nbsp;<div class=\"grey-arrow"
-"\"></div></div>"
+"<div class=\"no-wrap\">もっと見る&nbsp;<div class=\"grey-arrow\"></div></div>"
 
 #~ msgid "ONLYOFFICE joins the Linux Foundation as a silver member"
-#~ msgstr "ONLYOFFICE se ha unido a la Fundación Linux como miembro de plata"
-
-#~ msgid "follow us on:"
-#~ msgstr "Síganos en:"
-
-#~ msgid ""
-#~ "Meet ONLYOFFICE Private Rooms where every symbol you type is encrypted "
-#~ "<span class=\"nowrap\">end-to-end</span>"
-#~ msgstr ""
-#~ "Descubre las Salas privadas de ONLYOFFICE, donde cada uno de los símbolos "
-#~ "que escribes se encripta de extremo a extremo"
-
-#~ msgid ""
-#~ "<b>ONLYOFFICE Advent Calendar</b>. Get new gifts and discounts each day!"
-#~ msgstr ""
-#~ "<b>Calendario de Adviento de ONLYOFFICE</b>. ¡Consigue nuevos regalos y "
-#~ "descuentos cada día!"
-
-#~ msgid "<b>ONLYOFFICE Advent Calendar</b>"
-#~ msgstr "<b>Calendario de Adviento de ONLYOFFICE</b>"
-
-#~ msgid ""
-#~ "<b>ONLYOFFICE Docs v6.4</b> with conditional formatting, new scaling "
-#~ "options, and WOPI protocol support "
-#~ msgstr ""
-#~ "<b>ONLYOFFICE Docs v6.4</b> con el formato condicional, nuevas opciones "
-#~ "de escalado y soporte del protocolo WOPI"
-
-#~ msgid "<b>Cloud Computing Insider Award 2021:</b> Vote for ONLYOFFICE"
-#~ msgstr "<b>Premio Cloud Computing Insider 2021:</b> vota por ONLYOFFICE"
-
-#~ msgid "Vote for ONLYOFFICE"
-#~ msgstr "Vota por ONLYOFFICE"
-
-#~ msgid ""
-#~ "How ONLYOFFICE and Nextcloud ensure streamlined workflow at the Vegan in "
-#~ "Leipzig project"
-#~ msgstr ""
-#~ "Cómo ONLYOFFICE y Nextcloud garantizan un flujo de trabajo racionalizado "
-#~ "en el proyecto Vegan in Leipzig"
-
-#~ msgid ""
-#~ "How Germany’s public radio and television deployed ONLYOFFICE for "
-#~ "seamless online content collaboration within Nextcloud"
-#~ msgstr ""
-#~ "Cómo la radio y la televisión públicas de Alemania desplegaron ONLYOFFICE "
-#~ "para conseguir una colaboración de contenido en línea sin problemas "
-#~ "dentro de Nextcloud"
-
-#~ msgid "Personal Use"
-#~ msgstr "Oficina Personal"
-
-#~ msgid "Features"
-#~ msgstr "CARACTERÍSTICAS"
-
-#~ msgid "Documents editors"
-#~ msgstr "Editores de documentos"
-
-#~ msgid "Collaboration Platform"
-#~ msgstr "Plataforma de Colaboración"
-
-#~ msgid "Get Info"
-#~ msgstr "Obtenga información"
-
-#~ msgid "FAQ"
-#~ msgstr "FAQ"
-
-#~ msgid "Getting Started"
-#~ msgstr "Pasos para empezar"
-
-#~ msgid "Video Guides"
-#~ msgstr "Guías de vídeo"
-
-#~ msgid "onlyoffice-in-the-press"
-#~ msgstr "es/onlyoffice-in-the-press"
-
-#~ msgid ""
-#~ "Online documents editors and productivity business tools provided as a "
-#~ "SaaS"
-#~ msgstr ""
-#~ "Editores de documentos en línea y herramientas empresariales de "
-#~ "productividad proporcionadas como SaaS"
-
-#~ msgid "Overview"
-#~ msgstr "Descripción"
-
-#~ msgid "No installation required. Get started for "
-#~ msgstr "No requiere instalación. Comience "
-
-#~ msgid "Complete set of business tools"
-#~ msgstr "Conjunto completo de herramientas de negocio"
-
-#~ msgid "Secure and reliable hosting"
-#~ msgstr "Servicio de hosting confiable y seguro"
-
-#~ msgid "Cloud for non-profits"
-#~ msgstr "Nube para organizaciones sin ánimo de lucro"
-
-#~ msgid "Cloud for personal use"
-#~ msgstr "Nube para uso personal"
-
-#~ msgid ""
-#~ "Online document editors and productivity business tools at private network"
-#~ msgstr ""
-#~ "Editores de documentos en línea y herramientas empresariales de "
-#~ "productividad en red privada"
-
-#~ msgid "Self-hosted. Try for"
-#~ msgstr "Autohospedado. Pruebe"
-
-#~ msgid "Enhanced security measures"
-#~ msgstr "Medidas de seguridad mejoradas"
-
-#~ msgid "Various installation options"
-#~ msgstr "Varias opciones de instalación"
-
-#~ msgid "Professional support"
-#~ msgstr "Soporte profesional"
-
-#~ msgid "Community Edition vs Enterprise Edition"
-#~ msgstr "Edición Comunitaria vs Edición Empresarial"
-
-#~ msgid "Integration Edition"
-#~ msgstr "Integration Edition"
-
-#~ msgid "Online document editors and connectors for popular web services"
-#~ msgstr ""
-#~ "Editores de documentos en línea y conectores para los servicios web más "
-#~ "populares"
-
-#~ msgid "Self-hosted. Get started"
-#~ msgstr "Autohospedado. Comience"
-
-#~ msgid "NOW"
-#~ msgstr "AHORA"
-
-#~ msgid "For Nextcloud"
-#~ msgstr "Para Nextcloud"
-
-#~ msgid "For ownCloud"
-#~ msgstr "Para ownCloud"
-
-#~ msgid "For Alfresco"
-#~ msgstr "Para Alfresco"
-
-#~ msgid "For Confluence"
-#~ msgstr "Para Confluence"
-
-#~ msgid "For SharePoint"
-#~ msgstr "Para SharePoint"
-
-#~ msgid "Third-party connectors"
-#~ msgstr "Conectores de terceros"
-
-#~ msgid "Community Edition vs Integration Edition"
-#~ msgstr "Community Edition vs Integration Edition"
-
-#~ msgid "Online document editors to integrate with a service you are building"
-#~ msgstr ""
-#~ "Editores de documentos en línea para integrar con un servicio que está "
-#~ "construyendo"
-
-#~ msgid "Dual licensing"
-#~ msgstr "Doble licencia"
-
-#~ msgid "Online Editors"
-#~ msgstr "Editores de oficina en línea"
-
-#~ msgid "Desktop Editors"
-#~ msgstr "Editores Desktop"
-
-#~ msgid "Office for iOS"
-#~ msgstr "Office para iOS"
-
-#~ msgid "Mobile Projects"
-#~ msgstr "Proyectos móviles"
-
-#~ msgid "Document Management"
-#~ msgstr "Gestión de documentos"
-
-#~ msgid "Download"
-#~ msgstr "Descargas"
-
-#~ msgid "View all news&nbsp;>"
-#~ msgstr "Ver todas las noticias&nbsp;>"
-
-#~ msgid "View all posts&nbsp;>"
-#~ msgstr "Ver todas las noticias&nbsp;>"
-
-#~ msgid "View all posts"
-#~ msgstr "Todas las entradas"
-
-#~ msgid "Subscribe to our newsletters"
-#~ msgstr "Suscríbase a nuestra newsletter"
-
-#~ msgid "Success stories"
-#~ msgstr "Casos de éxito"
-
-#~ msgid "Case studies"
-#~ msgstr "Historias de clientes"
-
-#~ msgid ""
-#~ "By clicking \"Subscribe\", you agree to the rules for using the service "
-#~ "and processing personal data."
-#~ msgstr ""
-#~ "Al hacer clic en \"Suscribirse\", usted \n"
-#~ "acepta las normas de uso del \n"
-#~ "servicio y el tratamiento de los datos personales."
-
-#~ msgid "Offers"
-#~ msgstr "Ofertas"
-
-#~ msgid "Apps"
-#~ msgstr "Apps"
-
-#~ msgid "Get onlyoffice"
-#~ msgstr "Obtenga onlyoffice"
-
-#~ msgid "% Comments"
-#~ msgstr "% comentarios"
-
-#, fuzzy
-#~| msgid "% Comments"
-#~ msgid "% comments"
-#~ msgstr "% comentarios"
-
-#~ msgid "http://wordpress.org/"
-#~ msgstr "http://wordpress.org/"
-
-#~ msgid "Mobile Editors"
-#~ msgstr "Editores Móviles"
-
-#~ msgid "Blockchain"
-#~ msgstr "Cadena de bloques"
-
-#~ msgid "About us"
-#~ msgstr "Sobre servicio"
-
-#~ msgid "Affiliate Program"
-#~ msgstr "Afiliados"
-
-#~ msgid "Prices"
-#~ msgstr "Precios"
+#~ msgstr "Univention Summit 2022にぜひご参加ください。"

@@ -23,6 +23,8 @@ global $current_language;
 			<div class="meta info-page">
 				<span class="date"><?php if ($current_language == WEB_ROOT_URL . '/' . 'zh') {
 										echo get_the_date('Y日m月d日');
+									} else if ($current_language == WEB_ROOT_URL . '/' . 'ja'){
+										echo get_the_date('Y年m月d日 ');
 									} else {
 										echo get_the_date('j F Y');
 									} ?></span>

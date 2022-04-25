@@ -11,6 +11,8 @@
  */
 
 global $current_language;
+global $sitepress;
+$lang = $sitepress->get_current_language();
 ?>
 </div><!-- #content -->
 </div><!-- #pageContent -->
@@ -19,7 +21,7 @@ global $current_language;
     <div class="footercolor">
         <div class="narrowfooter">
             <div class="bottomlines">
-                <ul class="footer_menu">
+                <ul class="footer_menu <?php echo $lang ?>">
                     <div group-menu>
                         <li class="footer-border">
                             <a id="footer_menu_developers" class="footer-button">

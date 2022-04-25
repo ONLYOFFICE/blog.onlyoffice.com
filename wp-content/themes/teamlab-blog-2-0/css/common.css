@@ -114,6 +114,11 @@ header {
   height: 100%;
   text-align: left;
 }
+
+.footer_menu.ja{
+  grid-template-columns: 0.8fr 0.75fr 0.75fr 1.07fr;
+  -ms-grid-columns: 0.8fr 32px 0.75fr 32px 0.75fr 32px 1.07fr;
+}
 .footer_menu p {
   font-size: 12px;
   margin: 0 0 5px;
@@ -651,6 +656,10 @@ body.desktop .button.red.disabled:visited {
     background-size: 14px 15px;
     cursor: pointer;
     background-position: 99% center;
+  }
+  .ja .input-header .search-field{
+      box-sizing: border-box;
+      width: 0;
   }
   .input-header .search-field:focus{
     background-color: #F9F9F9;
