@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: _s 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/tags/_s\n"
 "POT-Creation-Date: 2022-04-19 14:26+0300\n"
-"PO-Revision-Date: 2022-04-22 10:55+0300\n"
+"PO-Revision-Date: 2022-04-25 12:24+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja\n"
@@ -1149,7 +1149,7 @@ msgstr "一致する情報は見つかりませんでした"
 
 #: wp-content/themes/teamlab-blog-2-0/cloud-block.php:3
 msgid "Try ONLYOFFICE in the cloud"
-msgstr "ONLYOFFICEをクラウドでお試しください"
+msgstr "ONLYOFFICEをクラウドで</br>お試しください"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:17
 msgid ""
