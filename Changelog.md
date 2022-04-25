@@ -1,5 +1,9 @@
 ﻿# Changelog
 
+## 1.2.4
+### Fixes
+* Hidden Russian and English languages from the language selector
+
 ## 1.2.3
 ### New
 * Added Japanese language and translations
