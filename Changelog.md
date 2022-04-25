@@ -1,5 +1,12 @@
 ﻿# Changelog
 
+## 1.2.4
+### New
+* Changed the top banner
+
+### Fixes
+* Hidden Russian and English languages from the language selector
+
 ## 1.2.3
 ### New
 * Added Japanese language and translations

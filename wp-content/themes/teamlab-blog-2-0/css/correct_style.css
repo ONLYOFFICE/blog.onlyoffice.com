@@ -13,7 +13,7 @@ main{
 
 /*---------Top-banner-------*/
 .advent-announce.push{
-    background-color: #333333;
+    background: linear-gradient(270deg, #FF8D5C 19.21%, #FFB979 95.78%);
     /* background-image: url(../images/top_banner/onlyoffice_7.0/desktop_left.svg), url(../images/top_banner/onlyoffice_7.0/desktop_right.svg);
     background-position: calc(50% - 456px) 0, calc(50% + 428px) 0; */
     background-repeat: no-repeat;
@@ -45,26 +45,26 @@ main{
 }
 .advent-announce.push .advent-announce-text:before{
     content: '';
-    background-image: url(../images/top_banner/onlyoffice_7.0/desktop_left_1.svg), url(../images/top_banner/onlyoffice_7.0/desktop_left_2.svg);
-    background-position: 0 10px, 100% 5px;
+    background-image:  url(../images/top_banner/insider_awards_2022/logo_left.svg), url(../images/top_banner/insider_awards_2022/desktop_left.svg);
+    background-position: 128px -35px, 0 4px;
     background-repeat: no-repeat;
     position: absolute;
-    height: 56px;
-    width: 307px;
-    left: -327px;
+    height: 123px;
+    width: 280px;
+    left: -300px;
     top: 0px;
     box-sizing: content-box;
 }
 
 .advent-announce.push .advent-announce-text:after{
     content: '';
-    background-image: url(../images/top_banner/onlyoffice_7.0/arrow_right.svg), url(../images/top_banner/onlyoffice_7.0/desktop_right_1.svg);
-    background-position: 0 14px, 100% -5px;
+    background-image: url(../images/top_banner/insider_awards_2022/icon_right.svg), url(../images/top_banner/insider_awards_2022/desktop_right.svg);
+    background-position: 0 11px, 100% 4px;
     background-repeat: no-repeat;
     position: absolute;
     height: 56px;
-    width: 301px;
-    right: -305px;
+    width: 206px;
+    right: -226px;
     top: 0px;
 } 
 
