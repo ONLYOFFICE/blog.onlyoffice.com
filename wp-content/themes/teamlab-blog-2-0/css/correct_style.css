@@ -400,6 +400,9 @@ main{
     max-width: 100%;
     margin: 16px 0;
 }
+.content figure.aligncenter{
+	margin: 16px auto;
+}
 .content p.first-img {
     text-align: center;
 }
