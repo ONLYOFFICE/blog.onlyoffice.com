@@ -1,5 +1,12 @@
 ﻿# Changelog
 
+## 1.2.5
+### New
+* Updated wordpress from 5.6.20 to 5.9.3 version
+
+### Fixes
+* Fixed styles for figure alignment tag
+
 ## 1.2.4
 ### New
 * Changed the top banner
