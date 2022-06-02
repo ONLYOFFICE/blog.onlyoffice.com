@@ -299,7 +299,7 @@ class Onlyoffice_Plugin_Editor
             if (!$has_read_capability) wp_die('No read capability', '', array('response' => 403));
         }
         if (Onlyoffice_Plugin_JWT_Manager::is_jwt_enabled()) {
-            $jwt_header = "AuthorizationJWT";
+            $jwt_header = "Authorizationjwt";
             if (!empty(apache_request_headers()[$jwt_header])) {
                 $options = get_option('onlyoffice_settings');
                 $secret = $options[Onlyoffice_Plugin_Settings::docserver_jwt];
