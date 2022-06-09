@@ -281,7 +281,7 @@ class Onlyoffice_Plugin_Editor
     function get_file($req) {
 
         if (Onlyoffice_Plugin_JWT_Manager::is_jwt_enabled()) {
-            $jwt_header = "AuthorizationJwt";
+            $jwt_header = "Authorizationjwt";
             $authorization_header = apache_request_headers()[$jwt_header];
 
             $token = $authorization_header !== NULL ?  substr($authorization_header, strlen("Bearer ")) : $authorization_header;
