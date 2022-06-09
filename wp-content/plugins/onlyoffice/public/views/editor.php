@@ -50,8 +50,8 @@ class Onlyoffice_Plugin_Editor
         $hidden_id = urlencode($this->encode_openssl_data($attachment_id, $passphrase));
         $hidden_id = str_replace('%', ',', $hidden_id);
 
-        $editor_url = $permalink_structure === '' ? get_option('siteurl') . '/index.php?rest_route=/onlyoffice/editor/' . $hidden_id
-            : get_option('siteurl') . '/wp-json/onlyoffice/editor/' . $hidden_id;
+        $editor_url = $permalink_structure === '' ? get_option('siteurl') . '/index.php?rest_route=/onlyoffice/oo.editor/' . $hidden_id
+            : get_option('siteurl') . '/wp-json/onlyoffice/oo.editor/' . $hidden_id;
         $response->set_data(array(
                 'url' => $editor_url
         ));
@@ -148,11 +148,11 @@ class Onlyoffice_Plugin_Editor
         $hidden_id = str_replace('%', ',', urlencode($this->encode_openssl_data($attachemnt_id, $passphrase)));
         $hidden_data = str_replace('%', ',', urlencode($this->encode_openssl_data(json_encode(["attachment_id" => $attachemnt_id, 'user_id' => $user->ID]), $passphrase)));
 
-        $callback_url = $permalink_structure === '' ? get_option('siteurl') . '/index.php?rest_route=/onlyoffice/callback/' . $hidden_id
-            : get_option('siteurl') . '/wp-json/onlyoffice/callback/' . $hidden_id;
+        $callback_url = $permalink_structure === '' ? get_option('siteurl') . '/index.php?rest_route=/onlyoffice/oo.callback/' . $hidden_id
+            : get_option('siteurl') . '/wp-json/onlyoffice/oo.callback/' . $hidden_id;
 
-        $file_url = $permalink_structure === '' ? get_option('siteurl') . '/index.php?rest_route=/onlyoffice/getfile/' . $hidden_data
-            : get_option('siteurl') . '/wp-json/onlyoffice/getfile/' . $hidden_data;
+        $file_url = $permalink_structure === '' ? get_option('siteurl') . '/index.php?rest_route=/onlyoffice/oo.getfile/' . $hidden_data
+            : get_option('siteurl') . '/wp-json/onlyoffice/oo.getfile/' . $hidden_data;
 
         $lang = $opened_from_admin_panel ? get_user_locale($user->ID) : get_locale();
         $config = [
@@ -279,6 +279,28 @@ class Onlyoffice_Plugin_Editor
     }
 
     function get_file($req) {
+
+        if (Onlyoffice_Plugin_JWT_Manager::is_jwt_enabled()) {
+            $jwt_header = "AuthorizationJwt";
+            $authorization_header = apache_request_headers()[$jwt_header];
+
+            $token = $authorization_header !== NULL ?  substr($authorization_header, strlen("Bearer ")) : $authorization_header;
+
+           if (empty($token)) {
+               wp_die("The request token is missing.", '', array('response' => 401));
+           }
+
+            $options = get_option('onlyoffice_settings');
+            $secret = $options[Onlyoffice_Plugin_Settings::docserver_jwt];
+
+            try {
+                Onlyoffice_Plugin_JWT_Manager::jwt_decode($token, $secret);
+            } catch (Exception $e) {
+                error_log($e);
+                wp_die("Invalid JWT signature", '', array('response' => 401));
+            }
+        }
+
         $param = urldecode(str_replace(',', '%', $req->get_params()['id']));
         $decoded = json_decode($this->decode_openssl_data($param, get_option("onlyoffice-plugin-uuid")));
 
@@ -298,17 +320,6 @@ class Onlyoffice_Plugin_Editor
             $has_read_capability = current_user_can('read');
             if (!$has_read_capability) wp_die('No read capability', '', array('response' => 403));
         }
-        if (Onlyoffice_Plugin_JWT_Manager::is_jwt_enabled()) {
-            $jwt_header = "AuthorizationJwt";
-            if (!empty(apache_request_headers()[$jwt_header])) {
-                $options = get_option('onlyoffice_settings');
-                $secret = $options[Onlyoffice_Plugin_Settings::docserver_jwt];
-                $token = Onlyoffice_Plugin_JWT_Manager::jwt_decode(substr(apache_request_headers()[$jwt_header], strlen("Bearer ")), $secret);
-                if (empty($token)) {
-                    wp_die("Invalid JWT signature", '', array('response' => 403));
-                }
-            }
-        }
 
         if (ob_get_level()) {
             ob_end_clean();
@@ -318,7 +329,7 @@ class Onlyoffice_Plugin_Editor
 
         @header('Content-Length: ' . filesize($filepath));
         @header('Content-Disposition: attachment; filename*=UTF-8\'\'' . urldecode(basename($filepath)));
-        @header('Content-Type: application/octet-stream');
+        @header('Content-Type: ' . Onlyoffice_Plugin_Document_Helper::get_mime_type($filepath));
 
         if ($fd = fopen($filepath, 'rb')) {
             while (!feof($fd)) {
@@ -333,38 +344,45 @@ class Onlyoffice_Plugin_Editor
     {
         require_once ABSPATH . 'wp-admin/includes/post.php';
 
-        $response = new WP_REST_Response();
-        $response_json = array(
-            'error' => 0
-        );
+        $body = json_decode($req->get_body(), TRUE);
+
+        if ($body === NULL) {
+            wp_send_json(['error' => 1, 'message' => 'The request body is missing.'], 400);
+        }
+
+        if (Onlyoffice_Plugin_JWT_Manager::is_jwt_enabled()) {
+            $token = $body["token"];
+            $in_body = true;
+
+            if (empty($token)) {
+                $jwt_header = "AuthorizationJwt";
+                $authorization_header = apache_request_headers()[$jwt_header];
+                $token = $authorization_header !== NULL ? substr($authorization_header, strlen("Bearer ")) : $authorization_header;
+                $in_body = false;
+            }
+
+            if (empty($token)) {
+                wp_send_json(['error' => 1, 'message' => 'The request token is missing.'], 401);
+            }
+
+            $options = get_option('onlyoffice_settings');
+            $secret = $options[Onlyoffice_Plugin_Settings::docserver_jwt];
+
+            try {
+                $bodyFromToken = Onlyoffice_Plugin_JWT_Manager::jwt_decode($token, $secret);
+                $body = json_decode(json_encode($bodyFromToken), true);
+
+                if (!$in_body) $body = $body["payload"];
+            } catch (Exception $e) {
+                error_log($e);
+                wp_send_json(['error' => 1, 'message' => 'Invalid request token.'], 401);
+            }
+        }
 
         $param = urldecode(str_replace(',', '%', $req->get_params()['id']));
+
         $attachemnt_id = intval($this->decode_openssl_data($param, get_option("onlyoffice-plugin-uuid")));
-        $body = Onlyoffice_Plugin_Callback_Helper::read_body($req->get_body());
-        if (!empty($body["error"])){
-            $response_json["message"] = $body["error"];
-            $response->data = $response_json;
-            return $response;
-        }
-
-        wp_set_current_user($body["actions"][0]["userid"]);
-
-        $status = Onlyoffice_Plugin_Editor::CALLBACK_STATUS[$body["status"]];
-
-        $user_id = null;
-        if (!empty($body['users'])) {
-            $users = $body['users'];
-            if (count($users) > 0) {
-                $user_id = $users[0];
-            }
-        }
-
-        if ($user_id === null && !empty($body['actions'])) {
-            $actions = $body['actions'];
-            if (count($actions) > 0) {
-                $user_id = $actions[0]['userid'];
-            }
-        }
+        $user_id = isset($body["actions"]) ? $body["actions"][0]["userid"] : null;
 
         $user = get_user_by( 'id', $user_id );
         if ($user_id !== null && $user) {
@@ -374,6 +392,13 @@ class Onlyoffice_Plugin_Editor
         } else {
             wp_die("No user information", '', array('response' => 403));
         }
+
+        $status = Onlyoffice_Plugin_Editor::CALLBACK_STATUS[$body["status"]];
+
+        $response = new WP_REST_Response();
+        $response_json = array(
+            'error' => 0
+        );
 
         switch ($status) {
             case "Editing":
