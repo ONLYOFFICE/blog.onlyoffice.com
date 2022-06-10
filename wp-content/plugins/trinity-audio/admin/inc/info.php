@@ -10,13 +10,6 @@
   // write that content into file.
   trinity_log_to_file($contents, TRINITY_AUDIO_INFO_HTML, 'w');
 
-  function trinity_info_show_install_key() {
-    $result = trinity_get_install_key();
-    echo '<p class="info-text install-key">' . esc_html($result) . '</p>';
-
-    echo '<p class="description">Your unique key bound to your domain. Keep it in secret. Using that key you can restore your installation in a new env</p>';
-  }
-
   function trinity_info_show_credits() {
     $error_msg = trinity_can_not_connect_error_message('Can\'t get available credits.');
     $result    = trinity_curl_get(TRINITY_AUDIO_CREDITS_URL . '?installkey=' . trinity_get_install_key(), $error_msg, false);

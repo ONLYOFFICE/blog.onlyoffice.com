@@ -11,6 +11,15 @@
     wp_enqueue_script('trinity_audio_admin', plugin_dir_url(__FILE__) . '../js/admin.js', [], wp_rand(), true);
     wp_enqueue_style('trinity_audio_styles', plugin_dir_url(__FILE__) . 'dist/styles.css', [], wp_rand());
 
+    $bulk_progress = [];
+
+    if (trinity_is_bulk_update_in_progress()) {
+      $bulk_progress['inProgress']        = true;
+      $bulk_progress['processedPosts']    = (int)get_option(TRINITY_AUDIO_BULK_UPDATE_NUM_POSTS_UPDATED);
+      $bulk_progress['numOfFailedPosts']  = (int)get_option(TRINITY_AUDIO_BULK_UPDATE_NUM_POSTS_FAILED);
+      $bulk_progress['totalPosts']        = sizeof(trinity_get_posts());
+    }
+
     wp_localize_script(
       'trinity_audio_admin',
       'TRINITY_WP_ADMIN',
@@ -26,7 +35,10 @@
         'TRINITY_AUDIO_REGISTER'                    => TRINITY_AUDIO_REGISTER,
         'TRINITY_AUDIO_RECOVER_INSTALLKEY'          => TRINITY_AUDIO_RECOVER_INSTALLKEY,
         'TRINITY_AUDIO_FIRST_CHANGES_SAVE'          => TRINITY_AUDIO_FIRST_CHANGES_SAVE,
-        'LANGUAGES'                                 => trinity_get_languages()
+        'LANGUAGES'                                 => trinity_get_languages(),
+        'TRINITY_AUDIO_BULK_UPDATE_PROGRESS'        => $bulk_progress,
+        TRINITY_AUDIO_SKIP_TAGS                     => implode(',', trinity_get_skip_tags()),
+        TRINITY_AUDIO_ALLOW_SHORTCODES              => implode(',', trinity_get_allowed_shortcodes())
       ]
     );
   }
@@ -60,8 +72,10 @@
 
     register_setting(TRINITY_AUDIO, TRINITY_AUDIO_ADD_POST_TITLE);
     register_setting(TRINITY_AUDIO, TRINITY_AUDIO_ADD_POST_EXCERPT);
-    
+
     register_setting(TRINITY_AUDIO, TRINITY_AUDIO_TRANSLATE);
+
+    register_setting(TRINITY_AUDIO, TRINITY_AUDIO_FIRST_CHANGES_SAVE);
 
     register_setting(
       TRINITY_AUDIO,

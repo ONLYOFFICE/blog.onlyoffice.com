@@ -8,7 +8,7 @@
     wp_enqueue_style('trinity_audio_styles', plugin_dir_url(__FILE__) . 'dist/styles.css', [], wp_rand());
   }
 
-  add_action('add_meta_boxes', 'trinity_add_meta_boxes');
+  if (!empty(trinity_get_install_key())) add_action('add_meta_boxes', 'trinity_add_meta_boxes');
 
   function trinity_add_meta_boxes() {
     add_meta_box('trinity_audio_box_id', 'Trinity Audio', 'trinity_audio_box_content', ['post'], 'normal', 'high');
