@@ -1,5 +1,12 @@
 ﻿# Changelog
 
+## 1.2.6
+### New
+* Added plugin "Onlyoffice" for embedding documents in a post
+
+### Fixes
+* Updated plugin "Trinity Audio"
+
 ## 1.2.5
 ### New
 * Updated wordpress from 5.6.20 to 5.9.3 version
