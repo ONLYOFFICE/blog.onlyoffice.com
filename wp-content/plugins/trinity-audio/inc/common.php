@@ -142,10 +142,6 @@
     return get_option(TRINITY_AUDIO_BULK_UPDATE_HEARTBEAT);
   }
 
-  function trinity_set_first_changes_save() {
-    update_option(TRINITY_AUDIO_FIRST_CHANGES_SAVE, 1);
-  }
-
   function trinity_get_is_first_changes_saved() {
     return get_option(TRINITY_AUDIO_FIRST_CHANGES_SAVE);
   }
@@ -181,7 +177,23 @@
       return false;
     }
 
-    return json_decode($result);
+    $languages = [];
+
+    foreach (json_decode($result) as $lang) {
+      $languageObj = (object)[
+        'name' => $lang->languageName,
+        'code' => $lang->code,
+        'genders' => array_keys((array)$lang->voices)
+      ];
+
+      if ($lang->country) $languageObj->name .= " ($lang->country)";
+
+      array_push($languages, $languageObj);
+    }
+
+    $languages = array_values($languages);
+
+    return $languages;
   }
 
   function trinity_get_audio_posthash($post_id) {
@@ -201,6 +213,7 @@
   }
 
   function trinity_include_audio_player() {
+    $date = trinity_get_date();
     $post_id = $GLOBALS['post']->ID;
 
     $post_hash = trinity_get_audio_posthash($post_id);
@@ -243,27 +256,30 @@
     $poweredby = trinity_get_powered_by();
     $poweredby = $poweredby ? $poweredby : 0;
 
-    $response = '<script nitro-exclude>var TRINITY_TTS_WP_CONFIG = ' . json_encode($trinity_tts_wp_config) . ';</script>';
+    $response = "<script nitro-exclude data-trinity-mount-date='$date'>var TRINITY_TTS_WP_CONFIG = " . json_encode($trinity_tts_wp_config) . ';</script>';
     // voiceGender support in new sergio API
-    $playerArgs = ['viewkey'     => $viewkey,
-                   'postHash'    => $post_hash,
+    $playerArgs = ['postHash'    => $post_hash,
                    'poweredby'   => $poweredby,
                    'language'    => $source_language,
                    'voiceGender' => $gender,
                    'pageURL'     => get_permalink()
     ];
-    $response   .= '<div class="trinityAudioPlaceholder"></div>';
+    $response   .= "<div class='trinityAudioPlaceholder' data-trinity-mount-date='$date'></div>";
 
-    add_filter( 'script_loader_tag', 'trinity_exclude_player_from_nitro', 10, 2 );
-    wp_enqueue_script('trinity-player', add_query_arg($playerArgs, TRINITY_AUDIO_STARTUP));
+    $trinity_url = TRINITY_AUDIO_STARTUP . $viewkey . '/';
+
+    add_filter( 'script_loader_tag', 'trinity_exclude_player_from_caching_plugins', 10, 2 );
+    wp_enqueue_script('trinity-player', add_query_arg($playerArgs, $trinity_url));
 
     return $response;
   }
 
-  function trinity_exclude_player_from_nitro( $tag, $handle) {
+  function trinity_exclude_player_from_caching_plugins($tag, $handle) {
+    $date = trinity_get_date();
+
     if ($handle === 'trinity-player') {
-      remove_filter('script_loader_tag', 'trinity_exclude_player_from_nitro', 10, 2);
-      return str_replace('<script', '<script nitro-exclude', $tag);
+      remove_filter('script_loader_tag', 'trinity_exclude_player_from_caching_plugins', 10, 2);
+      return str_replace('<script', "<script nitro-exclude data-wpfc-render='false' data-trinity-mount-date='$date'", $tag);
     }
     return $tag;
   }
@@ -300,7 +316,13 @@
     $content = html_entity_decode($content);
 
     $content = trinity_remove_tags($content);
-    $content = strip_tags($content);
+    $content = strip_tags($content, '<br>');  // strip all except <br>
+
+    // in order to not read a dot in cases like "sample.text"
+    $content = preg_replace('/\.[\n|\s\|\r]*<br>/', '. ', $content);
+    // in order to not read a comma in cases like "sample,text"
+    $content = preg_replace('/\,[\n|\s\|\r]*<br>/', ', ', $content);
+    $content = str_replace('<br>', BREAK_MACRO, $content);
 
     return $content;
   }
@@ -324,6 +346,8 @@
 
   function trinity_save_post($post_id, $die = false, $throw_exception = false) {
     $installkey = trinity_get_install_key();
+
+    if (empty($installkey)) return;
 
     $clean_text_with_title    = trinity_get_clean_text($post_id, true, false);
     $clean_text_without_title = trinity_get_clean_text($post_id, false, false);
@@ -396,7 +420,6 @@
 
         trinity_save_post($post_id, false, true);
 
-        update_post_meta($post_id, TRINITY_AUDIO_ENABLED, 1);
         update_option(TRINITY_AUDIO_BULK_UPDATE_NUM_POSTS_UPDATED, ++$num_of_success_posts);
         update_option(TRINITY_AUDIO_BULK_UPDATE_HEARTBEAT, trinity_get_date());
 
@@ -436,6 +459,8 @@
     if (trinity_is_bulk_update_in_progress()) {
       return;
     }
+
+    update_option(TRINITY_AUDIO_BULK_UPDATE_HEARTBEAT, trinity_get_date());
 
     trinity_log('Bulk update started');
 
@@ -525,7 +550,7 @@
   }
 
   function trinity_is_bulk_update_in_progress() {
-    $value = get_option(TRINITY_AUDIO_BULK_UPDATE_HEARTBEAT);
+    $value = trinity_get_is_bulk_updated();
     if (!$value) {
       return false;
     }
@@ -547,6 +572,8 @@
       $processed_posts     = (int)get_option(TRINITY_AUDIO_BULK_UPDATE_NUM_POSTS_UPDATED);
       $num_of_failed_posts = (int)get_option(TRINITY_AUDIO_BULK_UPDATE_NUM_POSTS_FAILED);
       $total_posts         = sizeof(trinity_get_posts());
+    } else {
+      delete_option(TRINITY_AUDIO_BULK_UPDATE_NUM_POSTS_UPDATED);
     }
 
     die(
@@ -555,7 +582,7 @@
         'inProgress'       => $in_progress,
         'processedPosts'   => $processed_posts,
         'totalPosts'       => $total_posts,
-        'numOfFailedPosts' => $num_of_failed_posts,
+        'numOfFailedPosts' => $num_of_failed_posts
       ]
     )
     );
@@ -832,8 +859,13 @@
 
     if ($response) {
         $notification = json_decode($response);
-  	    $notification = json_decode($notification->message);
-        echo htmlspecialchars_decode($notification->message_html);
+        if (property_exists($notification, 'message')) {
+  	      $notification = json_decode($notification->message);
+        }
+
+  	    if ($notification && property_exists($notification, 'message_html')) {
+  	      echo htmlspecialchars_decode($notification->message_html);
+        }
     }
 
     if (!$package_data) return;
@@ -851,6 +883,23 @@
 							</span>
 							<span class='trinity-notification-close'></span>
 						</div>";
+  }
+
+  function trinity_show_bulk_progress() {
+    echo "<div class='trinity-bulk-update-wrapper trinity-notification'>
+            <span class='trinity-bulk-update status error'>A problem occurred while updating articles values. Please try again later.</span>
+  
+            <span class='trinity-bulk-update status progress'>
+              <span class='trinity-bulk-message'>We're updating your content settings. The plugin may experience issue while this is ongoing. You may navigate away from this page.</span>
+  
+              <div class='trinity-bulk-count-wrapper'>
+                <span class='trinity-bulk-posts'></span>
+                <span class='trinity-bulk-bar'>
+                  <div class='trinity-bulk-bar-inner'></div>
+                </span>
+              </div>
+            </span>
+          </div>";
   }
 
   function show_articles_usage($package_data) {

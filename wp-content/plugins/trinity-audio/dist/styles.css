@@ -1,37 +1,39 @@
 @font-face {
-  font-family: MontserratBlack;
-  src: url("../assets/fonts/Montserrat-Black.ttf");
-}
-@font-face {
-  font-family: MontserratBold;
-  src: url("../assets/fonts/Montserrat-Bold.ttf");
-}
-@font-face {
-  font-family: MontserratRegular;
-  src: url("../assets/fonts/Montserrat-Regular.ttf");
-}
-@font-face {
-  font-family: MontserratMedium;
-  src: url("../assets/fonts/Montserrat-Medium.ttf");
-}
-@font-face {
-  font-family: MontserratBlackItalic;
-  src: url("../assets/fonts/Montserrat-BlackItalic.ttf");
-}
-@font-face {
-  font-family: MontserratLight;
+  font-family: Montserrat;
   src: url("../assets/fonts/Montserrat-Light.ttf");
+  font-weight: 300;
 }
 @font-face {
-  font-family: MontserratSemiBold;
+  font-family: Montserrat;
+  src: url("../assets/fonts/Montserrat-Regular.ttf");
+  font-weight: 400;
+}
+@font-face {
+  font-family: Montserrat;
+  src: url("../assets/fonts/Montserrat-Medium.ttf");
+  font-weight: 500;
+}
+@font-face {
+  font-family: Montserrat;
   src: url("../assets/fonts/Montserrat-SemiBold.ttf");
+  font-weight: 600;
+}
+@font-face {
+  font-family: Montserrat;
+  src: url("../assets/fonts/Montserrat-Bold.ttf");
+  font-weight: 700;
+}
+@font-face {
+  font-family: Montserrat;
+  src: url("../assets/fonts/Montserrat-Black.ttf");
+  font-weight: 800;
 }
 .trinity-page .custom-checkbox {
   cursor: pointer;
   color: #777777 !important;
   position: relative;
   padding: 8px;
-  border: 1px solid #d8d8d8d8;
+  border: 1px solid rgba(216, 216, 216, 0.8470588235);
   background: white;
   width: 250px;
   margin-bottom: 9px;
@@ -86,7 +88,7 @@
   color: #777777 !important;
   position: relative;
   padding: 8px;
-  border: 1px solid #d8d8d8d8;
+  border: 1px solid rgba(216, 216, 216, 0.8470588235);
   background: white;
   width: 250px;
   margin-bottom: 9px;
@@ -100,7 +102,7 @@
 }
 .trinity-page .value-text, .trinity-page .line, .trinity-page .description, .trinity-page .text-label, .trinity-page .custom-input {
   line-height: 19px;
-  font-family: MontserratLight;
+  font-weight: 300;
   font-size: 16px;
 }
 .trinity-page .options {
@@ -172,14 +174,59 @@
   transition: background-color 180ms ease-in;
 }
 
+.trinity-page .trinity-warning {
+  opacity: 0;
+  visibility: hidden;
+  margin-top: -40px;
+  margin-bottom: 0px;
+  height: 38px;
+  transition: margin-top 200ms ease-out, opacity 300ms ease-out;
+  gap: 10px;
+  color: #996600;
+}
+.trinity-page .trinity-warning span.icon.warning-icon {
+  display: inline-block;
+  min-width: 20px;
+  background-repeat: no-repeat;
+  background-image: url(../assets/icons/warning-outline.svg);
+  background-position: center;
+}
+.trinity-page .dirty {
+  border-color: #FFCC00;
+  box-shadow: none;
+  background-color: #FFF0B3;
+}
+.trinity-page .dirty ~ .trinity-warning-dirty.description {
+  display: flex;
+  visibility: visible;
+  opacity: 1;
+  margin-top: 0;
+  height: auto;
+  color: #996600;
+  transition: margin-top 200ms ease-out, opacity 300ms ease-out;
+}
+.trinity-page .bulk-notify {
+  border-color: #FFCC00;
+  box-shadow: none;
+  background-color: #FFF0B3;
+}
+.trinity-page .bulk-notify ~ .trinity-warning-bulk-notify.description {
+  display: flex;
+  visibility: visible;
+  opacity: 1;
+  margin-top: 0;
+  height: auto;
+  color: #996600;
+  transition: margin-top 200ms ease-out, opacity 300ms ease-out;
+}
 .trinity-page .custom-input {
-  font-family: MontserratLight;
+  font-weight: 300;
   font-size: 16px;
   cursor: pointer;
   color: #777777 !important;
   position: relative;
   padding: 8px;
-  border: 1px solid #d8d8d8d8;
+  border: 1px solid rgba(216, 216, 216, 0.8470588235);
   background: white;
   width: 250px;
   margin-bottom: 9px;
@@ -190,20 +237,55 @@
   flex-flow: row;
   justify-content: space-between;
   align-items: center;
+  cursor: auto;
   line-height: 30px !important;
   padding: 3px 10px;
-  min-width: 250px;
   width: 66%;
   min-width: 268px;
+  z-index: 2;
+}
+.trinity-page .custom-input.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: lightgray;
+  box-shadow: none;
+  border-color: rgba(216, 216, 216, 0.8470588235);
+}
+.trinity-page .custom-input-disabled {
+  position: relative;
+  display: inline-block;
+}
+.trinity-page .custom-input-disabled input {
+  width: 300px;
+  font-weight: normal;
+  color: #B7B6B6 !important;
+  cursor: default;
+}
+.trinity-page .custom-input-disabled .edit-icon {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  font-size: 18px;
+  line-height: 40px;
+  display: inline-block;
+  color: #B7B6B6;
+  transform: rotate(90deg);
+  z-index: 1;
+}
+.trinity-page .custom-input-disabled .edit-icon span {
+  cursor: pointer;
+}
+.trinity-page .custom-input-disabled .edit-icon span:hover {
+  color: black;
 }
 .trinity-page .custom-textarea {
-  font-family: MontserratLight;
+  font-weight: 300;
   font-size: 16px;
   cursor: pointer;
   color: #777777 !important;
   position: relative;
   padding: 8px;
-  border: 1px solid #d8d8d8d8;
+  border: 1px solid rgba(216, 216, 216, 0.8470588235);
   background: white;
   width: 250px;
   margin-bottom: 9px;
@@ -217,6 +299,7 @@
   min-width: 250px;
   width: 100%;
   color: #C8C8C8;
+  cursor: auto;
 }
 
 #trinity-admin-info {
@@ -230,7 +313,7 @@
 }
 
 .info-text {
-  font-family: MontserratLight;
+  font-weight: 300;
 }
 
 .form-table td {
@@ -253,7 +336,7 @@
   color: #777777 !important;
   position: relative;
   padding: 8px;
-  border: 1px solid #d8d8d8d8;
+  border: 1px solid rgba(216, 216, 216, 0.8470588235);
   background: white;
   width: 250px;
   margin-bottom: 9px;
@@ -264,16 +347,16 @@
   flex-flow: row;
   justify-content: space-between;
   align-items: center;
-  font-family: MontserratLight;
+  font-weight: 300;
   font-size: 16px;
   width: 100%;
   line-height: 36px !important;
-  border-color: #d8d8d8d8 !important;
+  border-color: rgba(216, 216, 216, 0.8470588235) !important;
   border-width: 0.5px !important;
 }
 
 .trinity-custom-contact-textarea {
-  font-family: MontserratLight;
+  font-weight: 300;
   width: 66%;
   font-size: 16px;
   line-height: 24px !important;
@@ -294,7 +377,7 @@
   cursor: pointer;
   display: inline-block;
   padding: 0 20px;
-  font-family: MontserratMedium;
+  font-weight: 500;
   max-width: 100%;
   border-radius: 4px;
   transition: all 200ms ease-out;
@@ -331,7 +414,7 @@
   cursor: pointer;
   display: inline-block;
   padding: 0 20px;
-  font-family: MontserratMedium;
+  font-weight: 500;
   max-width: 100%;
   border-radius: 4px;
   transition: all 200ms ease-out;
@@ -415,7 +498,7 @@
 .trinity-page .flex-grid .column .section-title {
   margin-bottom: 10px;
   font-size: 18px;
-  font-family: MontserratBold;
+  font-weight: 700;
   color: #000033;
 }
 .trinity-page .inline-block {
@@ -433,11 +516,11 @@
 }
 .trinity-page .register .description {
   font-size: 16px;
-  font-family: MontserratLight;
+  font-weight: 300;
 }
 .trinity-page .register .description .bold-text {
   color: #777777;
-  font-family: "MontserratMedium";
+  font-weight: 500;
 }
 .trinity-page .register .custom-input {
   margin-top: 8px;
@@ -453,7 +536,7 @@
 .trinity-page .register .text-label {
   margin-right: 0;
   margin-left: 12px;
-  font-family: "MontserratRegular";
+  font-weight: 400;
   font-weight: 700;
 }
 .trinity-page .register a {
@@ -475,37 +558,45 @@
   cursor: pointer;
   display: inline-block;
   padding: 0 20px;
-  font-family: MontserratMedium;
+  font-weight: 500;
   max-width: 100%;
   border-radius: 4px;
   transition: all 200ms ease-out;
   box-sizing: border-box;
   text-transform: uppercase;
-  float: right;
 }
 .trinity-page .register button.button.button-primary:hover {
   background: #951d51;
   transition: all 200ms ease-out;
 }
 
-.trinity-page .save-and-odds .save-and-odds-positioning {
-  height: 100%;
+.trinity-page {
+  font-family: Montserrat;
+}
+.trinity-page .plan-banner-wrapper {
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
 }
-.trinity-page .save-and-odds .save-and-odds-positioning .premium-banner {
+@media (max-width: 600px) {
+  .trinity-page .plan-banner-wrapper {
+    flex-direction: column;
+  }
+}
+.trinity-page .plan-banner-wrapper .current-plan-wrapper {
+  flex: 1;
+}
+.trinity-page .premium-banner {
   padding: 32px;
   margin-top: 20px;
   text-decoration: none;
   background: #FFFFFF;
-  justify-content: space-between;
   display: flex;
-  flex-direction: column;
-  border-radius: 18px;
   align-items: flex-start;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 18px;
 }
-.trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-button {
+.trinity-page .premium-banner .upgrade-button {
   line-height: 40px;
   font-weight: 300;
   font-size: 14px;
@@ -520,7 +611,7 @@
   cursor: pointer;
   display: inline-block;
   padding: 0 20px;
-  font-family: MontserratMedium;
+  font-weight: 500;
   max-width: 100%;
   border-radius: 4px;
   transition: all 200ms ease-out;
@@ -529,46 +620,29 @@
   background: #010031;
   text-decoration: none;
 }
-.trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-button:hover {
+.trinity-page .premium-banner .upgrade-button:hover {
   background: #951d51;
   transition: all 200ms ease-out;
 }
-@media (max-width: 1366px) {
-  .trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-button {
-    font-size: 12px;
-  }
-}
-.trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds {
+.trinity-page .premium-banner .upgrade-odds {
   display: flex;
-  flex-direction: row;
   width: 100%;
   font-size: 16px;
-  font-family: MontserratSemiBold;
+  font-weight: 600;
   color: #000033;
 }
-.trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds ul {
+.trinity-page .premium-banner .upgrade-odds ul {
   width: 50%;
-  list-style: disc;
-  list-style-position: inside;
+  list-style: disc inside;
 }
-@media (max-width: 680px) {
-  .trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds ul {
-    width: 100%;
-  }
-}
-.trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds ul li {
-  font-family: MontserratMedium;
+.trinity-page .premium-banner .upgrade-odds ul li {
+  font-weight: 500;
   margin-bottom: 18px;
   padding-left: 13px;
   position: relative;
   list-style: none;
 }
-@media (max-width: 1330px) {
-  .trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds ul li {
-    margin-bottom: 13px;
-  }
-}
-.trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds ul li::before {
+.trinity-page .premium-banner .upgrade-odds ul li::before {
   content: "";
   position: absolute;
   width: 6px;
@@ -579,38 +653,41 @@
   transform: translate(0, -50%);
   background: #FF0066;
 }
-@media (max-width: 1500px) {
-  .trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds {
-    font-size: 14px;
-    margin: 10px 0;
-  }
-}
-@media (max-width: 1330px) {
-  .trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds {
-    margin: 6px 0;
-    font-size: 12px;
-  }
-}
-@media (max-width: 1200px) {
-  .trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-odds {
-    font-size: 14px;
-  }
-}
-.trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-plan {
+.trinity-page .premium-banner .upgrade-plan {
   color: #000033;
   width: 100%;
-  font-size: 30px;
-  line-height: 30px;
-  font-family: MontserratBold;
+  font-size: 20px;
+  line-height: 22px;
+  font-weight: 700;
 }
-@media (max-width: 1700px) {
-  .trinity-page .save-and-odds .save-and-odds-positioning .premium-banner .upgrade-plan {
-    font-size: 20px;
-    line-height: 22px;
-  }
+.trinity-page .save-and-odds .save-and-odds-positioning {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.trinity-page .trinity-show-recovery-token-button a:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.trinity-page .trinity-show-recovery-token-button.inline {
+  font-size: 13px;
+}
+.trinity-page .trinity-show-recovery-token-button.inline + span {
+  display: inline-block;
+  font-size: 13px;
+}
+.trinity-page .trinity-show-recovery-token-button.inline + span.hidden {
+  display: none;
+}
+.trinity-page .trinity-show-recovery-token-button + p {
+  display: block;
+}
+.trinity-page .trinity-show-recovery-token-button + p.hidden {
+  display: none;
 }
 .trinity-page .trinity-head {
-  font-family: MontserratBlack;
+  font-weight: 800;
   padding: 9px 25px 4px;
   text-align: left;
   font-size: 30px;
@@ -622,10 +699,10 @@
   font-size: 30px;
 }
 .trinity-page .existing-account {
-  font-family: "MontserratRegular";
+  font-weight: 400;
 }
 .trinity-page .existing-account a {
-  font-family: "MontserratBold";
+  font-weight: 700;
 }
 .trinity-page .notice {
   margin: 5px 25px 5px 25px !important;
@@ -634,9 +711,10 @@
   padding: 17px 24px;
   font-size: 16px;
   line-height: 19px;
-  font-family: MontserratLight, sans-serif;
+  font-family: Montserrat, sans-serif;
+  font-weight: 300;
   background: #FFFFFF 0 0 no-repeat padding-box;
-  box-shadow: 0 2px 6px #0000000A;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.0392156863);
   box-sizing: border-box;
   height: 100%;
 }
@@ -651,43 +729,80 @@
   font-size: 16px;
   height: auto;
 }
+.trinity-page .trinity-section-body.plan-section .premium-banner {
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.1490196078);
+  padding: 20px;
+  width: 50%;
+  margin: 0 0 20px 20px;
+  box-sizing: border-box;
+  max-width: 350px;
+}
+.trinity-page .trinity-section-body.plan-section .premium-banner .upgrade-plan {
+  font-size: 16px;
+}
+.trinity-page .trinity-section-body.plan-section .premium-banner .upgrade-odds {
+  font-size: 14px;
+}
+.trinity-page .trinity-section-body.plan-section .premium-banner .upgrade-odds ul {
+  width: 100%;
+}
+.trinity-page .trinity-section-body.plan-section .premium-banner .upgrade-odds ul li {
+  margin-bottom: 10px;
+}
+.trinity-page .trinity-section-body.plan-section .premium-banner .upgrade-button {
+  margin: 0 auto;
+}
+@media (max-width: 600px) {
+  .trinity-page .trinity-section-body.plan-section .premium-banner {
+    margin: 16px auto;
+    padding: 22px;
+    width: 100%;
+  }
+  .trinity-page .trinity-section-body.plan-section .premium-banner .upgrade-odds,
+.trinity-page .trinity-section-body.plan-section .premium-banner .upgrade-button {
+    font-size: 14px;
+  }
+}
 .trinity-page .trinity-section-body.plan-section .plan-description {
   width: 50%;
 }
 .trinity-page .trinity-section-body.plan-section a {
   color: #FF0066;
   text-decoration: none;
-  font-family: "MontserratRegular";
+  font-weight: 400;
 }
 .trinity-page .trinity-section-body.plan-section .token-label {
   margin-top: 25px;
 }
+.trinity-page .trinity-section-body.plan-section .curr-plan {
+  display: inline-block;
+}
 .trinity-page .trinity-section-body.plan-section .curr-plan,
 .trinity-page .trinity-section-body.plan-section .token-label {
   height: 31px;
-  font-family: MontserratRegular;
+  font-weight: 400;
   font-size: 16px;
 }
 .trinity-page .trinity-section-body.plan-section .plan-name {
   margin-top: 10px;
-  font-family: MontserratBold;
+  font-weight: 700;
   font-size: 18px;
   height: 31px;
   color: #7f7f97;
 }
 .trinity-page .trinity-section-body.plan-section .feature-title {
-  font-family: MontserratSemiBold;
+  font-weight: 600;
 }
 .trinity-page .trinity-section-body.plan-section .feature-title.large-title {
   line-height: 50px;
 }
 .trinity-page .trinity-section-body.plan-section .feature-title.large-title span {
-  font-family: MontserratBlack;
+  font-weight: 800;
   font-size: 40px;
 }
 .trinity-page .trinity-section-body.plan-section .feature-description {
   font-size: 14px;
-  font-family: MontserratMedium;
+  font-weight: 500;
 }
 .trinity-page .trinity-section-body.plan-section .bright {
   font-size: 50px;
@@ -714,26 +829,26 @@
   margin-right: 6px;
   background-image: url("../assets/icons/check.svg");
 }
-.trinity-page .trinity-section-body.plan-section .verified-message ~ div {
+.trinity-page .trinity-section-body.plan-section .verified-message ~ div, .trinity-page .trinity-section-body.plan-section .advanced-features {
   margin-top: 15px;
-  font-family: MontserratSemiBold;
+  font-weight: 600;
 }
-.trinity-page .trinity-section-body.plan-section .verified-message ~ div a {
+.trinity-page .trinity-section-body.plan-section .verified-message ~ div a, .trinity-page .trinity-section-body.plan-section .advanced-features a {
   text-decoration: underline;
-  font-family: MontserratSemiBold;
+  font-weight: 600;
 }
 .trinity-page .trinity-section-body .section-form-group {
   margin-bottom: 20px;
-  font-family: MontserratLight;
+  font-weight: 300;
 }
 .trinity-page .trinity-section-body .section-form-group b {
-  font-family: MontserratMedium;
+  font-weight: 500;
 }
 .trinity-page .trinity-section-body .section-form-group input.hidden {
   display: none;
 }
 .trinity-page .trinity-section-body .section-form-group > .section-form-title {
-  font-family: MontserratRegular;
+  font-weight: 400;
   margin-bottom: 10px;
   display: inline-block;
   color: #000033;
@@ -758,7 +873,7 @@
   cursor: pointer;
   display: inline-block;
   padding: 0 20px;
-  font-family: MontserratMedium;
+  font-weight: 500;
   max-width: 100%;
   border-radius: 4px;
   transition: all 200ms ease-out;
@@ -769,6 +884,21 @@
 .trinity-page .save-button:hover {
   background: #951d51;
   transition: all 200ms ease-out;
+}
+.trinity-page .save-button.disabled {
+  opacity: 0.2;
+  pointer-events: none;
+  user-select: none;
+}
+.trinity-page .save-button ~ .trinity-warning {
+  margin-top: 0;
+}
+.trinity-page .save-button.dirty ~ .trinity-warning {
+  margin-top: 20px;
+  height: auto;
+}
+.trinity-page .save-button.dirty ~ .trinity-warning .icon {
+  width: 30px;
 }
 .trinity-page .trinity-save-account {
   display: flex;
@@ -789,7 +919,7 @@
   cursor: pointer;
   display: inline-block;
   padding: 0 20px;
-  font-family: MontserratMedium;
+  font-weight: 500;
   max-width: 100%;
   border-radius: 4px;
   transition: all 200ms ease-out;
@@ -822,6 +952,9 @@
 .trinity-page .install-key {
   font-size: 18px;
 }
+.trinity-page .underline {
+  text-decoration: underline;
+}
 
 .trinity-notification {
   margin-left: -20px;
@@ -830,7 +963,7 @@
   box-sizing: border-box;
   width: calc(100% + 20px);
   color: white;
-  font-family: MontserratRegular;
+  font-weight: 400;
   font-size: 14px;
   line-height: 28px;
   padding: 5px 10px 5px 10px;
@@ -854,6 +987,41 @@
 .trinity-notification a {
   color: white;
   white-space: nowrap;
+}
+
+.trinity-bulk-update-wrapper {
+  background-color: #000033;
+  display: none;
+  font-family: Montserrat;
+  font-weight: 100;
+}
+.trinity-bulk-update-wrapper .trinity-bulk-update.status.error {
+  color: red;
+  font-weight: 600;
+}
+.trinity-bulk-update-wrapper .trinity-bulk-bar,
+.trinity-bulk-update-wrapper .trinity-bulk-estimate,
+.trinity-bulk-update-wrapper .trinity-bulk-count-wrapper {
+  display: inline-block;
+  width: 400px;
+  text-align: right;
+}
+.trinity-bulk-update-wrapper .trinity-bulk-estimate-value {
+  font-weight: 600;
+}
+.trinity-bulk-update-wrapper .trinity-bulk-bar,
+.trinity-bulk-update-wrapper .trinity-bulk-bar-inner {
+  height: 10px;
+  border-radius: 2px;
+}
+.trinity-bulk-update-wrapper .trinity-bulk-bar {
+  background-color: white;
+  width: 240px;
+  max-width: 240px;
+  margin-left: 10px;
+}
+.trinity-bulk-update-wrapper .trinity-bulk-bar .trinity-bulk-bar-inner {
+  background-color: #00CC66;
 }
 
 .components-tab-panel__tabs {
@@ -882,7 +1050,7 @@
 
 .trinity-hide,
 .trinity-phpinfo iframe {
-  display: none;
+  display: none !important;
 }
 
 #trinity-metabox .components-tab-panel__tab-content select {
@@ -904,7 +1072,7 @@
 }
 
 .trinity-submit-wrapper {
-  font-family: MontserratLight;
+  font-weight: 300;
   display: flex;
   align-items: center;
 }
@@ -984,5 +1152,5 @@
 }
 
 .bold-text {
-  font-family: "MontserratBold";
+  font-weight: 700;
 }

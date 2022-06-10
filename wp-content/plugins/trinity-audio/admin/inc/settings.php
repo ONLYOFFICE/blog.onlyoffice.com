@@ -4,16 +4,20 @@
   require_once __DIR__ . '/../../inc/constants.php';
   require_once __DIR__ . '/../../inc/templates.php';
 
+  $initial_save = !trinity_get_is_first_changes_saved();
+
   trinity_audio_first_time_install_notice();
-  if (!trinity_get_is_first_changes_saved()) {
+
+  if ($initial_save) {
     trinity_show_warning_need_to_activate();
   }
+
   $package_data = trinity_get_package_data();
   notifications($package_data);
+  trinity_show_bulk_progress();
 ?>
 
-<form action="options.php" name="settings" method="post"
-  onsubmit="trinityAudioOnSettingsFormSubmit(this, <?php echo trinity_get_is_first_changes_saved() ?>)">
+<form action="options.php" name="settings" method="post" onsubmit="trinityAudioOnSettingsFormSubmit(this, <?=(int)$initial_save?>)">
   <?php
     settings_errors();
     settings_fields('trinity_audio');
@@ -61,8 +65,6 @@
           <section>
             <div class="section-title">Subscription</div>
             <div class="trinity-section-body plan-section">
-              <div class="curr-plan">Current plan:</div>
-
               <?php trinity_current_package_info_template($package_data); ?>
             </div>
           </section>
@@ -137,7 +139,9 @@
               <div class="section-form-group">
                 <label class="section-form-title" for="<?php echo TRINITY_AUDIO_POWERED_BY; ?>">
                   Help us reach new users:
-                </label> <br />
+                </label>
+
+                <div></div>
 
                 <?php trinity_display_powered_by(); ?>
               </div>
@@ -164,7 +168,7 @@
       </div>
 
       <div class="row">
-	      <div class="column"></div>
+        <div class="column"></div>
         <div class="column">
           <section class="save-and-odds">
             <div class="section-title">SAVE & ACTIVATE</div>
@@ -172,6 +176,7 @@
             <div class="save-and-odds-positioning">
               <button class="save-button">Save Changes
               </button>
+
               <?php trinity_premium_banner(); ?>
             </div>
           </section>
@@ -179,6 +184,7 @@
       </div>
     </div>
   </div>
+  <input type="hidden" name="<?php echo TRINITY_AUDIO_FIRST_CHANGES_SAVE; ?>" value="1">
 </form>
 
 <?php
@@ -296,6 +302,7 @@
   function trinity_player_label() {
     $value = trinity_get_player_label();
     echo "<input placeholder='Enter label' type='text' value='$value' name='" . TRINITY_AUDIO_PLAYER_LABEL . "' id='" . TRINITY_AUDIO_PLAYER_LABEL . "' class='custom-input' />";
+    echo "<p class='description'>Specifies optional text you’d like to be shown above the audio player (HTML tags are supported with this label)</p>";
   }
 
   function trinity_display_powered_by() {
@@ -360,16 +367,31 @@
   function trinity_skip_tags() {
     $value = implode(',', trinity_get_skip_tags());
 
-    echo "<input type='text' class='custom-input' value='$value' name='" . TRINITY_AUDIO_SKIP_TAGS . "' id='" . TRINITY_AUDIO_SKIP_TAGS . "' />";
+    echo "<input type='text' placeholder='Example: htmltag1, htmltag2' class='custom-input' oninput='checkFieldDirty(this)' value='$value' name='" . TRINITY_AUDIO_SKIP_TAGS . "' id='" . TRINITY_AUDIO_SKIP_TAGS . "' />";
 
-    echo '<p class="description">Enter HTML tags that should be ignored while reading a text, using comma delimiter, e.g. img, i, footer. <br /></p>';
+    trinity_bulk_update_dirty_warning();
+    trinity_bulk_update_field_notify();
+    echo '<p class="description">
+            Enter HTML tags that should be ignored while reading a text, using comma delimiter, e.g. img, i, footer.
+          </p>
+          <p class="description">
+            Please note - changing the value of this setting effects the text being read by the player. This requires re-processing the current articles, and might take some time.
+         </p>';
   }
 
   function trinity_allow_shortcodes() {
     $value = implode(',', trinity_get_allowed_shortcodes());
 
-    echo "<input type='text' class='custom-input' value='$value' name='" . TRINITY_AUDIO_ALLOW_SHORTCODES . "' id='" . TRINITY_AUDIO_ALLOW_SHORTCODES . "' />";
-    echo '<p class="description">Enter shortcodes that should not be filtered out, using comma delimiter, e.g. gallery, myshortcode. By default all shortcodes are filtered out while reading text. <br /></p>';
+    echo "<input type='text' placeholder='Example: htmltag1, htmltag2' class='custom-input' oninput='checkFieldDirty(this)' value='$value' name='" . TRINITY_AUDIO_ALLOW_SHORTCODES . "' id='" . TRINITY_AUDIO_ALLOW_SHORTCODES . "' />";
+
+    trinity_bulk_update_dirty_warning();
+    trinity_bulk_update_field_notify();
+    echo '<p class="description">
+            Enter shortcodes that should not be filtered out, using comma delimiter, e.g. gallery, myshortcode. By default all shortcodes are filtered out while reading text. 
+          </p>
+          <p class="description">
+            Please note - changing the value of this setting effects the text being read by the player. This requires re-processing the current articles, and might take some time.
+         </p>';
   }
 
   function trinity_check_for_loop() {
@@ -417,12 +439,23 @@
         <p>We're excited that you've decided to join the audio future! Please note that our servers might take up to 5
           minutes to update before you can start using the plugin. Almost there!</p>
         <p>
-          Please save your secret recovery key <span class="bold-text"> (Install Key): <?php echo trinity_get_install_key(); ?> </span> in a safe
-          place.
-          This key is unique and bound to your domain. It is required for restoring your installation (a new environment of
-          any sort).
+          <?php trinity_show_recovery_token_inline(); ?> Please save your secret recovery token in a safe place. This token is unique and bound to your domain. It is required for restoring your installation (a new environment of any sort).
         </p>
       </div>
       <?php
     }
+  }
+
+  function trinity_bulk_update_dirty_warning() {
+    echo '<p class="trinity-warning trinity-warning-dirty description">
+            <span class="icon warning-icon"></span>
+            <span>During re-processing time audio player might experience errors. You can track the progress of the update at the top of the screen</span>
+          </p>';
+  }
+
+  function trinity_bulk_update_field_notify() {
+    echo '<p class="trinity-warning trinity-warning-bulk-notify description">
+            <span class="icon warning-icon"></span>
+            <span>This values can not be changed while re-processing is under going</span>
+          </p>';
   }

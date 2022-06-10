@@ -1,7 +1,7 @@
 <?php
   const TRINITY_AUDIO_SERVICE_HOST = 'audio.trinityaudio.ai';
   const TRINITY_AUDIO_SERVICE      = 'https://' . TRINITY_AUDIO_SERVICE_HOST;
-  const TRINITY_AUDIO_STARTUP      = 'https://trinitymedia.ai/player/trinity.php';
+  const TRINITY_AUDIO_STARTUP      = 'https://trinitymedia.ai/player/trinity/'; // v4.1.(4,5,6) works with trinity/_/?viewkey...
   const TRINITY_AUDIO_TEST_HOST    = 'example.com';
   const TRINITY_AUDIO_TEST_SERVICE = 'https://example.com';
   const TRINITY_AUDIO_DASHBOARD_URL = 'https://dashboard.trinityaudio.ai/?utm_medium=wp_admin';
@@ -21,6 +21,8 @@
   const TRINITY_AUDIO_MAX_REQUEST_RETRIES_IN_ROW          = 10;
 
   const TRINITY_AUDIO_LABEL_DEFAULT = 'Default';
+
+  const BREAK_MACRO = '⏸';
 
   abstract class TRINITY_AUDIO_ERROR_TYPES {
     const debug = 'debug';
@@ -69,6 +71,7 @@
   const TRINITY_AUDIO_TRANSLATE                     = 'trinity_audio_translate';
 
   const TRINITY_AUDIO_WP_SERVICE                 = TRINITY_AUDIO_SERVICE . '/wordpress';
+  const TRINITY_AUDIO_LANGUAGES_URL              = TRINITY_AUDIO_SERVICE . '/standard-voices';
   const TRINITY_AUDIO_BULK_UPDATE_URL            = TRINITY_AUDIO_WP_SERVICE . '/bulk_update';
   const TRINITY_AUDIO_POST_HASH_URL              = TRINITY_AUDIO_WP_SERVICE . '/posthash';
   const TRINITY_AUDIO_UPDATE_PLUGIN_SETTINGS_URL = TRINITY_AUDIO_WP_SERVICE . '/settings';
@@ -77,7 +80,6 @@
   const TRINITY_AUDIO_KEYS_URL                   = TRINITY_AUDIO_WP_SERVICE . '/signup';
   const TRINITY_AUDIO_CONTACT_US_URL             = TRINITY_AUDIO_WP_SERVICE . '/contact-us';
   const TRINITY_AUDIO_UPDATE_PLUGIN_DETAILS_URL  = TRINITY_AUDIO_WP_SERVICE . '/update_plugin_details';
-  const TRINITY_AUDIO_LANGUAGES_URL              = TRINITY_AUDIO_WP_SERVICE . '/languages';
   const TRINITY_AUDIO_PUBLISHER_TOKEN_URL        = TRINITY_AUDIO_WP_SERVICE . '/assign-unit-to-publisher';
   const TRINITY_AUDIO_NOTIFICATIONS_URL          = TRINITY_AUDIO_WP_SERVICE . '/notification';
 
