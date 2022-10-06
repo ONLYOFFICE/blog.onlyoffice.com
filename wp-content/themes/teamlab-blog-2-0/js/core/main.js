@@ -356,7 +356,7 @@ $(".close-popup").click(function () {
   $(".hidden").hide();
 });
 
-$("a[href=''], a:not([href])").css("cursor", "default");
+// $("a[href=''], a:not([href])").css("cursor", "default");
 
 /***** Click for header *****/
 $("#customer_stories_div").on("click", function () {
@@ -377,6 +377,9 @@ $("#oforms_div").on("click", function () {
 $("#for_developers_div").on("click", function () {
   location.href = $("#navitem_integration_for_developers").attr("href");
 });
+// $("#developers_div").on("click", function () {
+//   location.href = $("#navitem_developers_for_developers").attr("href");
+// });
 $("#latest_events_div").on("click", function () {
   location.href = $("#navitem_latest_events").attr("href");
 });

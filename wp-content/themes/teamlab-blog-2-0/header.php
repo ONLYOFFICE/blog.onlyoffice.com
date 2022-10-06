@@ -98,30 +98,32 @@ $lang = $sitepress->get_current_language();
     <?php wp_head() ?>
 </head>
 <div class="advent-announce push advent-mobile-hide">
-    <?php 
-    $banner_url = 'https://www.cloudcomputing-insider.de/award/';
-    // if($current_language == WEB_ROOT_URL.'/'.'de'){
-    //     $banner_url = 'https://www.onlyoffice.com/blog/de/2022/01/onlyoffice-docs-7-0-online-formulare-passwortschutz-in-tabellenkalkulationen-verbesserungen-der-zusammenarbeit-und-vieles-mehr/';
-    // }else if($current_language == WEB_ROOT_URL.'/'.'fr'){
-    //     $banner_url = 'https://www.onlyoffice.com/blog/fr/2022/01/onlyoffice-docs-7-0/';  
-    // }else if($current_language == WEB_ROOT_URL.'/'.'es'){
-    //     $banner_url = 'https://www.onlyoffice.com/blog/es/2022/01/onlyoffice-docs-7-0/';
-    // }else if($current_language == WEB_ROOT_URL.'/'.'it'){
-    //     $banner_url = 'https://www.onlyoffice.com/blog/it/2022/01/onlyoffice-docs-7-0/';
-    // }else if($current_language == WEB_ROOT_URL.'/'.'zh'){
-    //     $banner_url = 'https://www.onlyoffice.com/blog/zh-hans/2022/01/onlyoffice-docs-7-0/';
-    // }
+    <?php
+    $banner_url = 'https://www.onlyoffice.com/blog/2022/09/onlyoffice-docs-7-2/';
+     if($current_language == WEB_ROOT_URL.'/'.'de'){
+         $banner_url = 'https://www.onlyoffice.com/blog/de/2022/09/onlyoffice-7-2';
+     }else if($current_language == WEB_ROOT_URL.'/'.'fr'){
+         $banner_url = 'https://www.onlyoffice.com/blog/fr/2022/09/onlyoffice-docs-v7-2/';
+     }else if($current_language == WEB_ROOT_URL.'/'.'es'){
+         $banner_url = 'https://www.onlyoffice.com/blog/es/2022/09/onlyoffice-docs-v7-2/';
+     }else if($current_language == WEB_ROOT_URL.'/'.'it'){
+         $banner_url = 'https://www.onlyoffice.com/blog/it/2022/09/onlyoffice-docs-7-2';
+     }else if($current_language == WEB_ROOT_URL.'/'.'zh'){
+         $banner_url = 'https://www.onlyoffice.com/blog/zh-hans/2022/09/onlyoffice-docs-7-2/';
+     }else if($current_language == WEB_ROOT_URL.'/'.'jp'){
+         $banner_url = 'https://www.onlyoffice.com/blog/ja/2022/09/onlyoffice-docs-v7-2-ui/';
+     }
     ?>
     <a href="<?php echo $banner_url ?>">
         <div class="advent-announce-text">
-            <?php _e('Cloud Computing Insider Awards 2022: <b>Vote for ONLYOFFICE</b>', 'teamlab-blog-2-0'); ?>
+            <?php _e('Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures,  updated UI, and more', 'teamlab-blog-2-0'); ?>
         </div>
     </a>
 </div>
 <div class="advent-announce push advent-desktop-hide">
     <a  href="<?php echo $banner_url ?>">
         <div class="advent-announce-text">
-            <?php _e('<b>Vote for ONLYOFFICE</b>', 'teamlab-blog-2-0'); ?>
+            <?php _e('<b>ONLYOFFICE Docs v7.2</b>', 'teamlab-blog-2-0'); ?>
         </div>
     </a>
 </div>
@@ -155,10 +157,9 @@ $lang = $sitepress->get_current_language();
                         <?php  } ?>
                     </div>
                     <nav class="pushy pushy-left">
-
                         <div class="pushy-content">
                             <ul class="all-menu-items">
-                                <li class="pushy-submenu"><a class="menuitem <?php echo get_locale(); ?>" id="navitem_features"><?php _e('Products & Features', 'teamlab-blog-2-0'); ?></a>
+                                <li class="pushy-submenu"><a class="menuitem <?php echo get_locale(); ?>" id="navitem_features"><?php _e('Features', 'teamlab-blog-2-0'); ?></a>
                                     <div id="navitem_features_menu">
                                         <ul class="dropdown-content akkordeon">
                                             <li id="navitem_editors_third_level_menu">
@@ -224,7 +225,7 @@ $lang = $sitepress->get_current_language();
                                 </li>
                                 <!--
                                 -->
-                                <li class="pushy-submenu"><a class="menuitem" id="navitem_integrations"><?php _e('Integrations', 'teamlab-blog-2-0'); ?></a>
+                                <li class="pushy-submenu"><a class="menuitem" id="navitem_integrations"><?php _e('For business', 'teamlab-blog-2-0'); ?></a>
                                     <div id="navitem_integrations_menu">
                                         <ul class="dropdown-content akkordeon">
                                             <li class="li_without_border">
@@ -244,9 +245,18 @@ $lang = $sitepress->get_current_language();
                                                 <a id="navitem_integrations_jira" class="dropdown-item" href="<?php echo $current_language ?>/office-for-jira.aspx"><?php _e('Jira', 'teamlab-blog-2-0'); ?></a>
                                                 <a id="navitem_integrations_others" class="dropdown-item" href="<?php echo $current_language ?>/all-connectors.aspx"><?php _e('Others', 'teamlab-blog-2-0'); ?></a>
                                             </li>
-                                            <li id="navitem_integration_third_level_menu">
-                                                <a id="navitem_integration_for_developers" class="dropdown-item" href="<?php echo $current_language ?>/developer-edition.aspx"><?php _e('For developers', 'teamlab-blog-2-0'); ?></a>
-                                                <div id="for_developers_div" class="menu_pic_div">
+                                        </ul>
+                                    </div>
+                                </li>
+                                <!--
+                               -->
+
+                                <li class="pushy-submenu"><a class="menuitem" id="navitem_developers"><?php _e('For developers', 'teamlab-blog-2-0'); ?></a>
+                                    <div id="navitem_developers_menu">
+                                        <ul class="dropdown-content akkordeon">
+                                            <li id="navitem_developers_third_level_menu">
+                                                <a id="navitem_developers_for_developers" class="dropdown-item" href="<?php echo $current_language ?>/developer-edition.aspx"><?php _e('For developers', 'teamlab-blog-2-0'); ?></a>
+                                                <div id="developers_div" class="menu_pic_div">
                                                     <div id="for_developers_img" class="menu_pic_img"></div>
                                                     <p id="for_developers_header" class="menu_pic_header">
                                                         <?php _e('Integrate ONLYOFFICE Docs to bring document editing to your app users', 'teamlab-blog-2-0'); ?>
@@ -256,39 +266,7 @@ $lang = $sitepress->get_current_language();
                                         </ul>
                                     </div>
                                 </li>
-                                <!--
-                                -->
-                                <li class="pushy-submenu"><a class="menuitem <?php echo get_locale(); ?>" id="navitem_prices"><?php _e('Pricing', 'teamlab-blog-2-0'); ?></a>
-                                    <div id="navitem_prices_menu">
-                                        <ul class="dropdown-content">
-                                            <li id="navitem_docs_third_level_menu">
-                                                <a id="navitem_prices_docs" class="dropdown-item mobile_no_link"><?php _e('Pricing', 'teamlab-blog-2-0'); ?></a>
-                                                    <ul class="navitem_2nd_menu">
-                                                        <li><a class="nav_2nd_menu_link" id="navitem_prices_server_enterprice" href="<?php echo $current_language ?>/docs-enterprise-prices.aspx"><?php _e('Enterprise Edition', 'teamlab-blog-2-0'); ?></a>
-                                                        </li>
-                                                        <li><a class="nav_2nd_menu_link" id="navitem_prices_integration" href="<?php echo $current_language ?>/developer-edition-prices.aspx"><?php _e('Developer Edition', 'teamlab-blog-2-0'); ?></a>
-                                                        </li>
-                                                    </ul>
-                                                <a id="navitem_prices_workspace" class="dropdown-item mobile_no_link"><?php _e('ONLYOFFICE Workspace', 'teamlab-blog-2-0'); ?></a>
-                                                    <ul class="navitem_2nd_menu">
-                                                        <li><a class="nav_2nd_menu_link" id="navitem_prices_saas" href="<?php echo $current_language ?>/saas.aspx"><?php _e('Cloud Service', 'teamlab-blog-2-0'); ?></a>
-                                                        </li>
-                                                        <li><a class="nav_2nd_menu_link" id="navitem_prices_enterprise" href="<?php echo $current_language ?>/workspace-enterprise-prices.aspx"><?php _e('Server Enterprise', 'teamlab-blog-2-0'); ?></a>
-                                                        </li>
-                                                    </ul>
-                                            </li>
-                                            <li id="navitem_reseller_third_level_menu">
-                                                <a id="navitem_prices_reseller" class="dropdown-item" href="<?php echo $current_language ?>/find-partners.aspx"><?php _e('Buy from an ONLYOFFICE reseller', 'teamlab-blog-2-0'); ?></a>
-                                                <div id="reseller_div" class="menu_pic_div">
-                                                    <div id="reseller_img" class="menu_pic_img"></div>
-                                                    <p id="reseller_header" class="menu_pic_header">
-                                                        <?php _e('Find out the list of all the authorized ONLYOFFICE resellers in your area', 'teamlab-blog-2-0'); ?></a>
-                                                    </p>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
+
                                 <!--
                                 -->
                                 <li class="pushy-submenu"><a class="menuitem <?php echo get_locale(); ?>" id="navitem_download"><?php _e('Get ONLYOFFICE', 'teamlab-blog-2-0'); ?></a>
@@ -328,6 +306,39 @@ $lang = $sitepress->get_current_language();
                                     </div>
                                 </li>
                                 <!--
+                              -->
+                                <li class="pushy-submenu"><a class="menuitem <?php echo get_locale(); ?>" id="navitem_prices"><?php _e('Pricing', 'teamlab-blog-2-0'); ?></a>
+                                    <div id="navitem_prices_menu">
+                                        <ul class="dropdown-content">
+                                            <li id="navitem_docs_third_level_menu">
+                                                <a id="navitem_prices_docs" class="dropdown-item mobile_no_link"><?php _e('Pricing', 'teamlab-blog-2-0'); ?></a>
+                                                <ul class="navitem_2nd_menu">
+                                                    <li><a class="nav_2nd_menu_link" id="navitem_prices_server_enterprice" href="<?php echo $current_language ?>/docs-enterprise-prices.aspx"><?php _e('Enterprise Edition', 'teamlab-blog-2-0'); ?></a>
+                                                    </li>
+                                                    <li><a class="nav_2nd_menu_link" id="navitem_prices_integration" href="<?php echo $current_language ?>/developer-edition-prices.aspx"><?php _e('Developer Edition', 'teamlab-blog-2-0'); ?></a>
+                                                    </li>
+                                                </ul>
+                                                <a id="navitem_prices_workspace" class="dropdown-item mobile_no_link"><?php _e('ONLYOFFICE Workspace', 'teamlab-blog-2-0'); ?></a>
+                                                <ul class="navitem_2nd_menu">
+                                                    <li><a class="nav_2nd_menu_link" id="navitem_prices_saas" href="<?php echo $current_language ?>/saas.aspx"><?php _e('Cloud Service', 'teamlab-blog-2-0'); ?></a>
+                                                    </li>
+                                                    <li><a class="nav_2nd_menu_link" id="navitem_prices_enterprise" href="<?php echo $current_language ?>/workspace-enterprise-prices.aspx"><?php _e('Server Enterprise', 'teamlab-blog-2-0'); ?></a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li id="navitem_reseller_third_level_menu">
+                                                <a id="navitem_prices_reseller" class="dropdown-item" href="<?php echo $current_language ?>/find-partners.aspx"><?php _e('Buy from an ONLYOFFICE reseller', 'teamlab-blog-2-0'); ?></a>
+                                                <div id="reseller_div" class="menu_pic_div">
+                                                    <div id="reseller_img" class="menu_pic_img"></div>
+                                                    <p id="reseller_header" class="menu_pic_header">
+                                                        <?php _e('Find out the list of all the authorized ONLYOFFICE resellers in your area', 'teamlab-blog-2-0'); ?></a>
+                                                    </p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <!--
                                 -->
                                 <li class="pushy-submenu partnership_menu_item"><a class="menuitem <?php echo get_locale(); ?>" id="navitem_partners"><?php _e('Partners', 'teamlab-blog-2-0'); ?></a>
                                     <div id="navitem_partnership_menu">
@@ -350,7 +361,7 @@ $lang = $sitepress->get_current_language();
                                 </li>
                                 <!--
                                 -->
-                                <li class="pushy-submenu about_menu_item"><a class="menuitem" id="navitem_about"><?php _e('About', 'teamlab-blog-2-0'); ?></a>
+                                <li class="pushy-submenu about_menu_item"><a class="menuitem" id="navitem_about"><?php _e('Resources', 'teamlab-blog-2-0'); ?></a>
                                     <div id="navitem_about_menu">
                                         <ul class="dropdown-content">
                                             <li class="pushy-link">
@@ -364,7 +375,6 @@ $lang = $sitepress->get_current_language();
                                                 <a id="navitem_about_contacts" class="dropdown-item" href="<?php echo $current_language ?>/contacts.aspx"><?php _e('Contacts', 'teamlab-blog-2-0'); ?></a>
                                             </li>
                                             <li id="navitem_about_third_level_menu">
-                                                <a id="navitem_about_resources" class="dropdown-item mobile_no_link"><?php _e('Resources', 'teamlab-blog-2-0'); ?></a>
                                                 <a id="navitem_about_blog" class="dropdown-item" href="<?php echo icl_get_home_url() ?>"><?php _e('Blog', 'teamlab-blog-2-0'); ?></a>
                                                 <a id="navitem_about_pressdownloads" class="dropdown-item" href="<?php echo $current_language ?>/press-downloads.aspx"><?php _e('Press downloads', 'teamlab-blog-2-0'); ?></a>
                                                 <a id="navitem_about_helpcenter" class="dropdown-item" href="https://helpcenter.onlyoffice.com/"><?php _e('Help Center', 'teamlab-blog-2-0'); ?></a>

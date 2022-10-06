@@ -13,7 +13,7 @@ main{
 
 /*---------Top-banner-------*/
 .advent-announce.push{
-    background: linear-gradient(270deg, #FF8D5C 19.21%, #FFB979 95.78%);
+    background: #4F698E;
     /* background-image: url(../images/top_banner/onlyoffice_7.0/desktop_left.svg), url(../images/top_banner/onlyoffice_7.0/desktop_right.svg);
     background-position: calc(50% - 456px) 0, calc(50% + 428px) 0; */
     background-repeat: no-repeat;
@@ -45,28 +45,28 @@ main{
 }
 .advent-announce.push .advent-announce-text:before{
     content: '';
-    background-image:  url(../images/top_banner/insider_awards_2022/logo_left.svg), url(../images/top_banner/insider_awards_2022/desktop_left.svg);
-    background-position: 128px -35px, 0 4px;
+    background-image: url(../images/top_banner/onlyoffice_7.2/update_icon7_2.svg), url(../images/top_banner/onlyoffice_7.2/desk_left.svg);
+    background-position: 228px 0, 0 12px;
     background-repeat: no-repeat;
     position: absolute;
-    height: 123px;
-    width: 280px;
-    left: -300px;
-    top: 0px;
+    height: 56px;
+    width: 475px;
+    left: -315px;
+    top: 0;
     box-sizing: content-box;
 }
 
 .advent-announce.push .advent-announce-text:after{
     content: '';
-    background-image: url(../images/top_banner/insider_awards_2022/icon_right.svg), url(../images/top_banner/insider_awards_2022/desktop_right.svg);
-    background-position: 0 11px, 100% 4px;
+    background-image: url(../images/top_banner/onlyoffice_7.2/right_arrow.svg), url(../images/top_banner/onlyoffice_7.2/desk_right.svg);
+    background-position: 0 21px, 100% 12px;
     background-repeat: no-repeat;
     position: absolute;
     height: 56px;
-    width: 206px;
-    right: -226px;
+    width: 240px;
+    right: -260px;
     top: 0px;
-} 
+}
 
 .advent-announce.push .advent-announce-text b{
     font-weight: 700;
@@ -312,7 +312,7 @@ main{
     width: 220px;
 }
 
-.input-header .search-field::placeholder { 
+.input-header .search-field::placeholder {
     font-family: Open Sans;
     font-style: normal;
     font-weight: normal;
@@ -333,7 +333,7 @@ main{
 }
 
 /* Firefox 4-18 */
-.input-header .search-field:-moz-placeholder { 
+.input-header .search-field:-moz-placeholder {
     font-family: Open Sans;
     font-style: normal;
     font-weight: normal;
@@ -345,7 +345,7 @@ main{
 }
 
 /* Firefox 19+ */
-.input-header .search-field::-moz-placeholder { 
+.input-header .search-field::-moz-placeholder {
     font-family: Open Sans;
     font-style: normal;
     font-weight: normal;
@@ -357,7 +357,7 @@ main{
 }
 
 /* IE 10-11 */
-.input-header .search-field:-ms-input-placeholder { 
+.input-header .search-field:-ms-input-placeholder {
     font-family: Open Sans;
     font-style: normal;
     font-weight: normal;
@@ -368,7 +368,7 @@ main{
 }
 
 /* Edge */
-.input-header .search-field::-ms-input-placeholder { 
+.input-header .search-field::-ms-input-placeholder {
     font-family: Open Sans;
     font-style: normal;
     font-weight: normal;
@@ -811,7 +811,7 @@ main{
     /* icon+text */
     color: #919192;
     margin-right: 16px;
-    
+
 }
 .meta span:last-child{
     margin-right: 0;
@@ -1385,7 +1385,7 @@ a.download:active{
     background: url(../images/cloud-block.svg) no-repeat  50% 10px;
     background-size: 689px 186px;
     background-color: #F8F8F8;
-    
+
 }
 .content .cloud-block .red{
     text-transform: uppercase;
@@ -1530,7 +1530,7 @@ a.download:active{
 .breadcrumbs a.home:visited,
 .breadcrumbs a.home:active{
     color: #444444;
-}   
+}
 .breadcrumbs a.home{
     text-decoration: none;
     font-family: Open Sans;
@@ -1646,7 +1646,7 @@ a.download:active{
     color: #FF6F3D;
     content: "\2666";
     transform: rotate(-45deg);
-    padding-right: 15px; 
+    padding-right: 15px;
     width: 5.73px;
     height: 5.72px;
    }
@@ -1671,7 +1671,7 @@ a.download:active{
     background: #FF6F3D;
     border-radius: 3px;
     padding: 18px 20px;
-    
+
 }
 
 .content .button:hover{
@@ -1875,7 +1875,7 @@ a.download:active{
 .a2a_menu{
     box-sizing: border-box !important;
     border: none !important;
-    border-radius: 5px;   
+    border-radius: 5px;
     z-index: 15 !important;
 }
 .a2a_mini{
@@ -2506,7 +2506,7 @@ body.page-template-for-main-page-site-php{
     overflow: hidden;
 }
 
-body.page-template-for-main-page-site-php header, 
+body.page-template-for-main-page-site-php header,
 body.page-template-for-main-page-site-php footer,
 body.page-template-for-main-page-site-php .copyReserved{
     display: none;
@@ -2520,7 +2520,7 @@ body.page-template-for-main-page-site-php #content{
 }
 
 body.page-template-for-main-page-site-php .content img{
-    margin: 0;   
+    margin: 0;
 }
 
 body.page-template-for-main-page-site-php .post h5.entry-title,
@@ -2571,7 +2571,7 @@ body.page-template-for-header-site-php{
     overflow: hidden;
 }
 
-body.page-template-for-header-site-php header, 
+body.page-template-for-header-site-php header,
 body.page-template-for-header-site-php footer,
 body.page-template-for-header-site-php .copyReserved{
     display: none;
@@ -2587,7 +2587,7 @@ body.page-template-for-header-site-php #content{
 }
 
 body.page-template-for-header-site-php .content img{
-    margin: 0;   
+    margin: 0;
 }
 
 body.page-template-for-header-site-php .post p.entry-title,
@@ -2731,7 +2731,7 @@ p img.aligncenter {
     max-width: 80vw;
     max-height: 80vh;
 }
-  
+
   .overlay-dark {
     top: 0;
     position: fixed;
