@@ -159,7 +159,7 @@ a.dropdown-item {
   font-weight: 700;
   cursor: pointer;
   line-height: 36px;
-  margin: 0;
+  margin: 0 0 24px;
   padding: 0 32px;
   text-decoration: none;
   white-space: nowrap;
@@ -419,9 +419,11 @@ div.custom-select div.selector {
   padding-bottom: 10px;
 }
 
-#oforms_header {
+#oforms_header
+#see_it_action_header {
   min-width: 180px;
 }
+
 .menu_pic_div {
   cursor: pointer;
   margin: 16px 32px 0;
@@ -452,19 +454,24 @@ div.custom-select div.selector {
 #oforms_img {
   background-image: url("../images/img_for_header/oforms.svg");
 }
+#see_it_img {
+  background-image: url("../images/img_for_header/onlyoffice_7.2/see_it_action.svg");
+}
 
 #reseller_img {
   background-image: url("../images/img_for_header/menu_reseller.svg");
 }
-#compare_img {
-  background-image: url("../images/img_for_header/menu_compare_edition.svg");
+#hosting_img {
+  background-image: url("../images/img_for_header/onlyoffice_7.2/hosting.svg");
 }
-
-#for_developers_img {
+#for_education_img {
   background-image: url("../images/img_for_header/menu_for_developers.png");
 }
-#latest_events_img{
-  background-image: url("../images/img_for_header/univention_may_2022_@2x-01.png")
+#for_developers_img {
+  background-image: url("../images/img_for_header/onlyoffice_7.2/code_github2x.png");
+}
+#education_eve_img{
+  background-image: url("../images/img_for_header/onlyoffice_7.2/education.png")
 }
 
 @media screen and (min-width: 1024px) {
@@ -582,6 +589,11 @@ div.custom-select div.selector {
   #navitem_about_menu .dropdown-content > li{
     display: table-cell;
     padding: 27px 0;
+  }
+  #navitem_download_menu .dropdown-content > li,
+  #navitem_prices_menu .dropdown-content > li,
+  #navitem_developers_menu .dropdown-content > li {
+    padding: 32px 0 8px;
   }
   #navitem_about_menu .dropdown-content > li {
     min-width: 312px;
@@ -729,7 +741,7 @@ div.custom-select div.selector {
     font-weight: 700;
     cursor: pointer;
     line-height: 24px;
-    margin: 0;
+    margin: 0 0 24px;
     padding: 0 32px 0 68px;
     text-decoration: none;
     white-space: nowrap;
@@ -743,7 +755,7 @@ div.custom-select div.selector {
     position: absolute;
     left: 32px;
     top: 0;
-    background-image: url("../images/img_for_header/icons.svg");
+    background-image: url("../images/img_for_header/onlyoffice_7.2/icons.svg");
     background-repeat: no-repeat;
   }
   #navitem_solutions_clients_apps:before {
@@ -751,6 +763,39 @@ div.custom-select div.selector {
   }
   #navitem_solutions_clients_mobile_ios:before {
     background-position-y: -78px;
+  }
+  #navitem_features_spreadsheet_editor:before {
+    background-position-y: -50px;
+  }
+  #navitem_features_presentation_editor:before {
+    background-position-y: -934px;
+  }
+  #navitem_features_form_creator:before {
+    background-position-y: -728px;
+  }
+  #navitem_features_pdf_reader:before {
+    background-position-y: -756px;
+  }
+  #navitem_fb_docs_ee:before {
+    background-position-y: -806px;
+  }
+  #navitem_fb_workspace:before {
+    background-position-y: -25px;
+  }
+  #navitem_document_developer:before {
+    background-position-y: -832px;
+  }
+  #navitem_document_api:before {
+    background-position-y: -908px;
+  }
+  #navitem_developer_edition:before {
+    background-position-y: -832px;
+  }
+  #navitem_document_builder:before {
+    background-position-y: -858px;
+  }
+  #navitem_about_compare:before {
+    background-position-y: -780px;
   }
   #navitem_solutions_clients_mobile_android:before {
     background-position-y: -104px;
@@ -824,8 +869,20 @@ div.custom-select div.selector {
   #navitem_features_security:before{
     background-position-y: -650px;
   }
+  #navitem_integrations_nextcloud:before,
+  #navitem_integrations_owncloud:before,
+  #navitem_integrations_alfresco:before,
+  #navitem_integrations_moodle:before,
+  #navitem_integrations_others:before,
+  #navitem_developers_for_developers:before,
+  #navitem_education_for_business:before,
+  #navitem_integrations_confluence:before
+  {
+    background-position-y: 22px;
+  }
   #navitem_features_docs_editions,
   #navitem_solutions_clients_workspace,
+  #navitem_fb_other_integrations,
   #navitem_prices_docs,
   #navitem_prices_workspace,
   #navitem_download_docs,
@@ -833,7 +890,7 @@ div.custom-select div.selector {
   #navitem_about_resources {
     background-color: #f5f5f5;
     padding-left: 12px;
-    margin: 0 32px;
+    margin: 0 32px 16px;
     color: #666666;
     font-weight: 600;
     font-size: 13px;
@@ -844,16 +901,20 @@ div.custom-select div.selector {
   }
   #navitem_features_docs_editions:before,
   #navitem_solutions_clients_workspace:before,
+  #navitem_fb_other_integrations:before,
   #navitem_prices_docs:before,
   #navitem_prices_workspace:before,
   #navitem_download_docs:before,
   #navitem_download_workspace:before,
   #navitem_features_oforms:before,
+  #navitem_features_see_it:before,
   /*#navitem_developers_menu:before,*/
-  #navitem_integrations_menu a.dropdown-item:before,
-  #navitem_prices_menu a.dropdown-item:before,
-  #navitem_compare_third_level_menu a.dropdown-item:before,
-  #navitem_latest_events_third_level_menu a.dropdown-item:before,
+  /*#navitem_integrations_menu a.dropdown-item:before,*/
+  /*#navitem_prices_menu a.dropdown-item:before,*/
+  #navitem_hosting_third_level_menu a.dropdown-item:before,
+  #navitem_education_events_third_level_menu a.dropdown-item:before,
+  #navitem_reseller_third_level_menu a.dropdown-item:before,
+  #navitem_education_eve_events_third_level_menu a.dropdown-item:before,
   #navitem_about_resources:before{
     content: none;
   }
@@ -875,12 +936,13 @@ div.custom-select div.selector {
   }
 
   #navitem_oforms_third_level_menu a.dropdown-item,
-  #navitem_integrations_menu a.dropdown-item,
+  /*#navitem_integrations_menu a.dropdown-item,*/
   #navitem_developers_third_level_menu a.dropdown-item,
   #navitem_reseller_third_level_menu a.dropdown-item,
-  #navitem_compare_third_level_menu a.dropdown-item,
-  #navitem_developers_third_level_menu a.dropdown-item,
-  #navitem_latest_events_third_level_menu a.dropdown-item{
+  #navitem_hosting_third_level_menu a.dropdown-item,
+  #navitem_education_third_level_menu a.dropdown-item,
+  #navitem_education_eve_events_third_level_menu a.dropdown-item,
+  #navitem_education_events_third_level_menu a.dropdown-item{
     padding: 0 32px;
     margin-bottom: 24px;
   }
@@ -1246,18 +1308,22 @@ div.custom-select div.selector {
   }
   a.dropdown-item {
     white-space: normal;
+    padding: 7px 36px !important;
   }
   #compare_div,
   #customer_stories_div,
   #latest_release_div,
   #reseller_div,
   #oforms_div,
+  #for_education_div,
   #for_developers_div,
-  #latest_events_div,
+  #for_business_div,
+  #education_eve_div,
   #navitem_about_resources {
     display: none;
   }
   #navitem_features_docs_editions,
+  #navitem_fb_other_integrations,
   #navitem_solutions_clients_workspace,
   #navitem_prices_docs,
   #navitem_prices_workspace,
@@ -1265,7 +1331,7 @@ div.custom-select div.selector {
   #navitem_download_workspace,
   #navitem_about_resources {
     background-color: #f5f5f5;
-    padding:0 0 0 8px;
+    padding-left: 8px !important;
     margin: 0 16px;
     color: #666666;
     font-weight: 600;
@@ -1283,10 +1349,15 @@ div.custom-select div.selector {
   #navitem_partnership_menu a.dropdown-item,
   #navitem_about_menu a.dropdown-item,
   #navitem_features_security,
+  #navitem_features_see_it,
   #navitem_features_oforms{
     line-height: 21px;
     margin-bottom: 24px;
   }
+}
+
+#navitem_features_oforms {
+  margin-top: 22px;
 }
 
 @media screen and (max-width: 592px) {
