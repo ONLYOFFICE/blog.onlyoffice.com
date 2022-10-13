@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: _s 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/tags/_s\n"
 "POT-Creation-Date: 2022-04-25 15:20+0300\n"
-"PO-Revision-Date: 2022-10-12 16:56+0500\n"
+"PO-Revision-Date: 2022-10-13 11:29+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja\n"
@@ -757,8 +757,8 @@ msgid "Solutions"
 msgstr "ソリューション"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:44 wp-content/themes/teamlab-blog-2-0/footer.php:81
-msgid "By size"
-msgstr "規模により"
+msgid "SOLUTIONS BY SIZE"
+msgstr "規模別ソリューション"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:49 wp-content/themes/teamlab-blog-2-0/footer.php:86
 msgid "SMBs"
@@ -773,8 +773,8 @@ msgid "Home use"
 msgstr "家庭用"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:60 wp-content/themes/teamlab-blog-2-0/footer.php:99
-msgid "By industry"
-msgstr "業界により"
+msgid "SOLUTIONS BY INDUSTRY"
+msgstr "業種別ソリューション"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:68 wp-content/themes/teamlab-blog-2-0/footer.php:107
 msgid "Hosting providers"

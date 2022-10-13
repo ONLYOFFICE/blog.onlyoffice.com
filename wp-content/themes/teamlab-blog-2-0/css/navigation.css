@@ -32,9 +32,17 @@ nav {
 }
 nav .pushy-content {
   margin: 0 auto;
-  max-width: 768px;
-  width: 45vw;
+  max-width: 920px;
+  width: 72vw;
 }
+@media screen and (max-width: 1440px) {
+  nav .pushy-content {
+    margin: 0 auto;
+    max-width: 85%;
+    width: 80%;
+  }
+}
+
 nav > div {
   visibility: inherit;
 }

@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: _s 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/tags/_s\n"
 "POT-Creation-Date: 2022-04-25 15:19+0300\n"
-"PO-Revision-Date: 2022-10-12 16:58+0500\n"
+"PO-Revision-Date: 2022-10-13 11:29+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -924,8 +924,8 @@ msgid "Solutions"
 msgstr "解决方案"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:44 wp-content/themes/teamlab-blog-2-0/footer.php:81
-msgid "By size"
-msgstr "按大小"
+msgid "SOLUTIONS BY SIZE"
+msgstr "按规模划分的解决方案"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:49 wp-content/themes/teamlab-blog-2-0/footer.php:86
 msgid "SMBs"
@@ -940,8 +940,8 @@ msgid "Home use"
 msgstr "家庭使用"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:60 wp-content/themes/teamlab-blog-2-0/footer.php:99
-msgid "By industry"
-msgstr "按行业划分"
+msgid "SOLUTIONS BY INDUSTRY"
+msgstr "按行业划分的解决方案"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:68 wp-content/themes/teamlab-blog-2-0/footer.php:107
 msgid "Hosting providers"
