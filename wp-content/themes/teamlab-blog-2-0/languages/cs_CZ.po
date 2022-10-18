@@ -341,6 +341,9 @@ msgstr ""
 msgid "Hosting providers"
 msgstr ""
 
+msgid "Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures, <br> updated UI, and more"
+msgstr "Objevte <b>ONLYOFFICE Docs v7.2</b> s tržištěm zásuvných modulů, novými formulářovými poli, živým prohlížečem, ligaturami, <br> aktualizovaným uživatelským rozhraním a dalšími funkcemi."
+
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:71
 #: wp-content/themes/teamlab-blog-2-0/footer.php:108
 msgid "Government"

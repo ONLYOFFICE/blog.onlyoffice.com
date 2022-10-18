@@ -710,6 +710,9 @@ body.desktop .button.red.disabled:visited {
     outline: 0;
     width: calc(100vw - 120px);
   }
+  .ListSocLink li {
+    padding-right: 13px;
+  }
   .serach-header {
     position: absolute;
     right: 40px;
@@ -775,6 +778,9 @@ body.desktop .button.red.disabled:visited {
     margin:auto;
     box-sizing: border-box;
     max-width: 736px;
+  }
+  .footer_menu_item div p{
+    text-align: center;
   }
   .SearchContainer{
     margin: auto;
@@ -946,6 +952,9 @@ body.desktop .button.red.disabled:visited {
    .SearchContainer .sidebar .wrapperMain {
      margin: 40px 0 0 0;
    }
+  .ListSocLink li {
+    padding-right: 35px;
+  }
    .PostContainer {
      width: auto;
      padding: 0 40px 80px 40px;
@@ -1082,7 +1091,11 @@ body.desktop .button.red.disabled:visited {
     margin-top: -30px;
 }
   .SocialLinks {
+    display: block;
     margin-top: 32px;
+  }
+  .footer_menu_item.fmi_social {
+    display: block;
   }
   .SocialLinks h6{
     display: block;
@@ -1091,6 +1104,7 @@ body.desktop .button.red.disabled:visited {
   .SocialLinks span {
     display: block;
     padding-bottom: 10px;
+    text-align: center;
   }
   .footer-search{
     margin-top: 32px;
@@ -1239,6 +1253,7 @@ body.desktop .button.red.disabled:visited {
   .ErrorContainer .bg{
     height: 235px;
   }
+
 .gRecaptcha{
     width: 100%;
     transform: none;
@@ -1397,6 +1412,9 @@ body.desktop .button.red.disabled:visited {
   }
   .SocialLinks{
     margin-top: 10px;
+  }
+  .SocialLinks span {
+    display: none;
   }
 }
 

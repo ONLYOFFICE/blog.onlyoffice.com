@@ -584,6 +584,9 @@ msgstr "Блог"
 msgid "Customers"
 msgstr "Клиенты"
 
+msgid "Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures, <br> updated UI, and more"
+msgstr "Откройте для себя <b>ONLYOFFICE Docs v7.2</b> с магазином плагинов, новыми полями форм, режимом просмотра в реальном времени, <br> лигатурами, обновленным пользовательским интерфейсом и другими возможностями"
+
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:244
 #: wp-content/themes/teamlab-blog-2-0/header.php:358
 msgid "Awards"

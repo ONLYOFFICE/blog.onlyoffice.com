@@ -1179,9 +1179,9 @@ msgid "(Edit)"
 msgstr "（編集）"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:117
-msgid "Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures,  updated UI, and more"
+msgid "Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures, <br> updated UI, and more"
 msgstr ""
-"<b>ONLYOFFICE Docs v7.2</b> プラグインマーケットプレイス、新しいフォームフィールド、ライブビューア、合字、アップデートされたUI、そ"
+"<b>ONLYOFFICE Docs v7.2</b> プラグインマーケットプレイス、新しいフォームフィールド、ライブビューア、合字、 <br> アップデートされたUI、そ"
 "の他をご覧ください。"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:124

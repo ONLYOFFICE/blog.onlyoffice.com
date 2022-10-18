@@ -336,6 +336,9 @@ msgstr "Empresas"
 msgid "Home use"
 msgstr "Uso doméstico"
 
+msgid "Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures, <br> updated UI, and more"
+msgstr "Descubra o <b>ONLYOFFICE Docs v7.2</b> com mercado de plug-ins, novos campos de formulário, visualizador ao vivo, ligaduras, <br> atualizada e muito mais"
+
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:60
 #: wp-content/themes/teamlab-blog-2-0/footer.php:99
 msgid "By industry"

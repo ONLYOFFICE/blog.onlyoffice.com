@@ -810,8 +810,8 @@ msgid "(Edit)"
 msgstr "(Éditer)"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:117
-msgid "Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures,  updated UI, and more"
-msgstr "Découvrez <b>ONLYOFFICE Docs v7.2</b> avec marketplace de plugins, nouveaux champs de formulaires, visionneuse en direct, ligatures, interface utilisateur mise à jour, et plus encore"
+msgid "Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures, <br> updated UI, and more"
+msgstr "Découvrez <b>ONLYOFFICE Docs v7.2</b> avec marketplace de plugins, nouveaux champs de formulaires, visionneuse en direct, <br> ligatures, interface utilisateur mise à jour, et plus encore"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:124
 msgid "<b>ONLYOFFICE Docs v7.2</b>"

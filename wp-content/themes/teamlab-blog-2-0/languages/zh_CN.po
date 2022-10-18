@@ -1362,8 +1362,8 @@ msgid "(Edit)"
 msgstr "（编辑）"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:117
-msgid "Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures,  updated UI, and more"
-msgstr "了解 <b>ONLYOFFICE 文档 v7.2</b>，包括插件市场、全新表单字段、实时查看器、连写、UI 更新等"
+msgid "Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures, <br> updated UI, and more"
+msgstr "了解 <b>ONLYOFFICE 文档 v7.2</b>，包括插件市场、全新表单字段、实时查看器、连写、 <br> UI 更新等"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:124
 msgid "<b>ONLYOFFICE Docs v7.2</b>"

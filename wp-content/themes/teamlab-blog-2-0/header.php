@@ -116,7 +116,7 @@ $lang = $sitepress->get_current_language();
     ?>
     <a href="<?php echo $banner_url ?>">
         <div class="advent-announce-text">
-            <?php _e('Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures,  updated UI, and more', 'teamlab-blog-2-0'); ?>
+            <?php _e('Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures, <br> updated UI, and more', 'teamlab-blog-2-0'); ?>
         </div>
     </a>
 </div>
