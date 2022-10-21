@@ -38,8 +38,8 @@ nav .pushy-content {
 @media screen and (max-width: 1440px) {
   nav .pushy-content {
     margin: 0 auto;
-    max-width: 85%;
-    width: 80%;
+    max-width: 100%;
+    width: 92%;
   }
 }
 
@@ -958,7 +958,7 @@ div.custom-select div.selector {
   #navitem_about_menu a.dropdown-item:last-child {
     margin-bottom: 0;
   }
-  #navitem_features_menu .dropdown-content > li:first-of-type:before,
+  /*#navitem_features_menu .dropdown-content > li:first-of-type:before,*/
   #navitem_about_menu .dropdown-content > li:first-of-type:before{
     content: "";
     display: block;
@@ -968,6 +968,17 @@ div.custom-select div.selector {
     position: absolute;
     top: 27px;
     left: 295px;
+  }
+  /*#navitem_features_menu .dropdown-content > li:first-of-type:before {*/
+  /*  left: 350px;*/
+  /*}*/
+  #navitem_features_menu .dropdown-content > li:first-of-type > ul,
+  #navitem_download_menu .dropdown-content > li:first-of-type > ul {
+    border-right: 1px solid #ebebeb;
+    height: 410px;
+  }
+  #navitem_download_menu .dropdown-content > li:first-of-type > ul {
+    height: 100%;
   }
   #navitem_about_menu .dropdown-content > li:first-of-type:before{
     left: 312px;
@@ -1131,7 +1142,7 @@ div.custom-select div.selector {
   }
 
   ul.navitem_2nd_menu {
-    padding: 16px 0 24px;
+    padding: 0;
   }
   ul.navitem_2nd_menu li a.nav_2nd_menu_link{
     line-height: 26px;

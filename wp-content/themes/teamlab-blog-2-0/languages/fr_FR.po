@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: teamlab-blog-2-0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/twentyten\n"
 "POT-Creation-Date: 2022-04-25 15:17+0300\n"
-"PO-Revision-Date: 2022-10-13 11:28+0500\n"
+"PO-Revision-Date: 2022-10-21 12:48+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -418,18 +418,18 @@ msgstr "Connecteurs ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:114
 #: wp-content/themes/teamlab-blog-2-0/header.php:186
-msgid "ONLYOFFICE for desktop"
-msgstr "ONLYOFFICE pour le bureau"
+msgid "For desktop"
+msgstr "Pour le bureau"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:117
 #: wp-content/themes/teamlab-blog-2-0/header.php:187
-msgid "ONLYOFFICE for iOS"
-msgstr "ONLYOFFICE pour iOS"
+msgid "For iOS"
+msgstr "Pour iOS"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:120
 #: wp-content/themes/teamlab-blog-2-0/header.php:188
-msgid "ONLYOFFICE for Android"
-msgstr "ONLYOFFICE pour Android"
+msgid "For Android"
+msgstr "Pour Android"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:123
 msgid "ONLYOFFICE Groups"
@@ -1036,6 +1036,9 @@ msgstr "Tous les <div class=\"no-wrap\">billets&nbsp;<div class=\"grey-arrow\"><
 msgid "Features"
 msgstr "FONCTIONNALITÉS"
 
+msgid "follow us on:"
+msgstr "Suivez-nous sur:"
+
 #~ msgid "<b>ONLYOFFICE 7.0:</b> <span>online forms</span>, password protection in sheets, collaboration improvements and much more"
 #~ msgstr "<b>ONLYOFFICE 7.0 :</b> <span>formulaires en ligne</span>, protection avec un mot de passe dans les feuilles de calcul, collaboration améliorée et plus encore"
 
@@ -1044,9 +1047,6 @@ msgstr "FONCTIONNALITÉS"
 
 #~ msgid "ONLYOFFICE joins the Linux Foundation as a silver member"
 #~ msgstr "ONLYOFFICE rejoint Linux Foundation avec le statut membre Argent"
-
-#~ msgid "follow us on:"
-#~ msgstr "Suivez-nous sur:"
 
 #~ msgid "Meet ONLYOFFICE Private Rooms where every symbol you type is encrypted <span class=\"nowrap\">end-to-end</span>"
 #~ msgstr "Découvrez les salles privées de ONLYOFFICE où chaque symbole que vous tapez est chiffré de bout en bout"

@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: _s 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/tags/_s\n"
 "POT-Creation-Date: 2022-04-25 15:20+0300\n"
-"PO-Revision-Date: 2022-10-13 11:29+0500\n"
+"PO-Revision-Date: 2022-10-21 12:49+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja\n"
@@ -244,8 +244,7 @@ msgstr ""
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1114
 msgid ""
-"Require verification of first-time subscription e-mails (this is known as \"double opt-in\" and is required by law in some "
-"countries)"
+"Require verification of first-time subscription e-mails (this is known as \"double opt-in\" and is required by law in some countries)"
 msgstr ""
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1117
@@ -266,8 +265,8 @@ msgstr ""
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1125
 msgid ""
-"Do a CSS \"clear\" on the subscription checkbox/message (uncheck this if the checkbox/message appears in a strange location in "
-"your theme)"
+"Do a CSS \"clear\" on the subscription checkbox/message (uncheck this if the checkbox/message appears in a strange location in your "
+"theme)"
 msgstr ""
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1128
@@ -305,8 +304,8 @@ msgstr ""
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1142
 msgid ""
-"These settings only matter if you are using a custom style.  <code>[theme_path]</code> will be replaced with the path to your "
-"current theme."
+"These settings only matter if you are using a custom style.  <code>[theme_path]</code> will be replaced with the path to your current "
+"theme."
 msgstr ""
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1144
@@ -373,22 +372,22 @@ msgstr ""
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1328
 #, php-format
 msgid ""
-"<strong>%s</strong> has been blocked from receiving notifications.  You will have to have the administrator remove the block "
-"before you will be able to change your notification address."
+"<strong>%s</strong> has been blocked from receiving notifications.  You will have to have the administrator remove the block before "
+"you will be able to change your notification address."
 msgstr ""
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1331
 #, php-format
 msgid ""
-"Your change of e-mail request was successfully received.  Please check your old account (<strong>%s</strong>) in order to confirm "
-"the change."
+"Your change of e-mail request was successfully received.  Please check your old account (<strong>%s</strong>) in order to confirm the "
+"change."
 msgstr ""
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1336
 #, php-format
 msgid ""
-"Your request to block <strong>%s</strong> from receiving any further notifications has been received.  In order for you to "
-"complete the block, please check your e-mail and click on the link in the message that has been sent to you."
+"Your request to block <strong>%s</strong> from receiving any further notifications has been received.  In order for you to complete "
+"the block, please check your e-mail and click on the link in the message that has been sent to you."
 msgstr ""
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1340
@@ -420,8 +419,8 @@ msgstr ""
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1380
 #, php-format
 msgid ""
-"Click the button below to remove the block on <strong>%s</strong>.  This should only be done if the user has specifically "
-"requested it."
+"Click the button below to remove the block on <strong>%s</strong>.  This should only be done if the user has specifically requested "
+"it."
 msgstr ""
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1388
@@ -435,8 +434,8 @@ msgstr ""
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1397
 #, php-format
 msgid ""
-"You have indicated that you do not wish to receive any notifications at <strong>%1$s</strong> from this site. If this is "
-"incorrect, or if you wish to have the block removed, please contact the <a href=\"mailto:%2$s\">site administrator</a>."
+"You have indicated that you do not wish to receive any notifications at <strong>%1$s</strong> from this site. If this is incorrect, "
+"or if you wish to have the block removed, please contact the <a href=\"mailto:%2$s\">site administrator</a>."
 msgstr ""
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1411
@@ -515,8 +514,8 @@ msgstr ""
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1575
 #, php-format
 msgid ""
-"If you would like <strong>%s</strong> to be blocked from receiving any notifications from this site, click the button below.  "
-"This should be reserved for cases where someone is signing you up for notifications without your consent."
+"If you would like <strong>%s</strong> to be blocked from receiving any notifications from this site, click the button below.  This "
+"should be reserved for cases where someone is signing you up for notifications without your consent."
 msgstr ""
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1579
@@ -530,8 +529,8 @@ msgstr ""
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1592
 #, php-format
 msgid ""
-"If you would like to change the e-mail address for your subscriptions, enter the new address below.  You will be required to "
-"verify this request by clicking a special link sent to your current address (<strong>%s</strong>)."
+"If you would like to change the e-mail address for your subscriptions, enter the new address below.  You will be required to verify "
+"this request by clicking a special link sent to your current address (<strong>%s</strong>)."
 msgstr ""
 
 #: wp-content/plugins/subscribe-to-comments/subscribe-to-comments.php:1596
@@ -704,8 +703,8 @@ msgstr "ヘルプ・センター"
 msgid "App Directory"
 msgstr "App ディレクトリ"
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:67 wp-content/themes/teamlab-blog-2-0/footer.php:166 msgid "Compare to
-#: other suites" msgstr "他のスイートと比較する" wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:68
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:67 wp-content/themes/teamlab-blog-2-0/footer.php:166 msgid "Compare to other
+#: suites" msgstr "他のスイートと比較する" wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:68
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:238 wp-content/themes/teamlab-blog-2-0/footer.php:169
 #: wp-content/themes/teamlab-blog-2-0/header.php:359
 msgid "Contribute"
@@ -830,16 +829,16 @@ msgid "ONLYOFFICE Connectors"
 msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:114 wp-content/themes/teamlab-blog-2-0/header.php:186
-msgid "ONLYOFFICE for desktop"
-msgstr "デスクトップ用ONLYOFFICE"
+msgid "For desktop"
+msgstr "デスクトップ用"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:117 wp-content/themes/teamlab-blog-2-0/header.php:187
-msgid "ONLYOFFICE for iOS"
-msgstr "IOS用ONLYOFFICE"
+msgid "For iOS"
+msgstr "IOS用"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:120 wp-content/themes/teamlab-blog-2-0/header.php:188
-msgid "ONLYOFFICE for Android"
-msgstr "Android用ONLYOFFICE"
+msgid "For Android"
+msgstr "Android用"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:123
 msgid "ONLYOFFICE Groups"
@@ -1181,8 +1180,8 @@ msgstr "（編集）"
 #: wp-content/themes/teamlab-blog-2-0/header.php:117
 msgid "Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures, <br> updated UI, and more"
 msgstr ""
-"<b>ONLYOFFICE Docs v7.2</b> プラグインマーケットプレイス、新しいフォームフィールド、ライブビューア、合字、 <br> アップデートされたUI、そ"
-"の他をご覧ください。"
+"<b>ONLYOFFICE Docs v7.2</b> プラグインマーケットプレイス、新しいフォームフィールド、ライブビューア、合字、 <br> アップデートされたUI、"
+"その他をご覧ください。"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:124
 msgid "<b>ONLYOFFICE Docs v7.2</b>"

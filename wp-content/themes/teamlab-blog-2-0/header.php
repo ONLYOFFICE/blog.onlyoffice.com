@@ -178,9 +178,9 @@ $lang = $sitepress->get_current_language();
                                                 <ul class="navitem_2nd_menu">
                                                     <li>
                                                         <a id="navitem_solutions_clients_workspace" class="dropdown-item mobile_no_link"><?php _e('DESKTOP&MOBILE APPS', 'teamlab-blog-2-0'); ?></a>
-                                                        <a id="navitem_solutions_clients_apps" class="dropdown-item" href="<?php echo $current_language ?>/desktop.aspx"><?php _e('ONLYOFFICE for desktop', 'teamlab-blog-2-0'); ?></a>
-                                                        <a id="navitem_solutions_clients_mobile_ios" class="dropdown-item" href="<?php echo $current_language ?>/office-for-ios.aspx"><?php _e('ONLYOFFICE for iOS', 'teamlab-blog-2-0'); ?></a>
-                                                        <a id="navitem_solutions_clients_mobile_android" class="dropdown-item" href="<?php echo $current_language ?>/office-for-android.aspx"><?php _e('ONLYOFFICE for Android', 'teamlab-blog-2-0'); ?></a>
+                                                        <a id="navitem_solutions_clients_apps" class="dropdown-item" href="<?php echo $current_language ?>/desktop.aspx"><?php _e('For desktop', 'teamlab-blog-2-0'); ?></a>
+                                                        <a id="navitem_solutions_clients_mobile_ios" class="dropdown-item" href="<?php echo $current_language ?>/office-for-ios.aspx"><?php _e('For iOS', 'teamlab-blog-2-0'); ?></a>
+                                                        <a id="navitem_solutions_clients_mobile_android" class="dropdown-item" href="<?php echo $current_language ?>/office-for-android.aspx"><?php _e('For Android', 'teamlab-blog-2-0'); ?></a>
                                                     </li>
                                                 </ul>
                                             </li>
@@ -256,18 +256,20 @@ $lang = $sitepress->get_current_language();
                                     <div id="navitem_download_menu">
                                         <ul class="dropdown-content">
                                             <li class="pushy-link">
-                                                <a id="navitem_download_docs" class="dropdown-item mobile_no_link"><?php _e('For business', 'teamlab-blog-2-0'); ?></a>
-                                                <a class="dropdown-item" id="navitem_fb_docs_ee"  href="<?php echo $current_language ?>/docs-enterprise.aspx"><?php _e('Docs Enterprise', 'teamlab-blog-2-0'); ?></a>
-                                                <a class="dropdown-item" id="navitem_fb_workspace"  href="<?php echo $current_language ?>/workspace.aspx"><?php _e('Workspace', 'teamlab-blog-2-0'); ?></a>
-                                                <ul class="navitem_2nd_menu">
-                                                    <li><a class="nav_item_nowrap_link" id="navitem_download_signin" href="<?php echo $current_language ?>/signin.aspx"><?php _e('Sign in', 'teamlab-blog-2-0'); ?></a> /
-                                                        <a class="nav_item_nowrap_link second" id="navitem_download_signup" href="<?php echo $current_language ?>/registration.aspx"><?php _e('Sign up for cloud', 'teamlab-blog-2-0'); ?></a>
-                                                    </li>
-                                                    <li><a class="nav_2nd_menu_link" id="navitem_download_onpremises" href="<?php echo $current_language ?>/download-workspace.aspx"><?php _e('Install on-premises', 'teamlab-blog-2-0'); ?></a>
-                                                    </li>
-                                                </ul>
-                                                <a id="navitem_link_personal" class="dropdown-item" href="<?php echo $current_language ?>/download-connectors.aspx"><?php _e('Connectors', 'teamlab-blog-2-0'); ?></a>
-                                                <a id="navitem_download_desktop" class="dropdown-item" href="<?php echo $current_language ?>/download-desktop.aspx"><?php _e('DESKTOP&MOBILE APPS', 'teamlab-blog-2-0'); ?></a>
+                                               <ul>
+                                                   <a id="navitem_download_docs" class="dropdown-item mobile_no_link"><?php _e('For business', 'teamlab-blog-2-0'); ?></a>
+                                                   <a class="dropdown-item" id="navitem_fb_docs_ee"  href="<?php echo $current_language ?>/docs-enterprise.aspx"><?php _e('Docs Enterprise', 'teamlab-blog-2-0'); ?></a>
+                                                   <a class="dropdown-item" id="navitem_fb_workspace"  href="<?php echo $current_language ?>/workspace.aspx"><?php _e('Workspace', 'teamlab-blog-2-0'); ?></a>
+                                                   <ul class="navitem_2nd_menu">
+                                                       <li><a class="nav_item_nowrap_link" id="navitem_download_signin" href="<?php echo $current_language ?>/signin.aspx"><?php _e('Sign in', 'teamlab-blog-2-0'); ?></a> /
+                                                           <a class="nav_item_nowrap_link second" id="navitem_download_signup" href="<?php echo $current_language ?>/registration.aspx"><?php _e('Sign up for cloud', 'teamlab-blog-2-0'); ?></a>
+                                                       </li>
+                                                       <li><a class="nav_2nd_menu_link" id="navitem_download_onpremises" href="<?php echo $current_language ?>/download-workspace.aspx"><?php _e('Install on-premises', 'teamlab-blog-2-0'); ?></a>
+                                                       </li>
+                                                   </ul>
+                                                   <a id="navitem_link_personal" class="dropdown-item" href="<?php echo $current_language ?>/download-connectors.aspx"><?php _e('Connectors', 'teamlab-blog-2-0'); ?></a>
+                                                   <a id="navitem_download_desktop" class="dropdown-item" href="<?php echo $current_language ?>/download-desktop.aspx"><?php _e('DESKTOP&MOBILE APPS', 'teamlab-blog-2-0'); ?></a>
+                                               </ul>
                                             </li>
                                             <li class="pushy-link">
                                                 <a id="navitem_download_docs" class="dropdown-item mobile_no_link"><?php _e('For developers', 'teamlab-blog-2-0'); ?></a>
