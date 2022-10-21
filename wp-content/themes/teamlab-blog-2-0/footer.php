@@ -231,7 +231,7 @@ $lang = $sitepress->get_current_language();
                 <div class="footer_menu_item fmi_social">
                     <div class="SocialLinks">
                         <span>
-                            <?php _e('Follow us on', 'teamlab-blog-2-0'); ?>
+                            <?php _e('Follow us on:', 'teamlab-blog-2-0'); ?>
                         </span>
                         <ul class="ListSocLink">
                             <li>

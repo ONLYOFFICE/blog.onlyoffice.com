@@ -1036,7 +1036,7 @@ msgstr "Tous les <div class=\"no-wrap\">billets&nbsp;<div class=\"grey-arrow\"><
 msgid "Features"
 msgstr "FONCTIONNALITÉS"
 
-msgid "follow us on:"
+msgid "Follow us on:"
 msgstr "Suivez-nous sur:"
 
 #~ msgid "<b>ONLYOFFICE 7.0:</b> <span>online forms</span>, password protection in sheets, collaboration improvements and much more"
