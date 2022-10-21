@@ -28,3 +28,4 @@ if ( defined( 'ADVANCEDCACHEPROBLEM' ) ) {
 	register_shutdown_function( 'wpcache_broken_message' );
 }
 
+
