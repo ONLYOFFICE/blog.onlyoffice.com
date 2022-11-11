@@ -35,14 +35,23 @@ nav .pushy-content {
   max-width: 920px;
   width: 72vw;
 }
-@media screen and (max-width: 1440px) {
-  nav .pushy-content {
-    margin: 0 auto;
-    max-width: 100%;
-    width: 92%;
+@media screen and (max-width: 1560px) {
+  nav .pushy-content{
+    margin: 0 auto 0 14%;
   }
 }
-
+@media screen and (max-width: 1250px) {
+  nav .pushy-content {
+    margin: 0 15% 0 auto;
+    max-width: 100%;
+  }
+}
+@media screen and (max-width: 1184px) {
+  nav .pushy-content {
+    margin: 0 20% 0 auto;
+    max-width: 100%;
+  }
+}
 nav > div {
   visibility: inherit;
 }
@@ -1083,7 +1092,7 @@ div.custom-select div.selector {
     position: absolute;
     top: 1px;
     width: 30px;
-    z-index: 10000000;
+    z-index: 100;
   }
   .pushy,
   .push {
