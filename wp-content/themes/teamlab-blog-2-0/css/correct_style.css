@@ -980,6 +980,10 @@ margin: 16px auto;
   grid-gap: 64px 32px;
   position: relative;
 }
+.wrapperMain .no-results{
+  padding: 0 16px;
+  grid-column: span 3;
+}
 .wrapperMainTag{
   margin: 40px 0 0;
 }
