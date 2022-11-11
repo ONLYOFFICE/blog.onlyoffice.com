@@ -269,8 +269,8 @@ $lang = $sitepress->get_current_language();
                         </ul>
                     </div>
                     <div class="copyReserved">
-                        <p>&copy; <?php _e('Ascensio System SIA 1998', 'teamlab-blog-2-0'); ?>-<?php echo date("Y"); ?>.</p>
-                        <p><?php _e('All rights reserved', 'teamlab-blog-2-0'); ?></p>
+                        <span>&copy; <?php _e('Ascensio System SIA 1998', 'teamlab-blog-2-0'); ?>-<?php echo date("Y"); ?>.</span>
+                        <span><?php _e('All rights reserved', 'teamlab-blog-2-0'); ?></span>
                     </div>
                 </div>
             </div>
