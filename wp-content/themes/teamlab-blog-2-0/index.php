@@ -137,8 +137,7 @@ $queryNews = new WP_Query($argsNews); ?>
             'post_status' => 'publish',
             'posts_per_page' => 3,
             'category__not_in' => $news_cat_id,
-            // 'cat'=> 1061,
-            'category_name' => 'teamlab'
+            'cat'=> 1061,
           ];
 
           $wp_query = new WP_Query($args);
@@ -147,7 +146,7 @@ $queryNews = new WP_Query($argsNews); ?>
           <div class="wrapperBlock">
             <div class="wrapperTitle">
               <h2><?php _e('Product releases', 'teamlab-blog-2-0'); ?></h2>
-              <div class="view-all"><a href="<?php echo icl_get_home_url() ?>category/teamlab"><?php _e( 'View all <div class="no-wrap">posts&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
+              <div class="view-all"><a href="<?php echo icl_get_home_url() ?>category/product-releases"><?php _e( 'View all <div class="no-wrap">posts&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
             </div>
             <div class="wrapperMain">
               <?php while ($wp_query->have_posts()) : $wp_query->the_post(); ?>
