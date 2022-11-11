@@ -137,7 +137,7 @@ $queryNews = new WP_Query($argsNews); ?>
             'post_status' => 'publish',
             'posts_per_page' => 3,
             'category__not_in' => $news_cat_id,
-            'cat'=> 1061,
+            'category_name' =>  'product-releases, product-releases-fr, product-releases-es, product-releases-pt, product-releases-it, product-releases-cs, product-releases-ja, product-releases-zh-hans'
           ];
 
           $wp_query = new WP_Query($args);
@@ -166,7 +166,7 @@ $queryNews = new WP_Query($argsNews); ?>
             'post_status' => 'publish',
             'posts_per_page' => 3,
             'category__not_in' => $news_cat_id,
-            'cat'=> 1062,
+            'category_name' =>  'for-developers, for-developers-fr, for-developers-es, for-developers-pt, for-developers-it, for-developers-cs, for-developers-ja, for-developers-zh-hans'
           ];
 
           $wp_query = new WP_Query($args);
@@ -197,7 +197,7 @@ $queryNews = new WP_Query($argsNews); ?>
             'post_status' => 'publish',
             'posts_per_page' => 3,
             'category__not_in' => $news_cat_id,
-            'cat'=> 1063,
+            'category_name' =>  'for-business, for-business-fr, for-business-es, for-business-pt, for-business-it, for-business-cs, for-business-ja, for-business-zh-hans'
           ];
 
           $wp_query = new WP_Query($args);
@@ -226,7 +226,7 @@ $queryNews = new WP_Query($argsNews); ?>
             'post_status' => 'publish',
             'posts_per_page' => 3,
             'category__not_in' => $news_cat_id,
-            'cat'=> 1064,
+            'category_name' =>  'for-education, for-education-fr, for-education-es, for-education-pt, for-education-it, for-education-cs, for-education-ja, for-education-zh-hans'
           ];
 
           $wp_query = new WP_Query($args);
