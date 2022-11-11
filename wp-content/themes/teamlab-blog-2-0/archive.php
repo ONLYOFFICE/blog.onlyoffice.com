@@ -50,6 +50,7 @@ get_header();
 						</script>
 						
 						<div class="load_more_results" id="true_loadmore_tags"><?php _e('Load more', 'teamlab-blog-2-0'); ?></div>
+						<div class="load_more_results" id="true_loadmore_tags_mobile"><?php _e('View all posts', 'teamlab-blog-2-0'); ?></div>
 						<?php wp_reset_postdata(); ?>
 						<?php endif; ?>
 
@@ -73,12 +74,12 @@ get_header();
 								<?php while ($pageposts->have_posts()) : $pageposts->the_post(); get_template_part( 'template-parts/content-tag', get_post_type() ); ?>
 								<?php if ($countOfPosts > 0) : $countOfPosts = $countOfPosts + 1; ?>
 
-								<?php if (($countOfPosts == 6 || $countOfPosts == $pageposts->post_count) && $countOfCountSub == 0) : ?>
+								<?php if ($countOfPosts == 6 && $countOfCountSub == 0) : ?>
 									<?php include get_template_directory() . '/' . 'download-block.php' ?>
 									<?php $countOfCountSub = $countOfCountSub ?>
 								<?php endif; ?>
 
-								<?php if (($countOfPosts == 12 || $countOfPosts == $pageposts->post_count) && $countOfCountSub == 0) : ?>
+								<?php if ($countOfPosts == 12 && $countOfCountSub == 0) : ?>
 									<?php include get_template_directory() . '/' . 'subscribe-blue.php' ?>
 							
 							<?php $countOfCountSub = $countOfCountSub + 1 ?>
