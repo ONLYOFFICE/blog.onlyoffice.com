@@ -1,4 +1,6 @@
 const TRINITY_LOCAL_STORAGE_POSTS_BULK_UPDATE_KEY = 'bulk-update';
+// check status for 10sec at least in the beginning, that server have a time to set heartbeat
+const TRINITY_BULK_POLLING_TIMEOUT = 10000;
 
 const REGISTRATION_RESPONSE_CODE = {
     ERROR_NETWORK: 'ERROR_NETWORK',
@@ -11,29 +13,19 @@ const REGISTRATION_RESPONSE_CODE = {
 };
 
 const $ = jQuery;
+const trinityPageIds = '#trinity-admin, #trinity-admin-info, #trinity-admin-logs, #trinity-admin-contact-us';
 
 (function ($) {
     const id = '#trinity-admin';
+    let isBulkTriggered = false;
 
-    function bulkUpdateWaitingDecision() {
-        $('#trinity_audio_activate_for_all_posts').hide();
-        $('#trinity-admin .trinity-status-wrapper .progress').show();
-        $('#trinity-admin .trinity-status-wrapper .progress .description').text('Checking...');
-    }
+    if (!jQuery(trinityPageIds)[0]) return;
 
-    function bulkUpdateInProgress() {
-        $('#trinity_audio_activate_for_all_posts').hide();
-        $('#trinity-admin .trinity-status-wrapper .progress').show();
-        $('#trinity-admin .trinity-status-wrapper .progress .description').show();
-    }
-
-    function bulkUpdateEnded() {
-        $('#trinity_audio_activate_for_all_posts').show();
-        $('#trinity-admin .trinity-status-wrapper .progress').hide();
+    function checkIsBulkUpdateInProgress() {
+      return window.TRINITY_WP_ADMIN.TRINITY_AUDIO_BULK_UPDATE_PROGRESS?.inProgress;
     }
 
     function checkIfPostsBulkUpdateRequested() {
-        bulkUpdateWaitingDecision();
 
         if (!trinityAudioCheckIfLocalStorageAvailable()) return;
 
@@ -47,10 +39,17 @@ const $ = jQuery;
             },
         });
 
+        trinityUpdateBulkProgress({
+          totalPosts: 0,
+          processedPosts: 0,
+          statusName: 'progress'
+        });
+        trinityDisableFieldsWhichProduceBulkUpdate();
+
         localStorage.removeItem(TRINITY_LOCAL_STORAGE_POSTS_BULK_UPDATE_KEY);
     }
 
-    function checkProgress() {
+    function checkProgress(allowRerunCheckProgrees) {
         $.ajax({
             type: 'GET',
             url: ajaxurl,
@@ -58,40 +57,33 @@ const $ = jQuery;
                 action: window.TRINITY_WP_ADMIN.TRINITY_AUDIO_BULK_UPDATE_STATUS
             },
             dataType: 'json',
-            success: function (response) {
-                const processedPosts = response.processedPosts;
-                const totalPosts = response.totalPosts;
-                const numOfFailedPosts = response.numOfFailedPosts;
+            success: function (bulkUpdateResponse) {
+                const processedPosts = bulkUpdateResponse.processedPosts;
+                const totalPosts = bulkUpdateResponse.totalPosts;
+                const numOfFailedPosts = bulkUpdateResponse.numOfFailedPosts;
 
-                if (response.inProgress && totalPosts) {
-                    bulkUpdateInProgress();
+                if (bulkUpdateResponse.inProgress && totalPosts) {
+                    isBulkTriggered = true;
 
-                    const readyPercentage = (processedPosts / totalPosts) * 100;
-                    let text;
+                    trinityUpdateBulkProgress({
+                      totalPosts,
+                      processedPosts,
+                      numOfFailedPosts,
+                      statusName: 'progress'
+                    });
+                    trinityDisableFieldsWhichProduceBulkUpdate();
 
-                    const prefix = `Trinity Audio is currently active on ${processedPosts} posts out of ${totalPosts}. Failed to update ${numOfFailedPosts} posts`;
-
-                    if (readyPercentage < 10) {
-                        text = `${prefix}. Keep it going!`;
-                    } else if (readyPercentage < 35) {
-                        text = `${prefix}. There are still a lot of posts that can be audiofied to allow your users to listen to your content.`;
-                    } else if (readyPercentage > 35) {
-                        text = `${prefix}. Well done and welcome to the audio revolution!`;
-                    }
-
-                    $('#trinity-admin .trinity-status-wrapper .progress .description').text(text);
-                    trinityShowStatus(id, 'progress');
-
-                    setTimeout(function () {
-                        checkProgress();
-                    }, 1000);
-                } else {
-                    bulkUpdateEnded();
+                    if (allowRerunCheckProgrees) setTimeout(checkProgress, 1000, allowRerunCheckProgrees);
+                }
+                // Hide progress bar only after inProgress was true
+                else if (bulkUpdateResponse.inProgress === false && isBulkTriggered) {
+                  trinityHideBulkProgress();
+                  trinityEnableFieldsWhichProduceBulkUpdate();
                 }
             }
         }).fail(function (response) {
             console.error('TRINITY_WP', response);
-            trinityShowStatus(id, 'error');
+            trinityUpdateBulkProgress({statusName: 'error'});
         });
     }
 
@@ -160,23 +152,38 @@ const $ = jQuery;
         });
     }
 
+    if (checkIsBulkUpdateInProgress()) {
+      const {
+        totalPosts,
+        processedPosts,
+        numOfFailedPosts
+      } = window.TRINITY_WP_ADMIN.TRINITY_AUDIO_BULK_UPDATE_PROGRESS;
+
+      trinityUpdateBulkProgress({
+        totalPosts,
+        processedPosts,
+        numOfFailedPosts,
+        statusName: 'progress'
+      });
+      trinityDisableFieldsWhichProduceBulkUpdate();
+    }
+
     checkIfPostsBulkUpdateRequested();
 
-    // check status for 7sec at least in the beginning
-    setTimeout(() => { // wait for 3sec to make sync req to server, before checking status
-        const t = setInterval(() => {
-            checkProgress();
-        }, 1000);
+    const t = setInterval(checkProgress, 1000);
 
-        setTimeout(() => {
-            clearInterval(t);
-        }, 7000);
-    }, 3000);
+    // need to give a time for the backend to set `bulkInProgress: true`
+    setTimeout(() => {
+      clearInterval(t);
+      checkProgress(true);
+    }, TRINITY_BULK_POLLING_TIMEOUT);
 
     initLanguageSelect();
     initContactUs();
     $("#register-site").submit(trinityAudioOnRegisterFormSubmit);
     $(".use-account-key-button").click(trinityAudioOnPublisherTokenSubmit);
+    $(".trinity-show-recovery-token-button a").click(showRecoveryToken);
+    $(".custom-input-disabled .edit-icon span").click(enableInput);
 
     $(".trinity-custom-select").click(function (e) {
         $('.trinity-custom-select').removeClass('opened');
@@ -215,21 +222,18 @@ function updateCustomSelectValue(name, value, code) {
     else document.forms.settings.elements[name].value = value;
 }
 
-function trinityAudioOnSettingsFormSubmit(form, changesWereSaved) {
+function trinityAudioOnSettingsFormSubmit(form, isInitialSave) {
     if (!trinityAudioCheckIfLocalStorageAvailable()) return;
 
-    localStorage.setItem(TRINITY_LOCAL_STORAGE_POSTS_BULK_UPDATE_KEY, '1');
+    const shouldBulkUpdate = isInitialSave
+      || isFormValueChanged('trinity_audio_skip_tags', form['trinity_audio_skip_tags'].value)
+      || isFormValueChanged('trinity_audio_allow_shortcodes', form['trinity_audio_allow_shortcodes'].value);
 
-    if (!changesWereSaved) {
-        jQuery.ajax({
-            type: 'GET',
-            url: window.TRINITY_WP_ADMIN.TRINITY_AUDIO_ADMIN_POST,
-            data: {
-                action: window.TRINITY_WP_ADMIN.TRINITY_AUDIO_FIRST_CHANGES_SAVE
-            },
-        });
-    }
+    if (shouldBulkUpdate) localStorage.setItem(TRINITY_LOCAL_STORAGE_POSTS_BULK_UPDATE_KEY, '1');
+}
 
+function isFormValueChanged(field, formValue) {
+  return window.TRINITY_WP_ADMIN[field] !== formValue;
 }
 
 function showRegistrationErrorMessage(message) {
@@ -239,12 +243,10 @@ function showRegistrationErrorMessage(message) {
 function trinityAudioOnRegisterFormSubmit(e) {
     e.preventDefault();
     const terms = document.forms['register-site'].trinity_audio_terms_of_service;
-    const privacy = document.forms['register-site'].trinity_audio_privacy_statement;
 
-    if (!terms.checked)  $(terms).addClass('trinity-custom-required');
-    if (!privacy.checked) $(privacy).addClass('trinity-custom-required');
+    if (!terms.checked) $(terms).addClass('trinity-custom-required');
 
-    if (!terms.checked || !privacy.checked) return;
+    if (!terms.checked) return;
 
     jQuery.ajax({
         type: 'POST',
@@ -283,7 +285,7 @@ function trinityAudioOnPublisherTokenSubmit(e) {
             publisher_token: jQuery('#' + window.TRINITY_WP_ADMIN.TRINITY_AUDIO_PUBLISHER_TOKEN).val(),
         },
         success: (response) => {
-            if (response.code === REGISTRATION_RESPONSE_CODE.SUCCESS) {
+            if (response.code === REGISTRATION_RESPONSE_CODE.SUCCESS || response.code === REGISTRATION_RESPONSE_CODE.ALREADY_ASSIGNED_PUBLISHER_TOKEN) {
                 showPublisherTokenMessage('Successfully connected to Trinity Account');
                 location.reload();
             } else {
@@ -300,4 +302,29 @@ function trinityAudioOnPublisherTokenSubmit(e) {
 function showPublisherTokenMessage(message, isError = false) {
     $cssClassSuffix = isError ? 'error' : 'success';
     jQuery('.publisher-token-notification').append(`<div class="notice notice-${$cssClassSuffix}"><p>${message}</p></div>`);
+}
+
+function showRecoveryToken(e) {
+    e.preventDefault();
+    e.target.parentElement.classList.toggle('hidden');
+    e.target.parentElement.nextElementSibling.classList.toggle('hidden');
+}
+
+function enableInput(e) {
+    const iconWrapper = e.target.parentElement;
+    const input = iconWrapper.nextElementSibling;
+    const submitSection = input.nextElementSibling.nextElementSibling;
+    const verifiedMessage = document.querySelector('.verified-message');
+
+    iconWrapper.classList.toggle('trinity-hide')
+    input.toggleAttribute('disabled');
+    input.focus();
+    submitSection.classList.toggle('trinity-hide');
+    verifiedMessage.remove();
+}
+
+function checkFieldDirty(input) {
+  if (isFormValueChanged(input.name, input.value)) return input.classList.add('dirty');
+
+  input.classList.remove('dirty')
 }

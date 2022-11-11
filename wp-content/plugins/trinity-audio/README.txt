@@ -1,32 +1,30 @@
-=== Trinity Audio ===
+=== Trinity Audio - Text to Speech AI audio player to convert content into audio ===
 
 Contributors : TrinityAudio
-Tags: TrinityAudio, Polly, Trinity, Text-to-Speech, Audio, Tts, Voice, AI, Podcast
+Tags: Text to Speech, Audio Player, player, Content to audio, TTS, Text to Audio, Text to voice, Voiceover, Accessibility, Audio, Turn text into audio, audio narrator
 Requires at least: 5.2
 Requires PHP: 7.2
-Tested up to: 5.8
+Tested up to: 6.0
 Stable tag: trunk
 License: GPLv3 ONLY
 License URI : https://www.gnu.org/licenses/gpl-3.0.html
 
 
 == Description ==
-Instantly convert your content into audio in just a few clicks, with seamless integration, and give your audience the ability to listen to your content on the go.
+The audio player will convert your content into audio in just a few clicks, with seamless integration, and give your audience the ability to listen to your content on the go.
+The free version of this plugin is designed for content creators, such as bloggers who do not produce a large volume of content, and for those who want to give it a try before choosing one of the advanced plans. It enables converting up to 5 articles to audio per month, to add an audio narrator to your blog in 125 languages, 250 voices (both male and female) and increase accessibility to broader audience.
 
-Implement the default TrinityAudio player on your website with over 30 languages and much more AI-voices.
+For a quick start, please follow the instructions on our [Implementation Guide](https://trinityaudio.ai/the-trinity-audio-wordpress-plugin-implementation-guide/).
 
+[Explore](https://trinityaudio.ai/) our advanced products and features:
 
-[Explore](https://trinityaudio.ai/) our advanced products and features to take advantage of our full service:
-
-* Almost 50 Supported languages with over 400 accents and natural voices
-* CMS to manage, edit, distribute audio content and create playlists
-* Automatic real-time translation
-* Multiple playing speed capabilities
-* Dashboard with statistics and usability reports
+* 125 supported languages with __over 600 accents and natural voices__
+* __CMS__ to manage, edit, and distribute audio content in leading platforms such as Spotify, Apple, and Google Podcast, and create playlists to increase engagement
+* __Automatic real-time translation__
+* Multiple playing __speed capabilities__
+* __Dashboard__ with statistics and usability reports
 
 __And much more!__
-
-For quick start, please follow the instructions on this guide: [Implementation Guide](https://trinityaudio.ai/the-trinity-audio-wordpress-plugin-implementation-guide/)
 
 == Customer Testimonial ==
 
@@ -106,15 +104,90 @@ Generated audio posts will be available for consumption regardless of package st
 = What text would the player read? =
     The player would read the article body and headline. The Headline can be removed easily by clicking the checkbox in the settings tab. Reading the excerpt is also supported and it can be added from the settings tab.
 
+== Video ==
+
+[youtube https://www.youtube.com/watch?v=3D5-xPLA_QA]
+
 == Screenshots ==
 
 1. Admin settings screen.
 2. Admin settings screen - continued.
-3. Player view as implemented in a post.
-4. Example of using "Player Label".
+3. Create and customize you Trinity Audio player.
+4. Engage your audience with exclusively tailored audio.
+5. Manage and follow up on your audio journey success.
+6. Increase your audio content reach with new distribution options.
+7. Trusted by leading media publications and content creators.
 
 
 == Changelog ==
+= 4.2.4 =
+*Release Date - Mar 21, 2022*
+* Added debug information
+
+= 4.2.3 =
+*Release Date - Mar 3, 2022*
+* Fixed "Get my token" functionality
+
+= 4.2.2 =
+*Release Date - Mar 3, 2022*
+* Fixed uninstall issue for PHP 8
+
+= 4.2.1 =
+*Release Date - Feb 21, 2022*
+* Added debug mode for development purposes
+* Fixed php warnings
+
+= 4.2.0 =
+*Release Date - 21 Feb, 2021*
+* Content setting update (text hash calculation) on settings change
+* Added bulk update progress indication
+* Bug fixes
+
+= 4.1.7 =
+*Release Date - Jan 31, 2021*
+* Audio player endpoint: update to a new version
+
+= 4.1.6 =
+*Release Date - Jan 10, 2021*
+* Updated list of available languages
+
+= 4.1.5 =
+*Release Date - Dec 29, 2021*
+* Fixing registration flow
+
+= 4.1.4 =
+*Release Date - Dec 27, 2021*
+* UI/UX feature: add description to the "Player label" feature settings
+* UI/UX feature: Update registration page UX and consent flow
+* Update player endpoint to a newer version
+
+= 4.1.3 =
+*Release Date - Dec 27, 2021*
+* Bug fix: cases where the player is reading "dot" as a word and not as punctuation
+
+= 4.1.2 =
+*Release Date - Dec 21, 2021*
+* Remove post-menu before plugin is configured
+
+= 4.1.1 =
+*Release Date - Dec 6, 2021*
+* Fixed plugin's general configuration page interface bug
+
+= 4.1.0 =
+*Release Date - Nov 23, 2021*
+* Preview and edit account key
+
+= 4.0.9 =
+*Release Date - Nov 16, 2021*
+* Deal with post debug notifying
+
+= 4.0.8 =
+*Release Date - Nov 15, 2021*
+* Added promote banner
+
+= 4.0.7 =
+*Release Date - Nov 8, 2021*
+* Update recovery token
 
 = 4.0.6 =
 *Release Date - Oct 12, 2021*

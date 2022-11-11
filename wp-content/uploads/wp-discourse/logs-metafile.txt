@@ -2,9 +2,9 @@
 
 ### Server ###
 
-WordPress - 5.9.3
-PHP - 7.4.29
-MySQL - 5.7.39
+WordPress - 5.6
+PHP - 7.4.7
+MySQL - 8.0.20
 
 ### Active Plugins ###
 
@@ -12,17 +12,21 @@ Accelerated Mobile Pages - 1.0.76.6
 AddToAny Share Buttons - 1.7.41
 Advanced Custom Fields - 5.8.9
 Akismet Anti-Spam - 4.1.4
-All in One SEO - 4.1.4.3
+All in One SEO - 4.1.1.1
+Amazon AWS CDN - 1.5.4
 Breadcrumb NavXT - 6.4.0
 Classic Editor - 1.6
 Custom Post Type UI - 1.8.1
 Cyr to Lat enhanced - 3.5
-Democracy Poll - 5.6.0
-Fluent Forms - 4.3.4
+Easy FancyBox - 1.8.18
+Force Lowercase URLs - 1.0
+Internal Link Juicer - 1.1.5.2
+Newpost Catch - 1.3.7
 ONLYOFFICE IN THE PRESS - 
+Require Featured Image - 1.5.0
 Simple Twitter Tweets - 4.4
 Subscribe To Comments - 2.3
-Trinity Audio - 4.0.6
+Twitter for Wordpress - 1.9.7
 Urvanov Syntax Highlighter - 2.8.10
 WordPress Importer - 0.7
 Wordpress Logging Service - 1.5.4
@@ -32,41 +36,39 @@ WP-PostViews - 1.76.1
 WP Mail SMTP - 2.5.1
 WPML CMS Nav - 1.4.6
 WPML MarketPress - 1.1.4
-WPML Media - 2.1.8
 WPML Multilingual CMS - 3.1.9.4
 WPML Sticky Links - 1.3.9
 WPML String Translation - 2.1.2
 WPML Translation Analytics - 1.0.7
 WPML Translation Management - 1.9.11
 WPScan - 1.8
-WP Super Cache - 1.7.7
+WP Super Cache - 1.7.1
 ¤ Kama Quicktags - 2.2
 
 ### WP Discourse Settings (Secrets Excluded) ###
 
 display-subcategories - 0
-allow-tags - 1
+full-post-content - 0
+allow-tags - 0
 max-tags - 5
 publish-as-unlisted - 0
-full-post-content - 1
 custom-excerpt-length - 55
-add-featured-link - 1
-auto-publish - 1
+add-featured-link - 0
+auto-publish - 0
 force-publish - 0
 force-publish-max-age - 0
 publish-failure-notice - 0
 auto-track - 1
 allowed_post_types - post
-exclude_tags - 
 hide-discourse-name-field - 0
 discourse-username-editable - 0
-direct-db-publication-flags - 0
-verbose-publication-logs - 0
-enable-discourse-comments - 1
-comment-type - display-comments-link
+enable-discourse-comments - 0
+comment-type - display-comments
 ajax-load - 0
-load-comment-css - 0
-discourse-new-tab - 1
+cache-html - 0
+clear-cached-comment-html - 0
+discourse-new-tab - 0
+comment-sync-period - 10
 hide-wordpress-comments - 0
 show-existing-comments - 0
 max-comments - 5
@@ -74,10 +76,9 @@ min-replies - 1
 min-score - 0
 min-trust-level - 1
 bypass-trust-level-score - 50
-only-show-moderator-liked - 0
 custom-datetime-format - 
-cache-html - 0
-clear-cached-comment-html - 0
+only-show-moderator-liked - 0
+load-comment-css - 0
 use-discourse-webhook - 0
 webhook-match-old-topics - 0
 use-discourse-user-webhook - 0

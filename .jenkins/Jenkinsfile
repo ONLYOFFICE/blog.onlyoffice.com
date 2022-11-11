@@ -1,0 +1,39 @@
+ // Variables declaration
+
+if ("${BRANCH_NAME}" == 'test.blog') {
+	SECRET_ID_01   = "deploymentuser_pass"
+	}
+
+if ("${BRANCH_NAME}" == 'production.blog') {
+	SECRET_ID_01   = "anton.rychenkov.test03.03"
+	}
+
+// Pipeline
+
+pipeline {
+
+	agent {label 'master'}
+
+	stages {
+	
+		stage('Build') {
+
+			environment {
+				SECRET_ID_01 	= credentials("${SECRET_ID_01}")
+			}	
+						
+			steps {
+				withCredentials([usernamePassword(credentialsId: 'teamlab_testblog_db_user',
+								passwordVariable: 'testdbuser',
+								usernameVariable: 'testdbpass')]) {
+                
+					echo 'Prepare config file'
+					bat 'powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File %WORKSPACE%/.jenkins/replace_web_config_php_script.ps1'
+				
+					echo 'MSDeploy to server'
+					bat '%WORKSPACE%/.jenkins/webdeploy2.bat'
+				}
+			}
+		}
+	}
+}

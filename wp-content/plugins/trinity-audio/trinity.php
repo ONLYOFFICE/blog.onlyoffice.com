@@ -8,7 +8,7 @@
    * Plugin Name:       Trinity Audio
    * Plugin URI:        https://wordpress.org/plugins/trinity-audio/
    * Description:       This plugin generates an audio version of the post, for absolutely FREE. You can choose the language and the gender of the voice reading your content. You also have the option to add Trinity Audio's player on select posts or have it audiofy all of your content. In both cases, it only takes a few simple clicks to get it done. The plugin is built through collaboration with the Amazon Polly team.
-   * Version:           4.0.6
+   * Version:           4.2.4
    * Author:            Trinity Audio
    * Author URI:        https://trinityaudio.ai/
    * License:           GPL-3.0 ONLY
@@ -20,13 +20,18 @@
   require_once __DIR__ . '/inc/common.php';
   require_once __DIR__ . '/migrations/index.php';
   require_once __DIR__ . '/initial_checking.php';
+  require_once __DIR__ . '/utils.php';
+
+  if (trinity_is_dev_env()) {
+    error_reporting(E_ALL);
+    ini_set('display_errors', '1');
+  }
 
   add_action('wp_head', 'trinity_hook_header');
 
   add_action('plugins_loaded', 'trinity_plugin_loaded');
 
   add_action('admin_post_' . TRINITY_AUDIO_BULK_UPDATE, 'trinity_bulk_update');
-  add_action('admin_post_' . TRINITY_AUDIO_FIRST_CHANGES_SAVE, 'trinity_set_first_changes_save');
 
   add_filter('the_content', 'trinity_content_filter', 99999);
 
@@ -62,14 +67,22 @@
   }
 
   function trinity_content_filter($content) {
-    $content = "<script>console.debug('TRINITY_WP', 'trinity_content_filter');</script>$content";
+    $date = trinity_get_date();
+
+    wp_enqueue_script("the_content-hook-script", plugin_dir_url(__FILE__) . 'js/the_content-hook-script.js');
 
     // Check if we're inside the main loop.
     $is_single     = is_single();
     $in_the_loop   = in_the_loop(); // $in_the_loop   = trinity_get_check_for_loop() ? in_the_loop() : true;.
     $is_main_query = is_main_query();
     if (!($is_single && $in_the_loop && $is_main_query)) {
-      return "<script>console.debug('TRINITY_WP', 'Skip player from rendering', 'is single: $is_single, is main loop: $in_the_loop, is main query: $is_main_query');</script>$content";
+      wp_add_inline_script("the_content-hook-script", "console.debug('TRINITY_WP', 'Skip player from rendering', 'is single: $is_single, is main loop: $in_the_loop, is main query: $is_main_query', 'TS: $date');");
+
+      if (strpos($content, TRINITY_AUDIO_STARTUP) !== false) {
+        wp_add_inline_script("the_content-hook-script", "console.debug('TRINITY_WP', 'Post content contains trinity tag');");
+      }
+
+      return $content;
     }
 
     $post_id = $GLOBALS['post']->ID;
@@ -111,7 +124,7 @@
 
       if ($bulk_update && !$fist_time_install) {
         if (!$audio_part) {
-          $content .= "<script>console.warn('TRINITY_WP', 'Do not include player for post ID: $post_id, no text for playback was found')</script>";
+          $content .= "<script>console.warn('TRINITY_WP', 'Do not include player for post ID: $post_id, no text for playback was found. TS: $date')</script>";
         } else {
           $player_content = '
         <table id="trinity-audio-table" style="width:100%; display: table;">
@@ -132,10 +145,10 @@
           }
         }
       } else {
-        $content .= "<script>console.warn('TRINITY_WP', 'Hide player in for post ID: $post_id, bulk update: $bulk_update, first time install: $fist_time_install')</script>";
+        wp_add_inline_script("the_content-hook-script", "console.warn('TRINITY_WP', 'Hide player in for post ID: $post_id, bulk update: $bulk_update, first time install: $fist_time_install', 'TS: $date')");
       }
     } else {
-      $content .= "<script>console.warn('TRINITY_WP', 'Hide player in for post ID: $post_id, enabled: $is_enabled, posthash: $posthash, is no text: $is_no_text')</script>";
+      wp_add_inline_script("the_content-hook-script", "console.warn('TRINITY_WP', 'Hide player in for post ID: $post_id, enabled: $is_enabled, posthash: $posthash, is no text: $is_no_text', 'TS: $date')");
     }
 
     return $content;
