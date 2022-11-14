@@ -1296,9 +1296,9 @@ msgid "Get the latest ONLYOFFICE news"
 msgstr "ONLYOFFICEの最新情報を入手"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:395 wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:7
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:15
-msgid "Your email"
-msgstr "メールアドレス"
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:16
+msgid "Your email*"
+msgstr "メールアドレス*"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:400 wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:22
 msgid "Email is empty"
@@ -1378,6 +1378,57 @@ msgstr "</em>登録していただき、ありがとうございます。"
 #: wp-content/themes/teamlab-blog-2-0/templates/activation.php:72
 msgid "Check your inbox for your first email and stay updated from now on!"
 msgstr "これからは最新情報をお届けいたします。最初のメールをお送りいたしましたので、受信箱でチェックしてください。"
+
+#: wp-content/themes/teamlab-blog-2-0/searchform.php:9
+msgid "Search"
+msgstr "検索"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:106
+msgid "Category Topics"
+msgstr "カテゴリー"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:108
+msgid "Product releases"
+msgstr "プロダクトリリース"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:112
+#: wp-content/themes/teamlab-blog-2-0/index.php:117
+msgid "For developers"
+msgstr "開発者向け"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:115
+#: wp-content/themes/teamlab-blog-2-0/index.php:208
+msgid "For business"
+msgstr "企業向け"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:118
+#: wp-content/themes/teamlab-blog-2-0/index.php:237
+msgid "For education"
+msgstr "教育機関向け"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:157
+msgid "View all posts Product releases"
+msgstr "プロダクトリリースの投稿をすべて見る"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:186
+msgid "View all posts For developers"
+msgstr "開発者向けの投稿をすべて見る"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:217
+msgid "View all posts For business"
+msgstr "企業向けの投稿をすべて見る"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:246
+msgid "View all posts For education"
+msgstr "教育機関向けの投稿をすべて見る"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:283
+msgid "View all posts"
+msgstr "投稿をすべて見る"
+
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:34
+msgid "By clicking \"Subscribe\", you agree to the <u>rules for using the service and processing personal data.</u>"
+msgstr "「登録する」をクリックすると、<u>サービスの利用および個人情報の取り扱いに関する規定に同意したものとみなされます。</u>"
 
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:27
 msgid "Your site&#8217;s most recent Posts."

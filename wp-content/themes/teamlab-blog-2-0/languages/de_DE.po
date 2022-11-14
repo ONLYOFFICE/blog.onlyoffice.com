@@ -924,9 +924,9 @@ msgstr "Erhalten Sie die neuesten Nachrichten über ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:395
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:7
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:15
-msgid "Your email"
-msgstr "Ihre E-Mail"
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:16
+msgid "Your email*"
+msgstr "Ihre E-Mail*"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:397
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:17
@@ -1030,6 +1030,57 @@ msgstr ""
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:95
 msgid "View all <div class=\"no-wrap\">posts&nbsp;<div class=\"grey-arrow\"></div></div>"
 msgstr "Alle Beiträge <div class=\"no-wrap\">ansehen&nbsp;<div class=\"grey-arrow\"></div></div>"
+
+#: wp-content/themes/teamlab-blog-2-0/searchform.php:9
+msgid "Search"
+msgstr "Suche"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:106
+msgid "Category Topics"
+msgstr "Kategorien und Themen"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:108
+msgid "Product releases"
+msgstr "Veröffentlichungen"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:112
+#: wp-content/themes/teamlab-blog-2-0/index.php:117
+msgid "For developers"
+msgstr "Für Entwickler"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:115
+#: wp-content/themes/teamlab-blog-2-0/index.php:208
+msgid "For business"
+msgstr "Für Business"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:118
+#: wp-content/themes/teamlab-blog-2-0/index.php:237
+msgid "For education"
+msgstr "Für Bildungswesen"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:157
+msgid "View all posts Product releases"
+msgstr "Alle Beiträge Veröffentlichungen"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:186
+msgid "View all posts For developers"
+msgstr "Alle Beiträge Für Entwickler"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:217
+msgid "View all posts For business"
+msgstr "Alle Beiträge Für Business"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:246
+msgid "View all posts For education"
+msgstr "Alle Beiträge Für Bildungswesen"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:283
+msgid "View all posts"
+msgstr "Alle Beiträge lesen"
+
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:34
+msgid "By clicking \"Subscribe\", you agree to the <u>rules for using the service and processing personal data.</u>"
+msgstr "Wenn Sie auf \"Abonnieren\" klicken, erklären Sie sich mit den <u>Regeln für die Nutzung dieses Dienstes und sind die Verarbeitung personenbezogener Daten einverstanden.</u>"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:162
 msgid "Features"

@@ -894,9 +894,9 @@ msgstr "Receba as últimas notícias do ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:392
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:7
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:15
-msgid "Your email"
-msgstr "Seu email"
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:16
+msgid "Your email*"
+msgstr "Seu email*"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:394
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:17
@@ -992,6 +992,57 @@ msgstr "Obrigado </em>por se inscrever na newsletter da ONLYOFFICE!"
 #: wp-content/themes/teamlab-blog-2-0/templates/activation.php:72
 msgid "Check your inbox for your first email and stay updated from now on!"
 msgstr "Verifique sua caixa de entrada para ver o primeiro e-mail e fique ligado!"
+
+#: wp-content/themes/teamlab-blog-2-0/searchform.php:9
+msgid "Search"
+msgstr "Pesquisar"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:106
+msgid "Category Topics"
+msgstr "Tópicos da categoria"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:108
+msgid "Product releases"
+msgstr "Lançamentos de produtos"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:112
+#: wp-content/themes/teamlab-blog-2-0/index.php:117
+msgid "For developers"
+msgstr "Para desenvolvedores"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:115
+#: wp-content/themes/teamlab-blog-2-0/index.php:208
+msgid "For business"
+msgstr "Para empresas"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:118
+#: wp-content/themes/teamlab-blog-2-0/index.php:237
+msgid "For education"
+msgstr "Parar educação"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:157
+msgid "View all posts Product releases"
+msgstr "Ver todos os posts de Lançamentos de produtos"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:186
+msgid "View all posts For developers"
+msgstr "Ver todos os posts Para desenvolvedores"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:217
+msgid "View all posts For business"
+msgstr Ver todos os posts Para empresas"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:246
+msgid "View all posts For education"
+msgstr "Ver todos os posts Para educação"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:283
+msgid "View all posts"
+msgstr "Ver todos os posts"
+
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:34
+msgid "By clicking \"Subscribe\", you agree to the <u>rules for using the service and processing personal data.</u>"
+msgstr "Ao clicar em \"Assinar\", você concorda com as <u>regras de uso do serviço e processamento de dados pessoais.</u>"
 
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:27
 msgid "Your site&#8217;s most recent Posts."

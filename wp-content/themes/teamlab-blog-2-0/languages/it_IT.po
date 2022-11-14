@@ -921,9 +921,9 @@ msgstr "Ricevi le ultime notizie di ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:395
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:7
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:15
-msgid "Your email"
-msgstr "Tua email"
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:16
+msgid "Your email*"
+msgstr "Tua email*"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:397
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:17
@@ -1027,6 +1027,57 @@ msgstr ""
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:95
 msgid "View all <div class=\"no-wrap\">posts&nbsp;<div class=\"grey-arrow\"></div></div>"
 msgstr "Guarda tutte <div class=\"no-wrap\">le voci&nbsp;<div class=\"grey-arrow\"></div></div>"
+
+#: wp-content/themes/teamlab-blog-2-0/searchform.php:9
+msgid "Search"
+msgstr "Ricerca"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:106
+msgid "Category Topics"
+msgstr "Argomenti della categoria"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:108
+msgid "Product releases"
+msgstr "Rilasci del prodotto"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:112
+#: wp-content/themes/teamlab-blog-2-0/index.php:117
+msgid "For developers"
+msgstr "Per gli sviluppatori"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:115
+#: wp-content/themes/teamlab-blog-2-0/index.php:208
+msgid "For business"
+msgstr "Per gli affari"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:118
+#: wp-content/themes/teamlab-blog-2-0/index.php:237
+msgid "For education"
+msgstr "Per l'istruzione"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:157
+msgid "View all posts Product releases"
+msgstr "Visualizza tutti i post Rilasci del prodotto"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:186
+msgid "View all posts For developers"
+msgstr "Visualizza tutti i post Per gli sviluppatori"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:217
+msgid "View all posts For business"
+msgstr "Visualizza tutti i post Per gli affari"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:246
+msgid "View all posts For education"
+msgstr "Visualizza tutti i post Per l'istruzione"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:283
+msgid "View all posts"
+msgstr "Visualizza tutti i post"
+
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:34
+msgid "By clicking \"Subscribe\", you agree to the <u>rules for using the service and processing personal data.</u>"
+msgstr "Cliccando su \"Iscriviti\", accetti <u>le regole per l'utilizzo del servizio e il trattamento dei dati personali.</u>"
 
 #~ msgid "<b>ONLYOFFICE 7.0:</b> <span>online forms</span>, password protection in sheets, collaboration improvements and much more"
 #~ msgstr "<b>ONLYOFFICE 7.0:</b> <span>moduli online</span>, protezione con password nei fogli di calcolo, miglioramenti della collaborazione e altro ancora"

@@ -1330,9 +1330,6 @@ body.desktop .button.red.disabled:visited {
   .SearchContainer .searchlist{
     padding: 0 16px;
   }
-  .SingleContainer .entry-title{
-    padding: 0 16px;
-  }
   .SingleContainer .press-page-title{
     padding: 0;
   }
