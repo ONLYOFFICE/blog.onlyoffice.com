@@ -103,19 +103,19 @@ $queryNews = new WP_Query($argsNews); ?>
         </div>
         <div>
           <div class="category-topics">
-            <h4>Category Topics</h4>
+            <h4><?php _e('Category Topics', 'teamlab-blog-2-0'); ?></h4>
             <ul>
               <li>
-                <a class="product-releases-topic" href="<?php echo icl_get_home_url() ?>category/product-releases">Product releases</a>
+                <a class="product-releases-topic" href="<?php echo icl_get_home_url() ?>category/product-releases"><?php _e('Product releases', 'teamlab-blog-2-0'); ?></a>
               </li>
               <li>
-                <a class="for-developers-topic" href="<?php echo icl_get_home_url() ?>category/for-developers">For developers</a>
+                <a class="for-developers-topic" href="<?php echo icl_get_home_url() ?>category/for-developers"><?php _e('For developers', 'teamlab-blog-2-0'); ?></a>
               </li>
               <li>
-                <a class="for-business-topic" href="<?php echo icl_get_home_url() ?>category/for-business">For business</a>
+                <a class="for-business-topic" href="<?php echo icl_get_home_url() ?>category/for-business"><?php _e('For business', 'teamlab-blog-2-0'); ?></a>
               </li>
               <li>
-                <a class="for-education-topic" href="<?php echo icl_get_home_url() ?>category/for-education">For education</a>
+                <a class="for-education-topic" href="<?php echo icl_get_home_url() ?>category/for-education"><?php _e('For education', 'teamlab-blog-2-0'); ?></a>
               </li>
             </ul>
           </div>
