@@ -771,7 +771,9 @@ body.desktop .button.red.disabled:visited {
     position: relative;
     margin-top: -50px;
   }
-
+  .inputButton::after {
+    left: 32%;
+  }
   .all-menu-items{
     display: block;
     height: 100%;
@@ -978,7 +980,7 @@ body.desktop .button.red.disabled:visited {
   .download.winodws,
   .download.linux,
   .download.MacOs{
-    padding: 11px 10px 11px 40px;
+    padding: 11px 2px 11px 40px;
   }
   .winodws:before{
     left: 11px;
@@ -1324,6 +1326,9 @@ body.desktop .button.red.disabled:visited {
   .load_more_results:hover:after{
     left: 47%;
   }
+  .inputButton::after {
+    top: 27%;
+  }
   .searchForm{
     margin-bottom: 32px;
   }
@@ -1408,6 +1413,10 @@ body.desktop .button.red.disabled:visited {
   .subscribe-blue,
   .subscribe-white{
     box-shadow: initial;
+  }
+  .inputBox .errorMessage{
+    top: 46px;
+    font-size: 10px;
   }
   .load_more_results{
     grid-column: initial;

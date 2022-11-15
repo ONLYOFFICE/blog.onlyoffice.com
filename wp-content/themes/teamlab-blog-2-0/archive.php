@@ -69,17 +69,18 @@ get_header();
 						$pageposts = new WP_Query($query);
 						if ($pageposts->have_posts()) : ?>
 							<h1><?php single_cat_title(); ?></h1>
+							<?php $countOfPosts = 0; $countOfCountSub = 0 ?>
 							<div class="content wrapperMain">
-								<?php $countOfPosts = 0; $countOfCountSub = 0 ?>
+
 								<?php while ($pageposts->have_posts()) : $pageposts->the_post(); get_template_part( 'template-parts/content-tag', get_post_type() ); ?>
 								<?php if ($countOfPosts > 0) : $countOfPosts = $countOfPosts + 1; ?>
 
-								<?php if ($countOfPosts == 6 && $countOfCountSub == 0) : ?>
+								<?php if ($countOfPosts == 6) : ?>
 									<?php include get_template_directory() . '/' . 'download-block.php' ?>
 									<?php $countOfCountSub = $countOfCountSub ?>
 								<?php endif; ?>
 
-								<?php if ($countOfPosts == 12 && $countOfCountSub == 0) : ?>
+								<?php if ($countOfPosts == 12) : ?>
 									<?php include get_template_directory() . '/' . 'subscribe-blue.php' ?>
 							
 							<?php $countOfCountSub = $countOfCountSub + 1 ?>
@@ -88,8 +89,17 @@ get_header();
 						<?php else : ?>
 							<?php $countOfPosts = $countOfPosts + 1; ?>
 						<?php endif; ?>
-						<?php endwhile;
-						global $wp_query;
+						<?php endwhile; ?>
+
+						<?php if ($countOfPosts < 6) : ?>
+							<?php include get_template_directory() . '/' . 'download-block.php' ?>
+						<?php endif; ?>
+
+						<?php if ($countOfPosts < 12) : ?>
+							<?php include get_template_directory() . '/' . 'subscribe-blue.php' ?>
+						<?php endif; ?>
+
+						<?php global $wp_query;
 						if ($wp_query->max_num_pages > 1) : ?>
 							<script>
 								var ajaxurl = '<?php echo site_url() ?>/wp-admin/admin-ajax.php';
