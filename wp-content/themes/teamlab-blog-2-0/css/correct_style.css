@@ -150,6 +150,7 @@ main{
   background-size: 18px;
   background-position: 50%;
   transform: translateY(-50%);
+  pointer-events: none;
 }
 
 .searchForm .clearButton{
@@ -254,7 +255,7 @@ main{
 .tagsList .tagItem{
   display:inline-block;
   background-color:#F2F2F2;
-  margin-right: 4px;
+  margin-right: 8px;
   margin-bottom: 8px;
   border-radius: 3px;
 }
@@ -263,6 +264,7 @@ main{
   padding: 6px 16px;
   display: block;
   font-size: 14px;
+  line-height: 23px;
   color: #616161;
   text-decoration: none;
 }
@@ -1303,8 +1305,8 @@ margin: 16px auto;
 }
 .inputButton::after{
   position: absolute;
-  left: 35%;
-  top: 27%;
+  left: 42%;
+  top: 30%;
   width: 18px;
   height: 18px;
   margin: 0 auto;
