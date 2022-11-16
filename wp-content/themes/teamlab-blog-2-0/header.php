@@ -99,31 +99,37 @@ $lang = $sitepress->get_current_language();
 </head>
 <div class="advent-announce push advent-mobile-hide">
     <?php
-    $banner_url = 'https://www.onlyoffice.com/blog/2022/09/onlyoffice-docs-7-2/';
+    $banner_url = 'https://www.onlyoffice.com/blog/2022/11/meet-onlyoffice-docs-saas/';
      if($current_language == WEB_ROOT_URL.'/'.'de'){
-         $banner_url = 'https://www.onlyoffice.com/blog/de/2022/09/onlyoffice-7-2';
+         $banner_url = 'https://www.onlyoffice.com/blog/de/2022/11/begrusen-sie-onlyoffice-docs-saas-die-cloudbasierte-version-der-onlyoffice-online-suite/';
      }else if($current_language == WEB_ROOT_URL.'/'.'fr'){
-         $banner_url = 'https://www.onlyoffice.com/blog/fr/2022/09/onlyoffice-docs-v7-2/';
+         $banner_url = 'https://www.onlyoffice.com/blog/fr/2022/11/decouvrez-onlyoffice-docs-saas/';
      }else if($current_language == WEB_ROOT_URL.'/'.'es'){
-         $banner_url = 'https://www.onlyoffice.com/blog/es/2022/09/onlyoffice-docs-v7-2/';
+         $banner_url = 'https://www.onlyoffice.com/blog/es/2022/11/descubre-onlyoffice-docs-saas/';
      }else if($current_language == WEB_ROOT_URL.'/'.'it'){
-         $banner_url = 'https://www.onlyoffice.com/blog/it/2022/09/onlyoffice-docs-7-2';
+         $banner_url = 'https://www.onlyoffice.com/blog/it/2022/11/onlyoffice-docs-saas-nel-cloud/';
      }else if($current_language == WEB_ROOT_URL.'/'.'zh'){
-         $banner_url = 'https://www.onlyoffice.com/blog/zh-hans/2022/09/onlyoffice-docs-7-2/';
-     }else if($current_language == WEB_ROOT_URL.'/'.'jp'){
-         $banner_url = 'https://www.onlyoffice.com/blog/ja/2022/09/onlyoffice-docs-v7-2-ui/';
+         $banner_url = 'https://www.onlyoffice.com/blog/zh-hans/2022/11/meet-onlyoffice-docs-saas/';
+     }else if($current_language == WEB_ROOT_URL.'/'.'ja'){
+         $banner_url = 'https://www.onlyoffice.com/blog/ja/2022/11/onlyoffice-onlyoffice-docs-saas/';
+     }else if($current_language == WEB_ROOT_URL.'/'.'pt'){
+         $banner_url = 'https://www.onlyoffice.com/blog/pt-br/2022/11/conheca-o-onlyoffice-docs-saas/';
      }
     ?>
     <a href="<?php echo $banner_url ?>">
         <div class="advent-announce-text">
-            <?php _e('Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures, <br> updated UI, and more', 'teamlab-blog-2-0'); ?>
+            <div>
+                <div><?php _e('Meet <b>ONLYOFFICE Docs Cloud</b>, complete office software as a service', 'teamlab-blog-2-0'); ?></div>
+            </div>
         </div>
     </a>
 </div>
 <div class="advent-announce push advent-desktop-hide">
     <a  href="<?php echo $banner_url ?>">
         <div class="advent-announce-text">
-            <?php _e('<b>ONLYOFFICE Docs v7.2</b>', 'teamlab-blog-2-0'); ?>
+            <div>
+                <div><?php _e('Meet <b>ONLYOFFICE Docs Cloud</b>', 'teamlab-blog-2-0'); ?></div>
+            </div>
         </div>
     </a>
 </div>
