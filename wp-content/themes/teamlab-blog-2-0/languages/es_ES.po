@@ -814,6 +814,14 @@ msgstr "Descubre <b>ONLYOFFICE Docs v7.2</b> con un marketplace de plugins, nuev
 msgid "<b>ONLYOFFICE Docs v7.2</b>"
 msgstr "<b>Descubre ONLYOFFICE Docs v7.2</b>"
 
+#: wp-content/themes/teamlab-blog-2-0/header.php:120
+msgid "Meet <b>ONLYOFFICE Docs Cloud</b>, complete office software as a service"
+msgstr "Descubre <b>ONLYOFFICE Docs Cloud</b>, un completo software ofimático ofrecido como servicio"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:129
+msgid "Meet <b>ONLYOFFICE Docs Cloud</b>"
+msgstr "Descubre <b>ONLYOFFICE Docs Cloud</b>"
+
 #: wp-content/themes/teamlab-blog-2-0/header.php:152
 #: wp-content/themes/teamlab-blog-2-0/searchform.php:9
 msgid "Find news, tips and how-tos"
