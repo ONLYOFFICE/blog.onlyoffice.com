@@ -35,9 +35,27 @@ nav .pushy-content {
   max-width: 920px;
   width: 72vw;
 }
+@media screen and (max-width: 1700px) {
+  .advent-announce.push .advent-announce-text:before {
+    left: -80px;
+  }
+
+  .advent-announce.push .advent-announce-text:after {
+    right: -120px;
+  }
+}
 @media screen and (max-width: 1560px) {
   nav .pushy-content{
     margin: 0 auto 0 14%;
+  }
+}
+@media screen and (max-width: 1400px) {
+  .advent-announce.push .advent-announce-text:before {
+    left: -260px;
+  }
+
+  .advent-announce.push .advent-announce-text:after {
+    right: -300px;
   }
 }
 @media screen and (max-width: 1250px) {
@@ -1033,30 +1051,15 @@ div.custom-select div.selector {
     background-position: 50% 0px; */
   }
 
-  .advent-announce.push .advent-announce-text {
+  .advent-announce.push .advent-announce-text > div {
     padding: 0;
     font-size: 12px;
-    line-height: 48px;
+    line-height: 16px;
+    letter-spacing: 0.01em;
     white-space: normal;
-    font-weight: 700;
+    height: 48px;
   }
 
-  .advent-announce.push .advent-announce-text:after {
-    content: '';
-    background-position: 6px 50%, 54px 6px;
-    background-size: 7px, 253px 36px;
-    right: -301px;
-    width: 300px;
-    height: 48px;
-  }
-  .advent-announce.push .advent-announce-text:before {
-    content: '';
-    background-size: 50px 90px, 304px 40px;
-    background-position: 100% -30px, -70px;
-    left: -320px;
-    width: 306px;
-    height: 48px;
-  }
   .advent-announce.push .advent-announce-text b {
     color: #ffffff;
     font-weight: 700;
@@ -1066,6 +1069,19 @@ div.custom-select div.selector {
   }
   .advent-announce.push.advent-mobile-hide {
     display: none;
+  }
+
+  .advent-announce.push .advent-announce-text:before,
+  .advent-announce.push .advent-announce-text:after {
+    height: 48px;
+  }
+
+  .advent-announce.push .advent-announce-text:before {
+    left: -185px;
+  }
+
+  .advent-announce.push .advent-announce-text:after {
+    right: -220px;
   }
 
   .phone_wrapper {
@@ -1391,5 +1407,19 @@ div.custom-select div.selector {
 @media screen and (max-width: 592px) {
   ul.navitem_2nd_menu li a.nav_item_nowrap_link.second {
     padding: 4px 16px 4px 32px;
+  }
+
+  .advent-announce.push .advent-announce-text:after,
+  .advent-announce.push .advent-announce-text > div:after {
+    content: none;
+  }
+
+  .advent-announce.push .advent-announce-text:before {
+    width: 332px;
+    height: 44px;
+    background-image: url(../images/top_banner/onlyoffice_docs_cloud/mobile.svg);
+    left: 50%;
+    top: 2px;
+    transform: translateX(-48%);
   }
 }

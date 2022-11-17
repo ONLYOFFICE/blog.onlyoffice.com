@@ -1366,6 +1366,14 @@ msgstr "了解 <b>ONLYOFFICE 文档 v7.2</b>，包括插件市场、全新表单
 msgid "<b>ONLYOFFICE Docs v7.2</b>"
 msgstr "<b>了解 ONLYOFFICE 文档 v7.2</b>"
 
+#: wp-content/themes/teamlab-blog-2-0/header.php:120
+msgid "Meet <b>ONLYOFFICE Docs Cloud</b>, complete office software as a service"
+msgstr "了解 <b>ONLYOFFICE 文档云版本</b>，为您提供了现成的办公软件即服务"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:129
+msgid "Meet <b>ONLYOFFICE Docs Cloud</b>"
+msgstr "了解 <b>ONLYOFFICE 文档云版本</b>"
+
 #: wp-content/themes/teamlab-blog-2-0/header.php:152 wp-content/themes/teamlab-blog-2-0/searchform.php:9
 msgid "Find news, tips and how-tos"
 msgstr "寻找新闻、提示和教材"
