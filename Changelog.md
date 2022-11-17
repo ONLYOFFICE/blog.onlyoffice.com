@@ -1,5 +1,9 @@
 ﻿# Changelog
  
+## 1.2.8
+### New
+* Update top banner
+ 
 ## 1.2.7
 ### New
 * Update menu
