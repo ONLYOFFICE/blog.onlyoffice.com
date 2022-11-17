@@ -655,6 +655,7 @@ body.desktop .button.red.disabled:visited {
   border-radius: 5px;
   height: 100%;
   background-color: #FFFFFF;
+  overflow: hidden;
   transition: box-shadow 0.3s;
 }
 
@@ -875,6 +876,28 @@ body.desktop .button.red.disabled:visited {
   }
   .wrapperMorePosts{
     display: block;
+  }
+  .widget-title{
+    font-size: 16px;
+    line-height: 21px;
+    letter-spacing: -0.01em;
+  }
+  .post .post-content{
+    padding: 24px;
+  }
+  .post h2.entry-title a,
+  .post .post-content p,
+  .in_the_press_entries li a{
+    -webkit-line-clamp: 3;
+  }
+  .category-topics a{
+    font-size: 14px;
+  }
+  #content .post .head, .grid{
+    margin-top: 10px;
+  }
+  .head, .grid{
+    margin-top: 13px;
   }
   #true_loadmore,
   #true_loadmore_tags{
@@ -1543,7 +1566,7 @@ body.desktop .button.red.disabled:visited {
     margin: 16px 0;
   }
   .post .post-content p{
-    margin: 12px 0 0;
+    margin: 9px 0 0;
   }
   .post p{
     font-size: 14px;
@@ -1556,7 +1579,7 @@ body.desktop .button.red.disabled:visited {
     padding-bottom: 50.35%;
   }
   .postThemeGridBox{
-    padding: 24px;
+    padding: 21px 22px 21px;
   }
   .postThemeGridBox h4.entry-title{
     font-size: 16px;
