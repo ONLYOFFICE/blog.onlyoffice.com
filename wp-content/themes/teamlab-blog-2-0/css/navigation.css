@@ -689,8 +689,22 @@ div.custom-select div.selector {
     min-width: 244px;
   }
 
-  #navitem_integrations_menu .dropdown-content > li:last-of-type {
+  #navitem_features_menu .dropdown-content > li:last-of-type,
+  #navitem_integrations_menu .dropdown-content > li:last-of-type,
+  #navitem_developers_menu .dropdown-content > li:last-of-type,
+  #navitem_download_menu .dropdown-content > li:last-of-type,
+  #navitem_prices_menu .dropdown-content > li:last-of-type,
+  #navitem_partnership_menu .dropdown-content > li:last-of-type {
     max-width: 312px;
+  }
+
+  #navitem_features_see_it,
+  #navitem_features_oforms,
+  #navitem_education_for_business,
+  #navitem_developers_for_developers,
+  #navitem_download_hostiog,
+  #navitem_education_eve_events {
+    white-space: initial;
   }
 
   #navitem_prices_menu #navitem_prices_reseller {
