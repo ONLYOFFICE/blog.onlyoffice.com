@@ -1001,12 +1001,13 @@ msgstr "Pesquisar"
 msgid "Category Topics"
 msgstr "Tópicos da categoria"
 
-#: wp-content/themes/teamlab-blog-2-0/index.php:108
+#: wp-content/themes/teamlab-blog-2-0/index.php:109
+#: wp-content/themes/teamlab-blog-2-0/index.php:148
 msgid "Product releases"
 msgstr "Lançamentos de produtos"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:112
-#: wp-content/themes/teamlab-blog-2-0/index.php:117
+#: wp-content/themes/teamlab-blog-2-0/index.php:177
 msgid "For developers"
 msgstr "Para desenvolvedores"
 
@@ -1039,6 +1040,30 @@ msgstr "Ver todos os posts Para educação"
 #: wp-content/themes/teamlab-blog-2-0/index.php:283
 msgid "View all posts"
 msgstr "Ver todos os posts"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:109
+#: wp-content/themes/teamlab-blog-2-0/index.php:149
+#: wp-content/themes/teamlab-blog-2-0/index.php:157
+msgid "product-releases"
+msgstr "lancamentos-de-produtos"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:112
+#: wp-content/themes/teamlab-blog-2-0/index.php:178
+#: wp-content/themes/teamlab-blog-2-0/index.php:186
+msgid "for-developers"
+msgstr "para-desenvolvedores"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:115
+#: wp-content/themes/teamlab-blog-2-0/index.php:209
+#: wp-content/themes/teamlab-blog-2-0/index.php:217
+msgid "for-business"
+msgstr "para-negocios"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:118
+#: wp-content/themes/teamlab-blog-2-0/index.php:238
+#: wp-content/themes/teamlab-blog-2-0/index.php:246
+msgid "for-education"
+msgstr "para-educacao"
 
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:34
 msgid "By clicking \"Subscribe\", you agree to the <u>rules for using the service and processing personal data.</u>"

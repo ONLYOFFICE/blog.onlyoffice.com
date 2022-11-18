@@ -1395,12 +1395,13 @@ msgstr "検索"
 msgid "Category Topics"
 msgstr "カテゴリー"
 
-#: wp-content/themes/teamlab-blog-2-0/index.php:108
+#: wp-content/themes/teamlab-blog-2-0/index.php:109
+#: wp-content/themes/teamlab-blog-2-0/index.php:148
 msgid "Product releases"
 msgstr "プロダクトリリース"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:112
-#: wp-content/themes/teamlab-blog-2-0/index.php:117
+#: wp-content/themes/teamlab-blog-2-0/index.php:177
 msgid "For developers"
 msgstr "開発者向け"
 
