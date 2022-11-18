@@ -106,16 +106,16 @@ $queryNews = new WP_Query($argsNews); ?>
             <h4><?php _e('Category Topics', 'teamlab-blog-2-0'); ?></h4>
             <ul>
               <li>
-                <a class="product-releases-topic" href="<?php echo icl_get_home_url() ?>category/product-releases"><?php _e('Product releases', 'teamlab-blog-2-0'); ?></a>
+                <a class="product-releases-topic" href="<?php echo icl_get_home_url() ?>category/<?php _e('product-releases', 'teamlab-blog-2-0'); ?>"><?php _e('Product releases', 'teamlab-blog-2-0'); ?></a>
               </li>
               <li>
-                <a class="for-developers-topic" href="<?php echo icl_get_home_url() ?>category/for-developers"><?php _e('For developers', 'teamlab-blog-2-0'); ?></a>
+                <a class="for-developers-topic" href="<?php echo icl_get_home_url() ?>category/<?php _e('for-developers', 'teamlab-blog-2-0'); ?>"><?php _e('For developers', 'teamlab-blog-2-0'); ?></a>
               </li>
               <li>
-                <a class="for-business-topic" href="<?php echo icl_get_home_url() ?>category/for-business"><?php _e('For business', 'teamlab-blog-2-0'); ?></a>
+                <a class="for-business-topic" href="<?php echo icl_get_home_url() ?>category/<?php _e('for-business', 'teamlab-blog-2-0'); ?>"><?php _e('For business', 'teamlab-blog-2-0'); ?></a>
               </li>
               <li>
-                <a class="for-education-topic" href="<?php echo icl_get_home_url() ?>category/for-education"><?php _e('For education', 'teamlab-blog-2-0'); ?></a>
+                <a class="for-education-topic" href="<?php echo icl_get_home_url() ?>category/<?php _e('for-education', 'teamlab-blog-2-0'); ?>"><?php _e('For education', 'teamlab-blog-2-0'); ?></a>
               </li>
             </ul>
           </div>
@@ -137,7 +137,7 @@ $queryNews = new WP_Query($argsNews); ?>
             'post_status' => 'publish',
             'posts_per_page' => 3,
             'category__not_in' => $news_cat_id,
-            'category_name' => 'product-releases, product-releases-fr, product-releases-es, product-releases-pt, product-releases-it, product-releases-cs, product-releases-ja, product-releases-zh-hans'
+            'category_name' => 'product-releases, veroeffentlichungen, mises-à-jour-des-produits-fr, lanzamientos-de-productos, lancamentos-de-produtos, product-releases-it, product-releases-cs, product-releases-ja, product-releases-zh-hans'
           ];
 
           $wp_query = new WP_Query($args);
@@ -146,7 +146,7 @@ $queryNews = new WP_Query($argsNews); ?>
           <div class="wrapperBlock">
             <div class="wrapperTitle">
               <h2><?php _e('Product releases', 'teamlab-blog-2-0'); ?></h2>
-              <div class="view-all"><a href="<?php echo icl_get_home_url() ?>category/product-releases"><?php _e( 'View all <div class="no-wrap">posts&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
+              <div class="view-all"><a href="<?php echo icl_get_home_url() ?>category/<?php _e('product-releases', 'teamlab-blog-2-0'); ?>"><?php _e( 'View all <div class="no-wrap">posts&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
             </div>
             <div class="wrapperMain">
               <?php while ($wp_query->have_posts()) : $wp_query->the_post(); ?>
@@ -154,7 +154,7 @@ $queryNews = new WP_Query($argsNews); ?>
               <?php endwhile; wp_reset_query(); ?>
             </div>
             <div class="wrapperMorePosts">
-              <a href="<?php echo icl_get_home_url() ?>category/teamlab"><?php _e('View all posts Product releases', 'teamlab-blog-2-0'); ?></a>
+              <a href="<?php echo icl_get_home_url() ?>category/<?php _e('product-releases', 'teamlab-blog-2-0'); ?>"><?php _e('View all posts Product releases', 'teamlab-blog-2-0'); ?></a>
             </div>
           </div>
         <?php else : ?>
@@ -166,7 +166,7 @@ $queryNews = new WP_Query($argsNews); ?>
             'post_status' => 'publish',
             'posts_per_page' => 3,
             'category__not_in' => $news_cat_id,
-            'category_name' => 'for-developers, for-developers-fr, for-developers-es, for-developers-pt, for-developers-it, for-developers-cs, for-developers-ja, for-developers-zh-hans'
+            'category_name' => 'for-developers, entwicklung, pour-les-développeurs-fr, para-desarrolladores, para-desenvolvedores, for-developers-it, for-developers-cs, for-developers-ja, for-developers-zh-hans'
           ];
 
           $wp_query = new WP_Query($args);
@@ -175,7 +175,7 @@ $queryNews = new WP_Query($argsNews); ?>
           <div class="wrapperBlock">
             <div class="wrapperTitle">
               <h2><?php _e('For developers', 'teamlab-blog-2-0'); ?></h2>
-              <div class="view-all"><a href="<?php echo icl_get_home_url() ?>category/for-developers"><?php _e( 'View all <div class="no-wrap">posts&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
+              <div class="view-all"><a href="<?php echo icl_get_home_url() ?>category/<?php _e('for-developers', 'teamlab-blog-2-0'); ?>"><?php _e( 'View all <div class="no-wrap">posts&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
             </div>
             <div class="wrapperMain">
               <?php while ($wp_query->have_posts()) : $wp_query->the_post(); ?>
@@ -183,7 +183,7 @@ $queryNews = new WP_Query($argsNews); ?>
               <?php endwhile; wp_reset_query(); ?>
             </div>
             <div class="wrapperMorePosts">
-              <a href="<?php echo icl_get_home_url() ?>category/for-developers"><?php _e('View all posts For developers', 'teamlab-blog-2-0'); ?></a>
+              <a href="<?php echo icl_get_home_url() ?>category/<?php _e('for-developers', 'teamlab-blog-2-0'); ?>"><?php _e('View all posts For developers', 'teamlab-blog-2-0'); ?></a>
             </div>
           </div>
         <?php else : ?>
@@ -197,7 +197,7 @@ $queryNews = new WP_Query($argsNews); ?>
             'post_status' => 'publish',
             'posts_per_page' => 3,
             'category__not_in' => $news_cat_id,
-            'category_name' => 'for-business, for-business-fr, for-business-es, for-business-pt, for-business-it, for-business-cs, for-business-ja, for-business-zh-hans'
+            'category_name' => 'for-business, business, pour-les-entreprises-fr, para-empresas, para-negocios, for-business-it, for-business-cs, for-business-ja, for-business-zh-hans'
           ];
 
           $wp_query = new WP_Query($args);
@@ -206,7 +206,7 @@ $queryNews = new WP_Query($argsNews); ?>
           <div class="wrapperBlock">
             <div class="wrapperTitle">
               <h2><?php _e('For business', 'teamlab-blog-2-0'); ?></h2>
-              <div class="view-all"><a href="<?php echo icl_get_home_url() ?>category/for-business"><?php _e( 'View all <div class="no-wrap">posts&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
+              <div class="view-all"><a href="<?php echo icl_get_home_url() ?>category/<?php _e('for-business', 'teamlab-blog-2-0'); ?>"><?php _e( 'View all <div class="no-wrap">posts&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
             </div>
             <div class="wrapperMain">
               <?php while ($wp_query->have_posts()) : $wp_query->the_post(); ?>
@@ -214,7 +214,7 @@ $queryNews = new WP_Query($argsNews); ?>
               <?php endwhile; wp_reset_query(); ?>
             </div>
             <div class="wrapperMorePosts">
-              <a href="<?php echo icl_get_home_url() ?>category/for-business"><?php _e('View all posts For business', 'teamlab-blog-2-0'); ?></a>
+              <a href="<?php echo icl_get_home_url() ?>category/<?php _e('for-business', 'teamlab-blog-2-0'); ?>"><?php _e('View all posts For business', 'teamlab-blog-2-0'); ?></a>
             </div>
           </div>
         <?php else : ?>
@@ -226,7 +226,7 @@ $queryNews = new WP_Query($argsNews); ?>
             'post_status' => 'publish',
             'posts_per_page' => 3,
             'category__not_in' => $news_cat_id,
-            'category_name' => 'for-education, for-education-fr, for-education-es, for-education-pt, for-education-it, for-education-cs, for-education-ja, for-education-zh-hans'
+            'category_name' => 'for-education, bildung, pour-éducation-fr, para-la-educacion, para-educacao, for-education-it, for-education-cs, for-education-ja, for-education-zh-hans'
           ];
 
           $wp_query = new WP_Query($args);
@@ -235,7 +235,7 @@ $queryNews = new WP_Query($argsNews); ?>
           <div class="wrapperBlock">
             <div class="wrapperTitle">
               <h2><?php _e('For education', 'teamlab-blog-2-0'); ?></h2>
-              <div class="view-all"><a href="<?php echo icl_get_home_url() ?>category/for-education"><?php _e( 'View all <div class="no-wrap">posts&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
+              <div class="view-all"><a href="<?php echo icl_get_home_url() ?>category/<?php _e('for-education', 'teamlab-blog-2-0'); ?>"><?php _e( 'View all <div class="no-wrap">posts&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
             </div>
             <div class="wrapperMain">
               <?php while ($wp_query->have_posts()) : $wp_query->the_post(); ?>
@@ -243,7 +243,7 @@ $queryNews = new WP_Query($argsNews); ?>
               <?php endwhile; wp_reset_query(); ?>
             </div>
             <div class="wrapperMorePosts">
-              <a href="<?php echo icl_get_home_url() ?>category/for-education"><?php _e('View all posts For education', 'teamlab-blog-2-0'); ?></a>
+              <a href="<?php echo icl_get_home_url() ?>category/<?php _e('for-education', 'teamlab-blog-2-0'); ?>"><?php _e('View all posts For education', 'teamlab-blog-2-0'); ?></a>
             </div>
           </div>
         <?php else : ?>
