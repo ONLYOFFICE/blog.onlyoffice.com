@@ -1566,12 +1566,13 @@ msgstr "搜索"
 msgid "Category Topics"
 msgstr "分类"
 
-#: wp-content/themes/teamlab-blog-2-0/index.php:108
+#: wp-content/themes/teamlab-blog-2-0/index.php:109
+#: wp-content/themes/teamlab-blog-2-0/index.php:148
 msgid "Product releases"
 msgstr "产品发布新闻"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:112
-#: wp-content/themes/teamlab-blog-2-0/index.php:117
+#: wp-content/themes/teamlab-blog-2-0/index.php:177
 msgid "For developers"
 msgstr "开发领域"
 

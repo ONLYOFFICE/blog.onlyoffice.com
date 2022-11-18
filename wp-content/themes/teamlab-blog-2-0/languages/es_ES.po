@@ -1049,12 +1049,13 @@ msgstr "Buscar"
 msgid "Category Topics"
 msgstr "Categorías y temas"
 
-#: wp-content/themes/teamlab-blog-2-0/index.php:108
+#: wp-content/themes/teamlab-blog-2-0/index.php:109
+#: wp-content/themes/teamlab-blog-2-0/index.php:148
 msgid "Product releases"
 msgstr "Lanzamientos de productos"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:112
-#: wp-content/themes/teamlab-blog-2-0/index.php:117
+#: wp-content/themes/teamlab-blog-2-0/index.php:177
 msgid "For developers"
 msgstr "Para desarrolladores"
 
@@ -1078,7 +1079,7 @@ msgstr "Ver todos los posts Para desarrolladores"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:217
 msgid "View all posts For business"
-msgstr "Ver todos los posts Para empresas "
+msgstr "Ver todos los posts Para empresas"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:246
 msgid "View all posts For education"
@@ -1086,7 +1087,31 @@ msgstr "Ver todos los posts Para la educación"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:283
 msgid "View all posts"
-msgstr "Ver todos los posts "
+msgstr "Ver todos los posts"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:109
+#: wp-content/themes/teamlab-blog-2-0/index.php:149
+#: wp-content/themes/teamlab-blog-2-0/index.php:157
+msgid "product-releases"
+msgstr "lanzamientos-de-productos"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:112
+#: wp-content/themes/teamlab-blog-2-0/index.php:178
+#: wp-content/themes/teamlab-blog-2-0/index.php:186
+msgid "for-developers"
+msgstr "para-desarrolladores"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:115
+#: wp-content/themes/teamlab-blog-2-0/index.php:209
+#: wp-content/themes/teamlab-blog-2-0/index.php:217
+msgid "for-business"
+msgstr "para-empresas"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:118
+#: wp-content/themes/teamlab-blog-2-0/index.php:238
+#: wp-content/themes/teamlab-blog-2-0/index.php:246
+msgid "for-education"
+msgstr "para-la-educacion"
 
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:34
 msgid "By clicking \"Subscribe\", you agree to the <u>rules for using the service and processing personal data.</u>"

@@ -1047,12 +1047,13 @@ msgstr "Suche"
 msgid "Category Topics"
 msgstr "Kategorien und Themen"
 
-#: wp-content/themes/teamlab-blog-2-0/index.php:108
+#: wp-content/themes/teamlab-blog-2-0/index.php:109
+#: wp-content/themes/teamlab-blog-2-0/index.php:148
 msgid "Product releases"
 msgstr "Veröffentlichungen"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:112
-#: wp-content/themes/teamlab-blog-2-0/index.php:117
+#: wp-content/themes/teamlab-blog-2-0/index.php:177
 msgid "For developers"
 msgstr "Für Entwickler"
 
@@ -1085,6 +1086,30 @@ msgstr "Alle Beiträge Für Bildungswesen"
 #: wp-content/themes/teamlab-blog-2-0/index.php:283
 msgid "View all posts"
 msgstr "Alle Beiträge lesen"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:109
+#: wp-content/themes/teamlab-blog-2-0/index.php:149
+#: wp-content/themes/teamlab-blog-2-0/index.php:157
+msgid "product-releases"
+msgstr "veroeffentlichungen"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:112
+#: wp-content/themes/teamlab-blog-2-0/index.php:178
+#: wp-content/themes/teamlab-blog-2-0/index.php:186
+msgid "for-developers"
+msgstr "entwicklung"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:115
+#: wp-content/themes/teamlab-blog-2-0/index.php:209
+#: wp-content/themes/teamlab-blog-2-0/index.php:217
+msgid "for-business"
+msgstr "business"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:118
+#: wp-content/themes/teamlab-blog-2-0/index.php:238
+#: wp-content/themes/teamlab-blog-2-0/index.php:246
+msgid "for-education"
+msgstr "bildung"
 
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:34
 msgid "By clicking \"Subscribe\", you agree to the <u>rules for using the service and processing personal data.</u>"
