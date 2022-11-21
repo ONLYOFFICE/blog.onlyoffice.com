@@ -105,18 +105,24 @@ $queryNews = new WP_Query($argsNews); ?>
           <div class="category-topics">
             <h4><?php _e('Category Topics', 'teamlab-blog-2-0'); ?></h4>
             <ul>
-              <li>
-                <a class="product-releases-topic" href="<?php echo icl_get_home_url() ?>category/<?php _e('product-releases', 'teamlab-blog-2-0'); ?>"><?php _e('Product releases', 'teamlab-blog-2-0'); ?></a>
-              </li>
-              <li>
-                <a class="for-developers-topic" href="<?php echo icl_get_home_url() ?>category/<?php _e('for-developers', 'teamlab-blog-2-0'); ?>"><?php _e('For developers', 'teamlab-blog-2-0'); ?></a>
-              </li>
-              <li>
-                <a class="for-business-topic" href="<?php echo icl_get_home_url() ?>category/<?php _e('for-business', 'teamlab-blog-2-0'); ?>"><?php _e('For business', 'teamlab-blog-2-0'); ?></a>
-              </li>
-              <li>
-                <a class="for-education-topic" href="<?php echo icl_get_home_url() ?>category/<?php _e('for-education', 'teamlab-blog-2-0'); ?>"><?php _e('For education', 'teamlab-blog-2-0'); ?></a>
-              </li>
+              <?php if ($current_language == WEB_ROOT_URL.'/'.'cs') { ?>
+                <li>
+                  <a class="for-business-topic" href="<?php echo icl_get_home_url() ?>category/<?php _e('for-business', 'teamlab-blog-2-0'); ?>"><?php _e('For business', 'teamlab-blog-2-0'); ?></a>
+                </li>
+              <?php } else { ?>
+                <li>
+                  <a class="product-releases-topic" href="<?php echo icl_get_home_url() ?>category/<?php _e('product-releases', 'teamlab-blog-2-0'); ?>"><?php _e('Product releases', 'teamlab-blog-2-0'); ?></a>
+                </li>
+                <li>
+                  <a class="for-developers-topic" href="<?php echo icl_get_home_url() ?>category/<?php _e('for-developers', 'teamlab-blog-2-0'); ?>"><?php _e('For developers', 'teamlab-blog-2-0'); ?></a>
+                </li>
+                <li>
+                  <a class="for-business-topic" href="<?php echo icl_get_home_url() ?>category/<?php _e('for-business', 'teamlab-blog-2-0'); ?>"><?php _e('For business', 'teamlab-blog-2-0'); ?></a>
+                </li>
+                <li>
+                  <a class="for-education-topic" href="<?php echo icl_get_home_url() ?>category/<?php _e('for-education', 'teamlab-blog-2-0'); ?>"><?php _e('For education', 'teamlab-blog-2-0'); ?></a>
+                </li>
+              <?php } ?>
             </ul>
           </div>
           <?php if ($current_language == WEB_ROOT_URL . '/' . 'zh') { ?>
@@ -197,7 +203,7 @@ $queryNews = new WP_Query($argsNews); ?>
             'post_status' => 'publish',
             'posts_per_page' => 3,
             'category__not_in' => $news_cat_id,
-            'category_name' => 'for-business, business, pour-les-entreprises-fr, para-empresas, para-negocios, for-business-it, for-business-cs, for-business-ja, for-business-zh-hans'
+            'category_name' => 'for-business, business, pour-les-entreprises-fr, para-empresas, para-negocios, for-business-it, pro-firmy, for-business-ja, for-business-zh-hans'
           ];
 
           $wp_query = new WP_Query($args);
