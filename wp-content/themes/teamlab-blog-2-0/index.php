@@ -276,14 +276,13 @@ $queryNews = new WP_Query($argsNews); ?>
             </div>
           </div>
 
+        <script>
+          var ajaxurl = '<?php echo site_url() ?>/wp-admin/admin-ajax.php';
+          var true_posts = '<?php echo serialize($wp_query->query_vars); ?>';
+          var current_page = '<?php echo (get_query_var('paged')) ? get_query_var('paged') : 1; ?>';
+          var max_pages = '<?php echo $wp_query->max_num_pages; ?>';
+        </script>
         <?php if ($wp_query->max_num_pages > 1) : ?>
-          <script>
-            var ajaxurl = '<?php echo site_url() ?>/wp-admin/admin-ajax.php';
-            var true_posts = '<?php echo serialize($wp_query->query_vars); ?>';
-            var current_page = '<?php echo (get_query_var('paged')) ? get_query_var('paged') : 1; ?>';
-            var max_pages = '<?php echo $wp_query->max_num_pages; ?>';
-          </script>
-
           <div class="wrapperMain">
             <div class="main_button" id="true_loadmore"><?php _e('Load more', 'teamlab-blog-2-0'); ?></div>
             <div class="main_button" id="true_loadmore_mobile"><?php _e('View all posts', 'teamlab-blog-2-0'); ?></div>
