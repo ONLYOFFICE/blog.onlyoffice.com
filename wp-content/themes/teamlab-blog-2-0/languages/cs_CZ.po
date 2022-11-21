@@ -885,7 +885,7 @@ msgstr "Pro vývojáře"
 #: wp-content/themes/teamlab-blog-2-0/index.php:115
 #: wp-content/themes/teamlab-blog-2-0/index.php:208
 msgid "For business"
-msgstr "Pro podniky"
+msgstr "Pro firmy"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:118
 #: wp-content/themes/teamlab-blog-2-0/index.php:237
@@ -911,6 +911,12 @@ msgstr "Zobrazit všechny příspěvky Pro vzdělávání"
 #: wp-content/themes/teamlab-blog-2-0/index.php:283
 msgid "View all posts"
 msgstr "Zobrazit všechny příspěvky"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:115
+#: wp-content/themes/teamlab-blog-2-0/index.php:209
+#: wp-content/themes/teamlab-blog-2-0/index.php:217
+msgid "for-business"
+msgstr "pro-firmy"
 
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:34
 msgid "By clicking \"Subscribe\", you agree to the <u>rules for using the service and processing personal data.</u>"
