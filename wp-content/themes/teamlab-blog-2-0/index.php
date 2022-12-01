@@ -143,7 +143,7 @@ $queryNews = new WP_Query($argsNews); ?>
             'post_status' => 'publish',
             'posts_per_page' => 3,
             'category__not_in' => $news_cat_id,
-            'category_name' => 'product-releases, veroeffentlichungen, mises-à-jour-des-produits-fr, lanzamientos-de-productos, lancamentos-de-produtos, product-releases-it, product-releases-cs, product-releases-ja, product-releases-zh-hans'
+            'category_name' => 'product-releases, veroeffentlichungen, mises-a-jour-des-produits-fr, lanzamientos-de-productos, lancamentos-de-produtos, rilascio-dei-prodotti, product-releases-ja, product-releases-zh-hans'
           ];
 
           $wp_query = new WP_Query($args);
@@ -172,7 +172,7 @@ $queryNews = new WP_Query($argsNews); ?>
             'post_status' => 'publish',
             'posts_per_page' => 3,
             'category__not_in' => $news_cat_id,
-            'category_name' => 'for-developers, entwicklung, pour-les-développeurs-fr, para-desarrolladores, para-desenvolvedores, for-developers-it, for-developers-cs, for-developers-ja, for-developers-zh-hans'
+            'category_name' => 'for-developers, entwicklung, pour-les-developpeurs-fr, para-desarrolladores, para-desenvolvedores, per-gli-sviluppatori, for-developers-ja, for-developers-zh-hans'
           ];
 
           $wp_query = new WP_Query($args);
@@ -203,7 +203,7 @@ $queryNews = new WP_Query($argsNews); ?>
             'post_status' => 'publish',
             'posts_per_page' => 3,
             'category__not_in' => $news_cat_id,
-            'category_name' => 'for-business, business, pour-les-entreprises-fr, para-empresas, para-negocios, for-business-it, pro-firmy, for-business-ja, for-business-zh-hans'
+            'category_name' => 'for-business, business, pour-les-entreprises-fr, para-empresas, para-negocios, per-affari, pro-firmy, for-business-ja, for-business-zh-hans'
           ];
 
           $wp_query = new WP_Query($args);
@@ -232,7 +232,7 @@ $queryNews = new WP_Query($argsNews); ?>
             'post_status' => 'publish',
             'posts_per_page' => 3,
             'category__not_in' => $news_cat_id,
-            'category_name' => 'for-education, bildung, pour-éducation-fr, para-la-educacion, para-educacao, for-education-it, for-education-cs, for-education-ja, for-education-zh-hans'
+            'category_name' => 'for-education, bildung, pour-education-fr, para-la-educacion, para-educacao, per-l-istruzione, for-education-ja, for-education-zh-hans'
           ];
 
           $wp_query = new WP_Query($args);
