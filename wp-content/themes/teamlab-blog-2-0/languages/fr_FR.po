@@ -1092,13 +1092,13 @@ msgstr "Afficher tous les billets"
 #: wp-content/themes/teamlab-blog-2-0/index.php:149
 #: wp-content/themes/teamlab-blog-2-0/index.php:157
 msgid "product-releases"
-msgstr "mises-à-jour-des-produits-fr"
+msgstr "mises-a-jour-des-produits-fr"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:112
 #: wp-content/themes/teamlab-blog-2-0/index.php:178
 #: wp-content/themes/teamlab-blog-2-0/index.php:186
 msgid "for-developers"
-msgstr "pour-les-développeurs-fr"
+msgstr "pour-les-developpeurs-fr"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:115
 #: wp-content/themes/teamlab-blog-2-0/index.php:209
@@ -1110,7 +1110,7 @@ msgstr "pour-les-entreprises-fr"
 #: wp-content/themes/teamlab-blog-2-0/index.php:238
 #: wp-content/themes/teamlab-blog-2-0/index.php:246
 msgid "for-education"
-msgstr "pour-éducation-fr"
+msgstr "pour-education-fr"
 
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:34
 msgid "By clicking \"Subscribe\", you agree to the <u>rules for using the service and processing personal data.</u>"

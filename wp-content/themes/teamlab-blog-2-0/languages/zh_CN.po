@@ -1606,6 +1606,30 @@ msgstr "阅读更多有关教育领域的文章"
 msgid "View all posts"
 msgstr "阅读更多文章"
 
+#: wp-content/themes/teamlab-blog-2-0/index.php:109
+#: wp-content/themes/teamlab-blog-2-0/index.php:149
+#: wp-content/themes/teamlab-blog-2-0/index.php:157
+msgid "product-releases"
+msgstr "product-releases-zh-hans"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:112
+#: wp-content/themes/teamlab-blog-2-0/index.php:178
+#: wp-content/themes/teamlab-blog-2-0/index.php:186
+msgid "for-developers"
+msgstr "for-developers-zh-hans"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:115
+#: wp-content/themes/teamlab-blog-2-0/index.php:209
+#: wp-content/themes/teamlab-blog-2-0/index.php:217
+msgid "for-business"
+msgstr "for-business-zh-hans"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:118
+#: wp-content/themes/teamlab-blog-2-0/index.php:238
+#: wp-content/themes/teamlab-blog-2-0/index.php:246
+msgid "for-education"
+msgstr "for-education-zh-hans"
+
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:34
 msgid "By clicking \"Subscribe\", you agree to the <u>rules for using the service and processing personal data.</u>"
 msgstr "通过点击 "订阅"，您同意<u>使用服务和处理个人数据的规则。</u>"

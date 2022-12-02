@@ -431,6 +431,9 @@ main{
   margin-bottom: 60px;
   grid-gap: 32px;
 }
+#content .content {
+  max-width: 736px;
+}
 .postwrapper > a{
   position: relative;
   display: block;
