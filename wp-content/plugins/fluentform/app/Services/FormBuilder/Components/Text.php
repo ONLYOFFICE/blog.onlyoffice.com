@@ -9,9 +9,11 @@ class Text extends BaseComponent
 {
     /**
      * Compile and echo the html element
-     * @param  array $data [element data]
-     * @param  stdClass $form [Form Object]
-     * @return viod
+     *
+     * @param array     $data [element data]
+     * @param \stdClass $form [Form Object]
+     *
+     * @return void
      */
     public function compile($data, $form)
     {
@@ -19,16 +21,16 @@ class Text extends BaseComponent
         $data = apply_filters('fluentform_rendering_field_data_' . $elementName, $data, $form);
 
         // </mask input>
-        if (isset($data['settings']['temp_mask']) && $data['settings']['temp_mask'] != 'custom') {
+        if (isset($data['settings']['temp_mask']) && 'custom' != $data['settings']['temp_mask']) {
             $data['attributes']['data-mask'] = $data['settings']['temp_mask'];
         }
 
-        if (ArrayHelper::get($data, 'settings.temp_mask') == 'custom') {
-            if (ArrayHelper::get($data, 'settings.data-mask-reverse') == 'yes') {
+        if ('custom' == ArrayHelper::get($data, 'settings.temp_mask')) {
+            if ('yes' == ArrayHelper::get($data, 'settings.data-mask-reverse')) {
                 $data['attributes']['data-mask-reverse'] = 'true';
             }
 
-            if (ArrayHelper::get($data, 'settings.data-clear-if-not-match') == 'yes') {
+            if ('yes' == ArrayHelper::get($data, 'settings.data-clear-if-not-match')) {
                 $data['attributes']['data-clear-if-not-match'] = 'true';
             }
         }
@@ -37,13 +39,13 @@ class Text extends BaseComponent
             wp_enqueue_script(
                 'jquery-mask',
                 $this->app->publicUrl('libs/jquery.mask.min.js'),
-                array('jquery'),
+                ['jquery'],
                 false,
                 true
             );
         }
 
-        if ($data['element'] == 'input_number' || $data['element'] == 'custom_payment_component') {
+        if ('input_number' == $data['element'] || 'custom_payment_component' == $data['element']) {
             if (
                 ArrayHelper::get($data, 'settings.calculation_settings.status') &&
                 $formula = ArrayHelper::get($data, 'settings.calculation_settings.formula')
@@ -61,9 +63,9 @@ class Text extends BaseComponent
                 }, 10, 2);
                 do_action('ff_rendering_calculation_form', $form, $data);
             } else {
-                if (!apply_filters('fluentform_disable_inputmode', false)) {
+                if (! apply_filters('fluentform_disable_inputmode', false)) {
                     $inputMode = ArrayHelper::get($data, 'attributes.inputmode');
-                    if(!$inputMode) {
+                    if (! $inputMode) {
                         $inputMode = 'numeric';
                     }
                     $data['attributes']['inputmode'] = $inputMode;
@@ -72,12 +74,12 @@ class Text extends BaseComponent
 
             if ($step = ArrayHelper::get($data, 'settings.number_step')) {
                 $data['attributes']['step'] = $step;
-            } else if (ArrayHelper::get($data, 'attributes.type') == 'number') {
+            } elseif ('number' == ArrayHelper::get($data, 'attributes.type')) {
                 $data['attributes']['step'] = 'any';
             }
 
             $min = ArrayHelper::get($data, 'settings.validation_rules.min.value');
-            if ($min || $min == 0) {
+            if ($min || 0 == $min) {
                 $data['attributes']['min'] = $min;
             }
 
@@ -87,7 +89,7 @@ class Text extends BaseComponent
 
             if ($formatter = ArrayHelper::get($data, 'settings.numeric_formatter')) {
                 $formatters = Helper::getNumericFormatters();
-                if (!empty($formatters[$formatter]['settings'])) {
+                if (! empty($formatters[$formatter]['settings'])) {
                     $data['attributes']['class'] .= ' ff_numeric';
                     $data['attributes']['data-formatter'] = json_encode($formatters[$formatter]['settings']);
                     wp_enqueue_script(
@@ -99,22 +101,19 @@ class Text extends BaseComponent
                     );
                     $data['attributes']['type'] = 'text';
                 }
-
             }
-
         }
 
-
         // For hidden input
-        if ($data['attributes']['type'] == 'hidden') {
-            echo "<input " . $this->buildAttributes($data['attributes'], $form) . ">";
+        if ('hidden' == $data['attributes']['type']) {
+            $attributes = $this->buildAttributes($data['attributes'], $form);
+            echo '<input ' . $attributes . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $attributes is escaped before being passed in.
             return;
         }
 
-        if ($tabIndex = \FluentForm\App\Helpers\Helper::getNextTabIndex()) {
+        if ($tabIndex = Helper::getNextTabIndex()) {
             $data['attributes']['tabindex'] = $tabIndex;
         }
-
 
         $data['attributes']['class'] = @trim('ff-el-form-control ' . $data['attributes']['class']);
         $data['attributes']['id'] = $this->makeElementId($data, $form);
@@ -122,27 +121,27 @@ class Text extends BaseComponent
         $elMarkup = $this->buildInputGroup($data, $form);
 
         $html = $this->buildElementMarkup($elMarkup, $data, $form);
-        echo apply_filters('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
+
+        $this->printContent('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
     }
 
     private function buildInputGroup($data, $form)
     {
-        $input = "<input " . $this->buildAttributes($data['attributes'], $form) . ">";
+        $input = '<input ' . $this->buildAttributes($data['attributes'], $form) . '>';
         $prefix = ArrayHelper::get($data, 'settings.prefix_label');
         $suffix = ArrayHelper::get($data, 'settings.suffix_label');
         if ($prefix || $suffix) {
             $wrapper = '<div class="ff_input-group">';
             if ($prefix) {
-                $wrapper .= '<div class="ff_input-group-prepend"><span class="ff_input-group-text">' . $prefix . '</span></div>';
+                $wrapper .= '<div class="ff_input-group-prepend"><span class="ff_input-group-text">' . fluentform_sanitize_html($prefix) . '</span></div>';
             }
             $wrapper .= $input;
             if ($suffix) {
-                $wrapper .= '<div class="ff_input-group-append"><span class="ff_input-group-text">' . $suffix . '</span></div>';
+                $wrapper .= '<div class="ff_input-group-append"><span class="ff_input-group-text">' . fluentform_sanitize_html($suffix) . '</span></div>';
             }
             $wrapper .= '</div>';
             return $wrapper;
         }
         return $input;
     }
-
 }

@@ -17,6 +17,13 @@ class autoptimizeHTML extends autoptimizeBase
     private $keepcomments = false;
 
     /**
+     * Whether inline CSS/ JS is minified.
+     *
+     * @var bool
+     */
+    private $minify_inline = false;
+
+    /**
      * Whether to force xhtml compatibility.
      *
      * @var bool
@@ -41,6 +48,9 @@ class autoptimizeHTML extends autoptimizeBase
 
         // Filter to force xhtml.
         $this->forcexhtml = (bool) apply_filters( 'autoptimize_filter_html_forcexhtml', false );
+
+        // minify inline JS/ CSS.
+        $this->minify_inline = (bool) apply_filters( 'autoptimize_html_minify_inline_js_css', $options['minify_inline'] );
 
         // Filterable strings to be excluded from HTML minification.
         $exclude = apply_filters( 'autoptimize_filter_html_exclude', '' );
@@ -82,10 +92,14 @@ class autoptimizeHTML extends autoptimizeBase
             $options['xhtml'] = true;
         }
 
-        // Optionally (filter-based, GUI later) minify inline JS & CSS.
-        if ( apply_filters( 'autoptimize_html_minify_inline_js_css', false ) ) {
-            $options['jsMinifier']  = 'JSMin::minify';
-            $options['cssMinifier'] = 'autoptimizeCSSmin::minify';
+        // Optionally minify inline JS & CSS.
+        if ( $this->minify_inline ) {
+            if ( false != autoptimizeOptionWrapper::get_option( 'autoptimize_js' ) && false != autoptimizeConfig::get_post_meta_ao_settings( 'ao_post_js_optimize' ) && true !== apply_filters( 'autoptimize_filter_js_noptimize', false, $this->content ) && false === strpos( $this->content, 'text/template' ) ) {
+                $options['jsMinifier']  = 'JSMin::minify';
+            }
+            if ( false != autoptimizeOptionWrapper::get_option( 'autoptimize_css' ) && false != autoptimizeConfig::get_post_meta_ao_settings( 'ao_post_css_optimize' ) && true !== apply_filters( 'autoptimize_filter_css_noptimize', false, $this->content ) ) {
+                $options['cssMinifier'] = 'autoptimizeCSSmin::minify';
+            }
         }
 
         $tmp_content = AO_Minify_HTML::minify( $this->content, $options );

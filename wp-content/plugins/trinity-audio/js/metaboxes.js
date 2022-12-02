@@ -1,3 +1,32 @@
+function updateVoiceValue() {
+  const voiceField = document.querySelector('#trinity_audio_voice_id.trinity-audio-metaboxes-element');
+  const languageField = document.querySelector('#trinity_audio_source_language');
+  const genderField = document.querySelector('#trinity_audio_gender_id');
+
+  if (!voiceField || !languageField || !genderField) return;
+
+  let languageVoices = languageField.selectedOptions?.[0].attributes['data-voices']?.value;
+
+  if (!languageVoices) return voiceField.value = '';
+  else languageVoices = JSON.parse(languageVoices);
+
+  const currentGender = genderField.value;
+
+  voiceField.value = languageVoices[currentGender] || languageVoices[Object.keys(languageVoices)[0]];
+}
+
+function trinitySendMetricMeta(metric, additionalData) {
+  $.ajax({
+    type: 'POST',
+    url: ajaxurl,
+    data: {
+      metric,
+      additionalData,
+      action: window.TRINITY_WP_ADMIN.TRINITY_AUDIO_SEND_METRIC
+    }
+  });
+}
+
 (function ($) {
   const ERROR_GET_VALUE = 'Unable to retrieve value';
 
@@ -66,4 +95,5 @@
   }
 
   initTabPanel();
+  updateVoiceValue($);
 })(jQuery);

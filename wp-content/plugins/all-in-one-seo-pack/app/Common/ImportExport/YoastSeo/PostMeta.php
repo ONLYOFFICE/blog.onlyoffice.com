@@ -28,8 +28,8 @@ class PostMeta {
 				return;
 			}
 
-			if ( ! aioseo()->transients->get( 'import_post_meta_yoast_seo' ) ) {
-				aioseo()->transients->update( 'import_post_meta_yoast_seo', time(), WEEK_IN_SECONDS );
+			if ( ! aioseo()->core->cache->get( 'import_post_meta_yoast_seo' ) ) {
+				aioseo()->core->cache->update( 'import_post_meta_yoast_seo', time(), WEEK_IN_SECONDS );
 			}
 
 			as_schedule_single_action( time(), aioseo()->importExport->yoastSeo->postActionName, [], 'aioseo' );
@@ -48,9 +48,9 @@ class PostMeta {
 	public function importPostMeta() {
 		$postsPerAction  = 100;
 		$publicPostTypes = implode( "', '", aioseo()->helpers->getPublicPostTypes( true ) );
-		$timeStarted     = gmdate( 'Y-m-d H:i:s', aioseo()->transients->get( 'import_post_meta_yoast_seo' ) );
+		$timeStarted     = gmdate( 'Y-m-d H:i:s', aioseo()->core->cache->get( 'import_post_meta_yoast_seo' ) );
 
-		$posts = aioseo()->db
+		$posts = aioseo()->core->db
 			->start( 'posts' . ' as p' )
 			->select( 'p.ID, p.post_type' )
 			->leftJoin( 'aioseo_posts as ap', '`p`.`ID` = `ap`.`post_id`' )
@@ -62,7 +62,8 @@ class PostMeta {
 			->result();
 
 		if ( ! $posts || ! count( $posts ) ) {
-			aioseo()->transients->delete( 'import_post_meta_yoast_seo' );
+			aioseo()->core->cache->delete( 'import_post_meta_yoast_seo' );
+
 			return;
 		}
 
@@ -87,7 +88,7 @@ class PostMeta {
 		];
 
 		foreach ( $posts as $post ) {
-			$postMeta = aioseo()->db
+			$postMeta = aioseo()->core->db
 				->start( 'postmeta' . ' as pm' )
 				->select( 'pm.meta_key, pm.meta_value' )
 				->where( 'pm.post_id', $post->ID )
@@ -166,12 +167,17 @@ class PostMeta {
 						if ( in_array( $post->post_type, [ 'post', 'page', 'attachment' ], true ) ) {
 							break;
 						}
-						if ( in_array( $value, ImportExport\SearchAppearance::$supportedWebPageGraphs, true ) ) {
-							$meta[ $mappedMeta[ $name ] ] = 'WebPage';
-							$options          = new \stdClass();
-							$options->webPage = [ 'webPageType' => $value ];
+
+						if ( ! in_array( $value, ImportExport\SearchAppearance::$supportedWebPageGraphs, true ) ) {
+							break;
 						}
-						$meta['schema_type_options'] = wp_json_encode( $options );
+
+						$meta[ $mappedMeta[ $name ] ] = 'WebPage';
+						$meta['schema_type_options']  = wp_json_encode( [
+							'webPage' => [
+								'webPageType' => $value
+							]
+						] );
 						break;
 					case '_yoast_wpseo_schema_article_type':
 						$value = aioseo()->helpers->pregReplace( '#\s#', '', $value );
@@ -200,11 +206,16 @@ class PostMeta {
 						$meta['schema_type_options'] = wp_json_encode( $options );
 						break;
 					case '_yoast_wpseo_focuskw':
-						$keyphrase = [
-							'focus'      => [ 'keyphrase' => aioseo()->helpers->sanitizeOption( $value ) ],
-							'additional' => []
+						$focusKeyphrase = [
+							'focus' => [ 'keyphrase' => aioseo()->helpers->sanitizeOption( $value ) ]
 						];
-						$meta['keyphrases'] = wp_json_encode( $keyphrase );
+
+						// Merge with existing keyphrases if the array key already exists.
+						if ( ! empty( $meta['keyphrases'] ) ) {
+							$meta['keyphrases'] = array_merge( $meta['keyphrases'], $focusKeyphrase );
+						} else {
+							$meta['keyphrases'] = $focusKeyphrase;
+						}
 						break;
 					case '_yoast_wpseo_focuskeywords':
 						$keyphrases = [];
@@ -215,11 +226,21 @@ class PostMeta {
 						$yoastKeyphrases = json_decode( $value );
 						for ( $i = 0; $i < count( $yoastKeyphrases ); $i++ ) {
 							$keyphrase = [ 'keyphrase' => aioseo()->helpers->sanitizeOption( $yoastKeyphrases[ $i ]->keyword ) ];
+
+							if ( ! isset( $keyphrases['additional'] ) ) {
+								$keyphrases['additional'] = [];
+							}
+
 							$keyphrases['additional'][ $i ] = $keyphrase;
 						}
 
 						if ( ! empty( $keyphrases ) ) {
-							$meta['keyphrases'] = wp_json_encode( $keyphrases );
+							// Merge with existing keyphrases if the array key already exists.
+							if ( ! empty( $meta['keyphrases'] ) ) {
+								$meta['keyphrases'] = array_merge( $meta['keyphrases'], $keyphrases );
+							} else {
+								$meta['keyphrases'] = $keyphrases;
+							}
 						}
 						break;
 					case '_yoast_wpseo_title':
@@ -254,6 +275,10 @@ class PostMeta {
 				$meta['twitter_title']  = $title;
 			}
 
+			if ( ! empty( $meta['keyphrases'] ) && is_array( $meta['keyphrases'] ) ) {
+				$meta['keyphrases'] = wp_json_encode( $meta['keyphrases'] );
+			}
+
 			$aioseoPost = Models\Post::getPost( (int) $post->ID );
 			$aioseoPost->set( $meta );
 			$aioseoPost->save();
@@ -268,7 +293,7 @@ class PostMeta {
 				// Do nothing.
 			}
 		} else {
-			aioseo()->transients->delete( 'import_post_meta_yoast_seo' );
+			aioseo()->core->cache->delete( 'import_post_meta_yoast_seo' );
 		}
 	}
 }

@@ -20,17 +20,24 @@ class Database {
 	 * @var array
 	 */
 	protected $customTables = [
+		'aioseo_cache',
+		'aioseo_links',
+		'aioseo_links_suggestions',
 		'aioseo_notifications',
 		'aioseo_posts',
+		'aioseo_redirects',
+		'aioseo_redirects_404_logs',
+		'aioseo_redirects_hits',
+		'aioseo_redirects_logs',
 		'aioseo_terms'
 	];
 
 	/**
-	 * Holds $wpdb.
+	 * Holds $wpdb instance.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @var array
+	 * @var wpdb
 	 */
 	public $db;
 
@@ -41,7 +48,7 @@ class Database {
 	 *
 	 * @var string
 	 */
-	public $prefix;
+	public $prefix = '';
 
 	/**
 	 * The database table in use by this query.
@@ -50,7 +57,7 @@ class Database {
 	 *
 	 * @var string
 	 */
-	public $table;
+	public $table = '';
 
 	/**
 	 * The sql statement (SELECT, INSERT, UPDATE, DELETE, etc.).
@@ -59,19 +66,19 @@ class Database {
 	 *
 	 * @var string
 	 */
-	private $statement;
+	private $statement = '';
 
 	/**
-	 * The limit clause for the sql query.
+	 * The limit clause for the SQL query.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @var string|array
+	 * @var string|int
 	 */
-	private $limit;
+	private $limit = '';
 
 	/**
-	 * The group clause for the sql query.
+	 * The group clause for the SQL query.
 	 *
 	 * @since 4.0.0
 	 *
@@ -80,7 +87,7 @@ class Database {
 	private $group = [];
 
 	/**
-	 * The order by clause for the sql query.
+	 * The order by clause for the SQL query.
 	 *
 	 * @since 4.0.0
 	 *
@@ -89,7 +96,7 @@ class Database {
 	private $order = [];
 
 	/**
-	 * The select clause for the sql query.
+	 * The select clause for the SQL query.
 	 *
 	 * @since 4.0.0
 	 *
@@ -98,7 +105,7 @@ class Database {
 	private $select = [];
 
 	/**
-	 * The set clause for the sql query.
+	 * The set clause for the SQL query.
 	 *
 	 * @since 4.0.0
 	 *
@@ -107,7 +114,25 @@ class Database {
 	private $set = [];
 
 	/**
-	 * The where clause for the sql query.
+	 * Duplicate clause for the INSERT query.
+	 *
+	 * @since 4.1.5
+	 *
+	 * @var array
+	 */
+	private $onDuplicate = [];
+
+	/**
+	 * Ignore clause for the INSERT query.
+	 *
+	 * @since 4.1.6
+	 *
+	 * @var array
+	 */
+	private $ignore = false;
+
+	/**
+	 * The where clause for the SQL query.
 	 *
 	 * @since 4.0.0
 	 *
@@ -116,7 +141,7 @@ class Database {
 	private $where = [];
 
 	/**
-	 * The union clause for the sql query.
+	 * The union clause for the SQL query.
 	 *
 	 * @since 4.0.0
 	 *
@@ -125,13 +150,22 @@ class Database {
 	private $union = [];
 
 	/**
+	 * The join clause for the SQL query.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var array
+	 */
+	private $join = [];
+
+	/**
 	 * Determines whether the select statement should be distinct.
 	 *
 	 * @since 4.0.0
 	 *
 	 * @var bool
 	 */
-	private $distinct;
+	private $distinct = false;
 
 	/**
 	 * The order by direction for the query.
@@ -149,7 +183,7 @@ class Database {
 	 *
 	 * @var string
 	 */
-	private $query;
+	private $query = '';
 
 	/**
 	 * The sql query results are stored here.
@@ -174,25 +208,39 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $stripTags = false;
 
 	/**
-	 * Set which option to use to escape the sql query.
+	 * Set which option to use to escape the SQL query.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $escapeOptions = 0;
+
+	/**
+	 * A cache of all queries and their results.
+	 *
+	 * @var array
+	 */
+	private $cache = [];
+
+	/**
+	 * Whether or not to reset the cached results.
+	 *
+	 * @var bool
+	 */
+	private $shouldResetCache = false;
 
 	/**
 	 * Constant for escape options.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const ESCAPE_FORCE = 2;
 
@@ -201,7 +249,7 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const ESCAPE_STRIP_HTML = 4;
 
@@ -210,22 +258,29 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	const ESCAPE_QUOTE = 8;
+
+	/**
+	 * List of model class instances.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var array
+	 */
+	private $models = [];
 
 	/**
 	 * Prepares the database class for use.
 	 *
 	 * @since 4.0.0
-	 *
-	 * @global object $wpdb The WordPress database object.
 	 */
-	public function __construct( $escape = null ) {
+	public function __construct() {
 		global $wpdb;
 		$this->db            = $wpdb;
 		$this->prefix        = $wpdb->prefix;
-		$this->escapeOptions = is_null( $escape ) ? self::ESCAPE_STRIP_HTML | self::ESCAPE_QUOTE : $escape;
+		$this->escapeOptions = self::ESCAPE_STRIP_HTML | self::ESCAPE_QUOTE;
 	}
 
 	/**
@@ -234,34 +289,46 @@ class Database {
 	 * @since 4.0.0
 	 */
 	public function __clone() {
-		// We need to reset the result separetely as well since it is not in the default array.
+		// We need to reset the result separately as well since it is not in the default array.
 		$this->reset( [ 'result' ] );
 		$this->reset();
 	}
 
 	/**
-	 * Gets all AIO installed tables.
+	 * Gets all AIOSEO installed tables.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return array An array of custom AIO tables.
+	 * @return array An array of custom AIOSEO tables.
 	 */
 	public function getInstalledTables() {
 		$results = $this->db->get_results( 'SHOW TABLES', 'ARRAY_N' );
+
 		return ! empty( $results ) ? wp_list_pluck( $results, 0 ) : [];
 	}
 
 	/**
-	 * Gets all AIO installed tables.
+	 * Gets all columns from a table.
 	 *
 	 * @since 4.0.0
 	 *
 	 * @param  string $table The name of the table to lookup columns for.
-	 * @return array         An array of custom AIO tables.
+	 * @return array         An array of custom AIOSEO tables.
 	 */
 	public function getColumns( $table ) {
-		$results = $this->db->get_results( 'SHOW COLUMNS FROM `' . $this->prefix . $table . '`', 'ARRAY_N' );
-		return ! empty( $results ) ? wp_list_pluck( $results, 0 ) : [];
+		$installedTables = json_decode( aioseo()->internalOptions->database->installedTables, true );
+		$table           = $this->prefix . $table;
+
+		if ( ! isset( $installedTables[ $table ] ) ) {
+			return [];
+		}
+
+		if ( empty( $installedTables[ $table ] ) ) {
+			$installedTables[ $table ]                           = $this->db->get_col( 'SHOW COLUMNS FROM `' . $table . '`' );
+			aioseo()->internalOptions->database->installedTables = wp_json_encode( $installedTables );
+		}
+
+		return $installedTables[ $table ];
 	}
 
 	/**
@@ -269,12 +336,25 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string  $table The name of the table.
-	 * @return boolean        Whether or not the table exists.
+	 * @param  string $table The name of the table.
+	 * @return bool          Whether or not the table exists.
 	 */
 	public function tableExists( $table ) {
-		$results = $this->db->get_results( "SHOW TABLES LIKE '" . $this->prefix . $table . "'" );
-		return ! ( empty( $results ) );
+		$table           = $this->prefix . $table;
+		$installedTables = json_decode( aioseo()->internalOptions->database->installedTables, true ) ?: [];
+		if ( isset( $installedTables[ $table ] ) ) {
+			return true;
+		}
+
+		$results = $this->db->get_results( "SHOW TABLES LIKE '" . $table . "'" );
+		if ( empty( $results ) ) {
+			return false;
+		}
+
+		$installedTables[ $table ]                           = [];
+		aioseo()->internalOptions->database->installedTables = wp_json_encode( $installedTables );
+
+		return true;
 	}
 
 	/**
@@ -282,9 +362,9 @@ class Database {
 	 *
 	 * @since 4.0.5
 	 *
-	 * @param  string   $table  The name of the table.
-	 * @param  string   $column The name of the column.
-	 * @return boolean          Whether or not the column exists.
+	 * @param  string $table  The name of the table.
+	 * @param  string $column The name of the column.
+	 * @return bool           Whether or not the column exists.
 	 */
 	public function columnExists( $table, $column ) {
 		if ( ! $this->tableExists( $table ) ) {
@@ -293,10 +373,7 @@ class Database {
 
 		$columns = $this->getColumns( $table );
 
-		if ( ! in_array( $column, $columns, true ) ) {
-			return false;
-		}
-		return true;
+		return in_array( $column, $columns, true );
 	}
 
 	/**
@@ -304,8 +381,8 @@ class Database {
 	 *
 	 * @since 4.1.0
 	 *
-	 * @param  string  $table The table to check.
-	 * @return integer        The size of the table in bytes.
+	 * @param  string $table The table to check.
+	 * @return int           The size of the table in bytes.
 	 */
 	public function getTableSize( $table ) {
 		$this->db->query( 'ANALYZE TABLE ' . $this->prefix . $table );
@@ -319,7 +396,7 @@ class Database {
 			ORDER BY (DATA_LENGTH + INDEX_LENGTH) DESC;
 		' );
 
-		return empty( $results ) ? 0 : $results[0]->size;
+		return ! empty( $results ) ? $results[0]->size : 0;
 	}
 
 	/**
@@ -332,9 +409,17 @@ class Database {
 	public function __toString() {
 		switch ( strtoupper( $this->statement ) ) {
 			case 'INSERT':
+				$insert = 'INSERT ';
+				if ( $this->ignore ) {
+					$insert .= 'IGNORE ';
+				}
+				$insert   .= 'INTO ' . $this->table;
 				$clauses   = [];
-				$clauses[] = "INSERT INTO $this->table";
+				$clauses[] = $insert;
 				$clauses[] = 'SET ' . implode( ', ', $this->set );
+				if ( ! empty( $this->onDuplicate ) ) {
+					$clauses[] = 'ON DUPLICATE KEY UPDATE ' . implode( ', ', $this->onDuplicate );
+				}
 
 				break;
 			case 'REPLACE':
@@ -372,7 +457,7 @@ class Database {
 					$clauses[] = 'ORDER BY ' . implode( ', ', $this->order );
 				}
 
-				if ( strlen( $this->limit ) > 0 ) {
+				if ( $this->limit ) {
 					$clauses[] = 'LIMIT ' . $this->limit;
 				}
 
@@ -395,7 +480,7 @@ class Database {
 					$clauses[] = 'ORDER BY ' . implode( ', ', $this->order );
 				}
 
-				if ( strlen( $this->limit ) > 0 ) {
+				if ( $this->limit ) {
 					$clauses[] = 'LIMIT ' . $this->limit;
 				}
 
@@ -459,7 +544,7 @@ class Database {
 				}
 
 				// Select limit.
-				if ( strlen( $this->limit ) > 0 ) {
+				if ( $this->limit ) {
 					$clauses[] = 'LIMIT ' . $this->limit;
 				}
 
@@ -470,6 +555,15 @@ class Database {
 		$clauses[] = '/* %d = %d */';
 
 		$this->query = str_replace( '%%d = %%d', '%d = %d', str_replace( '%', '%%', implode( "\n", $clauses ) ) );
+
+		// Flag queries with double quotes down, but not if the double quotes are contained within a string value (like JSON).
+		if ( aioseo()->isDev && preg_match( '/\{[^}]*\}(*SKIP)(*FAIL)|\[[^]]*\](*SKIP)(*FAIL)|\'[^\']*\'(*SKIP)(*FAIL)|\\"(*SKIP)(*FAIL)|"/i', $this->query ) ) {
+			error_log(
+				"Query with double quotes detected - this may cause isues when ANSI_QUOTES is enabled:\r\n" .
+				$this->query . "\r\n" . wp_debug_backtrace_summary()
+			);
+		}
+
 		return $this->query;
 	}
 
@@ -489,14 +583,17 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string  $table          The name of the table without the WordPress prefix unless includes_prefix is true.
-	 * @param  boolean $includesPrefix This determines if the table name includes the WordPress prefix or not.
-	 * @param  string  $statement      The MySQL statement for the query.
-	 * @return Database                Returns the Database class which can then be method chained for building the query.
+	 * @param  string   $table          The name of the table without the WordPress prefix unless includes_prefix is true.
+	 * @param  bool     $includesPrefix This determines if the table name includes the WordPress prefix or not.
+	 * @param  string   $statement      The MySQL statement for the query.
+	 * @return Database                 Returns the Database class which can then be method chained for building the query.
 	 */
-	public function start( $table = null, $includesPrefix = false, $statement = 'SELECT' ) {
+	public function start( $table = '', $includesPrefix = false, $statement = 'SELECT' ) {
+		// Always reset everything when starting a new query.
+		$this->reset();
 		$this->table = $includesPrefix ? $table : $this->prefix . $table;
 		$this->statement = $statement;
+
 		return $this;
 	}
 
@@ -505,11 +602,26 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string  $table          The name of the table without the WordPress prefix unless includes_prefix is true.
-	 * @param  boolean $includesPrefix This determines if the table name includes the WordPress prefix or not.
-	 * @return Database                Returns the Database class which can then be method chained for building the query.
+	 * @param  string   $table          The name of the table without the WordPress prefix unless includes_prefix is true.
+	 * @param  bool     $includesPrefix This determines if the table name includes the WordPress prefix or not.
+	 * @return Database                 Returns the Database class which can then be method chained for building the query.
 	 */
-	public function insert( $table = null, $includesPrefix = false ) {
+	public function insert( $table = '', $includesPrefix = false ) {
+		return $this->start( $table, $includesPrefix, 'INSERT' );
+	}
+
+	/**
+	 * Shortcut method for start with INSERT IGNORE as the statement.
+	 *
+	 * @since 4.1.6
+	 *
+	 * @param  string   $table          The name of the table without the WordPress prefix unless includes_prefix is true.
+	 * @param  bool     $includesPrefix This determines if the table name includes the WordPress prefix or not.
+	 * @return Database                 Returns the Database class which can then be method chained for building the query.
+	 */
+	public function insertIgnore( $table = '', $includesPrefix = false ) {
+		$this->ignore = true;
+
 		return $this->start( $table, $includesPrefix, 'INSERT' );
 	}
 
@@ -518,11 +630,11 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string  $table          The name of the table without the WordPress prefix unless includes_prefix is true.
-	 * @param  boolean $includesPrefix This determines if the table name includes the WordPress prefix or not.
-	 * @return Database                Returns the Database class which can then be method chained for building the query.
+	 * @param  string   $table          The name of the table without the WordPress prefix unless includes_prefix is true.
+	 * @param  bool     $includesPrefix This determines if the table name includes the WordPress prefix or not.
+	 * @return Database                 Returns the Database class which can then be method chained for building the query.
 	 */
-	public function update( $table = null, $includesPrefix = false ) {
+	public function update( $table = '', $includesPrefix = false ) {
 		return $this->start( $table, $includesPrefix, 'UPDATE' );
 	}
 
@@ -531,11 +643,11 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string  $table          The name of the table without the WordPress prefix unless includes_prefix is true.
-	 * @param  boolean $includesPrefix This determines if the table name includes the WordPress prefix or not.
-	 * @return Database                Returns the Database class which can then be method chained for building the query.
+	 * @param  string   $table          The name of the table without the WordPress prefix unless includes_prefix is true.
+	 * @param  bool     $includesPrefix This determines if the table name includes the WordPress prefix or not.
+	 * @return Database                 Returns the Database class which can then be method chained for building the query.
 	 */
-	public function replace( $table = null, $includesPrefix = false ) {
+	public function replace( $table = '', $includesPrefix = false ) {
 		return $this->start( $table, $includesPrefix, 'REPLACE' );
 	}
 
@@ -544,11 +656,11 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string  $table          The name of the table without the WordPress prefix unless includes_prefix is true.
-	 * @param  boolean $includesPrefix This determines if the table name includes the WordPress prefix or not.
-	 * @return Database                Returns the Database class which can then be method chained for building the query.
+	 * @param  string   $table          The name of the table without the WordPress prefix unless includes_prefix is true.
+	 * @param  bool     $includesPrefix This determines if the table name includes the WordPress prefix or not.
+	 * @return Database                 Returns the Database class which can then be method chained for building the query.
 	 */
-	public function truncate( $table = null, $includesPrefix = false ) {
+	public function truncate( $table = '', $includesPrefix = false ) {
 		return $this->start( $table, $includesPrefix, 'TRUNCATE' );
 	}
 
@@ -557,11 +669,11 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string  $table          The name of the table without the WordPress prefix unless includes_prefix is true.
-	 * @param  boolean $includesPrefix This determines if the table name includes the WordPress prefix or not.
-	 * @return Database                Returns the Database class which can then be method chained for building the query.
+	 * @param  string   $table          The name of the table without the WordPress prefix unless includes_prefix is true.
+	 * @param  bool     $includesPrefix This determines if the table name includes the WordPress prefix or not.
+	 * @return Database                 Returns the Database class which can then be method chained for building the query.
 	 */
-	public function delete( $table = null, $includesPrefix = false ) {
+	public function delete( $table = '', $includesPrefix = false ) {
 		return $this->start( $table, $includesPrefix, 'DELETE' );
 	}
 
@@ -570,7 +682,7 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param string    A string to add to the select clause.
+	 * @param  mixed    A string or array to add to the select clause.
 	 * @return Database Returns the Database class which can be method chained for more query building.
 	 */
 	public function select() {
@@ -580,6 +692,7 @@ class Database {
 		}
 
 		$this->select = array_merge( $this->select, $this->escapeColNames( $args ) );
+
 		return $this;
 	}
 
@@ -588,7 +701,7 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param mixed     A string or array to add to the where clause.
+	 * @param  mixed    A string or array to add to the where clause.
 	 * @return Database Returns the Database class which can be method chained for more query building.
 	 */
 	public function where() {
@@ -604,19 +717,26 @@ class Database {
 			if ( is_null( $value ) && false !== stripos( $field, ' IS ' ) ) {
 				// WHERE `field` IS NOT NULL.
 				$this->where[] = "$field NULL";
-			} elseif ( is_null( $value ) ) {
+				continue;
+			}
+
+			if ( is_null( $value ) ) {
 				// WHERE `field` IS NULL.
 				$this->where[] = "$field NULL";
-			} elseif ( is_array( $value ) ) {
+				continue;
+			}
+
+			if ( is_array( $value ) ) {
 				$wheres = [];
 				foreach ( (array) $value as $val ) {
 					$wheres[] = sprintf( "$field %s", $this->escape( $val, $this->getEscapeOptions() | self::ESCAPE_QUOTE ) );
 				}
 
 				$this->where[] = '(' . implode( ' OR ', $wheres ) . ')';
-			} else {
-				$this->where[] = sprintf( "$field %s", $this->escape( $value, $this->getEscapeOptions() | self::ESCAPE_QUOTE ) );
+				continue;
 			}
+
+			$this->where[] = sprintf( "$field %s", $this->escape( $value, $this->getEscapeOptions() | self::ESCAPE_QUOTE ) );
 		}
 
 		return $this;
@@ -627,7 +747,7 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param mixed     A string or array to add to the where clause.
+	 * @param  mixed    A string or array to add to the where clause.
 	 * @return Database Returns the Database class which can be method chained for more query building.
 	 */
 	public function whereRaw() {
@@ -646,7 +766,7 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param mixed     A string or array to add to the where clause.
+	 * @param  mixed    A string or array to add to the where clause.
 	 * @return Database Returns the Database class which can be method chained for more query building.
 	 */
 	public function whereOr() {
@@ -663,12 +783,15 @@ class Database {
 			if ( is_null( $value ) && false !== stripos( $field, ' IS ' ) ) {
 				// WHERE `field` IS NOT NULL.
 				$or[] = "$field NULL";
-			} elseif ( is_null( $value ) ) {
+				continue;
+			}
+
+			if ( is_null( $value ) ) {
 				// WHERE `field` IS NULL.
 				$or[] = "$field NULL";
-			} else {
-				$or[] = sprintf( "$field %s", $this->escape( $value, $this->getEscapeOptions() | self::ESCAPE_QUOTE ) );
 			}
+
+			$or[] = sprintf( "$field %s", $this->escape( $value, $this->getEscapeOptions() | self::ESCAPE_QUOTE ) );
 		}
 
 		// Create our subclause, and add it to the WHERE array.
@@ -691,20 +814,26 @@ class Database {
 		foreach ( (array) $criteria as $field => $values ) {
 			if ( ! is_array( $values ) ) {
 				$values = [ $values ];
-			} elseif ( count( $values ) === 0 ) {
+			}
+
+			if ( count( $values ) === 0 ) {
 				continue;
 			}
 
 			foreach ( $values as &$value ) {
 				// Note: We can no longer check for `is_numeric` because a value like `61021e6242255` returns true and breaks the query.
-				if ( is_integer( $value ) || is_float( $value ) ) {
+				if ( is_int( $value ) || is_float( $value ) ) {
 					// No change.
-				} elseif ( is_null( $value ) || false !== stristr( $value, 'NULL' ) ) {
+					continue;
+				}
+
+				if ( is_null( $value ) || false !== stristr( $value, 'NULL' ) ) {
 					// Change to a true NULL value.
 					$value = null;
-				} else {
-					$value = sprintf( '%s', $this->escape( $value, $this->getEscapeOptions() | self::ESCAPE_QUOTE ) );
+					continue;
 				}
+
+				$value = sprintf( '%s', $this->escape( $value, $this->getEscapeOptions() | self::ESCAPE_QUOTE ) );
 			}
 
 			$values = implode( ',', $values );
@@ -719,7 +848,7 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param mixed     A string or array to add to the where clause.
+	 * @param  mixed    A string or array to add to the where clause.
 	 * @return Database Returns the Database class which can be method chained for more query building.
 	 */
 	public function whereNotIn() {
@@ -728,19 +857,25 @@ class Database {
 		foreach ( (array) $criteria as $field => $values ) {
 			if ( ! is_array( $values ) ) {
 				$values = [ $values ];
-			} elseif ( count( $values ) === 0 ) {
+			}
+
+			if ( count( $values ) === 0 ) {
 				continue;
 			}
 
 			foreach ( $values as &$value ) {
 				if ( is_numeric( $value ) ) {
 					// No change.
-				} elseif ( is_null( $value ) || false !== stristr( $value, 'NULL' ) ) {
+					continue;
+				}
+
+				if ( is_null( $value ) || false !== stristr( $value, 'NULL' ) ) {
 					// Change to a true NULL value.
 					$value = null;
-				} else {
-					$value = sprintf( '%s', $this->escape( $value, $this->getEscapeOptions() | self::ESCAPE_QUOTE ) );
+					continue;
 				}
+
+				$value = sprintf( '%s', $this->escape( $value, $this->getEscapeOptions() | self::ESCAPE_QUOTE ) );
 			}
 
 			$values = implode( ',', $values );
@@ -757,10 +892,10 @@ class Database {
 	 *
 	 * @param  string       $table          The name of the table to join to this query.
 	 * @param  string|array $conditions     The conditions of the join clause.
-	 * @param  boolean      $includesPrefix This determines if the table name includes the WordPress prefix or not.
+	 * @param  bool         $includesPrefix This determines if the table name includes the WordPress prefix or not.
 	 * @return Database                     Returns the Database class which can be method chained for more query building.
 	 */
-	public function leftJoin( $table, $conditions, $includesPrefix = false ) {
+	public function leftJoin( $table = '', $conditions = '', $includesPrefix = false ) {
 		return $this->join( $table, $conditions, 'LEFT', $includesPrefix );
 	}
 
@@ -772,11 +907,12 @@ class Database {
 	 * @param  string       $table          The name of the table to join to this query.
 	 * @param  string|array $conditions     The conditions of the join clause.
 	 * @param  string       $direction      This can take 'LEFT' or 'RIGHT' as arguments.
-	 * @param  boolean      $includesPrefix This determines if the table name includes the WordPress prefix or not.
+	 * @param  bool         $includesPrefix This determines if the table name includes the WordPress prefix or not.
 	 * @return Database                     Returns the Database class which can be method chained for more query building.
 	 */
-	public function join( $table, $conditions, $direction = '', $includesPrefix = false ) {
+	public function join( $table = '', $conditions = '', $direction = '', $includesPrefix = false ) {
 		$this->join[] = [ $includesPrefix ? $table : $this->prefix . $table, $conditions, $direction ];
+
 		return $this;
 	}
 
@@ -785,21 +921,22 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @var $query       Database|string   The query (Database object or query string) to be joined with.
-	 * @var $distinct    boolean           Set whether this union should be distinct or not.
-	 * @return Database                    Returns the Database class which can be method chained for more query building.
+	 * @param  Database|string The query (Database object or query string) to be joined with.
+	 * @param  bool            Set whether this union should be distinct or not.
+	 * @return Database        Returns the Database class which can be method chained for more query building.
 	 */
 	public function union( $query, $distinct = true ) {
 		$this->union[] = [ $query, $distinct ];
+
 		return $this;
 	}
 
 	/**
-	 * Adds a GROUP BY clause.
+	 * Adds am GROUP BY clause.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param string    A string to add to the group by clause.
+	 * @param  mixed    A string or array to add to the group by clause.
 	 * @return Database Returns the Database class which can be method chained for more query building.
 	 */
 	public function groupBy() {
@@ -809,12 +946,13 @@ class Database {
 		}
 
 		$this->group = array_merge( $this->group, $args );
+
 		return $this;
 	}
 
 
 	/**
-	 * Adds a ORDER BY clause.
+	 * Adds am ORDER BY clause.
 	 *
 	 * @since 4.0.0
 	 *
@@ -827,6 +965,9 @@ class Database {
 		if ( count( $args ) === 1 && is_array( $args[0] ) ) {
 			$args = $args[0];
 		}
+
+		// Escape the order by clause.
+		$args = array_map( 'esc_sql', $args );
 
 		if ( ! empty( $args[0] ) && true !== $args[0] ) {
 			$this->order = array_merge( $this->order, $args );
@@ -849,6 +990,7 @@ class Database {
 	 */
 	public function orderDirection( $direction = 'ASC' ) {
 		$this->orderDirection = $direction;
+
 		return $this;
 	}
 
@@ -857,12 +999,50 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param mixed     $limit A string or array that sets the limit clause.
-	 * @return Database        Returns the Database class which can be method chained for more query building.
+	 * @param  int      $limit  The amount of rows to limit the query to.
+	 * @param  int      $offset The amount of rows the result of the query should be ofset with.
+	 * @return Database         Returns the Database class which can be method chained for more query building.
 	 */
-	public function limit( $limit, $offset = null ) {
-		$this->limit = ( null === $offset ) ? $limit : "$offset, $limit";
+	public function limit( $limit = 0, $offset = -1 ) {
+		if ( ! $limit ) {
+			return $this;
+		}
+
+		$this->limit = ( -1 === $offset ) ? $limit : "$offset, $limit";
+
 		return $this;
+	}
+
+	/**
+	 * Converts associative arrays to a SET argument.
+	 *
+	 * @since 4.1.5
+	 *
+	 * @param  array $args        The arguments.
+	 * @return array $preparedSet The prepared arguments.
+	 */
+	private function prepareSet( $args ) {
+		$args = $this->prepArgs( $args );
+
+		$preparedSet = [];
+		foreach ( (array) $args as $field => $value ) {
+			if ( is_null( $value ) ) {
+				$preparedSet[] = "`$field` = NULL";
+				continue;
+			}
+
+			if ( is_array( $value ) ) {
+				throw new \Exception( 'Cannot save an unserialized array in the database. Data passed was: ' . wp_json_encode( $value ) );
+			}
+
+			if ( is_object( $value ) ) {
+				throw new \Exception( 'Cannot save an unserialized object in the database. Data passed was: ' . $value );
+			}
+
+			$preparedSet[] = sprintf( "`$field` = %s", $this->escape( $value, $this->getEscapeOptions() | self::ESCAPE_QUOTE ) );
+		}
+
+		return $preparedSet;
 	}
 
 	/**
@@ -870,23 +1050,25 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param mixed     $limit A string or array that is added to the set clause.
-	 * @return Database        Returns the Database class which can be method chained for more query building.
+	 * @param  array    An associative array with columns mapped to their new values.
+	 * @return Database Returns the Database class which can be method chained for more query building.
 	 */
 	public function set() {
-		$values = $this->prepArgs( func_get_args() );
+		$this->set = array_merge( $this->set, $this->prepareSet( func_get_args() ) );
 
-		foreach ( (array) $values as $field => $value ) {
-			if ( is_null( $value ) ) {
-				$this->set[] = "`$field` = NULL";
-			} elseif ( is_array( $value ) ) {
-				throw new \Exception( 'Cannot save an unserialized array in the database. Data passed was: ' . wp_json_encode( $values ) );
-			} elseif ( is_object( $value ) ) {
-				throw new \Exception( 'Cannot save an unserialized object in the database. Data passed was: ' . $value );
-			} else {
-				$this->set[] = sprintf( "`$field` = %s", $this->escape( $value, $this->getEscapeOptions() | self::ESCAPE_QUOTE ) );
-			}
-		}
+		return $this;
+	}
+
+	/**
+	 * Adds an ON DUPLICATE clause.
+	 *
+	 * @since 4.1.5
+	 *
+	 * @param  mixed    An associative array with columns mapped to their new values.
+	 * @return Database Returns the Database class which can be method chained for more query building.
+	 */
+	public function onDuplicate() {
+		$this->onDuplicate = array_merge( $this->onDuplicate, $this->prepareSet( func_get_args() ) );
 
 		return $this;
 	}
@@ -896,11 +1078,29 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string   $output  This can be one of the following: ARRAY_A | ARRAY_N | OBJECT | OBJECT_K.
-	 * @return Database          Returns the Database class which can be method chained for more query building.
+	 * @param  string   $output This can be one of the following: ARRAY_A | ARRAY_N | OBJECT | OBJECT_K.
+	 * @return Database         Returns the Database class which can be method chained for more query building.
 	 */
-	public function output( $output ) {
+	public function output( $output = 'OBJECT' ) {
+		if ( ! $output ) {
+			$output = 'OBJECT';
+		}
+
 		$this->output = $output;
+
+		return $this;
+	}
+
+	/**
+	 * Reset the cache so we make sure the query gets to the DB.
+	 *
+	 * @since 4.1.6
+	 *
+	 * @return Database Returns the Database class which can be method chained for more query building.
+	 */
+	public function resetCache() {
+		$this->shouldResetCache = true;
+
 		return $this;
 	}
 
@@ -909,27 +1109,38 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  boolean           $reset  Whether or not to reset the results/query.
-	 * @param  string            $return Determine which method to call on the $wpdb object
-	 * @param  array             $params Optional extra parameters to pass to the db method call
-	 * @return array|object|null         Database query results.
+	 * @param  bool     $reset  Whether or not to reset the results/query.
+	 * @param  string   $return Determine which method to call on the $wpdb object
+	 * @param  array    $params Optional extra parameters to pass to the db method call
+	 * @return Database         Returns the Database class which can be method chained for more query building.
 	 */
-	public function run( $reset = true, $return = 'results', $params = [] ) {
+	public function run( $reset = true, $return = 'results', $params = [] ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		if ( ! in_array( $return, [ 'results', 'col', 'var' ], true ) ) {
 			$return = 'results';
 		}
 
-		$prepare = $this->db->prepare( $this->query(), 1, 1 );
+		$prepare        = $this->db->prepare( $this->query(), 1, 1 );
+		$queryHash      = sha1( $this->query() );
+		$cacheTableName = $this->getCacheTableName();
+
+		// Pull the result from the in-memory cache if everything checks out.
+		if (
+			! $this->shouldResetCache &&
+			isset( $this->cache[ $cacheTableName ][ $queryHash ][ $return ] ) &&
+			empty( $this->join )
+		) {
+			$this->result = $this->cache[ $cacheTableName ][ $queryHash ][ $return ];
+
+			return $this;
+		}
 
 		switch ( $return ) {
 			case 'col':
 				$this->result = $this->db->get_col( $prepare );
 				break;
-
 			case 'var':
 				$this->result = $this->db->get_var( $prepare );
 				break;
-
 			default:
 				$this->result = $this->db->get_results( $prepare, $this->output );
 		}
@@ -937,6 +1148,11 @@ class Database {
 		if ( $reset ) {
 			$this->reset();
 		}
+
+		$this->cache[ $cacheTableName ][ $queryHash ][ $return ] = $this->result;
+
+		// Reset the cache trigger for the next run.
+		$this->shouldResetCache = false;
 
 		return $this;
 	}
@@ -947,22 +1163,25 @@ class Database {
 	 * @since 4.1.0
 	 *
 	 * @param  string $countColumn The column to count with. Defaults to '*' all.
-	 * @return void                The count total.
+	 * @return int                 The number of rows that were found.
 	 */
 	public function count( $countColumn = '*' ) {
-		$results = $this->select( 'count(' . $countColumn . ') as count' )
+		$usingGroup = ! empty( $this->group );
+		$results    = $this->select( 'count(' . $countColumn . ') as count' )
 			->run()
 			->result();
 
-		return 1 === $this->numRows() ? (int) $results[0]->count : $this->numRows();
+		return 1 === $this->numRows() && ! $usingGroup
+			? (int) $results[0]->count
+			: $this->numRows();
 	}
 
 	/**
-	 * Returns the query results based on the output.
+	 * Returns the query results based on the value of the output property.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return mixed This could be an array or an object based on the original output method.
+	 * @return array|object This could be an array or an object based on what was set in the output property.
 	 */
 	public function result() {
 		return $this->result;
@@ -973,38 +1192,45 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param string  $class The class to call.
-	 * @return object        The class object.
+	 * @param  string $class The name of the model class to call.
+	 * @return object        The model class instance.
 	 */
 	public function model( $class ) {
 		$result = $this->result();
-		return ! empty( $result ) ? ( is_array( $result ) ? new $class( (array) current( $result ) ) : $result ) : new $class();
+
+		return ! empty( $result )
+			? ( is_array( $result )
+				? new $class( (array) current( $result ) )
+				: $result )
+			: new $class();
 	}
 
 	/**
-	 * Return an array of model models from the result
+	 * Return an array of model class instancnes from the result.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param string  $class The class to call.
-	 * @param string  $id    The id of the index to use.
-	 * @param string  $index The index if necessary.
-	 * @return array         An array of class models.
+	 * @param string $class The name of the model class to call.
+	 * @param string $id    The ID of the index to use.
+	 * @param string $index The index if necessary.
+	 * @return array         An array of model class instances.
 	 */
 	public function models( $class, $id = null, $toJson = false ) {
-		if ( empty( $this->models ) ) {
-			$i      = 0;
-			$models = [];
-			foreach ( $this->result() as $row ) {
-				$var   = ( null === $id ) ? $row : $row[ $id ];
-				$class = new $class( $var );
-				// Lets add the class to the array using the class ID.
-				$models[ $class->id ] = $toJson ? $class->jsonSerialize() : $class;
-				$i++;
-			}
-
-			$this->models = $models;
+		if ( ! empty( $this->models ) ) {
+			return $this->models;
 		}
+
+		$i      = 0;
+		$models = [];
+		foreach ( $this->result() as $row ) {
+			$var   = ( null === $id ) ? $row : $row[ $id ];
+			$class = new $class( $var );
+			// Lets add the class to the array using the class ID.
+			$models[ $class->id ] = $toJson ? $class->jsonSerialize() : $class;
+			$i++;
+		}
+
+		$this->models = $models;
 
 		return $this->models;
 	}
@@ -1014,7 +1240,7 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return string The last error.
+	 * @return string The last error message.
 	 */
 	public function lastError() {
 		return $this->db->last_error;
@@ -1025,7 +1251,7 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return integer The id of the most recent INSERT query.
+	 * @return int The ID of the most recent INSERT query.
 	 */
 	public function insertId() {
 		return $this->db->insert_id;
@@ -1036,7 +1262,7 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return integer The number of rows affected.
+	 * @return int The number of rows affected.
 	 */
 	public function rowsAffected() {
 		return $this->db->rows_affected;
@@ -1047,7 +1273,7 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return integer The count for the number of rows in the last query.
+	 * @return int The count for the number of rows in the last query.
 	 */
 	public function numRows() {
 		return $this->db->num_rows;
@@ -1092,7 +1318,8 @@ class Database {
 	}
 
 	/**
-	 * Fast way to execute queries.
+	 * Fast way to execute raw queries.
+	 * NOTE: When using this method, all arguments must be sanitized manually!
 	 *
 	 * @since 4.0.0
 	 *
@@ -1102,6 +1329,7 @@ class Database {
 	public function execute( $sql, $results = false ) {
 		if ( $results ) {
 			$this->result = $this->db->get_results( $sql );
+
 			return $this;
 		}
 
@@ -1111,9 +1339,9 @@ class Database {
 	/**
 	 * Escape a value for safe use in SQL queries.
 	 *
-	 * @param string  $value   The value to be escaped.
-	 * @param boolean $options Escape options.
-	 * @return string          The escaped SQL value.
+	 * @param string   $value   The value to be escaped.
+	 * @param int|null $options The escape options.
+	 * @return string           The escaped SQL value.
 	 */
 	public function escape( $value, $options = null ) {
 		if ( is_array( $value ) ) {
@@ -1122,32 +1350,32 @@ class Database {
 			}
 
 			return $value;
-		} else {
-			$options = ( is_null( $options ) ) ? $this->getEscapeOptions() : $options;
-			if ( ( $options & self::ESCAPE_STRIP_HTML ) !== 0 && isset( $this->stripTags ) && true === $this->stripTags ) {
-				$value = wp_strip_all_tags( $value );
-			}
-
-			if (
-				( ( $options & self::ESCAPE_FORCE ) !== 0 || php_sapi_name() === 'cli' ) ||
-				( ( $options & self::ESCAPE_QUOTE ) !== 0 && ! is_integer( $value ) )
-			) {
-				$value = esc_sql( $value );
-				if ( ! is_integer( $value ) ) {
-					$value = "'$value'";
-				}
-			}
-
-			return $value;
 		}
+
+		$options = ( is_null( $options ) ) ? $this->getEscapeOptions() : $options;
+		if ( ( $options & self::ESCAPE_STRIP_HTML ) !== 0 && isset( $this->stripTags ) && true === $this->stripTags ) {
+			$value = wp_strip_all_tags( $value );
+		}
+
+		if (
+			( ( $options & self::ESCAPE_FORCE ) !== 0 || php_sapi_name() === 'cli' ) ||
+			( ( $options & self::ESCAPE_QUOTE ) !== 0 && ! is_int( $value ) )
+		) {
+			$value = esc_sql( $value );
+			if ( ! is_int( $value ) ) {
+				$value = "'$value'";
+			}
+		}
+
+		return $value;
 	}
 
 	/**
-	 * Get the current escape options.
+	 * Returns the current escape options value.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return integer The current escape options.
+	 * @return int The current escape options value.
 	 */
 	public function getEscapeOptions() {
 		return $this->escapeOptions;
@@ -1155,11 +1383,11 @@ class Database {
 
 
 	/**
-	 * Set the current escape options.
+	 * Sets the current escape options value.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param integer $options
+	 * @param int $options The escape options value.
 	 */
 	public function setEscapeOptions( $options ) {
 		$this->escapeOptions = $options;
@@ -1170,7 +1398,7 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param array  $cols An array of column names to be escaped.
+	 * @param  array $cols An array of column names to be escaped.
 	 * @return array       An array of escaped column names.
 	 */
 	private function escapeColNames( $cols ) {
@@ -1183,9 +1411,10 @@ class Database {
 				if ( stripos( $col, '.' ) ) {
 					list( $table, $c ) = explode( '.', $col );
 					$col = "`$table`.`$c`";
-				} else {
-					$col = "`$col`";
+					continue;
 				}
+
+				$col = "`$col`";
 			}
 		}
 
@@ -1197,8 +1426,8 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param unknown_type   $values This could be anything, but if used properly its usually a string or an array.
-	 * @return array|unknown         If the preparation is correct it will return an array of arguments.
+	 * @param  mixed $values This could be anything, but if used properly it usually is a string or an array.
+	 * @return mixed         If the preparation was successful, it will return an array of arguments. Otherwise it could be anything.
 	 */
 	private function prepArgs( $values ) {
 		$values = (array) $values;
@@ -1216,8 +1445,8 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param array     $what Set which items you want to reset, all are selected by default.
-	 * @return Database       Returns the Database object.
+	 * @param  array    $what Set which properties you want to reset. All are selected by default.
+	 * @return Database       Returns the Database instance.
 	 */
 	public function reset(
 		$what = [
@@ -1228,6 +1457,8 @@ class Database {
 			'order',
 			'select',
 			'set',
+			'onDuplicate',
+			'ignore',
 			'where',
 			'union',
 			'distinct',
@@ -1239,12 +1470,22 @@ class Database {
 			'join'
 		]
 	) {
+		// If we are not running a select query, let's bust the cache for this table.
+		$selectStatements = [ 'SELECT', 'SELECT DISTINCT' ];
+		if (
+			! empty( $this->statement ) &&
+			! in_array( $this->statement, $selectStatements, true )
+		) {
+			$this->bustCache( $this->getCacheTableName() );
+		}
+
 		foreach ( (array) $what as $var ) {
 			switch ( $var ) {
 				case 'group':
 				case 'order':
 				case 'select':
 				case 'set':
+				case 'onDuplicate':
 				case 'where':
 				case 'union':
 				case 'join':
@@ -1253,6 +1494,7 @@ class Database {
 				case 'orderDirection':
 					$this->$var = 'ASC';
 					break;
+				case 'ignore':
 				case 'stripTags':
 					$this->$var = false;
 					break;
@@ -1271,24 +1513,82 @@ class Database {
 	}
 
 	/**
-	 * Get the current value of one or more query properties. If only one property is specified, returns the value;
-	 * if an array of values is specified, then returns an array of values.
+	 * Returns the current value of one or more query properties.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param string|array  $what You can pass in an array of options to retrieve. By default it selects all if them.
+	 * @param  string|array  $what You can pass in an array of options to retrieve. By default it selects all if them.
 	 * @return string|array       Returns the value of whichever variables are passed in.
 	 */
-	public function getQueryProperty( $what = [ 'table', 'statement', 'limit', 'group', 'order', 'select', 'set', 'where', 'union', 'distinct', 'orderDirection', 'query', 'output', 'result' ] ) {
+	public function getQueryProperty(
+		$what = [
+			'table',
+			'statement',
+			'limit',
+			'group',
+			'order',
+			'select',
+			'set',
+			'onDuplicate',
+			'where',
+			'union',
+			'distinct',
+			'orderDirection',
+			'query',
+			'output',
+			'result'
+		]
+	) {
 		if ( is_array( $what ) ) {
 			$return = [];
 			foreach ( (array) $what as $which ) {
 				$return[ $which ] = $this->$which;
 			}
+
 			return $return;
-		} else {
-			return $this->$what;
 		}
+
+		return $this->$what;
+	}
+
+	/**
+	 * Get a table name for the cache key.
+	 *
+	 * @since 4.1.6
+	 *
+	 * @param  string $cacheTableName The table name to check against.
+	 * @return string                 The cache key table name.
+	 */
+	private function getCacheTableName( $cacheTableName = null ) {
+		$cacheTableName = empty( $cacheTableName ) ? $this->table : $cacheTableName;
+
+		foreach ( $this->customTables as $tableName ) {
+			if ( false !== stripos( $cacheTableName, $this->prefix . $tableName ) ) {
+				$cacheTableName = $tableName;
+				break;
+			}
+		}
+
+		return $cacheTableName;
+	}
+
+	/**
+	 * Busts the cache for the given table name.
+	 *
+	 * @since 4.1.6
+	 *
+	 * @param  string $tableName The table name.
+	 * @return void
+	 */
+	public function bustCache( $tableName = '' ) {
+		if ( ! $tableName ) {
+			// Bust all the cache.
+			$this->cache = [];
+
+			return;
+		}
+
+		unset( $this->cache[ $tableName ] );
 	}
 
 	/**
@@ -1296,7 +1596,7 @@ class Database {
 	 *
 	 * @since 4.1.0
 	 *
-	 * @return Options The cloned Options object.
+	 * @return Database The cloned Database instance.
 	 */
 	public function noConflict() {
 		return clone $this;

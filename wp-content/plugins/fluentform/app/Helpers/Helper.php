@@ -6,13 +6,13 @@ use FluentForm\Framework\Helpers\ArrayHelper;
 
 class Helper
 {
-    static $tabIndex = 0;
+    public static $tabIndex = 0;
 
-    static $formInstance = 0;
+    public static $formInstance = 0;
 
-    static $loadedForms = [];
+    public static $loadedForms = [];
 
-    static $tabIndexStatus = 'na';
+    public static $tabIndexStatus = 'na';
 
     /**
      * Sanitize form inputs recursively.
@@ -33,7 +33,7 @@ class Helper
             foreach ($input as $key => &$value) {
                 $attribute = $attribute ? $attribute . '[' . $key . ']' : $key;
 
-                $value = Helper::sanitizer($value, $attribute, $fields);
+                $value = static::sanitizer($value, $attribute, $fields);
 
                 $attribute = null;
             }
@@ -63,7 +63,6 @@ class Helper
         }
 
         return $baseUrl;
-
     }
 
     public static function getHtmlElementClass($value1, $value2, $class = 'active', $default = '')
@@ -85,18 +84,17 @@ class Helper
         return json_last_error() === JSON_ERROR_NONE;
     }
 
-
     public static function isSlackEnabled()
     {
         $globalModules = get_option('fluentform_global_modules_status');
-        return $globalModules && isset($globalModules['slack']) && $globalModules['slack'] == 'yes';
+        return $globalModules && isset($globalModules['slack']) && 'yes' == $globalModules['slack'];
     }
 
     public static function getEntryStatuses($form_id = false)
     {
         $statuses = apply_filters('fluentform_entry_statuses_core', [
             'unread' => 'Unread',
-            'read'   => 'Read'
+            'read'   => 'Read',
         ], $form_id);
         $statuses['trashed'] = 'Trashed';
         return $statuses;
@@ -111,14 +109,14 @@ class Helper
             'ratings',
             'net_promoter',
             'select_country',
-            'net_promoter_score'
+            'net_promoter_score',
         ]);
     }
 
     public static function getSubFieldReportableInputs()
     {
         return apply_filters('fluentform_subfield_reportable_inputs', [
-            'tabular_grid'
+            'tabular_grid',
         ]);
     }
 
@@ -159,14 +157,14 @@ class Helper
                 ->insert([
                     'meta_key' => $metaKey,
                     'form_id'  => $formId,
-                    'value'    => $value
+                    'value'    => $value,
                 ]);
             return $insetid;
         } else {
             wpFluent()->table('fluentform_form_meta')
                 ->where('id', $meta->id)
                 ->update([
-                    'value' => $value
+                    'value' => $value,
                 ]);
         }
 
@@ -202,7 +200,7 @@ class Helper
                 ->where('id', $meta->id)
                 ->insert([
                     'value'      => $value,
-                    'updated_at' => current_time('mysql')
+                    'updated_at' => current_time('mysql'),
                 ]);
             return $meta->id;
         }
@@ -222,9 +220,8 @@ class Helper
                 'meta_key'    => $metaKey,
                 'value'       => $value,
                 'created_at'  => current_time('mysql'),
-                'updated_at'  => current_time('mysql')
+                'updated_at'  => current_time('mysql'),
             ]);
-
     }
 
     public static function isEntryAutoDeleteEnabled($formId)
@@ -264,7 +261,6 @@ class Helper
             return '';
         }
 
-
         if ($formSettings && $extraClass = ArrayHelper::get($formSettings, 'form_extra_css_class')) {
             return esc_attr($extraClass);
         }
@@ -302,12 +298,14 @@ class Helper
             'fluent_forms_add_ons',
             'fluent_forms_docs',
             'fluent_forms_payment_entries',
-            'fluent_forms_smtp'
+            'fluent_forms_smtp',
         ];
 
         $status = true;
 
-        if (!isset($_GET['page']) || !in_array($_GET['page'], $fluentPages)) {
+        $page = wpFluentForm('request')->get('page');
+
+        if (!$page || !in_array($page, $fluentPages)) {
             $status = false;
         }
 
@@ -316,7 +314,6 @@ class Helper
 
     public static function getShortCodeIds($content, $tag = 'fluentform', $selector = 'id')
     {
-
         if (false === strpos($content, '[')) {
             return [];
         }
@@ -346,7 +343,7 @@ class Helper
 
     public static function isTabIndexEnabled()
     {
-        if (static::$tabIndexStatus == 'na') {
+        if ('na' == static::$tabIndexStatus) {
             $globalSettings = get_option('_fluentform_global_form_settings');
             static::$tabIndexStatus = ArrayHelper::get($globalSettings, 'misc.tabIndex') == 'yes';
         }
@@ -383,7 +380,7 @@ class Helper
                     ->first();
                 if ($exist) {
                     return [
-                        'unique' => ArrayHelper::get($field, 'raw.settings.unique_validation_message')
+                        'unique' => ArrayHelper::get($field, 'raw.settings.unique_validation_message'),
                     ];
                 }
             }
@@ -394,52 +391,52 @@ class Helper
 
     public static function getNumericFormatters()
     {
-        return apply_filters('fluentform_numeric_styles', array(
-            'none'                 => array(
+        return apply_filters('fluentform_numeric_styles', [
+            'none'                 => [
                 'value' => '',
-                'label' => 'None'
-            ),
-            'comma_dot_style'      => array(
+                'label' => 'None',
+            ],
+            'comma_dot_style'      => [
                 'value'    => 'comma_dot_style',
                 'label'    => __('US Style with Decimal (EX: 123,456.00)', 'fluentform'),
                 'settings' => [
                     'decimal'   => '.',
                     'separator' => ',',
                     'precision' => 2,
-                    'symbol'    => ''
-                ]
-            ),
-            'dot_comma_style_zero' => array(
+                    'symbol'    => '',
+                ],
+            ],
+            'dot_comma_style_zero' => [
                 'value'    => 'dot_comma_style_zero',
                 'label'    => __('US Style without Decimal (Ex: 123,456,789)', 'fluentform'),
                 'settings' => [
                     'decimal'   => '.',
                     'separator' => ',',
                     'precision' => 0,
-                    'symbol'    => ''
-                ]
-            ),
-            'dot_comma_style'      => array(
+                    'symbol'    => '',
+                ],
+            ],
+            'dot_comma_style'      => [
                 'value'    => 'dot_comma_style',
                 'label'    => __('EU Style with Decimal (Ex: 123.456,00)', 'fluentform'),
                 'settings' => [
                     'decimal'   => ',',
                     'separator' => '.',
                     'precision' => 2,
-                    'symbol'    => ''
-                ]
-            ),
-            'comma_dot_style_zero' => array(
+                    'symbol'    => '',
+                ],
+            ],
+            'comma_dot_style_zero' => [
                 'value'    => 'comma_dot_style_zero',
                 'label'    => __('EU Style without Decimal (EX: 123.456.789)', 'fluentform'),
                 'settings' => [
                     'decimal'   => ',',
                     'separator' => '.',
                     'precision' => 0,
-                    'symbol'    => ''
-                ]
-            )
-        ));
+                    'symbol'    => '',
+                ],
+            ],
+        ]);
     }
 
     public static function getNumericValue($input, $formatterName)
@@ -515,9 +512,9 @@ class Helper
 
     public static function getPreviewUrl($formId, $type = '')
     {
-        if ($type == 'conversational') {
+        if ('conversational' == $type) {
             return self::getConversionUrl($formId);
-        } else if ($type == 'classic') {
+        } elseif ('classic' == $type) {
             return site_url('?fluent_forms_pages=1&design_mode=1&preview_id=' . $formId) . '#ff_preview';
         } else {
             if (self::isConversionForm($formId)) {
@@ -545,13 +542,29 @@ class Helper
         $meta = self::getFormMeta($formId, 'ffc_form_settings_meta', []);
         $key = ArrayHelper::get($meta, 'share_key', '');
         $paramKey = apply_filters('fluentform_conversational_url_slug', 'fluent-form');
-        if($paramKey == 'form') {
+        if ('form' == $paramKey) {
             $paramKey = 'fluent-form';
         }
         if ($key) {
-            return site_url('?'.$paramKey.'=' . $formId . '&form=' . $key);
+            return site_url('?' . $paramKey . '=' . $formId . '&form=' . $key);
         }
-        return site_url('?'.$paramKey.'=' . $formId);
+        return site_url('?' . $paramKey . '=' . $formId);
+    }
+
+    public static function fileUploadLocations()
+    {
+        $locations = [
+            [
+                'value' => 'default',
+                'label' => __('Fluentforms Default', 'fluentform'),
+            ],
+            [
+                'value' => 'wp_media',
+                'label' => __('Media Library', 'fluentform'),
+            ],
+        ];
+
+        return apply_filters('fluentform_file_upload_options', $locations);
     }
 
     private function unreadCount($formId)
@@ -560,5 +573,112 @@ class Helper
             ->where('status', 'unread')
             ->where('form_id', $formId)
             ->count();
+    }
+
+    public static function getForms()
+    {
+        $ff_list = wpFluent()->table('fluentform_forms')
+            ->select(['id', 'title'])
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        $forms = [];
+
+        if ($ff_list) {
+            $forms[0] = esc_html__('Select a Fluent Forms', 'fluentform');
+            foreach ($ff_list as $form) {
+                $forms[$form->id] = esc_html($form->title) . ' (' . $form->id . ')';
+            }
+        } else {
+            $forms[0] = esc_html__('Create a Form First', 'fluentform');
+        }
+
+        return $forms;
+    }
+
+    public static function replaceBrTag($content, $with = '')
+    {
+        if (is_array($content)) {
+            foreach ($content as $key => $value) {
+                $content[$key] = static::replaceBrTag($value, $with);
+            }
+        } elseif (static::hasBrTag($content)) {
+            $content = str_replace('<br />', $with, $content);
+        }
+
+        return $content;
+    }
+
+    public static function hasBrTag($content)
+    {
+        return is_string($content) && strpos($content, '<br />') !== false;
+    }
+
+    public static function sanitizeForCSV($content)
+    {
+        $formulas = ['=', '-', '+', '@', "\t", "\r"];
+
+        if (Str::startsWith($content, $formulas)) {
+            $content = "'" . $content;
+        }
+
+        return $content;
+    }
+
+    public static function getForm($id)
+    {
+        return wpFluent()->table('fluentform_forms')->where('id', $id)->first();
+    }
+
+    public static function shouldHidePassword($formId)
+    {
+        return apply_filters('fluentform_truncate_password_values', true, $formId) &&
+        (
+            (defined('FLUENTFORM_RENDERING_ENTRIES') && FLUENTFORM_RENDERING_ENTRIES) ||
+            (defined('FLUENTFORM_RENDERING_ENTRY') && FLUENTFORM_RENDERING_ENTRY) ||
+            (defined('FLUENTFORM_EXPORTING_ENTRIES') && FLUENTFORM_EXPORTING_ENTRIES)
+        );
+    }
+
+    // make tabular-grid value markdown format
+    public static function getTabularGridMarkdownValue($girdData, $field, $rowJoiner = '<br />', $colJoiner = ', ')
+    {
+        $girdRows = ArrayHelper::get($field, 'raw.settings.grid_rows', '');
+        $girdCols = ArrayHelper::get($field, 'raw.settings.grid_columns', '');
+        $value = '';
+        foreach ($girdData as $row => $column) {
+            if ($girdRows && isset($girdRows[$row])) {
+                $row = $girdRows[$row];
+            }
+            $value .= '- *' . $row . '* :  ';
+            if (is_array($column)) {
+                foreach ($column as $index => $item) {
+                    $_colJoiner = $colJoiner;
+                    if ($girdCols && isset($girdCols[$item])) {
+                        $item = $girdCols[$item];
+                    }
+                    if ($index == (count($column) - 1)) {
+                        $_colJoiner = '';
+                    }
+                    $value .= $item . $_colJoiner;
+                }
+            } else {
+                if ($girdCols && isset($girdCols[$column])) {
+                    $column = $girdCols[$column];
+                }
+                $value .= $column;
+            }
+            $value .= $rowJoiner;
+        }
+        return $value;
+    }
+
+    public static function getInputNameFromShortCode($value)
+    {
+        preg_match('/{+(.*?)}/', $value, $matches);
+        if ($matches && strpos($matches[1], 'inputs.') !== false) {
+            return substr($matches[1], strlen('inputs.'));
+        }
+        return '';
     }
 }

@@ -4,21 +4,26 @@ Contributors : TrinityAudio
 Tags: Text to Speech, Audio Player, player, Content to audio, TTS, Text to Audio, Text to voice, Voiceover, Accessibility, Audio, Turn text into audio, audio narrator
 Requires at least: 5.2
 Requires PHP: 7.2
-Tested up to: 6.0
+Tested up to: 6.1
 Stable tag: trunk
 License: GPLv3 ONLY
 License URI : https://www.gnu.org/licenses/gpl-3.0.html
 
 
 == Description ==
-The audio player will convert your content into audio in just a few clicks, with seamless integration, and give your audience the ability to listen to your content on the go.
+The audio player will convert your content into audio in just a few clicks, with one-time seamless integration (no support, or special tech knowledge needed), and give your audience the ability to listen to your content on the go.
 The free version of this plugin is designed for content creators, such as bloggers who do not produce a large volume of content, and for those who want to give it a try before choosing one of the advanced plans. It enables converting up to 5 articles to audio per month, to add an audio narrator to your blog in 125 languages, 250 voices (both male and female) and increase accessibility to broader audience.
+
+* Add rich media to your existing pages to improve __SEO rankings__.
+* __Dashboard__ with statistics and usability reports.
+* __Fast player loading time__ for a smooth experience that doesn’t affect page loading time.
+* A __dedicated support team__ to provide assistance with any issue that might come up.
 
 For a quick start, please follow the instructions on our [Implementation Guide](https://trinityaudio.ai/the-trinity-audio-wordpress-plugin-implementation-guide/).
 
 [Explore](https://trinityaudio.ai/) our advanced products and features:
 
-* 125 supported languages with __over 600 accents and natural voices__
+* Over 125 supported languages with __over 600 accents and natural voices__
 * __CMS__ to manage, edit, and distribute audio content in leading platforms such as Spotify, Apple, and Google Podcast, and create playlists to increase engagement
 * __Automatic real-time translation__
 * Multiple playing __speed capabilities__
@@ -48,17 +53,24 @@ For more about Trinity Audio: [Trinity Audio](https://trinityaudio.ai/)
 
 The following are configuration options you can modify as you see fit:
 
-* __Default language:__ The language of your content. In case you have multiple, you can also control the language on the post level.
-* __Default Gender:__ the default gender voice for each post.
-* __New post default:__ Specifies whether the player is automatically enabled for all new posts. Choose this option if you want [Trinity Audio](https://trinityaudio.ai/) to add an audio player for each new post.
-* __Player position:__ The position of the audio player on your page. We recommend placing the player before the main article text.
-* __Player label:__ Specifies optional text you’d like to be shown above the audio player (HTML tags are supported with this label).
-* __Display "Powered by Trinity Audio":__ choose if you want to display credit next to the player. We’d very much appreciate it if you choose to give us credit.
-* __Resource preconnect:__ this feature will allow us to load the player faster on your page so we strongly advise enabling it.
+* __Pick a narrator for your content:__ Please choose the language of your content and the voice you would like to use. In case you have multiple languages on your site, choose the main one and configure the correct language on the individual post level.
+* __Voice style:__ Choose the type of reading you would like to use. For example, choose news (formal) for formal news content. Please note that only narrators that have a wave icon next to the, support voice styles.
+* __Play premium version:__ In case the voice has a better version than chosen, click it to hear how it could sound like.
+* __Default player speed:__ Choose the default player speed. Listeners could still change it from the player menu if needed.
+* __Theme:__ Choose the player theme you want.
+* __The player itself:__ Click the play to listen to a sample from the selected narrator.
+* __Player features:__ Add the relevant player features to your site.
+* __FAB (Floating Action Button:__ Enable a floating action button that will control the player for users scrolling while reading.
+* __Player name:__ Give the player a name. You would see that name in the Trinity Audio dashboard.
 * __Add post title to audio:__ If enabled, each audio file will start by reading the post title.
 * __Add post excerpt to audio:__ If enabled, each audio file will read an excerpt from the post at the beginning of the audio (after the title, if chosen).
 * __Skip HTML tags:__ Use this if you want to avoid generating audio for specific parts of posts based on the tags (content blacklist).
 * __Allow shortcodes:__ By default, the Trinity Audio player will read only the textual content of your post and will filter out all additional texts generated using plugins or shortcodes. If you would like to add shortcodes that you would like the player to read, please add them using comma delimiter. For example: gallery, myshortcode. After you change those settings, make sure to use “Activate for all posts” to allow those configurations to update.
+* __Player position:__ The position of the audio player on your page. We recommend placing the player before the main article text.
+* __Player label:__ Specifies optional text you’d like to be shown above the audio player (HTML tags are supported with this label).
+* __Help us reach more users:__ Choose if you want to display credit next to the player. We’d very much appreciate it if you choose to give us credit.
+* __Resource preconnect:__ This feature will allow us to load the player faster on your page so we strongly advise enabling it.
+* __New post default:__ Enable this to make sure that the Trinity Audio player will be added to each new post you publish.
 
 Still here? Go turn your readers to listeners.
 
@@ -76,12 +88,17 @@ Instantly convert your content from text to audio with the most natural sounding
 Here are the recommended steps for configuring the plugin:
 
 1. Choose the default source language.
-3. Choose “Before post” in the “player position” section.
-4. Choose “Add to all new posts” on the “New post default” section.
-5. Check the “Add post title to audio” title option.
-6. Click “Save Changes”.
-7. Wait for all posts to be updated.
-
+2. Filter the gender you prefer.
+3. Open the premium voice tab.
+4. If locked, choose standard voices.
+5. Listen to the different narrators and choose the one you find as best.
+6. Choose a voice style you like and click on the player to listen to the sample.
+7. Check the “Add post title to audio” title option.
+8. Choose “Before post” in the “player position” section.
+9. Make sure the checkbox next to “Help us reach new users” is checked.
+10. Make sure the checkbox next to “Resource Preconnect” is checked.
+11. Make sure the checkbox next to “New post default” is checked.
+12. Click “Save Changes”.
 
 If at any stage you have questions or need support, reach out to us at: [wp@trinityaudio.ai](wp@trinityaudio.ai) - we’d love to hear from you!
 
@@ -89,20 +106,41 @@ If at any stage you have questions or need support, reach out to us at: [wp@trin
 == Frequently Asked Questions ==
 
 = What is Trinity Audio? =
-    Trinity Audio's AI-driven solutions help you create a world of audio experiences for your readers, covering every stage of the audio journey from creation to distribution.
+    Trinity Audio, the only unified audio platform, is an AI company helping publishers and content creators build their audio future and provide audio experiences for their audiences. The company's technology instantly converts content from text to audio with the most natural sounding voices, continuously learns listeners' behavior, and creates smart audio experiences, covering every stage of the audio journey from creation to distribution.
 = Which languages are supported? =
-     Arabic, Chinese (Mandarin), Danish, Dutch, English (muliple accents), French, German, Hindi, Icelandic, Italian, Japanese, Korean, Norwegian, Polish, Portuguese (muliple accents), Romanian, Russian, Spanish (muliple accents), Swedish, Turkish, Welsh and more!
+     Trinity Audio is supporting the following languages: 
+Afrikaans, Albanian, Amharic, Arabic (multiple accents), Azerbaijani, Bengali (multiple accents), Bosnian, Bulgarian, Burmese, Catalan, Chinese (multiple accents), Croatian, Czech, Danish, Dutch (multiple accents), English (multiple accents), Estonian, Filipino, Finnish, French (multiple accents), Galician, Georgian, German (multiple accents), Greek, Gujarati, Hebrew, Hindi, Hungarian, Icelandic, Indonesian, Irish, Italian, Japanese, Javanese, Kannada, Kazakh, Khmer, Korean, Lao, Latvian, Lithuanian, Macedonian, Malay, Malayalam, Maltese, Mandarin Chinese (multiple accents), Marathi, Mongolian, Nepali, Norwegian Bokmål, Panjabi, Pashto, Persian, Polish, Portuguese (multiple accents), Romanian, Russian, Serbian, Sinhala, Slovak, Slovene, Somali, Spanish (multiple accents), Standard Arabic, Sundanese, Swahili (multiple accents), Swedish, Tamil (multiple accents), Telugu, Thai, Turkish, Ukrainian, Urdu (multiple accents), Uzbek, Vietnamese, Welsh, Yue Chinese and Zulu.
+ 
+* We are constantly working on adding more languages. In case the required language is not in the list, reach out to support to check when it is expected.
+** Some of the languages are only available in the paid plans.
 = How much does Trinity Audio cost? =
-    Trinity Audio WP plugin version enables to convert 5 content articles to audio per month at no cost. For a more robust version of the player or higher consumption requirements please [contact us](https://trinityaudio.ai/contact/).
+    The Trinity Audio free plan enables converting up to 5 content articles to audio per month at no cost. For a more robust version of the player or higher consumption requirements, please [see our advanced plans](https://www.trinityaudio.ai/pricing-trinity-audio)
 Generated audio posts will be available for consumption regardless of package status.
 = Can I choose a different gender/language on a specific post? =
-    Yes you can! In the general settings, you can define the default gender voice and can change it for each individual post in the post menu.
-= If I add the player to all posts be default, can I disable selected posts? =
+    Yes you can! In the general settings, you can define the default voice and can change it for each individual post in the post menu.
+= If I add the player to all posts by default, can I disable selected posts? =
     Yes - you can disable it from specific posts from the post menu.
 = Where would the player be placed in my post? =
-    The exact location is configurable from the settings tab.
+    The exact location is configurable from the settings tab. We recommend placing the player before the post for the best engagement.
 = What text would the player read? =
     The player would read the article body and headline. The Headline can be removed easily by clicking the checkbox in the settings tab. Reading the excerpt is also supported and it can be added from the settings tab.
+= Do you support multiple domains? =
+    Yes we do! Although the free plan supports only a single domain, the paid plans support multiple domains to be integrated to the service. Check out our [pricing page](https://www.trinityaudio.ai/pricing-trinity-audio) to learn more and enjoy our 30-days money back guarantee
+= How do I install the plugin? =
+    The full instructions are found here: [Implementation Guide](https://trinityaudio.ai/the-trinity-audio-wordpress-plugin-implementation-guide/).
+= Do you support dark themes? =
+    Yes we do! Visit the plugin settings and choose a theme that matches your design (for example “Coda dark”).
+= Do the plugin support pages and custom posts? =
+    Currently, the plugin integration supports only posts. However, our JS integration is flexible and supports any type of page. Check out our [pricing page](https://www.trinityaudio.ai/pricing-trinity-audio) to learn more and enjoy our 30-day money-back guarantee.
+= I have migrated my site and the plugin doesn’t work - what should I do? =
+    If you’ve registered before and are now migrating to a new database or hosting service, please insert your previous Recovery Token while installing the plugin again. Your Recovery Token can be found in your previous admin panel, under Trinity Audio -> Info -> Recovery Token. If you can’t found it, reach out to our support and we’ll gladly help you [support@trinityaudio.ai](mailto:support@trinityaudio.ai)
+= The player is reading text that it shouldn’t - how to fix it? =
+    In case you already know what elements are being read and shouldn’t, use the “Skip HTML tags” section in the plugin. Place the relevant HTML elements the player should avoid. If that’s not helping, please reach out to our support [support@trinityaudio.ai](mailto:support@trinityaudio.ai) and we’ll help out
+= The player is  not reading all the text it should - how to fix it? =
+    In case the elements missed are added using shortcodes, use the “Allow shortcodes” section and add the relevant shortcodes. If that’s not helping, please reach out to our support [support@trinityaudio.ai](mailto:support@trinityaudio.ai) and we’ll help out
+= I don’t see the player on a post it be on. Why is that? =
+    The main reason that might cause that is lack of credits. Once there are no more credits, the player will not appear on new posts. Please visit the plugin’s page and check that you still have enough credits left as part of your plan.
+
 
 == Video ==
 
@@ -110,8 +148,6 @@ Generated audio posts will be available for consumption regardless of package st
 
 == Screenshots ==
 
-1. Admin settings screen.
-2. Admin settings screen - continued.
 3. Create and customize you Trinity Audio player.
 4. Engage your audience with exclusively tailored audio.
 5. Manage and follow up on your audio journey success.
@@ -120,6 +156,78 @@ Generated audio posts will be available for consumption regardless of package st
 
 
 == Changelog ==
+= 5.3.4 =
+*Release Date - Nov 23, 2022*
+* Subscription panel fixes and improvements
+
+= 5.3.3 =
+*Release Date - Oct 31, 2022*
+* Layout fixes
+* Subscription panel fixes and improvements
+* Fixed URLs
+
+= 5.3.2 =
+*Release Date - Oct 3, 2022*
+* Fixed URLs
+* Fixed issue with filtering
+
+= 5.3.1 =
+*Release Date - Sep 22, 2022*
+* Improved labels
+
+= 5.3.0 =
+*Release Date - Sep 19, 2022*
+* Added ability to enable or disable Trinity Audio on multiple posts
+* Added ability to view posts which have Trinity Audio enabled or disabled
+
+= 5.2.1 =
+*Release Date - Sep 19, 2022*
+* Improved subscription details loading flow
+
+= 5.1.1 =
+*Release Date - Sep 13, 2022*
+* Added useful informational banners
+* Added a link to the installation guide from the plugin settings
+
+= 5.1.0 =
+*Release Date - Sep 6, 2022*
+* Revamped plugin admin experience
+* support for multiple new features:
+* voice and voice style support (for premium users)
+* player preview
+* theme selection (for premium users)
+* And much more!
+
+= 5.0.5 =
+*Release Date - Sep 5, 2022*
+* Added debug logs for the installation flow
+
+= 5.0.4 =
+*Release Date - Aug 26, 2022*
+* Fixed plugin bug
+
+= 5.0.3 =
+*Release Date - Aug 9, 2022*
+* Improved performance for post settings
+* Added checkbox to approve receiving emails from Trinity Audio
+* Added useful links for plugin in plugins list
+
+= 5.0.2 =
+*Release Date - Aug 2, 2022*
+* Added support for custom database prefix
+* Fixed default behavior for enabling player per post
+* Improved options description
+
+= 5.0.1 =
+*Release Date - Jul 27, 2022*
+* Added missed migration file
+
+= 5.0.0 =
+*Release Date - Jul 26, 2022*
+* Updated list of available languages/voices for paid publishers
+* Plugin flow reworked
+* Bug fixes
+
 = 4.2.4 =
 *Release Date - Mar 21, 2022*
 * Added debug information

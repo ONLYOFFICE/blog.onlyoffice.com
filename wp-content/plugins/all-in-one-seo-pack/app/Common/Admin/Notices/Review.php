@@ -43,17 +43,21 @@ class Review {
 			return;
 		}
 
-		// Only show if plugin has been active for over two weeks.
+		// Only show if plugin has been active for over 10 days.
 		if ( ! aioseo()->internalOptions->internal->firstActivated ) {
 			aioseo()->internalOptions->internal->firstActivated = time();
 		}
 
 		$activated = aioseo()->internalOptions->internal->firstActivated( time() );
-		if ( $activated > strtotime( '-2 weeks' ) ) {
+		if ( $activated > strtotime( '-10 days' ) ) {
 			return;
 		}
 
-		$this->showNotice();
+		if ( get_option( 'aioseop_options' ) || get_option( 'aioseo_options_v3' ) ) {
+			$this->showNotice();
+		} else {
+			$this->showNotice2();
+		}
 
 		// Print the script to the footer.
 		add_action( 'admin_footer', [ $this, 'printScript' ] );
@@ -83,16 +87,19 @@ class Review {
 			'https://aioseo.com/plugin-feedback/'
 		);
 
-		// Translators: 1 - The plugin name ("All in One SEO").
-		$string1  = sprintf( __( 'Are you enjoying %1$s?', 'all-in-one-seo-pack' ), AIOSEO_PLUGIN_NAME );
+		$string1 = sprintf(
+			// Translators: 1 - The plugin short name ("AIOSEO").
+			__( 'Are you enjoying %1$s?', 'all-in-one-seo-pack' ),
+			AIOSEO_PLUGIN_NAME
+		);
 		$string2  = __( 'Yes I love it', 'all-in-one-seo-pack' );
 		$string3  = __( 'Not Really...', 'all-in-one-seo-pack' );
-		// Translators: The plugin name ("All in One SEO").
+		// Translators: 1 - The plugin name ("All in One SEO").
 		$string4  = sprintf( __( 'We\'re sorry to hear you aren\'t enjoying %1$s. We would love a chance to improve. Could you take a minute and let us know what we can do better?', 'all-in-one-seo-pack' ), AIOSEO_PLUGIN_NAME ); // phpcs:ignore Generic.Files.LineLength.MaxExceeded
 		$string5  = __( 'Give feedback', 'all-in-one-seo-pack' );
 		$string6  = __( 'No thanks', 'all-in-one-seo-pack' );
 		$string7  = __( 'That\'s awesome! Could you please do me a BIG favor and give it a 5-star rating on WordPress to help us spread the word and boost our motivation?', 'all-in-one-seo-pack' );
-		// Translators: The plugin name ("All in One SEO").
+		// Translators: 1 - The plugin name ("All in One SEO").
 		$string8  = sprintf( __( 'CEO of %1$s', 'all-in-one-seo-pack' ), AIOSEO_PLUGIN_NAME );
 		$string9  = __( 'Ok, you deserve it', 'all-in-one-seo-pack' );
 		$string10 = __( 'Nope, maybe later', 'all-in-one-seo-pack' );
@@ -124,6 +131,47 @@ class Review {
 					<a href="#" class="aioseo-dismiss-review-notice-delay" target="_blank" rel="noopener noreferrer">
 						<?php echo esc_html( $string10 ); ?>
 					</a>&nbsp;&nbsp;
+					<a href="#" class="aioseo-dismiss-review-notice" target="_blank" rel="noopener noreferrer">
+						<?php echo esc_html( $string11 ); ?>
+					</a>
+				</p>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Actually show the review plugin 2.0.
+	 *
+	 * @since 4.2.2
+	 *
+	 * @return void
+	 */
+	public function showNotice2() {
+		$string1 = sprintf(
+			// Translators: 1 - The plugin name ("All in One SEO").
+			__( 'Hey, I noticed you have been using %1$s for some time - that’s awesome! Could you please do me a BIG favor and give it a 5-star rating on WordPress to help us spread the word and boost our motivation?', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
+			'<strong>' . esc_html( AIOSEO_PLUGIN_NAME ) . '</strong>'
+		);
+
+		// Translators: 1 - The plugin name ("All in One SEO").
+		$string8  = sprintf( __( 'CEO of %1$s', 'all-in-one-seo-pack' ), AIOSEO_PLUGIN_NAME );
+		$string9  = __( 'Ok, you deserve it', 'all-in-one-seo-pack' );
+		$string10 = __( 'Nope, maybe later', 'all-in-one-seo-pack' );
+		$string11 = __( 'I already did', 'all-in-one-seo-pack' );
+
+		?>
+		<div class="notice notice-info aioseo-review-plugin-cta is-dismissible">
+			<div class="step-3">
+				<p><?php echo $string1; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
+				<p><strong>~ Syed Balkhi<br><?php echo esc_html( $string8 ); ?></strong></p>
+				<p>
+					<a href="https://wordpress.org/support/plugin/all-in-one-seo-pack/reviews/?filter=5#new-post" class="aioseo-dismiss-review-notice" target="_blank" rel="noopener noreferrer">
+						<?php echo esc_html( $string9 ); ?>
+					</a><br />
+					<a href="#" class="aioseo-dismiss-review-notice-delay" target="_blank" rel="noopener noreferrer">
+						<?php echo esc_html( $string10 ); ?>
+					</a><br />
 					<a href="#" class="aioseo-dismiss-review-notice" target="_blank" rel="noopener noreferrer">
 						<?php echo esc_html( $string11 ); ?>
 					</a>
@@ -254,6 +302,7 @@ class Review {
 
 		if ( ! $delay ) {
 			update_user_meta( get_current_user_id(), '_aioseo_plugin_review_dismissed', $relay ? '2' : '1' );
+
 			return wp_send_json_success();
 		}
 

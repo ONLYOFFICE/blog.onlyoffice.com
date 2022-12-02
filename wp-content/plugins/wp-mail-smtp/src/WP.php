@@ -2,6 +2,8 @@
 
 namespace WPMailSMTP;
 
+use WPMailSMTP\Helpers\Helpers;
+
 /**
  * Class WP provides WordPress shortcuts.
  *
@@ -16,7 +18,8 @@ class WP {
 	 *
 	 * @var array
 	 */
-	protected static $admin_notices = array();
+	protected static $admin_notices = [];
+
 	/**
 	 * CSS class for a success notice.
 	 *
@@ -25,6 +28,7 @@ class WP {
 	 * @var string
 	 */
 	const ADMIN_NOTICE_SUCCESS = 'notice-success';
+
 	/**
 	 * CSS class for an error notice.
 	 *
@@ -33,6 +37,7 @@ class WP {
 	 * @var string
 	 */
 	const ADMIN_NOTICE_ERROR = 'notice-error';
+
 	/**
 	 * CSS class for an info notice.
 	 *
@@ -41,6 +46,7 @@ class WP {
 	 * @var string
 	 */
 	const ADMIN_NOTICE_INFO = 'notice-info';
+
 	/**
 	 * CSS class for a warning notice.
 	 *
@@ -49,6 +55,15 @@ class WP {
 	 * @var string
 	 */
 	const ADMIN_NOTICE_WARNING = 'notice-warning';
+
+	/**
+	 * Cross-platform line break.
+	 *
+	 * @since 3.4.0
+	 *
+	 * @var string
+	 */
+	const EOL = "\r\n";
 
 	/**
 	 * True if WP is processing an AJAX call.
@@ -254,7 +269,9 @@ class WP {
 	public static function get_default_email() {
 
 		if ( version_compare( get_bloginfo( 'version' ), '5.5-alpha', '<' ) ) {
-			$sitename = strtolower( $_SERVER['SERVER_NAME'] ); // phpcs:ignore
+			$sitename = ! empty( $_SERVER['SERVER_NAME'] ) ?
+				strtolower( sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) ) :
+				wp_parse_url( get_home_url( get_current_blog_id() ), PHP_URL_HOST );
 		} else {
 			$sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
 		}
@@ -301,5 +318,451 @@ class WP {
 		$main_site_options = get_blog_option( get_main_site_id(), Options::META_KEY, [] );
 
 		return ! empty( $main_site_options['general']['network_wide'] );
+	}
+
+	/**
+	 * Returns Jed-formatted localization data.
+	 * This code was taken from a function removed from WP core: `wp_get_jed_locale_data`.
+	 *
+	 * @since 2.6.0
+	 *
+	 * @param string $domain Translation domain.
+	 *
+	 * @return array
+	 */
+	public static function get_jed_locale_data( $domain ) {
+
+		$translations = get_translations_for_domain( $domain );
+
+		$locale = array(
+			'' => array(
+				'domain' => $domain,
+				'lang'   => is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale(),
+			),
+		);
+
+		if ( ! empty( $translations->headers['Plural-Forms'] ) ) {
+			$locale['']['plural_forms'] = $translations->headers['Plural-Forms'];
+		}
+
+		foreach ( $translations->entries as $msgid => $entry ) {
+			$locale[ $msgid ] = $entry->translations;
+		}
+
+		return $locale;
+	}
+
+	/**
+	 * Check if plugins is activated.
+	 * Replacement for is_plugin_active function as it works only in admin area
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $plugin_slug Plugin slug.
+	 *
+	 * @return bool
+	 */
+	public static function is_plugin_activated( $plugin_slug ) {
+
+		static $active_plugins;
+
+		if ( ! isset( $active_plugins ) ) {
+			$active_plugins = (array) get_option( 'active_plugins', [] );
+
+			if ( is_multisite() ) {
+				$active_plugins = array_merge( $active_plugins, get_site_option( 'active_sitewide_plugins', [] ) );
+			}
+		}
+
+		return ( in_array( $plugin_slug, $active_plugins, true ) || array_key_exists( $plugin_slug, $active_plugins ) );
+	}
+
+	/**
+	 * Get the ISO 639-2 Language Code from user/site locale.
+	 *
+	 * @see   http://www.loc.gov/standards/iso639-2/php/code_list.php
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	public static function get_language_code() {
+
+		$default_lang = 'en';
+		$locale       = get_user_locale();
+
+		if ( ! empty( $locale ) ) {
+			$lang = explode( '_', $locale );
+			if ( ! empty( $lang ) && is_array( $lang ) ) {
+				$default_lang = strtolower( $lang[0] );
+			}
+		}
+
+		return $default_lang;
+	}
+
+	/**
+	 * Get the certain date of a specified day in a specified format.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $period         Supported values: start, end.
+	 * @param string $timestamp      Default is the current timestamp, if left empty.
+	 * @param string $format         Default is a MySQL format.
+	 * @param bool   $use_gmt_offset Use GTM offset.
+	 *
+	 * @return string
+	 */
+	public static function get_day_period_date( $period, $timestamp = '', $format = 'Y-m-d H:i:s', $use_gmt_offset = false ) {
+
+		$date = '';
+
+		if ( empty( $timestamp ) ) {
+			$timestamp = time();
+		}
+
+		$offset_sec = $use_gmt_offset ? get_option( 'gmt_offset' ) * 3600 : 0;
+
+		switch ( $period ) {
+			case 'start_of_day':
+				$date = gmdate( $format, strtotime( 'today', $timestamp ) - $offset_sec );
+				break;
+
+			case 'end_of_day':
+				$date = gmdate( $format, strtotime( 'tomorrow', $timestamp ) - 1 - $offset_sec );
+				break;
+		}
+
+		return $date;
+	}
+
+	/**
+	 * Returns extracted domain from email address.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $email Email address.
+	 *
+	 * @return string
+	 */
+	public static function get_email_domain( $email ) {
+
+		return substr( strrchr( $email, '@' ), 1 );
+	}
+
+	/**
+	 * Wrapper for set_time_limit to see if it is enabled.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param int $limit Time limit.
+	 */
+	public static function set_time_limit( $limit = 0 ) {
+
+		if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) { // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.safe_modeDeprecatedRemoved
+			@set_time_limit( $limit ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		}
+	}
+
+	/**
+	 * Recursive arguments parsing.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param array $args     Arguments.
+	 * @param array $defaults Defaults.
+	 *
+	 * @return array
+	 */
+	public static function parse_args_r( &$args, $defaults ) {
+
+		$args     = (array) $args;
+		$defaults = (array) $defaults;
+		$r        = $defaults;
+
+		foreach ( $args as $k => &$v ) {
+			if ( is_array( $v ) && isset( $r[ $k ] ) ) {
+				$r[ $k ] = self::parse_args_r( $v, $r[ $k ] );
+			} else {
+				$r[ $k ] = $v;
+			}
+		}
+
+		return $r;
+	}
+
+	/**
+	 * True if WP is processing plugin related AJAX call.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return bool
+	 */
+	public static function is_doing_self_ajax() {
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$action = isset( $_REQUEST['action'] ) ? sanitize_key( $_REQUEST['action'] ) : false;
+
+		return self::is_doing_ajax() && $action && substr( $action, 0, 12 ) === 'wp_mail_smtp';
+	}
+
+	/**
+	 * Get the name of the plugin/theme/wp-core that initiated the desired function call.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $file_path The absolute path of a file that that called the desired function.
+	 *
+	 * @return string
+	 */
+	public static function get_initiator_name( $file_path ) {
+
+		$cache_key = 'wp_mail_smtp_initiators';
+
+		// Mainly we have several initiators and we can cache them for better performance.
+		$initiators_cache = get_transient( $cache_key );
+		$initiators_cache = is_array( $initiators_cache ) ? $initiators_cache : [];
+
+		if ( isset( $initiators_cache[ $file_path ] ) ) {
+			return $initiators_cache[ $file_path ];
+		}
+
+		$name = self::get_initiator( $file_path )['name'];
+
+		$initiators_cache[ $file_path ] = $name;
+
+		set_transient( $cache_key, $initiators_cache, HOUR_IN_SECONDS );
+
+		return $name;
+	}
+
+	/**
+	 * Get the info of the plugin/theme/wp-core function.
+	 *
+	 * @since 3.5.0
+	 *
+	 * @param string $file_path The absolute path of the function location.
+	 *
+	 * @return array
+	 */
+	public static function get_initiator( $file_path ) {
+
+		$name = self::get_initiator_plugin( $file_path );
+		$type = 'plugin';
+
+		if ( empty( $name ) ) {
+			$name = self::get_initiator_plugin( $file_path, true );
+			$type = 'mu-plugin';
+		}
+
+		if ( empty( $name ) ) {
+			$name = self::get_initiator_theme( $file_path );
+			$type = 'theme';
+		}
+
+		if ( empty( $name ) ) {
+			$name = self::get_initiator_wp_core( $file_path );
+			$type = 'wp-core';
+		}
+
+		if ( empty( $name ) ) {
+			$name = esc_html__( 'N/A', 'wp-mail-smtp' );
+			$type = 'unknown';
+		}
+
+		return [
+			'name' => $name,
+			'type' => $type,
+		];
+	}
+
+	/**
+	 * Get the initiator's name, if it's a plugin (or mu plugin).
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $file_path       The absolute path of a file.
+	 * @param bool   $check_mu_plugin Whether to check for mu plugins or not.
+	 *
+	 * @return false|string
+	 */
+	private static function get_initiator_plugin( $file_path, $check_mu_plugin = false ) {
+
+		$constant = empty( $check_mu_plugin ) ? 'WP_PLUGIN_DIR' : 'WPMU_PLUGIN_DIR';
+
+		if ( ! defined( $constant ) ) {
+			return false;
+		}
+
+		$root      = basename( constant( $constant ) );
+		$separator = defined( 'DIRECTORY_SEPARATOR' ) ? '\\' . DIRECTORY_SEPARATOR : '\/';
+
+		preg_match( "/$separator$root$separator(.[^$separator]+)($separator|\.php)/", $file_path, $result );
+
+		if ( ! empty( $result[1] ) ) {
+			if ( ! function_exists( 'get_plugins' ) ) {
+				include ABSPATH . '/wp-admin/includes/plugin.php';
+			}
+
+			$all_plugins = empty( $check_mu_plugin ) ? get_plugins() : get_mu_plugins();
+			$plugin_slug = $result[1];
+
+			foreach ( $all_plugins as $plugin => $plugin_data ) {
+				if (
+					1 === preg_match( "/^$plugin_slug(\/|\.php)/", $plugin ) &&
+					isset( $plugin_data['Name'] )
+				) {
+					return $plugin_data['Name'];
+				}
+			}
+
+			return $result[1];
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get the initiator's name, if it's a theme.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $file_path The absolute path of a file.
+	 *
+	 * @return false|string
+	 */
+	private static function get_initiator_theme( $file_path ) {
+
+		if ( ! defined( 'WP_CONTENT_DIR' ) ) {
+			return false;
+		}
+
+		$root      = basename( WP_CONTENT_DIR );
+		$separator = defined( 'DIRECTORY_SEPARATOR' ) ? '\\' . DIRECTORY_SEPARATOR : '\/';
+
+		preg_match( "/$separator$root{$separator}themes{$separator}(.[^$separator]+)/", $file_path, $result );
+
+		if ( ! empty( $result[1] ) ) {
+			$theme = wp_get_theme( $result[1] );
+
+			if ( method_exists( $theme, 'get' ) ) {
+				return $theme->get( 'Name' );
+			}
+
+			return $result[1];
+		}
+
+		return false;
+	}
+
+	/**
+	 * Return WP Core if the file path is from WP Core (wp-admin or wp-includes folders).
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param string $file_path The absolute path of a file.
+	 *
+	 * @return false|string
+	 */
+	private static function get_initiator_wp_core( $file_path ) {
+
+		if ( ! defined( 'ABSPATH' ) ) {
+			return false;
+		}
+
+		$wp_includes = defined( 'WPINC' ) ? trailingslashit( ABSPATH . WPINC ) : false;
+		$wp_admin    = trailingslashit( ABSPATH . 'wp-admin' );
+
+		if (
+			strpos( $file_path, $wp_includes ) === 0 ||
+			strpos( $file_path, $wp_admin ) === 0
+		) {
+			return esc_html__( 'WP Core', 'wp-mail-smtp' );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Retrieves the timezone from site settings as a `DateTimeZone` object.
+	 *
+	 * Timezone can be based on a PHP timezone string or a ±HH:MM offset.
+	 *
+	 * We use `wp_timezone()` when it's available (WP 5.3+),
+	 * otherwise fallback to the same code, copy-pasted.
+	 *
+	 * @since 3.0.2
+	 *
+	 * @return \DateTimeZone Timezone object.
+	 */
+	public static function wp_timezone() {
+
+		if ( function_exists( 'wp_timezone' ) ) {
+			return wp_timezone();
+		}
+
+		return new \DateTimeZone( self::wp_timezone_string() );
+	}
+
+	/**
+	 * Retrieves the timezone from site settings as a string.
+	 *
+	 * Uses the `timezone_string` option to get a proper timezone if available,
+	 * otherwise falls back to an offset.
+	 *
+	 * We use `wp_timezone_string()` when it's available (WP 5.3+),
+	 * otherwise fallback to the same code, copy-pasted.
+	 *
+	 * @since 3.0.2
+	 *
+	 * @return string PHP timezone string or a ±HH:MM offset.
+	 */
+	public static function wp_timezone_string() {
+
+		if ( function_exists( 'wp_timezone_string' ) ) {
+			return wp_timezone_string();
+		}
+
+		$timezone_string = get_option( 'timezone_string' );
+
+		if ( $timezone_string ) {
+			return $timezone_string;
+		}
+
+		$offset  = (float) get_option( 'gmt_offset' );
+		$hours   = (int) $offset;
+		$minutes = ( $offset - $hours );
+
+		$sign      = ( $offset < 0 ) ? '-' : '+';
+		$abs_hour  = abs( $hours );
+		$abs_mins  = abs( $minutes * 60 );
+		$tz_offset = sprintf( '%s%02d:%02d', $sign, $abs_hour, $abs_mins );
+
+		return $tz_offset;
+	}
+
+	/**
+	 * Get wp remote response error message.
+	 *
+	 * @since 3.4.0
+	 *
+	 * @param array $response Response array.
+	 */
+	public static function wp_remote_get_response_error_message( $response ) {
+
+		if ( is_wp_error( $response ) ) {
+			return '';
+		}
+
+		$body        = wp_remote_retrieve_body( $response );
+		$message     = wp_remote_retrieve_response_message( $response );
+		$code        = wp_remote_retrieve_response_code( $response );
+		$description = '';
+
+		if ( ! empty( $body ) ) {
+			$description = is_string( $body ) ? $body : wp_json_encode( $body );
+		}
+
+		return Helpers::format_error_message( $message, $code, $description );
 	}
 }

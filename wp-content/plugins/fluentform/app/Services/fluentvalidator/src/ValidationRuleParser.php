@@ -45,7 +45,7 @@ class ValidationRuleParser
     protected function explodeRules($rules)
     {
         foreach ($rules as $attribute => $rule) {
-            if (fluentform_mb_strpos($attribute, '*') !== false) {
+            if (false !== fluentform_mb_strpos($attribute, '*')) {
                 $rules = $this->explodeWildcardRules($rules, $attribute, [$rule]);
 
                 unset($rules[$attribute]);
@@ -76,8 +76,8 @@ class ValidationRuleParser
     /**
      * Define a set of rules that apply to each element in an array attribute.
      *
-     * @param array $results
-     * @param string $attribute
+     * @param array        $results
+     * @param string       $attribute
      * @param string|array $rules
      *
      * @return array
@@ -89,7 +89,7 @@ class ValidationRuleParser
         $data = ValidationData::initializeAndGatherData($attribute, $this->data);
 
         foreach ($data as $key => $value) {
-            if (substr($key, 0, strlen($attribute)) === $attribute || (bool) preg_match('/^'.$pattern.'\z/', $key)) {
+            if (substr($key, 0, strlen($attribute)) === $attribute || (bool) preg_match('/^' . $pattern . '\z/', $key)) {
                 foreach ((array) $rules as $rule) {
                     $results = $this->mergeRules($results, $key, $rule);
                 }
@@ -102,7 +102,7 @@ class ValidationRuleParser
     /**
      * Merge additional rules into a given attribute(s).
      *
-     * @param array $results
+     * @param array        $results
      * @param string|array $attribute
      * @param string|array $rules
      *
@@ -119,15 +119,17 @@ class ValidationRuleParser
         }
 
         return $this->mergeRulesForAttribute(
-            $results, $attribute, $rules
+            $results,
+            $attribute,
+            $rules
         );
     }
 
     /**
      * Merge additional rules into a given attribute.
      *
-     * @param array $results
-     * @param string $attribute
+     * @param array        $results
+     * @param string       $attribute
      * @param string|array $rules
      *
      * @return array
@@ -139,7 +141,8 @@ class ValidationRuleParser
         $merge = reset($array);
 
         $results[$attribute] = array_merge(
-            isset($results[$attribute]) ? $this->explodeExplicitRule($results[$attribute]) : [], $merge
+            isset($results[$attribute]) ? $this->explodeExplicitRule($results[$attribute]) : [],
+            $merge
         );
 
         return $results;
@@ -156,7 +159,7 @@ class ValidationRuleParser
     {
         $parameters = [];
 
-        if (strpos($rule, ':') !== false) {
+        if (false !== strpos($rule, ':')) {
             list($rule, $parameter) = explode(':', $rule, 2);
 
             $parameters = str_getcsv($parameter);

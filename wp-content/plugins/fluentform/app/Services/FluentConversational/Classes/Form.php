@@ -2,13 +2,13 @@
 
 namespace FluentForm\App\Services\FluentConversational\Classes;
 
-use FluentForm\App\Modules\Form\Settings\FormCssJs;
-use FluentForm\App\Services\FluentConversational\Classes\Elements\WelcomeScreen;
+use FluentForm\View;
 use FluentForm\App\Helpers\Helper;
 use FluentForm\App\Modules\Acl\Acl;
-use FluentForm\App\Services\FluentConversational\Classes\Converter\Converter;
 use FluentForm\Framework\Helpers\ArrayHelper;
-use FluentForm\View;
+use FluentForm\App\Modules\Form\Settings\FormCssJs;
+use FluentForm\App\Services\FluentConversational\Classes\Converter\Converter;
+use FluentForm\App\Services\FluentConversational\Classes\Elements\WelcomeScreen;
 
 class Form
 {
@@ -24,13 +24,13 @@ class Form
 
         add_action('wp_ajax_ff_store_conversational_form_settings', [$this, 'saveSettingsAjax']);
 
-        add_filter('fluent_editor_components', array($this, 'filterAcceptedFields'), 999, 2);
+        add_filter('fluent_editor_components', [$this, 'filterAcceptedFields'], 999, 2);
 
-        add_filter('fluentform_form_admin_menu', array($this, 'pushDesignTab'), 10, 2);
+        add_filter('fluentform_form_admin_menu', [$this, 'pushDesignTab'], 10, 2);
 
-        add_filter('ff_fluentform_form_application_view_conversational_design', array($this, 'renderDesignSettings'), 10, 1);
+        add_filter('ff_fluentform_form_application_view_conversational_design', [$this, 'renderDesignSettings'], 10, 1);
 
-        add_filter('fluent_editor_element_settings_placement', array($this, 'maybeAlterPlacement'), 10, 2);
+        add_filter('fluent_editor_element_settings_placement', [$this, 'maybeAlterPlacement'], 10, 2);
 
         // elements
         new WelcomeScreen();
@@ -38,7 +38,7 @@ class Form
 
     public function pushDesignTab($menuItems, $formId)
     {
-        if (!Helper::isConversionForm($formId)) {
+        if (! Helper::isConversionForm($formId)) {
             return $menuItems;
         }
 
@@ -49,8 +49,8 @@ class Form
                 'conversational_design' => [
                     'slug'  => 'conversational_design',
                     'title' => __('Design', 'fluentform'),
-                    'url'   => admin_url('admin.php?page=fluent_forms&form_id=' . $formId . '&route=conversational_design')
-                ]
+                    'url'   => admin_url('admin.php?page=fluent_forms&form_id=' . $formId . '&route=conversational_design'),
+                ],
             ] + array_slice($menuItems, 1, count($menuItems) - 1, true);
         }
 
@@ -59,8 +59,9 @@ class Form
 
     public function renderDesignSettings($formId)
     {
-        if (!Helper::isConversionForm($formId)) {
+        if (! Helper::isConversionForm($formId)) {
             echo 'Sorry! This is not a conversational form';
+
             return;
         }
 
@@ -73,13 +74,13 @@ class Form
         wp_enqueue_script(
             'fluent_forms_conversational_design',
             fluentformMix('js/conversational_design.js'),
-            array('jquery'),
+            ['jquery'],
             FLUENTFORM_VERSION,
             true
         );
 
         $paramKey = apply_filters('fluentform_conversational_url_slug', 'fluent-form');
-        if ($paramKey == 'form') {
+        if ('form' == $paramKey) {
             $paramKey = 'fluent-form';
         }
 
@@ -87,13 +88,13 @@ class Form
             'form_id'     => $formId,
             'preview_url' => site_url('?' . $paramKey . '=' . $formId),
             'fonts'       => Fonts::getFonts(),
-            'has_pro'     => defined('FLUENTFORMPRO')
+            'has_pro'     => defined('FLUENTFORMPRO'),
         ]);
 
         wp_enqueue_style(
             'fluent_forms_conversion_style',
             fluentformMix('css/conversational_design.css'),
-            array(),
+            [],
             FLUENTFORM_VERSION
         );
 
@@ -102,7 +103,7 @@ class Form
 
     public function getSettingsAjax()
     {
-        $formId = intval($_REQUEST['form_id']);
+        $formId = intval(wpFluentForm('request')->get('form_id'));
 
         Acl::verify('fluentform_forms_manager', $formId);
 
@@ -112,33 +113,35 @@ class Form
         wp_send_json_success([
             'design_settings' => $designSettings,
             'meta_settings'   => $meta_settings,
-            'has_pro'         => defined('FLUENTFORMPRO')
+            'has_pro'         => defined('FLUENTFORMPRO'),
         ]);
     }
 
     public function saveSettingsAjax()
     {
-        $formId = intval($_REQUEST['form_id']);
+        $request = wpFluentForm('request');
+
+        $formId = intval($request->get('form_id'));
 
         Acl::verify('fluentform_forms_manager', $formId);
 
-        $settings = wp_unslash($_REQUEST['design_settings']);
+        $settings = wp_unslash($request->get('design_settings'));
         Helper::setFormMeta($formId, $this->metaKey . '_design', $settings);
-        $generatedCss = wp_strip_all_tags(wp_unslash($_REQUEST['generated_css']));
+        $generatedCss = wp_strip_all_tags(wp_unslash($request->get('generated_css')));
         if ($generatedCss) {
             Helper::setFormMeta($formId, $this->metaKey . '_generated_css', $generatedCss);
         }
 
-        $meta = wp_unslash(ArrayHelper::get($_REQUEST, 'meta_settings', []));
+        $meta = wp_unslash($request->get('meta_settings', []));
         if ($meta) {
             Helper::setFormMeta($formId, $this->metaKey . '_meta', $meta);
         }
 
         $params = [
-            'fluent-form' => $formId
+            'fluent-form' => $formId,
         ];
 
-        if (!empty($meta['share_key'])) {
+        if (! empty($meta['share_key'])) {
             $params['form'] = $meta['share_key'];
         }
 
@@ -146,7 +149,7 @@ class Form
 
         wp_send_json_success([
             'message'   => __('Settings successfully updated'),
-            'share_url' => $shareUrl
+            'share_url' => $shareUrl,
         ]);
     }
 
@@ -164,7 +167,7 @@ class Form
             'background_brightness' => 0,
             'disable_branding'      => 'no',
             'hide_media_on_mobile'  => 'no',
-            'key_hint'              => 'yes'
+            'key_hint'              => 'yes',
         ];
 
         return wp_parse_args($settings, $defaults);
@@ -193,15 +196,15 @@ class Form
                 'default_placeholder'  => 'Type Your answer here',
                 'key_hint_text'        => 'Key',
                 'key_hint_tooltip'     => 'Press the key to select',
-            ]
+            ],
         ];
 
-        if ($settings && !isset($settings['i18n']['key_hint_text'])) {
+        if ($settings && ! isset($settings['i18n']['key_hint_text'])) {
             $settings['i18n']['key_hint_text'] = $defaults['i18n']['key_hint_text'];
             $settings['i18n']['key_hint_tooltip'] = $defaults['i18n']['key_hint_tooltip'];
         }
 
-        if (!$settings || empty($settings['title'])) {
+        if (! $settings || empty($settings['title'])) {
             $form = wpFluent()->table('fluentform_forms')->find($formId);
             $settings['title'] = $form->title;
         }
@@ -225,13 +228,15 @@ class Form
     public function render()
     {
         $paramKey = apply_filters('fluentform_conversational_url_slug', 'fluent-form');
-        if ($paramKey == 'form') {
+        if ('form' == $paramKey) {
             $paramKey = 'fluent-form';
         }
 
-        if ((isset($_GET[$paramKey])) && !wp_doing_ajax()) {
-            $formId = intval(ArrayHelper::get($_GET, $paramKey));
-            $shareKey = ArrayHelper::get($_GET, 'form');
+        $request = wpFluentForm('request')->get();
+
+        if ((isset($request[$paramKey])) && ! wp_doing_ajax()) {
+            $formId = intval(ArrayHelper::get($request, $paramKey));
+            $shareKey = ArrayHelper::get($request, 'form');
             $this->renderFormHtml($formId, $shareKey);
         }
     }
@@ -242,7 +247,7 @@ class Form
 
         $addOn = ArrayHelper::get($globalModules, $this->addOnKey);
 
-        if (!$addOn || $addOn == 'yes') {
+        if (! $addOn || 'yes' == $addOn) {
             return true;
         }
 
@@ -251,20 +256,19 @@ class Form
 
     private function getSubmitBttnStyle($form)
     {
-
         $data = $form->submit_button;
         $styles = '';
 
-        if (ArrayHelper::get($data, 'settings.button_style') == '') {
+        if ('' == ArrayHelper::get($data, 'settings.button_style')) {
             // it's a custom button
             $buttonActiveStyles = ArrayHelper::get($data, 'settings.normal_styles', []);
             $buttonHoverStyles = ArrayHelper::get($data, 'settings.hover_styles', []);
             $activeStates = '';
             foreach ($buttonActiveStyles as $styleAtr => $styleValue) {
-                if (!$styleValue) {
+                if (! $styleValue) {
                     continue;
                 }
-                if ($styleAtr == 'borderRadius') {
+                if ('borderRadius' == $styleAtr) {
                     $styleValue .= 'px';
                 }
                 $activeStates .= ltrim(strtolower(preg_replace('/[A-Z]([A-Z](?![a-z]))*/', '-$0', $styleAtr)), '_') . ':' . $styleValue . ';';
@@ -274,10 +278,10 @@ class Form
             }
             $hoverStates = '';
             foreach ($buttonHoverStyles as $styleAtr => $styleValue) {
-                if (!$styleValue) {
+                if (! $styleValue) {
                     continue;
                 }
-                if ($styleAtr == 'borderRadius') {
+                if ('borderRadius' == $styleAtr) {
                     $styleValue .= 'px';
                 }
                 $hoverStates .= ltrim(strtolower(preg_replace('/[A-Z]([A-Z](?![a-z]))*/', '-$0', $styleAtr)), '-') . ':' . $styleValue . ';';
@@ -300,7 +304,7 @@ class Form
 
     public function filterAcceptedFields($components, $formId)
     {
-        if (!Helper::isConversionForm($formId)) {
+        if (! Helper::isConversionForm($formId)) {
             return $components;
         }
 
@@ -330,6 +334,7 @@ class Form
             'input_checkbox',
             'input_password',
             'terms_and_condition',
+            'gdpr_agreement',
             'multi_payment_component',
             'subscription_payment_component',
             'custom_payment_component',
@@ -337,15 +342,17 @@ class Form
             'payment_method',
             'payment_summary_component',
             'payment_coupon',
-            'recaptcha'
+            'recaptcha',
+            'hcaptcha',
+            'quiz_score',
         ];
 
         $elements = [];
 
         $allFields = [
-            'general' => $generalFields,
+            'general'  => $generalFields,
             'advanced' => $advancedFields,
-            'payments' => $paymentFields
+            'payments' => $paymentFields,
         ];
 
         foreach ($allFields as $groupType => $group) {
@@ -358,16 +365,31 @@ class Form
                         'brightness'       => 0,
                         'alt_text'         => '',
                         'media_x_position' => 50,
-                        'media_y_position' => 50
+                        'media_y_position' => 50,
                     ];
-    
-                    if ($element == 'terms_and_condition') {
+
+                    if ('terms_and_condition' == $element || 'gdpr_agreement' == $element) {
                         $existingSettings = $field['settings'];
                         $existingSettings['tc_agree_text'] = __('I accept', 'fluentform');
-                        $existingSettings['tc_dis_agree_text'] = __('I don\'t accept', 'fluentform');
+                        if ('terms_and_condition' == $element) {
+                            $existingSettings['tc_dis_agree_text'] = __('I don\'t accept', 'fluentform');
+                        }
                         $field['settings'] = $existingSettings;
                     }
-    
+                    //adding required settings for captcha in conversational form
+                    if ('hcaptcha' == $element || 'recaptcha' == $element) {
+                        $existingSettings = $field['settings'];
+                        if (empty($existingSettings['validation_rules'])) {
+                            $existingSettings['validation_rules'] = [
+                                'required' => [
+                                    'value'   => true,
+                                    'message' => __('This field is required', 'fluentform'),
+                                ],
+                            ];
+                        }
+                        $field['settings'] = $existingSettings;
+                    }
+
                     $elements[$groupType][] = $field;
                 }
             }
@@ -381,36 +403,33 @@ class Form
     {
         $jsScripts = $this->getRegisteredScripts();
         if ($jsScripts) {
-            $jsTypeAttr = current_theme_supports('html5', 'script') ? '' : " type='text/javascript'";
-            add_action('fluentform_conversational_frame_footer', function () use ($jsScripts, $jsTypeAttr) {
+            add_action('fluentform_conversational_frame_footer', function () use ($jsScripts) {
                 foreach ($jsScripts as $handle => $jsScript) {
                     if (empty($jsScript->src)) {
                         continue;
                     }
                     if ($data = ArrayHelper::get($jsScript->extra, 'data')) {
-                        printf("<script%s id='%s-js-extra'>\n", $jsTypeAttr, esc_attr($handle));
-                        echo "$data\n";
+                        printf("<script type='text/javascript' id='%s-js-extra'>\n", esc_attr($handle));
+                        echo "$data\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $data is hardcoded localized data and escaped before being passed in.
                         echo "</script>\n";
                     }
-                    $src = esc_attr($jsScript->src);
+                    $src = $jsScript->src;
                     $src = add_query_arg('ver', $jsScript->ver, $src);
-                    echo "<script{$jsTypeAttr} id='" . esc_attr($handle) . "' src='" . $src . "'></script>\n";
+                    echo "<script type='text/javascript' id='" . esc_attr($handle) . "' src='" . esc_url($src) . "'></script>\n";
                 }
             }, 1);
         }
 
         $cssStyles = $this->getRegisteredStyles();
         if ($cssStyles) {
-            $cssTypeAttr = current_theme_supports('html5', 'style') ? '' : ' type="text/css"';
-            add_action('fluentform_conversational_frame_head', function () use ($cssStyles, $cssTypeAttr) {
+            add_action('fluentform_conversational_frame_head', function () use ($cssStyles) {
                 foreach ($cssStyles as $styleName => $cssStyle) {
                     if (empty($cssStyle->src)) {
                         continue;
                     }
-                    $src = esc_attr($cssStyle->src);
-                    $src = add_query_arg('ver', $cssStyle->ver, $src);
+                    $src = add_query_arg('ver', $cssStyle->ver, $cssStyle->src);
 
-                    echo "<link rel='stylesheet' id='" . esc_attr($styleName) . "' href='" . $src . "'{$cssTypeAttr} media='all' />\n";
+                    echo "<link rel='stylesheet' id='" . esc_attr($styleName) . "' href='" . esc_url($src) . "' type='text/css' media='all' />\n";
                 }
             });
         }
@@ -419,10 +438,9 @@ class Form
     private function getRegisteredScripts()
     {
         global $wp_scripts;
-        if (!$wp_scripts) {
+        if (! $wp_scripts) {
             return [];
         }
-
 
         $jsScripts = [];
 
@@ -432,12 +450,12 @@ class Form
             $item = $wp_scripts->registered[$script];
             $src = $wp_scripts->registered[$script]->src;
 
-            if (!strpos($src, $pluginUrl) === false) {
+            if (false === ! strpos($src, $pluginUrl)) {
                 continue;
             }
 
             foreach ($item->deps as $dep) {
-                if (!isset($items[$dep])) {
+                if (! isset($items[$dep])) {
                     $child = $wp_scripts->registered[$dep];
                     if ($child->src) {
                         $jsScripts[$dep] = $child;
@@ -462,7 +480,7 @@ class Form
     private function getRegisteredStyles()
     {
         $wp_styles = wp_styles();
-        if (!$wp_styles) {
+        if (! $wp_styles) {
             return [];
         }
 
@@ -474,12 +492,12 @@ class Form
             $item = $wp_styles->registered[$style];
             $src = $wp_styles->registered[$style]->src;
 
-            if (!strpos($src, $pluginUrl) === false) {
+            if (false === ! strpos($src, $pluginUrl)) {
                 continue;
             }
 
             foreach ($item->deps as $dep) {
-                if (!isset($items[$dep])) {
+                if (! isset($items[$dep])) {
                     $child = $wp_styles->registered[$dep];
                     if ($child->src) {
                         $cssStyles[$dep] = $child;
@@ -521,23 +539,26 @@ class Form
                 'questions'      => $form->questions,
                 'image_preloads' => $form->image_preloads,
                 'submit_button'  => $form->submit_button,
-                'hasPayment'     => !!$form->has_payment,
+                'hasPayment'     => (bool) $form->has_payment,
+                'hasCalculation' => (bool) $form->hasCalculation,
                 'reCaptcha'      => $form->reCaptcha,
+                'hCaptcha'       => $form->hCaptcha,
             ],
-            'assetBaseUrl'             => FLUENT_CONVERSATIONAL_FORM_DIR_URL . 'public',
-            'i18n'                     => $metaSettings['i18n'],
-            'form_id'                  => $form->id,
-            'is_inline_form'           => true,
-            'design'                   => $designSettings,
-            'extra_inputs'             => $this->getExtraHiddenInputs($formId),
-            'uploading_txt'            => __('Uploading', 'fluentform'),
-            'upload_completed_txt'     => __('100% Completed', 'fluentform'),
-            'paymentConfig'            => $this->getPaymentConfig($form),
-            'date_i18n'                => \FluentForm\App\Modules\Component\Component::getDatei18n()
+            'assetBaseUrl'         => FLUENT_CONVERSATIONAL_FORM_DIR_URL . 'public',
+            'i18n'                 => $metaSettings['i18n'],
+            'form_id'              => $form->id,
+            'hasPro'               => defined('FLUENTFORMPRO'),
+            'is_inline_form'       => true,
+            'design'               => $designSettings,
+            'extra_inputs'         => $this->getExtraHiddenInputs($formId),
+            'uploading_txt'        => __('Uploading', 'fluentform'),
+            'upload_completed_txt' => __('100% Completed', 'fluentform'),
+            'paymentConfig'        => $this->getPaymentConfig($form),
+            'date_i18n'            => \FluentForm\App\Modules\Component\Component::getDatei18n(),
         ]);
 
-        if (!apply_filters('fluentform-disabled_analytics', false)) {
-            if (!Acl::hasAnyFormPermission($form->id)) {
+        if (! apply_filters('fluentform-disabled_analytics', false)) {
+            if (! Acl::hasAnyFormPermission($form->id)) {
                 (new \FluentForm\App\Modules\Form\Analytics(wpFluentForm()))->record($form->id);
             }
         }
@@ -550,13 +571,13 @@ class Form
             'meta'            => $metaSettings,
             'global_var_name' => $varName,
             'instance_id'     => $instanceId,
-            'is_inline'       => 'yes'
+            'is_inline'       => 'yes',
         ]);
     }
 
     public function maybeAlterPlacement($placements, $form)
     {
-        if (!Helper::isConversionForm($form->id) || empty($placements['terms_and_condition'])) {
+        if (! Helper::isConversionForm($form->id) || empty($placements['terms_and_condition'])) {
             return $placements;
         }
 
@@ -565,18 +586,18 @@ class Form
             'validation_rules',
             'tnc_html',
             'tc_agree_text',
-            'tc_dis_agree_text'
+            'tc_dis_agree_text',
         ];
 
         $placements['terms_and_condition']['generalExtras'] = [
-            'tc_agree_text'     => [
+            'tc_agree_text' => [
                 'template' => 'inputText',
                 'label'    => 'Agree Button Text',
             ],
             'tc_dis_agree_text' => [
                 'template' => 'inputText',
                 'label'    => 'Disagree Button Text',
-            ]
+            ],
         ];
 
         return $placements;
@@ -587,7 +608,7 @@ class Form
         return [
             '__fluent_form_embded_post_id'                => get_the_ID(),
             '_fluentform_' . $formId . '_fluentformnonce' => wp_create_nonce('fluentform-submit-form'),
-            '_wp_http_referer'                            => esc_attr(wp_unslash($_SERVER['REQUEST_URI']))
+            '_wp_http_referer'                            => esc_attr(wp_unslash(wpFluentForm('request')->server('REQUEST_URI'))),
         ];
     }
 
@@ -599,7 +620,7 @@ class Form
     private function renderFormHtml($formId, $providedKey = '')
     {
         $form = wpFluent()->table('fluentform_forms')->find($formId);
-        if (!$form) {
+        if (! $form) {
             return '';
         }
 
@@ -607,7 +628,7 @@ class Form
 
         $shareKey = ArrayHelper::get($metaSettings, 'share_key');
         if ($shareKey) {
-            if ($providedKey != $shareKey && !Acl::hasAnyFormPermission($formId)) {
+            if ($providedKey != $shareKey && ! Acl::hasAnyFormPermission($formId)) {
                 return '';
             }
         }
@@ -620,7 +641,7 @@ class Form
             ->where('meta_key', 'formSettings')
             ->first();
 
-        if (!$formSettings) {
+        if (! $formSettings) {
             return '';
         }
 
@@ -640,55 +661,56 @@ class Form
                 'questions'      => $form->questions,
                 'image_preloads' => $form->image_preloads,
                 'submit_button'  => $form->submit_button,
-                'hasPayment'     => !!$form->has_payment,
+                'hasPayment'     => (bool) $form->has_payment,
+                'hasCalculation' => (bool) $form->hasCalculation,
                 'reCaptcha'      => $form->reCaptcha,
+                'hCaptcha'       => $form->hCaptcha,
             ],
-            'form_id'                  => $form->id,
-            'assetBaseUrl'             => FLUENT_CONVERSATIONAL_FORM_DIR_URL . 'public',
-            'i18n'                     => $metaSettings['i18n'],
-            'design'                   => $designSettings,
-            'extra_inputs'             => $this->getExtraHiddenInputs($formId),
-            'uploading_txt'            => __('Uploading', 'fluentform'),
-            'upload_completed_txt'     => __('100% Completed', 'fluentform'),
-            'paymentConfig'            => $this->getPaymentConfig($form),
-            'date_i18n'                => \FluentForm\App\Modules\Component\Component::getDatei18n()
+            'form_id'              => $form->id,
+            'assetBaseUrl'         => FLUENT_CONVERSATIONAL_FORM_DIR_URL . 'public',
+            'i18n'                 => $metaSettings['i18n'],
+            'design'               => $designSettings,
+            'hasPro'               => defined('FLUENTFORMPRO'),
+            'extra_inputs'         => $this->getExtraHiddenInputs($formId),
+            'uploading_txt'        => __('Uploading', 'fluentform'),
+            'upload_completed_txt' => __('100% Completed', 'fluentform'),
+            'paymentConfig'        => $this->getPaymentConfig($form),
+            'date_i18n'            => \FluentForm\App\Modules\Component\Component::getDatei18n(),
         ]);
 
         $this->printLoadedScripts();
 
-
-        $isRenderable = array(
+        $isRenderable = [
             'status'  => true,
-            'message' => ''
-        );
+            'message' => '',
+        ];
 
         $isRenderable = apply_filters('fluentform_is_form_renderable', $isRenderable, $form);
 
-        if (is_array($isRenderable) && !$isRenderable['status']) {
-            if (!Acl::hasAnyFormPermission($form->id)) {
-                echo "<h1 style='width: 600px; margin: 200px auto; text-align: center;' id='ff_form_{$form->id}' class='ff_form_not_render'>{$isRenderable['message']}</h1>";
-                die();
+        if (is_array($isRenderable) && ! $isRenderable['status']) {
+            if (! Acl::hasAnyFormPermission($form->id)) {
+                echo "<h1 style='width: 600px; margin: 200px auto; text-align: center;' id='ff_form_{$form->id}' class='ff_form_not_render'>" . wp_kses_post($isRenderable['message']) . '</h1>';
+                exit();
             }
         }
 
-        if (!apply_filters('fluentform-disabled_analytics', false)) {
-            if (!Acl::hasAnyFormPermission($form->id)) {
+        if (! apply_filters('fluentform-disabled_analytics', false)) {
+            if (! Acl::hasAnyFormPermission($form->id)) {
                 (new \FluentForm\App\Modules\Form\Analytics(wpFluentForm()))->record($form->id);
             }
         }
 
-        echo View::make('public.conversational-form', [
+        View::render('public.conversational-form', [
             'generated_css' => $this->getGeneratedCss($formId),
             'design'        => $designSettings,
             'submit_css'    => $submitCss,
             'form_id'       => $formId,
             'meta'          => $metaSettings,
-            'form'          => $form
+            'form'          => $form,
         ]);
 
         exit(200);
     }
-
 
     /**
      * Enqueue proper stylesheet based on rtl & JS script.
@@ -704,14 +726,14 @@ class Form
         wp_enqueue_style(
             'fluent_forms_conversational_form',
             FLUENT_CONVERSATIONAL_FORM_DIR_URL . 'public/css/' . $cssFileName . '.css',
-            array(),
+            [],
             FLUENTFORM_VERSION
         );
 
         wp_enqueue_script(
             'fluent_forms_conversational_form',
             FLUENT_CONVERSATIONAL_FORM_DIR_URL . 'public/js/conversationalForm.js',
-            array(),
+            [],
             FLUENTFORM_VERSION,
             true
         );
@@ -737,15 +759,15 @@ class Form
                 'currency_settings' => \FluentFormPro\Payments\PaymentHelper::getCurrencyConfig($form->id),
                 'stripe'            => [
                     'publishable_key' => $publishableKey,
-                    'inlineConfig'    => \FluentFormPro\Payments\PaymentHelper::getStripeInlineConfig($form->id)
+                    'inlineConfig'    => \FluentFormPro\Payments\PaymentHelper::getStripeInlineConfig($form->id),
                 ],
-                'stripe_app_info'   => array(
+                'stripe_app_info' => [
                     'name'       => 'Fluent Forms',
                     'version'    => FLUENTFORMPRO_VERSION,
                     'url'        => site_url(),
-                    'partner_id' => 'pp_partner_FN62GfRLM2Kx5d'
-                ),
-                'i18n'              => [
+                    'partner_id' => 'pp_partner_FN62GfRLM2Kx5d',
+                ],
+                'i18n' => [
                     'item'            => __('Item', 'fluentformpro'),
                     'price'           => __('Price', 'fluentformpro'),
                     'qty'             => __('Qty', 'fluentformpro'),
@@ -754,8 +776,8 @@ class Form
                     'not_found'       => __('No payment item selected yet', 'fluentformpro'),
                     'discount:'       => __('Discount:', 'fluentformpro'),
                     'processing_text' => __('Processing payment. Please wait...', 'fluentformpro'),
-                    'confirming_text' => __('Confirming payment. Please wait...', 'fluentformpro')
-                ]
+                    'confirming_text' => __('Confirming payment. Please wait...', 'fluentformpro'),
+                ],
             ];
 
             $paymentConfig['currency_settings']['currency_symbol'] = \html_entity_decode($paymentConfig['currency_settings']['currency_sign']);

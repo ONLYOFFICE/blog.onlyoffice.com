@@ -159,6 +159,7 @@ class DeprecatedWordPress {
 		check_ajax_referer( 'aioseo-dismiss-deprecated-wordpress', 'nonce' );
 
 		update_option( '_aioseo_deprecated_wordpress_dismissed', true );
+
 		return wp_send_json_success();
 	}
 }

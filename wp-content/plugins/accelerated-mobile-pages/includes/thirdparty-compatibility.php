@@ -71,6 +71,19 @@ function ampforwp_thirdparty_compatibility(){
 	if(class_exists('FinalTiles_Gallery')){
 		add_filter('wp_is_mobile','ampforwp_final_tiles_grid_gallery');
 	}
+	if(class_exists('Getty_Images')){
+		add_filter( 'embed_oembed_html', 'ampforwp_get_gitty_image_embed',10,4);
+		add_filter( 'ampforwp_the_content_last_filter','ampforwp_getty_image_compatibility',10);
+	}
+	if(function_exists('megashop_setup')){
+        remove_filter( 'wp_nav_menu_args', 'TT_nav_menu_args' );
+    }
+    if (function_exists('vinkmag_action_setup')) {
+    	remove_action( 'amp_post_template_head', 'vinkmag_amp_fonts', 1 );
+    }
+    if(function_exists('zeen_lazyload_images')){
+        add_filter('zeen_lazy_embedded_images','ampforwp_zeen_lazyload');
+    }
 	$yoast_canonical = $yoast_canonical_post = $yoast_canonical_page = '';
 	$yoast_canonical = get_option( 'wpseo_titles' );
 	if(isset($yoast_canonical['noindex-post'])){
@@ -799,8 +812,11 @@ function ampforwp_seopress_social(){
 				if ( '' == $url && has_post_thumbnail() ) {
 					$url = get_the_post_thumbnail_url();
 				}
-				if (function_exists('attachment_url_to_postid')) {
+				if (function_exists('attachment_url_to_postid') || has_post_thumbnail(ampforwp_get_the_ID()) ) {
 					$image_id = attachment_url_to_postid( $url );
+					if(empty($image_id)){
+						$image_id = get_post_thumbnail_id( ampforwp_get_the_ID() );
+					}
 					if ( !$image_id ){
 						return;
 					}
@@ -1132,7 +1148,7 @@ if(!function_exists('ampforwp_mistape_plugin_compatibility')){
 	}
 }
 function ampforwp_valid_amp_componet_script(){
-	$ce_valid_scripts = array('amp-3d-gltf','amp-3q-player','amp-access','amp-analytics','amp-access-laterpay','amp-access-poool','amp-accordion','amp-action-macro','amp-ad-exit','amp-ad','amp-embed','amp-addthis','amp-anim','amp-animation','amp-apester-media','amp-app-banner','amp-audio','amp-auto-ads','amp-autocomplete','amp-base-carousel','amp-beopinion','amp-bind','amp-bodymovin-animation','amp-brid-player','amp-brightcove','amp-byside-content','amp-call-tracking','amp-carousel','amp-connatix-player','amp-consent','amp-dailymotion','amp-date-countdown','amp-date-picker','amp-delight-player','amp-dynamic-css-classes','amp-embedly-card','amp-experiment','amp-facebook-comments','amp-facebook-like','amp-facebook-page','amp-facebook','amp-fit-text','amp-font','amp-form','amp-fx-collection','amp-fx-flying-carpet','amp-geo','amp-gfycat','amp-gist','amp-google-document-embed','amp-google-vrview-image','amp-hulu','amp-iframe','amp-ima-video','amp-image-lightbox','amp-image-slider','amp-imgur','amp-inputmask','amp-instagram','amp-install-serviceworker','amp-izlesene','amp-jwplayer','amp-kaltura-player','amp-lightbox-gallery','amp-lightbox','amp-link-rewriter','amp-list','amp-live-list','amp-mathml','amp-mega-menu','amp-megaphone','amp-minute-media-player','amp-form','amp-mustache','amp-next-page','amp-nexxtv-player','amp-o2-player','amp-ooyala-player','amp-orientation-observer','amp-pan-zoom','amp-pinterest','amp-playbuzz','amp-position-observer','amp-powr-player','amp-reach-player','amp-recaptcha-input','amp-redbull-player','amp-reddit','amp-riddle-quiz','amp-script','amp-selector','amp-sidebar','amp-skimlinks','amp-smartlinks','amp-social-share','amp-soundcloud','amp-springboard-player','amp-sticky-ad','amp-story-auto-ads','amp-story','amp-subscriptions-google','amp-subscriptions','amp-timeago','amp-truncate-text','amp-twitter','amp-user-notification','amp-video-docking','amp-video-iframe','amp-video','amp-vimeo','amp-vine','amp-viqeo-player','amp-viz-vega','amp-vk','amp-web-push','amp-wistia-player','amp-yotpo','amp-youtube','amp-story-player');
+	$ce_valid_scripts = array('amp-3d-gltf','amp-3q-player','amp-access','amp-analytics','amp-access-laterpay','amp-access-poool','amp-accordion','amp-action-macro','amp-ad-exit','amp-ad','amp-embed','amp-addthis','amp-anim','amp-animation','amp-apester-media','amp-app-banner','amp-audio','amp-auto-ads','amp-autocomplete','amp-base-carousel','amp-beopinion','amp-bind','amp-bodymovin-animation','amp-brid-player','amp-brightcove','amp-byside-content','amp-call-tracking','amp-carousel','amp-connatix-player','amp-consent','amp-dailymotion','amp-date-countdown','amp-date-picker','amp-delight-player','amp-dynamic-css-classes','amp-embedly-card','amp-experiment','amp-facebook-comments','amp-facebook-like','amp-facebook-page','amp-facebook','amp-fit-text','amp-font','amp-form','amp-fx-collection','amp-fx-flying-carpet','amp-geo','amp-gfycat','amp-gist','amp-google-document-embed','amp-google-vrview-image','amp-hulu','amp-iframe','amp-ima-video','amp-image-lightbox','amp-image-slider','amp-imgur','amp-inputmask','amp-instagram','amp-install-serviceworker','amp-izlesene','amp-jwplayer','amp-kaltura-player','amp-lightbox-gallery','amp-lightbox','amp-link-rewriter','amp-list','amp-live-list','amp-mathml','amp-mega-menu','amp-megaphone','amp-minute-media-player','amp-form','amp-mustache','amp-next-page','amp-nexxtv-player','amp-o2-player','amp-ooyala-player','amp-orientation-observer','amp-pan-zoom','amp-pinterest','amp-playbuzz','amp-position-observer','amp-powr-player','amp-reach-player','amp-recaptcha-input','amp-redbull-player','amp-reddit','amp-riddle-quiz','amp-script','amp-selector','amp-sidebar','amp-skimlinks','amp-smartlinks','amp-social-share','amp-soundcloud','amp-springboard-player','amp-sticky-ad','amp-story-auto-ads','amp-story','amp-subscriptions-google','amp-subscriptions','amp-timeago','amp-truncate-text','amp-twitter','amp-user-notification','amp-video-docking','amp-video-iframe','amp-video','amp-vimeo','amp-vine','amp-viqeo-player','amp-viz-vega','amp-vk','amp-web-push','amp-wistia-player','amp-yotpo','amp-youtube','amp-story-player','amp-wordpress-embed');
 	$ce_valid_scripts = apply_filters('ampforwp_valid_amp_component_script',$ce_valid_scripts);
 	return $ce_valid_scripts;
 }
@@ -1204,11 +1220,27 @@ function ampforwp_is_amp_inURL($url){
 		if( in_array( '?' . AMPFORWP_AMP_QUERY_VAR , $urlArray ) ) {
         	return true;
     	}
+    	else {
+    		foreach($urlArray as $index => $string) {
+	        if (strpos($string, '?' . AMPFORWP_AMP_QUERY_VAR) !== FALSE)
+	            return true;
+	    	}
+    	}
 	}
 	if (ampforwp_get_setting('ampforwp-amp-takeover')) {
 		return true;
 	}
 	if(get_option('permalink_structure') == '' && isset($_GET['amp'])){
+        return true;
+    }
+    if (class_exists('AMPforWP_Subdomain_Endpoint') && ampforwp_get_setting('amp-subdomain-url-format')) {
+		return true;
+	}
+	$mob_pres_link = false;
+    if(function_exists('ampforwp_mobile_redirect_preseve_link')){
+       $mob_pres_link = ampforwp_mobile_redirect_preseve_link();
+    }
+    if ($mob_pres_link == true) {
         return true;
     }
     $urlArray = explode("/", $url);
@@ -1281,5 +1313,77 @@ if(!function_exists('ampforwp_category_image_compatibility')){
 		}else if($type=='echo'){
 			echo $cat_image;
 		}
+	}
+}
+
+function ampforwp_zeen_lazyload($lazyload){
+	$lazyload = false;
+    return $lazyload;
+}
+
+add_action('plugins_loaded', 'ampforwp_jetpack_boost_compatibility' , 0);
+function ampforwp_jetpack_boost_compatibility(){
+    $url_path = trim(parse_url(add_query_arg(array()), PHP_URL_PATH),'/' );	
+    if (function_exists('\Automattic\Jetpack_Boost\run_jetpack_boost') && function_exists('ampforwp_is_amp_inURL') && ampforwp_is_amp_inURL($url_path)) {
+ 		remove_action( 'plugins_loaded', '\Automattic\Jetpack_Boost\run_jetpack_boost', 1 );
+ 	}
+}
+if(!function_exists('ampforwp_get_coauthor_id')){
+	function ampforwp_get_coauthor_id()
+	{
+		$author_name = esc_attr(get_query_var('author_name'));
+		$coauthor_id 	 = get_the_author_meta( 'ID' );
+		if(!$coauthor_id)
+		{
+			$coauthors = get_the_coauthor_meta('login');
+			foreach($coauthors as $key=>$value)
+			{
+			if($value==$author_name)
+			{
+				$coauthor_id = $key;
+			}
+			}
+		}
+		return $coauthor_id;
+	}
+}
+
+if(!function_exists('ampforwp_get_coauthor_meta')){
+	function ampforwp_get_coauthor_meta($meta_name=null)
+	{ 
+		if(!function_exists('get_the_coauthor_meta') || !$meta_name)
+		{
+			return '';
+	    }
+		$coauthor_id 	 = get_the_author_meta( 'ID' );
+		if(!$coauthor_id)
+		{
+			$author_name = esc_attr(get_query_var('author_name'));
+			$coauthors = get_the_coauthor_meta('login');
+			foreach($coauthors as $key=>$value)
+			{
+				if($value==$author_name)
+				{
+					$coauthor_id = $key;
+				}
+			}
+		}
+		if(!$coauthor_id)
+		{
+			return '';
+		}
+		if($meta_name=='avatar_url')
+		{
+			$meta_value = get_avatar_url($coauthor_id,array('size'=>180));
+		}
+		else 
+		{
+			$meta_value = get_the_coauthor_meta($meta_name,$coauthor_id);
+		}
+		if(is_array($meta_value))
+		{ 
+			$meta_value=$meta_value[$coauthor_id];
+		}
+		return esc_html($meta_value);
 	}
 }

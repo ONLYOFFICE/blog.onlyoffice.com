@@ -16,7 +16,9 @@ class FormProperties
 
     /**
      * Get Form formatted inputs
+     *
      * @param string[] $with
+     *
      * @return array
      */
     public function inputs($with = ['admin_label', 'raw'])
@@ -26,6 +28,7 @@ class FormProperties
 
     /**
      * Get Form Input labels
+     *
      * @return array
      */
     public function labels()
@@ -36,6 +39,7 @@ class FormProperties
 
     /**
      * Get Form Fields
+     *
      * @return array
      */
     public function fields()
@@ -45,6 +49,7 @@ class FormProperties
 
     /**
      * Get Form Settings
+     *
      * @return array
      */
     public function settings()
@@ -54,7 +59,9 @@ class FormProperties
 
     /**
      * Get Email Notifications as an array
+     *
      * @return array
+     *
      * @throws \WpFluent\Exception
      */
     public function emailNotifications()
@@ -70,8 +77,8 @@ class FormProperties
         foreach ($emailNotifications as $notification) {
             $value = \json_decode($notification->value, true);
             $formattedNotifications[] = [
-                'id'   => $notification->id,
-                'settings' => $value
+                'id'       => $notification->id,
+                'settings' => $value,
             ];
         }
 
@@ -79,9 +86,11 @@ class FormProperties
     }
 
     /**
-     * get Form metas
+     * Get Form metas
+     *
      * @param $metaName
      * @param false $default
+     *
      * @return mixed|string
      */
     public function meta($metaName, $default = false)
@@ -90,24 +99,27 @@ class FormProperties
     }
 
     /**
-     * get form renerable pass settings as an array
+     * Get form renerable pass settings as an array
+     *
      * @return array
      */
     public function renderable()
     {
-        return apply_filters('fluentform_is_form_renderable', array(
-            'status' => true,
-            'message' => ''
-        ), $this->form);
+        return apply_filters('fluentform_is_form_renderable', [
+            'status'  => true,
+            'message' => '',
+        ], $this->form);
     }
 
     public function conversionRate()
     {
-        if (!$this->form->total_Submissions)
+        if (!$this->form->total_Submissions) {
             return 0;
+        }
 
-        if (!$this->form->total_views)
+        if (!$this->form->total_views) {
             return 0;
+        }
 
         return ceil(($this->form->total_Submissions / $this->form->total_views) * 100);
     }
@@ -144,7 +156,6 @@ class FormProperties
             ->count();
     }
 
-
     public function __get($name)
     {
         if (property_exists($this->form, $name)) {
@@ -153,5 +164,4 @@ class FormProperties
 
         return false;
     }
-
 }

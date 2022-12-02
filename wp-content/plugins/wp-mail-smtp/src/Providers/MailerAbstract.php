@@ -2,8 +2,9 @@
 
 namespace WPMailSMTP\Providers;
 
-use WPMailSMTP\Conflicts;
+use WPMailSMTP\Admin\DebugEvents\DebugEvents;
 use WPMailSMTP\Debug;
+use WPMailSMTP\Helpers\Helpers;
 use WPMailSMTP\MailCatcherInterface;
 use WPMailSMTP\Options;
 use WPMailSMTP\WP;
@@ -102,7 +103,7 @@ abstract class MailerAbstract implements MailerInterface {
 	 */
 	public function __construct( MailCatcherInterface $phpmailer ) {
 
-		$this->options = new Options();
+		$this->options = Options::init();
 		$this->mailer  = $this->options->get( 'mail', 'mailer' );
 
 		// Only non-SMTP mailers need URL and extra processing for PHPMailer class.
@@ -276,6 +277,10 @@ abstract class MailerAbstract implements MailerInterface {
 
 		$response = wp_safe_remote_post( $this->url, $params );
 
+		DebugEvents::add_debug(
+			esc_html__( 'An email request was sent.', 'wp-mail-smtp' )
+		);
+
 		$this->process_response( $response );
 	}
 
@@ -285,22 +290,21 @@ abstract class MailerAbstract implements MailerInterface {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param mixed $response
+	 * @param mixed $response Response array.
 	 */
 	protected function process_response( $response ) {
 
 		if ( is_wp_error( $response ) ) {
 			// Save the error text.
-			$errors = $response->get_error_messages();
-			foreach ( $errors as $error ) {
-				$this->error_message .= $error . PHP_EOL;
+			foreach ( $response->errors as $error_code => $error_message ) {
+				$this->error_message .= Helpers::format_error_message( $error_message, $error_code ) . WP::EOL;
 			}
 
 			return;
 		}
 
 		if ( isset( $response['body'] ) && WP::is_json( $response['body'] ) ) {
-			$response['body'] = \json_decode( $response['body'] );
+			$response['body'] = json_decode( $response['body'] );
 		}
 
 		$this->response = $response;
@@ -341,27 +345,16 @@ abstract class MailerAbstract implements MailerInterface {
 
 		if ( wp_remote_retrieve_response_code( $this->response ) === $this->email_sent_code ) {
 			$is_sent = true;
-		} else {
-			$error = $this->get_response_error();
-
-			if ( ! empty( $error ) ) {
-				// Add mailer to the beginning and save to display later.
-				$message = 'Mailer: ' . esc_html( wp_mail_smtp()->get_providers()->get_options( $this->mailer )->get_title() ) . "\r\n";
-
-				$conflicts = new Conflicts();
-				if ( $conflicts->is_detected() ) {
-					$message .= 'Conflicts: ' . esc_html( $conflicts->get_conflict_name() ) . "\r\n";
-				}
-
-				Debug::set( $message . $error );
-			}
 		}
 
-		// Clear debug messages if email is successfully sent.
-		if ( $is_sent ) {
-			Debug::clear();
-		}
-
+		/**
+		 * Filters whether the email is sent or not.
+		 *
+		 * @since 3.1.0
+		 *
+		 * @param bool           $is_sent Whether the email is sent or not.
+		 * @param MailerAbstract $mailer  Mailer object.
+		 */
 		return apply_filters( 'wp_mail_smtp_providers_mailer_is_email_sent', $is_sent, $this->mailer );
 	}
 
@@ -527,5 +520,114 @@ abstract class MailerAbstract implements MailerInterface {
 	public function get_mailer_name() {
 
 		return $this->mailer;
+	}
+
+	/**
+	 * Get PHPMailer attachment file content.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param array $attachment PHPMailer attachment.
+	 *
+	 * @return string|false
+	 */
+	public function get_attachment_file_content( $attachment ) {
+
+		$file = false;
+
+		/*
+		 * We are not using WP_Filesystem API as we can't reliably work with it.
+		 * It is not always available, same as credentials for FTP.
+		 */
+		try {
+			if ( $attachment[5] === true ) {  // Whether there is string attachment.
+				$file = $attachment[0];
+			} elseif ( is_file( $attachment[0] ) && is_readable( $attachment[0] ) ) {
+				$file = file_get_contents( $attachment[0] );
+			}
+		} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+			// We don't handle this exception as we define a default value above.
+		}
+
+		return $file;
+	}
+
+	/**
+	 * Get PHPMailer attachment file size.
+	 *
+	 * @since 3.4.0
+	 *
+	 * @param array $attachment PHPMailer attachment.
+	 *
+	 * @return int|false
+	 */
+	public function get_attachment_file_size( $attachment ) {
+
+		$size = false;
+
+		if ( $attachment[5] === true ) {  // Whether there is string attachment.
+			$size = Helpers::strsize( $attachment[0] );
+		} elseif ( is_file( $attachment[0] ) && is_readable( $attachment[0] ) ) {
+			$size = filesize( $attachment[0] );
+		}
+
+		return $size;
+	}
+
+	/**
+	 * Get PHPMailer attachment file name.
+	 *
+	 * @since 3.4.0
+	 *
+	 * @param array $attachment PHPMailer attachment.
+	 *
+	 * @return string
+	 */
+	public function get_attachment_file_name( $attachment ) {
+
+		$filetype = str_replace( ';', '', trim( $attachment[4] ) );
+
+		return ! empty( $attachment[2] ) ? trim( $attachment[2] ) : 'file-' . wp_hash( microtime() ) . '.' . $filetype;
+	}
+
+	/**
+	 * Perform remote request with merged default params.
+	 *
+	 * @since 3.4.0
+	 *
+	 * @param string $url    Request url.
+	 * @param array  $params Request params.
+	 *
+	 * @return array
+	 */
+	public function remote_request( $url, $params ) {
+
+		if ( ! isset( $params['method'] ) ) {
+			$params['method'] = 'POST';
+		}
+
+		$params = Options::array_merge_recursive( $this->get_default_params(), $params );
+
+		/**
+		 * Filters request params.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param array          $params Request params.
+		 * @param MailerAbstract $mailer Mailer object.
+		 */
+		$params = apply_filters( 'wp_mail_smtp_providers_mailer_remote_request_params', $params, $this );
+
+		/**
+		 * Filters request url.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param string         $url    Request url.
+		 * @param MailerAbstract $mailer Mailer object.
+		 */
+		$url = apply_filters( 'wp_mail_smtp_providers_mailer_remote_request_url', $url, $this );
+
+		return wp_safe_remote_request( $url, $params );
 	}
 }

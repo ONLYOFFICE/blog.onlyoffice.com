@@ -18,10 +18,8 @@ function ampforwp_framework_get_related_posts($argsdata=array()){
 				<ul class="clearfix">
 					<?php ampforwp_related_post(); ?>
 					<?php
-					
 				    while( $my_query->have_posts() ) {
 					    $my_query->the_post();
-					   
 					?>
 						<li class="<?php if ( has_post_thumbnail() ) { echo'has_thumbnail'; } else { echo 'no_thumbnail'; } ?>">
 				            <?php
@@ -60,7 +58,6 @@ function ampforwp_related_post_loop_query(){
 		'fields' => 'ids',
 		'post_type'	   => get_post_type($post),
 	    'posts_per_page'=> $int_number_of_related_posts,
-	    'post__not_in' => array($post->ID),
 	    'orderby' => $orderby,
 	    'ignore_sticky_posts'=>1,
 		'has_password' => false ,
@@ -68,9 +65,9 @@ function ampforwp_related_post_loop_query(){
 		'no_found_rows'	=> true,
 		'meta_query' => array(
 			array(
-					'key'        => 'ampforwp-amp-on-off',
-					'value'      => 'default',
-				)
+		    	'key' => 'ampforwp-amp-on-off',
+		    	'value' => 'default',
+		    )
 		)
 	);
 	if($redux_builder_amp['ampforwp-single-select-type-of-related']==2 && 'post' == $post->post_type ){
@@ -132,6 +129,7 @@ function ampforwp_get_relatedpost_image( $imagetype ='thumbnail', $data=array() 
 		$related_post_permalink = get_permalink();
 	}
 	$show_image = (isset($data['show_image']) ? $data['show_image'] : true);
+	$related_post_permalink = ampforwp_modify_url_utm_params($related_post_permalink);
 	?>
 	<a href="<?php echo esc_url( $related_post_permalink ); ?>" rel="bookmark" title="<?php the_title_attribute(); ?>">
 	    <?php
@@ -186,6 +184,7 @@ function ampforwp_get_relatedpost_content($argsdata=array()){
 	global $redux_builder_amp;
 	$title = get_the_title();
 	$related_post_permalink = ampforwp_url_controller( get_permalink() );
+	$related_post_permalink = ampforwp_modify_url_utm_params($related_post_permalink);
 	if ( ampforwp_get_setting('ampforwp-single-related-posts-link') ) {
 		$related_post_permalink = get_permalink();
 		if ( ampforwp_get_setting('amp-mobile-redirection') ) {

@@ -83,16 +83,46 @@ if (!function_exists('adsforwp_admin_notice')) {
             'desc' => $advertisementdesc,
             'class'      => '',
             'id'         => 'amp-ads',
+            'class'=>'ampforwp_new_features ',
             'subsection' => true,
             'fields'     => apply_filters('ampforwp_ads_option_fields', $fields = array() ),
         ) );   
- } 
+ }  
  }
 
  //
  add_filter('ampforwp_ads_option_fields', 'ampforwp_add_ads_fields');
  function ampforwp_add_ads_fields($fields){
         if ( !is_plugin_active('ads-for-wp/ads-for-wp.php') ) {
+
+                $fields[] =     array(
+                            'id' => 'amp-ads_0',
+                           'type' => 'section',
+                           'title' => esc_html__('Optimize Your Revenue With The Publisher Desk', 'accelerated-mobile-pages'),
+                           'indent' => true,
+                           'layout_type' => 'accordion',
+                           'accordion-open'=> 1,
+                );
+
+                $fields[] =    array(
+                        'id'        =>'ampforwp-ads-publisherdesk',
+                        'type'      => 'switch',
+                        'title'     => esc_html__('Ad Revenue Optimization', 'accelerated-mobile-pages'),
+                        'desc' => sprintf('%s <a href="%s" target="_blank">%s</a>', 
+                         esc_html__('Integrate Ads Through The Publisher Desk', 'accelerated-mobile-pages'), esc_url('https://www.publisherdesk.com/amp-for-wp/'),esc_html__('Learn more','accelerated-mobile-pages')),    
+                        'default'   => 0,
+                    );
+                $fields[] =        array(
+                            'class' => 'child_opt',
+                            'id'        =>'ampforwp-publisherdesk-id',
+                            'type'      => 'text',
+                            'required' => array('ampforwp-ads-publisherdesk', '=' , '1'),
+                            'title'     => esc_html__('Publisher ID', 'accelerated-mobile-pages'),
+                            'desc' => sprintf('%s <a href="%s" target="_blank">%s</a>', 
+                        esc_html__('Obtain your Publisher ID through', 'accelerated-mobile-pages'), esc_url('https://ampforwp.com/tutorials/article/how-to-add-the-publisher-desk-ads-in-amp/'), esc_html__('these steps','accelerated-mobile-pages')),
+                            'default'   => '10001',
+                            'placeholder'=> '10001'
+                        );
 
                 $fields[] = array(
                        'id' => 'amp-ads_1',
@@ -1001,7 +1031,7 @@ if (!function_exists('adsforwp_admin_notice')) {
                                             array('enable-amp-ads-6', '=' , '1'),
                                             array('enable-amp-ads-type-6', '=' , 'adsense'),
                                         ),
-                        );
+                        );   
                      // MGID fields
                 $fields[] =        array(
                             'class' => 'child_opt',
@@ -1179,6 +1209,19 @@ if (!function_exists('adsforwp_admin_notice')) {
                             'default'   => '',
                             'placeholder'=> 'Sponsored'
                         );
+                $fields[] =  array(
+                        'id'    => 'ampforwp-ads-sponsorship-position',
+                        'class' => 'child_opt child_opt_arrow', 
+                        'type'     => 'select',
+                        'title'    => esc_html__( 'Position', 'accelerated-mobile-pages' ),
+                        'tooltip-subtitle' => esc_html__( 'Select Sponsorship Position you want to show.', 'accelerated-mobile-pages' ),
+                        'options'   => array(
+                            '1'     => 'Above the Ads',
+                            '2'     => 'Below the Ads',
+                                    ),
+                        'default'  => '2',
+                        'required'  => array('ampforwp-ads-sponsorship','=','1'),
+                    );
         }
 
            return $fields;

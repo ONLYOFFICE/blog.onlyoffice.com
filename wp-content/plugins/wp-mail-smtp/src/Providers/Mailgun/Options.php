@@ -25,8 +25,8 @@ class Options extends OptionsAbstract {
 				'title'       => esc_html__( 'Mailgun', 'wp-mail-smtp' ),
 				'description' => sprintf(
 					wp_kses(
-						/* translators: %1$s - opening link tag; %2$s - closing link tag; %3$s - opening link tag; %4$s - closing link tag. */
-						__( '%1$sMailgun%2$s is one of the leading transactional email services trusted by over 150,000+ businesses. They provide 5,000 free emails per month for 3 months.<br><br>Read our %3$sMailgun documentation%4$s to learn how to configure Mailgun and improve your email deliverability.', 'wp-mail-smtp' ),
+						/* translators: %1$s - URL to mailgun.com; %2$s - URL to Mailgun documentation on wpmailsmtp.com */
+						__( '<a href="%1$s" target="_blank" rel="noopener noreferrer">Mailgun</a> is a transactional email provider that offers a generous 3-month free trial. After that, it offers a \'Pay As You Grow\' plan that allows you to pay for what you use without committing to a fixed monthly rate.<br><br>To get started, read our <a href="%2$s" target="_blank" rel="noopener noreferrer">Mailgun documentation</a>.', 'wp-mail-smtp' ),
 						array(
 							'br' => array(),
 							'a'  => array(
@@ -36,10 +36,8 @@ class Options extends OptionsAbstract {
 							),
 						)
 					),
-					'<a href="https://www.mailgun.com" target="_blank" rel="noopener noreferrer">',
-					'</a>',
-					'<a href="https://wpmailsmtp.com/docs/how-to-set-up-the-mailgun-mailer-in-wp-mail-smtp/" target="_blank" rel="noopener noreferrer">',
-					'</a>'
+					'https://www.mailgun.com',
+					esc_url( wp_mail_smtp()->get_utm_url( 'https://wpmailsmtp.com/docs/how-to-set-up-the-mailgun-mailer-in-wp-mail-smtp/', 'Mailgun documentation' ) )
 				),
 			)
 		);
@@ -73,7 +71,7 @@ class Options extends OptionsAbstract {
 					<?php
 					printf(
 						/* translators: %s - API key link. */
-						esc_html__( 'Follow this link to get an API Key from Mailgun: %s.', 'wp-mail-smtp' ),
+						esc_html__( 'Follow this link to get a Private API Key from Mailgun: %s.', 'wp-mail-smtp' ),
 						'<a href="https://app.mailgun.com/app/account/security/api_keys" target="_blank" rel="noopener noreferrer">' .
 						esc_html__( 'Get a Private API Key', 'wp-mail-smtp' ) .
 						'</a>'

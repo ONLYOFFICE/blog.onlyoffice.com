@@ -32,7 +32,7 @@ use AIOSEO\Vendor\Monolog\Utils;
  *
  * @author Andrius Putna <fordnox@gmail.com>
  */
-class FluentdFormatter implements \AIOSEO\Vendor\Monolog\Formatter\FormatterInterface
+class FluentdFormatter implements FormatterInterface
 {
     /**
      * @var bool $levelTag should message level be a part of the fluentd tag
@@ -60,7 +60,7 @@ class FluentdFormatter implements \AIOSEO\Vendor\Monolog\Formatter\FormatterInte
             $message['level'] = $record['level'];
             $message['level_name'] = $record['level_name'];
         }
-        return \AIOSEO\Vendor\Monolog\Utils::jsonEncode(array($tag, $record['datetime']->getTimestamp(), $message));
+        return Utils::jsonEncode(array($tag, $record['datetime']->getTimestamp(), $message));
     }
     public function formatBatch(array $records)
     {

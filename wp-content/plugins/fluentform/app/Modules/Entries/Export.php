@@ -6,20 +6,27 @@ use FluentForm\App\Modules\Form\FormDataParser;
 use FluentForm\App\Modules\Form\FormFieldsParser;
 use FluentForm\Framework\Foundation\Application;
 use FluentForm\Framework\Helpers\ArrayHelper as Arr;
+use FluentForm\App\Helpers\Helper;
 
 class Export
 {
     /**
+     * App instance
+     *
      * @var \FluentForm\Framework\Foundation\Application
      */
     protected $app;
 
     /**
+     * Request object
+     *
      * @var \FluentForm\Framework\Request\Request
      */
     protected $request;
 
     /**
+     * Table name
+     *
      * @var String table/data source name
      */
     protected $tableName;
@@ -43,6 +50,10 @@ class Export
      */
     public function index()
     {
+        if (!defined('FLUENTFORM_EXPORTING_ENTRIES')) {
+            define('FLUENTFORM_EXPORTING_ENTRIES', true);
+        }
+
         $formId = intval($this->request->get('form_id'));
 
         $form = wpFluent()->table('fluentform_forms')->find($formId);
@@ -56,7 +67,7 @@ class Export
             exit('Invalid requested format');
         }
 
-        if ($type == 'json') {
+        if ('json' == $type) {
             $this->exportAsJSON($form);
         }
 
@@ -64,7 +75,7 @@ class Export
             define('FLUENTFORM_DOING_CSV_EXPORT', true);
         }
 
-        $formInputs = FormFieldsParser::getEntryInputs($form, array('admin_label', 'raw'));
+        $formInputs = FormFieldsParser::getEntryInputs($form, ['admin_label', 'raw']);
 
         $inputLabels = FormFieldsParser::getAdminLabels($form, $formInputs);
 
@@ -77,16 +88,18 @@ class Export
             $submission->response = json_decode($submission->response, true);
             $temp = [];
             foreach ($inputLabels as $field => $label) {
-                $temp[] = trim(
+                $content = trim(
                     wp_strip_all_tags(
                         FormDataParser::formatValue(
                             Arr::get($submission->user_inputs, $field)
                         )
                     )
                 );
+
+                $temp[] = Helper::sanitizeForCSV($content);
             }
 
-            if ($form->has_payment && $this->tableName == 'fluentform_submissions') {
+            if ($form->has_payment && 'fluentform_submissions' == $this->tableName) {
                 $temp[] = round($submission->payment_total / 100, 1);
                 $temp[] = $submission->payment_status;
                 $temp[] = $submission->currency;
@@ -100,7 +113,7 @@ class Export
         }
 
         $extraLabels = [];
-        if ($form->has_payment && $this->tableName == 'fluentform_submissions') {
+        if ($form->has_payment && 'fluentform_submissions' == $this->tableName) {
             $extraLabels[] = 'payment_total';
             $extraLabels[] = 'payment_status';
             $extraLabels[] = 'currency';
@@ -120,7 +133,6 @@ class Export
 
         $this->downloadOfficeDoc($data, $type, $fileName);
     }
-
 
     private function downloadOfficeDoc($data, $type = 'csv', $fileName = null)
     {
@@ -143,7 +155,7 @@ class Export
 
     private function exportAsJSON($form)
     {
-        $formInputs = FormFieldsParser::getEntryInputs($form, array('admin_label', 'raw'));
+        $formInputs = FormFieldsParser::getEntryInputs($form, ['admin_label', 'raw']);
 
         $inputLabels = FormFieldsParser::getAdminLabels($form, $formInputs);
 
@@ -158,7 +170,7 @@ class Export
 
         header('Content-disposition: attachment; filename=' . sanitize_title($form->title, 'export', 'view') . '-' . date('Y-m-d') . '.json');
         header('Content-type: application/json');
-        echo json_encode($submissions);
+        echo json_encode($submissions); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $submissions is escaped before being passed in.
         exit();
     }
 
@@ -168,7 +180,7 @@ class Export
             ->where('form_id', $formId)
             ->orderBy('id', $this->request->get('sort_by', 'DESC'));
 
-        if ($this->tableName == 'fluentform_submissions') {
+        if ('fluentform_submissions' == $this->tableName) {
             $dateRange = $this->request->get('date_range');
             if ($dateRange) {
                 $query->where('created_at', '>=', $dateRange[0] . ' 00:00:01');
@@ -177,22 +189,22 @@ class Export
 
             $isFavourite = $this->request->get('is_favourite');
 
-            if ($isFavourite == 'yes') {
+            if ('yes' == $isFavourite) {
                 $query->where('is_favourite', '1');
             }
-            
+
             $status = $this->request->get('entry_type');
 
-            if ($status == 'trashed') {
+            if ('trashed' == $status) {
                 $query->where('status', 'trashed');
-            } else if ($status && $status != 'all') {
+            } elseif ($status && 'all' != $status) {
                 $query->where('status', $status);
             } else {
                 $query->where('status', '!=', 'trashed');
             }
             $entries = fluentFormSanitizer($this->request->get('entries', []));
-    
-            if (is_array($entries) && (count ($entries) > 0 )) {
+
+            if (is_array($entries) && (count($entries) > 0)) {
                 $query->whereIn('id', $entries);
             }
 
@@ -201,7 +213,6 @@ class Export
                     $query->whereIn('payment_status', $paymentStatuses);
                 }
             }
-
         }
 
         $searchString = $this->request->get('search');
@@ -211,7 +222,7 @@ class Export
                 $q->where('id', 'LIKE', "%{$searchString}%")
                     ->orWhere('response', 'LIKE', "%{$searchString}%");
 
-                if ($this->tableName == 'fluentform_submissions') {
+                if ('fluentform_submissions' == $this->tableName) {
                     $q->orWhere('status', 'LIKE', "%{$searchString}%")
                         ->orWhere('created_at', 'LIKE', "%{$searchString}%");
                 }

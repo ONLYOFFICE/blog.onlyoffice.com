@@ -3,7 +3,7 @@
 Plugin Name: Urvanov Syntax Highlighter
 Plugin URI: https://github.com/urvanov-ru/crayon-syntax-highlighter
 Description: Supports multiple languages, themes, highlighting from a URL, local file or post text.
-Version: 2.8.10
+Version: 2.8.28
 Author: Fedor Urvanov, Aram Kocharyan
 Author URI: https://urvanov.ru
 Text Domain: urvanov-syntax-highlighter
@@ -34,8 +34,8 @@ if (URVANOV_SYNTAX_HIGHLIGHTER_THEME_EDITOR) {
 require_once('class-urvanov-syntax-highlighter-wp.php');
 
 Urvanov_Syntax_Highlighter_Global::set_info(array(
-	'Version' => '2.8.10',
-	'Date' => '06th April, 2019',
+	'Version' => '2.8.28',
+	'Date' => '13th August 2022',
 	'AuthorName' => 'Fedor Urvanov & Aram Kocharyan',
 	'PluginURI' => 'https://github.com/urvanov-ru/crayon-syntax-highlighter',
 ));
@@ -902,6 +902,10 @@ class Urvanov_Syntax_Highlighter_Plugin {
         self::refresh_post($post);
     }
 
+    public static function rest_after_insert( $post, $request, $creating ){
+    	Urvanov_Syntax_Highlighter_Plugin::save_post(null, $post);
+    }
+
     public static function filter_post_data($data, $postarr) {
         // Remove the selected CSS that may be present from the tag editor.
         UrvanovSyntaxHighlighterTagEditorWP::init_settings();
@@ -1126,23 +1130,24 @@ class Urvanov_Syntax_Highlighter_Plugin {
             $touched = FALSE;
 
             // Upgrade database and settings
-
-            if (UrvanovSyntaxHighlighterUtil::version_compare($version, '1.7.21') < 0) {
+            
+            UrvanovSyntaxHighlighterLog::log($version, 'Upgrading database and settings');
+            if (version_compare($version, '1.7.21') < 0) {
                 $settings[Urvanov_Syntax_Highlighter_Settings::SCROLL] = $defaults[Urvanov_Syntax_Highlighter_Settings::SCROLL];
                 $touched = TRUE;
             }
 
-            if (UrvanovSyntaxHighlighterUtil::version_compare($version, '1.7.23') < 0 && $settings[Urvanov_Syntax_Highlighter_Settings::FONT] == 'theme-font') {
+            if (version_compare($version, '1.7.23') < 0 && $settings[Urvanov_Syntax_Highlighter_Settings::FONT] == 'theme-font') {
                 $settings[Urvanov_Syntax_Highlighter_Settings::FONT] = $defaults[Urvanov_Syntax_Highlighter_Settings::FONT];
                 $touched = TRUE;
             }
 
-            if (UrvanovSyntaxHighlighterUtil::version_compare($version, '1.14') < 0) {
+            if (version_compare($version, '1.14') < 0) {
                 UrvanovSyntaxHighlighterLog::syslog("Updated to v1.14: Font size enabled");
                 $settings[Urvanov_Syntax_Highlighter_Settings::FONT_SIZE_ENABLE] = TRUE;
             }
 
-            if (UrvanovSyntaxHighlighterUtil::version_compare($version, '1.17') < 0) {
+            if (version_compare($version, '1.17') < 0) {
                 $settings[Urvanov_Syntax_Highlighter_Settings::HIDE_HELP] = FALSE;
             }
 
@@ -1319,6 +1324,7 @@ if (defined('ABSPATH')) {
         }
     } else {
         // Update between versions
+        UrvanovSyntaxHighlighterLog::log("Calling update plugin...");
         Urvanov_Syntax_Highlighter_Plugin::update();
         // For marking a post as containing a Crayon
         add_action('update_post', 'Urvanov_Syntax_Highlighter_Plugin::save_post', 10, 2);
@@ -1332,8 +1338,7 @@ if (defined('ABSPATH')) {
         add_action('edit_comment', 'Urvanov_Syntax_Highlighter_Plugin::save_comment', 10, 2);
     }
     add_filter('init', 'Urvanov_Syntax_Highlighter_Plugin::init_ajax');
-
-    
+    add_action( 'rest_after_insert_post', 'Urvanov_Syntax_Highlighter_Plugin::rest_after_insert', 10, 3 );
 }
 
 function register_urvanov_syntax_highlighter_gutenberg_block() {

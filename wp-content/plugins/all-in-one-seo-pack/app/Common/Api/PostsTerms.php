@@ -38,7 +38,7 @@ class PostsTerms {
 			], 400 );
 		}
 
-		$searchQuery = aioseo()->db->db->esc_like( $body['query'] );
+		$searchQuery = esc_sql( aioseo()->core->db->db->esc_like( $body['query'] ) );
 
 		$objects        = [];
 		$dynamicOptions = aioseo()->dynamicOptions->noConflict();
@@ -52,7 +52,7 @@ class PostsTerms {
 				}
 			}
 
-			$objects = aioseo()->db
+			$objects = aioseo()->core->db
 				->start( 'posts' )
 				->select( 'ID, post_type, post_title, post_name' )
 				->whereRaw( "( post_title LIKE '%{$searchQuery}%' OR post_name LIKE '%{$searchQuery}%' OR ID = '{$searchQuery}' )" )
@@ -73,7 +73,7 @@ class PostsTerms {
 				}
 			}
 
-			$objects = aioseo()->db
+			$objects = aioseo()->core->db
 				->start( 'terms as t' )
 				->select( 't.term_id as term_id, t.slug as slug, t.name as name, tt.taxonomy as taxonomy' )
 				->join( 'term_taxonomy as tt', 't.term_id = tt.term_id', 'INNER' )
@@ -145,9 +145,42 @@ class PostsTerms {
 			'postData' => [
 				'parsedTitle'       => aioseo()->tags->replaceTags( $thePost->title, $args['postId'] ),
 				'parsedDescription' => aioseo()->tags->replaceTags( $thePost->description, $args['postId'] ),
-				'content'           => aioseo()->helpers->doShortcodes( self::getAnalysisContent( $args['postId'] ) ),
+				'content'           => aioseo()->helpers->theContent( self::getAnalysisContent( $args['postId'] ) ),
 				'slug'              => get_post_field( 'post_name', $args['postId'] )
 			]
+		], 200 );
+	}
+
+	/**
+	 * Get the first attached image for a post.
+	 *
+	 * @since 4.1.8
+	 *
+	 * @param  \WP_REST_Request  $request The REST Request
+	 * @return \WP_REST_Response          The response.
+	 */
+	public static function getFirstAttachedImage( $request ) {
+		$args = $request->get_params();
+
+		if ( empty( $args['postId'] ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => __( 'No post ID was provided.', 'all-in-one-seo-pack' )
+			], 400 );
+		}
+
+		// Disable the cache.
+		aioseo()->social->image->useCache = false;
+
+		$post = aioseo()->helpers->getPost( $args['postId'] );
+		$url  = aioseo()->social->image->getImage( 'facebook', 'attach', $post );
+
+		// Reset the cache property.
+		aioseo()->social->image->useCache = true;
+
+		return new \WP_REST_Response( [
+			'success' => true,
+			'url'     => is_array( $url ) ? $url[0] : $url,
 		], 200 );
 	}
 
@@ -204,7 +237,6 @@ class PostsTerms {
 		$body['twitter_title']       = ! empty( $body['twitter_title'] ) ? sanitize_text_field( $body['twitter_title'] ) : null;
 		$body['twitter_description'] = ! empty( $body['twitter_description'] ) ? sanitize_text_field( $body['twitter_description'] ) : null;
 
-		// @TODO: Refactor this as it's not the best way to look for errors.
 		$error = Models\Post::savePost( $postId, $body );
 
 		if ( ! empty( $error ) ) {
@@ -283,7 +315,7 @@ class PostsTerms {
 		}
 		$thePost->save();
 
-		$lastError = aioseo()->db->lastError();
+		$lastError = aioseo()->core->db->lastError();
 		if ( ! empty( $lastError ) ) {
 			return new \WP_REST_Response( [
 				'success' => false,
@@ -333,7 +365,7 @@ class PostsTerms {
 		$thePost->updated = gmdate( 'Y-m-d H:i:s' );
 		$thePost->save();
 
-		$lastError = aioseo()->db->lastError();
+		$lastError = aioseo()->core->db->lastError();
 		if ( ! empty( $lastError ) ) {
 			return new \WP_REST_Response( [
 				'success' => false,
@@ -344,6 +376,62 @@ class PostsTerms {
 		return new \WP_REST_Response( [
 			'success' => true,
 			'post'    => $postId
+		], 200 );
+	}
+
+	/**
+	 * Disable the link format education.
+	 *
+	 * @since 4.2.2
+	 *
+	 * @param  \WP_REST_Request  $request The REST Request
+	 * @return \WP_REST_Response          The response.
+	 */
+	public static function disableLinkFormatEducation( $request ) {
+		$args = $request->get_params();
+
+		if ( empty( $args['postId'] ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => __( 'No post ID was provided.', 'all-in-one-seo-pack' )
+			], 400 );
+		}
+
+		$thePost = Models\Post::getPost( $args['postId'] );
+		$thePost->options->linkFormat->linkAssistantDismissed = true;
+		$thePost->save();
+
+		return new \WP_REST_Response( [
+			'success' => true
+		], 200 );
+	}
+
+	/**
+	 * Increment the internal link count.
+	 *
+	 * @since 4.2.2
+	 *
+	 * @param  \WP_REST_Request  $request The REST Request
+	 * @return \WP_REST_Response          The response.
+	 */
+	public static function updateInternalLinkCount( $request ) {
+		$args  = $request->get_params();
+		$body  = $request->get_json_params();
+		$count = ! empty( $body['count'] ) ? intval( $body['count'] ) : null;
+
+		if ( empty( $args['postId'] ) || null === $count ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => __( 'No post ID or count was provided.', 'all-in-one-seo-pack' )
+			], 400 );
+		}
+
+		$thePost = Models\Post::getPost( $args['postId'] );
+		$thePost->options->linkFormat->internalLinkCount = $count;
+		$thePost->save();
+
+		return new \WP_REST_Response( [
+			'success' => true
 		], 200 );
 	}
 }

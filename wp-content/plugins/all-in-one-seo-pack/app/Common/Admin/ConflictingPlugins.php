@@ -20,6 +20,11 @@ class ConflictingPlugins {
 	 * @since 4.0.0
 	 */
 	public function __construct() {
+		// We don't want to trigger our notices when not in the admin.
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		add_action( 'init', [ $this, 'init' ] );
 	}
 
@@ -45,6 +50,7 @@ class ConflictingPlugins {
 			}
 
 			Models\Notification::deleteNotificationByName( 'conflicting-plugins' );
+
 			return;
 		}
 

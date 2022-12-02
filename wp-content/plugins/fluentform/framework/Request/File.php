@@ -783,6 +783,7 @@ class File extends \SplFileInfo implements Contract
         'video/x-ms-wmx'                                                            => 'wmx',
         'video/x-ms-wvx'                                                            => 'wvx',
         'video/x-msvideo'                                                           => 'avi',
+        'video/avi'                                                                 => 'avi',
         'video/x-sgi-movie'                                                         => 'movie',
         'video/x-smv'                                                               => 'smv',
         'x-conference/x-cooltalk'                                                   => 'ice',

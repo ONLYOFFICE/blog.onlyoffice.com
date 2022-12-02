@@ -2250,7 +2250,7 @@
                                             150,
                                             150
                                         ) );
-                                        $this->options[ $field['id'] ]['thumbnail'] = $data[0];
+                                        $this->options[ $field['id'] ]['thumbnail'] = isset($data[0]) ? $data[0] : '' ;
                                         $doUpdate                                   = true;
                                     }
                                 }
@@ -2846,10 +2846,12 @@
 
                     $values = $values[ $redux->args['opt_name'] ];
 
-                    if ( function_exists( 'get_magic_quotes_gpc' ) && get_magic_quotes_gpc() ) {
-                        $values = array_map( 'stripslashes_deep', $values );
-                    }
+                    // Saving a copy of global css 
+                    $tmp_css_editor = $values['css_editor'];
+                    $values = array_map( 'stripslashes_deep', $values );
 
+                    // fixing backslash not saving in global css #5329
+                    $values['css_editor'] = $tmp_css_editor;
                     if ( ! empty ( $values ) ) {
 
                         try {
@@ -2973,6 +2975,15 @@
                                 if ( ! isset ( $plugin_options[ $field['id'] ] ) ) {
                                     $plugin_options[ $field['id'] ] = 0;
                                 }
+                            }
+                            if ( isset ( $field['type'] ) &&  $field['type'] == 'ace_editor'  ) {
+                                if(isset($field['mode']) && in_array($field['mode'], array('css','javascript')) ) {
+                                    $plugin_options[ $field['id'] ]= strip_tags($plugin_options[ $field['id'] ]);
+                                }
+
+                            }
+                            if ( isset ( $field['type'] ) &&  $field['type'] == 'text'  ) {
+                                    $plugin_options[ $field['id'] ]= str_replace("=", "", $plugin_options[ $field['id'] ]);
                             }
 
 //                            if ( isset ( $field['type'] ) && $field['type'] == 'typography' ) {
@@ -3234,6 +3245,8 @@
 
                     $amp_opt = get_option("ampforwp_option_panel_view_type");
                     $opt_visible = "";
+                    $extmnger_data = "";
+                    $anchor_href = 'javascript:void(0);';
                     $opt_visible_class = "amp-full-view-options";
                     if(($amp_opt==1 || $amp_opt=="") && !get_theme_support('amp-template-mode')){
                         $opt_visible = 'style=display:none';
@@ -3242,8 +3255,12 @@
                          $opt_visible = '';
                          $opt_visible_class = "";
                     }
+                    if($section['title']=="Extensions"){
+                         $anchor_href = class_exists('AMPExtensionManager') ?admin_url( 'admin.php?page=amp-extension-manager' ) : 'javascript:void(0);';
+                         $extmnger_data = class_exists('AMPExtensionManager') ? 'extmnger_data="1"' : '';                         
+                    }
                     $string .= '<li '.esc_html($opt_visible).' id="' . esc_attr( $k . $suffix ) . '_section_group_li" class="'.esc_attr($opt_visible_class).' redux-group-tab-link-li '.esc_attr($addClass).'' . esc_attr( $hide_section ) . esc_attr( $section['class'] ) . esc_attr( $subsectionsClass ) . ' ' . strtolower( wp_kses_post( $section['id'] )) . '" '.esc_html($style).'>';
-                    $string .= '<a href="javascript:void(0);" id="' . esc_attr( $k . $suffix ) . '_section_group_li_a" class="redux-group-tab-link-a" data-key="' . esc_attr( $k ) . '" data-rel="' . esc_attr( $k . $suffix ) . '">' . $extra_icon . $icon . '<span class="group_title">' . wp_kses_post( $section['title'] ) . '</span></a>';
+                    $string .= '<a href="'.$anchor_href.'" '.$extmnger_data.' id="' . esc_attr( $k . $suffix ) . '_section_group_li_a" class="redux-group-tab-link-a" data-key="' . esc_attr( $k ) . '" data-rel="' . esc_attr( $k . $suffix ) . '">' . $extra_icon . $icon . '<span class="group_title">' . wp_kses_post( $section['title'] ) . '</span></a>';
 
                     $nextK = $k;
 

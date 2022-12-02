@@ -16,7 +16,7 @@ use AIOSEO\Vendor\Monolog\Utils;
  *
  * @author Florian Plattner <me@florianplattner.de>
  */
-class MongoDBFormatter implements \AIOSEO\Vendor\Monolog\Formatter\FormatterInterface
+class MongoDBFormatter implements FormatterInterface
 {
     private $exceptionTraceAsString;
     private $maxNestingLevel;
@@ -68,12 +68,12 @@ class MongoDBFormatter implements \AIOSEO\Vendor\Monolog\Formatter\FormatterInte
     protected function formatObject($value, $nestingLevel)
     {
         $objectVars = \get_object_vars($value);
-        $objectVars['class'] = \AIOSEO\Vendor\Monolog\Utils::getClass($value);
+        $objectVars['class'] = Utils::getClass($value);
         return $this->formatArray($objectVars, $nestingLevel);
     }
     protected function formatException(\Exception $exception, $nestingLevel)
     {
-        $formattedException = array('class' => \AIOSEO\Vendor\Monolog\Utils::getClass($exception), 'message' => $exception->getMessage(), 'code' => (int) $exception->getCode(), 'file' => $exception->getFile() . ':' . $exception->getLine());
+        $formattedException = array('class' => Utils::getClass($exception), 'message' => $exception->getMessage(), 'code' => (int) $exception->getCode(), 'file' => $exception->getFile() . ':' . $exception->getLine());
         if ($this->exceptionTraceAsString === \true) {
             $formattedException['trace'] = $exception->getTraceAsString();
         } else {

@@ -22,22 +22,27 @@ class Loader {
 	 *
 	 * @var array
 	 */
-	protected $providers = array(
+	protected $providers = [
 		'mail'        => 'WPMailSMTP\Providers\Mail\\',
+		'sendlayer'   => 'WPMailSMTP\Providers\Sendlayer\\',
 		'smtpcom'     => 'WPMailSMTP\Providers\SMTPcom\\',
 		'sendinblue'  => 'WPMailSMTP\Providers\Sendinblue\\',
-		'pepipostapi' => 'WPMailSMTP\Providers\PepipostAPI\\',
-		'mailgun'     => 'WPMailSMTP\Providers\Mailgun\\',
-		'sendgrid'    => 'WPMailSMTP\Providers\Sendgrid\\',
 		'amazonses'   => 'WPMailSMTP\Providers\AmazonSES\\',
 		'gmail'       => 'WPMailSMTP\Providers\Gmail\\',
+		'mailgun'     => 'WPMailSMTP\Providers\Mailgun\\',
 		'outlook'     => 'WPMailSMTP\Providers\Outlook\\',
+		'pepipostapi' => 'WPMailSMTP\Providers\PepipostAPI\\',
+		'postmark'    => 'WPMailSMTP\Providers\Postmark\\',
+		'sendgrid'    => 'WPMailSMTP\Providers\Sendgrid\\',
+		'sparkpost'   => 'WPMailSMTP\Providers\SparkPost\\',
 		'zoho'        => 'WPMailSMTP\Providers\Zoho\\',
 		'smtp'        => 'WPMailSMTP\Providers\SMTP\\',
 		'pepipost'    => 'WPMailSMTP\Providers\Pepipost\\',
-	);
+	];
 
 	/**
+	 * PHPMailer object.
+	 *
 	 * @since 1.0.0
 	 *
 	 * @var MailCatcherInterface

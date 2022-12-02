@@ -2,11 +2,14 @@
 
 namespace WPMailSMTP\Providers\Gmail;
 
-use WPMailSMTP\Debug;
+use WPMailSMTP\Admin\DebugEvents\DebugEvents;
+use WPMailSMTP\Helpers\Helpers;
 use WPMailSMTP\MailCatcherInterface;
 use WPMailSMTP\Providers\MailerAbstract;
-use WPMailSMTP\Vendor\Google_Service_Gmail;
-use WPMailSMTP\Vendor\Google_Service_Gmail_Message;
+use WPMailSMTP\Vendor\Google\Service\Gmail;
+use WPMailSMTP\Vendor\Google\Service\Gmail\Message;
+use WPMailSMTP\Options as PluginOptions;
+use WPMailSMTP\WP;
 
 /**
  * Class Mailer.
@@ -30,7 +33,7 @@ class Mailer extends MailerAbstract {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var Google_Service_Gmail_Message
+	 * @var Message
 	 */
 	protected $message;
 
@@ -78,7 +81,7 @@ class Mailer extends MailerAbstract {
 		require_once wp_mail_smtp()->plugin_path . '/vendor/autoload.php';
 
 		$auth    = new Auth();
-		$message = new Google_Service_Gmail_Message();
+		$message = new Message();
 
 		// Set the authorized Gmail email address as the "from email" if the set email is not on the list of aliases.
 		$possible_from_emails = $auth->get_user_possible_send_from_addresses();
@@ -105,19 +108,16 @@ class Mailer extends MailerAbstract {
 
 			$message->setRaw( $base64 );
 
-			$service  = new Google_Service_Gmail( $auth->get_client() );
+			$service  = new Gmail( $auth->get_client() );
 			$response = $service->users_messages->send( 'me', $message );
+
+			DebugEvents::add_debug(
+				esc_html__( 'An email request was sent to the Gmail API.', 'wp-mail-smtp' )
+			);
 
 			$this->process_response( $response );
 		} catch ( \Exception $e ) {
-			$this->error_message = $e->getMessage();
-
-			Debug::set(
-				'Mailer: Gmail' . "\r\n" .
-				$this->process_exception_message( $e->getMessage() )
-			);
-
-			return;
+			$this->error_message = $this->process_exception_message( $e->getMessage() );
 		}
 	}
 
@@ -127,13 +127,13 @@ class Mailer extends MailerAbstract {
 	 * @since 1.0.0
 	 * @since 1.5.0 Added action "wp_mail_smtp_providers_gmail_mailer_process_response" with $response.
 	 *
-	 * @param Google_Service_Gmail_Message $response Instance of Gmail response.
+	 * @param Message $response Instance of Gmail response.
 	 */
 	protected function process_response( $response ) {
 
 		$this->response = $response;
 
-		if ( ! method_exists( $this->response, 'getId' ) ) {
+		if ( empty( $this->response ) || ! method_exists( $this->response, 'getId' ) ) {
 			$this->error_message = esc_html__( 'The response object is invalid (missing getId method).', 'wp-mail-smtp' );
 		} else {
 			$message_id = $this->response->getId();
@@ -157,19 +157,16 @@ class Mailer extends MailerAbstract {
 
 		$is_sent = false;
 
-		if ( method_exists( $this->response, 'getId' ) ) {
-			$message_id = $this->response->getId();
-			if ( ! empty( $message_id ) ) {
-				$is_sent = true;
-			}
+		if (
+			! empty( $this->response ) &&
+			method_exists( $this->response, 'getId' ) &&
+			! empty( $this->response->getId() )
+		) {
+			$is_sent = true;
 		}
 
-		// Clear debug messages if email is successfully sent.
-		if ( $is_sent ) {
-			Debug::clear();
-		}
-
-		return $is_sent;
+		/** This filter is documented in src/Providers/MailerAbstract.php. */
+		return apply_filters( 'wp_mail_smtp_providers_mailer_is_email_sent', $is_sent, $this->mailer );
 	}
 
 	/**
@@ -180,15 +177,15 @@ class Mailer extends MailerAbstract {
 	 *
 	 * @return string
 	 */
-	public function get_debug_info() {
+	public function get_debug_info() { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 
 		$gmail_text = array();
 
-		$options  = new \WPMailSMTP\Options();
+		$options  = PluginOptions::init();
 		$gmail    = $options->get_group( 'gmail' );
 		$curl_ver = 'No';
 		if ( function_exists( 'curl_version' ) ) {
-			$curl     = curl_version(); // phpcs:ignore
+			$curl     = curl_version();
 			$curl_ver = $curl['version'];
 		}
 
@@ -202,7 +199,7 @@ class Mailer extends MailerAbstract {
 		$gmail_text[] = '<strong>PHP.allow_url_fopen:</strong> ' . ( ini_get( 'allow_url_fopen' ) ? 'Yes' : 'No' );
 		$gmail_text[] = '<strong>PHP.stream_socket_client():</strong> ' . ( function_exists( 'stream_socket_client' ) ? 'Yes' : 'No' );
 		$gmail_text[] = '<strong>PHP.fsockopen():</strong> ' . ( function_exists( 'fsockopen' ) ? 'Yes' : 'No' );
-		$gmail_text[] = '<strong>PHP.curl_version():</strong> ' . $curl_ver; // phpcs:ignore
+		$gmail_text[] = '<strong>PHP.curl_version():</strong> ' . $curl_ver;
 		if ( function_exists( 'apache_get_modules' ) ) {
 			$modules      = apache_get_modules();
 			$gmail_text[] = '<strong>Apache.mod_security:</strong> ' . ( in_array( 'mod_security', $modules, true ) || in_array( 'mod_security2', $modules, true ) ? 'Yes' : 'No' );
@@ -261,22 +258,22 @@ class Mailer extends MailerAbstract {
 		}
 
 		// Define known errors, that we will scan the message with.
-		$known_errors = array(
-			array(
-				'errors'      => array(
+		$known_errors = [
+			[
+				'errors'      => [
 					'invalid_grant',
-				),
-				'explanation' => esc_html__( 'Please re-grant Google app permissions!', 'wp-mail-smtp' ) . ' ' . PHP_EOL .
-					esc_html__( 'Go to WP Mail SMTP plugin settings page. Click the “Remove Connection” button.', 'wp-mail-smtp' ) . ' ' . PHP_EOL .
+				],
+				'explanation' => esc_html__( 'Please re-grant Google app permissions!', 'wp-mail-smtp' ) . ' ' . WP::EOL .
+					esc_html__( 'Go to WP Mail SMTP plugin settings page. Click the “Remove Connection” button.', 'wp-mail-smtp' ) . ' ' . WP::EOL .
 					esc_html__( 'Then click the “Allow plugin to send emails using your Google account” button and re-enable access.', 'wp-mail-smtp' ),
-			),
-		);
+			],
+		];
 
 		// Check if we get a match and append the explanation to the original message.
 		foreach ( $known_errors as $error ) {
 			foreach ( $error['errors'] as $error_fragment ) {
 				if ( false !== strpos( $message, $error_fragment ) ) {
-					return $message . PHP_EOL . $error['explanation'];
+					return Helpers::format_error_message( $message, '', $error['explanation'] );
 				}
 			}
 		}

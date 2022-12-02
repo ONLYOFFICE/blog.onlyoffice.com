@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Extendable Block class helper
+ * Block helpers.
  *
  * @since 4.1.1
  */
@@ -19,13 +19,6 @@ class Blocks {
 	 */
 	public function __construct() {
 		add_action( 'init', [ $this, 'init' ] );
-
-		global $wp_version;
-		if ( version_compare( $wp_version, '5.8', '<' ) ) {
-			add_filter( 'block_categories', [ $this, 'blockCategories' ], 10 );
-			return;
-		}
-		add_filter( 'block_categories_all', [ $this, 'blockCategories' ], 10 );
 	}
 
 	/**
@@ -36,45 +29,95 @@ class Blocks {
 	 * @return void
 	 */
 	public function init() {
+		add_action( 'enqueue_block_editor_assets', [ $this, 'registerBlockEditorAssets' ] );
+	}
+
+	/**
+	 * Registers the block type with WordPress.
+	 *
+	 * @since 4.2.1
+	 *
+	 * @param string $slug Block type name including namespace.
+	 * @param array $args Array of block type arguments with additional 'wp_min_version' arg.
+	 *
+	 * @return WP_Block_Type|false The registered block type on success, or false on failure.
+	 */
+	public function registerBlock( $slug = '', $args = [] ) {
+		global $wp_version;
+
+		if ( ! strpos( $slug, '/' ) ) {
+			$slug = 'aioseo/' . $slug;
+		}
+
 		if ( ! $this->isBlockEditorActive() ) {
 			return;
 		}
 
-		$this->register();
+		// Check if the block requires a minimum WP version.
+		if ( ! empty( $args['wp_min_version'] ) && version_compare( $wp_version, $args['wp_min_version'], '>' ) ) {
+			return false;
+		}
+
+		// Checking whether block is registered to ensure it isn't registered twice.
+		if ( $this->isRegistered( $slug ) ) {
+			return false;
+		}
+
+		$defaults = [
+			'render_callback' => '',
+			'editor_script'   => aioseo()->core->assets->jsHandle( 'src/vue/standalone/blocks/main.js' ),
+			'editor_style'    => aioseo()->core->assets->cssHandle( 'src/vue/assets/scss/blocks-editor.scss' ),
+			'style'           => '',
+			'attributes'      => null,
+			'supports'        => '',
+		];
+
+		$args = wp_parse_args( $args, $defaults );
+
+		return register_block_type( $slug, $args );
 	}
 
 	/**
-	 * Registers the block. This is a wrapper to be extended in the child class.
+	 * Register Gutenberg editor assets
 	 *
-	 * @since 4.1.1
+	 * @since 4.2.1
 	 *
 	 * @return void
 	 */
-	public function register() {}
+	public function registerBlockEditorAssets() {
+		aioseo()->core->assets->loadCss( 'src/vue/standalone/blocks/main.js', [], false );
 
-	/**
-	 * Adds a new AIOSEO block category.
-	 *
-	 * @since 4.1.1
-	 *
-	 * @param  array $categories Array of block categories.
-	 * @return void
-	 */
-	public function blockCategories( $categories ) {
-		$exists = wp_list_filter( $categories, [ 'slug' => 'aioseo' ] );
-		if ( ! empty( $exists ) ) {
-			return $categories;
+		$dependencies = [
+			'wp-blocks',
+			'wp-components',
+			'wp-element',
+			'wp-i18n',
+			'wp-data',
+			'wp-url',
+			'wp-polyfill',
+			aioseo()->core->assets->jsHandle( 'src/vue/standalone/post-settings/main.js' )
+		];
+
+		global $wp_version;
+		if ( version_compare( $wp_version, '5.2', '>=' ) ) {
+			$dependencies[] = 'wp-block-editor';
 		}
 
-		return array_merge(
-			$categories,
-			[
-				[
-					'slug'  => 'aioseo',
-					'title' => AIOSEO_PLUGIN_SHORT_NAME,
-				]
-			]
-		);
+		aioseo()->core->assets->registerJs( 'src/vue/standalone/blocks/main.js', $dependencies );
+		aioseo()->core->assets->registerCss( 'src/vue/assets/scss/blocks-editor.scss', [], 'src/vue/assets/scss/blocks-editor.scss' );
+	}
+
+	/**
+	 * Check if a block is already registered.
+	 *
+	 * @since 4.2.1
+	 *
+	 * @param string $slug Name of block to check.
+	 *
+	 * @return bool
+	 */
+	public function isRegistered( $slug ) {
+		return \WP_Block_Type_Registry::get_instance()->is_registered( $slug );
 	}
 
 	/**
@@ -85,7 +128,7 @@ class Blocks {
 	 * @return bool In gutenberg.
 	 */
 	public function isGBEditor() {
-		return \defined( 'REST_REQUEST' ) && REST_REQUEST && ! empty( $_REQUEST['context'] ) && 'edit' === $_REQUEST['context']; // phpcs:ignore HM.Security.NonceVerification.Recommended
+		return defined( 'REST_REQUEST' ) && REST_REQUEST && ! empty( $_REQUEST['context'] ) && 'edit' === $_REQUEST['context']; // phpcs:ignore HM.Security.NonceVerification.Recommended
 	}
 
 	/**

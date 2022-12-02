@@ -50,6 +50,24 @@ class YoastSeo extends ImportExport\Importer {
 	public $userActionName = 'aioseo_import_user_meta_yoast_seo';
 
 	/**
+	 * UserMeta class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var UserMeta
+	 */
+	private $userMeta = null;
+
+	/**
+	 * SearchAppearance class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var SearchAppearance
+	 */
+	public $searchAppearance = null;
+
+	/**
 	 * The post action name.
 	 *
 	 * @since 4.0.0
@@ -60,6 +78,7 @@ class YoastSeo extends ImportExport\Importer {
 		$this->helpers  = new Helpers();
 		$this->postMeta = new PostMeta();
 		$this->userMeta = new UserMeta();
+
 		add_action( $this->postActionName, [ $this->postMeta, 'importPostMeta' ] );
 		add_action( $this->userActionName, [ $this->userMeta, 'importUserMeta' ] );
 
@@ -79,7 +98,8 @@ class YoastSeo extends ImportExport\Importer {
 	 */
 	protected function importSettings() {
 		new GeneralSettings();
-		new SearchAppearance();
+		$this->searchAppearance = new SearchAppearance();
+		// NOTE: The Social Meta settings need to be imported after the Search Appearance ones because some imports depend on what was imported there.
 		new SocialMeta();
 		$this->userMeta->scheduleImport();
 	}

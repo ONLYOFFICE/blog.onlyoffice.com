@@ -104,18 +104,6 @@ trait Options {
 	protected $screenRedirection = '';
 
 	/**
-	 * Initialize network options.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @return void
-	 */
-	public function initNetwork() {
-		$this->optionsName = $this->optionsName . '_network';
-		$this->init();
-	}
-
-	/**
 	 * Retrieve an option or null if missing.
 	 *
 	 * @since 4.0.0
@@ -130,7 +118,7 @@ trait Options {
 		}
 
 		// If we need to set a sub-group, do that now.
-		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$cachedOptions = aioseo()->core->optionsCache->getOptions( $this->optionsName );
 		$defaults      = $cachedOptions[ $this->groupKey ];
 		if ( ! empty( $this->subGroups ) ) {
 			foreach ( $this->subGroups as $subGroup ) {
@@ -140,6 +128,7 @@ trait Options {
 
 		if ( ! isset( $defaults[ $name ] ) ) {
 			$this->resetGroups();
+
 			return ! empty( $this->arguments[0] )
 				? $this->arguments[0]
 				: $this->getDefault( $name, false );
@@ -180,7 +169,7 @@ trait Options {
 		}
 
 		// If we need to set a sub-group, do that now.
-		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$cachedOptions = aioseo()->core->optionsCache->getOptions( $this->optionsName );
 		$defaults      = $cachedOptions[ $this->groupKey ];
 		if ( ! empty( $this->subGroups ) ) {
 			foreach ( $this->subGroups as $subGroup ) {
@@ -263,7 +252,7 @@ trait Options {
 		}
 
 		// If we need to set a sub-group, do that now.
-		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$cachedOptions = aioseo()->core->optionsCache->getOptions( $this->optionsName );
 		$defaults      = json_decode( wp_json_encode( $cachedOptions[ $this->groupKey ] ), true );
 		if ( ! empty( $this->subGroups ) ) {
 			foreach ( $this->subGroups as $subGroup ) {
@@ -311,14 +300,14 @@ trait Options {
 		}
 
 		$originalDefaults = json_decode( wp_json_encode( $cachedOptions[ $this->groupKey ] ), true );
-		$pointer          = &$originalDefaults;
+		$pointer          = &$originalDefaults; // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		foreach ( $this->subGroups as $subGroup ) {
 			$pointer = &$pointer[ $subGroup ];
 		}
 		$pointer = $defaults;
 
 		$cachedOptions[ $this->groupKey ] = $originalDefaults;
-		aioseo()->optionsCache->setOptions( $this->optionsName, $cachedOptions );
+		aioseo()->core->optionsCache->setOptions( $this->optionsName, $cachedOptions );
 
 		$this->resetGroups();
 
@@ -339,7 +328,7 @@ trait Options {
 		}
 
 		// If we need to set a sub-group, do that now.
-		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$cachedOptions = aioseo()->core->optionsCache->getOptions( $this->optionsName );
 		$defaults      = $cachedOptions[ $this->groupKey ];
 		if ( ! empty( $this->subGroups ) ) {
 			foreach ( $this->subGroups as $subGroup ) {
@@ -349,6 +338,7 @@ trait Options {
 
 		if ( ! isset( $defaults[ $name ] ) ) {
 			$this->resetGroups();
+
 			return false;
 		}
 
@@ -379,7 +369,7 @@ trait Options {
 		}
 
 		// If we need to set a sub-group, do that now.
-		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$cachedOptions = aioseo()->core->optionsCache->getOptions( $this->optionsName );
 		$defaults      = json_decode( wp_json_encode( $cachedOptions[ $this->groupKey ] ), true );
 		if ( ! empty( $this->subGroups ) ) {
 			foreach ( $this->subGroups as $subGroup ) {
@@ -390,6 +380,7 @@ trait Options {
 		if ( ! isset( $defaults[ $name ] ) ) {
 			$this->groupKey  = null;
 			$this->subGroups = [];
+
 			return;
 		}
 
@@ -404,7 +395,7 @@ trait Options {
 		unset( $defaults[ $name ]['value'] );
 
 		$cachedOptions[ $this->groupKey ] = $defaults;
-		aioseo()->optionsCache->setOptions( $this->optionsName, $cachedOptions );
+		aioseo()->core->optionsCache->setOptions( $this->optionsName, $cachedOptions );
 
 		$this->resetGroups();
 
@@ -428,7 +419,7 @@ trait Options {
 		$this->init();
 
 		// Refactor options.
-		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$cachedOptions = aioseo()->core->optionsCache->getOptions( $this->optionsName );
 		$refactored    = $this->convertOptionsToValues( $cachedOptions );
 
 		$this->groupKey = null;
@@ -439,15 +430,17 @@ trait Options {
 
 		if ( empty( $originalSubGroups ) ) {
 			$all = $refactored[ $originalGroupKey ];
+
 			return $this->allFiltered( $all, $include, $exclude );
 		}
 
-		$returnable = &$refactored[ $originalGroupKey ];
+		$returnable = &$refactored[ $originalGroupKey ]; // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		foreach ( $originalSubGroups as $subGroup ) {
 			$returnable = &$returnable[ $subGroup ];
 		}
 
 		$this->resetGroups();
+
 		return $this->allFiltered( $returnable, $include, $exclude );
 	}
 
@@ -467,7 +460,7 @@ trait Options {
 		// Make sure our dynamic options have loaded.
 		$this->init();
 
-		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$cachedOptions = aioseo()->core->optionsCache->getOptions( $this->optionsName );
 
 		// If we don't have a group key set, it means we want to reset everything.
 		if ( empty( $originalGroupKey ) ) {
@@ -492,17 +485,18 @@ trait Options {
 
 		// Refactor options.
 		$resetValues = $this->resetValues( $defaults, $this->defaultsMerged, $keys, $include, $exclude );
-		$defaults    = array_replace_recursive( $defaults, $resetValues );
+		// We need to call our helper method instead of the built-in array_replace_recursive() function here because we want values to be replaced with empty arrays.
+		$defaults = aioseo()->helpers->arrayReplaceRecursive( $defaults, $resetValues );
 
 		$originalDefaults = json_decode( wp_json_encode( $cachedOptions[ $originalGroupKey ] ), true );
-		$pointer          = &$originalDefaults;
+		$pointer          = &$originalDefaults; // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		foreach ( $originalSubGroups as $subGroup ) {
 			$pointer = &$pointer[ $subGroup ];
 		}
 		$pointer = $defaults;
 
 		$cachedOptions[ $originalGroupKey ] = $originalDefaults;
-		aioseo()->optionsCache->setOptions( $this->optionsName, $cachedOptions );
+		aioseo()->core->optionsCache->setOptions( $this->optionsName, $cachedOptions );
 
 		$this->resetGroups();
 
@@ -562,7 +556,7 @@ trait Options {
 		}
 
 		// If we need to set a sub-group, do that now.
-		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$cachedOptions = aioseo()->core->optionsCache->getOptions( $this->optionsName );
 		$defaults      = $originalGroupKey ? $cachedOptions[ $originalGroupKey ] : $cachedOptions;
 		if ( ! empty( $originalSubGroups ) ) {
 			foreach ( $originalSubGroups as $subGroup ) {
@@ -593,7 +587,7 @@ trait Options {
 	 */
 	private function allFiltered( $all, $include, $exclude ) {
 		if ( ! empty( $include ) ) {
-			return array_intersect_ukey( $all, $include, function ( $key1, $key2 ) use ( $include ) {
+			return array_intersect_ukey( $all, $include, function ( $key1, $key2 ) use ( $include ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 				if ( in_array( $key1, $include, true ) ) {
 					return 0;
 				}
@@ -603,7 +597,7 @@ trait Options {
 		}
 
 		if ( ! empty( $exclude ) ) {
-			return array_diff_ukey( $all, $exclude, function ( $key1, $key2 ) use ( $exclude ) {
+			return array_diff_ukey( $all, $exclude, function ( $key1, $key2 ) use ( $exclude ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 				if ( ! in_array( $key1, $exclude, true ) ) {
 					return 0;
 				}
@@ -621,7 +615,7 @@ trait Options {
 	 * @since 4.0.0
 	 *
 	 * @param  string $name The option name.
-	 * @return void
+	 * @return mixed        The default value.
 	 */
 	public function getDefault( $name, $resetGroups = true ) {
 		$defaults = $this->defaultsMerged[ $this->groupKey ];
@@ -688,7 +682,7 @@ trait Options {
 		$originalInstance = $this->getOriginalInstance();
 
 		// Update the DB options.
-		aioseo()->optionsCache->setDb( $optionsName, $refactored );
+		aioseo()->core->optionsCache->setDb( $optionsName, $refactored );
 
 		// Force a save here and in the main class.
 		$this->shouldSave             = true;
@@ -716,7 +710,7 @@ trait Options {
 		$this->update( $optionsName );
 
 		// First, we need to filter our options.
-		$options = $this->filterOptions( $defaults, null, $optionsName );
+		$options = $this->filterOptions( $defaults );
 
 		// Refactor options.
 		$refactored = $this->convertOptionsToValues( $options );
@@ -736,8 +730,9 @@ trait Options {
 	 * @return array                An array of filtered options.
 	 */
 	public function filterOptions( $defaults, $options = null ) {
-		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$cachedOptions = aioseo()->core->optionsCache->getOptions( $this->optionsName );
 		$options       = ! empty( $options ) ? $options : json_decode( wp_json_encode( $cachedOptions ), true );
+
 		return $this->filterRecursively( $options, $defaults );
 	}
 
@@ -794,6 +789,7 @@ trait Options {
 				foreach ( (array) $value as $k => $v ) {
 					$array[ $k ] = sanitize_text_field( $preserveHtml ? htmlspecialchars( $v, ENT_NOQUOTES, 'UTF-8' ) : $v );
 				}
+
 				return $array;
 			case 'float':
 				return floatval( $value );
@@ -818,6 +814,7 @@ trait Options {
 			$groups = array_keys( $this->defaultsMerged );
 			if ( in_array( $name, $groups, true ) ) {
 				$this->groupKey = $name;
+
 				return true;
 			}
 
@@ -917,7 +914,6 @@ trait Options {
 				continue;
 			}
 
-			// @TODO: See if we need this? could just eliminate.
 			if ( ! is_array( $value ) ) {
 				continue;
 			}
@@ -1012,7 +1008,7 @@ trait Options {
 	 */
 	public function refresh() {
 		// Reset DB options to clear the cache.
-		aioseo()->optionsCache->resetDb();
+		aioseo()->core->optionsCache->resetDb();
 		$this->init();
 	}
 
@@ -1025,16 +1021,16 @@ trait Options {
 	 * @return array               The options.
 	 */
 	public function getDbOptions( $optionsName ) {
-		$cache = aioseo()->optionsCache->getDb( $optionsName );
+		$cache = aioseo()->core->optionsCache->getDb( $optionsName );
 		if ( empty( $cache ) ) {
 			$options = json_decode( get_option( $optionsName ), true );
 			$options = ! empty( $options ) ? $options : [];
 
 			// Set the cache.
-			aioseo()->optionsCache->setDb( $optionsName, $options );
+			aioseo()->core->optionsCache->setDb( $optionsName, $options );
 		}
 
-		return aioseo()->optionsCache->getDb( $optionsName );
+		return aioseo()->core->optionsCache->getDb( $optionsName );
 	}
 
 	/**
@@ -1042,11 +1038,17 @@ trait Options {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return Options The cloned Options object.
+	 * @param  bool    $reInitialize Whether or not to reinitialize on the clone.
+	 * @return Options               The cloned Options object.
 	 */
-	public function noConflict() {
+	public function noConflict( $reInitialize = false ) {
 		$class          = clone $this;
 		$class->isClone = true;
+
+		if ( $reInitialize ) {
+			$class->init();
+		}
+
 		return $class;
 	}
 
@@ -1068,5 +1070,7 @@ trait Options {
 		if ( isset( aioseo()->{ $optionName } ) ) {
 			return aioseo()->{ $optionName };
 		}
+
+		return $this;
 	}
 }

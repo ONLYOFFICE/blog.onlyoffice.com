@@ -29,6 +29,26 @@ function ampforwp_analytics() {
 								'request'=>'pageview'			
 						)
 					);
+		if (true == ampforwp_get_setting('ampforwp-infinite-scroll')) {
+			$url = ampforwp_url_controller(get_the_permalink());
+      		$ga_fields['requests'] =  array(
+				'nextpage' => esc_url($url) ,	 
+			);
+			$ga_fields['triggers'] = array(
+						'trackPageview'=> array(
+								'on'=>'visible',
+								'request'=>'pageview'			
+						),
+						'trackScrollThrough'=> array(
+								'on'=>'amp-next-page-scroll',
+								'request'=>'nextpage'			
+						),
+						'trackClickThrough'=> array(
+								'on'=>'amp-next-page-click',
+								'request'=>'nextpage'			
+						)
+					);
+		}
 		if ( true == ampforwp_get_setting('ampforwp-ga-field-anonymizeIP')) {
 			$ga_fields['vars']['anonymizeIP'] = 'true';
 		}
@@ -36,6 +56,12 @@ function ampforwp_analytics() {
 			$ga_fields['vars']['linkers'] = array(
 				'enabled'=> true
 			);
+		}
+		if (ampforwp_get_setting('ampforwp-ga-field-author')) {
+			$author = ampforwp_get_setting('ampforwp-ga-field-author-index');
+			if ($author) {
+				$ga_fields['vars']['config'][$author] = get_the_author_meta('display_name');
+			}
 		}
 		$ga_fields = apply_filters('ampforwp_google_analytics_fields', $ga_fields );
 		$ampforwp_ga_fields = json_encode( $ga_fields);
@@ -49,7 +75,7 @@ function ampforwp_analytics() {
 				<?php echo $ampforwp_ga_fields; ?>
 			</script>
 			</amp-analytics>
-	 		<?php } else { ?>
+	 		<?php } else if (!empty($ga_account) && $ga_account != "UA-XXXXX-Y") { ?>
 			<amp-analytics <?php if(ampforwp_get_data_consent()){?>data-block-on-consent <?php } ?> type="gtag" id="analytics1" data-credentials="include" >
 				<script type="application/json">
 					<?php echo $ampforwp_ga_fields; ?>
@@ -98,13 +124,17 @@ function ampforwp_analytics() {
 			$idsite = ampforwp_get_setting('pa-feild');
 			$title = urlencode(get_the_title());
 			$url = get_the_permalink();
-			$url = ampforwp_remove_protocol(ampforwp_url_controller($url));
+			if (function_exists( 'is_ssl' ) && !is_ssl()) {
+				$url = ampforwp_remove_protocol(ampforwp_url_controller($url));
+			}else{
+				ampforwp_url_controller($url);
+			}
 			$rand = rand(1111,9999);
 			$referer  = $url;
 			if(isset($_SERVER['HTTP_REFERER'])) {
 		      $referer  = $_SERVER['HTTP_REFERER'];
 		    }
-			$piwik_api = str_replace("YOUR_SITE_ID", '1', $idsite);
+			$piwik_api = str_replace("YOUR_SITE_ID", '1', $idsite[0]);
 			$piwik_api = str_replace("TITLE", esc_attr($title), $piwik_api);
 			$piwik_api = str_replace("DOCUMENT_REFERRER", esc_url($referer), $piwik_api);
 			$piwik_api = str_replace("CANONICAL_URL", esc_url($url), $piwik_api);
@@ -304,6 +334,97 @@ function ampforwp_analytics() {
 				if(!empty($config_url) && !empty($number) && !empty($analytics_url)){?>
 			    <amp-call-tracking config="<?php echo esc_url($config_url); ?>"><a href="tel:<?php echo esc_attr($number);?>"><?php echo esc_html($number);?></a></amp-call-tracking><amp-analytics config="<?php echo esc_url($analytics_url); ?>"></amp-analytics>   
 			<?php } }	
+			if( true == ampforwp_get_setting('ampforwp-dotmetrics-switch')) { 
+                $dot_id = '';
+                $dot_id = ampforwp_get_setting('ampforwp-dotmetrics-id');
+                if(!empty($dot_id)){
+                $analytics_url = "https://script.dotmetrics.net/AmpConfig.json?id=".esc_html($dot_id); ?>
+                <amp-analytics config="<?php echo esc_url_raw($analytics_url); ?>"></amp-analytics>
+                <?php } }
+            if( true == ampforwp_get_setting('ampforwp-topmailru-switch')) { 
+                $topmailru_id = '';
+                $topmailru_id = ampforwp_get_setting('ampforwp-topmailru-id');
+                if(!empty($topmailru_id)){ ?>
+                <amp-analytics type="topmailru" id="topmailru">
+				<script type="application/json">
+				{
+				    "vars": {
+				        "id": "<?php echo esc_attr($topmailru_id);?>"
+				    }
+				}
+				</script>
+				</amp-analytics>
+                <?php } }    
+                if( true == ampforwp_get_setting('ampforwp-plausible-switch')) { 
+                $site_url = site_url();?>
+                <amp-analytics>
+		    		<script type="application/json">
+				        {
+				            "vars": {
+				                "dataDomain": "<?php echo esc_attr($site_url);?>"
+				            },
+				            "requests": {
+				                "event": "https://plausible.io/api/event"
+				            },
+				            "triggers": {
+				                "trackPageview": {
+				                    "on": "visible",
+				                    "request": "event",
+				                    "extraUrlParams": {
+				                        "n": "pageview"
+				                    }
+				                }
+				            },
+				            "transport": {
+				                "beacon": true,
+				                "xhrpost": true,
+				                "image": false,
+				                "useBody": true
+				            }
+				        }
+				    </script>
+				</amp-analytics>
+                <?php }
+                if( true == ampforwp_get_setting('amp-atinternet-switch')) { 
+	                $site_id = $site_url = $title = '';
+	                $site_id = ampforwp_get_setting('amp-atinternet-site-id');
+	                $site_url = site_url();
+					$title = get_the_title(ampforwp_get_the_ID());
+					if (!empty($site_id)) {?>
+	                <amp-analytics type="atinternet" id="atinternet">
+					<script type="application/json">
+					{
+					  "vars": {
+					    "site": "<?php echo esc_attr($site_id);?>",
+					    "log": "logs",
+					    "domain": "<?php echo esc_attr($site_url);?>",
+					    "title": "<?php echo esc_attr($title);?>",
+					    "level2": "10"
+					  },
+					  "triggers": {
+					    "defaultPageview": {
+					      "on": "visible",
+					      "request": "pageview"
+					    }
+					  }
+					}
+					</script>
+					</amp-analytics>
+                <?php } }
+            // Marfeel Analytics
+            if(true == ampforwp_get_setting('amp-marfeel-pixel')){ 
+            	$account_id = ampforwp_get_setting('amp-marfeel-account-id'); ?>
+				<amp-analytics config="https://events.newsroom.bi/amp.v1.json" data-credentials="include">
+				<script type="application/json" >
+					{
+						"vars" : {
+							"accountId": "<?php echo esc_attr($account_id);?>"
+						}
+					}
+				</script>
+				</amp-analytics><?php
+            }
+
 			if( true == ampforwp_get_setting('ampforwp-iotech-switch')) {
                 $project_id = $id = $title = $author = $categories = $cat_names = '';
                 $project_id = ampforwp_get_setting('ampforwp-iotech-projectid');
@@ -415,19 +536,6 @@ if( ! function_exists( ' ampforwp_analytics_clientid_api ' ) ) {
 			<meta name="amp-google-client-id-api" content="googleanalytics">
 		<?php }
 	}
-}
-
-// 6.1 Adding Analytics Scripts
-add_filter('amp_post_template_data','ampforwp_register_analytics_script', 20);
-function ampforwp_register_analytics_script( $data ){ 
-	global $redux_builder_amp;
-	if( true == ampforwp_get_setting('ampforwp-ga-switch') || true == ampforwp_get_setting('ampforwp-Segment-switch') || true == ampforwp_get_setting('ampforwp-Quantcast-switch') || true == ampforwp_get_setting('ampforwp-comScore-switch') || true == ampforwp_get_setting('ampforwp-Yandex-switch') || true == ampforwp_get_setting('ampforwp-Chartbeat-switch') || true == ampforwp_get_setting('ampforwp-Alexa-switch') || true == ampforwp_get_setting('ampforwp-afs-analytics-switch') || true == ampforwp_get_setting('amp-use-gtm-option') || true == ampforwp_get_setting('amp-clicky-switch') || true == ampforwp_get_setting('ampforwp-Piwik-switch')) {
-		
-		if ( empty( $data['amp_component_scripts']['amp-analytics'] ) ) {
-			$data['amp_component_scripts']['amp-analytics'] = 'https://cdn.ampproject.org/v0/amp-analytics-0.1.js';
-		}
-	}
-	return $data;
 }
 
 if ( ! function_exists('amp_activate') ) {

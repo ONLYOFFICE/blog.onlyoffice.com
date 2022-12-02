@@ -49,6 +49,10 @@ abstract class Filters {
 			add_filter( 'weglot_active_translation_before_treat_page', '__return_false' );
 		}
 
+		if ( preg_match( '#(\.xml)$#i', $_SERVER['REQUEST_URI'] ) ) {
+			add_filter( 'jetpack_boost_should_defer_js', '__return_false' );
+		}
+
 		// GoDaddy CDN compatibility.
 		add_filter( 'wpaas_cdn_file_ext', [ $this, 'goDaddySitemapXml' ] );
 
@@ -57,11 +61,38 @@ abstract class Filters {
 		add_action( 'dp_duplicate_page', [ $this, 'duplicatePost' ], 10, 2 );
 		add_action( 'woocommerce_product_duplicate_before_save', [ $this, 'scheduleDuplicateProduct' ], 10, 2 );
 
-		// Classic Editor emoji
-		add_action( 'init', [ $this, 'removeEmojiScript' ] );
+		add_action( 'init', [ $this, 'resetUserBBPress' ], -1 );
 
 		// Bypass the JWT Auth plugin's unnecessary restrictions. https://wordpress.org/plugins/jwt-auth/
 		add_filter( 'jwt_auth_default_whitelist', [ $this, 'allowRestRoutes' ] );
+
+		// Clear the site authors cache.
+		add_action( 'profile_update', [ $this, 'clearAuthorsCache' ] );
+		add_action( 'user_register', [ $this, 'clearAuthorsCache' ] );
+
+		add_filter( 'aioseo_public_post_types', [ $this, 'removeInvalidPublicPostTypes' ] );
+		add_filter( 'aioseo_public_taxonomies', [ $this, 'removeInvalidPublicTaxonomies' ] );
+
+		// Disable Jetpack sitemaps module.
+		if ( aioseo()->options->sitemap->general->enable ) {
+			add_filter( 'jetpack_get_available_modules', [ $this, 'disableJetpackSitemaps' ] );
+		}
+	}
+
+	/**
+	 * Resets the current user if bbPress is active.
+	 * We have to do this because our calls to wp_get_current_user() set the current user early and this breaks core functionality in bbPress.
+	 *
+	 *
+	 * @since 4.1.5
+	 *
+	 * @return void
+	 */
+	public function resetUserBBPress() {
+		if ( function_exists( 'bbpress' ) ) {
+			global $current_user;
+			$current_user = null;
+		}
 	}
 
 	/**
@@ -80,12 +111,8 @@ abstract class Filters {
 			return;
 		}
 
-		$newPost = Models\Post::getPost( $newPostId );
-		if ( $newPost->exists() ) {
-			return;
-		}
-
-		$columns = $originalAioseoPost->getColumns();
+		$newAioseoPost = Models\Post::getPost( $newPostId );
+		$columns       = $originalAioseoPost->getColumns();
 		foreach ( $columns as $column => $value ) {
 			// Skip the ID column.
 			if ( 'id' === $column ) {
@@ -93,13 +120,13 @@ abstract class Filters {
 			}
 
 			if ( 'post_id' === $column ) {
-				$newPost->$column = $newPostId;
+				$newAioseoPost->$column = $newPostId;
 				continue;
 			}
 
-			$newPost->$column = $originalAioseoPost->$column;
+			$newAioseoPost->$column = $originalAioseoPost->$column;
 		}
-		$newPost->save();
+		$newAioseoPost->save();
 	}
 
 	/**
@@ -162,6 +189,7 @@ abstract class Filters {
 	public function goDaddySitemapXml( $extensions ) {
 		$key = array_search( 'xml', $extensions, true );
 		unset( $extensions[ $key ] );
+
 		return $extensions;
 	}
 
@@ -207,20 +235,8 @@ abstract class Filters {
 				$actions = 'after' === $position ? array_merge( $actions, $link ) : array_merge( $link, $actions );
 			}
 		}
-		return $actions;
-	}
 
-	/**
-	 * Prevents the Classic Editor from enqueuing a script that breaks emoji in our metabox.
-	 *
-	 * @since 4.1.1
-	 *
-	 * @return void
-	 */
-	public function removeEmojiScript() {
-		if ( apply_filters( 'aioseo_classic_editor_disable_emoji_script', false ) ) {
-			remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
-		}
+		return $actions;
 	}
 
 	/**
@@ -235,5 +251,95 @@ abstract class Filters {
 		return array_merge( $allowList, [
 			'/aioseo/'
 		] );
+	}
+
+	/**
+	 * Clear the site authors cache when user is updated or registered.
+	 *
+	 * @since 4.1.8
+	 *
+	 * @return void
+	 */
+	public function clearAuthorsCache() {
+		aioseo()->core->cache->delete( 'site_authors' );
+	}
+
+	/**
+	 * Filters out post types that aren't really public when getPublicPostTypes() is called.
+	 *
+	 * @since 4.1.9
+	 *
+	 * @param  array[Object]|array[string] $postTypes The post types.
+	 * @return array[Object]|array[string]            The filtered post types.
+	 */
+	public function removeInvalidPublicPostTypes( $postTypes ) {
+		$elementorEnabled = isset( aioseo()->standalone->pageBuilderIntegrations['elementor'] ) &&
+			aioseo()->standalone->pageBuilderIntegrations['elementor']->isPluginActive();
+
+		if ( ! $elementorEnabled ) {
+			return $postTypes;
+		}
+
+		$postTypesToRemove = [
+			'elementor_library'
+		];
+
+		foreach ( $postTypes as $index => $postType ) {
+			if ( is_string( $postType ) && in_array( $postType, $postTypesToRemove, true ) ) {
+				unset( $postTypes[ $index ] );
+				continue;
+			}
+
+			if ( is_array( $postType ) && in_array( $postType['name'], $postTypesToRemove, true ) ) {
+				unset( $postTypes[ $index ] );
+			}
+		}
+
+		return array_values( $postTypes );
+	}
+
+	/**
+	 * Filters out taxonomies that aren't really public when getPublicTaxonomies() is called.
+	 *
+	 * @since 4.2.4
+	 *
+	 * @param  array[Object]|array[string] $taxonomies The taxonomies.
+	 * @return array[Object]|array[string]             The filtered taxonomies.
+	 */
+	public function removeInvalidPublicTaxonomies( $taxonomies ) {
+		// Check if the Avada Builder plugin is enabled.
+		if ( ! defined( 'FUSION_BUILDER_VERSION' ) ) {
+			return $taxonomies;
+		}
+
+		$taxonomiesToRemove = [
+			'fusion_tb_category',
+			'element_category',
+			'template_category'
+		];
+
+		foreach ( $taxonomies as $index => $taxonomy ) {
+			if ( is_string( $taxonomy ) && in_array( $taxonomy, $taxonomiesToRemove, true ) ) {
+				unset( $taxonomies[ $index ] );
+				continue;
+			}
+
+			if ( is_array( $taxonomy ) && in_array( $taxonomy['name'], $taxonomiesToRemove, true ) ) {
+				unset( $taxonomies[ $index ] );
+			}
+		}
+
+		return array_values( $taxonomies );
+	}
+
+	/**
+	 * Disable Jetpack sitemaps module.
+	 *
+	 * @since 4.2.2
+	 */
+	public function disableJetpackSitemaps( $active ) {
+		unset( $active['sitemaps'] );
+
+		return $active;
 	}
 }

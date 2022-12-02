@@ -5,7 +5,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $redux_builder_amp; ?>
 <?php amp_header(); 
 $paged = get_query_var( 'paged' );
-$page = get_query_var( 'page' ); ?>
+$page = get_query_var( 'page' );
+$page = intval($page); ?>
 <?php if(ampforwp_get_setting('single-design-type') == '1'){?>
 <div class="sp sgl">
 	<?php if(!checkAMPforPageBuilderStatus(get_the_ID())){ ?>
@@ -28,7 +29,13 @@ $page = get_query_var( 'page' ); ?>
 							array('author_pub_name'=>true,'author_info'=>true)
 						); ?>
 			    </div>
-			<?php } ?> 
+			 <?php } 
+			if( true == ampforwp_get_setting('swift-date') && true == ampforwp_get_setting('amp-published-date-display')) { ?>
+			            <div class="post-date mob-date">
+			            	<?php amp_date(); ?><?php edit_post_link(); ?>
+			            </div>
+					<?php do_action('ampforwp_post_views_ctr'); ?> 
+		            <?php } ?>
 		</div>
 		<?php 
 	   	if($paged==0 && $page==0){
@@ -89,7 +96,7 @@ $page = get_query_var( 'page' ); ?>
 						amp_author_box( $author_box ); ?>	
 					<?php } ?>
 					<?php amp_post_navigation();?>
-					<?php if ( true == ampforwp_get_setting('wordpress-comments-support') || true == ampforwp_get_setting('ampforwp-disqus-comments-support') || true == ampforwp_get_setting('ampforwp-facebook-comments-support') ||true == ampforwp_get_setting('ampforwp-vuukle-comments-support') ||true == ampforwp_get_setting('ampforwp-spotim-comments-support') ){ ?>
+					<?php if ((true == ampforwp_get_setting('wordpress-comments-support') && comments_open()) || true == ampforwp_get_setting('ampforwp-disqus-comments-support') || true == ampforwp_get_setting('ampforwp-facebook-comments-support') ||true == ampforwp_get_setting('ampforwp-vuukle-comments-support') ||true == ampforwp_get_setting('ampforwp-spotim-comments-support') ){ ?>
 					<div class="cmts">
 						<?php amp_comments();?>
 					</div>
@@ -119,7 +126,7 @@ $page = get_query_var( 'page' ); ?>
 			            </div>
 		            <?php } 
 		             if( true == ampforwp_get_setting('swift-date') ) { ?>
-			            <div class="post-date">
+			            <div class="post-date desk-date">
 			            	<?php amp_date(); ?><?php edit_post_link(); ?>
 			            </div>
                           <?php do_action('ampforwp_post_views_ctr'); ?>
@@ -131,10 +138,12 @@ $page = get_query_var( 'page' ); ?>
 			            <ul class="clearfix">
 					        <?php ampforwp_related_post(); ?>
 					        <?php
-					       
+					          $current_id = ampforwp_get_the_ID();	
 					          while( $my_query->have_posts() ) {
 					            $my_query->the_post();
-					          
+					          if(ampforwp_get_the_ID()==$current_id){
+					            continue;
+					          }
 					        ?>
 					        <li class="<?php if ( has_post_thumbnail() ) { echo'has_thumbnail'; } else { echo 'no_thumbnail'; } ?>">
 					        	<?php if ( true == $redux_builder_amp['ampforwp-single-related-posts-image'] ) { if(ampforwp_has_post_thumbnail()){?>
@@ -186,10 +195,12 @@ do_action("ampforwp_single_design_type_handle_d1");
 	  		<?php ampforwp_related_post(); ?>
 	            <ul class="clearfix">
 			        <?php
-			       
+			          $current_id = ampforwp_get_the_ID();	
 			          while( $my_query->have_posts() ) {
 			            $my_query->the_post();
-			          
+			          if(ampforwp_get_the_ID()==$current_id){
+			            continue;
+			           }
 			        ?>
 			        <li class="<?php if ( has_post_thumbnail() ) { echo'has_thumbnail'; } else { echo 'no_thumbnail'; } ?>">
 			        	<?php if ( true == $redux_builder_amp['ampforwp-single-related-posts-image'] ) { if(ampforwp_has_post_thumbnail()){?>
@@ -232,10 +243,12 @@ do_action("ampforwp_single_design_type_handle_d1");
 	  		<?php ampforwp_related_post(); ?>
 	            <amp-carousel height="310" layout="fixed-height" type="carousel">
 			        <?php
-			        
+			          $current_id = ampforwp_get_the_ID();
 			          while( $my_query->have_posts() ) {
 			            $my_query->the_post();
-			           
+			           if(ampforwp_get_the_ID()==$current_id){
+			            	continue;
+			            } 
 			        ?>
 			        <li class="<?php if ( has_post_thumbnail() ) { echo'has_thumbnail'; } else { echo 'no_thumbnail'; } ?>">
 			        	<div class="rp-slide">
@@ -418,10 +431,12 @@ do_action("ampforwp_single_design_type_handle_d1");
 							  		<?php ampforwp_related_post(); ?>
 						            <ul class="clearfix">
 								        <?php
-								       
+								          $current_id = ampforwp_get_the_ID();
 								          while( $my_query->have_posts() ) {
 								            $my_query->the_post();
-								           
+								          if(ampforwp_get_the_ID()==$current_id){
+								            continue;
+								           } 
 								        ?>
 								        <li class="<?php if ( has_post_thumbnail() ) { echo'has_thumbnail'; } else { echo 'no_thumbnail'; } ?>">
 								        	<?php if ( true == $redux_builder_amp['ampforwp-single-related-posts-image'] ) { ?>

@@ -2,6 +2,8 @@
 
 namespace FluentForm\App\Services\FormBuilder\Notifications;
 
+use FluentForm\App\Helpers\Helper;
+use FluentForm\App\Services\FormBuilder\ShortCodeParser;
 use FluentForm\Framework\Foundation\Application;
 use FluentForm\Framework\Helpers\ArrayHelper;
 
@@ -23,7 +25,57 @@ class EmailNotificationActions
             return $types;
         });
 
-        add_action('fluentform_integration_notify_notifications', array($this, 'notify'), 10, 4);
+        add_action('fluentform_integration_notify_notifications', [$this, 'notify'], 10, 4);
+        add_action('fluentform_process_payment', [$this, 'notifyOnSubmitPaymentForm'], 10, 3);
+    }
+
+    public function notifyOnSubmitPaymentForm($submissionId, $submissionData, $form)
+    {
+        $emailFeeds = wpFluent()->table('fluentform_form_meta')
+            ->where('form_id', $form->id)
+            ->where('meta_key', 'notifications')
+            ->get();
+
+        if (! $emailFeeds) {
+            return;
+        }
+
+        $formData = $this->getFormData($submissionId);
+        $notificationManager = new  \FluentForm\App\Services\Integrations\GlobalNotificationManager(wpFluentForm());
+
+        $activeEmailFeeds = $notificationManager->getEnabledFeeds($emailFeeds, $formData, $submissionId);
+        if (! $activeEmailFeeds) {
+            return;
+        }
+
+        $onSubmitEmailFeeds = array_filter($activeEmailFeeds, function ($feed) {
+            return 'payment_form_submit' == ArrayHelper::get($feed, 'settings.feed_trigger_event');
+        });
+
+        if (! $onSubmitEmailFeeds || 'yes' === Helper::getSubmissionMeta($submissionId, '_ff_on_submit_email_sent')) {
+            return;
+        }
+
+        $entry = $this->getEntry($submissionId);
+
+        foreach ($onSubmitEmailFeeds as $feed) {
+            $processedValues = $feed['settings'];
+            unset($processedValues['conditionals']);
+
+            $processedValues = ShortCodeParser::parse(
+                $processedValues,
+                $submissionId,
+                $formData,
+                $form,
+                false,
+                $feed['meta_key']
+            );
+            $feed['processedValues'] = $processedValues;
+
+            $this->notify($feed, $formData, $entry, $form);
+        }
+
+        Helper::setSubmissionMeta($submissionId, '_ff_on_submit_email_sent', 'yes', $form->id);
     }
 
     public function notify($feed, $formData, $entry, $form)
@@ -33,19 +85,37 @@ class EmailNotificationActions
         );
 
         $emailData = $feed['processedValues'];
+        $emailAttachments = $this->getAttachments($emailData, $formData, $entry, $form);
+        if ($emailAttachments) {
+            $emailData['attachments'] = $emailAttachments;
+        }
+
+        $notifier->notify($emailData, $formData, $form, $entry->id);
+    }
+
+    /**
+     * @param $emailData
+     * @param $formData
+     * @param $entry
+     * @param $form
+     *
+     * @return array
+     */
+    private function getAttachments($emailData, $formData, $entry, $form)
+    {
         $emailAttachments = [];
-        if(!empty($emailData['attachments']) && is_array($emailData['attachments'])) {
+        if (! empty($emailData['attachments']) && is_array($emailData['attachments'])) {
             $attachments = [];
             foreach ($emailData['attachments'] as $name) {
                 $fileUrls = ArrayHelper::get($formData, $name);
-                if($fileUrls && is_array($fileUrls)) {
+                if ($fileUrls && is_array($fileUrls)) {
                     foreach ($fileUrls as $url) {
                         $filePath = str_replace(
                             site_url(''),
-                            wp_normalize_path( untrailingslashit( ABSPATH ) ),
+                            wp_normalize_path(untrailingslashit(ABSPATH)),
                             $url
                         );
-                        if(file_exists($filePath)) {
+                        if (file_exists($filePath)) {
                             $attachments[] = $filePath;
                         }
                     }
@@ -53,32 +123,54 @@ class EmailNotificationActions
             }
             $emailAttachments = $attachments;
         }
-        $mediaAttachments = ArrayHelper::get($emailData,'media_attachments') ;
-        if(!empty($mediaAttachments) && is_array($mediaAttachments)) {
+        $mediaAttachments = ArrayHelper::get($emailData, 'media_attachments');
+        if (! empty($mediaAttachments) && is_array($mediaAttachments)) {
             $attachments = [];
             foreach ($mediaAttachments as $file) {
                 $fileUrl = ArrayHelper::get($file, 'url');
-                if($fileUrl) {
+                if ($fileUrl) {
                     $filePath = str_replace(
                         site_url(''),
-                        wp_normalize_path( untrailingslashit( ABSPATH ) ),
+                        wp_normalize_path(untrailingslashit(ABSPATH)),
                         $fileUrl
                     );
-                    if(file_exists($filePath)) {
+                    if (file_exists($filePath)) {
                         $attachments[] = $filePath;
                     }
                 }
             }
-            $emailAttachments = array_merge($emailAttachments,$attachments);
+            $emailAttachments = array_merge($emailAttachments, $attachments);
         }
-
 
         // let others to apply attachments
-        $emailAttachments = apply_filters('fluentform_email_attachments', $emailAttachments, $emailData, $formData, $entry, $form);
-        if($emailAttachments) {
-            $emailData['attachments'] = $emailAttachments;
+        $emailAttachments = apply_filters(
+            'fluentform_email_attachments',
+            $emailAttachments,
+            $emailData,
+            $formData,
+            $entry,
+            $form
+        );
+        return $emailAttachments;
+    }
+
+    public function getFormData($submissionId)
+    {
+        $submission = wpFluent()->table('fluentform_submissions')
+            ->where('id', $submissionId)
+            ->first();
+
+        if (! $submission) {
+            return false;
         }
 
-        $notifier->notify($emailData, $formData, $form, $entry->id);
+        return json_decode($submission->response, true);
+    }
+
+    public function getEntry($submissionId)
+    {
+        return wpFluent()->table('fluentform_submissions')
+            ->where('id', $submissionId)
+            ->first();
     }
 }

@@ -20,7 +20,7 @@ use AIOSEO\Vendor\Monolog\Utils;
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
-class ChromePHPHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandler
+class ChromePHPHandler extends AbstractProcessingHandler
 {
     /**
      * Version of the extension
@@ -49,7 +49,7 @@ class ChromePHPHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessing
      * @param int  $level  The minimum logging level at which this handler will be triggered
      * @param bool $bubble Whether the messages that are handled can bubble up the stack or not
      */
-    public function __construct($level = \AIOSEO\Vendor\Monolog\Logger::DEBUG, $bubble = \true)
+    public function __construct($level = Logger::DEBUG, $bubble = \true)
     {
         parent::__construct($level, $bubble);
         if (!\function_exists('json_encode')) {
@@ -79,7 +79,7 @@ class ChromePHPHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessing
      */
     protected function getDefaultFormatter()
     {
-        return new \AIOSEO\Vendor\Monolog\Formatter\ChromePHPFormatter();
+        return new ChromePHPFormatter();
     }
     /**
      * Creates & sends header for a record
@@ -111,13 +111,13 @@ class ChromePHPHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessing
             }
             self::$json['request_uri'] = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
         }
-        $json = \AIOSEO\Vendor\Monolog\Utils::jsonEncode(self::$json, null, \true);
+        $json = Utils::jsonEncode(self::$json, null, \true);
         $data = \base64_encode(\utf8_encode($json));
         if (\strlen($data) > 3 * 1024) {
             self::$overflowed = \true;
-            $record = array('message' => 'Incomplete logs, chrome header size limit reached', 'context' => array(), 'level' => \AIOSEO\Vendor\Monolog\Logger::WARNING, 'level_name' => \AIOSEO\Vendor\Monolog\Logger::getLevelName(\AIOSEO\Vendor\Monolog\Logger::WARNING), 'channel' => 'monolog', 'datetime' => new \DateTime(), 'extra' => array());
+            $record = array('message' => 'Incomplete logs, chrome header size limit reached', 'context' => array(), 'level' => Logger::WARNING, 'level_name' => Logger::getLevelName(Logger::WARNING), 'channel' => 'monolog', 'datetime' => new \DateTime(), 'extra' => array());
             self::$json['rows'][\count(self::$json['rows']) - 1] = $this->getFormatter()->format($record);
-            $json = \AIOSEO\Vendor\Monolog\Utils::jsonEncode(self::$json, null, \true);
+            $json = Utils::jsonEncode(self::$json, null, \true);
             $data = \base64_encode(\utf8_encode($json));
         }
         if (\trim($data) !== '') {

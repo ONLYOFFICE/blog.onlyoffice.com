@@ -3,11 +3,12 @@
 namespace WPMailSMTP\Providers\Gmail;
 
 use WPMailSMTP\Admin\Area;
+use WPMailSMTP\Admin\DebugEvents\DebugEvents;
 use WPMailSMTP\Debug;
 use WPMailSMTP\Options as PluginOptions;
 use WPMailSMTP\Providers\AuthAbstract;
 use WPMailSMTP\Vendor\Google_Client;
-use WPMailSMTP\Vendor\Google_Service_Gmail;
+use WPMailSMTP\Vendor\Google\Service\Gmail;
 
 /**
  * Class Auth to request access and refresh tokens.
@@ -32,7 +33,7 @@ class Auth extends AuthAbstract {
 	 */
 	public function __construct() {
 
-		$options           = new PluginOptions();
+		$options           = PluginOptions::init();
 		$this->mailer_slug = $options->get( 'mail', 'mailer' );
 
 		if ( $this->mailer_slug !== Options::SLUG ) {
@@ -76,12 +77,14 @@ class Auth extends AuthAbstract {
 	 * @since 1.0.0
 	 * @since 1.5.0 Add ability to apply custom options to the client via a filter.
 	 *
+	 * @param bool $force If the client should be forcefully reinitialized.
+	 *
 	 * @return Google_Client
 	 */
-	public function get_client() {
+	public function get_client( $force = false ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 
 		// Doesn't load client twice + gives ability to overwrite.
-		if ( ! empty( $this->client ) ) {
+		if ( ! empty( $this->client ) && ! $force ) {
 			return $this->client;
 		}
 
@@ -101,7 +104,7 @@ class Auth extends AuthAbstract {
 		$client->setApprovalPrompt( 'force' );
 		$client->setIncludeGrantedScopes( true );
 		// We request only the sending capability, as it's what we only need to do.
-		$client->setScopes( array( Google_Service_Gmail::MAIL_GOOGLE_COM ) );
+		$client->setScopes( array( Gmail::MAIL_GOOGLE_COM ) );
 		$client->setRedirectUri( self::get_oauth_redirect_url() );
 		$client->setState( self::get_plugin_auth_url() );
 
@@ -136,6 +139,24 @@ class Auth extends AuthAbstract {
 
 			$this->update_access_token( $client->getAccessToken() );
 			$this->update_refresh_token( $client->getRefreshToken() );
+
+			/*
+			 * We need to set the correct `from_email` address, to avoid the SPF and DKIM issue.
+			 */
+			$gmail_aliases = $this->is_clients_saved() ? $this->get_user_possible_send_from_addresses() : [];
+			$options       = PluginOptions::init();
+			$all_options   = $options->get_all();
+
+			if (
+				! empty( $gmail_aliases ) &&
+				isset( $gmail_aliases[0] ) &&
+				is_email( $gmail_aliases[0] ) !== false &&
+				! in_array( $all_options['mail']['from_email'], $gmail_aliases, true )
+			) {
+				$all_options['mail']['from_email'] = $gmail_aliases[0];
+
+				$options->set( $all_options );
+			}
 		}
 
 		if ( ! empty( $this->options['access_token'] ) ) {
@@ -179,10 +200,19 @@ class Auth extends AuthAbstract {
 	 *
 	 * @since 1.0.0
 	 */
-	public function process() {
+	public function process() { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 
-		if ( ! ( isset( $_GET['tab'] ) && $_GET['tab'] === 'auth' ) ) { // phpcs:ignore
-			wp_safe_redirect( wp_mail_smtp()->get_admin()->get_admin_page_url() );
+		$redirect_url         = wp_mail_smtp()->get_admin()->get_admin_page_url();
+		$is_setup_wizard_auth = ! empty( $this->options['is_setup_wizard_auth'] );
+
+		if ( $is_setup_wizard_auth ) {
+			$this->update_is_setup_wizard_auth( false );
+
+			$redirect_url = \WPMailSMTP\Admin\SetupWizard::get_site_url() . '#/step/configure_mailer/gmail';
+		}
+
+		if ( ! ( isset( $_GET['tab'] ) && $_GET['tab'] === 'auth' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			wp_safe_redirect( $redirect_url );
 			exit;
 		}
 
@@ -195,7 +225,7 @@ class Auth extends AuthAbstract {
 				add_query_arg(
 					'error',
 					'google_no_clients',
-					wp_mail_smtp()->get_admin()->get_admin_page_url()
+					$redirect_url
 				)
 			);
 			exit;
@@ -207,57 +237,91 @@ class Auth extends AuthAbstract {
 		$scope = '';
 		$error = '';
 
-		if ( isset( $_GET['error'] ) ) { // phpcs:ignore
-			$error = sanitize_key( $_GET['error'] ); // phpcs:ignore
+		if ( isset( $_GET['error'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$error = sanitize_key( $_GET['error'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 
 		// In case of any error: display a message to a user.
 		if ( ! empty( $error ) ) {
+			DebugEvents::add_debug(
+				sprintf( /* Translators: %s the error code passed from Google. */
+					esc_html__( 'There was an error while processing Google authorization: %s' ),
+					esc_html( $error )
+				)
+			);
+
 			wp_safe_redirect(
 				add_query_arg(
 					'error',
 					'google_' . $error,
-					wp_mail_smtp()->get_admin()->get_admin_page_url()
+					$redirect_url
 				)
 			);
 			exit;
 		}
 
-		if ( isset( $_GET['code'] ) ) { // phpcs:ignore
-			$code = urldecode( $_GET['code'] ); // phpcs:ignore
+		if ( isset( $_GET['code'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$code = urldecode( $_GET['code'] );
 		}
-		if ( isset( $_GET['scope'] ) ) { // phpcs:ignore
-			$scope = urldecode( base64_decode( $_GET['scope'] ) ); // phpcs:ignore
+		if ( isset( $_GET['scope'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$scope = urldecode( base64_decode( $_GET['scope'] ) );
 		}
 
 		// Let's try to get the access token.
 		if (
 			! empty( $code ) &&
 			(
-				$scope === Google_Service_Gmail::MAIL_GOOGLE_COM . ' ' . Google_Service_Gmail::GMAIL_SEND ||
-				$scope === Google_Service_Gmail::GMAIL_SEND . ' ' . Google_Service_Gmail::MAIL_GOOGLE_COM ||
-				$scope === Google_Service_Gmail::GMAIL_SEND ||
-				$scope === Google_Service_Gmail::MAIL_GOOGLE_COM
+				$scope === Gmail::MAIL_GOOGLE_COM . ' ' . Gmail::GMAIL_SEND ||
+				$scope === Gmail::GMAIL_SEND . ' ' . Gmail::MAIL_GOOGLE_COM ||
+				$scope === Gmail::GMAIL_SEND ||
+				$scope === Gmail::MAIL_GOOGLE_COM
 			)
 		) {
 			// Save the auth code. So Google_Client can reuse it to retrieve the access token.
 			$this->update_auth_code( $code );
 		} else {
+			DebugEvents::add_debug(
+				esc_html__( 'There was an error while processing Google authorization: missing code or scope parameter.' )
+			);
+
 			wp_safe_redirect(
 				add_query_arg(
 					'error',
 					'google_no_code_scope',
-					wp_mail_smtp()->get_admin()->get_admin_page_url()
+					$redirect_url
 				)
 			);
 			exit;
+		}
+
+		if ( $is_setup_wizard_auth ) {
+			Debug::clear();
+
+			$this->get_client( true );
+
+			$error = Debug::get_last();
+
+			if ( ! empty( $error ) ) {
+				wp_safe_redirect(
+					add_query_arg(
+						'error',
+						'google_unsuccessful_oauth',
+						$redirect_url
+					)
+				);
+				exit;
+			}
 		}
 
 		wp_safe_redirect(
 			add_query_arg(
 				'success',
 				'google_site_linked',
-				wp_mail_smtp()->get_admin()->get_admin_page_url()
+				$redirect_url
 			)
 		);
 		exit;
@@ -292,7 +356,7 @@ class Auth extends AuthAbstract {
 	 */
 	public function get_user_info() {
 
-		$gmail = new Google_Service_Gmail( $this->get_client() );
+		$gmail = new Gmail( $this->get_client() );
 
 		try {
 			$email = $gmail->users->getProfile( 'me' )->getEmailAddress();
@@ -316,10 +380,12 @@ class Auth extends AuthAbstract {
 			return $this->aliases;
 		}
 
-		$gmail = new Google_Service_Gmail( $this->get_client() );
+		$gmail = new Gmail( $this->get_client() );
 
 		try {
-			$response = $gmail->users_settings_sendAs->listUsersSettingsSendAs( 'me' ); // phpcs:ignore
+
+			// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			$response = $gmail->users_settings_sendAs->listUsersSettingsSendAs( 'me' );
 
 			// phpcs:disable
 			$this->aliases = array_map(
@@ -331,6 +397,13 @@ class Auth extends AuthAbstract {
 			// phpcs:enable
 
 		} catch ( \Exception $exception ) {
+			DebugEvents::add_debug(
+				sprintf( /* Translators: %s the error message. */
+					esc_html__( 'An error occurred when trying to get Gmail aliases: %s' ),
+					esc_html( $exception->getMessage() )
+				)
+			);
+
 			$this->aliases = [];
 		}
 

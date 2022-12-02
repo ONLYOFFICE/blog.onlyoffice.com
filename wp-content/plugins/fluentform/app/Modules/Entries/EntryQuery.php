@@ -7,6 +7,8 @@ use FluentForm\App;
 class EntryQuery
 {
     /**
+     * Request object
+     *
      * @var \FluentForm\Framework\Request\Request $request
      */
     protected $request;
@@ -21,7 +23,7 @@ class EntryQuery
     protected $is_favourite = null;
     protected $sort_by = 'ASC';
     protected $search = false;
-    protected $wheres = array();
+    protected $wheres = [];
 
     protected $startDate;
     protected $endDate;
@@ -87,7 +89,7 @@ class EntryQuery
                         $operator = '=';
                         $value = $where[1];
                     }
-                    if(is_array($value)) {
+                    if (is_array($value)) {
                         $query->whereIn($column, $value);
                     } else {
                         $query->where($column, $operator, $value);
@@ -106,8 +108,8 @@ class EntryQuery
                 'total'        => $total,
                 'per_page'     => $this->per_page,
                 'current_page' => $this->page_number,
-                'last_page'    => ceil($total / $this->per_page)
-            ]
+                'last_page'    => ceil($total / $this->per_page),
+            ],
         ];
     }
 
@@ -120,7 +122,7 @@ class EntryQuery
     {
         $query = $this->getNextPrevEntryQuery();
 
-        $operator = $this->sort_by == 'ASC' ? '>' : '<';
+        $operator = 'ASC' == $this->sort_by ? '>' : '<';
 
         return $query->select('id')
             ->where('id', $operator, $entryId)
@@ -132,9 +134,9 @@ class EntryQuery
     {
         $query = $this->getNextPrevEntryQuery();
 
-        $operator = $this->sort_by == 'ASC' ? '<' : '>';
+        $operator = 'ASC' == $this->sort_by ? '<' : '>';
 
-        $orderBy = $this->sort_by == 'ASC' ? 'DESC' : 'ASC';
+        $orderBy = 'ASC' == $this->sort_by ? 'DESC' : 'ASC';
 
         return $query->select('id')
             ->where('id', $operator, $entryId)
@@ -170,7 +172,7 @@ class EntryQuery
             ->where('form_id', $form_id)
             ->groupBy('status')
             ->get();
-        
+
         $counts = [];
         foreach ($statuses as $status) {
             $counts[$status->status] = $status->count;
@@ -189,7 +191,7 @@ class EntryQuery
             ->count();
 
         $counts['favourites'] = $favorites;
-        
+
         return $counts;
     }
 }

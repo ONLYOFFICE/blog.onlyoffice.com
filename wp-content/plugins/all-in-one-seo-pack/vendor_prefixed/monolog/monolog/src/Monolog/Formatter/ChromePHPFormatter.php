@@ -16,12 +16,12 @@ use AIOSEO\Vendor\Monolog\Logger;
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
-class ChromePHPFormatter implements \AIOSEO\Vendor\Monolog\Formatter\FormatterInterface
+class ChromePHPFormatter implements FormatterInterface
 {
     /**
      * Translates Monolog log levels to Wildfire levels.
      */
-    private $logLevels = array(\AIOSEO\Vendor\Monolog\Logger::DEBUG => 'log', \AIOSEO\Vendor\Monolog\Logger::INFO => 'info', \AIOSEO\Vendor\Monolog\Logger::NOTICE => 'info', \AIOSEO\Vendor\Monolog\Logger::WARNING => 'warn', \AIOSEO\Vendor\Monolog\Logger::ERROR => 'error', \AIOSEO\Vendor\Monolog\Logger::CRITICAL => 'error', \AIOSEO\Vendor\Monolog\Logger::ALERT => 'error', \AIOSEO\Vendor\Monolog\Logger::EMERGENCY => 'error');
+    private $logLevels = array(Logger::DEBUG => 'log', Logger::INFO => 'info', Logger::NOTICE => 'info', Logger::WARNING => 'warn', Logger::ERROR => 'error', Logger::CRITICAL => 'error', Logger::ALERT => 'error', Logger::EMERGENCY => 'error');
     /**
      * {@inheritdoc}
      */

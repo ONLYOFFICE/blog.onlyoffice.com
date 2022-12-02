@@ -29,8 +29,8 @@ class PostMeta {
 				return;
 			}
 
-			if ( ! aioseo()->transients->get( 'import_post_meta_rank_math' ) ) {
-				aioseo()->transients->update( 'import_post_meta_rank_math', time(), WEEK_IN_SECONDS );
+			if ( ! aioseo()->core->cache->get( 'import_post_meta_rank_math' ) ) {
+				aioseo()->core->cache->update( 'import_post_meta_rank_math', time(), WEEK_IN_SECONDS );
 			}
 
 			as_schedule_single_action( time(), aioseo()->importExport->rankMath->postActionName, [], 'aioseo' );
@@ -49,9 +49,9 @@ class PostMeta {
 	public function importPostMeta() {
 		$postsPerAction  = 100;
 		$publicPostTypes = implode( "', '", aioseo()->helpers->getPublicPostTypes( true ) );
-		$timeStarted     = gmdate( 'Y-m-d H:i:s', aioseo()->transients->get( 'import_post_meta_rank_math' ) );
+		$timeStarted     = gmdate( 'Y-m-d H:i:s', aioseo()->core->cache->get( 'import_post_meta_rank_math' ) );
 
-		$posts = aioseo()->db
+		$posts = aioseo()->core->db
 			->start( 'posts' . ' as p' )
 			->select( 'p.ID, p.post_type' )
 			->join( 'postmeta as pm', '`p`.`ID` = `pm`.`post_id`' )
@@ -60,12 +60,14 @@ class PostMeta {
 			->whereRaw( "( p.post_type IN ( '$publicPostTypes' ) )" )
 			->whereRaw( "( ap.post_id IS NULL OR ap.updated < '$timeStarted' )" )
 			->orderBy( 'p.ID DESC' )
+			->groupBy( 'p.ID' )
 			->limit( $postsPerAction )
 			->run()
 			->result();
 
 		if ( ! $posts || ! count( $posts ) ) {
-			aioseo()->transients->delete( 'import_post_meta_rank_math' );
+			aioseo()->core->cache->delete( 'import_post_meta_rank_math' );
+
 			return;
 		}
 
@@ -87,7 +89,7 @@ class PostMeta {
 		];
 
 		foreach ( $posts as $post ) {
-			$postMeta = aioseo()->db
+			$postMeta = aioseo()->core->db
 				->start( 'postmeta' . ' as pm' )
 				->select( 'pm.meta_key, pm.meta_value' )
 				->where( 'pm.post_id', $post->ID )
@@ -95,13 +97,18 @@ class PostMeta {
 				->run()
 				->result();
 
-			if ( ! $postMeta || ! count( $postMeta ) ) {
-				continue;
-			}
-
 			$meta = [
 				'post_id' => $post->ID,
 			];
+
+			if ( ! $postMeta || ! count( $postMeta ) ) {
+				$aioseoPost = Models\Post::getPost( (int) $post->ID );
+				$aioseoPost->set( $meta );
+				$aioseoPost->save();
+
+				aioseo()->migration->meta->migrateAdditionalPostMeta( $post->ID );
+				continue;
+			}
 
 			foreach ( $postMeta as $record ) {
 				$name  = $record->meta_key;
@@ -189,6 +196,8 @@ class PostMeta {
 			$aioseoPost = Models\Post::getPost( $post->ID );
 			$aioseoPost->set( $meta );
 			$aioseoPost->save();
+
+			aioseo()->migration->meta->migrateAdditionalPostMeta( $post->ID );
 		}
 
 		if ( count( $posts ) === $postsPerAction ) {
@@ -198,7 +207,7 @@ class PostMeta {
 				// Do nothing.
 			}
 		} else {
-			aioseo()->transients->delete( 'import_post_meta_rank_math' );
+			aioseo()->core->cache->delete( 'import_post_meta_rank_math' );
 		}
 	}
 }

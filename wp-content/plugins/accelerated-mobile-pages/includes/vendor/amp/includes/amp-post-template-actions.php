@@ -8,6 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function amp_post_template_add_title( $amp_template ) {
 	$title = $amp_template->get( 'document_title' );
 	$title = str_replace('&#8211;', '-', $title);
+	$title = apply_filters( 'ampforwp_modify_title', $title );
 	?>
 	<title><?php echo esc_html( $title ); ?></title>
 	<?php
@@ -25,9 +26,10 @@ if( (class_exists('Yoast\\WP\\SEO\\Integrations\\Front_End_Integration')) ){
 	add_action( 'amp_post_template_head', 'AMPforWP\\AMPVendor\\amp_post_template_add_title' );
 }
 function amp_post_template_add_canonical( $amp_template ) {
-	if (function_exists('aioseo_pro_just_activated')) {
-    	return;
-  	}
+	
+	if (function_exists('aioseo') && ((aioseo()->pro && (version_compare(AIOSEO_VERSION,'4.2.6')>=0)) || (!aioseo()->pro && (version_compare(AIOSEO_VERSION,'4.2.4')>0)))) {
+		return;
+	 }
 	?>
 	<link rel="canonical" href="<?php echo esc_url( apply_filters('ampforwp_modify_rel_url',$amp_template->get( 'canonical_url' ) ) ); ?>" />
    <?php
@@ -55,6 +57,33 @@ function amp_post_template_add_cached_link($amp_template) {
 	}
 	?>
 	<link rel="preload" as="script" href="https://cdn.ampproject.org/v0.js">
+		<?php
+			$thumb_id = get_post_thumbnail_id(ampforwp_get_the_ID());
+			$image_size = ampforwp_get_setting('swift-featued-image-size');
+			$image = wp_get_attachment_image_src( $thumb_id, $image_size );
+			if($image!="" && isset($image[0]) && ampforwp_get_setting('swift-featued-image')){
+				if(function_exists('_imagify_init')){
+					$image[0] = esc_url($image[0]).".webp";
+				}
+				if(function_exists('webp_express_process_post')){
+					$img_url_webp = '';
+				 	$img_url = $image[0];
+					if(!preg_match('/\.webp/', $img_url)){
+						$config = \WebPExpress\Config::loadConfigAndFix();
+						if($config['destination-folder'] == 'mingled'){
+							$img_url_webp = $img_url;
+						}else{
+							$img_url_webp = preg_replace('/http(.*?)\/wp-content(.*?)/', 'http$1/wp-content/webp-express/webp-images$2', $img_url);
+							if($config['destination-structure'] == 'doc-root'){
+								$img_url_webp = preg_replace('/http(.*?)\/wp-content(.*?)/', 'http$1/wp-content/webp-express/webp-images/doc-root/wp-content$2', $img_url);
+							}
+						}
+						$image[0] = esc_url($img_url_webp).".webp";
+				    }
+				}
+				?>
+				<link rel="preload" href="<?php echo esc_url($image[0]);?>" as="image">
+			<?php } ?>
 		<?php
 		$scripts = $amp_template->get( 'amp_component_scripts', array() );
 		foreach ( $scripts as $element => $script ) : 
@@ -96,10 +125,11 @@ function amp_post_template_add_fonts( $amp_template ) {
 add_action( 'amp_post_template_head', 'AMPforWP\\AMPVendor\\amp_post_template_add_boilerplate_css' );
 function amp_post_template_add_boilerplate_css( $amp_template ) {
 	?>
+	<style amp-runtime></style>
 	<style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
 	<?php
 }
-if(!function_exists('ampforwp_with_scheme_app_output') && !function_exists('saswp_schema_markup_output') && ( ampforwp_get_setting('ampforwp-seo-selection') != "rank_math" || ! ampforwp_get_setting('ampforwp-seo-rank_math-schema')) && ! class_exists('SQ_Classes_ObjController') ):
+if(ampforwp_get_setting('ampforwp-sd-switch') && !function_exists('ampforwp_with_scheme_app_output') && !function_exists('saswp_schema_markup_output') && ( ampforwp_get_setting('ampforwp-seo-selection') != "rank_math" || ! ampforwp_get_setting('ampforwp-seo-rank_math-schema')) && ! class_exists('SQ_Classes_ObjController') ):
 add_action( 'amp_post_template_footer', 'AMPforWP\\AMPVendor\\amp_post_template_add_schemaorg_metadata' );
 function amp_post_template_add_schemaorg_metadata( $amp_template ) {
 	$metadata = $amp_template->get( 'metadata' );

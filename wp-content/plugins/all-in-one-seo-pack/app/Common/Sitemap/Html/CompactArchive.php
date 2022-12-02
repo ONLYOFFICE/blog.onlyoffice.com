@@ -53,6 +53,7 @@ class CompactArchive {
 		if ( $echo ) {
 			echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
+
 		return $output;
 	}
 	// phpcs:enable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
@@ -74,6 +75,7 @@ class CompactArchive {
 		}
 
 		$html .= '</li>' . "\n";
+
 		return wp_kses_post( $html );
 	}
 
@@ -103,6 +105,7 @@ class CompactArchive {
 				esc_html( $monthAbbrevation )
 			);
 		}
+
 		return $html;
 	}
 }

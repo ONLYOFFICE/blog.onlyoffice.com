@@ -16,7 +16,7 @@ namespace AIOSEO\Vendor\Monolog\Handler;
  *
  * @author Craig D'Amelio <craig@damelio.ca>
  */
-class WhatFailureGroupHandler extends \AIOSEO\Vendor\Monolog\Handler\GroupHandler
+class WhatFailureGroupHandler extends GroupHandler
 {
     /**
      * {@inheritdoc}

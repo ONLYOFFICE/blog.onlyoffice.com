@@ -39,7 +39,7 @@
     float: left;}.redux-main .hide{display:none }.redux-main .redux-field-container{    padding: 18px 50px 18px 0;}.redux-main .mini,.redux-main input[type=text].mini{width:60px;text-align:center}.redux-main input{line-height:19px}.redux-main img{max-width:100%;height:auto;width:auto !important}.redux-main .select2-default{width:auto !important}.redux-main .showDefaults{display:block;font-weight:normal;font-size:.8em;color:#888}.redux-main span.description{font-style: normal;
     left: 18px;}.redux-main #redux-system-info textarea{min-height:730px;width:100%}.redux-main .field-desc{clear:both;font-size:13px;line-height: 20px;}.redux-main .data-full li{width:100%}.redux-main .data-half li{width:50%;float:left}.redux-main .data-third li{width:33.3%;float:left}.redux-main .data-quarter li{width:25%;float:left}.redux-main .ui-helper-hidden-accessible{top:inherit}.redux-main .form-table{clear:none;margin-top:0px !important}.redux-main .form-table tr:first-child th,.redux-main .form-table tr:first-child td{padding-top:0}.redux-main .input-append input{border-right:0;margin-bottom:0;border-top-right-radius:0;border-bottom-right-radius:0;margin-right:0;float:left;margin-top:0;display:block}.redux-main .input-append .add-on{border-top-right-radius:3px;border-bottom-right-radius:3px;margin-left:-2px;padding-top:4px !important;padding-bottom:2px !important}.redux-main .input-prepend input{border-left:0;margin-bottom:0;border-top-left-radius:0;border-bottom-left-radius:0;margin-left:0;padding-top:2px;padding-bottom:5px;float:left;margin-top:0;display:block}.redux-main .input-prepend .add-on{border-top-left-radius:3px;border-bottom-left-radius:3px;float:left}.redux-main .input-append{margin-right:10px;font-size:0;white-space:nowrap;float:left;display:inline-block;margin-bottom:6px}.redux-main .input-append .add-on,.redux-main .input-prepend .add-on{width:auto;display:inline-block;min-width:16px;padding:3px 4px;font-size:12px;font-weight:400;line-height:20px;text-align:center;text-shadow:0 1px 0 #ffffff;background-color:#eeeeee;border:1px solid #cccccc}.redux-main .input-prepend{font-size:0;white-space:nowrap;float:left;display:inline-block;margin-bottom:6px}.redux-sidebar{width:202px;float:left}.redux-sidebar .redux-group-menu{margin-top:0 !important}
 
-.redux-sidebar .redux-group-menu li{margin-top:0}.redux-sidebar .redux-group-menu li.active a,.redux-sidebar .redux-group-menu li.active a:hover,.redux-sidebar .redux-group-menu li.activeChild a,.redux-sidebar .redux-group-menu li.activeChild a:hover{background:#FCFCFC;color:#269ad6;width:184px;opacity:1}.redux-sidebar .redux-group-menu li.active a li a{background:#333;padding-left:5px}.redux-sidebar .redux-group-menu li.divide{padding:0;border-width:1px 0;border-style:solid;border-bottom-color:#E7E7E7;border-top-color:#F9F9F9}.redux-sidebar .redux-group-menu li a:first-child{border-top:none}.redux-sidebar .redux-group-menu li a{display:block;padding:14px 4px 14px 10px;background:#e0e0e0;background:transparent;border-width:1px 0;border-style:solid;border-bottom-color:#E7E7E7;border-top-color:#F9F9F9;opacity:0.7;color:#555;font-weight:600;text-decoration:none;-webkit-transition:none;transition:none}.redux-sidebar .redux-group-menu li a.custom-tab{background:#f6f6f6}.redux-sidebar .redux-group-menu li a img{width:16px;height:16px;position:absolute;left:15px}.redux-sidebar .redux-group-menu li a:hover{color:#fff;background: #f45c43;background: linear-gradient(to right,#eb3349,#f45c43);opacity:1}.redux-sidebar .redux-menu-warning,.redux-sidebar .redux-menu-error,.redux-sidebar .hasSubSections .extraIconSubsections{display:inline-block;float:right;padding:6px 7px 4px 7px;margin-left:4px;font-family:sans-serif;font-size:9px;font-weight:600;line-height:9px;border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:10px;border:0 solid transparent}.redux-sidebar .redux-menu-warning i,.redux-sidebar .redux-menu-error i,.redux-sidebar .hasSubSections .extraIconSubsections i{display: none}.redux-sidebar .redux-menu-error{background-color:#b94a48;color:#f2dede}.redux-sidebar .redux-menu-warning{background-color:#C09853;color:#FCF8E3}.redux-sidebar ul .subsection{display:none}.redux-sidebar .redux-group-tab-link-a{position:relative;outline:0}
+.redux-sidebar .redux-group-menu li{margin-top:0}.redux-sidebar .redux-group-menu li.active a,.redux-sidebar .redux-group-menu li.active a:hover,.redux-sidebar .redux-group-menu li.activeChild a,.redux-sidebar .redux-group-menu li.activeChild a:hover{width:184px;opacity:1}.redux-sidebar .redux-group-menu li.active a li a{background:#333;padding-left:5px}.redux-sidebar .redux-group-menu li.divide{padding:0;border-width:1px 0;border-style:solid;border-bottom-color:#E7E7E7;border-top-color:#F9F9F9}.redux-sidebar .redux-group-menu li a:first-child{border-top:none}.redux-sidebar .redux-group-menu li a{display:block;padding:14px 4px 14px 10px;background:#e0e0e0;background:transparent;border-width:1px 0;border-style:solid;border-bottom-color:#E7E7E7;border-top-color:#F9F9F9;opacity:0.7;color:#555;font-weight:600;text-decoration:none;-webkit-transition:none;transition:none}.redux-sidebar .redux-group-menu li a.custom-tab{background:#f6f6f6}.redux-sidebar .redux-group-menu li a img{width:16px;height:16px;position:absolute;left:15px}.redux-sidebar .redux-group-menu li a:hover{color:#fff;background: #f45c43;background: linear-gradient(to right,#eb3349,#f45c43);opacity:1}.redux-sidebar .redux-menu-warning,.redux-sidebar .redux-menu-error,.redux-sidebar .hasSubSections .extraIconSubsections{display:inline-block;float:right;padding:6px 7px 4px 7px;margin-left:4px;font-family:sans-serif;font-size:9px;font-weight:600;line-height:9px;border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:10px;border:0 solid transparent}.redux-sidebar .redux-menu-warning i,.redux-sidebar .redux-menu-error i,.redux-sidebar .hasSubSections .extraIconSubsections i{display: none}.redux-sidebar .redux-menu-error{background-color:#b94a48;color:#f2dede}.redux-sidebar .redux-menu-warning{background-color:#C09853;color:#FCF8E3}.redux-sidebar ul .subsection{display:none}.redux-sidebar .redux-group-tab-link-a{position:relative;outline:0}
 .redux-sidebar .redux-group-tab-link-a i{     
     vertical-align: middle;
     font-size: 24px;
@@ -1140,20 +1140,20 @@ background: linear-gradient(45deg, #E47B49 0%, #ea4c89 100%);
     margin-top: 15px;
 }
 
-.beta_tester {
+.custom_url {
     float: left;
     margin-top: 12px;
     margin-left: 15px
 }
-.beta_tester a{
+.custom_url a{
     text-decoration: none;
-background: #fff;
-    color: #4452a7;
     padding: 6px 10px;
     border-radius: 20px;
-    border: 1px solid #ddd;
+    background: #4452a7;
+    color: #fff;
+    border: 0;
 }
-.beta_tester a:hover{
+.custom_url a:hover{
     text-decoration: underline;
 }
 @media(max-width:1366px){
@@ -1510,8 +1510,8 @@ img.ampforwp-quads-logo{
     border-radius: 30px;
 }
 .button.installed:before, .button.installing:before, .button.updated-message:before, .button.updating-message:before { 
-    margin: 0px 7px 2px -2px;
-    color: #fff;
+    margin: 3px 7px 2px -2px;
+    color: #f56e28;
 }
 div#section-amp-ads_1, table#section-table-amp-ads_1 {
     max-width: 100% !important;
@@ -1555,17 +1555,30 @@ doc-cnt h1 , .doc-cnt p{
 }   
 #toplevel_page_amp_options > a{ 
     position: relative; 
-}   
-#toplevel_page_amp_options .wp-menu-name:after{ 
-    content:""; 
-    display:inline-block;   
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512.003 512.003" style="enable-background:new 0 0 512.003 512.003;" xml:space="preserve"><g><g><path xmlns="http://www.w3.org/2000/svg" d="M477.958,262.633c-2.06-4.215-2.06-9.049,0-13.263l19.096-39.065c10.632-21.751,2.208-47.676-19.178-59.023l-38.41-20.38    c-4.144-2.198-6.985-6.11-7.796-10.729l-7.512-42.829c-4.183-23.846-26.241-39.87-50.208-36.479l-43.053,6.09    c-4.647,0.656-9.242-0.838-12.613-4.099l-31.251-30.232c-17.401-16.834-44.661-16.835-62.061,0L193.72,42.859    c-3.372,3.262-7.967,4.753-12.613,4.099l-43.053-6.09c-23.975-3.393-46.025,12.633-50.208,36.479l-7.512,42.827    c-0.811,4.62-3.652,8.531-7.795,10.73l-38.41,20.38c-21.386,11.346-29.81,37.273-19.178,59.024l19.095,39.064    c2.06,4.215,2.06,9.049,0,13.263l-19.096,39.064c-10.632,21.751-2.208,47.676,19.178,59.023l38.41,20.38    c4.144,2.198,6.985,6.11,7.796,10.729l7.512,42.829c3.808,21.708,22.422,36.932,43.815,36.93c2.107,0,4.245-0.148,6.394-0.452    l43.053-6.09c4.643-0.659,9.241,0.838,12.613,4.099l31.251,30.232c8.702,8.418,19.864,12.626,31.03,12.625    c11.163-0.001,22.332-4.209,31.03-12.625l31.252-30.232c3.372-3.261,7.968-4.751,12.613-4.099l43.053,6.09    c23.978,3.392,46.025-12.633,50.208-36.479l7.513-42.827c0.811-4.62,3.652-8.531,7.795-10.73l38.41-20.38    c21.386-11.346,29.81-37.273,19.178-59.024L477.958,262.633z M464.035,334.635l-38.41,20.38    c-12.246,6.499-20.645,18.057-23.04,31.713l-7.512,42.828c-1.415,8.068-8.874,13.487-16.987,12.342l-43.053-6.09    c-13.73-1.945-27.316,2.474-37.281,12.113L266.5,478.152c-5.886,5.694-15.109,5.694-20.997,0l-31.251-30.232    c-8.422-8.147-19.432-12.562-30.926-12.562c-2.106,0-4.229,0.148-6.355,0.449l-43.053,6.09    c-8.106,1.146-15.571-4.274-16.987-12.342l-7.513-42.829c-2.396-13.656-10.794-25.215-23.041-31.712l-38.41-20.38    c-7.236-3.839-10.086-12.61-6.489-19.969l19.096-39.065c6.088-12.456,6.088-26.742,0-39.198l-19.096-39.065    c-3.597-7.359-0.747-16.13,6.489-19.969l38.41-20.38c12.246-6.499,20.645-18.057,23.04-31.713l7.512-42.828    c1.416-8.068,8.874-13.488,16.987-12.342l43.053,6.09c13.725,1.943,27.316-2.474,37.281-12.113l31.252-30.232    c5.886-5.694,15.109-5.694,20.997,0l31.251,30.232c9.965,9.64,23.554,14.056,37.281,12.113l43.053-6.09    c8.107-1.147,15.572,4.274,16.987,12.342l7.512,42.829c2.396,13.656,10.794,25.215,23.041,31.712l38.41,20.38    c7.236,3.839,10.086,12.61,6.489,19.969l-19.096,39.064c-6.088,12.455-6.088,26.743,0,39.198l19.096,39.064    C474.121,322.024,471.271,330.796,464.035,334.635z" style="fill: white;"/></g></g><g><g><path xmlns="http://www.w3.org/2000/svg" d="M363.886,148.116c-5.765-5.766-15.115-5.766-20.881,0L148.116,343.006c-5.766,5.766-5.766,15.115,0,20.881    c2.883,2.883,6.662,4.325,10.44,4.325c3.778,0,7.558-1.441,10.44-4.325l194.889-194.889    C369.653,163.231,369.653,153.883,363.886,148.116z" style="fill: white;"/></g></g><g><g><path xmlns="http://www.w3.org/2000/svg" d="M196.941,123.116c-29.852,0-54.139,24.287-54.139,54.139s24.287,54.139,54.139,54.139s54.139-24.287,54.139-54.139    S226.793,123.116,196.941,123.116z M196.941,201.863c-13.569,0-24.608-11.039-24.608-24.609c0-13.569,11.039-24.608,24.608-24.608    c13.569,0,24.609,11.039,24.609,24.608C221.549,190.824,210.51,201.863,196.941,201.863z" style="fill: white;"/></g></g><g><g><path xmlns="http://www.w3.org/2000/svg" d="M315.061,280.61c-29.852,0-54.139,24.287-54.139,54.139s24.287,54.139,54.139,54.139    c29.852,0,54.139-24.287,54.139-54.139S344.913,280.61,315.061,280.61z M315.061,359.357c-13.569,0-24.609-11.039-24.609-24.608    s11.039-24.608,24.609-24.608c13.569,0,24.608,11.039,24.608,24.608S328.63,359.357,315.061,359.357z" style="fill: white;"/></g></g><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/></svg>');    
-    width: 20px;    
-    height: 20px;   
-    background-repeat: no-repeat;   
-    position: absolute; 
-    right: 20px;    
-    top: 7px;   
-}   
+}      
 
 /** Discount Offer CSS Ends **/
+ul#\32 _section_group_li_subsections .redux-group-tab-link-li.active {  
+    background: linear-gradient(to right,#eb3349,#f45c43);
+}
+
+/**Removed WP Quads Banner**/
+div#\34_section_group.amp-ads .redux-section-desc {
+    display: none!important;
+}
+
+#section-amp-ads_0.afw-accordion-header > h3 {
+    background: #200305 !important;
+    border-color: #200305 !important;
+    color: #fff;
+}
+table#section-table-amp-ads_0 {
+    border-color: #000;
+}
+#pa-feild-ul a.deletion.redux-multi-text-remove , #redux_builder_amp-pa-feild a.button.button-primary.redux-multi-text-add{
+    display: none;
+}
+
+fieldset#redux_builder_amp-signin-button-link a.deletion.redux-multi-text-remove , fieldset#redux_builder_amp-signin-button-link a.button.button-primary.redux-multi-text-add{
+    display: none;
+}

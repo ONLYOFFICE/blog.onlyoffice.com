@@ -10,7 +10,7 @@ $A2A_SHARE_SAVE_services = array(
 	"twitter" => array(
 		"name" => "Twitter",
 		"icon" => "twitter",
-		"color" => "55ACEE",
+		"color" => "1D9BF0",
 	),
 	"pinterest" => array(
 		"name" => "Pinterest",
@@ -67,11 +67,6 @@ $A2A_SHARE_SAVE_services = array(
 		"icon" => "bitty",
 		"color" => "999",
 	),
-	"blinklist" => array(
-		"name" => "Blinklist",
-		"icon" => "blinklist",
-		"color" => "3D3C3B",
-	),
 	"blogger" => array(
 		"name" => "Blogger",
 		"icon" => "blogger",
@@ -97,11 +92,6 @@ $A2A_SHARE_SAVE_services = array(
 		"icon" => "buffer",
 		"color" => "2A2A2A",
 	),
-	"care2_news" => array(
-		"name" => "Care2 News",
-		"icon" => "care2",
-		"color" => "6EB43F",
-	),
 	"citeulike" => array(
 		"name" => "CiteULike",
 		"icon" => "citeulike",
@@ -111,11 +101,6 @@ $A2A_SHARE_SAVE_services = array(
 		"name" => "Copy Link",
 		"icon" => "link",
 		"color" => "0166FF",
-	),
-	"design_float" => array(
-		"name" => "Design Float",
-		"icon" => "designfloat",
-		"color" => "8AC8FF",
 	),
 	"diary_ru" => array(
 		"name" => "Diary.Ru",
@@ -147,20 +132,10 @@ $A2A_SHARE_SAVE_services = array(
 		"icon" => "draugiem",
 		"color" => "F60",
 	),
-	"dzone" => array(
-		"name" => "DZone",
-		"icon" => "dzone",
-		"color" => "82C251",
-	),
 	"evernote" => array(
 		"name" => "Evernote",
 		"icon" => "evernote",
 		"color" => "00A82D",
-	),
-	"facebook_messenger" => array(
-		"name" => "Facebook Messenger",
-		"icon" => "facebook_messenger",
-		"color" => "0084FF",
 	),
 	"fark" => array(
 		"name" => "Fark",
@@ -181,11 +156,6 @@ $A2A_SHARE_SAVE_services = array(
 		"name" => "Gmail",
 		"icon" => "gmail",
 		"color" => "DD5347",
-	),
-	"google_bookmarks" => array(
-		"name" => "Google Bookmarks",
-		"icon" => "google",
-		"color" => "4285F4",
 	),
 	"google_classroom" => array(
 		"name" => "Google Classroom",
@@ -216,11 +186,6 @@ $A2A_SHARE_SAVE_services = array(
 		"name" => "Kakao",
 		"icon" => "kakao",
 		"color" => "FCB700",
-	),
-	"kik" => array(
-		"name" => "Kik",
-		"icon" => "kik",
-		"color" => "2A2A2A",
 	),
 	"known" => array(
 		"name" => "Known",
@@ -257,15 +222,15 @@ $A2A_SHARE_SAVE_services = array(
 		"icon" => "meneame",
 		"color" => "FF7D12",
 	),
+	"facebook_messenger" => array(
+		"name" => "Messenger",
+		"icon" => "facebook_messenger",
+		"color" => "0084FF",
+	),
 	"mewe" => array(
 		"name" => "MeWe",
 		"icon" => "mewe",
 		"color" => "007DA1",
-	),
-	"mix" => array(
-		"name" => "Mix",
-		"icon" => "mix",
-		"color" => "ff8226",
 	),
 	"mixi" => array(
 		"name" => "Mixi",
@@ -276,11 +241,6 @@ $A2A_SHARE_SAVE_services = array(
 		"name" => "MySpace",
 		"icon" => "myspace",
 		"color" => "2A2A2A",
-	),
-	"netvouz" => array(
-		"name" => "Netvouz",
-		"icon" => "netvouz",
-		"color" => "6C3",
 	),
 	"odnoklassniki" => array(
 		"name" => "Odnoklassniki",
@@ -322,11 +282,6 @@ $A2A_SHARE_SAVE_services = array(
 		"icon" => "printfriendly",
 		"color" => "6D9F00",
 	),
-	"protopage_bookmarks" => array(
-		"name" => "Protopage Bookmarks",
-		"icon" => "protopage",
-		"color" => "413FFF",
-	),
 	"pusha" => array(
 		"name" => "Pusha",
 		"icon" => "pusha",
@@ -352,11 +307,6 @@ $A2A_SHARE_SAVE_services = array(
 		"icon" => "refind",
 		"color" => "1492ef",
 	),
-	"renren" => array(
-		"name" => "Renren",
-		"icon" => "renren",
-		"color" => "005EAC",
-	),
 	"sina_weibo" => array(
 		"name" => "Sina Weibo",
 		"icon" => "sina_weibo",
@@ -381,6 +331,11 @@ $A2A_SHARE_SAVE_services = array(
 		"name" => "SMS",
 		"icon" => "sms",
 		"color" => "6CBE45",
+	),
+	"snapchat" => array(
+		"name" => "Snapchat",
+		"icon" => "snapchat",
+		"color" => "2A2A2A",
 	),
 	"stocktwits" => array(
 		"name" => "StockTwits",
@@ -412,11 +367,6 @@ $A2A_SHARE_SAVE_services = array(
 		"icon" => "trello",
 		"color" => "0079BF",
 	),
-	"tuenti" => array(
-		"name" => "Tuenti",
-		"icon" => "tuenti",
-		"color" => "0075C9",
-	),
 	"twiddla" => array(
 		"name" => "Twiddla",
 		"icon" => "twiddla",
@@ -427,11 +377,6 @@ $A2A_SHARE_SAVE_services = array(
 		"icon" => "typepad",
 		"color" => "D2DE61",
 	),
-	"viadeo" => array(
-		"name" => "Viadeo",
-		"icon" => "viadeo",
-		"color" => "2A2A2A",
-	),
 	"viber" => array(
 		"name" => "Viber",
 		"icon" => "viber",
@@ -441,11 +386,6 @@ $A2A_SHARE_SAVE_services = array(
 		"name" => "VK",
 		"icon" => "vk",
 		"color" => "587EA3",
-	),
-	"wanelo" => array(
-		"name" => "Wanelo",
-		"icon" => "wanelo",
-		"color" => "9cb092",
 	),
 	"wechat" => array(
 		"name" => "WeChat",
@@ -472,11 +412,6 @@ $A2A_SHARE_SAVE_services = array(
 		"icon" => "yahoo",
 		"color" => "400090",
 	),
-	"yoolink" => array(
-		"name" => "Yoolink",
-		"icon" => "yoolink",
-		"color" => "A2C538",
-	),
 	"yummly" => array(
 		"name" => "Yummly",
 		"icon" => "yummly",
@@ -488,103 +423,103 @@ $A2A_SHARE_SAVE_services = array(
 $A2A_FOLLOW_services = array(
 	
 	'facebook' => array( 
-		'name' => 'Facebook', 
-		'href' => 'https://www.facebook.com/${id}',	
+		'name' => 'Facebook',
+		'href' => 'https://www.facebook.com/${id}',
 		'icon' => 'facebook',
 		'color' => '3B5998',
 	),
 	'twitter' => array( 
-		'name' => 'Twitter', 
-		'href' => 'https://twitter.com/${id}',	
+		'name' => 'Twitter',
+		'href' => 'https://twitter.com/${id}',
 		'icon' => 'twitter',
 		'color' => '55ACEE',
 	),
 	'instagram' => array( 
-		'name' => 'Instagram', 
-		'href' => 'https://www.instagram.com/${id}',	
+		'name' => 'Instagram',
+		'href' => 'https://www.instagram.com/${id}',
 		'icon' => 'instagram',
 		'color' => 'E4405F',
 	),
 	'pinterest' => array( 
-		'name' => 'Pinterest', 
-		'href' => 'https://www.pinterest.com/${id}',	
+		'name' => 'Pinterest',
+		'href' => 'https://www.pinterest.com/${id}',
 		'icon' => 'pinterest',
 		'color' => 'BD081C',
 	),
 	'behance' => array( 
-		'name' => 'Behance', 
-		'href' => 'https://www.behance.net/${id}',	
+		'name' => 'Behance',
+		'href' => 'https://www.behance.net/${id}',
 		'icon' => 'behance',
 		'color' => '007EFF',
 	),
 	'flickr' => array( 
-		'name' => 'Flickr', 
-		'href' => 'https://www.flickr.com/photos/${id}',	
+		'name' => 'Flickr',
+		'href' => 'https://www.flickr.com/photos/${id}',
 		'icon' => 'flickr',
 		'color' => 'FF0084',
 	),
 	'foursquare' => array( 
-		'name' => 'Foursquare', 
-		'href' => 'https://foursquare.com/${id}',	
+		'name' => 'Foursquare',
+		'href' => 'https://foursquare.com/${id}',
 		'icon' => 'foursquare',
 		'color' => 'F94877',
 	),
 	'github' => array( 
-		'name' => 'GitHub', 
-		'href' => 'https://github.com/${id}',	
+		'name' => 'GitHub',
+		'href' => 'https://github.com/${id}',
 		'icon' => 'github',
 		'color' => '2A2A2A',
 	),
 	'linkedin' => array( 
-		'name' => 'LinkedIn', 
-		'href' => 'https://www.linkedin.com/in/${id}',	
+		'name' => 'LinkedIn',
+		'href' => 'https://www.linkedin.com/in/${id}',
 		'icon' => 'linkedin',
 		'color' => '007BB5',
 	),
 	'linkedin_company' => array( 
-		'name' => 'LinkedIn Company', 
-		'href' => 'https://www.linkedin.com/company/${id}',	
+		'name' => 'LinkedIn Company',
+		'href' => 'https://www.linkedin.com/company/${id}',
 		'icon' => 'linkedin',
 		'color' => '007BB5',
 	),
 	'medium' => array( 
-		'name' => 'Medium', 
-		'href' => 'https://medium.com/@${id}',	
+		'name' => 'Medium',
+		'href' => 'https://medium.com/@${id}',
 		'icon' => 'medium',
 		'color' => '2A2A2A',
 	),
 	'snapchat' => array( 
-		'name' => 'Snapchat', 
-		'href' => 'https://www.snapchat.com/add/${id}',	
+		'name' => 'Snapchat',
+		'href' => 'https://www.snapchat.com/add/${id}',
 		'icon' => 'snapchat',
 		'color' => '2A2A2A',
 	),
 	'tumblr' => array( 
-		'name' => 'Tumblr', 
-		'href' => 'http://${id}.tumblr.com',	
+		'name' => 'Tumblr',
+		'href' => 'http://${id}.tumblr.com',
 		'icon' => 'tumblr',
 		'color' => '35465C',
 	),
 	'vimeo' => array( 
-		'name' => 'Vimeo', 
-		'href' => 'https://vimeo.com/${id}',	
+		'name' => 'Vimeo',
+		'href' => 'https://vimeo.com/${id}',
 		'icon' => 'vimeo',
 		'color' => '1AB7EA',
 	),
 	'youtube' => array( 
-		'name' => 'YouTube', 
-		'href' => 'https://www.youtube.com/user/${id}',	
+		'name' => 'YouTube',
+		'href' => 'https://www.youtube.com/user/${id}',
 		'icon' => 'youtube',
 		'color' => 'FF0000',
 	),
 	'youtube_channel' => array( 
-		'name' => 'YouTube Channel', 
-		'href' => 'https://www.youtube.com/channel/${id}',	
+		'name' => 'YouTube Channel',
+		'href' => 'https://www.youtube.com/channel/${id}',
 		'icon' => 'youtube',
 		'color' => 'FF0000',
 	),
 	'feed' => array( 
-		'name' => 'RSS Feed', 
+		'name' => 'RSS Feed',
 		'href' => 'http://www.example.com/feed/',
 		'icon' => 'feed',
 		'color' => 'e3702d',

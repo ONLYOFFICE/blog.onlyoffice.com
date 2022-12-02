@@ -49,7 +49,8 @@ class Helpers {
 				if ( ! $options->has( $lastOption, false ) ) {
 					$error = true;
 					break;
-				};
+				}
+
 				if ( count( $values['newOption'] ) - 1 !== $i ) {
 					$options = $options->$lastOption;
 				}
@@ -108,7 +109,7 @@ class Helpers {
 			'%date%'                   => '#archive_date',
 			'%day%'                    => '#post_day',
 			'%month%'                  => '#post_month',
-			'%monthnum%'               => '#monthnum',
+			'%monthnum%'               => '#post_month',
 			'%year%'                   => '#post_year',
 			'%current_date%'           => '#current_date',
 			'%current_day%'            => '#current_day',
@@ -189,6 +190,7 @@ class Helpers {
 		}
 
 		$string = preg_replace( '/%([a-f0-9]{2}[^%]*)%/i', '#$1#', $string );
+
 		return $string;
 	}
 
@@ -232,23 +234,14 @@ class Helpers {
 	 * @return void
 	 */
 	public static function redoMigration() {
-		aioseo()->db->delete( 'options' )
+		aioseo()->core->db->delete( 'options' )
 			->whereRaw( "`option_name` LIKE 'aioseo_options_internal%'" )
 			->run();
 
-		aioseo()->transients->delete( 'v3_migration_in_progress_posts' );
-		aioseo()->transients->delete( 'v3_migration_in_progress_terms' );
+		aioseo()->core->cache->delete( 'v3_migration_in_progress_posts' );
+		aioseo()->core->cache->delete( 'v3_migration_in_progress_terms' );
 
-		try {
-			if ( as_next_scheduled_action( 'aioseo_migrate_post_meta' ) ) {
-				as_unschedule_action( 'aioseo_migrate_post_meta', [], 'aioseo' );
-			}
-
-			if ( as_next_scheduled_action( 'aioseo_migrate_term_meta' ) ) {
-				as_unschedule_action( 'aioseo_migrate_term_meta', [], 'aioseo' );
-			}
-		} catch ( \Exception $e ) {
-			// Do nothing.
-		}
+		aioseo()->actionScheduler->unschedule( 'aioseo_migrate_post_meta' );
+		aioseo()->actionScheduler->unschedule( 'aioseo_migrate_term_meta' );
 	}
 }
