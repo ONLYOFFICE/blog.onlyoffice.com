@@ -1084,6 +1084,30 @@ msgstr "Visualizza tutti i post Per l'istruzione"
 msgid "View all posts"
 msgstr "Visualizza tutti i post"
 
+#: wp-content/themes/teamlab-blog-2-0/index.php:109
+#: wp-content/themes/teamlab-blog-2-0/index.php:149
+#: wp-content/themes/teamlab-blog-2-0/index.php:157
+msgid "product-releases"
+msgstr "rilascio-dei-prodotti"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:112
+#: wp-content/themes/teamlab-blog-2-0/index.php:178
+#: wp-content/themes/teamlab-blog-2-0/index.php:186
+msgid "for-developers"
+msgstr "per-gli-sviluppatori"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:115
+#: wp-content/themes/teamlab-blog-2-0/index.php:209
+#: wp-content/themes/teamlab-blog-2-0/index.php:217
+msgid "for-business"
+msgstr "per-affari"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:118
+#: wp-content/themes/teamlab-blog-2-0/index.php:238
+#: wp-content/themes/teamlab-blog-2-0/index.php:246
+msgid "for-education"
+msgstr "per-l-istruzione"
+
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:34
 msgid "By clicking \"Subscribe\", you agree to the <u>rules for using the service and processing personal data.</u>"
 msgstr "Cliccando su \"Iscriviti\", accetti <u>le regole per l'utilizzo del servizio e il trattamento dei dati personali.</u>"

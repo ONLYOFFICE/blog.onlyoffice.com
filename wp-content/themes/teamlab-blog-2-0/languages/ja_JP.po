@@ -1435,6 +1435,30 @@ msgstr "教育機関向けの投稿をすべて見る"
 msgid "View all posts"
 msgstr "投稿をすべて見る"
 
+#: wp-content/themes/teamlab-blog-2-0/index.php:109
+#: wp-content/themes/teamlab-blog-2-0/index.php:149
+#: wp-content/themes/teamlab-blog-2-0/index.php:157
+msgid "product-releases"
+msgstr "product-releases-ja"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:112
+#: wp-content/themes/teamlab-blog-2-0/index.php:178
+#: wp-content/themes/teamlab-blog-2-0/index.php:186
+msgid "for-developers"
+msgstr "for-developers-ja"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:115
+#: wp-content/themes/teamlab-blog-2-0/index.php:209
+#: wp-content/themes/teamlab-blog-2-0/index.php:217
+msgid "for-business"
+msgstr "for-business-ja"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:118
+#: wp-content/themes/teamlab-blog-2-0/index.php:238
+#: wp-content/themes/teamlab-blog-2-0/index.php:246
+msgid "for-education"
+msgstr "for-education-ja"
+
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:34
 msgid "By clicking \"Subscribe\", you agree to the <u>rules for using the service and processing personal data.</u>"
 msgstr "「登録する」をクリックすると、<u>サービスの利用および個人情報の取り扱いに関する規定に同意したものとみなされます。</u>"
