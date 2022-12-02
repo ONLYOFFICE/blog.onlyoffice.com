@@ -33,8 +33,8 @@ class AdminNotices
 	
 	public function noticeActions()
 	{
-		$noticeName = sanitize_text_field($_REQUEST['notice_name']);
-		$noticeType = sanitize_text_field($_REQUEST['action_type']);
+		$noticeName = sanitize_text_field($this->app->request->get('notice_name'));
+		$noticeType = sanitize_text_field($this->app->request->get('action_type'));
 		
 		if($noticeName == 'track_data_notice') {
 			$notificationPref = $this->getNoticePref();

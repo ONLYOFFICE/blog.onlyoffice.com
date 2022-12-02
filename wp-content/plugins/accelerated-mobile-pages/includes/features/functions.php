@@ -29,12 +29,17 @@ function ampforwp_add_admin_styling($hook_suffix){
     // Style file to add or modify css inside admin area
     wp_register_style( 'ampforwp_admin_css', untrailingslashit(AMPFORWP_PLUGIN_DIR_URI) . '/includes/admin-style.css', false, AMPFORWP_VERSION );
     wp_enqueue_style( 'ampforwp_admin_css' );
-
     // Admin area scripts file
-    wp_register_script( 'ampforwp_admin_js', untrailingslashit(AMPFORWP_PLUGIN_DIR_URI) . '/includes/admin-script.js', array('wp-color-picker'), AMPFORWP_VERSION );
+    $dep = array('wp-color-picker');
+    $dep = apply_filters('ampforwp_modify_script_dependency', $dep);
+    wp_register_script( 'ampforwp_admin_js', untrailingslashit(AMPFORWP_PLUGIN_DIR_URI) . '/includes/admin-script.js', $dep , AMPFORWP_VERSION );
 
     // Localize the script with new data
     $redux_data = array();
+    global $pagenow;
+    if ('plugins.php' == $pagenow) {
+        add_action('admin_notices', 'ampforwp_tpd_notice' );
+    }
     if( current_user_can("manage_options") && $hook_suffix=='toplevel_page_amp_options' ){
         $redux_data = $redux_builder_amp;
         wp_dequeue_script( 'insert-post-adschart-admin' );
@@ -44,6 +49,9 @@ function ampforwp_add_admin_styling($hook_suffix){
         }
         if(function_exists('html5blank_header_scripts')){
             wp_dequeue_script( 'jquery-js' );
+        }
+        if(function_exists('megashop_setup')){
+            wp_dequeue_script( 'adminjs' );
         }
         remove_all_actions('admin_notices');
         remove_all_actions('all_admin_notices');
@@ -56,6 +64,9 @@ function ampforwp_add_admin_styling($hook_suffix){
         if (function_exists('aeccglobal_setup')) {
             remove_action( 'admin_footer', 'js_update_show_in_slider' );
         }
+        if (function_exists('appsero_init_tracker_tour_booking_manager')) {
+           add_action( 'wp_print_scripts', 'ampforwp_dequeue_tour_booking_script', 100 );
+        }
         add_action('admin_notices', 'ampforwp_dev_mode_notice');
         add_action('admin_notices', 'ampforwp_plugins_manager_notice');
         add_action('admin_notices', 'ampforwp_ampwptheme_notice');
@@ -65,6 +76,24 @@ function ampforwp_add_admin_styling($hook_suffix){
         add_action('admin_notices', 'ampforwp_mobile_redirection_notice' );
         add_action('admin_notices', 'ampforwp_category_base_remove_notice' );
         add_action('admin_notices', 'ampforwp_internal_feedback_notice' );
+        add_action('admin_notices', 'ampforwp_tpd_notice' );
+        if ( defined('AMPFORWPPRO_PLUGIN_DIR')  ) {     
+            $license_info = get_option( 'ampforwppro_license_info');
+            if (!$license_info) {
+               add_action('admin_notices', 'ampforwp_pro_extension_manager_notice' );
+            }
+        }
+        $setup_ids = array(
+                        'ampforwp-ux-website-type-section',
+                        'ampforwp-ux-need-type-section',
+                        'ampforwp-ux-analytics-section'
+                    );
+        for($sid = 0; $sid < count($setup_ids); $sid++ ){
+            $check = ampforwp_get_setup_info($setup_ids[$sid]);
+            if($check == ""){
+                add_action('admin_notices', 'ampforwp_incomplate_setup_notice' );
+            }
+        }
     }else{
         $redux_data['ampforwp-amp-takeover'] =  ampforwp_get_setting('ampforwp-amp-takeover');
     }
@@ -76,7 +105,7 @@ function ampforwp_add_admin_styling($hook_suffix){
     $screen = get_current_screen();
     if ( 'toplevel_page_amp_options' == $screen->base ) {
         $opt = get_option("ampforwp_option_panel_view_type");
-        wp_localize_script( 'ampforwp_admin_js', 'amp_option_panel_view', $opt);
+        wp_localize_script( 'ampforwp_admin_js', 'amp_option_panel_view', array($opt));
     }else{
         $opt = get_option("ampforwp_option_panel_view_type");
         if($opt==1 || $opt==2){
@@ -84,14 +113,21 @@ function ampforwp_add_admin_styling($hook_suffix){
         }else{
             $opt = "31";
         }
-        wp_localize_script( 'ampforwp_admin_js', 'amp_option_panel_view', "$opt");
+        wp_localize_script( 'ampforwp_admin_js', 'amp_option_panel_view', array($opt));
     }
-    wp_localize_script( 'ampforwp_admin_js', 'amp_fields', $amp_fields );
+    wp_localize_script( 'ampforwp_admin_js', 'amp_fields', array($amp_fields));
     $redux_data = apply_filters("ampforwp_custom_localize_data", $redux_data);
     wp_localize_script( 'ampforwp_admin_js', 'redux_data', $redux_data );
-    wp_localize_script( 'ampforwp_admin_js', 'ampforwp_nonce', wp_create_nonce('ampforwp-verify-request') );
+    wp_localize_script( 'ampforwp_admin_js', 'ampforwp_nonce',
+        array( 
+            'security' => wp_create_nonce( 'ampforwp-verify-request' )
+        )
+    );
     wp_enqueue_script( 'wp-color-picker' );
     wp_enqueue_script( 'ampforwp_admin_js' );
+}
+function ampforwp_dequeue_tour_booking_script() {
+    wp_dequeue_script( 'ttbm_mp_script' );
 }
 // 96. ampforwp_is_front_page() ampforwp_is_home() and ampforwp_is_blog is created
 function ampforwp_is_front_page(){
@@ -234,7 +270,10 @@ function ampforwp_the_content_filter_full( $content_buffer ) {
         //  Compatibility with the footnotes plugin. #2447
         if(class_exists('MCI_Footnotes')){
         $footnote_collapse_link = '';
-        $footnote_collapse = MCI_Footnotes_Convert::toBool(MCI_Footnotes_Settings::instance()->get(MCI_Footnotes_Settings::C_BOOL_REFERENCE_CONTAINER_COLLAPSE));
+        $footnote_collapse = false;
+        if (method_exists('MCI_Footnotes_Convert', 'toBool')) {
+           $footnote_collapse = MCI_Footnotes_Convert::toBool(MCI_Footnotes_Settings::instance()->get(MCI_Footnotes_Settings::C_BOOL_REFERENCE_CONTAINER_COLLAPSE));
+        }
         if( $footnote_collapse == true ){
             $footnote_collapse_link = 'on="tap:footnote_references_container.show" role="click" tabindex="1" ';
             $content_buffer = preg_replace( '/<div id=(.*?)footnote_references_container(.*?)\s/m','<div id=$1footnote_references_container$2 hidden ',$content_buffer);
@@ -823,7 +862,11 @@ function ampforwp_url_controller( $url, $nonamp = '' ) {
     }
     $new_url = "";
     $get_permalink_structure = "";
-    if ( ampforwp_amp_nonamp_convert("", "check") || (isset($redux_builder_amp['ampforwp-amp-takeover']) && true == $redux_builder_amp['ampforwp-amp-takeover']) ) {
+    $mob_pres_link = false;
+    if(function_exists('ampforwp_mobile_redirect_preseve_link')){
+      $mob_pres_link = ampforwp_mobile_redirect_preseve_link();
+    }
+    if ( ampforwp_amp_nonamp_convert("", "check") || ($mob_pres_link == true || true == ampforwp_get_setting('ampforwp-amp-takeover'))) {
         $nonamp = 'nonamp';
     }
     if ( isset($nonamp) && 'nonamp' == $nonamp ) {
@@ -1157,9 +1200,9 @@ function ampforwp_new_gallery_images($images_markup, $image, $markup_arr){
 }
 if( ! function_exists( 'ampforwp_additional_gallery_style' ) ){
     function ampforwp_additional_gallery_style(){
-        global $redux_builder_amp,$carousel_markup_all;
+        global $carousel_markup_all;
         $design_type = '';
-        $design_type = $redux_builder_amp['ampforwp-gallery-design-type'];
+        $design_type = ampforwp_get_setting('ampforwp-gallery-design-type');
         
         if(isset($design_type) && $design_type!==''){
             echo $carousel_markup_all[$design_type]['gallery_css'];
@@ -1461,7 +1504,7 @@ function ampforwp_internal_feedback_notice(){
        $install_date = date("m-d-Y", $install_date);
     }
     $activation_never =  get_option("ampforwp_feedback_remove_notice");
-    if (strtotime($install_date) < strtotime('1 month ago') && $activation_never !='remove') {?>
+    if (strtotime($install_date) < strtotime('-30 days') && $activation_never !='remove') {?>
         <div class="updated notice ampforwp_remove_notice" style="box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);background-color:white;">
             <p> 
             <?php esc_html_e('Awesome, you\'ve been using AMPforWP for more than 1 month. May I ask you to give it a 5-star rating on WordPress.org?', 'accelerated-mobile-pages'); ?></br>
@@ -1483,3 +1526,47 @@ function ampforwp_feedback_remove_notice(){
     wp_die();                
 }
 add_action('wp_ajax_ampforwp_feedback_remove_notice', 'ampforwp_feedback_remove_notice');
+
+function ampforwp_pro_extension_manager_notice(){?>
+    <div class="updated notice ampforwp_remove_notice" style="box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);background-color:white;">
+    <p> 
+    <?php echo esc_html__('AMP Pro Extension Manager has been activated, Please enter your license key', 'accelerated-mobile-pages'); ?>
+    <a href="<?php echo esc_url(admin_url('admin.php?page=amp-extension-manager')) ?>" style="font-weight:bold;"> <?php echo esc_html__('here', 'accelerated-mobile-pages') ?></a>
+    </p>
+    </div>
+<?php }
+
+function ampforwp_incomplate_setup_notice(){?>
+    <div class="updated notice ampforwp_remove_notice">
+    <p> 
+    <?php esc_html_e('Your setup is not completed. Please setup for better AMP Experience', 'accelerated-mobile-pages'); ?>
+    </p>
+    </div>
+<?php }
+
+function ampforwp_tpd_notice(){
+    $remove_notice =  get_option("ampforwp_tpd_remove_notice");
+    if ($remove_notice !='remove' && !ampforwp_get_setting('ampforwp-ads-publisherdesk')) { ?>
+        <div class="updated notice ampforwp_remove_notice" style="box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);background-color:white;">
+            <p> 
+            <?php echo sprintf( 'We have integrated <a href="https://www.publisherdesk.com/amp-for-wp/" target="_blank">%s</a> in our AMP plugin, it is a revenue optimization platform that helps publishers increase their ad revenue with fast fetch ad delivery and publishers can get upto 2x of the revenue compared to non-optimized pages',esc_html__('The Publisher Desk','accelerated-mobile-pages' ));?></p>
+            <a href="<?php echo esc_url('admin.php?page=amp_options&tab=4') ?>" class="button-primary" target="_self" style="font-weight:bold;" title="Ok, you deserved it"> <?php echo esc_html__('Setup The Publisher Desk in AMP', 'accelerated-mobile-pages') ?></a>
+            <a class="button-primary" id="ampforwp-close-ad-notice" style="font-weight:bold;"><?php echo esc_html__('Dismiss', 'accelerated-mobile-pages') ?></a>
+            </p>
+        </div>
+<?php    }
+}
+
+function ampforwp_tpd_remove_notice(){    
+    $result = '';
+    if(current_user_can( 'manage_options' )){
+       $result = update_option( "ampforwp_tpd_remove_notice", 'remove');
+    }
+    if($result){
+        echo json_encode(array('status'=>'t'));            
+    }else{    
+        echo json_encode(array('status'=>'f'));                
+    }   
+    wp_die();                
+}
+add_action('wp_ajax_ampforwp_tpd_remove_notice', 'ampforwp_tpd_remove_notice');

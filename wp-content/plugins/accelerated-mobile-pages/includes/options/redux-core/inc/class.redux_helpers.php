@@ -41,6 +41,13 @@ namespace ReduxCore\ReduxFramework;
                 return false;
             }
 
+            public static function get_auth_key_secret_key() {
+                $key = "";
+                $key .= defined( 'AUTH_KEY' ) ? AUTH_KEY : get_site_url();
+                $key .= defined( 'SECURE_AUTH_KEY' ) ? SECURE_AUTH_KEY : get_site_url();
+                return $key;
+            }
+
             public static function isFieldInUse( $parent, $field ) {
                 foreach ( $parent->sections as $k => $section ) {
                     if ( ! isset( $section['title'] ) ) {
@@ -674,12 +681,16 @@ namespace ReduxCore\ReduxFramework;
                     return $data[0];
                 } else {
                     $file_data = $filesystem->execute( 'get_contents', $file );
+                    if(!empty($file_data))
+                    {
+                        $file_data = str_replace( "\r", "\n", $file_data );
+                        $version   = '';
 
-                    $file_data = str_replace( "\r", "\n", $file_data );
-                    $version   = '';
-
-                    if ( preg_match( '/^[ \t\/*#@]*' . preg_quote( '@version', '/' ) . '(.*)$/mi', $file_data, $match ) && $match[1] ) {
-                        $version = _cleanup_header_comment( $match[1] );
+                        if ( preg_match( '/^[ \t\/*#@]*' . preg_quote( '@version', '/' ) . '(.*)$/mi', $file_data, $match ) && $match[1] ) {
+                            $version = _cleanup_header_comment( $match[1] );
+                        }
+                    }else{
+                        $version = '';
                     }
 
                     return $version;

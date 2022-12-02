@@ -233,7 +233,15 @@ class Form
      */
     public function hasElement($name)
     {
-        return array_key_exists($name, $this->getElement($name, ['element']));
+        $elements = $this->getElement($name, ['element']);
+        
+        foreach ($elements as $item) {
+            if ($item['element'] === $name) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     /**

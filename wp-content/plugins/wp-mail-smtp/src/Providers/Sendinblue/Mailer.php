@@ -2,7 +2,8 @@
 
 namespace WPMailSMTP\Providers\Sendinblue;
 
-use WPMailSMTP\Debug;
+use WPMailSMTP\Admin\DebugEvents\DebugEvents;
+use WPMailSMTP\Helpers\Helpers;
 use WPMailSMTP\MailCatcherInterface;
 use WPMailSMTP\Providers\MailerAbstract;
 use WPMailSMTP\Vendor\SendinBlue\Client\ApiException;
@@ -245,7 +246,7 @@ class Mailer extends MailerAbstract {
 	 *
 	 * @since 1.6.0
 	 *
-	 * @param array $attachments
+	 * @param array $attachments The array of attachments data.
 	 */
 	public function set_attachments( $attachments ) {
 
@@ -254,38 +255,28 @@ class Mailer extends MailerAbstract {
 		}
 
 		foreach ( $attachments as $attachment ) {
-			$file = false;
 
-			/*
-			 * We are not using WP_Filesystem API as we can't reliably work with it.
-			 * It is not always available, same as credentials for FTP.
-			 */
-			try {
-				if ( is_file( $attachment[0] ) && is_readable( $attachment[0] ) ) {
-					$ext = pathinfo( $attachment[0], PATHINFO_EXTENSION );
+			$ext = pathinfo( $attachment[1], PATHINFO_EXTENSION );
 
-					if ( in_array( $ext, $this->allowed_attach_ext, true ) ) {
-						$file = file_get_contents( $attachment[0] ); // phpcs:ignore
-					}
-				}
+			if ( ! in_array( $ext, $this->allowed_attach_ext, true ) ) {
+				continue;
 			}
-			catch ( \Exception $e ) {
-				$file = false;
-			}
+
+			$file = $this->get_attachment_file_content( $attachment );
 
 			if ( $file === false ) {
 				continue;
 			}
 
-			$this->body['attachment'][] = array(
-				'name'    => $attachment[2],
-				'content' => base64_encode( $file ),
-			);
+			$this->body['attachment'][] = [
+				'name'    => $this->get_attachment_file_name( $attachment ),
+				'content' => base64_encode( $file ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+			];
 		}
 	}
 
 	/**
-	 * @inheritDoc
+	 * Get the email body.
 	 *
 	 * @since 1.6.0
 	 *
@@ -293,7 +284,16 @@ class Mailer extends MailerAbstract {
 	 */
 	public function get_body() {
 
-		return new SendSmtpEmail( $this->body );
+		/**
+		 * Filters Sendinblue email body.
+		 *
+		 * @since 3.5.0
+		 *
+		 * @param array $body Email body.
+		 */
+		$body = apply_filters( 'wp_mail_smtp_providers_sendinblue_mailer_get_body', $this->body );
+
+		return new SendSmtpEmail( $body );
 	}
 
 	/**
@@ -308,25 +308,23 @@ class Mailer extends MailerAbstract {
 
 			$response = $api->get_smtp_client()->sendTransacEmail( $this->get_body() );
 
+			DebugEvents::add_debug(
+				esc_html__( 'An email request was sent to the Sendinblue API.', 'wp-mail-smtp' )
+			);
+
 			$this->process_response( $response );
 		} catch ( ApiException $e ) {
 			$error = json_decode( $e->getResponseBody() );
 
 			if ( json_last_error() === JSON_ERROR_NONE && ! empty( $error ) ) {
-				$message = '[' . sanitize_key( $error->code ) . ']: ' . esc_html( $error->message );
+				$message = Helpers::format_error_message( $error->message, $error->code );
 			} else {
 				$message = $e->getMessage();
 			}
 
 			$this->error_message = $message;
-
-			Debug::set( 'Mailer: Sendinblue' . PHP_EOL . $message );
 		} catch ( \Exception $e ) {
 			$this->error_message = $e->getMessage();
-
-			Debug::set( 'Mailer: Sendinblue' . PHP_EOL . $e->getMessage() );
-
-			return;
 		}
 	}
 
@@ -367,12 +365,8 @@ class Mailer extends MailerAbstract {
 			$is_sent = $this->response->valid();
 		}
 
-		// Clear debug messages if email is successfully sent.
-		if ( $is_sent ) {
-			Debug::clear();
-		}
-
-		return $is_sent;
+		/** This filter is documented in src/Providers/MailerAbstract.php. */
+		return apply_filters( 'wp_mail_smtp_providers_mailer_is_email_sent', $is_sent, $this->mailer );
 	}
 
 	/**

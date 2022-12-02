@@ -24,7 +24,8 @@ class Links {
 			'prev' => '',
 			'next' => '',
 		];
-		if ( is_home() || is_archive() || is_paged() || is_search() ) {
+
+		if ( is_home() || is_archive() || is_paged() ) {
 			$links = $this->getHomeLinks();
 		}
 
@@ -73,6 +74,13 @@ class Links {
 		// Remove trailing slashes if not set in the permalink structure.
 		$prev = aioseo()->helpers->maybeRemoveTrailingSlash( $prev );
 		$next = aioseo()->helpers->maybeRemoveTrailingSlash( $next );
+
+		// Remove any query args that may be set on the URL, except if the site is using plain permalinks.
+		$permalinkStructure = get_option( 'permalink_structure' );
+		if ( ! empty( $permalinkStructure ) ) {
+			$prev = explode( '?', $prev )[0];
+			$next = explode( '?', $next )[0];
+		}
 
 		return [
 			'prev' => $prev,

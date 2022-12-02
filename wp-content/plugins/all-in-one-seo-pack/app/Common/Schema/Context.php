@@ -13,6 +13,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Context {
 	/**
+	 * Breadcrumb class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Breadcrumb
+	 */
+	private $breadcrumb = null;
+
+	/**
 	 * Class constructor.
 	 *
 	 * @since 4.0.0
@@ -48,6 +57,7 @@ class Context {
 		}
 
 		$context['object'] = $post;
+
 		return $context;
 	}
 
@@ -144,6 +154,7 @@ class Context {
 		$title       = aioseo()->meta->title->getTitle();
 		$description = aioseo()->meta->description->getDescription();
 		$url         = aioseo()->helpers->getUrl();
+
 		return [
 			'name'        => $title,
 			'description' => $description,
@@ -172,6 +183,7 @@ class Context {
 		];
 
 		$context['breadcrumb'] = $this->breadcrumb->date( $context );
+
 		return $context;
 	}
 
@@ -187,12 +199,13 @@ class Context {
 		$title       = aioseo()->meta->title->getTitle();
 		$description = aioseo()->meta->description->getDescription();
 		$url         = aioseo()->helpers->getUrl();
+
 		return [
 			'name'        => $title,
 			'description' => $description,
 			'url'         => $url,
 			'breadcrumb'  => $this->breadcrumb->setPositions( [
-				'name'        => $s,
+				'name'        => $s ? $s : $title,
 				'description' => $description,
 				'url'         => $url,
 				'type'        => 'SearchResultsPage'

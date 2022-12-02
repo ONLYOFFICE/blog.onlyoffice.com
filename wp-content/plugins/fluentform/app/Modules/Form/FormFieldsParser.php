@@ -5,16 +5,18 @@ namespace FluentForm\App\Modules\Form;
 use FluentForm\App\Services\Parser\Form as FormParser;
 
 /**
- * @method array getShortCodeInputs(\stdClass $form, array $with = ['admin_label'])
- * @method array getValidations(\stdClass $form, array $inputs, array $fields = [])
- * @method array getElement(\stdClass $form, string|array $name, array $with = [])
- * @method boolean hasElement(\stdClass $form, string $name)
- * @method boolean hasPaymentFields(\stdClass $form)
- * @method array getPaymentFields(\stdClass $form, $with = [])
- * @method array getPaymentInputFields(\stdClass $form, $with = [])
- * @method array getAttachmentInputFields(\stdClass $form, $with = [])
- * @method boolean hasRequiredFields(\stdClass $form, array $fields)
- * @method array getInputsByElementTypes(\stdClass $form, array $elements, array $with = [])
+ * Available methods
+ *
+ * @method array      getShortCodeInputs(\stdClass $form, array $with = ['admin_label'])
+ * @method array      getValidations(\stdClass $form, array $inputs, array $fields = [])
+ * @method array      getElement(\stdClass $form, string|array $name, array $with = [])
+ * @method boolean    hasElement(\stdClass $form, string $name)
+ * @method boolean    hasPaymentFields(\stdClass $form)
+ * @method array      getPaymentFields(\stdClass $form, $with = [])
+ * @method array      getPaymentInputFields(\stdClass $form, $with = [])
+ * @method array      getAttachmentInputFields(\stdClass $form, $with = [])
+ * @method boolean    hasRequiredFields(\stdClass $form, array $fields)
+ * @method array      getInputsByElementTypes(\stdClass $form, array $elements, array $with = [])
  * @method array|null getField(\stdClass $form, string|array $element, string|array $attribute, array $with = [])
  */
 class FormFieldsParser
@@ -25,11 +27,11 @@ class FormFieldsParser
 
     public static function maybeResetForm($form, $with)
     {
-        if(!is_object($form) && is_numeric($form)) {
+        if (!is_object($form) && is_numeric($form)) {
             $form = wpFluent()->table('fluentform_forms')->find($form);
         }
 
-        if(isset(static::$formsWith[$form->id]) && array_diff(static::$formsWith[$form->id], $with)) {
+        if (isset(static::$formsWith[$form->id]) && array_diff(static::$formsWith[$form->id], $with)) {
             static::$forms[$form->id] = [];
         }
         static::$formsWith[$form->id] = $with;
@@ -54,7 +56,7 @@ class FormFieldsParser
 
     public static function parse($key, $form, $with)
     {
-        if(!is_object($form) && is_numeric($form)) {
+        if (!is_object($form) && is_numeric($form)) {
             $form = wpFluent()->table('fluentform_forms')->find($form);
         }
 
@@ -66,7 +68,7 @@ class FormFieldsParser
             $parser = new FormParser($form);
             $method = str_replace(' ', '', ucwords(str_replace('_', ' ', $key)));
 
-            static::$forms[$form->id][$key] = $parser->{'get'.$method}($with);
+            static::$forms[$form->id][$key] = $parser->{'get' . $method}($with);
         }
 
         return static::$forms[$form->id][$key];
@@ -82,7 +84,7 @@ class FormFieldsParser
             $parser = new FormParser($form);
             static::$forms[$form->id]['admin_labels'] = $parser->getAdminLabels($fields);
         }
-        
+
         return static::$forms[$form->id]['admin_labels'];
     }
 
@@ -90,8 +92,9 @@ class FormFieldsParser
      * Deligate dynamic static method calls to FormParser method.
      * And set the result to the store before returning to dev.
      *
-     * @param  string $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array  $parameters
+     *
      * @return mixed
      */
     public static function __callStatic($method, $parameters)

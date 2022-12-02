@@ -13,6 +13,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Title {
 	/**
+	 * Helpers class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Helpers
+	 */
+	public $helpers = null;
+
+	/**
 	 * Class constructor.
 	 *
 	* @since 4.1.2
@@ -32,6 +41,7 @@ class Title {
 	 */
 	public function filterPageTitle( $wpTitle = '' ) {
 		$title = $this->getTitle();
+
 		return ! empty( $title ) ? aioseo()->helpers->encodeOutputHtml( $title ) : $wpTitle;
 	}
 
@@ -45,10 +55,12 @@ class Title {
 	public function getHomePageTitle() {
 		if ( 'page' === get_option( 'show_on_front' ) ) {
 			$title = $this->getPostTitle( (int) get_option( 'page_on_front' ) );
+
 			return $title ? $title : aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'name' ) );
 		}
 
 		$title = $this->helpers->prepare( aioseo()->options->searchAppearance->global->siteTitle );
+
 		return $title ? $title : aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'name' ) );
 	}
 
@@ -62,7 +74,7 @@ class Title {
 	 * @return string           The page title.
 	 */
 	public function getTitle( $post = null, $default = false ) {
-		if ( is_home() && 'posts' === get_option( 'show_on_front' ) ) {
+		if ( is_home() ) {
 			return $this->getHomePageTitle();
 		}
 
@@ -72,6 +84,7 @@ class Title {
 
 		if ( is_category() || is_tag() || is_tax() ) {
 			$term = $post ? $post : get_queried_object();
+
 			return $this->getTermTitle( $term, $default );
 		}
 
@@ -87,13 +100,17 @@ class Title {
 			return $this->helpers->prepare( aioseo()->options->searchAppearance->archives->search->title );
 		}
 
-		if ( is_archive() ) {
-			$postType       = get_queried_object();
-			$dynamicOptions = aioseo()->dynamicOptions->noConflict();
-			if ( $dynamicOptions->searchAppearance->archives->has( $postType->name ) ) {
-				return $this->helpers->prepare( aioseo()->dynamicOptions->searchAppearance->archives->{ $postType->name }->title );
+		if ( is_post_type_archive() ) {
+			$postType = get_queried_object();
+			if ( is_a( $postType, 'WP_Post_Type' ) ) {
+				$dynamicOptions = aioseo()->dynamicOptions->noConflict();
+				if ( $dynamicOptions->searchAppearance->archives->has( $postType->name ) ) {
+					return $this->helpers->prepare( aioseo()->dynamicOptions->searchAppearance->archives->{ $postType->name }->title );
+				}
 			}
 		}
+
+		return '';
 	}
 
 	/**
@@ -107,6 +124,9 @@ class Title {
 	 */
 	public function getPostTitle( $post, $default = false ) {
 		$post = $post && is_object( $post ) ? $post : aioseo()->helpers->getPost( $post );
+		if ( ! is_a( $post, 'WP_Post' ) ) {
+			return '';
+		}
 
 		static $posts = [];
 		if ( isset( $posts[ $post->ID ] ) ) {
@@ -129,6 +149,7 @@ class Title {
 		}
 
 		$posts[ $post->ID ] = $title;
+
 		return $posts[ $post->ID ];
 	}
 
@@ -165,6 +186,10 @@ class Title {
 	 * @return string           The term title.
 	 */
 	public function getTermTitle( $term, $default = false ) {
+		if ( ! is_a( $term, 'WP_Term' ) ) {
+			return '';
+		}
+
 		static $terms = [];
 		if ( isset( $terms[ $term->term_id ] ) ) {
 			return $terms[ $term->term_id ];
@@ -179,6 +204,7 @@ class Title {
 		}
 
 		$terms[ $term->term_id ] = $title;
+
 		return $terms[ $term->term_id ];
 	}
 }

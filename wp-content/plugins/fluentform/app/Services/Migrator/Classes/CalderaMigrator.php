@@ -591,7 +591,7 @@ class CalderaMigrator extends BaseMigrator
      * @param array|null $form
      * @return array|mixed
      */
-    public function getFieldsNameMap(?array $form)
+    public function getFieldsNameMap($form)
     {
         $fields = \Caldera_Forms_Forms::get_fields($form);
         $map = [];

@@ -19,14 +19,14 @@ use AIOSEO\Vendor\Monolog\Formatter\LogglyFormatter;
  * @author Adam Pancutt <adam@pancutt.com>
  * @author Gregory Barchard <gregory@barchard.net>
  */
-class LogglyHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandler
+class LogglyHandler extends AbstractProcessingHandler
 {
     const HOST = 'logs-01.loggly.com';
     const ENDPOINT_SINGLE = 'inputs';
     const ENDPOINT_BATCH = 'bulk';
     protected $token;
     protected $tag = array();
-    public function __construct($token, $level = \AIOSEO\Vendor\Monolog\Logger::DEBUG, $bubble = \true)
+    public function __construct($token, $level = Logger::DEBUG, $bubble = \true)
     {
         if (!\extension_loaded('curl')) {
             throw new \LogicException('The curl extension is needed to use the LogglyHandler');
@@ -73,10 +73,10 @@ class LogglyHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHan
         \curl_setopt($ch, \CURLOPT_POSTFIELDS, $data);
         \curl_setopt($ch, \CURLOPT_HTTPHEADER, $headers);
         \curl_setopt($ch, \CURLOPT_RETURNTRANSFER, \true);
-        \AIOSEO\Vendor\Monolog\Handler\Curl\Util::execute($ch);
+        Curl\Util::execute($ch);
     }
     protected function getDefaultFormatter()
     {
-        return new \AIOSEO\Vendor\Monolog\Formatter\LogglyFormatter();
+        return new LogglyFormatter();
     }
 }

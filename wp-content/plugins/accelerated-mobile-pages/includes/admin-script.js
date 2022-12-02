@@ -177,9 +177,31 @@ jQuery(function($) {
         }
     });
 
-     $("#ampforwp-refersh-related-post").on('click', function(){
-        var ref_nonce = $(this).attr('data-nonce');
-        var current_post =  parseInt($(this).attr('data-id'));
+    function ampforwp_get_cookie(cname) {
+      var name = cname + "=";
+      var ca = document.cookie.split(';');
+      for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    }
+
+    var ref_lap = ampforwp_get_cookie('ref_lap');
+    if(ref_lap==''){
+        var ref_nonce = ampforwp_get_cookie('ref_nonce');
+        var current_post = ampforwp_get_cookie('current_post');
+        if(current_post!='' && ref_nonce!=''){
+            ampforwp_refresh_related_post(ref_nonce, current_post);
+        }
+    }
+
+    function ampforwp_refresh_related_post(ref_nonce='', current_post=''){
         var elem = document.getElementById("ref_rel_post_bar"); 
         var first_int = setInterval(first_frame, 1000);
         var width = current_post;
@@ -196,7 +218,8 @@ jQuery(function($) {
             method: 'post',
             data: {
                     action:     'ampforwp_referesh_related_post',
-                    verify_nonce: ref_nonce
+                    verify_nonce: ref_nonce,
+                    current_post: current_post,
                  },
             success: function(response){
                 clearInterval(first_int);
@@ -212,11 +235,27 @@ jQuery(function($) {
                         width++; 
                         elem.style.width = width + '%'; 
                         elem.innerHTML = width * 1  + '%';
+                        if(width == '100'){
+                            $('#ampforwp-refersh-related-post').remove();
+                            $('#redux_builder_amp-ampforwp-refersh-related-post .description').html('All the posts have been refreshed successfully.');
+                        }
                     }
                 }
             }
         });
-    
+    setTimeout(function(){
+            var ref_nonce = ampforwp_get_cookie('ref_nonce');
+            var current_post = ampforwp_get_cookie('current_post');
+            if(current_post!='' && ref_nonce!='' && current_post<100){
+                ampforwp_refresh_related_post(ref_nonce, current_post);
+            }
+        },30000);
+    }
+
+     $("#ampforwp-refersh-related-post").on('click', function(){
+        var ref_nonce = $(this).attr('data-nonce');
+        var current_post =  parseInt($(this).attr('data-id'));
+        ampforwp_refresh_related_post(ref_nonce, current_post);
     }); 
     $(".redux_field_search").on( "keypress", function (evt) {
         //Deterime where our character code is coming from within the event
@@ -436,12 +475,15 @@ jQuery(function($) {
 
             // Creating a select 
             var s = $('<select/>');
-
+            var amp_font_selector = redux_data['amp_font_selector'];
             for (var i in allFonts) {
 
                 var fontDetail = allFonts[i].fontFamily;                   
-
-               $('#amp_font_selector-select').append($('<option value="'+ fontDetail +'" data-font-number="'+ i +'"> '+ fontDetail  +' </option>'));
+                var selected = '';
+                if(amp_font_selector===fontDetail){
+                    selected = 'selected';
+                }
+               $('#amp_font_selector-select').append($('<option value="'+ fontDetail +'" data-font-number="'+ i +'" '+ selected +'> '+ fontDetail  +' </option>'));
                $('#amp_font_selector_content_single-select').append($('<option value="'+ fontDetail +'" data-font-number="'+ i +'"> '+ fontDetail  +' </option>'));
             }
             $('#amp_font_selector-select').append($('<option value="sans-serif" data-font-number="'+ i +'"> sans-serif </option>'));
@@ -821,9 +863,125 @@ function deactivatelicence(){
         $(".dashicons").addClass( 'spin' );
         setTimeout( function() {
             $(".dashicons").removeClass( 'spin' );}, 3000 );   
-
     }
 });
+
+        // Start Refresh and check if user has done renewal in between 0-7 Days & when Expired
+        var ap = document.getElementById("active-plugins-dr"); 
+        if (ap) {
+        var remainingdays = ap.getAttribute("data-days");
+        }
+        if (  remainingdays <= 7 ){
+            setTimeout(function () {
+                jQuery("#refresh_expired_addon").trigger("click");
+            }, 0);
+        }
+
+        $(".days_remain").click(function(){
+            var currentThis = $(this);
+            var plugin_id = currentThis.attr("id");
+            jQuery("#refresh_expired_addon").addClass( 'spin' );
+
+            var secure_nonce = currentThis.attr('data-nonce');
+            $.ajax({
+                url: ajaxurl,
+                method: 'post',
+                data: {action: 'ampforwp_get_licence_activate_update',
+                        update_check: 'yes',
+                       ampforwp_license_activate:plugin_id,
+                       verify_nonce: secure_nonce
+                        },
+                dataType: 'json',
+                success: function(response){
+                    jQuery("#refresh_expired_addon").removeClass( 'spin' );
+                    if(response.status=='200'){
+                        var expireData = new Date(response.other.all_data.expires);
+                        var today = new Date();
+                        var diffTime = Math.abs( expireData.getTime()-today.getTime() );
+                        var expireDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                        if (expireDays > 30) {
+                            $("span.before_msg_active").text('Your License is')
+                            $("span.lthan_0").text('Your License is')
+                            $(".lessthan_30,.pro_warning,.dashicons-no,.renewal-license,.ampforwp-addon-alert,.ooy").css("display","none")
+                            $("span.one_of_expired").text('Active')
+                            $(".one_of_expired,.expiredinner_span,.lthan_0").css("color","green")
+                            $("span.expiredinner_span").text('Active')
+                        }
+                    }else{
+                        jQuery("#refresh_expired_addon").removeClass( 'spin' );
+                    }
+                }
+            })
+
+            $.ajax({
+                url: ajaxurl,
+                method: 'post',
+                data: {action: 'ampforwp_set_license_transient',
+                        update_check: 'yes',
+                       verify_nonce: secure_nonce
+                        },
+                dataType: 'json',
+                        success: function (s) {
+                            JSON.parse(s);
+                        },
+                    });
+        });
+    // End Refresh to check if user has done renewal in between 0-7 Days & when Expired
+
+    // Start User Refresh when expired 
+       $(".user_refr").click(function(){
+        var currentThis = $(this);
+        var plugin_id = currentThis.attr("id");
+        jQuery("#user_refr_addon").addClass( 'spin' );         
+        var secure_nonce = currentThis.attr('data-nonce');
+
+        $.ajax({
+                url: ajaxurl,
+                method: 'post',
+                data: {action: 'ampforwp_get_licence_activate_update',
+                        update_check: 'yes',
+                       ampforwp_license_activate:plugin_id,
+                       verify_nonce: secure_nonce
+                        },
+                dataType: 'json',
+                success: function(response){
+                    jQuery("#user_refr_addon").removeClass( 'spin' );
+                    if(response.status=='200'){
+                        var expireData = new Date(response.other.all_data.expires);
+                        var today = new Date();
+                        var diffTime = Math.abs( expireData.getTime()-today.getTime() );
+                        var expireDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                        if (expireDays > 30) {
+                            $("span.before_msg_active").text('Your License is')
+                            $(".lessthan_30,.pro_warning,.dashicons-no,.renewal-license").css("display","none")
+                            $("span.one_of_expired").text('Active')
+                            $("span.one_of_expired").css("color","green")
+                        }
+                    }else{
+                        jQuery("#user_refr_addon").removeClass( 'spin' );
+                    }
+                }
+            })
+    });
+    // End User Refresh when Expired
+    var extmnger = document.querySelector('a[extmnger_data="1"]');
+if (extmnger) {
+    var tamp_options = document.getElementById("toplevel_page_amp_options");
+    let collection = tamp_options.querySelectorAll(".wp-submenu a");
+    collection.forEach((ele, ind) => {
+        let p = ele.parentNode;
+      let p_ind = Array.from(document.querySelectorAll('.wp-submenu')).indexOf(p);
+      ind++;
+      p_ind++;
+      ele.addEventListener('click', function(){
+            if (ele.innerText == 'Extensions') {
+        window.location.href = "admin.php?page=amp-extension-manager"
+    }
+}
+)
+  })
+}
+
 $(".redux-ampforwp-ext-deactivate").on("click", function(){
     var currentThis = $(this);
     var plugin_id = currentThis.attr("id");
@@ -2132,7 +2290,7 @@ function Drawer(drawerElem) {
             } else if (currentId == 'amp-ux-ext-ssd') {
                 activate = '&activate=structure_data';
             } else if (currentId == 'amp-ux-ext-afwp') {
-                activate = '&activate=adsforwp';
+                activate = '&activate=quads-settings';
             }
             console.log(wp.updates.l10n.installing);
 
@@ -2223,7 +2381,7 @@ function Drawer(drawerElem) {
                             }
                         });
                         }else if(self.attr('id')=='amp-ux-ext-afwp'){
-                        msgplug = 'Ads for WP';
+                        msgplug = 'Ads by WPQuads';
                         self.text( 'Importing data...' );
                         //Import Data
                         jQuery.ajax({
@@ -2231,12 +2389,12 @@ function Drawer(drawerElem) {
                             type: 'post',
                             data: 'action=ampforwp_import_modules_ads&verify_nonce='+nonce,
                             success: function () {
-                                console.log("Ads for WP");
+                                console.log("Ads by WPQuads");
                                 var res_url = ampforwp_generate_plugin_ulr(response.redirect_url);
                               $('.amp-ux-ext-afwp').html(res_url);
                               $("[required=amp-ux-ext-afwp]").addClass("hide");
                               var afwp_str = '<div id="section-ampforwp-ads-section" class="redux-section-field redux-field adsactive redux-section-indent-start  afw-accordion-header afw-accordion-tab-open">'+
-                                                '<h3 style="margin-top: 20px;">Introducing Ads for WP</h3>'+
+                                                '<h3 style="margin-top: 20px;">Introducing Ads by WPQuads</h3>'+
                                             '</div>'+
                                             '<table id="section-table-ampforwp-ads-section" data-id="ampforwp-ads-section" class="form-table form-table-section no-border form-table-section-indented" style="display: inline-table;">'+
                                                 '<tbody>'+
@@ -2248,15 +2406,15 @@ function Drawer(drawerElem) {
                                                         '<td colspan="2">'+
                                                             '<fieldset id="redux_builder_amp-ampforwp-ads-module" class="redux-field-container redux-field redux-field-init redux-container-raw redux_remove_th" data-id="ampforwp-ads-module" data-type="raw">'+
                                                                 '<div class="ampforwp-ads-data-update">'+
-                                                                    '<input type="hidden" value="admin.php?page=adsforwp&amp;tab=general&amp;reference=ampforwp" class="ampforwp-activation-url" id="active">'+
-                                                                    'Thank you for upgrading the Ads for WP'+
+                                                                    '<input type="hidden" value="admin.php?page=quads-settings&amp;tab=general&amp;reference=ampforwp" class="ampforwp-activation-url" id="active">'+
+                                                                    'Thank you for upgrading the Ads by WPQuads'+
                                                                     '<div class="row"><div>'+
-                                                                    '<a href="http://localhost/wasweb/wp-admin/edit.php?post_type=adsforwp">'+
+                                                                     '<a href="http://localhost/wasweb/wp-admin/edit.php?post_type=quads-settings">'+
                                                                         '<div class="ampforwp-recommendation-btn updated-message">'+
-                                                                            '<p>Go to Ads for WP settings</p>'+
+                                                                            '<p>Go to Ads by WPQuads settings</p>'+
                                                                         '</div>'+
                                                                     '</a>&nbsp;<br>'+
-                                                                    '<a href="https://ampforwp.com/tutorials/article/what-is-ads-for-wp-update-all-about/" class="amp_recommend_learnmore" target="_blank">Learn more</a>'+
+                                                                     '<a href="https://wpquads.com/documentation/" class="amp_recommend_learnmore" target="_blank">Learn more</a>'+
                                                                 '</div>'+
                                                             '</fieldset>'+
                                                         '</td>'+
@@ -2374,7 +2532,7 @@ function Drawer(drawerElem) {
             data: {
                     action:     'ampforwp_set_option_panel_view',
                     option_type: opt_type,
-                    verify_nonce: ampforwp_nonce
+                    verify_nonce: ampforwp_nonce.security
                  },
             dataType: 'json',
             success: function(response){
@@ -2595,6 +2753,14 @@ $("#subscribe-newsletter-form").on('submit',function(e){
     $("#ampforwp-close-notice").on("click", function(){
         var data = {
             action: 'ampforwp_feedback_remove_notice',
+        };
+        $.post(ajaxurl, data, function(response) {
+            $(".ampforwp_remove_notice").remove();
+        });
+    });
+     $("#ampforwp-close-ad-notice").on("click", function(){
+        var data = {
+            action: 'ampforwp_tpd_remove_notice',
         };
         $.post(ajaxurl, data, function(response) {
             $(".ampforwp_remove_notice").remove();

@@ -23,7 +23,7 @@ use Exception;
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-class Logger implements \AIOSEO\Vendor\Psr\Log\LoggerInterface, \AIOSEO\Vendor\Monolog\ResettableInterface
+class Logger implements LoggerInterface, ResettableInterface
 {
     /**
      * Detailed debug information
@@ -147,7 +147,7 @@ class Logger implements \AIOSEO\Vendor\Psr\Log\LoggerInterface, \AIOSEO\Vendor\M
      * @param  HandlerInterface $handler
      * @return $this
      */
-    public function pushHandler(\AIOSEO\Vendor\Monolog\Handler\HandlerInterface $handler)
+    public function pushHandler(HandlerInterface $handler)
     {
         \array_unshift($this->handlers, $handler);
         return $this;
@@ -248,7 +248,7 @@ class Logger implements \AIOSEO\Vendor\Psr\Log\LoggerInterface, \AIOSEO\Vendor\M
     public function addRecord($level, $message, array $context = array())
     {
         if (!$this->handlers) {
-            $this->pushHandler(new \AIOSEO\Vendor\Monolog\Handler\StreamHandler('php://stderr', static::DEBUG));
+            $this->pushHandler(new StreamHandler('php://stderr', static::DEBUG));
         }
         $levelName = static::getLevelName($level);
         // check if any handler will handle this message so we can return early and save cycles
@@ -271,7 +271,7 @@ class Logger implements \AIOSEO\Vendor\Psr\Log\LoggerInterface, \AIOSEO\Vendor\M
         if ($this->microsecondTimestamps && \PHP_VERSION_ID < 70100) {
             $ts = \DateTime::createFromFormat('U.u', \sprintf('%.6F', \microtime(\true)), static::$timezone);
         } else {
-            $ts = new \DateTime(null, static::$timezone);
+            $ts = new \DateTime('now', static::$timezone);
         }
         $ts->setTimezone(static::$timezone);
         $record = array('message' => (string) $message, 'context' => $context, 'level' => $level, 'level_name' => $levelName, 'channel' => $this->name, 'datetime' => $ts, 'extra' => array());
@@ -285,7 +285,7 @@ class Logger implements \AIOSEO\Vendor\Psr\Log\LoggerInterface, \AIOSEO\Vendor\M
                 }
                 \next($this->handlers);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->handleException($e, $record);
         }
         return \true;
@@ -321,12 +321,12 @@ class Logger implements \AIOSEO\Vendor\Psr\Log\LoggerInterface, \AIOSEO\Vendor\M
     public function reset()
     {
         foreach ($this->handlers as $handler) {
-            if ($handler instanceof \AIOSEO\Vendor\Monolog\ResettableInterface) {
+            if ($handler instanceof ResettableInterface) {
                 $handler->reset();
             }
         }
         foreach ($this->processors as $processor) {
-            if ($processor instanceof \AIOSEO\Vendor\Monolog\ResettableInterface) {
+            if ($processor instanceof ResettableInterface) {
                 $processor->reset();
             }
         }
@@ -437,14 +437,14 @@ class Logger implements \AIOSEO\Vendor\Psr\Log\LoggerInterface, \AIOSEO\Vendor\M
     public static function getLevelName($level)
     {
         if (!isset(static::$levels[$level])) {
-            throw new \AIOSEO\Vendor\Psr\Log\InvalidArgumentException('Level "' . $level . '" is not defined, use one of: ' . \implode(', ', \array_keys(static::$levels)));
+            throw new InvalidArgumentException('Level "' . $level . '" is not defined, use one of: ' . \implode(', ', \array_keys(static::$levels)));
         }
         return static::$levels[$level];
     }
     /**
      * Converts PSR-3 levels to Monolog ones if necessary
      *
-     * @param string|int Level number (monolog) or name (PSR-3)
+     * @param string|int $level Level number (monolog) or name (PSR-3)
      * @return int
      */
     public static function toMonologLevel($level)
@@ -500,7 +500,7 @@ class Logger implements \AIOSEO\Vendor\Psr\Log\LoggerInterface, \AIOSEO\Vendor\M
      * Delegates exception management to the custom exception handler,
      * or throws the exception if no custom handler is set.
      */
-    protected function handleException(\Exception $e, array $record)
+    protected function handleException(Exception $e, array $record)
     {
         if (!$this->exceptionHandler) {
             throw $e;

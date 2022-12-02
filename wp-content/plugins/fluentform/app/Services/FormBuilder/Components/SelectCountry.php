@@ -10,9 +10,11 @@ class SelectCountry extends BaseComponent
 {
     /**
      * Compile and echo the html element
-     * @param array $data [element data]
-     * @param stdClass $form [Form Object]
-     * @return viod
+     *
+     * @param array     $data [element data]
+     * @param \stdClass $form [Form Object]
+     *
+     * @return void
      */
     public function compile($data, $form)
     {
@@ -20,17 +22,17 @@ class SelectCountry extends BaseComponent
         $data = apply_filters('fluentform_rendering_field_data_' . $elementName, $data, $form);
 
         $data = $this->loadCountries($data);
-        $defaultValues = (array)$this->extractValueFromAttributes($data);
+        $defaultValues = (array) $this->extractValueFromAttributes($data);
         $data['attributes']['class'] = trim('ff-el-form-control ' . $data['attributes']['class']);
         $data['attributes']['id'] = $this->makeElementId($data, $form);
-        $isSearchable = ArrayHelper::get ($data,'settings.enable_select_2');
-        if($isSearchable == 'yes'){
+        $isSearchable = ArrayHelper::get($data, 'settings.enable_select_2');
+        if ('yes' == $isSearchable) {
             wp_enqueue_script('choices');
             wp_enqueue_style('ff_choices');
             $data['attributes']['class'] .= ' ff_has_multi_select';
         }
 
-        if ($tabIndex = \FluentForm\App\Helpers\Helper::getNextTabIndex()) {
+        if ($tabIndex = Helper::getNextTabIndex()) {
             $data['attributes']['tabindex'] = $tabIndex;
         }
 
@@ -38,46 +40,49 @@ class SelectCountry extends BaseComponent
 
         $activeList = ArrayHelper::get($data, 'settings.country_list.active_list');
 
-        $elMarkup = "<select " . $this->buildAttributes($data['attributes']) . "><option value=''>" . $placeholder . "</option>";
+        $elMarkup = '<select ' . $this->buildAttributes($data['attributes']) . "><option value=''>" . wp_strip_all_tags($placeholder) . '</option>';
 
-        if ($activeList == 'priority_based') {
+        if ('priority_based' == $activeList) {
             $selectCountries = ArrayHelper::get($data, 'settings.country_list.priority_based', []);
             $priorityCountries = $this->getSelectedCountries($selectCountries);
             $primaryListLabel = ArrayHelper::get($data, 'settings.primary_label');
             $otherListLabel = ArrayHelper::get($data, 'settings.other_label');
-            $elMarkup .= '<optgroup label="' . $primaryListLabel . '">';
+            $elMarkup .= '<optgroup label="' . wp_strip_all_tags($primaryListLabel) . '">';
             $elMarkup .= $this->buildOptions($priorityCountries, $defaultValues);
-            $elMarkup .= '</optgroup><optgroup label="' . $otherListLabel . '">';
+            $elMarkup .= '</optgroup><optgroup label="' . wp_strip_all_tags($otherListLabel) . '">';
             $elMarkup .= $this->buildOptions($data['options'], $defaultValues);
             $elMarkup .= '</optgroup>';
         } else {
             $elMarkup .= $this->buildOptions($data['options'], $defaultValues);
         }
 
-        $elMarkup .= "</select>";
+        $elMarkup .= '</select>';
 
         $html = $this->buildElementMarkup($elMarkup, $data, $form);
-        echo apply_filters('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
+
+        $this->printContent('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
     }
 
     /**
      * Load countt list from file
+     *
      * @param array $data
+     *
      * @return array
      */
     public function loadCountries($data)
     {
         $app = App::make();
-        $data['options'] = array();
+        $data['options'] = [];
         $activeList = ArrayHelper::get($data, 'settings.country_list.active_list');
         $countries = $app->load($app->appPath('Services/FormBuilder/CountryNames.php'));
 
-        if ($activeList == 'visible_list') {
+        if ('visible_list' == $activeList) {
             $selectCountries = ArrayHelper::get($data, 'settings.country_list.' . $activeList, []);
             foreach ($selectCountries as $value) {
                 $data['options'][$value] = $countries[$value];
             }
-        } elseif ($activeList == 'hidden_list' || $activeList == 'priority_based') {
+        } elseif ('hidden_list' == $activeList || 'priority_based' == $activeList) {
             $data['options'] = $countries;
             $selectCountries = ArrayHelper::get($data, 'settings.country_list.' . $activeList, []);
             foreach ($selectCountries as $value) {
@@ -98,7 +103,9 @@ class SelectCountry extends BaseComponent
 
     /**
      * Build options for country list/select
+     *
      * @param array $options
+     *
      * @return string/html [compiled options]
      */
     protected function buildOptions($options, $defaultValues = [])
@@ -110,7 +117,7 @@ class SelectCountry extends BaseComponent
             } else {
                 $selected = '';
             }
-            $opts .= "<option value='{$value}' {$selected}>{$label}</option>";
+            $opts .= "<option value='" . esc_attr($value) . "' {$selected}>" . esc_attr($label) . '</option>';
         }
         return $opts;
     }
@@ -128,5 +135,4 @@ class SelectCountry extends BaseComponent
         ksort($options);
         return array_flip($options);
     }
-
 }

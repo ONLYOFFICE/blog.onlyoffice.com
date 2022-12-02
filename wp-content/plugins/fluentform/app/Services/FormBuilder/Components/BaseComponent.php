@@ -2,13 +2,11 @@
 
 namespace FluentForm\App\Services\FormBuilder\Components;
 
-use FluentForm\App;
-use FluentForm\App\Modules\Component\Component;
 use FluentForm\Framework\Helpers\ArrayHelper;
+use FluentForm\App\Modules\Component\Component;
 
 class BaseComponent
 {
-
     public $app;
 
     public function __construct($key = '', $title = '', $tags = [], $position = 'advanced')
@@ -18,24 +16,28 @@ class BaseComponent
 
     /**
      * Build unique ID concating form id and name attribute
+     *
      * @param array $data $form
+     *
      * @return string for id value
      */
     protected function makeElementId($data, $form)
     {
         if (isset($data['attributes']['name'])) {
-            if (!empty($data['attributes']['id'])) {
+            if (! empty($data['attributes']['id'])) {
                 return $data['attributes']['id'];
             }
             $elementName = $data['attributes']['name'];
             $elementName = str_replace(['[', ']', ' '], '_', $elementName);
-            return "ff_{$form->id}_{$elementName}";
+            return 'ff_' . esc_attr($form->id) . '_' . esc_attr($elementName) . '';
         }
     }
 
     /**
      * Build attributes for any html element
+     *
      * @param array $attributes
+     *
      * @return string [Compiled key='value' attributes]
      */
     protected function buildAttributes($attributes, $form = null)
@@ -43,9 +45,9 @@ class BaseComponent
         $atts = '';
 
         foreach ($attributes as $key => $value) {
-            if ($value || $value === 0 || $value === '0') {
+            if ($value || 0 === $value || '0' === $value) {
                 $value = htmlspecialchars($value);
-                $atts .= $key . '="' . $value . '" ';
+                $atts .= esc_attr($key) . '="' . $value . '" ';
             }
         }
 
@@ -54,7 +56,9 @@ class BaseComponent
 
     /**
      * Extract value attribute from attribute list
-     * @param array  &$element
+     *
+     * @param array &$element
+     *
      * @return string
      */
     protected function extractValueFromAttributes(&$element)
@@ -84,7 +88,9 @@ class BaseComponent
 
     /**
      * Determine if the given element has conditions bound
+     *
      * @param array $element [Html element being compiled]
+     *
      * @return boolean
      */
     protected function hasConditions($element)
@@ -100,7 +106,9 @@ class BaseComponent
 
     /**
      * Generate a unique id for an element
+     *
      * @param string $str [preix]
+     *
      * @return string [Unique id]
      */
     protected function getUniqueId($str)
@@ -110,6 +118,7 @@ class BaseComponent
 
     /**
      * Get a default class for each form element wrapper
+     *
      * @return string
      */
     protected function getDefaultContainerClass()
@@ -119,7 +128,9 @@ class BaseComponent
 
     /**
      * Get required class for form element wrapper
+     *
      * @param array $rules [Validation rules]
+     *
      * @return mixed
      */
     protected function getRequiredClass($rules)
@@ -131,7 +142,8 @@ class BaseComponent
 
     /**
      * Get asterisk placement for the required form elements
-     * @return String
+     *
+     * @return string
      */
     protected function getAsteriskPlacement($form)
     {
@@ -147,13 +159,15 @@ class BaseComponent
 
     /**
      * Generate a label for any element
+     *
      * @param array $data
+     *
      * @return string [label Html element]
      */
     protected function buildElementLabel($data, $form)
     {
         $helpMessage = '';
-        if ($form->settings['layout']['helpMessagePlacement'] == 'with_label') {
+        if ('with_label' == $form->settings['layout']['helpMessagePlacement']) {
             $helpMessage = $this->getLabelHelpMessage($data);
         }
 
@@ -162,15 +176,17 @@ class BaseComponent
         $requiredClass = $this->getRequiredClass(ArrayHelper::get($data, 'settings.validation_rules', []));
         $classes = trim('ff-el-input--label ' . $requiredClass . $this->getAsteriskPlacement($form));
 
-        return "<div class='" . $classes . "'><label for='" . $id . "'>" . $label . "</label>{$helpMessage}</div>";
+        return "<div class='" . esc_attr($classes) . "'><label for='" . esc_attr($id) . "'>" . fluentform_sanitize_html($label) . '</label>' . $helpMessage . '</div>';
     }
 
     /**
      * Generate html/markup for any element
-     * @param string $elMarkup [Predifined partial markup]
-     * @param array $data
-     * @param StdClass $form [Form object]
-     * @return string   [Compiled markup]
+     *
+     * @param string    $elMarkup [Predifined partial markup]
+     * @param array     $data
+     * @param \stdClass $form     [Form object]
+     *
+     * @return string [Compiled markup]
      */
     protected function buildElementMarkup($elMarkup, $data, $form)
     {
@@ -198,11 +214,11 @@ class BaseComponent
         $labelHelpText = $inputHelpText = '';
 
         $labelPlacement = $form->settings['layout']['helpMessagePlacement'];
-        if ($labelPlacement == 'with_label') {
+        if ('with_label' == $labelPlacement) {
             $labelHelpText = $this->getLabelHelpMessage($data);
-        } elseif ($labelPlacement == 'on_focus') {
+        } elseif ('on_focus' == $labelPlacement) {
             $inputHelpText = $this->getInputHelpMessage($data, 'ff-hidden');
-        } else if($labelPlacement == 'after_label') {
+        } elseif ('after_label' == $labelPlacement) {
             $inputHelpText = $this->getInputHelpMessage($data, 'ff_ahm');
         } else {
             $inputHelpText = $this->getInputHelpMessage($data);
@@ -210,64 +226,68 @@ class BaseComponent
 
         $forStr = '';
         if (isset($data['attributes']['id'])) {
-            $forStr = "for='{$data['attributes']['id']}'";
+            $forStr = "for='" . esc_attr($data['attributes']['id']) . "'";
         }
 
         $labelMarkup = '';
 
-        if (!empty($data['settings']['label'])) {
+        if (! empty($data['settings']['label'])) {
             $label = ArrayHelper::get($data, 'settings.label');
 
             $labelMarkup = sprintf(
                 "<div class='%s'><label %s>%s</label> %s</div>",
-                $labelClass,
+                esc_attr($labelClass),
                 $forStr,
-                $label,
-                $labelHelpText
+                fluentform_sanitize_html($label),
+                fluentform_sanitize_html($labelHelpText)
             );
         }
 
-        if($labelPlacement == 'after_label') {
-            $elMarkup = $inputHelpText.$elMarkup;
+        $inputHelpText = fluentform_sanitize_html($inputHelpText);
+
+        if ('after_label' == $labelPlacement) {
+            $elMarkup = $inputHelpText . $elMarkup;
             $inputHelpText = '';
         }
 
         return sprintf(
             "<div class='%s'>%s<div class='ff-el-input--content'>%s%s</div></div>",
-            $formGroupClass,
+            esc_attr($formGroupClass),
             $labelMarkup,
             $elMarkup,
             $inputHelpText
         );
-
-        // return "<div class='".$formGroupClass."'>{$labelMarkup}<div class='ff-el-input--content'>{$elMarkup}{$inputHelpText}</div></div>";
     }
 
     /**
      * Generate a help message for any element beside label
+     *
      * @param array $data
+     *
      * @return string [Html]
      */
     protected function getLabelHelpMessage($data)
     {
-        if (isset($data['settings']['help_message']) && $data['settings']['help_message'] != '') {
-        	$text = htmlspecialchars($data['settings']['help_message']);
+        if (isset($data['settings']['help_message']) && '' != $data['settings']['help_message']) {
+            $text = htmlspecialchars($data['settings']['help_message']);
             $icon = '<svg width="16" height="16" viewBox="0 0 25 25"><path d="m329 393l0-46c0-2-1-4-2-6-2-2-4-3-7-3l-27 0 0-146c0-3-1-5-3-7-2-1-4-2-7-2l-91 0c-3 0-5 1-7 2-1 2-2 4-2 7l0 46c0 2 1 5 2 6 2 2 4 3 7 3l27 0 0 91-27 0c-3 0-5 1-7 3-1 2-2 4-2 6l0 46c0 3 1 5 2 7 2 1 4 2 7 2l128 0c3 0 5-1 7-2 1-2 2-4 2-7z m-36-256l0-46c0-2-1-4-3-6-2-2-4-3-7-3l-54 0c-3 0-5 1-7 3-2 2-3 4-3 6l0 46c0 3 1 5 3 7 2 1 4 2 7 2l54 0c3 0 5-1 7-2 2-2 3-4 3-7z m182 119c0 40-9 77-29 110-20 34-46 60-80 80-33 20-70 29-110 29-40 0-77-9-110-29-34-20-60-46-80-80-20-33-29-70-29-110 0-40 9-77 29-110 20-34 46-60 80-80 33-20 70-29 110-29 40 0 77 9 110 29 34 20 60 46 80 80 20 33 29 70 29 110z" transform="scale(0.046875 0.046875)"></path></svg>';
-            return sprintf( '<div class="ff-el-tooltip" data-content="%s">%s</div>', $text, $icon );
+            return sprintf('<div class="ff-el-tooltip" data-content="%s">%s</div>', $text, $icon);
         }
     }
 
     /**
      * Generate a help message for any element beside form element
+     *
      * @param array $data
+     *
      * @return string [Html]
      */
     protected function getInputHelpMessage($data, $hideClass = '')
     {
         $class = trim('ff-el-help-message ' . $hideClass);
 
-        if (isset($data['settings']['help_message']) && !empty($data['settings']['help_message'])) {
-            return "<div class='{$class}'>{$data['settings']['help_message']}</div>";
+        if (isset($data['settings']['help_message']) && ! empty($data['settings']['help_message'])) {
+            return "<div class='" . esc_attr($class) . "'>" . fluentform_sanitize_html($data['settings']['help_message']) . '</div>';
         }
         return false;
     }
@@ -275,5 +295,10 @@ class BaseComponent
     protected function parseEditorSmartCode($text, $form)
     {
         return (new Component($this->app))->replaceEditorSmartCodes($text, $form);
+    }
+
+    protected function printContent($hook, $html, $data, $form)
+    {
+        echo apply_filters($hook, $html, $data, $form); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $html is escaped before being passed in.
     }
 }

@@ -47,8 +47,9 @@ class Bootstrap
 
     public function setImporterType()
     {
+        $formType = sanitize_text_field(wpFluentForm('request')->get('form_type'));
 
-        switch (sanitize_text_field($_REQUEST['form_type'])) {
+        switch ($formType) {
             case 'caldera':
                 $this->importer = new CalderaMigrator();
                 break;
@@ -82,7 +83,7 @@ class Bootstrap
     {
         \FluentForm\App\Modules\Acl\Acl::verify(['fluentform_settings_manager', 'fluentform_forms_manager']);
 
-        $formIds = \FluentForm\Framework\Helpers\ArrayHelper::get($_REQUEST,'form_ids');
+        $formIds = wpFluentForm('request')->get('form_ids');
         $this->setImporterType();
         $this->importer->import_forms($formIds);
 
@@ -92,8 +93,8 @@ class Bootstrap
     {
         \FluentForm\App\Modules\Acl\Acl::verify(['fluentform_settings_manager', 'fluentform_forms_manager']);
 
-        $fluentFormId = $_REQUEST['imported_fluent_form_id'];
-        $importFormId = $_REQUEST['source_form_id'];
+        $fluentFormId = intval(wpFluentForm('request')->get('imported_fluent_form_id'));
+        $importFormId = intval(wpFluentForm('request')->get('source_form_id'));
         $this->setImporterType();
         $this->importer->insertEntries($fluentFormId, $importFormId);
     }

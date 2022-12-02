@@ -24,9 +24,9 @@ class SlackNotificationActions
             }
             return $types;
         });
-        add_action('fluentform_integration_notify_slack', array($this, 'notify'), 20, 4);
+        add_action('fluentform_integration_notify_slack', [$this, 'notify'], 20, 4);
         add_filter('fluentform_get_meta_key_settings_response', function ($response, $formId, $key) {
-            if ($key == 'slack') {
+            if ('slack' == $key) {
                 $formApi = fluentFormApi()->form($formId);
                 $response['formattedFields'] = array_values($formApi->labels());
             }
@@ -38,11 +38,11 @@ class SlackNotificationActions
     public function notify($feed, $formData, $entry, $form)
     {
         $isEnabled = Helper::isSlackEnabled();
-        if (!$isEnabled) {
+        if (! $isEnabled) {
             return;
         }
         $response = Slack::handle($feed, $formData, $form, $entry);
-        if ($response['status'] === 'success') {
+        if ('success' === $response['status']) {
             do_action('ff_log_data', [
                 'parent_source_id' => $form->id,
                 'source_type'      => 'submission_item',
@@ -50,7 +50,7 @@ class SlackNotificationActions
                 'component'        => 'slack',
                 'status'           => 'success',
                 'title'            => $feed['meta_key'],
-                'description'      => 'Slack feed has been successfully initialed and pushed data'
+                'description'      => 'Slack feed has been successfully initialed and pushed data',
             ]);
         } else {
             do_action('ff_log_data', [
@@ -60,7 +60,7 @@ class SlackNotificationActions
                 'component'        => 'slack',
                 'status'           => 'failed',
                 'title'            => $feed['meta_key'],
-                'description'      => $response['message']
+                'description'      => $response['message'],
             ]);
         }
     }

@@ -53,6 +53,12 @@ function ampforwp_pagebuilder_header_html_output(){
 	if($previousData!="" && $ampforwp_pagebuilder_enable=='yes'){
 		$previousData = json_decode($previousData,true);
 		if(isset($previousData['settingdata']['scripts_data']) && $previousData['settingdata']['scripts_data']!=""){
+			preg_match_all("/<script(?:(?!src).)*>(.*?)<\/script>/",$previousData['settingdata']['scripts_data'], $outremove, PREG_SET_ORDER);
+		    if($outremove && count($outremove)>0){
+		        foreach($outremove as $unwanted){
+		            $previousData['settingdata']['scripts_data'] = str_replace($unwanted[0], '', $previousData['settingdata']['scripts_data']);
+		        }
+		    }
 			echo $previousData['settingdata']['scripts_data']; // nothing to escaped
 		}
 	}
@@ -160,6 +166,7 @@ function amp_pagebuilder_content_styles(){
 .col-2{width:100%;float:none;margin-bottom:10%;}
 .col-2-wrap .col-2:nth-child(1){padding-right:0px;}
 .col-2-wrap .col-2:nth-child(2){padding-left:0px;}
+.sbs .col-2{width: calc(50% - 5px);float: left;margin:2px;}
 }
 ';
 
@@ -951,7 +958,7 @@ function ampforwp_rowData($container,$col,$moduleTemplate){
 								if(!is_array($replace)){
 									
 									if($field['type']=="upload"){
-										$image_alt = $imageUrl = $imageWidth = $imageHeight = $image_caption = '';
+										$image_alt = $imageUrl = $imageWidth = $imageHeight = $image_caption = $image_srcset = '';
 										if(isset($contentArray[$field['name']."_image_data"])){
 										 	$replace= $contentArray[$field['name']."_image_data"];
 										 	$imageUrl = $replace[0];
@@ -959,6 +966,7 @@ function ampforwp_rowData($container,$col,$moduleTemplate){
 											$imageHeight = $replace[2];
 											$image_alt = (isset($replace['alt'])? $replace['alt']: "");
 											$image_caption = (isset($replace['caption'])? $replace['caption']: "");
+											$image_srcset = $replace[0];
 										}elseif( $replace != "" ){
 											$imageDetails = ampforwp_get_attachment_id( $replace);
 											if(is_array($imageDetails)){
@@ -1009,6 +1017,16 @@ function ampforwp_rowData($container,$col,$moduleTemplate){
 													 	), 
 													$moduleFrontHtml
 												);
+										$moduleFrontHtml = str_replace(
+													array('{{image_srcset}}',
+														  '{{image_srcset_'.$field['name'].'}}'
+														 ), 
+													 array($image_srcset,
+													 	   $image_srcset
+													 	), 
+													$moduleFrontHtml
+												);
+										$moduleFrontHtml = ampforwp_replaceIfContentConditional('image_srcset', $image_srcset, $moduleFrontHtml);
 										$moduleFrontHtml = ampforwp_replaceIfContentConditional('image_alt', $image_alt, $moduleFrontHtml);
 										$moduleFrontHtml = str_replace(
 													array('{{image_caption}}',

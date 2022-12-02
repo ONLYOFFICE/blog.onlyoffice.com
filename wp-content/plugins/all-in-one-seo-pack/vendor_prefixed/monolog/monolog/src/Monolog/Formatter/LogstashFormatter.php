@@ -18,7 +18,7 @@ namespace AIOSEO\Vendor\Monolog\Formatter;
  *
  * @author Tim Mower <timothy.mower@gmail.com>
  */
-class LogstashFormatter extends \AIOSEO\Vendor\Monolog\Formatter\NormalizerFormatter
+class LogstashFormatter extends NormalizerFormatter
 {
     const V0 = 0;
     const V1 = 1;

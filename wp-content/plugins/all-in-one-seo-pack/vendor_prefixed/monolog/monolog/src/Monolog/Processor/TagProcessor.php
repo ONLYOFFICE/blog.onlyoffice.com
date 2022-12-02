@@ -15,7 +15,7 @@ namespace AIOSEO\Vendor\Monolog\Processor;
  *
  * @author Martijn Riemers
  */
-class TagProcessor implements \AIOSEO\Vendor\Monolog\Processor\ProcessorInterface
+class TagProcessor implements ProcessorInterface
 {
     private $tags;
     public function __construct(array $tags = array())

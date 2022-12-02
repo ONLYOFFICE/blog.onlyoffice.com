@@ -333,7 +333,7 @@ class GravityFormsMigrator extends BaseMigrator
                         'placeholder' => '',
                     ),
                     'settings'   => array(
-                        'label'            => $repeaterField['label'],
+                        'label'            => ArrayHelper::get($repeaterField, 'label', ''),
                         'help_message'     => '',
                         'validation_rules' => array(
                             'required' => array(
@@ -354,7 +354,7 @@ class GravityFormsMigrator extends BaseMigrator
 
         $layoutGroupIds = array_column($fields, 'layoutGroupId');
         $cols = array_count_values($layoutGroupIds); // if inputs has more then one duplicate layoutGroupIds then it has container
-        if (max($cols) < 2) {
+        if (intval($cols) < 2) {
             return $fluentFields;
         }
 
@@ -609,6 +609,70 @@ class GravityFormsMigrator extends BaseMigrator
         return $form['title'];
     }
 
+    public function getEntries($formId)
+    {
+        $form = $this->getForm($formId);
+        if (empty($form)) {
+            return false;
+        }
+
+        $submissions = \GFAPI::get_entries($formId);
+        $entries = [];
+        if (!is_array($submissions)) {
+            return $entries;
+        }
+        
+        $fieldsMap = $this->getFields($form);
+        foreach ($submissions as $submission) {
+            $entry = [];
+            foreach ($fieldsMap['fields'] as $id => $field) {
+                $name = ArrayHelper::get($field, 'attributes.name');
+                if (!$name) {
+                    continue;
+                }
+
+                $type = ArrayHelper::get($field, 'element');
+                $fieldModel = \GFFormsModel::get_field($form, $id);
+
+                // format entry value by field name
+                $finalValue = null;
+                if ("input_file" == $type && $value = $this->getSubmissionValue($id, $submission)) {
+                    $finalValue = $this->handleFileValue($value);
+                } elseif ("repeater_field" == $type && $value = $this->getSubmissionValue($id, $submission)) {
+                    if ($repeatData = (array)maybe_unserialize($value)) {
+                        $finalValue = [];
+                        foreach ($repeatData as $data) {
+                            $finalValue[] = array_values($data);
+                        }
+                    }
+                } elseif (
+                    "select" == $type &&
+                    ArrayHelper::isTrue($field, 'attributes.multiple') &&
+                    $value = $this->getSubmissionValue($id, $submission)
+                ) {
+                    $finalValue = \json_decode($value);
+                } elseif (
+                    in_array($type, ["input_checkbox", "address", "input_name", "terms_and_condition"]) &&
+                    isset($fieldModel['inputs'])
+                ) {
+                    $finalValue = $this->getSubmissionArrayValue($type, $field, $fieldModel['inputs'], $submission);
+                    if ("input_checkbox" == $type) {
+                        $finalValue = array_values($finalValue);
+                    } elseif ("terms_and_condition" == $type) {
+                        $finalValue = $finalValue ? 'on' : 'off';
+                    }
+                }
+
+                if (!$finalValue) {
+                    $finalValue = is_object($fieldModel) ? $fieldModel->get_value_export($submission, $id) : '';
+                }
+                $entry[$name] = $finalValue;
+            }
+            $entries[] = $entry;
+        }
+        return $entries;
+    }
+
     /**
      * @param $form
      * @return mixed
@@ -619,6 +683,65 @@ class GravityFormsMigrator extends BaseMigrator
             return $form['id'];
         }
         return false;
+    }
+
+    protected function getSubmissionArrayValue($type, $field, $inputs, $submission)
+    {
+        $arrayValue = [];
+        foreach ($inputs as $input) {
+            if (!isset($submission[$input['id']])) {
+                continue;
+            }
+            if ("input_name" == $type && $subFields = ArrayHelper::get($field, 'fields')) {
+                foreach ($subFields as $subField) {
+                    if (
+                        $input['label'] == ArrayHelper::get($subField, 'settings.label') &&
+                        $subName = ArrayHelper::get($subField, 'attributes.name', '')
+                    ) {
+                        $arrayValue[$subName] = $submission[$input['id']];
+                    }
+                }
+            } else {
+                $arrayValue[] = $submission[$input['id']];
+            }
+        }
+        if ('address' == $type) {
+            $arrayValue = array_combine([
+                "address_line_1",
+                "address_line_2",
+                "city",
+                "state",
+                "zip",
+                "country"
+            ], $arrayValue);
+        }
+        return array_filter($arrayValue);
+    }
+
+    protected function getSubmissionValue($id, $submission)
+    {
+        return  isset($submission[$id]) ? $submission[$id] : "";
+    }
+
+    protected function handleFileValue($url)
+    {
+        $value = [];
+        $file_name = 'ff-' . wp_basename($url);
+        $basDir = wp_upload_dir()['basedir'] . '/fluentform/';
+        $baseurl = wp_upload_dir()['baseurl'] . '/fluentform/';
+        if ((!file_exists($basDir)) || (file_exists($basDir) && !is_dir($basDir))) {
+            mkdir($basDir);
+        }
+
+        $destination = $basDir . $file_name;
+
+        require_once(ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php');
+        require_once(ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php');
+        $fileSystemDirect = new \WP_Filesystem_Direct(false);
+        if ($fileSystemDirect->copy($url, $destination, true)) {
+            $value[] = $baseurl .  $file_name;
+        }
+        return $value;
     }
 
 }

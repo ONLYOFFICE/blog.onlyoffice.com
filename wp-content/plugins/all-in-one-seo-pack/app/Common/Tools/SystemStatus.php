@@ -55,7 +55,7 @@ class SystemStatus {
 				],
 				[
 					'header' => __( 'Site Language', 'all-in-one-seo-pack' ),
-					'value'  => defined( 'WPLANG' ) && WPLANG ? WPLANG : 'en_US'
+					'value'  => get_locale() ?: 'en_US'
 				],
 				[
 					'header' => __( 'User Language', 'all-in-one-seo-pack' ),
@@ -165,10 +165,11 @@ class SystemStatus {
 	 */
 	public static function getServerInfo() {
 		$sqlMode   = null;
-		$mysqlInfo = aioseo()->db->db->get_results( "SHOW VARIABLES LIKE 'sql_mode'" );
+		$mysqlInfo = aioseo()->core->db->db->get_results( "SHOW VARIABLES LIKE 'sql_mode'" );
 		if ( is_array( $mysqlInfo ) ) {
 			$sqlMode = $mysqlInfo[0]->Value;
 		}
+
 		return [
 			'label'   => __( 'Server Info', 'all-in-one-seo-pack' ),
 			'results' => [
@@ -186,7 +187,7 @@ class SystemStatus {
 				],
 				[
 					'header' => __( 'MySQL Version', 'all-in-one-seo-pack' ),
-					'value'  => aioseo()->db->db->db_version()
+					'value'  => aioseo()->core->db->db->db_version()
 				],
 				[
 					'header' => __( 'MySQL SQL Mode', 'all-in-one-seo-pack' ),
@@ -199,10 +200,6 @@ class SystemStatus {
 				[
 					'header' => __( 'PHP Memory Limit', 'all-in-one-seo-pack' ),
 					'value'  => ini_get( 'memory_limit' )
-				],
-				[
-					'header' => __( 'PHP Allow Url fopen', 'all-in-one-seo-pack' ),
-					'value'  => ini_get( 'allow_url_fopen' ) ? __( 'Yes', 'all-in-one-seo-pack' ) : __( 'No', 'all-in-one-seo-pack' )
 				],
 				[
 					'header' => __( 'PHP Max Upload Size', 'all-in-one-seo-pack' ),
@@ -241,6 +238,7 @@ class SystemStatus {
 	 */
 	public static function activeTheme() {
 		$themeData = wp_get_theme();
+
 		return [
 			'label'   => __( 'Active Theme', 'all-in-one-seo-pack' ),
 			'results' => [
@@ -263,7 +261,7 @@ class SystemStatus {
 		$plugins   = [];
 		$muPlugins = get_mu_plugins();
 		if ( ! empty( $muPlugins ) ) {
-			foreach ( $muPlugins as $plugin => $pluginData ) {
+			foreach ( $muPlugins as $pluginData ) {
 				$plugins[] = [
 					'header' => $pluginData['Name'],
 					'value'  => $pluginData['Version']

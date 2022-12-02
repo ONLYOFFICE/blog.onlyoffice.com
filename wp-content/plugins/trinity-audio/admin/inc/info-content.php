@@ -53,7 +53,7 @@
             </div>
 
             <div class="section-form-group">
-              <?php show_articles_usage($package_data); ?>
+              <?php trinity_show_articles_usage($package_data); ?>
             </div>
 
           </div>
@@ -138,7 +138,7 @@
                         Speed and ability to connect to <strong>endpoint #2</strong> using wp_remote_get
                       </td>
                       <td colspan="2">
-                        <?php echo trinity_init_checks_speed_wp(TRINITY_AUDIO_LANGUAGES_URL); ?> ms
+                        <?php echo trinity_init_checks_speed_wp(TRINITY_AUDIO_STANDARD_VOICES_URL); ?> ms
                       </td>
                     </tr>
                     <tr>
@@ -146,7 +146,7 @@
                         Speed and ability to connect to <strong>endpoint #2</strong> using curl
                       </td>
                       <td colspan="2">
-                        <?php echo trinity_init_checks_speed_curl(TRINITY_AUDIO_LANGUAGES_URL); ?> ms
+                        <?php echo trinity_init_checks_speed_curl(TRINITY_AUDIO_STANDARD_VOICES_URL); ?> ms
                       </td>
                     </tr>
                     </tbody>

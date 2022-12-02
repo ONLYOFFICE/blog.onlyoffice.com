@@ -17,11 +17,11 @@ class RobotsTxt {
 	public function __construct() {
 		add_filter( 'robots_txt', [ $this, 'buildRules' ], 10000, 2 );
 
-		// If our tables do not exist, create them now.
-		if ( ! aioseo()->db->tableExists( 'aioseo_notifications' ) ) {
-			aioseo()->updates->addInitialCustomTablesForV4();
+		if ( ! is_admin() || wp_doing_ajax() || wp_doing_cron() ) {
+			return;
 		}
-		$this->checkForPhysicalFiles();
+
+		add_action( 'init', [ $this, 'checkForPhysicalFiles' ] );
 	}
 
 	/**
@@ -41,24 +41,22 @@ class RobotsTxt {
 		$original      = explode( "\n", $original );
 		$originalRules = $this->extractRules( $original );
 		$networkRules  = [];
+
 		if ( is_multisite() ) {
-			switch_to_blog( aioseo()->helpers->getNetworkId() );
-			$options = aioseo()->options->noConflict();
-			$options->initNetwork();
-			$networkRules = $options->tools->robots->enable ? $options->tools->robots->rules : [];
-			restore_current_blog();
+			$networkRules = aioseo()->networkOptions->tools->robots->enable ? aioseo()->networkOptions->tools->robots->rules : [];
 		}
 
 		if ( ! aioseo()->options->tools->robots->enable ) {
 			$networkAndOriginal = $this->mergeRules( $originalRules, $this->parseRules( $networkRules ) );
 			$networkAndOriginal = $this->robotsArrayUnique( $networkAndOriginal );
-			return $this->stringify( $networkAndOriginal, $original );
+
+			return $this->stringify( $networkAndOriginal );
 		}
 
 		$allRules = $this->mergeRules( $originalRules, $this->mergeRules( $this->parseRules( $networkRules ), $this->parseRules( aioseo()->options->tools->robots->rules ) ), true );
 		$allRules = $this->robotsArrayUnique( $allRules );
 
-		return $this->stringify( $allRules, $original );
+		return $this->stringify( $allRules );
 	}
 
 	/**
@@ -164,6 +162,7 @@ class RobotsTxt {
 				unset( $rules2[ $userAgent ][ $directive ][ $index1 ] );
 			}
 		}
+
 		return [ $rules1, $rules2 ];
 	}
 
@@ -171,10 +170,9 @@ class RobotsTxt {
 	 * Stringifies the parsed rules.
 	 *
 	 * @param  array  $allRules The rules array.
-	 * @param  string $original The original robots.txt content.
 	 * @return string           The stringified rules.
 	 */
-	private function stringify( $allRules, $original ) {
+	private function stringify( $allRules ) {
 		$robots = [];
 		foreach ( $allRules as $agent => $rules ) {
 			if ( empty( $agent ) ) {
@@ -198,13 +196,28 @@ class RobotsTxt {
 
 		$robots = implode( "\r\n", $robots ) . "\r\n";
 
-		$sitemapUrls = array_merge( aioseo()->sitemap->helpers->getSitemapUrls(), $this->extractSitemapUrls( $original ) );
+		$sitemapUrls = $this->getSitemapRules();
 		if ( ! empty( $sitemapUrls ) ) {
 			$sitemapUrls = implode( "\r\n", $sitemapUrls );
 			$robots     .= $sitemapUrls . "\r\n\r\n";
 		}
 
 		return $robots;
+	}
+
+	/**
+	 * Get Sitemap URLs excluding the default ones.
+	 *
+	 * @since 4.1.7
+	 *
+	 * @return array An array of the Sitemap URLs.
+	 */
+	private function getSitemapRules() {
+		$defaultRobots   = $this->getDefaultRobots();
+		$defaultSitemaps = $this->extractSitemapUrls( $defaultRobots );
+		$sitemapRules    = aioseo()->sitemap->helpers->getSitemapUrls();
+
+		return array_diff( $sitemapRules, $defaultSitemaps );
 	}
 
 	/**
@@ -295,6 +308,7 @@ class RobotsTxt {
 				$sitemapUrls[] = trim( $line );
 			}
 		}
+
 		return $sitemapUrls;
 	}
 
@@ -330,7 +344,7 @@ class RobotsTxt {
 	 *
 	 * @return void
 	 */
-	private function checkForPhysicalFiles() {
+	public function checkForPhysicalFiles() {
 		if ( ! $this->hasPhysicalRobotsTxt() ) {
 			return;
 		}
@@ -368,27 +382,32 @@ class RobotsTxt {
 	 * @return boolean Whether or not the file imported correctly.
 	 */
 	public function importPhysicalRobotsTxt( $network = false ) {
-		$wpfs = aioseo()->helpers->wpfs();
-		$file = trailingslashit( $wpfs->abspath() ) . 'robots.txt';
-		if ( ! @$wpfs->is_readable( $file ) ) {
+		$fs = aioseo()->core->fs;
+		if ( ! $fs->isWpfsValid() ) {
 			return false;
 		}
 
-		$lines = @$wpfs->get_contents_array( $file );
+		$file = trailingslashit( $fs->fs->abspath() ) . 'robots.txt';
+		if ( ! $fs->isReadable( $file ) ) {
+			return false;
+		}
+
+		$lines = $fs->getContentsArray( $file );
 		if ( ! $lines ) {
 			return true;
 		}
 
 		$allRules = $this->extractRules( $lines );
 
+		$options = aioseo()->options;
 		if ( $network ) {
-			aioseo()->options->initNetwork();
+			$options = aioseo()->networkOptions;
 		}
 
-		$currentRules = $this->parseRules( aioseo()->options->tools->robots->rules );
+		$currentRules = $this->parseRules( $options->tools->robots->rules );
 		$allRules     = $this->mergeRules( $currentRules, $allRules, false, true );
 
-		aioseo()->options->tools->robots->rules = aioseo()->robotsTxt->prepareRobotsTxt( $allRules );
+		$options->tools->robots->rules = aioseo()->robotsTxt->prepareRobotsTxt( $allRules );
 
 		return true;
 	}
@@ -441,13 +460,16 @@ class RobotsTxt {
 	 * @return boolean True if it does, false if not.
 	 */
 	public function hasPhysicalRobotsTxt() {
-		$wpfs       = aioseo()->helpers->wpfs();
+		$fs = aioseo()->core->fs;
+		if ( ! $fs->isWpfsValid() ) {
+			return false;
+		}
+
 		$accessType = get_filesystem_method();
-
 		if ( 'direct' === $accessType ) {
-			$file = trailingslashit( $wpfs->abspath() ) . 'robots.txt';
+			$file = trailingslashit( $fs->fs->abspath() ) . 'robots.txt';
 
-			return @$wpfs->exists( $file );
+			return $fs->exists( $file );
 		}
 
 		return false;
@@ -461,19 +483,24 @@ class RobotsTxt {
 	 * @return mixed The response from the delete method of WP_Filesystem.
 	 */
 	public function deletePhysicalRobotsTxt() {
-		$wpfs = aioseo()->helpers->wpfs();
-		$file = trailingslashit( $wpfs->abspath() ) . 'robots.txt';
-		return @$wpfs->delete( $file );
+		$fs = aioseo()->core->fs;
+		if ( ! $fs->isWpfsValid() ) {
+			return false;
+		}
+
+		$file = trailingslashit( $fs->fs->abspath() ) . 'robots.txt';
+
+		return $fs->fs->delete( $file );
 	}
 
 	/**
-	 * Get the default Robots.txt rules (excluding our own).
+	 * Get the default Robots.txt lines (excluding our own).
 	 *
-	 * @since 4.0.0
+	 * @since 4.1.7
 	 *
 	 * @return array An array of robots.txt rules (excluding our own).
 	 */
-	public function getDefaultRules() {
+	public function getDefaultRobots() {
 		// First, we need to remove our filter, so that it doesn't run unintentionally.
 		remove_filter( 'robots_txt', [ $this, 'buildRules' ], 10000 );
 
@@ -488,7 +515,20 @@ class RobotsTxt {
 		// Add the filter back.
 		add_filter( 'robots_txt', [ $this, 'buildRules' ], 10000, 2 );
 
-		return $this->extractRules( explode( "\n", $rules ) );
+		return explode( "\n", $rules );
+	}
+
+	/**
+	 * Get the default Robots.txt rules (excluding our own).
+	 *
+	 * @since 4.0.0
+	 *
+	 * @return array An array of robots.txt rules (excluding our own).
+	 */
+	public function getDefaultRules() {
+		$originalRobots = $this->getDefaultRobots();
+
+		return $this->extractRules( $originalRobots );
 	}
 
 	/**
@@ -500,6 +540,7 @@ class RobotsTxt {
 	 * @return array    The unique array.
 	 */
 	private function robotsArrayUnique( &$s ) {
+		$i = false;
 		foreach ( $s as $i => &$e ) {
 			if ( is_array( $e ) && ! empty( $e ) ) {
 				$e = $this->robotsArrayUnique( $e );
@@ -507,9 +548,9 @@ class RobotsTxt {
 		}
 		if ( is_numeric( $i ) ) {
 			return array_unique( $s, SORT_REGULAR );
-		} else {
-			return $s;
 		}
+
+		return $s;
 	}
 
 	/**
@@ -521,11 +562,6 @@ class RobotsTxt {
 	 * @return boolean Whether the rewrite rules are set or not.
 	 */
 	public function rewriteRulesExist() {
-		// We don't want to check if a migration is being restarted.
-		if ( isset( $_GET['aioseo-v3-migration'] ) && 'i-want-to-migrate' === wp_unslash( $_GET['aioseo-v3-migration'] ) ) { // phpcs:ignore HM.Security.ValidatedSanitizedInput.InputNotSanitized
-			return true;
-		}
-
 		// If we have a physical file, it's almost impossible to tell if the rewrite rules are set.
 		// The only scenario is if we still get a 404.
 		if ( $this->hasPhysicalRobotsTxt() ) {

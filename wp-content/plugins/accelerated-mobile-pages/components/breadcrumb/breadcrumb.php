@@ -106,7 +106,12 @@ function amp_breadcrumb_output(){
                         $tags_breadcrumbs .= '<li class="item-tag item-tag-' . esc_attr($tag_id) . ' item-tag-' . esc_attr($tag_name) . '"><a class="bread-tag bread-tag-' . esc_attr($tag_id) . ' bread-tag-' . esc_attr($tag_name) . '" href="' . esc_url($tag_link) . '" title="' . esc_attr($tag_name) . '">' . esc_html($tag_name) . '</a></li>';                
                     }
                     if(ampforwp_get_setting('ampforwp-bread-crumb-post')){
-                         $tags_breadcrumbs .='<li class="item-post item-post-' . esc_attr(ampforwp_get_the_ID()) . '"><span class="bread-post">'.wp_kses_data( get_the_title(ampforwp_get_the_ID()) ). '</span></li>';
+                        if (class_exists('WPSEO_Premium') && !empty(WPSEO_Meta::get_value( 'bctitle', ampforwp_get_the_ID()))) {
+                            $bc_title = WPSEO_Meta::get_value( 'bctitle', ampforwp_get_the_ID() );
+                        }else{
+                            $bc_title = get_the_title(ampforwp_get_the_ID());
+                        }
+                            $tags_breadcrumbs .='<li class="item-post item-post-' . esc_attr(ampforwp_get_the_ID()) . '"><span class="bread-post">'.wp_kses_data( $bc_title ). '</span></li>';
                     }
                     echo $tags_breadcrumbs; // Escaped above
                 }
@@ -133,7 +138,7 @@ function amp_breadcrumb_output(){
                     $cat_display = '';
                     foreach($cat_parents as $parents) {
                         $categories = get_the_category();
-                        $cat_id = $categories[0]->cat_ID;
+                        $cat_id = end($categories)->cat_ID;
                          if(class_exists( 'WPSEO_Options' ) && !empty($primary_cateogory)){
                             $cat_id = $primary_cateogory;
                         }
@@ -142,10 +147,16 @@ function amp_breadcrumb_output(){
                             $cat_link = ampforwp_url_controller( $cat_link );
                         }
                         $cat_link = apply_filters('ampforwp_breadcrumbs_category_url', $cat_link,$post->ID);
-                        $cat_display .=  '<li class="item-cat item-cat-' . esc_attr($cat_id) . '"><a class="bread-cat bread-cat-' . esc_attr($cat_id) . ' bread-cat-' . $parents. '" href="'. esc_url($cat_link).'" title="' . esc_attr($parents) . '">' . esc_html($parents) . '</a></li>';  
+                        $parents = apply_filters('ampforwp_breadcrumbs_category_name', $parents);
+                        $cat_display .=  '<li class="item-cat item-cat-' . esc_attr($cat_id) . '"><a class="bread-cat bread-cat-' . esc_attr($cat_id) . ' bread-cat-' . esc_attr($parents). '" href="'. esc_url($cat_link).'" title="' . esc_attr($parents) . '">' . esc_html($parents) . '</a></li>';  
                     }
                     if(ampforwp_get_setting('ampforwp-bread-crumb-post')){
-                        $cat_display .='<li class="item-post item-post-' . esc_attr(ampforwp_get_the_ID()) . '"><span class="bread-post">'.wp_kses_data( get_the_title(ampforwp_get_the_ID()) ). '</span></li>';
+                        if (class_exists('WPSEO_Premium') && !empty(WPSEO_Meta::get_value( 'bctitle', ampforwp_get_the_ID()))) {
+                            $bc_title = WPSEO_Meta::get_value( 'bctitle', ampforwp_get_the_ID() );
+                        }else{
+                            $bc_title = get_the_title(ampforwp_get_the_ID());
+                        }
+                            $cat_display .='<li class="item-post item-post-' . esc_attr(ampforwp_get_the_ID()) . '"><span class="bread-post">'.wp_kses_data( $bc_title ). '</span></li>';
                     }
                 }
             }

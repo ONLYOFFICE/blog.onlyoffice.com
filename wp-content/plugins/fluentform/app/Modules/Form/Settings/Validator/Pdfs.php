@@ -49,7 +49,7 @@ class Pdfs
                 'name.required'     => 'The Name field is required.',
                 'template.required' => 'The Template field is required.',
                 'filename.required' => 'The Filename field is required.',
-            ]
+            ],
         ];
     }
 

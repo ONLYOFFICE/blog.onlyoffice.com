@@ -17,10 +17,11 @@ class Facebook {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return string The image URL.
+	 * @param  int    $postId The post ID (optional).
+	 * @return string         The image URL.
 	 */
-	public function getImage() {
-		$post = aioseo()->helpers->getPost();
+	public function getImage( $postId = null ) {
+		$post = aioseo()->helpers->getPost( $postId );
 		if ( is_home() && 'posts' === get_option( 'show_on_front' ) ) {
 			$image = aioseo()->options->social->facebook->homePage->image;
 			if ( empty( $image ) ) {
@@ -39,6 +40,11 @@ class Facebook {
 				: aioseo()->options->social->facebook->general->defaultImageSourcePosts;
 
 			$image = aioseo()->social->image->getImage( 'facebook', $imageSource, $post );
+		}
+
+		// Since we could be on an archive page, let's check again for that default image.
+		if ( ! $image ) {
+			$image = aioseo()->social->image->getImage( 'facebook', 'default', null );
 		}
 
 		if ( ! $image ) {
@@ -66,6 +72,7 @@ class Facebook {
 	public function getImageWidth() {
 		if ( is_home() && 'posts' === get_option( 'show_on_front' ) ) {
 			$width = aioseo()->options->social->facebook->homePage->imageWidth;
+
 			return $width ? $width : aioseo()->options->social->facebook->general->defaultImagePostsWidth;
 		}
 
@@ -92,6 +99,7 @@ class Facebook {
 	public function getImageHeight() {
 		if ( is_home() && 'posts' === get_option( 'show_on_front' ) ) {
 			$height = aioseo()->options->social->facebook->homePage->imageHeight;
+
 			return $height ? $height : aioseo()->options->social->facebook->general->defaultImagePostsHeight;
 		}
 
@@ -104,6 +112,7 @@ class Facebook {
 		if ( is_array( $image ) ) {
 			return $image[2];
 		}
+
 		return aioseo()->options->social->facebook->general->defaultImagePostsHeight;
 	}
 
@@ -116,6 +125,7 @@ class Facebook {
 	 */
 	public function getVideo() {
 		$metaData = aioseo()->meta->metaData->getMetaData();
+
 		return ! empty( $metaData->og_video ) ? $metaData->og_video : '';
 	}
 
@@ -128,6 +138,7 @@ class Facebook {
 	 */
 	public function getVideoWidth() {
 		$metaData = aioseo()->meta->metaData->getMetaData();
+
 		return ! empty( $metaData->og_video_width ) ? $metaData->og_video_width : '';
 	}
 
@@ -140,6 +151,7 @@ class Facebook {
 	 */
 	public function getVideoHeight() {
 		$metaData = aioseo()->meta->metaData->getMetaData();
+
 		return ! empty( $metaData->og_video_height ) ? $metaData->og_video_height : '';
 	}
 
@@ -155,6 +167,7 @@ class Facebook {
 		if ( ! $title ) {
 			$title = aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'name' ) );
 		}
+
 		return wp_strip_all_tags( $title );
 	}
 
@@ -168,7 +181,12 @@ class Facebook {
 	public function getObjectType() {
 		if ( is_home() && 'posts' === get_option( 'show_on_front' ) ) {
 			$type = aioseo()->options->social->facebook->homePage->objectType;
+
 			return $type ? $type : 'website';
+		}
+
+		if ( is_post_type_archive() ) {
+			return 'website';
 		}
 
 		$post     = aioseo()->helpers->getPost();
@@ -197,6 +215,7 @@ class Facebook {
 	public function getTitle( $post = null ) {
 		if ( is_home() && 'posts' === get_option( 'show_on_front' ) ) {
 			$title = aioseo()->meta->title->helpers->prepare( aioseo()->options->social->facebook->homePage->title );
+
 			return $title ? $title : aioseo()->meta->title->getTitle();
 		}
 
@@ -207,7 +226,22 @@ class Facebook {
 		if ( ! empty( $metaData->og_title ) ) {
 			$title = aioseo()->meta->title->helpers->prepare( $metaData->og_title );
 		}
-		return $title ? $title : aioseo()->meta->title->getPostTitle( $post );
+
+		if ( is_post_type_archive() ) {
+			$postType       = get_queried_object();
+			$dynamicOptions = aioseo()->dynamicOptions->noConflict();
+			if ( $dynamicOptions->searchAppearance->archives->has( $postType->name ) ) {
+				$title = aioseo()->meta->title->helpers->prepare( aioseo()->dynamicOptions->searchAppearance->archives->{ $postType->name }->title );
+			}
+		}
+
+		return $title
+			? $title
+			: (
+				$post
+					? aioseo()->meta->title->getPostTitle( $post )
+					: $title
+			);
 	}
 
 	/**
@@ -221,6 +255,7 @@ class Facebook {
 	public function getDescription( $post = null ) {
 		if ( is_home() && 'posts' === get_option( 'show_on_front' ) ) {
 			$description = aioseo()->meta->description->helpers->prepare( aioseo()->options->social->facebook->homePage->description );
+
 			return $description ? $description : aioseo()->meta->description->getDescription();
 		}
 
@@ -231,7 +266,22 @@ class Facebook {
 		if ( ! empty( $metaData->og_description ) ) {
 			$description = aioseo()->meta->description->helpers->prepare( $metaData->og_description );
 		}
-		return $description ? $description : aioseo()->meta->description->getPostDescription( $post );
+
+		if ( is_post_type_archive() ) {
+			$postType       = get_queried_object();
+			$dynamicOptions = aioseo()->dynamicOptions->noConflict();
+			if ( $dynamicOptions->searchAppearance->archives->has( $postType->name ) ) {
+				$description = aioseo()->meta->description->helpers->prepare( aioseo()->dynamicOptions->searchAppearance->archives->{ $postType->name }->metaDescription );
+			}
+		}
+
+		return $description
+			? $description
+			: (
+				$post
+					? aioseo()->meta->description->getPostDescription( $post )
+					: $description
+			);
 	}
 
 	/**
@@ -243,6 +293,7 @@ class Facebook {
 	 */
 	public function getSection() {
 		$metaData = aioseo()->meta->metaData->getMetaData();
+
 		return ! empty( $metaData->og_article_section ) ? $metaData->og_article_section : '';
 	}
 
@@ -259,6 +310,7 @@ class Facebook {
 		}
 
 		$username = aioseo()->options->social->profiles->sameUsername->username;
+
 		return ( $username && in_array( 'facebookPageUrl', aioseo()->options->social->profiles->sameUsername->included, true ) )
 			? 'https://facebook.com/' . $username
 			: '';
@@ -273,7 +325,8 @@ class Facebook {
 	 */
 	public function getPublishedTime() {
 		$post = aioseo()->helpers->getPost();
-		return $post ? aioseo()->helpers->formatDateTime( $post->post_date_gmt ) : '';
+
+		return $post ? aioseo()->helpers->dateTimeToIso8601( $post->post_date_gmt ) : '';
 	}
 
 	/**
@@ -285,7 +338,8 @@ class Facebook {
 	 */
 	public function getModifiedTime() {
 		$post = aioseo()->helpers->getPost();
-		return $post ? aioseo()->helpers->formatDateTime( $post->post_modified_gmt ) : '';
+
+		return $post ? aioseo()->helpers->dateTimeToIso8601( $post->post_modified_gmt ) : '';
 	}
 
 
@@ -303,6 +357,7 @@ class Facebook {
 		}
 
 		$postAuthor = get_the_author_meta( 'aioseo_facebook', $post->post_author );
+
 		return ! empty( $postAuthor ) ? $postAuthor : aioseo()->options->social->facebook->advanced->authorUrl;
 	}
 

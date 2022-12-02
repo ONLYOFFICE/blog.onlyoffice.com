@@ -15,6 +15,24 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class GeneralSettings {
 	/**
+	 * List of options.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var array
+	 */
+	private $options = [];
+
+	/**
+	 * List of our access control roles.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var array
+	 */
+	private $roles = [];
+
+	/**
 	 * Class constructor.
 	 *
 	 * @since 4.1.4

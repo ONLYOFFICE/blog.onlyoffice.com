@@ -34,9 +34,12 @@ class autoptimizePartners
 
     public function add_partner_tabs( $in )
     {
-        $in = array_merge( $in, array(
-            'ao_partners' => __( 'Optimize More!', 'autoptimize' ),
-        ) );
+        $in = array_merge(
+            $in,
+            array(
+                'ao_partners' => __( 'Optimize More!', 'autoptimize' ),
+            )
+        );
 
         return $in;
     }
@@ -44,7 +47,7 @@ class autoptimizePartners
     public function add_admin_menu()
     {
         if ( $this->enabled() ) {
-            add_submenu_page( null, 'AO partner', 'AO partner', 'manage_options', 'ao_partners', array( $this, 'ao_partners_page' ) );
+            add_submenu_page( '', 'AO partner', 'AO partner', 'manage_options', 'ao_partners', array( $this, 'ao_partners_page' ) );
         }
     }
 
@@ -92,7 +95,7 @@ class autoptimizePartners
 
     public function ao_partners_page()
     {
-?>
+        ?>
 <style>
     .itemDetail {
         background: #fff;
@@ -145,6 +148,6 @@ class autoptimizePartners
             <?php echo $this->get_ao_partner_feed_markup(); ?>
         </div>
     </div>
-<?php
+        <?php
     }
 }

@@ -19,7 +19,7 @@ use AIOSEO\Vendor\Monolog\Utils;
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-class StreamHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandler
+class StreamHandler extends AbstractProcessingHandler
 {
     protected $stream;
     protected $url;
@@ -37,13 +37,13 @@ class StreamHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHan
      * @throws \Exception                If a missing directory is not buildable
      * @throws \InvalidArgumentException If stream is not a resource or string
      */
-    public function __construct($stream, $level = \AIOSEO\Vendor\Monolog\Logger::DEBUG, $bubble = \true, $filePermission = null, $useLocking = \false)
+    public function __construct($stream, $level = Logger::DEBUG, $bubble = \true, $filePermission = null, $useLocking = \false)
     {
         parent::__construct($level, $bubble);
         if (\is_resource($stream)) {
             $this->stream = $stream;
         } elseif (\is_string($stream)) {
-            $this->url = \AIOSEO\Vendor\Monolog\Utils::canonicalizePath($stream);
+            $this->url = Utils::canonicalizePath($stream);
         } else {
             throw new \InvalidArgumentException('A stream must either be a resource or a string.');
         }
@@ -137,7 +137,7 @@ class StreamHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHan
         if ('file://' === \substr($stream, 0, 7)) {
             return \dirname(\substr($stream, 7));
         }
-        return;
+        return null;
     }
     private function createDir()
     {

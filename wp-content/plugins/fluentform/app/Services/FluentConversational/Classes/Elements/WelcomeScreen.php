@@ -16,8 +16,7 @@ class WelcomeScreen extends BaseFieldManager
             'general'
         );
 
-        add_filter('fluent_conversational_editor_elements', array($this, 'pushConversationalComponent'), 10, 1);
-
+        add_filter('fluent_conversational_editor_elements', [$this, 'pushConversationalComponent'], 10, 1);
     }
 
     public function getComponent()
@@ -28,52 +27,52 @@ class WelcomeScreen extends BaseFieldManager
     public function pushConversationalComponent($components)
     {
         $components['advanced'][] = [
-            'index' => 50,
-            'element' => 'welcome_screen',
-            'attributes' => array(),
-            'settings' => array(
-                'label' => __('Welcome Heading', 'fluentform'),
-                'description' => __('Sub Heading', 'fluentform'),
-                'align' => 'center',
-                'conditional_logics' => array(),
+            'index'      => 50,
+            'element'    => 'welcome_screen',
+            'attributes' => [],
+            'settings'   => [
+                'label'              => __('Welcome Heading', 'fluentform'),
+                'description'        => __('Sub Heading', 'fluentform'),
+                'align'              => 'center',
+                'conditional_logics' => [],
                 'button_style'       => 'default',
                 'button_size'        => 'md',
                 'container_class'    => '',
                 'current_state'      => 'normal_styles',
                 'background_color'   => 'rgb(64, 158, 255)',
                 'color'              => 'rgb(255, 255, 255)',
-                'hover_styles'       => (object)[
+                'hover_styles'       => (object) [
                     'backgroundColor' => '#ffffff',
                     'borderColor'     => '#409EFF',
                     'color'           => '#409EFF',
                     'borderRadius'    => '',
-                    'minWidth'        => ''
+                    'minWidth'        => '',
                 ],
-                'normal_styles'      => (object)[
+                'normal_styles' => (object) [
                     'backgroundColor' => '#409EFF',
                     'borderColor'     => '#409EFF',
                     'color'           => '#ffffff',
                     'borderRadius'    => '',
-                    'minWidth'        => ''
+                    'minWidth'        => '',
                 ],
-                'button_ui'          => (object)[
-                    'text'    => 'Start Here',
-                    'type'    => 'default'
-                ]
-            ),
-            'editor_options' => array(
-                'title' => __('Welcome Screen', 'fluentform'),
+                'button_ui' => (object) [
+                    'text' => 'Start Here',
+                    'type' => 'default',
+                ],
+            ],
+            'editor_options' => [
+                'title'      => __('Welcome Screen', 'fluentform'),
                 'icon_class' => 'dashicons dashicons-align-wide',
-                'template' => 'welcomeScreen',
-            ),
+                'template'   => 'welcomeScreen',
+            ],
             'style_pref' => [
-                'layout' => 'default',
-                'media' => '',
-                'brightness' => 0,
-                'alt_text' => '',
+                'layout'           => 'default',
+                'media'            => '',
+                'brightness'       => 0,
+                'alt_text'         => '',
                 'media_x_position' => 50,
-                'media_y_position' => 50
-            ]
+                'media_y_position' => 50,
+            ],
         ];
 
         return $components;
@@ -86,7 +85,7 @@ class WelcomeScreen extends BaseFieldManager
             'description',
             'align',
             'btn_text',
-            'button_ui'
+            'button_ui',
         ];
     }
 
@@ -106,28 +105,28 @@ class WelcomeScreen extends BaseFieldManager
     public function render($data, $form)
     {
         $elementName = $data['element'];
-        $data = apply_filters('fluentform_rendering_field_data_'.$elementName, $data, $form);
+        $data = apply_filters('fluentform_rendering_field_data_' . $elementName, $data, $form);
 
         $alignment = ArrayHelper::get($data, 'settings.align');
-        if($alignment) {
-            if(empty($data['attributes']['class'])) {
+        if ($alignment) {
+            if (empty($data['attributes']['class'])) {
                 $data['attributes']['class'] = '';
             }
-            $data['attributes']['class'] .= ' ff_'.$alignment;
+            $data['attributes']['class'] .= ' ff_' . $alignment;
         }
 
         $hasConditions = $this->hasConditions($data) ? 'has-conditions ' : '';
-        $cls = trim($this->getDefaultContainerClass().' '.$hasConditions);
-        $data['attributes']['class'] = $cls .' ff-el-section-break '. $data['attributes']['class'];
+        $cls = trim($this->getDefaultContainerClass() . ' ' . $hasConditions);
+        $data['attributes']['class'] = $cls . ' ff-el-section-break ' . $data['attributes']['class'];
         $data['attributes']['class'] = trim($data['attributes']['class']);
         $atts = $this->buildAttributes(
-            \FluentForm\Framework\Helpers\ArrayHelper::except($data['attributes'], 'name')
+            ArrayHelper::except($data['attributes'], 'name')
         );
-        $html = "<div {$atts}>";
-        $html .= "<h3 class='ff-el-section-title'>{$data['settings']['label']}</h3>";
-        $html .= "<div class='ff-section_break_desk'>{$data['settings']['description']}</div>";
-        $html .= "</div>";
-        echo apply_filters('fluentform_rendering_field_html_'.$elementName, $html, $data, $form);
-    }
+        $html = "<div {$atts}>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
+        $html .= "<h3 class='ff-el-section-title'>" . fluentform_sanitize_html($data['settings']['label']) . '</h3>';
+        $html .= "<div class='ff-section_break_desk'>" . fluentform_sanitize_html($data['settings']['description']) . '</div>';
+        $html .= '</div>';
 
+        $this->printContent('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
+    }
 }

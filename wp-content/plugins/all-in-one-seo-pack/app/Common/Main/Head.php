@@ -24,6 +24,51 @@ class Head {
 	private static $pageTitle = null;
 
 	/**
+	 * GoogleAnalytics class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var GoogleAnalytics
+	 */
+	protected $analytics = null;
+
+	/**
+	 * Links class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Meta\Links
+	 */
+	protected $links = null;
+
+	/**
+	 * Keywords class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Meta\Keywords
+	 */
+	protected $keywords = null;
+
+	/**
+	 * Verification class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Meta\Verification
+	 */
+	protected $verification = null;
+
+	/**
+	 * The views to output.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var array
+	 */
+	protected $views = [];
+
+	/**
 	 * Class constructor.
 	 *
 	 * @since 4.0.0
@@ -35,13 +80,13 @@ class Head {
 
 		$this->analytics    = new GoogleAnalytics();
 		$this->links        = new Meta\Links();
-		$this->robots       = new Meta\Robots();
 		$this->keywords     = new Meta\Keywords();
 		$this->verification = new Meta\SiteVerification();
 		$this->views        = [
-			'meta'   => AIOSEO_DIR . '/app/Common/Views/main/meta.php',
-			'social' => AIOSEO_DIR . '/app/Common/Views/main/social.php',
-			'schema' => AIOSEO_DIR . '/app/Common/Views/main/schema.php'
+			'meta'    => AIOSEO_DIR . '/app/Common/Views/main/meta.php',
+			'social'  => AIOSEO_DIR . '/app/Common/Views/main/social.php',
+			'schema'  => AIOSEO_DIR . '/app/Common/Views/main/schema.php',
+			'clarity' => AIOSEO_DIR . '/app/Common/Views/main/clarity.php'
 		];
 	}
 
@@ -107,6 +152,7 @@ class Head {
 			return self::$pageTitle;
 		}
 		self::$pageTitle = aioseo()->meta->title->filterPageTitle( $wpTitle );
+
 		return self::$pageTitle;
 	}
 
@@ -141,7 +187,7 @@ class Head {
 
 		// Add the new title tag to our own comment block.
 		$pageTitle = aioseo()->helpers->escapeRegexReplacement( $this->getTitle() );
-		$head      = preg_replace( '#(<!--\sAll\sin\sOne\sSEO[a-zA-Z\s0-9.]+\s-->)#', "$1\r\n\t\t<title>$pageTitle</title>", $head, 1 );
+		$head      = preg_replace( '/(<!--\sAll\sin\sOne\sSEO[a-z0-9\s.]+\s-\saioseo\.com\s-->)/i', "$1\r\n\t\t<title>$pageTitle</title>", $head, 1 );
 
 		$content = $head . $body;
 		echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -166,10 +212,10 @@ class Head {
 			'%1$s %2$s',
 			esc_html( AIOSEO_PLUGIN_NAME ),
 			aioseo()->version // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		) . " -->\n";
+		) . " - aioseo.com -->\n";
 
 		foreach ( $views as $view ) {
-			require( $view );
+			require $view;
 		}
 
 		echo "\t\t<!-- " . esc_html( AIOSEO_PLUGIN_NAME ) . " -->\n\n";

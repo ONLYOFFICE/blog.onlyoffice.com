@@ -8,7 +8,7 @@
    * Plugin Name:       Trinity Audio
    * Plugin URI:        https://wordpress.org/plugins/trinity-audio/
    * Description:       This plugin generates an audio version of the post, for absolutely FREE. You can choose the language and the gender of the voice reading your content. You also have the option to add Trinity Audio's player on select posts or have it audiofy all of your content. In both cases, it only takes a few simple clicks to get it done. The plugin is built through collaboration with the Amazon Polly team.
-   * Version:           4.2.4
+   * Version:           5.3.4
    * Author:            Trinity Audio
    * Author URI:        https://trinityaudio.ai/
    * License:           GPL-3.0 ONLY
@@ -39,6 +39,62 @@
 
   register_deactivation_hook(__FILE__, 'trinity_audio_deactivation');
 
+  add_filter('plugin_row_meta', 'trinity_audio_plugin_links', 9999, 4);
+
+  if (trinity_get_is_first_changes_saved() && trinity_get_install_key() && trinity_get_view_key()) {
+    add_filter('bulk_actions-edit-post', function($bulk_actions) {
+      $bulk_actions['enable-trinity-audio'] = 'Enable Trinity Audio';
+      $bulk_actions['disable-trinity-audio'] = 'Disable Trinity Audio';
+      return $bulk_actions;
+    });
+
+    add_filter('handle_bulk_actions-edit-post', function($redirect_url, $action, $post_ids) {
+      if ($action == 'enable-trinity-audio') {
+        foreach ($post_ids as $post_id) {
+          update_post_meta($post_id, TRINITY_AUDIO_ENABLED, 1);
+        }
+      }
+
+      if ($action == 'disable-trinity-audio') {
+        foreach ($post_ids as $post_id) {
+          update_post_meta($post_id, TRINITY_AUDIO_ENABLED, 0);
+        }
+      }
+
+      return $redirect_url;
+    }, 9999, 3);
+
+    add_action('restrict_manage_posts', function () {
+      $values = [
+              'Trinity Audio enabled' => '1',
+              'Trinity Audio disabled' => '0'
+      ];
+      ?>
+      <select name="trinity-audio-bulk-filter">
+        <option value="">All posts</option>
+        <?php
+        $is_filtered = isset($_GET['trinity-audio-bulk-filter']) ? $_GET['trinity-audio-bulk-filter'] : '';
+
+        foreach ($values as $label => $value) {
+          $is_selected = $value == $is_filtered ? ' selected="selected"' : '';
+          echo "<option value='$value' $is_selected>$label</option>";
+        }
+        ?>
+      </select>
+      <?php
+    });
+
+    add_filter('parse_query', function ($query) {
+      global $pagenow;
+
+      if (is_admin() && $pagenow == 'edit.php' && isset($_GET['trinity-audio-bulk-filter']) && $_GET['trinity-audio-bulk-filter'] != '') {
+        $query->query_vars['meta_key'] = 'trinity_audio_enable';
+        $query->query_vars['meta_value'] = $_GET['trinity-audio-bulk-filter'];
+        $query->query_vars['meta_compare'] = '=';
+      }
+    });
+  }
+
   function trinity_audio_deactivation() {
     trinity_send_stat(TRINITY_AUDIO_UPDATE_PLUGIN_DETAILS_URL, 'deactivating', false);
   }
@@ -54,6 +110,7 @@
     add_option(TRINITY_AUDIO_POWERED_BY, 1, '', true);
     add_option(TRINITY_AUDIO_PRECONNECT, 1, '', true);
     add_option(TRINITY_AUDIO_GENDER_ID, 'f', '', true);
+    add_option(TRINITY_AUDIO_VOICE_ID, 'Joanna', '', true);
     add_option(TRINITY_AUDIO_PLAYER_POSITION, 'before', '', true);
     add_option(TRINITY_AUDIO_PLAYER_LABEL, '', '', true);
     add_option(TRINITY_AUDIO_SOURCE_NEW_POSTS_DEFAULT, 1, '', true);
@@ -156,4 +213,15 @@
 
   function trinity_plugin_loaded() {
     trinity_migration_init();
+  }
+
+  function trinity_audio_plugin_links($plugin_meta, $plugin_file) {
+    if (plugin_basename(__FILE__) == $plugin_file) {
+      $row_meta = array(
+        'guide'   => '<a href="https://www.trinityaudio.ai/the-trinity-audio-wordpress-plugin-implementation-guide" target="_blank" aria-label="Trinity Audio implementation guide">Implementation guide</a>',
+        'rate us' => '<a href="https://wordpress.org/support/plugin/trinity-audio/reviews/#new-post" target="_blank" aria-label="Rate Trinity Audio">Rate us</a>'
+      );
+      return array_merge($plugin_meta, $row_meta);
+    }
+    return (array) $plugin_meta;
   }

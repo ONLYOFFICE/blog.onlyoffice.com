@@ -19,7 +19,7 @@ class Wpml {
 	 */
 	public function __construct() {
 		// If the tables don't exist (could happen), return early.
-		if ( ! aioseo()->db->tableExists( 'icl_strings' ) && ! aioseo()->db->tableExists( 'icl_string_translations' ) ) {
+		if ( ! aioseo()->core->db->tableExists( 'icl_strings' ) && ! aioseo()->core->db->tableExists( 'icl_string_translations' ) ) {
 			return;
 		}
 
@@ -30,13 +30,13 @@ class Wpml {
 		];
 
 		try {
-			$v3Results = aioseo()->db->start( 'icl_strings' )
+			$v3Results = aioseo()->core->db->start( 'icl_strings' )
 				->where( 'context', 'admin_texts_aioseop_options' )
 				->whereIn( 'name', array_keys( $strings ) )
 				->run()
 				->result();
 
-			$v4Results = aioseo()->db->start( 'icl_strings' )
+			$v4Results = aioseo()->core->db->start( 'icl_strings' )
 				->where( 'context', 'admin_texts_aioseo_options_localized' )
 				->whereIn( 'name', array_values( $strings ) )
 				->run()
@@ -44,7 +44,7 @@ class Wpml {
 
 			if ( ! empty( $v3Results ) ) {
 				foreach ( $v3Results as $result ) {
-					$translations = aioseo()->db->start( 'icl_string_translations' )
+					$translations = aioseo()->core->db->start( 'icl_string_translations' )
 						->where( 'string_id', $result->id )
 						->run()
 						->result();
@@ -64,7 +64,7 @@ class Wpml {
 					}
 
 					if ( ! $v4ResultId ) {
-						$v4ResultId = aioseo()->db
+						$v4ResultId = aioseo()->core->db
 							->insert( 'icl_strings' )
 							->set( [
 								'language'                => $result->language,
@@ -88,14 +88,14 @@ class Wpml {
 
 					foreach ( $translations as $translation ) {
 						// Check if the translation exists first or we'll get a DB error.
-						$v4Translation = aioseo()->db->start( 'icl_string_translations' )
+						$v4Translation = aioseo()->core->db->start( 'icl_string_translations' )
 							->where( 'string_id', $v4ResultId )
 							->where( 'language', $translation->language )
 							->run()
 							->result();
 
 						if ( ! empty( $v4Translation ) ) {
-							aioseo()->db->update( 'icl_string_translations' )
+							aioseo()->core->db->update( 'icl_string_translations' )
 								->where( 'string_id', $v4ResultId )
 								->where( 'language', $translation->language )
 								->set( [
@@ -105,7 +105,7 @@ class Wpml {
 							continue;
 						}
 
-						aioseo()->db
+						aioseo()->core->db
 							->insert( 'icl_string_translations' )
 							->set( [
 								'string_id'           => $v4ResultId,

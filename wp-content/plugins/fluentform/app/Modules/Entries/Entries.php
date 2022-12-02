@@ -5,6 +5,7 @@ namespace FluentForm\App\Modules\Entries;
 use FluentForm\App\Helpers\Helper;
 use FluentForm\App\Modules\Form\FormDataParser;
 use FluentForm\App\Modules\Form\FormFieldsParser;
+use FluentForm\App\Modules\Registerer\TranslationString;
 use FluentForm\Framework\Helpers\ArrayHelper;
 use FluentForm\View;
 
@@ -32,7 +33,6 @@ class Entries extends EntryQuery
     public function getAllFormEntries()
     {
         $formId = intval($this->request->get('form_id'));
-
 
         $limit = $this->request->get('per_page', 10);
         $page = $this->request->get('page', 1);
@@ -67,7 +67,6 @@ class Entries extends EntryQuery
             $query->where('fluentform_submissions.status', '!=', 'trashed');
         }
 
-
         $dateRange = $this->request->get('date_range');
         if ($dateRange) {
             $query->where('fluentform_submissions.created_at', '>=', $dateRange[0] . ' 00:00:01');
@@ -87,10 +86,10 @@ class Entries extends EntryQuery
             $entry->human_date = human_time_diff(strtotime($entry->created_at), strtotime(current_time('mysql')));
         }
         wp_send_json_success([
-            'entries'   => $entries,
-            'total'     => $total,
-            'last_page' => ceil($total / $limit),
-            'available_forms' => $this->getAvailableForms()
+            'entries'         => $entries,
+            'total'           => $total,
+            'last_page'       => ceil($total / $limit),
+            'available_forms' => $this->getAvailableForms(),
         ]);
     }
 
@@ -108,9 +107,7 @@ class Entries extends EntryQuery
         if (!empty($ranges[1])) {
             $time = strtotime($ranges[1]) + 24 * 60 * 60;
             $to = date('Y-m-d H:i:s', $time);
-
         }
-
 
         $period = new \DatePeriod(new \DateTime($from), new \DateInterval('P1D'), new \DateTime($to));
 
@@ -140,9 +137,8 @@ class Entries extends EntryQuery
         }
 
         wp_send_json_success([
-            'stats' => $range
+            'stats' => $range,
         ]);
-
     }
 
     public function renderEntries($form_id)
@@ -167,12 +163,11 @@ class Entries extends EntryQuery
             $value = \json_decode($notification->value, true);
             $formattedNotification[] = [
                 'id'   => $notification->id,
-                'name' => ArrayHelper::get($value, 'name')
+                'name' => ArrayHelper::get($value, 'name'),
             ];
         }
 
         $form = wpFluent()->table('fluentform_forms')->find($form_id);
-
 
         $app = wpFluentForm();
 
@@ -191,16 +186,19 @@ class Entries extends EntryQuery
             'available_countries' => $app->load(
                 $app->appPath('Services/FormBuilder/CountryNames.php')
             ),
-            'upgrade_url'         => fluentform_upgrade_url()
+            'upgrade_url'      => fluentform_upgrade_url(),
+            'form_entries_str' => TranslationString::getEntriesI18n(),
         ], $form);
 
         wp_localize_script(
-            'fluentform_form_entries', 'fluent_form_entries_vars', $fluentFormEntriesVars
+            'fluentform_form_entries',
+            'fluent_form_entries_vars',
+            $fluentFormEntriesVars
         );
 
         View::render('admin.form.entries', [
             'form_id' => $form_id,
-            'has_pdf' => defined('FLUENTFORM_PDF_VERSION') ? 'true' : 'false'
+            'has_pdf' => defined('FLUENTFORM_PDF_VERSION') ? 'true' : 'false',
         ]);
     }
 
@@ -209,7 +207,7 @@ class Entries extends EntryQuery
         $formId = intval($this->request->get('form_id'));
         $counts = $this->groupCount($formId);
         wp_send_json_success([
-            'counts' => $counts
+            'counts' => $counts,
         ], 200);
     }
 
@@ -221,8 +219,7 @@ class Entries extends EntryQuery
         $entryType,
         $search,
         $wheres = []
-    )
-    {
+    ) {
         $this->formId = $formId;
         $this->per_page = $perPage;
         $this->sort_by = $sortBy;
@@ -230,9 +227,9 @@ class Entries extends EntryQuery
         $this->search = $search;
         $this->wheres = $wheres;
 
-        if ($entryType == 'favorite') {
+        if ('favorite' == $entryType) {
             $this->is_favourite = true;
-        } elseif ($entryType != 'all' && $entryType) {
+        } elseif ('all' != $entryType && $entryType) {
             $this->status = $entryType;
         }
 
@@ -276,27 +273,31 @@ class Entries extends EntryQuery
             $wheres
         );
 
-
         $labels = apply_filters(
-            'fluentform_all_entry_labels', $entries['formLabels'], $this->request->get('form_id')
+            'fluentform_all_entry_labels',
+            $entries['formLabels'],
+            $this->request->get('form_id')
         );
 
         $form = $this->formModel->find($this->request->get('form_id'));
 
         if ($form->has_payment) {
             $labels = apply_filters(
-                'fluentform_all_entry_labels_with_payment', $entries['formLabels'], false, $form
+                'fluentform_all_entry_labels_with_payment',
+                $entries['formLabels'],
+                false,
+                $form
             );
         }
         $formId = $this->request->get('form_id');
-        $visible_columns = Helper::getFormMeta($formId, '_visible_columns', NULL);
-        $columns_order = Helper::getFormMeta($formId, '_columns_order', NULL);
+        $visible_columns = Helper::getFormMeta($formId, '_visible_columns', null);
+        $columns_order = Helper::getFormMeta($formId, '_columns_order', null);
 
         wp_send_json_success([
             'submissions'     => apply_filters('fluentform_all_entries', $entries['submissions']),
             'labels'          => $labels,
             'visible_columns' => $visible_columns,
-            'columns_order'   => $columns_order
+            'columns_order'   => $columns_order,
         ], 200);
     }
 
@@ -308,9 +309,9 @@ class Entries extends EntryQuery
 
         $entry_type = sanitize_key($this->request->get('entry_type', 'all'));
 
-        if ($entry_type === 'favorite') {
+        if ('favorite' === $entry_type) {
             $this->is_favourite = true;
-        } elseif ($entry_type !== 'all') {
+        } elseif ('all' !== $entry_type) {
             $this->status = $entry_type;
         }
 
@@ -322,17 +323,17 @@ class Entries extends EntryQuery
 
         if (!$submission) {
             wp_send_json_error([
-                'message' => 'No Entry found.'
+                'message' => 'No Entry found.',
             ], 422);
         }
 
         $form = $this->formModel->find($this->formId);
 
-        if ($submission->status == 'unread' && apply_filters('fluentform_auto_read', true, $form)) {
+        if ('unread' == $submission->status && apply_filters('fluentform_auto_read', true, $form)) {
             wpFluent()->table('fluentform_submissions')
                 ->where('id', $entryId)
                 ->update([
-                    'status' => 'read'
+                    'status' => 'read',
                 ]);
 
             $submission->status = 'read';
@@ -348,7 +349,7 @@ class Entries extends EntryQuery
                 'name'      => $user->display_name,
                 'email'     => $user->user_email,
                 'ID'        => $user->ID,
-                'permalink' => get_edit_user_link($user->ID)
+                'permalink' => get_edit_user_link($user->ID),
             ];
             $submission->user = $user_data;
         }
@@ -356,22 +357,32 @@ class Entries extends EntryQuery
         $submission = apply_filters('fluentform_single_response_data', $submission, $this->formId);
 
         $fields = apply_filters(
-            'fluentform_single_response_input_fields', $formMeta['inputs'], $this->formId
+            'fluentform_single_response_input_fields',
+            $formMeta['inputs'],
+            $this->formId
         );
 
         $labels = apply_filters(
-            'fluentform_single_response_input_labels', $formMeta['labels'], $this->formId
+            'fluentform_single_response_input_labels',
+            $formMeta['labels'],
+            $this->formId
         );
 
         $order_data = false;
 
-        if ($submission->payment_status || $submission->payment_total || $submission->payment_type === 'subscription') {
+        if ($submission->payment_status || $submission->payment_total || 'subscription' === $submission->payment_type) {
             $order_data = apply_filters(
-                'fluentform_submission_order_data', false, $submission, $form
+                'fluentform_submission_order_data',
+                false,
+                $submission,
+                $form
             );
 
             $labels = apply_filters(
-                'fluentform_submission_entry_labels_with_payment', $labels, $submission, $form
+                'fluentform_submission_entry_labels_with_payment',
+                $labels,
+                $submission,
+                $form
             );
         }
 
@@ -385,15 +396,20 @@ class Entries extends EntryQuery
             'prev'       => $previousSubmissionId,
             'labels'     => $labels,
             'fields'     => $fields,
-            'order_data' => $order_data
+            'order_data' => $order_data,
         ];
     }
 
     public function getEntry()
     {
+        if (!defined('FLUENTFORM_RENDERING_ENTRY')) {
+            define('FLUENTFORM_RENDERING_ENTRY', true);
+        }
+
         $entryData = $this->_getEntry();
 
         $entryData['widgets'] = apply_filters('fluentform_single_entry_widgets', [], $entryData);
+        $entryData['extraCards'] = apply_filters('fluentform_single_entry_cards', [], $entryData);
 
         wp_send_json_success($entryData, 200);
     }
@@ -403,6 +419,7 @@ class Entries extends EntryQuery
      * @param array $with
      *
      * @return array
+     *
      * @todo: Implement Caching mechanism so we don't have to parse these things for every request
      */
     public function getFormInputsAndLabels($form, $with = ['admin_label', 'raw'])
@@ -411,7 +428,7 @@ class Entries extends EntryQuery
         $inputLabels = FormFieldsParser::getAdminLabels($form, $formInputs);
         return [
             'inputs' => $formInputs,
-            'labels' => $inputLabels
+            'labels' => $inputLabels,
         ];
     }
 
@@ -419,7 +436,7 @@ class Entries extends EntryQuery
     {
         $formId = intval($this->request->get('form_id'));
         $entry_id = intval($this->request->get('entry_id'));
-        $apiLog = sanitize_text_field($this->request->get('api_log')) == 'yes';
+        $apiLog = 'yes' == sanitize_text_field($this->request->get('api_log'));
 
         $metaKeys = ['_notes'];
 
@@ -451,7 +468,7 @@ class Entries extends EntryQuery
         $notes = apply_filters('fluentform_entry_notes', $notes, $entry_id, $formId);
 
         wp_send_json_success([
-            'notes' => $notes
+            'notes' => $notes,
         ], 200);
     }
 
@@ -473,7 +490,7 @@ class Entries extends EntryQuery
             'user_id'     => $user->ID,
             'name'        => $user->display_name,
             'created_at'  => current_time('mysql'),
-            'updated_at'  => current_time('mysql')
+            'updated_at'  => current_time('mysql'),
         ];
 
         $response_note = apply_filters('fluentform_add_response_note', $response_note);
@@ -487,7 +504,7 @@ class Entries extends EntryQuery
         wp_send_json_success([
             'message'   => __('Note has been successfully added', 'fluentform'),
             'note'      => $added_note,
-            'insert_id' => $insertId
+            'insert_id' => $insertId,
         ], 200);
     }
 
@@ -504,7 +521,7 @@ class Entries extends EntryQuery
 
         wp_send_json_success([
             'message' => __('Item has been marked as ' . $newStatus, 'fluentform'),
-            'status'  => $newStatus
+            'status'  => $newStatus,
         ], 200);
     }
 
@@ -518,7 +535,7 @@ class Entries extends EntryQuery
 
         wp_send_json_success([
             'message' => __('Item Successfully deleted', 'fluentform'),
-            'status'  => $newStatus
+            'status'  => $newStatus,
         ], 200);
     }
 
@@ -567,7 +584,6 @@ class Entries extends EntryQuery
                     ->where('submission_id', $entryId)
                     ->delete();
 
-
                 wpFluent()->table('fluentform_transactions')
                     ->where('submission_id', $entryId)
                     ->delete();
@@ -580,15 +596,12 @@ class Entries extends EntryQuery
                     ->where('origin_id', $entryId)
                     ->where('type', 'submission_action')
                     ->delete();
-
             } catch (\Exception $exception) {
                 // ...
             }
         }
 
-
         $errors = ob_get_clean();
-
 
         do_action('fluentform_after_entry_deleted', $entryId, $formId);
 
@@ -615,7 +628,6 @@ class Entries extends EntryQuery
                     } else {
                         $deletableFiles = $files;
                     }
-
                 }
             }
         }
@@ -640,7 +652,7 @@ class Entries extends EntryQuery
 
         wp_send_json_success([
             'message'      => $message,
-            'is_favourite' => $newStatus
+            'is_favourite' => $newStatus,
         ], 200);
     }
 
@@ -656,7 +668,7 @@ class Entries extends EntryQuery
 
         if (!$formId || !count($entries)) {
             wp_send_json_error([
-                'message' => __('Please select entries first', 'fluentform')
+                'message' => __('Please select entries first', 'fluentform'),
             ], 400);
         }
 
@@ -668,36 +680,35 @@ class Entries extends EntryQuery
             // it's status change
             $bulkQuery->update([
                 'status'     => $actionType,
-                'updated_at' => current_time('mysql')
+                'updated_at' => current_time('mysql'),
             ]);
 
             wp_send_json_success([
-                'message' => 'Selected entries successfully marked as ' . $statuses[$actionType]
+                'message' => 'Selected entries successfully marked as ' . $statuses[$actionType],
             ], 200);
         }
 
         // now other action handler
-        if ($actionType == 'other.delete_permanently') {
+        if ('other.delete_permanently' == $actionType) {
             $form = wpFluent()->table('fluentform_forms')->find($formId);
             foreach ($entries as $entryId) {
                 $this->deleteEntryById($entryId, $form);
             }
             $message = __('Selected entries successfully deleted', 'fluentform');
-
-        } elseif ($actionType == 'other.make_favorite') {
+        } elseif ('other.make_favorite' == $actionType) {
             $bulkQuery->update([
-                'is_favourite' => 1
+                'is_favourite' => 1,
             ]);
             $message = __('Selected entries successfully marked as favorites', 'fluentform');
-        } elseif ($actionType == 'other.unmark_favorite') {
+        } elseif ('other.unmark_favorite' == $actionType) {
             $bulkQuery->update([
-                'is_favourite' => 0
+                'is_favourite' => 0,
             ]);
             $message = __('Selected entries successfully removed from favorites', 'fluentform');
         }
 
         wp_send_json_success([
-            'message' => $message
+            'message' => $message,
         ], 200);
     }
 
@@ -709,9 +720,10 @@ class Entries extends EntryQuery
             '_wp_http_referer',
             'g-recaptcha-response',
             'h-captcha-response',
+            'cf-turnstile-response',
             '__stripe_payment_method_id',
             '__ff_all_applied_coupons',
-            '__entry_intermediate_hash'
+            '__entry_intermediate_hash',
         ]);
 
         $entryItems = [];
@@ -730,7 +742,7 @@ class Entries extends EntryQuery
                         'submission_id'  => $entryId,
                         'field_name'     => trim($dataKey),
                         'sub_field_name' => $subKey,
-                        'field_value'    => maybe_serialize($subValue)
+                        'field_value'    => maybe_serialize($subValue),
                     ];
                 }
             } else {
@@ -739,7 +751,7 @@ class Entries extends EntryQuery
                     'submission_id'  => $entryId,
                     'field_name'     => trim($dataKey),
                     'sub_field_name' => '',
-                    'field_value'    => $dataValue
+                    'field_value'    => $dataValue,
                 ];
             }
         }
@@ -772,7 +784,7 @@ class Entries extends EntryQuery
                         'submission_id'  => $entryId,
                         'field_name'     => $dataKey,
                         'sub_field_name' => $subKey,
-                        'field_value'    => maybe_serialize($subValue)
+                        'field_value'    => maybe_serialize($subValue),
                     ];
                 }
             } else {
@@ -781,7 +793,7 @@ class Entries extends EntryQuery
                     'submission_id'  => $entryId,
                     'field_name'     => $dataKey,
                     'sub_field_name' => '',
-                    'field_value'    => $dataValue
+                    'field_value'    => $dataValue,
                 ];
             }
         }
@@ -805,7 +817,7 @@ class Entries extends EntryQuery
 
         $users = get_users([
             'search' => "*{$search}*",
-            'number' => 50
+            'number' => 50,
         ]);
 
         $formattedUsers = [];
@@ -813,12 +825,12 @@ class Entries extends EntryQuery
         foreach ($users as $user) {
             $formattedUsers[] = [
                 'ID'    => $user->ID,
-                'label' => $user->display_name . ' - ' . $user->user_email
+                'label' => $user->display_name . ' - ' . $user->user_email,
             ];
         }
 
         wp_send_json_success([
-            'users' => $formattedUsers
+            'users' => $formattedUsers,
         ]);
     }
 
@@ -829,7 +841,7 @@ class Entries extends EntryQuery
 
         if (!$userId || !$submissionId) {
             wp_send_json_error([
-                'message' => __('Submission ID and User ID is required', 'fluentform')
+                'message' => __('Submission ID and User ID is required', 'fluentform'),
             ], 423);
         }
 
@@ -839,7 +851,7 @@ class Entries extends EntryQuery
 
         if (!$submission || $submission->user_id == $userId || !$user) {
             wp_send_json_error([
-                'message' => __('Invalid Request', 'fluentform')
+                'message' => __('Invalid Request', 'fluentform'),
             ], 423);
         }
 
@@ -847,7 +859,7 @@ class Entries extends EntryQuery
             ->where('id', $submission->id)
             ->update([
                 'user_id'    => $userId,
-                'updated_at' => current_time('mysql')
+                'updated_at' => current_time('mysql'),
             ]);
 
         if (defined('FLUENTFORMPRO')) {
@@ -856,7 +868,7 @@ class Entries extends EntryQuery
                 ->where('submission_id', $submission->id)
                 ->update([
                     'user_id'    => $userId,
-                    'updated_at' => current_time('mysql')
+                    'updated_at' => current_time('mysql'),
                 ]);
         }
 
@@ -866,40 +878,38 @@ class Entries extends EntryQuery
             'source_id'        => $submission->id,
             'component'        => 'General',
             'status'           => 'info',
-            'title'            => 'Associate user has been changed from '.$submission->user_id .' to '.$userId
+            'title'            => 'Associate user has been changed from ' . $submission->user_id . ' to ' . $userId,
         ]);
 
         do_action('fluentform_submission_user_changed', $submission, $user);
 
         wp_send_json_success([
-            'message' => __('Selected user has been successfully assigned to this submission', 'fuentform'),
+            'message' => __('Selected user has been successfully assigned to this submission', 'fluentform'),
             'user'    => [
                 'name'      => $user->display_name,
                 'email'     => $user->user_email,
                 'ID'        => $user->ID,
-                'permalink' => get_edit_user_link($user->ID)
+                'permalink' => get_edit_user_link($user->ID),
             ],
-            'user_id' => $userId
+            'user_id' => $userId,
         ]);
     }
 
     public function getAvailableForms()
     {
-
         $forms = wpFluent()->table('fluentform_forms')
-            ->select(array('id', 'title'))
+            ->select(['id', 'title'])
             ->orderBy('id', 'DESC')
             ->get();
 
         $formattedForms = [];
         foreach ($forms as $form) {
             $formattedForms[] = [
-                'id' => $form->id,
-                'title'   => $form->title
+                'id'    => $form->id,
+                'title' => $form->title,
             ];
         }
 
         return $formattedForms;
-
     }
 }

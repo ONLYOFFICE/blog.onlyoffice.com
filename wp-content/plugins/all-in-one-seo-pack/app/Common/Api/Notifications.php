@@ -53,6 +53,18 @@ class Notifications {
 	/**
 	 * Extend the start date of a notice.
 	 *
+	 * @since 4.2.1
+	 *
+	 * @param  \WP_REST_Request  $request The REST Request
+	 * @return \WP_REST_Response The response.
+	 */
+	public static function installOmReminder() {
+		return self::reminder( 'install-om' );
+	}
+
+	/**
+	 * Extend the start date of a notice.
+	 *
 	 * @since 4.0.0
 	 *
 	 * @param  \WP_REST_Request  $request The REST Request
@@ -130,18 +142,6 @@ class Notifications {
 	 * @param  \WP_REST_Request  $request The REST Request
 	 * @return \WP_REST_Response The response.
 	 */
-	public static function deprecatedFiltersReminder() {
-		return self::reminder( 'deprecated-filters-v2' );
-	}
-
-	/**
-	 * Extend the start date of a notice.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @param  \WP_REST_Request  $request The REST Request
-	 * @return \WP_REST_Response The response.
-	 */
 	public static function migrationCustomFieldReminder() {
 		return self::reminder( 'v3-migration-custom-field' );
 	}
@@ -186,7 +186,7 @@ class Notifications {
 	public static function dismissNotifications( $request ) {
 		$slugs = $request->get_json_params();
 
-		$notifications = aioseo()->db
+		$notifications = aioseo()->core->db
 			->start( 'aioseo_notifications' )
 			->whereIn( 'slug', $slugs )
 			->run()

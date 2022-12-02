@@ -412,6 +412,9 @@ if ( ! function_exists('ampforwp_sd_multiple_images') ) {
 // schema.org/SiteNavigationElement missing from menus #1229 & #2952
 add_action('amp_post_template_footer','ampforwp_sd_sitenavigation');
 function ampforwp_sd_sitenavigation(){
+	if (!ampforwp_get_setting('ampforwp-sd-switch')) {
+		return;
+	}
 	if (class_exists('Bunyad_Theme_SmartMag')) {
 	    if (!is_single() || !Bunyad::posts()->meta('reviews')) {
 	      return;
@@ -492,7 +495,7 @@ function ampforwp_sd_sitenavigation(){
 	    }
 	    echo '<script type="application/ld+json">' . json_encode($schema) . "</script>";
     }
-    if ( ! class_exists('saswp_fields_generator') ) {
+    if ( ! class_exists('saswp_fields_generator') && ampforwp_get_setting('ampforwp-sd-navigation-schema')) {
 	    $input = array();           
 	    $navObj = array();
 	    $ampforwp_sd_menu = get_transient('ampforwp_sd_menu');

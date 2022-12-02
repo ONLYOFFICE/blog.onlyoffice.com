@@ -48,9 +48,9 @@ class PostMeta {
 	 * @since 4.1.4
 	 */
 	public function scheduleImport() {
-		if ( aioseo()->helpers->scheduleSingleAction( aioseo()->importExport->seoPress->postActionName, 0 ) ) {
-			if ( ! aioseo()->transients->get( 'import_post_meta_seopress' ) ) {
-				aioseo()->transients->update( 'import_post_meta_seopress', time(), WEEK_IN_SECONDS );
+		if ( aioseo()->actionScheduler->scheduleSingle( aioseo()->importExport->seoPress->postActionName, 0 ) ) {
+			if ( ! aioseo()->core->cache->get( 'import_post_meta_seopress' ) ) {
+				aioseo()->core->cache->update( 'import_post_meta_seopress', time(), WEEK_IN_SECONDS );
 			}
 		}
 	}
@@ -65,9 +65,9 @@ class PostMeta {
 	public function importPostMeta() {
 		$postsPerAction  = 100;
 		$publicPostTypes = implode( "', '", aioseo()->helpers->getPublicPostTypes( true ) );
-		$timeStarted     = gmdate( 'Y-m-d H:i:s', aioseo()->transients->get( 'import_post_meta_seopress' ) );
+		$timeStarted     = gmdate( 'Y-m-d H:i:s', aioseo()->core->cache->get( 'import_post_meta_seopress' ) );
 
-		$posts = aioseo()->db
+		$posts = aioseo()->core->db
 			->start( 'posts as p' )
 			->select( 'p.ID, p.post_type' )
 			->join( 'postmeta as pm', '`p`.`ID` = `pm`.`post_id`' )
@@ -81,12 +81,13 @@ class PostMeta {
 			->result();
 
 		if ( ! $posts || ! count( $posts ) ) {
-			aioseo()->transients->delete( 'import_post_meta_seopress' );
+			aioseo()->core->cache->delete( 'import_post_meta_seopress' );
+
 			return;
 		}
 
 		foreach ( $posts as $post ) {
-			$postMeta = aioseo()->db
+			$postMeta = aioseo()->core->db
 				->start( 'postmeta' . ' as pm' )
 				->select( 'pm.meta_key, pm.meta_value' )
 				->where( 'pm.post_id', $post->ID )
@@ -94,23 +95,31 @@ class PostMeta {
 				->run()
 				->result();
 
-			if ( ! $postMeta || ! count( $postMeta ) ) {
-				continue;
-			}
-
 			$meta = array_merge( [
 				'post_id' => (int) $post->ID,
 			], $this->getMetaData( $postMeta, $post->ID ) );
 
+			if ( ! $postMeta || ! count( $postMeta ) ) {
+				$aioseoPost = Models\Post::getPost( (int) $post->ID );
+				$aioseoPost->set( $meta );
+				$aioseoPost->save();
+
+				aioseo()->migration->meta->migrateAdditionalPostMeta( $post->ID );
+
+				continue;
+			}
+
 			$aioseoPost = Models\Post::getPost( (int) $post->ID );
 			$aioseoPost->set( $meta );
 			$aioseoPost->save();
+
+			aioseo()->migration->meta->migrateAdditionalPostMeta( $post->ID );
 		}
 
 		if ( count( $posts ) === $postsPerAction ) {
-			aioseo()->helpers->scheduleSingleAction( aioseo()->importExport->seoPress->postActionName, 5 );
+			aioseo()->actionScheduler->scheduleSingle( aioseo()->importExport->seoPress->postActionName, 5, [], true );
 		} else {
-			aioseo()->transients->delete( 'import_post_meta_seopress' );
+			aioseo()->core->cache->delete( 'import_post_meta_seopress' );
 		}
 	}
 
@@ -122,7 +131,7 @@ class PostMeta {
 	 * @param object $postMeta The post meta from database.
 	 * @return array           The meta data.
 	 */
-	public function getMetaData( $postMeta, $post_id ) {
+	public function getMetaData( $postMeta, $postId ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$meta = [];
 		foreach ( $postMeta as $record ) {
 			$name  = $record->meta_key;

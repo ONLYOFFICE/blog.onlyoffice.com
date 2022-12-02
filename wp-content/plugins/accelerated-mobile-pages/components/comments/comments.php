@@ -86,7 +86,6 @@ function ampforwp_framework_get_comments(){
 											</div>
 										<?php do_action('ampforwp_reply_comment_form', $comment, $args, $depth); ?>
 										</article>
-									</li>
 									<?php 
 								}
 								wp_list_comments( array(
@@ -119,7 +118,7 @@ function ampforwp_framework_get_comments(){
 						</div> <!-- .amp-comments-wrapper -->
 						<?php // if amp-comments extension is enabled then hide this button
 					} // if ( $comments )
-					if ( ! defined( 'AMP_COMMENTS_VERSION' ) ) { ?>
+					if ( ! defined( 'AMP_COMMENTS_VERSION' ) && comments_open($postID) ) { ?>
 						<div class="amp-comment-button">
 							<?php if ( comments_open($postID) ) {
 								$nofollow = '';
@@ -173,12 +172,8 @@ function ampforwp_framework_get_disqus_comments(){
 	$layout = 'responsive';
 	if ( isset($redux_builder_amp['ampforwp-disqus-layout']) && 'fixed' == $redux_builder_amp['ampforwp-disqus-layout'] ) {
 		$layout = 'fixed';
-	
-		if ( isset($redux_builder_amp['ampforwp-disqus-height']) && $redux_builder_amp['ampforwp-disqus-height'] ) {
-			$height = $redux_builder_amp['ampforwp-disqus-height'];
-		}
 	}
-
+	$height = ampforwp_get_setting('ampforwp-disqus-height');
 	if( $redux_builder_amp['ampforwp-disqus-comments-name'] !== '' ) {
 		global $post; $post_slug = rawurlencode($post->post_name);
 

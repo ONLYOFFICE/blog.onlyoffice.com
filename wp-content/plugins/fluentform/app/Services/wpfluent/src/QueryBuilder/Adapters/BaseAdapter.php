@@ -466,7 +466,7 @@ abstract class BaseAdapter
 
         foreach ($valueArr as $key => $subValue) {
             // Don't wrap if we have *, which is not a usual field
-            $valueArr[$key] = trim($subValue) == '*' ? $subValue : $this->sanitizer . $subValue . $this->sanitizer;
+            $valueArr[$key] = trim($subValue) == '*' ? $subValue : $this->sanitizer . str_replace('`', '``', $subValue) . $this->sanitizer;
         }
 
         // Join these back with "." and return

@@ -2,6 +2,7 @@
 
 namespace FluentForm\App\Services\Integrations\Slack;
 
+use FluentForm\App\Helpers\Helper;
 use FluentForm\App\Modules\Form\FormDataParser;
 use FluentForm\App\Modules\Form\FormFieldsParser;
 use FluentForm\App\Services\Integrations\LogResponseTrait;
@@ -33,38 +34,51 @@ class Slack
 
         $labels = FormFieldsParser::getAdminLabels($form, $inputs);
 
-        $labels = apply_filters('fluentform_slack_field_label_selection', $labels ,$settings, $form);
+        $labels = apply_filters('fluentform_slack_field_label_selection', $labels, $settings, $form);
 
-        $formData = FormDataParser::parseData((object)$formData, $inputs, $form->id);
+        foreach ($inputs as $name => $input) {
+            if (empty($formData[$name])) {
+                continue;
+            }
+            if ('tabular_grid' == ArrayHelper::get($input, 'element', '')) {
+                $formData[$name] = Helper::getTabularGridMarkdownValue($formData[$name], $input);
+            }
+        }
+        $formData = FormDataParser::parseData((object) $formData, $inputs, $form->id);
 
         $slackTitle = ArrayHelper::get($settings, 'textTitle');
-      
-        if($slackTitle === '') {
-             $title = "New submission on " . $form->title;
-        }else {
+
+        if ('' === $slackTitle) {
+            $title = 'New submission on ' . $form->title;
+        } else {
             $title = $slackTitle;
+        }
+
+        $footerText = ArrayHelper::get($settings, 'footerText');
+        if ($footerText === '') {
+            $footerText = "fluentform";
         }
 
         $fields = [];
 
         foreach ($formData as $attribute => $value) {
-
+            $value = str_replace('<br />', "\n", $value);
             $value = str_replace('&', '&amp;', $value);
             $value = str_replace('<', '&lt;', $value);
-            $value = str_replace('>', "&gt;", $value);
-            if ( ! isset($labels[$attribute]) || empty($value)) {
+            $value = str_replace('>', '&gt;', $value);
+            if (! isset($labels[$attribute]) || empty($value)) {
                 continue;
             }
             $fields[] = [
                 'title' => $labels[$attribute],
                 'value' => $value,
-                'short' => false
+                'short' => false,
             ];
         }
-
         $slackHook = ArrayHelper::get($settings, 'webhook');
 
-        $titleLink = admin_url('admin.php?page=fluent_forms&form_id='
+        $titleLink = admin_url(
+            'admin.php?page=fluent_forms&form_id='
             . $form->id
             . '&route=entries#/entries/'
             . $entry->id
@@ -79,7 +93,7 @@ class Slack
                         'title'      => $title,
                         'title_link' => $titleLink,
                         'fields'     => $fields,
-                        'footer'     => 'fluentform',
+                        'footer'     => $footerText,
                         'ts'         => round(microtime(true) * 1000)
                     ]
                 ]
@@ -93,7 +107,7 @@ class Slack
             'httpversion' => '1.0',
             'headers'     => [],
             'body'        => $body,
-            'cookies'     => []
+            'cookies'     => [],
         ]);
 
         if (is_wp_error($result)) {
@@ -101,18 +115,18 @@ class Slack
             $message = $result->get_error_message();
         } else {
             $message = $result['response'];
-            $status = $result['response']['code'] == 200 ? 'success' : 'failed';
+            $status = 200 == $result['response']['code'] ? 'success' : 'failed';
         }
 
-        if ($status == 'failed') {
+        if ('failed' == $status) {
             do_action('ff_integration_action_result', $feed, 'failed', $message);
         } else {
             do_action('ff_integration_action_result', $feed, 'success', 'Submission notification has been successfully delivered to slack channel');
         }
 
-        return array(
+        return [
             'status'  => $status,
-            'message' => $message
-        );
+            'message' => $message,
+        ];
     }
 }

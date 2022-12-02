@@ -99,6 +99,19 @@ class SSOSettings {
 			'discourse_sso_common_settings_section'
 		);
 
+		if ( ! $this->use_network_sso_settings ) {
+			add_settings_field(
+				'discourse_verbose_sso_logs',
+				__( 'Verbose DiscourseConnect Logs', 'wp-discourse' ),
+				array(
+					$this,
+					'verbose_sso_logs',
+				),
+				'discourse_sso_common',
+				'discourse_sso_common_settings_section'
+			);
+		}
+
 		register_setting(
 			'discourse_sso_common',
 			'discourse_sso_common',
@@ -366,6 +379,21 @@ class SSOSettings {
 	}
 
 	/**
+	 * Outputs markup for the discourse_verbose_sso_logs checkbox.
+	 */
+	public function verbose_sso_logs() {
+		$this->form_helper->checkbox_input(
+			'verbose-sso-logs',
+			'discourse_sso_common',
+			__(
+				'Enable verbose logs for DiscourseConnect.',
+				'wp-discourse'
+			),
+			__( 'Will log successful operations as well as errors.', 'wp-discourse' ) . ' View logs in the <a href="?page=wp_discourse_options&tab=log_viewer">' . __( 'Log Viewer', 'wp-discourse' ) . '</a>.'
+		);
+	}
+
+	/**
 	 * ****************************
 	 *
 	 * SSO Provider settings fields.
@@ -433,7 +461,7 @@ class SSOSettings {
 			'discourse_sso_provider',
 			__(
 				"(Optional) If your site doesn't use the
-		default WordPress login page at '/wp-login.php', you can set the path to your login page here. 
+		default WordPress login page at '/wp-login.php', you can set the path to your login page here.
 		It should start with '/'. Leave blank to use the default WordPress login page.",
 				'wp-discourse'
 			)
@@ -704,7 +732,7 @@ class SSOSettings {
 		<ul class="wpdc-documentation-list">
 			<em>
 				<li>
-					<?php esc_html_e( "select the 'enable sso provider' setting", 'wp-discourse' ); ?>
+					<?php esc_html_e( "select the 'enable discourse connect provider' setting", 'wp-discourse' ); ?>
 				</li>
 				<li>
 					<?php esc_html_e( "add your 'DiscourseConnect Secret Key' to the 'discourse connect provider secrets' setting (use your WordPress domain for the domain field)", 'wp-discourse' ); ?>

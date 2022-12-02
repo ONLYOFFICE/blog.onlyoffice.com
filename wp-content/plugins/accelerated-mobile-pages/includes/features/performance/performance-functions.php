@@ -2,11 +2,11 @@
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
-use AMPforWP\AMPVendor\AMP_DOM_Utils;
 // 86. minify the content of pages
 add_filter('ampforwp_the_content_last_filter','ampforwp_minify_html_output');
 function ampforwp_minify_html_output($content_buffer){
     $content_buffer = str_replace('srcset=""', '', $content_buffer);
+    $content_buffer = preg_replace('/<style amp-runtime(=""|)><\/style>/', '', $content_buffer);
     //Removed trbidi attribute #3687
     $content_buffer = str_replace('trbidi="on"', '', $content_buffer);
     $content_buffer = str_replace("trbidi='on'", '', $content_buffer);
@@ -27,7 +27,7 @@ function ampforwp_minify_html_output($content_buffer){
     if(class_exists('Cli_Optimizer') && preg_match('/<style type="text\/css">@font-face(.*?)<\/style>/s', $content_buffer)!=0){
         $content_buffer = preg_replace('/<style type="text\/css">@font-face(.*?)<\/style>/s', '', $content_buffer);
     }
-    if(preg_match('/<script(.*?)type="text\/javascript"(.*?)>[\s\S]*?<\/script>/', $content_buffer)){
+    if(preg_match('/<script(.*?)type="text\/javascript"(.*?)>[\s\S]*?<\/script>/', $content_buffer) && !ampforwp_get_setting('ampforwp-query-monitor') ){
         $content_buffer = preg_replace('/<script(.*?)type="text\/javascript"(.*?)>[\s\S]*?<\/script>/', '', $content_buffer);
     }
     if(preg_match('/<amp-story-player(.*?)<\/amp-story-player>/s', $content_buffer)){
@@ -58,6 +58,63 @@ function ampforwp_minify_html_output($content_buffer){
     if ( class_exists( 'Jetpack' ) && preg_match('/<div(.*?)id="v-(.*?)-(.*?)"(.*?)class="video-player">(.*?)<\/div>/', $content_buffer)) {
         $content_buffer = preg_replace('/<div(.*?)id="v-(.*?)-(.*?)"(.*?)class="video-player">(.*?)<\/div>/', '<div$1id="v-$2-$3"$4class="video-player"><amp-iframe width="300" height="150" sandbox="allow-scripts allow-same-origin" layout="responsive" src="https://videopress.com/embed/$2"></amp-iframe></div>', $content_buffer);
     }
+    if (class_exists('AddWidgetAfterContent') && preg_match('/<form(.*?)><label(.*?)for="cat"(.*?)name="cat"(.*?)<\/form>/s', $content_buffer)) {
+        $content_buffer = preg_replace('/<form(.*?)><label(.*?)for="cat"(.*?)name="cat"(.*?)<\/form>/s', '<form$1 id="amp-wp-widget-categories-1" on="change:amp-wp-widget-categories-1.submit" target="_top"><label$2for="cat"$3name="cat"$4</form>', $content_buffer);
+    }
+    if(function_exists('vp_pfui_admin_init') && function_exists('penci_setup') && preg_match('/<amp-iframe src="(.*?)anchor.fm(.*?)"(.*?)<\/amp-iframe>/', $content_buffer)){
+        $content_buffer = preg_replace('/<amp-iframe src="(.*?)anchor.fm(.*?)"(.*?)<\/amp-iframe>/', '<amp-iframe src="$1anchor.fm$2" scrolling="no" $3</amp-iframe>', $content_buffer);
+    }
+    if(class_exists('Mfn_Builder_Front') && preg_match_all('/<div\sclass="section mcb-section(.*?)<div class="amp-wp-content">/s', $content_buffer, $matches)){
+        $match = $matches[0][0];
+        $mfn_content = str_replace("img", 'amp-img', $match);
+        $content_buffer = preg_replace('/<div\sclass="section mcb-section(.*?)<div class="amp-wp-content">/s', $mfn_content , $content_buffer);
+    }
+    if(preg_match('/<animatetransform(.*?)<\/animatetransform>/', $content_buffer)){
+        $content_buffer = preg_replace('/<animatetransform(.*?)<\/animatetransform>/', '', $content_buffer);
+    }
+    if( function_exists('aioseo') && preg_match('/<script type="text\/javascript"(.*?)>/', $content_buffer)){
+        $content_buffer = preg_replace('/<script type="text\/javascript"(.*?)>/', '', $content_buffer); 
+        $content_buffer = preg_replace('/window.ga=window.ga||function()(.*?)/', '', $content_buffer); 
+        $content_buffer = preg_replace('/\|\|\(\)\{\(ga\.q=ga\.q\|\|\[\]\).push\(arguments\)};ga\.l(.*?);/', '', $content_buffer);
+        $content_buffer = preg_replace('/ga\(\'create\',(.*?),\s{\s\'cookieDomain\':\s\'(.*?)\'\s}\s\);/', '', $content_buffer);
+        $content_buffer = preg_replace('/ga\(\'(.*?)\',(.*?)\'(.*?)\'\);/', '', $content_buffer);
+   }
+    if(preg_match('/<picture(.*?)<\/picture>/s', $content_buffer)){
+        $content_buffer = preg_replace('/<picture(.*?)<\/picture>/s', '<noscript><picture$1</picture></noscript>', $content_buffer);
+    }
+    if(class_exists('Avada') && preg_match('/<lite-youtube(.*?)videoid="(.*?)"(.*?)><\/lite-youtube>/s', $content_buffer)){
+        $content_buffer = preg_replace('/<lite-youtube(.*?)videoid="(.*?)"(.*?)><\/lite-youtube>/', '<amp-youtube width="480" height="270" layout="responsive" data-videoid="$2"></amp-youtube>', $content_buffer);
+    }    
+    if (function_exists('qoxag_setup')) {
+        $content_buffer = preg_replace('/<link rel="stylesheet"(.*?)href="(.*?).css">/', '', $content_buffer);
+    }
+    if(preg_match('/<fw-embed-feed(.*?)<\/fw-embed-feed>/', $content_buffer)){
+        $content_buffer = preg_replace('/<fw-embed-feed(.*?)<\/fw-embed-feed>/', '', $content_buffer);
+    }
+
+    if(preg_match('/<blockquote\sclass="wp-embedded-content"(.*?)<a href="(.*?)"(.*?)<\/blockquote>/', $content_buffer)){
+        $content_buffer = preg_replace('/<blockquote\sclass="wp-embedded-content"(.*?)<a href="(.*?)"(.*?)<\/blockquote>/', '<amp-wordpress-embed width="400" height="400" data-url="$2" ></amp-wordpress-embed>', $content_buffer);
+        $content_buffer = preg_replace('/<amp-iframe(.*?)class="wp-embedded-content(.*?)<\/amp-iframe>/', '', $content_buffer);
+    }
+    if (function_exists('wp_faq_schema_load_plugin_textdomain')) {
+        $content_buffer = preg_replace('/<div\sclass="">(.*?)<\/div>/s', '$1', $content_buffer);
+        $content_buffer = preg_replace('/<h4>/s', '<section><h4>', $content_buffer);
+        $content_buffer = preg_replace('/<\/p>/s', '</p></section>', $content_buffer);
+        $content_buffer = preg_replace('/<div\sclass="wp-faq-schema-items">(.*?)<\/div>/s', '<amp-accordion expand-single-section>$1</amp-accordion>', $content_buffer);
+    } 
+   if(preg_match('/<amp-iframe(.*?)src="(.*?)youtube.com\/embed\/(.*?)"(.*?)width="(.*?)"(.*?)height="(.*?)"(.*?)<\/amp-iframe>/', $content_buffer)){
+        // Youtube Embed with Query Parameters
+        $content_buffer = preg_replace('/<amp-iframe(.*?)src="(.*?)youtube.com\/embed\/(.*?)\?(.*?)"(.*?)width="(.*?)"(.*?)height="(.*?)"(.*?)<\/amp-iframe>/', '<amp-youtube data-videoid="$3" layout="responsive" width="$6" height="$8"></amp-youtube>', $content_buffer);
+        $content_buffer = preg_replace('/<amp-iframe(.*?)src="(.*?)youtube.com\/embed\/(.*?)"(.*?)width="(.*?)"(.*?)height="(.*?)"(.*?)<\/amp-iframe>/', '<amp-youtube data-videoid="$3" layout="responsive" width="$5" height="$7"></amp-youtube>', $content_buffer);
+    }
+    if(preg_match('/<amp-iframe\sclass="instagram-media(.*?)"(.*?)src="https:\/\/instagram.com\/p\/(.*?)\/(.*?)"(.*?)><\/amp-iframe>/', $content_buffer)){
+        $content_buffer = preg_replace('/<amp-iframe\sclass="instagram-media(.*?)"(.*?)src="https:\/\/instagram.com\/p\/(.*?)\/(.*?)"(.*?)><\/amp-iframe>/', '<amp-instagram data-shortcode="$3" data-captioned width="400" height="400"layout="responsive"></amp-instagram>', $content_buffer); 
+    }
+
+    if(preg_match('/<blockquote\sclass="instagram-media\s(.*?)"(.*?)data-instgrm-permalink="(.*?)p\/(.*?)"(.*?)<\/blockquote>/', $content_buffer)){
+        $content_buffer = preg_replace('/<blockquote\sclass="instagram-media\s(.*?)"(.*?)data-instgrm-permalink="(.*?)p\/(.*?)"(.*?)<\/blockquote>/', '<amp-instagram data-shortcode="$4" width="400" height="400"layout="responsive"></amp-instagram>', $content_buffer); 
+    }
+
     global $redux_builder_amp;
     if(!$redux_builder_amp['ampforwp_cache_minimize_mode']){
            return $content_buffer;       
@@ -287,7 +344,7 @@ function ampforwp_white_list_selectors($completeContent){
 if( !function_exists("ampforwp_tree_shaking_purify_amphtml") ){
     function ampforwp_tree_shaking_purify_amphtml($completeContent){
         $white_lists = ampforwp_white_list_selectors($completeContent);
-        if( function_exists('ampforwp_purify_amphtmls') ){
+        if( function_exists('ampforwp_purify_amphtmls') || ampforwp_get_setting('ampforwp-amp-convert-to-wp') ){
             // compatibility with AMP Pagebuilder Compatibility
             return $completeContent;
         }
@@ -295,7 +352,7 @@ if( !function_exists("ampforwp_tree_shaking_purify_amphtml") ){
         $completeContent = str_replace(array('"\\', "'\\"), array('":backSlash:',"':backSlash:"), $completeContent);   
         /***Replacements***/
         if(!empty($completeContent)){
-            $tmpDoc = AMP_DOM_Utils::get_dom_from_content($completeContent); 
+            $tmpDoc = AMPforWP\AMPVendor\AMP_DOM_Utils::get_dom_from_content($completeContent); 
             libxml_use_internal_errors(true);
             $tmpDoc->loadHTML($completeContent);
             $font_css = '';
@@ -317,14 +374,10 @@ if( !function_exists("ampforwp_tree_shaking_purify_amphtml") ){
                 $arg['allow_dirty_styles'] = false;
                 $obj = new AMPforWP\AMPVendor\AMP_treeshaking_Style_Sanitizer($tmpDoc, $arg);
                 $datatrack = $obj->sanitize();
-                // return json_encode($datatrack);
-
+                
                 $data = $obj->get_stylesheets();
-                //return json_encode($data);
-
                 $comment = $obj->get_comments();
-                //return json_encode($comment);
-
+                
                 foreach($data as $styles){
                     $sheet .= $styles;
                 }
@@ -334,6 +387,7 @@ if( !function_exists("ampforwp_tree_shaking_purify_amphtml") ){
                 if(strpos($sheet, '-keyframes')!==false){
                     $sheet = preg_replace("/@(-o-|-moz-|-webkit-|-ms-)*keyframes\s(.*?){([0-9%a-zA-Z,\s.]*{(.*?)})*[\s\n]*}/s", "", $sheet);
                 }
+                
                 //TRANSPOSH PLUGIN RTL ISSUE FIXED #3895
                 if(class_exists('transposh_plugin')){
                      ampforwp_clear_css_on_transposh_rtl($sheet);

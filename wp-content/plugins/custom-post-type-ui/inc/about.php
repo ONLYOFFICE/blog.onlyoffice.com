@@ -81,16 +81,26 @@ function cptui_settings() {
 		do_action( 'cptui_main_page_before_changelog' );
 		?>
 
-		<h2><?php printf( esc_html__( "What's new in version %s", 'custom-post-type-ui' ), CPTUI_VERSION ); ?></h2>
+		<h2>
+			<?php
+			printf(
+			// translators: Placeholder will hold the plugin version.
+				esc_html__( "What's new in version %s", 'custom-post-type-ui' ),
+				esc_html( CPTUI_VERSION )
+			);
+			?>
+		</h2>
 		<div class="changelog about-integrations">
 			<div class="cptui-feature feature-section col three-col">
 				<div class="col">
-					<h2><?php esc_html_e( 'Ability to set a default term for a custom taxonomy.', 'custom-post-type-ui' ); ?></h2>
-					<p><?php esc_html_e( 'WordPress 5.5 added the ability to set a default term to your custom taxonomy, and now you do not have to worry about extra coding for that with Custom Post Type UI.', 'custom-post-type-ui' ); ?></p>
-				</div>
-				<div class="col last-feature">
-					<h2><?php esc_html_e( 'Removed forced underscores for post type slugs.', 'custom-post-type-ui' ); ?></h2>
-					<p><?php esc_html_e( 'Post types are actually able to have dashes in their slug/name value, so we have removed the forcing of underscores for them. Taxonomies do still need underscores, until told otherwise.', 'custom-post-type-ui' ); ?></p>
+					<h2><?php esc_html_e( 'Post type descriptions', 'custom-post-type-ui' ); ?></h2>
+					<p><?php esc_html_e( 'We have updated a number of details around the post type description field. First we addressed issues with the Tools area when descriptions included quotes. Second we fixed an issue around stripping HTML from the field from previous security updates.', 'custom-post-type-ui' ); ?></p>
+					<h2><?php esc_html_e( 'Miscellaneous code cleanup and separation.', 'custom-post-type-ui' ); ?></h2>
+					<p><?php esc_html_e( 'Largely under the hood, but we have done some separation of our code and done more to help ensure code quality.', 'custom-post-type-ui' ); ?></p>
+					<h2><?php esc_html_e( 'Branding.', 'custom-post-type-ui' ); ?></h2>
+					<p><?php esc_html_e( 'We updated our branding for the plugin. Both within our UI but also on WordPress.org', 'custom-post-type-ui' ); ?></p>
+					<h2><?php esc_html_e( 'Miscellaneous.', 'custom-post-type-ui' ); ?></h2>
+					<p><?php esc_html_e( 'Added notes about some post type features also needing theme support declared for them to work. Fixed a pluralization issue with our UI and forms.', 'custom-post-type-ui' ); ?></p>
 				</div>
 			</div>
 		</div>
@@ -116,6 +126,7 @@ function cptui_settings() {
  * @since 1.4.0
  */
 function cptui_pluginize_content() {
+	// translators: Placeholder will hold the name of the author of the plugin.
 	echo '<h1>' . sprintf( esc_html__( 'More from %s', 'custom-post-type-ui' ), 'WebDevStudios' ) . '</h1>';
 	echo '<div class="wdspromos-about">';
 	$ads = cptui_get_ads();
@@ -133,7 +144,7 @@ function cptui_pluginize_content() {
 			printf(
 				'<p><a href="%s">%s</a></p>',
 				esc_url( $ad['url'] ),
-				$the_ad
+				$the_ad // phpcs:ignore
 			);
 		}
 	}

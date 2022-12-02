@@ -7,6 +7,8 @@
 use FluentForm\App\Modules\Acl\Acl;
 
 /**
+ * App instance
+ *
  * @var $app \FluentForm\Framework\Foundation\Application
  */
 
@@ -115,27 +117,27 @@ $app->addAdminAjaxAction('fluentform-settings-formSettings-remove', function () 
 
 $app->addAdminAjaxAction('fluentform-get-form-custom_css_js', function () {
     Acl::verify('fluentform_forms_manager');
-    (new \FluentForm\App\Modules\Form\Settings\FormCssJs)->getSettingsAjax();
+    (new \FluentForm\App\Modules\Form\Settings\FormCssJs())->getSettingsAjax();
 });
 
 $app->addAdminAjaxAction('fluentform-save-form-custom_css_js', function () {
     Acl::verify('fluentform_forms_manager');
-    (new \FluentForm\App\Modules\Form\Settings\FormCssJs)->saveSettingsAjax();
+    (new \FluentForm\App\Modules\Form\Settings\FormCssJs())->saveSettingsAjax();
 });
 
 $app->addAdminAjaxAction('fluentform-save-form-entry_column_view_settings', function () {
     Acl::verify('fluentform_forms_manager');
-    (new \FluentForm\App\Modules\Form\Settings\EntryColumnViewSettings)->saveVisibleColumnsAjax();
+    (new \FluentForm\App\Modules\Form\Settings\EntryColumnViewSettings())->saveVisibleColumnsAjax();
 });
 
 $app->addAdminAjaxAction('fluentform-save-form-entry_column_order_settings', function () {
     Acl::verify('fluentform_forms_manager');
-    (new \FluentForm\App\Modules\Form\Settings\EntryColumnViewSettings)->saveEntryColumnsOrderAjax();
+    (new \FluentForm\App\Modules\Form\Settings\EntryColumnViewSettings())->saveEntryColumnsOrderAjax();
 });
 
 $app->addAdminAjaxAction('fluentform-reset-form-entry_column_order_settings', function () {
     Acl::verify('fluentform_forms_manager');
-    (new \FluentForm\App\Modules\Form\Settings\EntryColumnViewSettings)->resetEntryDisplaySettings();
+    (new \FluentForm\App\Modules\Form\Settings\EntryColumnViewSettings())->resetEntryDisplaySettings();
 });
 
 $app->addAdminAjaxAction('fluentform-load-editor-components', function () use ($app) {
@@ -154,7 +156,7 @@ $app->addAdminAjaxAction('fluentform-form-entries', function () use ($app) {
 });
 
 $app->addAdminAjaxAction('fluentform-form-report', function () use ($app) {
-    $formId = intval($_REQUEST['form_id']);
+    $formId = intval($app->request->get('form_id'));
     Acl::verify('fluentform_entries_viewer', $formId);
     (new \FluentForm\App\Modules\Entries\Report($app))->getReport($formId);
 });
@@ -191,8 +193,8 @@ $app->addAdminAjaxAction('fluentform-add-entry-note', function () use ($app) {
 
 $app->addAdminAjaxAction('fluentform-get-entry-logs', function () use ($app) {
     Acl::verify('fluentform_entries_viewer');
-    $entry_id = intval($_REQUEST['entry_id']);
-    $logType = sanitize_text_field($_REQUEST['log_type']);
+    $entry_id = intval($app->request->get('entry_id'));
+    $logType = sanitize_text_field($app->request->get('log_type'));
     (new \FluentForm\App\Modules\Logger\DataLogger($app))->getLogsByEntry($entry_id, $logType);
 });
 
@@ -278,12 +280,12 @@ $app->addAdminAjaxAction(
             $formattedPages[] = [
                 'ID'         => $page->ID,
                 'post_title' => $page->post_title,
-                'guid'       => $page->guid
+                'guid'       => $page->guid,
             ];
         }
 
         wp_send_json_success([
-            'pages' => $formattedPages
+            'pages' => $formattedPages,
         ], 200);
     }
 );
@@ -332,7 +334,6 @@ $app->addAdminAjaxAction('fluentform-predefined-create', function () use ($app) 
  * slack and mailchimp if the form was submitted.
  */
 
-
 // Permission settings
 $app->addAdminAjaxAction('fluentform_get_access_roles', function () {
     Acl::verify('fluentform_full_access');
@@ -360,7 +361,6 @@ $app->addAdminAjaxAction('fluentform_del_managers', function () {
     Acl::verify('fluentform_full_access');
     (new \FluentForm\App\Modules\Acl\Managers())->remove();
 });
-
 
 // General Integration Settings Here
 $app->addAdminAjaxAction('fluentform_get_global_integration_settings', function () use ($app) {
@@ -414,7 +414,6 @@ $app->addAdminAjaxAction('fluentform_update_modules', function () {
     return (new \FluentForm\App\Modules\AddOnModule())->updateAddOnsStatus();
 });
 
-
 /*
  * Background Process Receiver
  */
@@ -426,4 +425,3 @@ $app->addAdminAjaxAction('fluentform_background_process', function () {
 $app->addPublicAjaxAction('fluentform_background_process', function () {
     $this->app['fluentFormAsyncRequest']->handleBackgroundCall();
 });
-
