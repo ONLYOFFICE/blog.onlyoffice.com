@@ -9,6 +9,7 @@ main{
   padding-top: 72px;
   position: relative;
   margin-top: -72px;
+  word-break: break-word;
 }
   
   /*---------Top-banner-------*/
@@ -430,9 +431,6 @@ main{
   grid-template-columns: auto 31.429%;
   margin-bottom: 60px;
   grid-gap: 32px;
-}
-#content .content {
-  max-width: 736px;
 }
 .postwrapper > a{
   position: relative;
