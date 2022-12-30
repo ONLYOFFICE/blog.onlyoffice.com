@@ -785,13 +785,19 @@ body.desktop .button.red.disabled:visited {
   body, .BaseSide{
     min-width: 0;
   }
+  .subscribe-blue h2{
+    width: 100%;
+  }
   .InThePressContainer #content{
     display: block;
     grid-template-columns: initial;
     gap: initial;
   }
-  .in-the-press{
-    padding: 0 16px;
+  .InThePressContainer #content .subscribe-blue{
+    padding: 32px 16px;
+  }
+  .InThePressContainer #content .subscribe-blue h2{
+    margin: 0 0 32px;
   }
   .MainContainer{
     width: auto;
@@ -1355,6 +1361,18 @@ body.desktop .button.red.disabled:visited {
   .searchForm{
     margin-bottom: 32px;
   }
+  .download-block.mob-gray{
+    background-color: #F8F8F8;
+  }
+  .subscribe-blue.mob-gray{
+    background-color: #F8F8F8;
+  }
+  .SingleContainer #content .category-title{
+    margin-bottom: 18px;
+  }
+  .SingleContainer .content > .entry-title{
+    padding: 0 16px;
+  }
   .SearchContainer .searchlist{
     padding: 0 16px;
   }
@@ -1364,14 +1382,11 @@ body.desktop .button.red.disabled:visited {
   .SingleContainer .content a.nameTags{
     margin: 0;
   }
-  .SingleContainer .bottomWrapper{
-    margin-top: 48px;
+  .InThePressContainer .in-the-press{
+    padding: 0 16px;
   }
-  .wrapperMainTag ~ .bottomWrapper {
-    margin-top: 32px;
-  }
-  .wrapperMainTag{
-    margin: 18px 0 0;
+  .InThePressContainer .subscribe-blue{
+    background-color: #F8F8F8;
   }
   .MainContainer{
     padding: 0 0 64px 0;
