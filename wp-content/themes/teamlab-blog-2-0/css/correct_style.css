@@ -479,6 +479,11 @@ margin: 16px auto;
   display: none;
 }
 /*---------SideBar-------*/
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 .sideBar li{
   list-style-type: none;
 }
@@ -546,6 +551,11 @@ margin: 16px auto;
   margin-top: 8px;
   margin-bottom: 28px;
 }
+.sidebar-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 .category-topics {
   margin-bottom: 32px;
   padding: 23px;
@@ -603,6 +613,11 @@ margin: 16px auto;
 }
 
 /*---------WIDGET ONLYOFFICE IN THE PRESS-------*/
+.in_the_press_entries {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 .in_the_press_entries li a{
   color: #444444;
   font-weight: 400;
@@ -639,6 +654,9 @@ margin: 16px auto;
   text-align: right;
   text-decoration: none;
   color: #444444 !important;
+}
+.widget .view-all {
+  margin-top: auto;
 }
 .no-wrap{
   display: inline-block;
@@ -878,9 +896,12 @@ margin: 16px auto;
   height: 1000px;
 }
 
+.MainContainer #content .content .post {
+  height: 100%;
+}
+
 .post {
   background-color: #ffffff;
-  height: 100%;
 }
 
 .post .post-content {
@@ -1041,9 +1062,6 @@ margin: 16px auto;
   padding: 0 16px;
   grid-column: span 3;
 }
-.wrapperMainTag{
-  margin: 40px 0 0;
-}
 .wrapperMorePosts{
   display: none;
   margin-top: 32px;
@@ -1135,6 +1153,8 @@ margin: 16px auto;
   font-weight: 700;
   font-size: 32px;
   line-height: 43px;
+  width: 100%;
+  max-width: 180px;
   letter-spacing: -0.02em;
   font-feature-settings: 'tnum' on, 'lnum' on;
   color: #333333;
@@ -1745,7 +1765,12 @@ a.download:active{
   color: #444444;
   /* link */
 }
-
+.breadcrumbs span a{
+  text-decoration: none;
+}
+.breadcrumbs span a:hover{
+  text-decoration: underline;
+}
 .breadcrumbs a.home:visited,
 .breadcrumbs a.home:active{
   color: #444444;
@@ -1807,9 +1832,10 @@ a.download:active{
   margin-top: 80px;
 }
 .SingleContainer{
+  display: flex;
+  flex-direction: column;
   max-width: 1120px;
   margin: 0 auto;
-  overflow: hidden;
   padding: 0 32px 103px;
 }
 .SingleContainer #content {
@@ -1826,6 +1852,15 @@ a.download:active{
 .InThePressContainer .content {
   display: flex;
   flex-direction: column;
+}
+.InThePressContainer #content .subscribe-blue{
+  padding: 54px 37px 37px;
+}
+.InThePressContainer #content .subscribe-blue h2{
+  margin-right: 24px;
+}
+.SingleContainer #content .category-title{
+  margin-bottom: 40px;
 }
 .SingleContainer #content h1 {
   margin-bottom: 80px;
@@ -1844,9 +1879,6 @@ a.download:active{
 .SingleContainer .subscribe-white{
   grid-column: span 3;
   margin: 0;
-}
-.SingleContainer .bottomWrapper{
-  margin-top: 64px;
 }
 .PostContainer #post-content #respond{
   border-bottom: none;
