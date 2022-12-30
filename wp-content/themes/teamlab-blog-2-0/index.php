@@ -101,7 +101,7 @@ $queryNews = new WP_Query($argsNews); ?>
             <?php get_footer(); ?>
           <?php endif; ?>
         </div>
-        <div>
+        <div class="sidebar-wrapper">
           <div class="category-topics">
             <h4><?php _e('Category Topics', 'teamlab-blog-2-0'); ?></h4>
             <ul>
