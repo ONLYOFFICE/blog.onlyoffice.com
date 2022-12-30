@@ -1,4 +1,4 @@
-<div class="subscribe-blue">
+<div class="subscribe-blue <?php echo (is_tag() || is_author()) ? 'mob-gray' : '' ?>">
 	<h2><?php _e('Newsletter', 'teamlab-blog-2-0'); ?></h2>
 
 	<div class="subscribe-wrapper">
