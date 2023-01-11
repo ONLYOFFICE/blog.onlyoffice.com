@@ -1062,6 +1062,9 @@ margin: 16px auto;
   padding: 0 16px;
   grid-column: span 3;
 }
+.wrapperMainTag{
+  margin: 40px 0 0;
+}
 .wrapperMorePosts{
   display: none;
   margin-top: 32px;
