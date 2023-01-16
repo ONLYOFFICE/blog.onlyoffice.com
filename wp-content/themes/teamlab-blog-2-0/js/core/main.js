@@ -341,7 +341,7 @@ $("#email-sub-button2").on("click", function () {
 });
 
 /***** Popup for subcribe *****/
-$("#subscribelink").click(function () {
+$("#subscribelink, #subscribelink2").click(function () {
   var html = document.documentElement;
   var body = document.body;
 
