@@ -1681,7 +1681,21 @@ body.desktop .button.red.disabled:visited {
   }
   .popup{
     width: 100%;
-    padding: 0;
+    padding: 0 16px;
+  }
+  .close-popup, 
+  .close-overlay {
+    top: -30px;
+  }
+  .close-popup:after, 
+  .close-overlay:after {
+    width: 20px;
+    left: 0;
+  }
+  .close-popup:before, 
+  .close-overlay:before {
+    width: 20px;
+    left: 0;
   }
   .content .cloud-block .red{
     bottom: 32px;

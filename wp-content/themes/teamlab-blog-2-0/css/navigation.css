@@ -671,10 +671,6 @@ div.custom-select div.selector {
   #navitem_download_menu .download-last-area .download-inner-list {
     display: flex;
   }
-  .narrowheader.fr nav,
-  .narrowheader.pt-br nav {
-    transform: translateX(-53%);
-  }
   #navitem_download_menu .dropdown-content>li:last-of-type {
     background-color: #ffffff;
     min-width: 627px;
