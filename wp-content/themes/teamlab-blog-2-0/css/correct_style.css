@@ -313,10 +313,11 @@ main{
 }
 /*---------Search in header-------*/
 .serach-header{
-  position: absolute;
-  right: 40px;
-  top: 15px;
-  z-index: 101;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 24px;
+  z-index: 15;
 }
 
 .input-header .search-field{
@@ -702,6 +703,8 @@ margin: 16px auto;
   color: #000000;
 }
 .widget.widget_recent_entries li {
+  display: flex;
+  flex-direction: column;
   padding: 0;
   min-width: 100px;
 }
@@ -710,6 +713,21 @@ margin: 16px auto;
 }
 .widget.widget_recent_entries a:hover{
   text-decoration: underline;
+}
+.widget.widget_recent_entries .post-date{
+  display: inline-block;
+  margin-top: 8px;
+  padding-left: 20px;
+  font-size: 12px;
+  line-height: 16px;
+  color: #919192;
+  background: url("../images/calendar.svg") no-repeat 50% 50%;
+  background-size: 12px;
+  background-position: 0 50%;
+  background-repeat: no-repeat;
+}
+.widget.widget_recent_entries ul li:not(:last-child) .post-date {
+  margin-bottom: 30px;
 }
 /*---------WIDGET SOCIAL-ICONS IN THE PRESS-------*/
 .icons-item {
@@ -2702,7 +2720,7 @@ div#respond form#commentform p.submit {
   text-align: center;
   letter-spacing: -0.01em;
   color: #333333;
-  margin-bottom: 40px;
+  margin: 0 15px 40px;
 }
 
 .bg{

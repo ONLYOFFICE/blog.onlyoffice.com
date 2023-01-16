@@ -81,6 +81,7 @@ header {
   top: 0;
 }
 .logo {
+  min-width: 180px;
   width: 180px;
   height: 70px;
   background: url("../images/logo_small.svg") no-repeat 0 50%;
@@ -103,8 +104,8 @@ header {
 }
 .footer_menu {
   display: grid;
-  grid-template-columns: 256px 256px 1fr;
-  grid-gap: 32px;
+  grid-template-columns: 206px 254px 256px 1fr;
+  grid-column-gap: 32px;
   margin-bottom: 24px;
   width: 100%;
   position: relative;
@@ -113,13 +114,19 @@ header {
   text-align: left;
 }
 
+.footer_menu.fr {
+  grid-template-columns: 206px 256px 248px 1fr;
+}
+
 .footer_menu.ja{
-  grid-template-columns: 0.8fr 0.75fr 0.75fr 1.07fr;
-  -ms-grid-columns: 0.8fr 32px 0.75fr 32px 0.75fr 32px 1.07fr;
+  grid-template-columns: 206px 248px 245px 1fr;
+}
+.footer_menu.pt-br{
+  grid-template-columns: 206px 253px 253px 1fr;
 }
 .footer_menu p {
   font-size: 12px;
-  margin: 0 0 12px;
+  margin: 0 0 8px;
   line-height: 1.6em;
 }
 .footer_menu p a {
@@ -143,9 +150,6 @@ header {
 }
 .footer_menu ul li {
   list-style-type: none;
-}
-.footer_menu ul li:first-child p{
-  margin: 14px 0 12px;
 }
 .footer_menu li a {
   display: block;
@@ -320,10 +324,12 @@ input.vertical-bottom {
   padding: 0 0 32px;
 }
 .footer_menu_item.fmi_social{
-  padding-bottom: 80px;
+  border-top: 1px solid #e2e2e2;
+  padding-top: 40px;
+  padding-bottom: 60px;
   text-align: left;
   display: grid;
-  grid-template-columns: 1fr 480px;
+  grid-template-columns: 1fr auto;
   align-items: center;
 }
 .footer_menu_item div p{
@@ -353,35 +359,100 @@ input.vertical-bottom {
 #navitem_footer_contact ul li{
   margin: 0 0 8px;
 }
+#navitem_footer_contact a[href*="/call-back-form.aspx"] {
+  font-weight: 700;
+}
 .footer_menu ul.ListSocLink {
   padding: 0;
+}
+.ListSocLink li.wechat .wechat_qr_code,
+.ListSocLink li.line .line_qr_code {
+  background-color: #fff;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  color: #333;
+  font-size: 13px;
+  left: -92px;
+  letter-spacing: 0.02em;
+  margin: 0;
+  opacity: 0;
+  padding: 20px;
+  position: relative;
+  box-shadow: 0 0 14px rgb(0 0 0 / 20%);
+  text-align: center;
+  transition: 0.55s opacity, 0.55s visibility;
+  visibility: hidden;
+  width: 160px;
+}
+.ListSocLink li.wechat .wechat_qr_code {
+  top: -300px;
+  height: 218px;
+  background-image: url("../images/qrcode_for_wechat.jpg");
+}
+.ListSocLink li.line {
+  position: relative;
+}
+.ListSocLink li.line .line_qr_code {
+  position: absolute;
+  top: -218px;
+  left: -81px;
+  height: 160px;
+  background-image: url("../images/qr-code-line.jpg");
+}
+.ListSocLink li.wechat .wechat_qr_code p {
+  line-height: 18px;
+  text-align: center;
+}
+.ListSocLink li a.wechat {
+  display: block;
+}
+.ListSocLink li a.wechat:hover .wechat_qr_code {
+  opacity: 1;
+  visibility: visible;
+}
+.ListSocLink li .social_grey_wechat {
+  left: 4px;
+  position: relative;
+  top: 8px;
+}
+.ListSocLink li a.line:hover .line_qr_code {
+  opacity: 1;
+  visibility: visible;
 }
 .ListSocLink {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin: 12px 0 0;
-  padding: 8px 0;
+  margin: 16px 0 0;
 }
 .ListSocLink li {
+  border-radius: 50%;
   list-style-type: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 24px;
-  height: 24px;
-  margin: 0;
-  padding-right: 32px;
+  width: 40px;
+  height: 40px;
+  margin: 0 16px 0 0;
   vertical-align: middle
 }
 .ListSocLink .twitter{
   margin: 0;
 }
 .ListSocLink a {
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
   text-decoration: none;
+  background-color: #f9f9f9;
 }
 .ListSocLink li label {
   background-repeat: no-repeat;
@@ -456,6 +527,23 @@ input.vertical-bottom {
   background-position-x: -393px
 }
 
+.ListSocLink li label.social_grey_tiktok {
+  background-image: url("../images/social-tiktok.svg");
+  background-position-x: center;
+  background-size: contain;
+}
+
+.ListSocLink li label.social_grey_wechat {
+  background-image: url("../images/social-wechat.png");
+  background-position-x: center;
+  background-size: contain;
+}
+
+.ListSocLink li label.social_grey_line {
+  background-image: url("../images/line.svg");
+  background-position-x: center;
+  background-size: contain;
+}
 
 
 /*****************livechat fix***********************/
@@ -674,15 +762,19 @@ body.desktop .button.red.disabled:visited {
   margin: 0 auto;
 }
 
-@media screen and (max-width: 1460px) {
+@media screen and (max-width: 1530px) {
   .logo {
+    min-width: 32px;
     width: 32px;
     background-size: 152px 32px;
+  }
+  .serach-header {
+    margin-right: 0;
   }
   .input-header .search-field{
     width: 0;
     height: 32px;
-    padding: 0 30px 0 14px;
+    padding: 0 16px;
     border: none;
     background-color: transparent;
     background-size: 14px 15px;
@@ -698,14 +790,8 @@ body.desktop .button.red.disabled:visited {
     border-radius: 5px;
     cursor: text;
     outline: 0;
-    width: calc(100vw - 110px);
+    width: calc(100vw - 150px);
   }
-  .serach-header {
-    position: absolute;
-    right: 24px;
-    top: 20px;
-  }
-
   .input-header .search-field::placeholder { 
     line-height: 220%;
   }
@@ -760,12 +846,23 @@ body.desktop .button.red.disabled:visited {
   .narrowheader{
     width: calc(100% - 30px);
   }
+  .footer_menu {
+    grid-template-columns: 0.65fr 0.79fr 0.79fr 1fr;
+  }
+
+  .input-header .search-field:focus{
+    width: calc(100vw - 110px);
+  }
 }
 
 @media screen and (max-width: 1024px){
   .logo {
+    min-width: 180px;
     width: 180px;
     background-size: auto 28px;
+  }
+  .serach-header {
+    margin-right: 8px;
   }
   main{
     padding-top: 50px;
@@ -924,11 +1021,12 @@ body.desktop .button.red.disabled:visited {
   }
   .serach-header{
     position: absolute;
-    right: 61px;
+    right: 50px;
     top: 8px;
+    z-index: 15;
 }
 .no-results h3{
-  margin-bottom: 80px;
+  margin: 0 15px 80px;
 }
 .bg{
   height: 302px;
@@ -1056,19 +1154,36 @@ body.desktop .button.red.disabled:visited {
     margin: 0 auto;
     padding: 0;
   }
-  .footer_menu{
-    grid-template-columns: 1fr 1fr 1fr;
+  .footer_menu {
+    margin-bottom: 0;
+    grid-template-columns: 0.6fr 0.6fr 1fr;
+    grid-template-areas:
+        "PerformConvert SupportResources ComparisonContactUs"
+        "Solutions SupportResources ComparisonContactUs";
+  }
+  .footer_menu > div:first-child {
+    grid-area: Solutions;
+  }
+  .footer_menu > div:nth-child(2) {
+    grid-area: PerformConvert;
+  }
+  .footer_menu > div:nth-child(3) {
+    grid-area: SupportResources;
+  }
+  .footer_menu > div:last-child {
+    grid-area: ComparisonContactUs;
   }
   .footer_menu_item.fmi_social{
     display: block;
-    padding-bottom: 40px;
+    padding-top: 40px;
+    padding-bottom: 64px;
   }
   .SocialLinks{
     justify-content: center;
     text-align: center;
   }
   .copyReserved{
-    margin-top: 40px;
+    margin-top: 32px;
     text-align: center;
   }
   .copyReserved span{
@@ -1134,9 +1249,6 @@ body.desktop .button.red.disabled:visited {
    .SearchContainer .sidebar .wrapperMain {
      margin: 40px 0 0 0;
    }
-  .ListSocLink li {
-    padding-right: 35px;
-  }
    .PostContainer {
      width: auto;
      padding: 0 40px 80px 40px;
@@ -1286,7 +1398,7 @@ body.desktop .button.red.disabled:visited {
   }
   .footer_menu_item.fmi_social {
     display: block;
-    padding: 6px 0 40px;
+    padding: 40px 0 64px;
   }
   .SocialLinks h6{
     display: block;
@@ -1300,6 +1412,12 @@ body.desktop .button.red.disabled:visited {
   }
   .ListSocLink {
     margin-bottom: 40px;
+  }
+  .ListSocLink li.wechat .wechat_qr_code {
+    left: -140px;
+  }
+  .ListSocLink li.line .line_qr_code {
+    left: -150px;
   }
   .tagsList{
     padding: 0 15px;
@@ -1675,7 +1793,7 @@ body.desktop .button.red.disabled:visited {
     font-size: 24px;
   }
   .no-results h3{
-    margin-bottom: 48px;
+    margin: 0 15px 48px;
   }
   .bg{
     height: 55vw;
@@ -1735,11 +1853,11 @@ body.desktop .button.red.disabled:visited {
   .ListSocLink{
     justify-content: center;
     flex-wrap: wrap;
-    gap: 20px 28px;
+    gap: 24px;
     margin-bottom: 0;
   }
   .ListSocLink li{
-    padding-right: 0;
+    margin-right: 0;
   }
   .ListSocLink li label{
     width: 24px;
@@ -1774,11 +1892,19 @@ body.desktop .button.red.disabled:visited {
   .ListSocLink li label.social_grey_fosstodon {
     background-position-x: -397px;
   }
+  .ListSocLink li.wechat .wechat_qr_code {
+    left: -92px;
+  }
   .SocialLinks{
-    margin-top: 32px;
+    margin-top: 14px;
+  }
+  .footer_menu ul li:first-of-type {
+    margin-top: 14px;
+  }
+  .footer_menu p {
+    margin: 0 0 12px;
   }
   .copyReserved span {
-    display: block;
     font-size: 12px;
     line-height: 26px;
     text-align: center;
@@ -1800,6 +1926,9 @@ body.desktop .button.red.disabled:visited {
 
 .cloud-block{
   background-size: 272px 122.78px;
+}
+.copyReserved span {
+  display: block;
 }
 
 }
@@ -1859,6 +1988,7 @@ body.desktop .button.red.disabled:visited {
     height: 133px;
   }
   .logo {
+    min-width: 180px;
     width: 180px;
     height: 70px;
     background: url("../images/logo-mini.svg") no-repeat 0 50%;

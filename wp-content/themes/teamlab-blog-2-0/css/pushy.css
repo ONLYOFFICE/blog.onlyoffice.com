@@ -141,7 +141,7 @@
     opacity: 0;
   }
   .pushy-submenu-open > div > ul {
-    padding: 16px 0;
+    padding: 8px 0;
     visibility: visible;
   }
   .pushy-submenu-open .pushy-link {
@@ -167,17 +167,31 @@
     transform: translate3d(267px, 0, 0);
   }
 
-  #navitem_features, 
-  #navitem_blockchain, 
-  #navitem_download, 
-  #navitem_partners, 
-  #navitem_solutions, 
-  #navitem_prices, 
-  #navitem_about,
-  #navitem_developers,
-  #navitem_integrations,
-  a.singin {
+  .pushy-submenu-closed #navitem_features, 
+  .pushy-submenu-closed #navitem_blockchain, 
+  .pushy-submenu-closed #navitem_download, 
+  .pushy-submenu-closed #navitem_partners, 
+  .pushy-submenu-closed #navitem_solutions, 
+  .pushy-submenu-closed #navitem_prices, 
+  .pushy-submenu-closed #navitem_about,
+  .pushy-submenu-closed #navitem_developers,
+  .pushy-submenu-closed #navitem_integrations,
+  .pushy-submenu-closed a.singin {
     font-size: 16px;
-    padding: 12px 36px 12px 18px;
+    padding: 9px 36px 9px 18px;
+  }
+
+  .pushy-submenu-open #navitem_features, 
+  .pushy-submenu-open #navitem_blockchain, 
+  .pushy-submenu-open #navitem_download, 
+  .pushy-submenu-open #navitem_partners, 
+  .pushy-submenu-open #navitem_solutions, 
+  .pushy-submenu-open #navitem_prices, 
+  .pushy-submenu-open #navitem_about,
+  .pushy-submenu-open #navitem_developers,
+  .pushy-submenu-open #navitem_integrations,
+  .pushy-submenu-open a.singin {
+    font-size: 16px;
+    padding: 6px 22px 12px 22px;
   }
 }
