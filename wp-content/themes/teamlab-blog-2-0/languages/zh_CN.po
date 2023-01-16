@@ -828,7 +828,7 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:49 wp-content/themes/teamlab-blog-2-0/header.php:245
 msgid "All"
-msgstr "全部"
+msgstr "查看更多"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:53 wp-content/themes/teamlab-blog-2-0/footer.php:131
 msgid "Support"
@@ -857,7 +857,7 @@ msgstr "申请演示"
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:63 wp-content/themes/teamlab-blog-2-0/footer.php:155
 #: wp-content/themes/teamlab-blog-2-0/header.php:367
 msgid "Resources"
-msgstr "资源"
+msgstr "信息"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:65 wp-content/themes/teamlab-blog-2-0/footer.php:160
 #: wp-content/themes/teamlab-blog-2-0/header.php:370
@@ -913,14 +913,39 @@ msgid "Ascensio System SIA"
 msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:125 wp-content/themes/teamlab-blog-2-0/footer.php:266
+msgid "."
+msgstr "。"
+
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:125 wp-content/themes/teamlab-blog-2-0/footer.php:266
 msgid "All rights reserved"
 msgstr "保留所有权利"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:39
+#: wp-content/themes/teamlab-blog-2-0/footer.php:79
 msgid "Solutions"
 msgstr "解决方案"
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:44 wp-content/themes/teamlab-blog-2-0/footer.php:81
+#: wp-content/themes/teamlab-blog-2-0/footer.php:120
+msgid "Perform your tasks"
+msgstr "执行您的任务"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:120
+msgid "Convert text files"
+msgstr "转换文本文件"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:120
+msgid "Convert spreadsheets"
+msgstr "转换电子表格"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:120
+msgid "Convert presentations"
+msgstr "转换演示文稿"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:120
+msgid "Convert PDFs"
+msgstr "转换 PDF 文件"
+
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:44
 msgid "SOLUTIONS BY SIZE"
 msgstr "按规模划分的解决方案"
 
@@ -972,14 +997,34 @@ msgstr ""
 msgid "Features"
 msgstr "功能"
 
+#: wp-content/themes/teamlab-blog-2-0/header.php:174
+msgid "Docs overview"
+msgstr "ONLYOFFICE文档概述"
+
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:99 wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:160
 #: wp-content/themes/teamlab-blog-2-0/header.php:165 wp-content/themes/teamlab-blog-2-0/header.php:298
 msgid "Document Editor"
 msgstr "文档编辑器"
 
+#: wp-content/themes/teamlab-blog-2-0/header.php:220
+msgid "Docs Cloud"
+msgstr "文档云版本"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:289
+msgid "Docs Community"
+msgstr "文档社区版"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:290
+msgid "Bundles"
+msgstr "套件"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:316
+msgid "Docs"
+msgstr "文档"
+
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:102 wp-content/themes/teamlab-blog-2-0/header.php:167
 msgid "Docs Enterprise"
-msgstr "文档编辑器"
+msgstr "文档企业版"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:105 wp-content/themes/teamlab-blog-2-0/header.php:169
 msgid "Spreadsheet Editor"
@@ -995,15 +1040,15 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:114 wp-content/themes/teamlab-blog-2-0/header.php:186
 msgid "For desktop"
-msgstr "的桌面版"
+msgstr "适用于电脑"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:117 wp-content/themes/teamlab-blog-2-0/header.php:187
 msgid "For iOS"
-msgstr "的IOS"
+msgstr "适用于iOS系统"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:120 wp-content/themes/teamlab-blog-2-0/header.php:188
 msgid "For Android"
-msgstr "的Android"
+msgstr "适用于安卓系统"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:123
 msgid "ONLYOFFICE Groups"
@@ -1033,19 +1078,33 @@ msgstr "日历"
 msgid "Community"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:144 wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:169
-#: wp-content/themes/teamlab-blog-2-0/header.php:191 wp-content/themes/teamlab-blog-2-0/header.php:272
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:144 
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:169 
+#: wp-content/themes/teamlab-blog-2-0/header.php:191 
+#: wp-content/themes/teamlab-blog-2-0/header.php:272 
 #: wp-content/themes/teamlab-blog-2-0/header.php:305
 msgid "Workspace"
-msgstr ""
+msgstr "工作区"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:261
 msgid "ONLYOFFICE for education"
-msgstr "面向教育的ONLYOFFICE"
+msgstr "针对教育领域的ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:265
 msgid "Edit and collaborate on docs within your eLearning platform"
 msgstr "在您的电子学习平台上编辑并协作文件"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:248 wp-content/themes/teamlab-blog-2-0/header.php:284 wp-content/themes/teamlab-blog-2-0/header.php:325
+msgid "Docs Developer"
+msgstr "文档开发者版"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:249
+msgid "Conversion API"
+msgstr "转化 API"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:252
+msgid "Get it now"
+msgstr "立即获取"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:147 wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:172
 #: wp-content/themes/teamlab-blog-2-0/header.php:274
@@ -1068,11 +1127,11 @@ msgstr "Enterprise的服务器"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:178 wp-content/themes/teamlab-blog-2-0/header.php:281
 msgid "Buy from an ONLYOFFICE reseller"
-msgstr "购买ONLYOFFICE通过代理商"
+msgstr "通过代理商购买ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:183 wp-content/themes/teamlab-blog-2-0/header.php:294
 msgid "Get ONLYOFFICE"
-msgstr "获取ONLYOFFICE"
+msgstr "获取 ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:188 wp-content/themes/teamlab-blog-2-0/header.php:307
 msgid "Sign in"
@@ -1080,7 +1139,7 @@ msgstr "登录"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:191
 msgid "Sign up for ONLYOFFICE Cloud"
-msgstr "注册ONLYOFFICE Cloud"
+msgstr "注册云端版"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:194
 msgid "Open source packages"
@@ -1099,12 +1158,12 @@ msgid "Compare editions"
 msgstr "对比版本"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:173
-msgid "PDF reader&converter"
+msgid "PDF reader & converter"
 msgstr "PDF查看器和转换器"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:216
-msgid "See it in action"
-msgstr "立即体验"
+msgid "See it in action!"
+msgstr "立即试一试"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:220
 msgid "Curious to know what the interface looks like and try the main functionality?"
@@ -1117,6 +1176,10 @@ msgstr "合作伙伴"
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:213 wp-content/themes/teamlab-blog-2-0/header.php:336
 msgid "Affiliates"
 msgstr "附属公司"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:355
+msgid "Technology partners"
+msgstr "技术合作伙伴"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:216 wp-content/themes/teamlab-blog-2-0/header.php:337
 msgid "Resellers"
@@ -1152,11 +1215,15 @@ msgstr "奖品"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:247 wp-content/themes/teamlab-blog-2-0/header.php:362
 msgid "Events"
-msgstr "事件"
+msgstr "活动"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:363
+msgid "Meet the ONLYOFFICE team"
+msgstr "了解 ONLYOFFICE 团队"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:250 wp-content/themes/teamlab-blog-2-0/header.php:369
 msgid "Press downloads"
-msgstr "新闻下载"
+msgstr "媒体下载材料"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:253 wp-content/themes/teamlab-blog-2-0/header.php:371
 msgid "White papers"
@@ -1168,7 +1235,7 @@ msgstr "礼品店"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:259 wp-content/themes/teamlab-blog-2-0/header.php:364
 msgid "Contacts"
-msgstr "联络"
+msgstr "联系我们"
 
 #: wp-content/themes/teamlab-blog-2-0/archive.php:37
 msgid "Tag Archives:"
@@ -1391,24 +1458,32 @@ msgid "Cloud Edition"
 msgstr "云服务"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:204
-msgid "DESKTOP&MOBILE APPS"
+msgid "Desktop & mobile apps"
 msgstr "桌面和移动应用程序"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:242
-msgid "OTHER INTEGRATIONS"
+msgid "Other Integrations"
 msgstr "其他集成"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:280
-msgid "API documentation"
+msgid "API Documentation"
 msgstr "API 文件"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:283
 msgid "Code on GitHub"
-msgstr "GitHub上的代码"
+msgstr "GitHub"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:295
+msgid "Web hosting"
+msgstr "虚拟主机"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:298
+msgid "Get web hosting from some of the best providers"
+msgstr "从一些可靠的供应商那里获得虚拟主机"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:214
-msgid "OFORMS"
-msgstr ""
+msgid "OFORMs"
+msgstr "OFORM表单"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:218
 msgid "OFORMS, free <span class=\"nowrap\">ready-to-fill</span> out online document forms"
@@ -1436,11 +1511,11 @@ msgstr "查看您所在地区ONLYOFFICE授权合作伙伴清单"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:300 wp-content/themes/teamlab-blog-2-0/header.php:309
 msgid "Sign up for cloud"
-msgstr "注册ONLYOFFICE Cloud"
+msgstr "注册云端版"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:302 wp-content/themes/teamlab-blog-2-0/header.php:311
 msgid "Install on-premises"
-msgstr "在企业内部安装"
+msgstr "在本地部署版"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:314
 msgid "Connectors"
@@ -1574,12 +1649,16 @@ msgstr "产品发布新闻"
 #: wp-content/themes/teamlab-blog-2-0/index.php:112
 #: wp-content/themes/teamlab-blog-2-0/index.php:177
 msgid "For developers"
-msgstr "开发领域"
+msgstr "针对开发者"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:288
+msgid "For community"
+msgstr "针对开源社区"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:115
 #: wp-content/themes/teamlab-blog-2-0/index.php:208
 msgid "For business"
-msgstr "企业领域"
+msgstr "针对企业"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:118
 #: wp-content/themes/teamlab-blog-2-0/index.php:237
