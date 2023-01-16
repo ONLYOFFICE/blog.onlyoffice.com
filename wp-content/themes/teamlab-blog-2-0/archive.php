@@ -61,7 +61,7 @@ get_header();
 						<?php endif;?>
 					<?php else : ?>
 						<?php
-						$currentCategory = get_queried_object()->category_nicename;
+							$currentCategory = get_queried_object()->category_nicename;
 							$pageposts = new WP_Query(
 								array(
 									'posts_per_page' => 15, 
@@ -100,15 +100,15 @@ get_header();
 							<?php include get_template_directory() . '/' . 'subscribe-blue.php' ?>
 						<?php endif; ?>
 
-						<?php global $wp_query;
-						if ($wp_query->max_num_pages > 1) : ?>
+						<?php
+						if ($pageposts->max_num_pages > 1) : ?>
 							<script>
 								var ajaxurl = '<?php echo site_url() ?>/wp-admin/admin-ajax.php';
-								var true_posts = '<?php echo serialize($wp_query->query_vars); ?>';
+								var true_posts = '<?php echo serialize($pageposts->query_vars); ?>';
 								var current_page = '<?php echo (get_query_var('paged')) ? get_query_var('page') : 1; ?>';
-								var max_pages = '<?php echo $wp_query->max_num_pages; ?>';
+								var max_pages = '<?php echo $pageposts->max_num_pages; ?>';
 							</script>
-								
+
 						<div class="load_more_results" id="true_loadmore_tags"><?php _e('Load more', 'teamlab-blog-2-0'); ?></div>
 						<div class="load_more_results" id="true_loadmore_tags_mobile"><?php _e('View all posts', 'teamlab-blog-2-0'); ?></div>
 						<?php wp_reset_postdata(); ?>
