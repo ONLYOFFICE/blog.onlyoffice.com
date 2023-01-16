@@ -733,9 +733,10 @@ margin: 16px auto;
 .widget .social-icons-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, 30px);
-  gap: 16px 24px;
+  gap: 24px;
 }
 .icons-item a {
+  position: relative;
   display: inline-block;
   background-repeat: no-repeat;
   background-image: url("../images/color_social_icons.svg");
@@ -777,7 +778,52 @@ margin: 16px auto;
 .icons-item .wdgt-tiktok {
   background-image: url("../images/social-tiktok.svg");
 }
-
+.icons-item .wdgt-wechat {
+  background-image: url("../images/social-wechat.png");
+  background-position-x: center;
+  background-size: contain;
+}
+.icons-item .wdgt-line {
+  background-image: url("../images/line.svg");
+  background-position-x: center;
+  background-size: contain;
+}
+.icons-item .wechat_qr_code {
+  top: -270px;
+  height: 218px;
+  background-image: url("../images/qrcode_for_wechat.jpg");
+}
+.icons-item .line_qr_code {
+  top: -218px;
+  left: -81px;
+  height: 160px;
+  background-image: url("../images/qr-code-line.jpg");
+}
+.icons-item .wechat_qr_code,
+.icons-item .line_qr_code {
+  background-color: #fff;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  color: #333;
+  font-size: 13px;
+  left: 50%;
+  transform: translateX(-50%);
+  letter-spacing: 0.02em;
+  margin: 0;
+  opacity: 0;
+  padding: 20px;
+  position: absolute;
+  box-shadow: 0 0 14px rgb(0 0 0 / 20%);
+  text-align: center;
+  transition: 0.55s opacity, 0.55s visibility;
+  visibility: hidden;
+  width: 160px;
+}
+.icons-item:hover .popup_qr_code {
+  opacity: 1;
+  visibility: visible;
+}
 /*---------PAGE ONLYOFFICE IN THE PRESS-------*/
 .in-the-press{
   margin-top: 40px;
@@ -2665,11 +2711,7 @@ div#respond form#commentform p.submit {
 .SearchContainer{
   max-width: 1120px;
   margin: 0 auto;
-  overflow: hidden;
-  padding: 40px 160px 82px;
-}
-.SearchContainer #content {
-  grid-gap: 128px;
+  padding: 40px 32px 82px;
 }
 .search-page{
     margin-bottom: 40px;
