@@ -76,7 +76,7 @@ $lang = $sitepress->get_current_language();
 <!--                        </li>-->
                         <li class="footer-border">
                             <a id="footer_menu_solutions_bsz" class="footer-button">
-                                <h6><?php _e('SOLUTIONS BY SIZE', 'teamlab-blog-2-0'); ?></h6>
+                                <h6><?php _e('Solutions', 'teamlab-blog-2-0'); ?></h6>
                             </a>
                             <div id="navitem_footer_by_size">
                                 <ul>
@@ -89,15 +89,6 @@ $lang = $sitepress->get_current_language();
                                     <li>
                                         <p><a href="<?php echo $current_language ?>/home-use.aspx"><?php _e('Home use', 'teamlab-blog-2-0'); ?></a></p>
                                     <li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="footer-border">
-                            <a id="footer_menu_solutions_bid" class="footer-button">
-                                <h6><?php _e('SOLUTIONS BY INDUSTRY', 'teamlab-blog-2-0'); ?></h6>
-                            </a>
-                            <div id="navitem_footer_by_industry">
-                                <ul>
                                     <li>
                                         <p><a href="<?php echo $current_language ?>/for-developers.aspx"><?php _e('Developers', 'teamlab-blog-2-0'); ?></a></p>
                                     </li>
@@ -118,6 +109,29 @@ $lang = $sitepress->get_current_language();
                                     </li>
                                     <li>
                                         <p><a href="<?php echo $current_language ?>/nonprofit-organizations.aspx"><?php _e('Nonprofits', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </div>
+                    <div group-menu>
+                        <li class="footer-border">
+                            <a id="footer_menu_perform" class="footer-button">
+                                <h6><?php _e('Perform your tasks', 'teamlab-blog-2-0'); ?></h6>
+                            </a>
+                            <div id="navitem_footer_perform">
+                                <ul>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/text-file-converter.aspx"><?php _e('Convert text files', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/spreadsheet-converter.aspx"><?php _e('Convert spreadsheets', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/presentation-converter.aspx"><?php _e('Convert presentations', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/pdf-converter.aspx"><?php _e('Convert PDFs', 'teamlab-blog-2-0'); ?></a></p>
                                     </li>
                                 </ul>
                             </div>
@@ -160,9 +174,11 @@ $lang = $sitepress->get_current_language();
                                     <li>
                                         <p><a href="<?php echo $current_language ?>/app-directory.aspx"><?php _e('App Directory', 'teamlab-blog-2-0'); ?></a></p>
                                     </li>
-                                    <li>
-                                        <p><a href="<?php echo $current_language ?>/document-editor-comparison.aspx"><?php _e('Compare to other suites', 'teamlab-blog-2-0'); ?></a></p>
-                                    </li>
+                                    <?php if (!($current_language == WEB_ROOT_URL.'/'.'zh')) { ?>
+                                        <li>
+                                            <p><a href="<?php echo $current_language ?>/document-editor-comparison.aspx"><?php _e('Compare to other suites', 'teamlab-blog-2-0'); ?></a></p>
+                                        </li>
+                                    <?php } ?>
                                     <li>
                                         <p><a href="<?php echo $current_language ?>/contribute.aspx"><?php _e('Contribute', 'teamlab-blog-2-0'); ?></a></p>
                                     </li>
@@ -173,34 +189,36 @@ $lang = $sitepress->get_current_language();
                             </div>
                         </li>
                     </div>
-                    <div group-menu>
-                        <li class="footer-border">
-                            <a id="footer_menu_comparison" class="footer-button">
-                                <h6><?php _e('Comparison', 'teamlab-blog-2-0'); ?></h6>
-                            </a>
-                            <div id="navitem_footer_comparison">
-                                <ul>
-                                    <li>
-                                        <p><a href="<?php echo $current_language ?>/best-microsoft-office-alternative.aspx"><?php _e('ONLYOFFICE Docs vs MS Office Online', 'teamlab-blog-2-0'); ?></a></p>
-                                    </li>
-                                    <li>
-                                        <p><a href="<?php echo $current_language ?>/best-google-docs-alternative.aspx"><?php _e('ONLYOFFICE Docs vs Google Docs', 'teamlab-blog-2-0'); ?></a></p>
-                                    </li>
-                                    <li>
-                                        <p><a href="<?php echo $current_language ?>/best-zoho-docs-alternative.aspx"><?php _e('ONLYOFFICE Docs vs Zoho Docs', 'teamlab-blog-2-0'); ?></a></p>
-                                    <li>
-                                    <li>
-                                        <p><a href="<?php echo $current_language ?>/best-libreoffice-alternative.aspx"><?php _e('ONLYOFFICE Docs vs LibreOffice', 'teamlab-blog-2-0'); ?></a></p>
-                                    </li>
-                                    <li>
-                                        <p><a href="<?php echo $current_language ?>/best-wps-alternative.aspx"><?php _e('ONLYOFFICE Docs vs WPS', 'teamlab-blog-2-0'); ?></a></p>
-                                    </li>
-                                    <li>
-                                        <p><a href="<?php echo $current_language ?>/best-adobe-alternative.aspx"><?php _e('ONLYOFFICE Docs vs Adobe Acrobat', 'teamlab-blog-2-0'); ?></a></p>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                        <div group-menu>
+                        <?php if (!($current_language == WEB_ROOT_URL.'/'.'zh')) { ?>
+                            <li class="footer-border">
+                                <a id="footer_menu_comparison" class="footer-button">
+                                    <h6><?php _e('Comparison', 'teamlab-blog-2-0'); ?></h6>
+                                </a>
+                                <div id="navitem_footer_comparison">
+                                    <ul>
+                                        <li>
+                                            <p><a href="<?php echo $current_language ?>/best-microsoft-office-alternative.aspx"><?php _e('ONLYOFFICE Docs vs MS Office Online', 'teamlab-blog-2-0'); ?></a></p>
+                                        </li>
+                                        <li>
+                                            <p><a href="<?php echo $current_language ?>/best-google-docs-alternative.aspx"><?php _e('ONLYOFFICE Docs vs Google Docs', 'teamlab-blog-2-0'); ?></a></p>
+                                        </li>
+                                        <li>
+                                            <p><a href="<?php echo $current_language ?>/best-zoho-docs-alternative.aspx"><?php _e('ONLYOFFICE Docs vs Zoho Docs', 'teamlab-blog-2-0'); ?></a></p>
+                                        <li>
+                                        <li>
+                                            <p><a href="<?php echo $current_language ?>/best-libreoffice-alternative.aspx"><?php _e('ONLYOFFICE Docs vs LibreOffice', 'teamlab-blog-2-0'); ?></a></p>
+                                        </li>
+                                        <li>
+                                            <p><a href="<?php echo $current_language ?>/best-wps-alternative.aspx"><?php _e('ONLYOFFICE Docs vs WPS', 'teamlab-blog-2-0'); ?></a></p>
+                                        </li>
+                                        <li>
+                                            <p><a href="<?php echo $current_language ?>/best-adobe-alternative.aspx"><?php _e('ONLYOFFICE Docs vs Adobe Acrobat', 'teamlab-blog-2-0'); ?></a></p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        <?php } ?>
                         <li class="footer-border">
                             <a id="footer_menu_contact" class="footer-button">
                                 <h6><?php _e('Contact Us', 'teamlab-blog-2-0'); ?></h6>
@@ -266,10 +284,33 @@ $lang = $sitepress->get_current_language();
                             <li><a class="fosstodon" title="Follow us on Fosstodon" href="https://fosstodon.org/@ONLYOFFICE" onmouseup="PageTrack('GoTo_medium');" target="_blank" rel="noreferrer noopener">
                                     <label title="Fosstodon" class="social_grey_fosstodon"></label>
                                 </a></li>
+                            <?php if ($current_language == WEB_ROOT_URL.'/'.'zh') { ?>
+                                <li class="wechat"><a class="wechat" title="WeChat" onmouseup="PageTrack('GoTo_medium');">
+                                        <label title="WeChat" class="social_grey_wechat"></label>
+                                        <div class="wechat_qr_code">
+                                            <p>关注我们</p>
+                                            <p>了解ONLYOFFICE最新信息</p>
+                                        </div>
+                                    </a></li>
+                            <?php } ?>
+                            <li><a class="tiktok" title="Follow us on TikTok" href="https://www.tiktok.com/@only_office" onmouseup="PageTrack('GoTo_medium');" target="_blank" rel="noreferrer noopener">
+                                    <label title="TikTok" class="social_grey_tiktok"></label>
+                                </a></li>
+                            <?php if ($current_language == WEB_ROOT_URL.'/'.'ja') { ?>
+                                <li class="line">
+                                    <a class="line" title="LINE" onmouseup="PageTrack('GoTo_medium');" target="_blank" rel="noreferrer noopener">
+                                        <label title="LINE" class="social_grey_line"></label>
+                                        <div class="line_qr_code">
+                                            <p></p>
+                                            <p></p>
+                                        </div>
+                                    </a>
+                                </li>
+                            <?php } ?>
                         </ul>
                     </div>
                     <div class="copyReserved">
-                        <span>&copy; <?php _e('Ascensio System SIA 1998', 'teamlab-blog-2-0'); ?>-<?php echo date("Y"); ?>.</span>
+                        <span>&copy; <?php _e('Ascensio System SIA 2009', 'teamlab-blog-2-0'); ?>-<?php echo date("Y"); ?><?php _e('.', 'teamlab-blog-2-0'); ?></span>
                         <span><?php _e('All rights reserved', 'teamlab-blog-2-0'); ?></span>
                     </div>
                 </div>
