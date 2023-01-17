@@ -143,6 +143,14 @@ msgstr "Conformità HIPAA"
 msgid "For business"
 msgstr "Per affari"
 
+#: wp-content/themes/teamlab-blog-2-0/header.php:288
+msgid "For community"
+msgstr "Per community"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:290
+msgid "Bundles"
+msgstr "Bundle"
+
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:39
 #: wp-content/themes/teamlab-blog-2-0/header.php:231
 msgid "Nextcloud"
@@ -154,12 +162,12 @@ msgid "ownCloud"
 msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:173
-msgid "PDF reader&converter"
+msgid "PDF reader & converter"
 msgstr "Lettore e convertitore PDF"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:216
-msgid "See it in action"
-msgstr "Vedilo all'opera"
+msgid "See it in action!"
+msgstr "Vedilo in azione!"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:220
 msgid "Curious to know what the interface looks like and try the main functionality?"
@@ -262,7 +270,7 @@ msgstr "Cartella applicazione"
 #: wp-content/themes/teamlab-blog-2-0/footer.php:169
 #: wp-content/themes/teamlab-blog-2-0/header.php:359
 msgid "Contribute"
-msgstr "Collabora con noi"
+msgstr "Collabora"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:69
 #: wp-content/themes/teamlab-blog-2-0/footer.php:145
@@ -309,17 +317,49 @@ msgstr "Seguici su:"
 msgid "Ascensio System SIA"
 msgstr ""
 
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:125 wp-content/themes/teamlab-blog-2-0/footer.php:266
+msgid "."
+msgstr ""
+
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:125
 #: wp-content/themes/teamlab-blog-2-0/footer.php:266
 msgid "All rights reserved"
 msgstr "Tutti i diritti riservati"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:39
+#: wp-content/themes/teamlab-blog-2-0/footer.php:79
 msgid "Solutions"
 msgstr "Soluzioni"
 
+#: wp-content/themes/teamlab-blog-2-0/footer.php:120
+msgid "Perform your tasks"
+msgstr "Svolgi le tue attività"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:120
+msgid "Convert text files"
+msgstr "Converti file di testo"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:120
+msgid "Convert spreadsheets"
+msgstr "Converti fogli di calcolo"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:120
+msgid "Convert presentations"
+msgstr "Converti presentazioni"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:120
+msgid "Convert PDFs"
+msgstr "Converti PDF"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:249
+msgid "Conversion API"
+msgstr "API di conversione"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:252
+msgid "Get it now"
+msgstr "Ottienilo ora"
+
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:44
-#: wp-content/themes/teamlab-blog-2-0/footer.php:81
 msgid "SOLUTIONS BY SIZE"
 msgstr "SOLUZIONI PER DIMENSIONE"
 
@@ -381,6 +421,10 @@ msgstr "Racconti dei Clienti"
 #: wp-content/themes/teamlab-blog-2-0/header.php:161
 msgid "Features"
 msgstr "FUNZIONALITÀ"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:174
+msgid "Docs overview"
+msgstr "Panoramica di Docs"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:99
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:160
@@ -524,7 +568,7 @@ msgid "Commercial packages"
 msgstr "Pacchetti commerciali"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:200
-msgid "Desktop and mobile apps"
+msgid "Desktop & mobile apps"
 msgstr "App desktop e mobili"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:203
@@ -541,6 +585,14 @@ msgstr "Partner"
 #: wp-content/themes/teamlab-blog-2-0/header.php:336
 msgid "Affiliates"
 msgstr "Affiliati"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:355
+msgid "Technology partners"
+msgstr "Partner tecnologici"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:363
+msgid "Meet the ONLYOFFICE team"
+msgstr "Incontra il team di ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:216
 #: wp-content/themes/teamlab-blog-2-0/header.php:337
@@ -840,19 +892,23 @@ msgid "DESKTOP&MOBILE APPS"
 msgstr "App desktop e mobili"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:242
-msgid "OTHER INTEGRATIONS"
+msgid "Other Integrations"
 msgstr "Altre integrazioni"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:280
-msgid "API documentation"
+msgid "API Documentation"
 msgstr "Documentazione API"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:283
 msgid "Code on GitHub"
 msgstr "Codice su GitHub"
 
+#: wp-content/themes/teamlab-blog-2-0/header.php:298
+msgid "Get web hosting from some of the best providers"
+msgstr "Ottieni web hosting da alcuni dei migliori provider"
+
 #: wp-content/themes/teamlab-blog-2-0/header.php:214
-msgid "OFORMS"
+msgid "OFORMs"
 msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:218
@@ -882,7 +938,7 @@ msgstr "Scopri l'elenco di tutti i partner autorizzati di ONLYOFFICE nella tua a
 #: wp-content/themes/teamlab-blog-2-0/header.php:300
 #: wp-content/themes/teamlab-blog-2-0/header.php:309
 msgid "Sign up for cloud"
-msgstr "Iscriviti a ONLYOFFICE Cloud"
+msgstr "Iscriviti al Cloud"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:302
 #: wp-content/themes/teamlab-blog-2-0/header.php:311
@@ -1052,12 +1108,12 @@ msgstr "Rilasci del prodotto"
 #: wp-content/themes/teamlab-blog-2-0/index.php:112
 #: wp-content/themes/teamlab-blog-2-0/index.php:177
 msgid "For developers"
-msgstr "Per gli sviluppatori"
+msgstr "PER SVILUPPATORI"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:115
 #: wp-content/themes/teamlab-blog-2-0/index.php:208
 msgid "For business"
-msgstr "Per gli affari"
+msgstr "Per affari"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:118
 #: wp-content/themes/teamlab-blog-2-0/index.php:237

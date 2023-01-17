@@ -66,7 +66,7 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:17 wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:65 wp-content/themes/teamlab-blog-2-0/footer.php:26
 #: wp-content/themes/teamlab-blog-2-0/footer.php:102
 msgid "Developers"
-msgstr ""
+msgstr "Vývojáři"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:19 wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:166 wp-content/themes/teamlab-blog-2-0/footer.php:31
 #: wp-content/themes/teamlab-blog-2-0/header.php:180 wp-content/themes/teamlab-blog-2-0/header.php:266
@@ -88,7 +88,7 @@ msgstr ""
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:26 wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:150 wp-content/themes/teamlab-blog-2-0/footer.php:50
 #: wp-content/themes/teamlab-blog-2-0/header.php:208
 msgid "Security"
-msgstr ""
+msgstr "Bezpečnost"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:28 wp-content/themes/teamlab-blog-2-0/footer.php:55
 msgid "Authentication and access control"
@@ -164,7 +164,7 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:53 wp-content/themes/teamlab-blog-2-0/footer.php:129
 msgid "Support"
-msgstr ""
+msgstr "Podpora"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:55
 msgid "Premium support"
@@ -172,7 +172,7 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:56 wp-content/themes/teamlab-blog-2-0/footer.php:134
 msgid "Support contact form"
-msgstr ""
+msgstr "Formulář pro kontakt podpory"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:57
 msgid "SaaS forum"
@@ -184,72 +184,97 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:59 wp-content/themes/teamlab-blog-2-0/footer.php:140
 msgid "Order demo"
-msgstr ""
+msgstr "Demo objednávky"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:63 wp-content/themes/teamlab-blog-2-0/footer.php:153 wp-content/themes/teamlab-blog-2-0/header.php:363
 msgid "Resources"
-msgstr ""
+msgstr "Zdroje"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:65 wp-content/themes/teamlab-blog-2-0/footer.php:158 wp-content/themes/teamlab-blog-2-0/header.php:366
 msgid "Help Center"
-msgstr ""
+msgstr "Centrum nápovědy"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:66 wp-content/themes/teamlab-blog-2-0/footer.php:161
 msgid "App Directory"
-msgstr ""
+msgstr "Adresář aplikace"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:67 wp-content/themes/teamlab-blog-2-0/footer.php:164
 msgid "Compare to other suites"
-msgstr ""
+msgstr "Porovnejte s jinými sadami"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:68 wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:238 wp-content/themes/teamlab-blog-2-0/footer.php:167
 #: wp-content/themes/teamlab-blog-2-0/header.php:355
 msgid "Contribute"
-msgstr ""
+msgstr "Přispět"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:69 wp-content/themes/teamlab-blog-2-0/footer.php:143 wp-content/themes/teamlab-blog-2-0/header.php:368
 msgid "Webinars"
-msgstr ""
+msgstr "Webináře"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:70 wp-content/themes/teamlab-blog-2-0/footer.php:170
 msgid "Legal notice"
-msgstr ""
+msgstr "Zákonné oznámení"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:74 wp-content/themes/teamlab-blog-2-0/footer.php:206
 msgid "Contact Us"
-msgstr ""
+msgstr "Kontaktujte nás"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:77 wp-content/themes/teamlab-blog-2-0/footer.php:211
 msgid "Sales questions"
-msgstr ""
+msgstr "Prodejní dotazy"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:81 wp-content/themes/teamlab-blog-2-0/footer.php:216
 msgid "Partner inquiries"
-msgstr ""
+msgstr "Partnerské dotazy na"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:85 wp-content/themes/teamlab-blog-2-0/footer.php:220
 msgid "Press inquiries"
-msgstr ""
+msgstr "Tiskové dotazy na"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:89 wp-content/themes/teamlab-blog-2-0/footer.php:224
 msgid "Request a call"
-msgstr ""
+msgstr "Zažádat o hovor"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:95
 msgid "Follow us on:"
-msgstr ""
+msgstr "Sledujte nás na:"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:125 wp-content/themes/teamlab-blog-2-0/footer.php:264
 msgid "Ascensio System SIA"
 msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:125 wp-content/themes/teamlab-blog-2-0/footer.php:264
-msgid "All rights reserved"
+msgid "."
 msgstr ""
 
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:125 wp-content/themes/teamlab-blog-2-0/footer.php:264
+msgid "All rights reserved"
+msgstr "Všechna práva vyhrazena"
+
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:39
+#: wp-content/themes/teamlab-blog-2-0/footer.php:79
 msgid "Solutions"
-msgstr ""
+msgstr "Řešení"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:120
+msgid "Perform your tasks"
+msgstr "Provádějte své úkoly"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:120
+msgid "Convert text files"
+msgstr "Převádějte textové soubory"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:120
+msgid "Convert spreadsheets"
+msgstr "Převádějte tabulky"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:120
+msgid "Convert presentations"
+msgstr "Převádějte prezentace"
+
+#: wp-content/themes/teamlab-blog-2-0/footer.php:120
+msgid "Convert PDFs"
+msgstr "Převádějte soubory PDF"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:44 wp-content/themes/teamlab-blog-2-0/footer.php:79
 msgid "By size"
@@ -257,15 +282,15 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:49 wp-content/themes/teamlab-blog-2-0/footer.php:84
 msgid "SMBs"
-msgstr ""
+msgstr "Malé a střední podniky"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:52 wp-content/themes/teamlab-blog-2-0/footer.php:87
 msgid "Enterprises"
-msgstr ""
+msgstr "Podniky"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:55 wp-content/themes/teamlab-blog-2-0/footer.php:90
 msgid "Home use"
-msgstr ""
+msgstr "Domácí použití"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:60 wp-content/themes/teamlab-blog-2-0/footer.php:97
 msgid "By industry"
@@ -273,30 +298,30 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:68 wp-content/themes/teamlab-blog-2-0/footer.php:105
 msgid "Hosting providers"
-msgstr ""
+msgstr "Poskytovatelé hostingu"
 
 msgid "Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures, <br> updated UI, and more"
 msgstr "Objevte <b>ONLYOFFICE Docs v7.2</b> s tržištěm zásuvných modulů, novými formulářovými poli, živým prohlížečem, ligaturami, <br> aktualizovaným uživatelským rozhraním a dalšími funkcemi."
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:71 wp-content/themes/teamlab-blog-2-0/footer.php:108
 msgid "Government"
-msgstr ""
+msgstr "Státní úřady"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:74 wp-content/themes/teamlab-blog-2-0/footer.php:111
 msgid "Healthcare"
-msgstr ""
+msgstr "Zdravotní péče"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:77 wp-content/themes/teamlab-blog-2-0/footer.php:114
 msgid "Research"
-msgstr ""
+msgstr "Výzkum"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:80 wp-content/themes/teamlab-blog-2-0/footer.php:117
 msgid "Education"
-msgstr ""
+msgstr "Vzdělávání"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:83 wp-content/themes/teamlab-blog-2-0/footer.php:120
 msgid "Nonprofits"
-msgstr ""
+msgstr "Neziskové organizace"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:88
 msgid "Customer stories"
@@ -306,38 +331,122 @@ msgstr ""
 msgid "Products & Features"
 msgstr ""
 
+#: wp-content/themes/teamlab-blog-2-0/header.php:162
+msgid "Features"
+msgstr "Funkce"
+
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:99 wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:160 wp-content/themes/teamlab-blog-2-0/header.php:162
 #: wp-content/themes/teamlab-blog-2-0/header.php:262 wp-content/themes/teamlab-blog-2-0/header.php:295
 msgid "ONLYOFFICE Docs"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:102 wp-content/themes/teamlab-blog-2-0/header.php:164
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:102 wp-content/themes/teamlab-blog-2-0/header.php:174
+msgid "Docs overview"
+msgstr ""
+
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:102 wp-content/themes/teamlab-blog-2-0/header.php:175
 msgid "Document Editor"
-msgstr ""
+msgstr "Editor dokumentů"
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:105 wp-content/themes/teamlab-blog-2-0/header.php:166
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:105 wp-content/themes/teamlab-blog-2-0/header.php:176
 msgid "Spreadsheet Editor"
-msgstr ""
+msgstr "Editor tabulek"
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:108 wp-content/themes/teamlab-blog-2-0/header.php:168
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:108 wp-content/themes/teamlab-blog-2-0/header.php:177
 msgid "Presentation Editor"
-msgstr ""
+msgstr "Editor prezentací"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:178
+msgid "Form creator"
+msgstr "Tvůrce formulářů"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:179
+msgid "PDF reader & converter"
+msgstr "Čtečka a konvertor PDF"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:111
 msgid "ONLYOFFICE Connectors"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:114 wp-content/themes/teamlab-blog-2-0/header.php:183
-msgid "for desktop"
-msgstr ""
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:114 wp-content/themes/teamlab-blog-2-0/header.php:188
+msgid "For desktop"
+msgstr "Pro stolní počítače"
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:117 wp-content/themes/teamlab-blog-2-0/header.php:184
-msgid "for iOS"
-msgstr ""
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:117 wp-content/themes/teamlab-blog-2-0/header.php:189
+msgid "For iOS"
+msgstr "Pro iOS"
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:120 wp-content/themes/teamlab-blog-2-0/header.php:185
-msgid "for Android"
-msgstr ""
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:120 wp-content/themes/teamlab-blog-2-0/header.php:190
+msgid "For Android"
+msgstr "Pro Android"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:195
+msgid "See it in action!"
+msgstr "Podívejte se na formulář v akci!"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:199
+msgid "Curious to know what the interface looks like and try the main functionality?"
+msgstr "Zajímá vás, jak vypadá rozhraní a jak si vyzkoušet hlavní funkce?"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:206
+msgid "OFORMS, free <span class=\"nowrap\">ready-to-fill</span> out online document forms"
+msgstr "OFORMs, bezplatné formuláře dokumentů připravené k vyplnění online"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:222
+msgid "Other Integrations"
+msgstr "Další integrace"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:228
+msgid "All"
+msgstr "Všechny stránky"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:231
+msgid "ONLYOFFICE for education"
+msgstr "ONLYOFFICE pro vzdělávání"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:235
+msgid "Edit and collaborate on docs within your eLearning platform"
+msgstr "Upravujte dokumenty a spolupracujte na nich v rámci své platformy pro elektronické vzdělávání"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:249
+msgid "Conversion API"
+msgstr "Rozhraní API pro konverzi"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:251
+msgid "API Documentation"
+msgstr "Dokumentace API"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:252
+msgid "Get it now"
+msgstr "Získejte jej nyní"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:275
+msgid "Connectors"
+msgstr "Konektory"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:288
+msgid "For community"
+msgstr "Pro komunitu"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:289
+msgid "Docs Community"
+msgstr "Komunita Docs"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:290
+msgid "Bundles"
+msgstr "Balíčky"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:291
+msgid "Code on GitHub"
+msgstr "GitHub"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:295
+msgid "Web hosting"
+msgstr "Webhosting"
+
+#: wp-content/themes/teamlab-blog-2-0/index.php:298
+msgid "Get web hosting from some of the best providers"
+msgstr "Získejte webhosting od nejlepších poskytovatelů"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:123
 msgid "ONLYOFFICE Groups"
@@ -378,7 +487,7 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:155 wp-content/themes/teamlab-blog-2-0/header.php:258
 msgid "Pricing"
-msgstr ""
+msgstr "Ceny"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:163 wp-content/themes/teamlab-blog-2-0/header.php:178 wp-content/themes/teamlab-blog-2-0/header.php:205
 #: wp-content/themes/teamlab-blog-2-0/header.php:264
@@ -389,17 +498,17 @@ msgstr ""
 msgid "Server Enterprise"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:178 wp-content/themes/teamlab-blog-2-0/header.php:278
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:178 wp-content/themes/teamlab-blog-2-0/header.php:330
 msgid "Buy from an ONLYOFFICE reseller"
-msgstr ""
+msgstr "Nakupujte přes prodejce ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:183 wp-content/themes/teamlab-blog-2-0/header.php:291
 msgid "Get ONLYOFFICE"
-msgstr ""
+msgstr "Získejte ONLYOFFICE"
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:188 wp-content/themes/teamlab-blog-2-0/header.php:304
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:188 wp-content/themes/teamlab-blog-2-0/header.php:269
 msgid "Sign in"
-msgstr ""
+msgstr "Přihlaste se"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:191
 msgid "Sign up for ONLYOFFICE Cloud"
@@ -413,9 +522,9 @@ msgstr ""
 msgid "Commercial packages"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:200
-msgid "Desktop and mobile apps"
-msgstr ""
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:187
+msgid "Desktop & mobile apps"
+msgstr "Desktopové a mobilní aplikace"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:203 wp-content/themes/teamlab-blog-2-0/header.php:316
 msgid "Compare editions"
@@ -423,59 +532,71 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:208 wp-content/themes/teamlab-blog-2-0/header.php:329
 msgid "Partners"
-msgstr ""
+msgstr "Partneři"
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:213 wp-content/themes/teamlab-blog-2-0/header.php:333
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:213 wp-content/themes/teamlab-blog-2-0/header.php:348
 msgid "Affiliates"
-msgstr ""
+msgstr "Přidružené společnosti"
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:216 wp-content/themes/teamlab-blog-2-0/header.php:334
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:216 wp-content/themes/teamlab-blog-2-0/header.php:347
 msgid "Resellers"
-msgstr ""
+msgstr "Prodejci"
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:219 wp-content/themes/teamlab-blog-2-0/header.php:335
+#: wp-content/themes/teamlab-blog-2-0/header.php:349
+msgid "Technology partners"
+msgstr "Technologičtí partneři"
+
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:219 wp-content/themes/teamlab-blog-2-0/header.php:350
 msgid "Find partners"
-msgstr ""
+msgstr "Najděte si partnery"
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:222 wp-content/themes/teamlab-blog-2-0/header.php:336
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:222 wp-content/themes/teamlab-blog-2-0/header.php:351
 msgid "Submit request"
-msgstr ""
+msgstr "Podat žádost"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:357
+msgid "Meet the ONLYOFFICE team"
+msgstr "Seznamte se s týmem ONLYOFFICE"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:372
+msgid "Jobs"
+msgstr "Pracovní nabídky"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:379
+msgid "Awards"
+msgstr "Ocenění"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:227 wp-content/themes/teamlab-blog-2-0/header.php:350
 msgid "About"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:232 wp-content/themes/teamlab-blog-2-0/header.php:354
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:232 wp-content/themes/teamlab-blog-2-0/header.php:369
 msgid "About ONLYOFFICE"
-msgstr ""
+msgstr "O ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:235 wp-content/themes/teamlab-blog-2-0/header.php:364
 msgid "Blog"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:241 wp-content/themes/teamlab-blog-2-0/header.php:356
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:241 wp-content/themes/teamlab-blog-2-0/header.php:370
 msgid "Customers"
-msgstr ""
+msgstr "Zákazníci"
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:244 wp-content/themes/teamlab-blog-2-0/header.php:357
-msgid "Awards"
-msgstr ""
-
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:247 wp-content/themes/teamlab-blog-2-0/header.php:358
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:247 wp-content/themes/teamlab-blog-2-0/header.php:354
 msgid "Events"
-msgstr ""
+msgstr "Události"
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:250 wp-content/themes/teamlab-blog-2-0/header.php:365
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:250 wp-content/themes/teamlab-blog-2-0/header.php:381
 msgid "Press downloads"
-msgstr ""
+msgstr "Tiskové zprávy"
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:253 wp-content/themes/teamlab-blog-2-0/header.php:367
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:253 wp-content/themes/teamlab-blog-2-0/header.php:383
 msgid "White papers"
-msgstr ""
+msgstr "Bílé knihy"
 
-#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:256 wp-content/themes/teamlab-blog-2-0/header.php:359
+#: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:256 wp-content/themes/teamlab-blog-2-0/header.php:375
 msgid "Gift shop"
-msgstr ""
+msgstr "Dárkový obchod"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:259 wp-content/themes/teamlab-blog-2-0/header.php:360
 msgid "Contacts"
@@ -604,15 +725,15 @@ msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:137
 msgid "Forum"
-msgstr ""
+msgstr "Fórum"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:146 wp-content/themes/teamlab-blog-2-0/header.php:369
 msgid "Training courses"
-msgstr ""
+msgstr "Kurzy a školení"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:179
 msgid "Comparison"
-msgstr ""
+msgstr "Srovnání"
 
 #: wp-content/themes/teamlab-blog-2-0/footer.php:184
 msgid "ONLYOFFICE Docs vs MS Office Online"
@@ -681,10 +802,6 @@ msgstr ""
 msgid "Find news, tips and how-tos"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:170
-msgid "Form creator"
-msgstr ""
-
 #: wp-content/themes/teamlab-blog-2-0/header.php:174
 msgid "Docs Editions"
 msgstr ""
@@ -698,12 +815,12 @@ msgid "Workspace Editions"
 msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:211
-msgid "OFORMS"
+msgid "OFORMs"
 msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:215
 msgid "OFORMS, free <span class=\"nowrap\">ready-to-fill</span> out online document forms"
-msgstr ""
+msgstr "OFORMs, bezplatné formuláře dokumentů připravené k vyplnění online"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:240
 msgid "Redmine"
@@ -721,13 +838,13 @@ msgstr ""
 msgid "Integrate ONLYOFFICE Docs to bring document editing to your app users"
 msgstr ""
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:282
+#: wp-content/themes/teamlab-blog-2-0/header.php:334
 msgid "Find out the list of all the authorized ONLYOFFICE resellers in your area"
-msgstr ""
+msgstr "Zde najdete seznam všech autorizovaných partnerů ONLYOFFICE ve své oblasti."
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:297 wp-content/themes/teamlab-blog-2-0/header.php:306
+#: wp-content/themes/teamlab-blog-2-0/header.php:270
 msgid "Sign up for cloud"
-msgstr ""
+msgstr "Zaregistrujte se do cloudu"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:299 wp-content/themes/teamlab-blog-2-0/header.php:308
 msgid "Install on-premises"
