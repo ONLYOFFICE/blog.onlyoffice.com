@@ -119,7 +119,7 @@ $lang = $sitepress->get_current_language();
     <a href="<?php echo $banner_url ?>">
         <div class="advent-announce-text">
             <div>
-                <div><?php _e('Meet <b>ONLYOFFICE Docs Cloud</b>, complete office software as a service', 'teamlab-blog-2-0'); ?></div>
+                <?php _e('<b>ONLYOFFICE Docs v7.3 released:</b> enhanced forms, SmartArt, new security settings, Watch Window, and more', 'teamlab-blog-2-0'); ?>
             </div>
         </div>
     </a>
@@ -128,7 +128,7 @@ $lang = $sitepress->get_current_language();
     <a  href="<?php echo $banner_url ?>">
         <div class="advent-announce-text">
             <div>
-                <div><?php _e('Meet <b>ONLYOFFICE Docs Cloud</b>', 'teamlab-blog-2-0'); ?></div>
+                <?php _e('<b>ONLYOFFICE Docs v7.3 released</b>', 'teamlab-blog-2-0'); ?>
             </div>
         </div>
     </a>

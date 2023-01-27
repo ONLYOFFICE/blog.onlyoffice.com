@@ -352,9 +352,6 @@ msgstr "Empresas"
 msgid "Home use"
 msgstr "Uso doméstico"
 
-msgid "Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures, <br> updated UI, and more"
-msgstr "Descubra o <b>ONLYOFFICE Docs v7.2</b> com mercado de plug-ins, novos campos de formulário, visualizador ao vivo, ligaduras, <br> atualizada e muito mais"
-
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:60
 #: wp-content/themes/teamlab-blog-2-0/footer.php:99
 msgid "SOLUTIONS BY INDUSTRY"
@@ -825,6 +822,14 @@ msgstr "<b>ONLYOFFICE 7.0:</b> <span>formulários online</span>, proteção de s
 #: wp-content/themes/teamlab-blog-2-0/header.php:121
 msgid "ONLYOFFICE 7.0 released"
 msgstr "ONLYOFFICE 7.0 lançou"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:120
+msgid "<b>ONLYOFFICE Docs v7.3 released:</b> enhanced forms, SmartArt, new security settings, Watch Window, and more"
+msgstr "<b>Lançado o ONLYOFFICE Docs v7.3:</b> formulários melhorados, SmartArt, novas configurações de segurança, Watch Window e muito mais"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:129
+msgid "<b>ONLYOFFICE Docs v7.3 released</b>"
+msgstr "<b>ONLYOFFICE Docs v7.3 lançado</b>"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:149
 #: wp-content/themes/teamlab-blog-2-0/searchform.php:9

@@ -300,8 +300,13 @@ msgstr ""
 msgid "Hosting providers"
 msgstr "Poskytovatelé hostingu"
 
-msgid "Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures, <br> updated UI, and more"
-msgstr "Objevte <b>ONLYOFFICE Docs v7.2</b> s tržištěm zásuvných modulů, novými formulářovými poli, živým prohlížečem, ligaturami, <br> aktualizovaným uživatelským rozhraním a dalšími funkcemi."
+#: wp-content/themes/teamlab-blog-2-0/header.php:120
+msgid "<b>ONLYOFFICE Docs v7.3 released:</b> enhanced forms, SmartArt, new security settings, Watch Window, and more"
+msgstr "<b>Vydána verze ONLYOFFICE Docs v7.3:</b> vylepšené formuláře, SmartArt, nová nastavení zabezpečení, Watch Window a další novinky"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:129
+msgid "<b>ONLYOFFICE Docs v7.3 released</b>"
+msgstr "<b>Vydána verze ONLYOFFICE Docs v7.3</b>"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:71 wp-content/themes/teamlab-blog-2-0/footer.php:108
 msgid "Government"
