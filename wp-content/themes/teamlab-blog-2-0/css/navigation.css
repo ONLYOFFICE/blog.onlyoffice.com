@@ -38,24 +38,6 @@ nav .pushy-content {
   max-width: 936px;
   width: 100%;
 }
-@media screen and (max-width: 1700px) {
-  .advent-announce.push .advent-announce-text:before {
-    left: -80px;
-  }
-
-  .advent-announce.push .advent-announce-text:after {
-    right: -120px;
-  }
-}
-@media screen and (max-width: 1400px) {
-  .advent-announce.push .advent-announce-text:before {
-    left: -260px;
-  }
-
-  .advent-announce.push .advent-announce-text:after {
-    right: -300px;
-  }
-}
 nav > div {
   visibility: inherit;
 }
@@ -1207,6 +1189,14 @@ div.custom-select div.selector {
   }
 }
 @media screen and (max-width: 1360px) {
+  .advent-announce.push .advent-announce-text:before {
+    left: -49px;
+  }
+
+  .advent-announce.push .advent-announce-text:after {
+    right: -47px;
+  }
+
   #navitem_prices_menu {
     left: calc(50% - 280px);
   }
@@ -1220,6 +1210,14 @@ div.custom-select div.selector {
   }
 }
 @media screen and (max-width: 1200px) {
+  .advent-announce.push .advent-announce-text:before {
+    left: -124px;
+  }
+
+  .advent-announce.push .advent-announce-text:after {
+    right: -124px;
+  }
+
   #navitem_solutions_clients_workspace,
   #navitem_download_desktop {
     white-space: initial;
@@ -1247,43 +1245,55 @@ div.custom-select div.selector {
     align-items: center;
     top: 0;
   }
-  .advent-announce.push {
-    height: 48px;
-    /* background-image: url(../images/top_banner/advent_calendar/trees_mobile.svg);
-    background-position: 50% 0px; */
+
+  .advent-announce.push .advent-announce-text:before {
+    content: none;
+  }
+
+  .advent-announce.push .advent-announce-text:after {
+    top: 21px;
+    right: 14px;
+    background-image: url(../images/top_banner/onlyoffice_docs_cloud/desktop-right-mobile.svg);
+    background-size: contain;
+    width: 10px;
+    height: 10px;
   }
 
   .advent-announce.push .advent-announce-text > div {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     padding: 0;
     font-size: 12px;
     line-height: 16px;
-    letter-spacing: 0.01em;
-    white-space: normal;
     height: 48px;
   }
 
-  .advent-announce.push .advent-announce-text b {
-    color: #ffffff;
-    font-weight: 700;
+  .advent-announce.push .advent-announce-text > div:before {
+    top: -16px;
+    left: -72px;
+    width: 55px;
+    height: 56px;
   }
+
+  .advent-announce.push .advent-announce-text > div:after {
+    top: 18px;
+    background-image: url(../images/top_banner/onlyoffice_docs_cloud/icon-3.svg);
+    width: 8px;
+    height: 13px;
+    transform: initial;
+  }
+
   .advent-desktop-hide {
     display: block;
   }
+
   .advent-announce.push.advent-mobile-hide {
     display: none;
   }
 
-  .advent-announce.push .advent-announce-text:before,
-  .advent-announce.push .advent-announce-text:after {
+  .advent-announce.push {
     height: 48px;
-  }
-
-  .advent-announce.push .advent-announce-text:before {
-    left: -185px;
-  }
-
-  .advent-announce.push .advent-announce-text:after {
-    right: -220px;
   }
 
   .phone_wrapper {
@@ -1639,18 +1649,8 @@ div.custom-select div.selector {
     padding: 4px 16px 4px 48px;
   }
 
-  .advent-announce.push .advent-announce-text:after,
-  .advent-announce.push .advent-announce-text > div:after {
-    content: none;
-  }
-
-  .advent-announce.push .advent-announce-text:before {
-    width: 332px;
-    height: 44px;
-    background-image: url(../images/top_banner/onlyoffice_docs_cloud/mobile.svg);
-    left: 50%;
-    top: 2px;
-    transform: translateX(-48%);
+  .advent-announce.push .advent-announce-text > div {
+    max-width: 188px;
   }
 
   nav > div > ul.all-menu-items {

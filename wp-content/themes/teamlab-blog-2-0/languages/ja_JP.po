@@ -1210,23 +1210,13 @@ msgstr ""
 msgid "(Edit)"
 msgstr "（編集）"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:117
-msgid "Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures, <br> updated UI, and more"
-msgstr ""
-"<b>ONLYOFFICE Docs v7.2</b> プラグインマーケットプレイス、新しいフォームフィールド、ライブビューア、合字、 <br> アップデートされたUI、"
-"その他をご覧ください。"
-
-#: wp-content/themes/teamlab-blog-2-0/header.php:124
-msgid "<b>ONLYOFFICE Docs v7.2</b>"
-msgstr "<b>ONLYOFFICE Docs v7.2についての詳細情報</b>"
-
 #: wp-content/themes/teamlab-blog-2-0/header.php:120
-msgid "Meet <b>ONLYOFFICE Docs Cloud</b>, complete office software as a service"
-msgstr "サービスとして提供されている完全なオフィスソフトウェアである<b>ONLYOFFICE Docs Cloud</b>をご紹介します"
+msgid "<b>ONLYOFFICE Docs v7.3 released:</b> enhanced forms, SmartArt, new security settings, Watch Window, and more"
+msgstr "<b>ONLYOFFICE Docs v7.3リリース：</b>フォームの強化、SmartArt、新しいセキュリティ設定、ウォッチウィンドウなど"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:129
-msgid "Meet <b>ONLYOFFICE Docs Cloud</b>"
-msgstr "<b>ONLYOFFICE Docs Cloud</b>をご紹介します"
+msgid "<b>ONLYOFFICE Docs v7.3 released</b>"
+msgstr "<b>ONLYOFFICE Docs v7.3がリリース</b>"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:152 wp-content/themes/teamlab-blog-2-0/searchform.php:9
 msgid "Find news, tips and how-tos"

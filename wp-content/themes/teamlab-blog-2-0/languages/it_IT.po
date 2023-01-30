@@ -853,21 +853,13 @@ msgstr ""
 msgid "(Edit)"
 msgstr "(Modificare)"
 
-#: wp-content/themes/teamlab-blog-2-0/header.php:117
-msgid "Discover <b>ONLYOFFICE Docs v7.2</b> with plugin marketplace, new form fields, live viewer, ligatures, <br> updated UI, and more"
-msgstr "Scopri <b>ONLYOFFICE Docs v7.2</b> con marketplace di plugin, nuovi campi dei moduli compilabili, visualizzatore live, legature, <br> interfaccia utente aggiornata e altro ancora"
-
-#: wp-content/themes/teamlab-blog-2-0/header.php:124
-msgid "<b>ONLYOFFICE Docs v7.2</b>"
-msgstr "<b>Scopri ONLYOFFICE Docs v7.2</b>"
-
 #: wp-content/themes/teamlab-blog-2-0/header.php:120
-msgid "Meet <b>ONLYOFFICE Docs Cloud</b>, complete office software as a service"
-msgstr "Scopri <b>ONLYOFFICE Docs Cloud</b>, un software per ufficio completo fornito come servizio"
+msgid "<b>ONLYOFFICE Docs v7.3 released:</b> enhanced forms, SmartArt, new security settings, Watch Window, and more"
+msgstr "<b>Rilasciato ONLYOFFICE Docs v7.3:</b> moduli migliorati, SmartArt, nuove impostazioni di sicurezza, Finestra di controllo e altro"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:129
-msgid "Meet <b>ONLYOFFICE Docs Cloud</b>"
-msgstr "Scopri <b>ONLYOFFICE Docs Cloud</b>"
+msgid "<b>ONLYOFFICE Docs v7.3 released</b>"
+msgstr "<b>ONLYOFFICE Docs v7.3 è rilasciato</b>"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:152
 #: wp-content/themes/teamlab-blog-2-0/searchform.php:9
