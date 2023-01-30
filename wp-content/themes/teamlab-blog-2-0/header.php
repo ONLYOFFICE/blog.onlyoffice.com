@@ -99,22 +99,7 @@ $lang = $sitepress->get_current_language();
 </head>
 <div class="advent-announce push advent-mobile-hide">
     <?php
-    $banner_url = 'https://www.onlyoffice.com/blog/2022/11/meet-onlyoffice-docs-saas/';
-     if($current_language == WEB_ROOT_URL.'/'.'de'){
-         $banner_url = 'https://www.onlyoffice.com/blog/de/2022/11/begrusen-sie-onlyoffice-docs-saas-die-cloudbasierte-version-der-onlyoffice-online-suite/';
-     }else if($current_language == WEB_ROOT_URL.'/'.'fr'){
-         $banner_url = 'https://www.onlyoffice.com/blog/fr/2022/11/decouvrez-onlyoffice-docs-saas/';
-     }else if($current_language == WEB_ROOT_URL.'/'.'es'){
-         $banner_url = 'https://www.onlyoffice.com/blog/es/2022/11/descubre-onlyoffice-docs-saas/';
-     }else if($current_language == WEB_ROOT_URL.'/'.'it'){
-         $banner_url = 'https://www.onlyoffice.com/blog/it/2022/11/onlyoffice-docs-saas-nel-cloud/';
-     }else if($current_language == WEB_ROOT_URL.'/'.'zh'){
-         $banner_url = 'https://www.onlyoffice.com/blog/zh-hans/2022/11/meet-onlyoffice-docs-saas/';
-     }else if($current_language == WEB_ROOT_URL.'/'.'ja'){
-         $banner_url = 'https://www.onlyoffice.com/blog/ja/2022/11/onlyoffice-onlyoffice-docs-saas/';
-     }else if($current_language == WEB_ROOT_URL.'/'.'pt'){
-         $banner_url = 'https://www.onlyoffice.com/blog/pt-br/2022/11/conheca-o-onlyoffice-docs-saas/';
-     }
+        $banner_url = 'https://www.onlyoffice.com/blog/2023/01/onlyoffice-docs-7-3-released/';
     ?>
     <a href="<?php echo $banner_url ?>">
         <div class="advent-announce-text">
