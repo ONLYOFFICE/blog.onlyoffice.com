@@ -100,6 +100,21 @@ $lang = $sitepress->get_current_language();
 <div class="advent-announce push advent-mobile-hide">
     <?php
         $banner_url = 'https://www.onlyoffice.com/blog/2023/01/onlyoffice-docs-7-3-released/';
+        if($current_language == WEB_ROOT_URL.'/'.'fr'){
+            $banner_url = 'https://www.onlyoffice.com/blog/fr/2023/01/sortie-onlyoffice-docs-v7-3/';
+        }else if($current_language == WEB_ROOT_URL.'/'.'de'){
+            $banner_url = 'https://www.onlyoffice.com/blog/de/2023/01/onlyoffice-7-3/';
+        }else if($current_language == WEB_ROOT_URL.'/'.'it'){
+            $banner_url = 'https://www.onlyoffice.com/blog/it/2023/01/onlyoffice-docs-v7-3/';
+        }else if($current_language == WEB_ROOT_URL.'/'.'es'){
+            $banner_url = 'https://www.onlyoffice.com/blog/es/2023/01/onlyoffice-docs-v7-3/';
+        }else if($current_language == WEB_ROOT_URL.'/'.'pt'){
+            $banner_url = 'https://www.onlyoffice.com/blog/pt-br/2023/01/onlyoffice-docs-v7-3/';
+        }else if($current_language == WEB_ROOT_URL.'/'.'ja'){
+            $banner_url = 'https://www.onlyoffice.com/blog/ja/2023/01/onlyoffice-docs-v7-3-smartart/';
+        }else if($current_language == WEB_ROOT_URL.'/'.'zh'){
+            $banner_url = 'https://www.onlyoffice.com/blog/zh-hans/2023/02/onlyoffice-docs-7-3-released/';
+        }
     ?>
     <a href="<?php echo $banner_url ?>">
         <div class="advent-announce-text">
