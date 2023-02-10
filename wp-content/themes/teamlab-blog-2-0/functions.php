@@ -881,3 +881,32 @@ function ampforwp_add_custom_css_example() { ?>
     }
     <?php 
 }
+
+ /**
+ * WPGraphQL Custom Post Types
+ */
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'Post', 'discourse_permalink', [
+        'type' => 'String',
+        'description' => __( 'Discourse permalink', 'wp-graphql' ),
+        'resolve' => function( $post ) {
+            $discoursePermalink = get_post_meta( $post->ID, 'discourse_permalink', true );
+            return ! empty( $discoursePermalink ) ? $discoursePermalink : '';
+        }
+    ] );
+});
+
+add_action( 'init', function() {
+    register_post_type( 'news', [
+        'show_ui' => true,
+        'labels'  => [
+            'menu_name' => __( 'news', 'your-textdomain' ),
+        ],
+        'hierarchical' => true,
+        'show_in_graphql' => true,
+        'graphql_single_name' => 'newsItem', 
+        'graphql_plural_name' => 'news',
+        'public' => true,
+        'publicly_queryable' => true,
+    ] );
+});
