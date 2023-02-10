@@ -896,17 +896,11 @@ add_action( 'graphql_register_types', function() {
     ] );
 });
 
-add_action( 'init', function() {
-    register_post_type( 'news', [
-        'show_ui' => true,
-        'labels'  => [
-            'menu_name' => __( 'news', 'your-textdomain' ),
-        ],
-        'hierarchical' => true,
-        'show_in_graphql' => true,
-        'graphql_single_name' => 'newsItem', 
-        'graphql_plural_name' => 'news',
-        'public' => true,
-        'publicly_queryable' => true,
-    ] );
-});
+add_filter( 'register_post_type_args', function( $args, $post_type ) {
+    if ( 'news' === $post_type ) {
+      $args['show_in_graphql'] = true;
+      $args['graphql_single_name'] = 'newsItem';
+      $args['graphql_plural_name'] = 'news';
+    }
+    return $args;
+}, 10, 2 );
