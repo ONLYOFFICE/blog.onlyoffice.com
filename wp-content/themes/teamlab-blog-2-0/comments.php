@@ -85,9 +85,13 @@
             <div class="textarea"><textarea name="comment" id="comment"></textarea></div>
         </p>
         <?php do_action('comment_form', $post->ID); ?>
-        
+
+        <?php if (!is_user_logged_in() ) : ?>
+            <div class="g-recaptcha" data-callback="recaptchaCallback" data-sitekey="recaptcha_public_key"></div>
+        <?php endif; ?>
+
         <p class="submit">
-            <input name="submit" type="submit" id="commentformsubmit" value="<?php _e('Add comment', 'teamlab-blog-2-0'); ?>" class="button gray" /><?php comment_id_fields(); ?>
+            <input name="submit" type="submit" disabled id="commentformsubmit" value="<?php _e('Add comment', 'teamlab-blog-2-0'); ?>" class="button gray" /><?php comment_id_fields(); ?>
         </p>
     </form>
     <?php endif; // If registration required and not logged in ?>

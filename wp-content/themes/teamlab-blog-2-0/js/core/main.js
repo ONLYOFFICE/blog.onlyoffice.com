@@ -442,3 +442,7 @@ window.onload = function () {
     }
   });
 };
+
+function recaptchaCallback() {
+  $("#commentformsubmit").removeAttr("disabled");
+}
