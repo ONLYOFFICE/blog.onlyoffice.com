@@ -516,7 +516,7 @@ function verify_recaptcha($recaptchaResp){
         'https://www.google.com/recaptcha/api/siteverify',
         array(
             'body' => array(
-                'secret' => '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe', // test private key
+                'secret' => "recaptcha_private_key",
                 'response' => $captcha_response,
                 'remoteip' => $_SERVER['REMOTE_ADDR']
             )

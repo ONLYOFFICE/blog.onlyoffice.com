@@ -87,7 +87,7 @@
         <?php do_action('comment_form', $post->ID); ?>
 
         <?php if (!is_user_logged_in() ) : ?>
-            <div class="g-recaptcha" data-callback="recaptchaCallback" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
+            <div class="g-recaptcha" data-callback="recaptchaCallback" data-sitekey="recaptcha_public_key"></div>
         <?php endif; ?>
 
         <p class="submit">
