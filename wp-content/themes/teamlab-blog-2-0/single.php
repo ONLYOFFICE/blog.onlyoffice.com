@@ -9,6 +9,31 @@
 
 get_header();
 ?>
+
+<?php
+    $recaptcha_url = "https://www.google.com/recaptcha/api.js?hl=en";
+
+    if ($current_language == WEB_ROOT_URL.'/'.'fr') {
+        $recaptcha_url = 'https://www.google.com/recaptcha/api.js?hl=fr';
+    } else if ($current_language == WEB_ROOT_URL.'/'.'de') {
+        $recaptcha_url = 'https://www.google.com/recaptcha/api.js?hl=de';
+    } else if ($current_language == WEB_ROOT_URL.'/'.'it') {
+        $recaptcha_url = 'https://www.google.com/recaptcha/api.js?hl=it';
+    } else if ($current_language == WEB_ROOT_URL.'/'.'es') {
+        $recaptcha_url = 'https://www.google.com/recaptcha/api.js?hl=es';
+    } else if ($current_language == WEB_ROOT_URL.'/'.'cs') {
+        $recaptcha_url = 'https://www.google.com/recaptcha/api.js?hl=cs';
+    } else if ($current_language == WEB_ROOT_URL.'/'.'pt') {
+        $recaptcha_url = 'https://www.google.com/recaptcha/api.js?hl=pt-BR';
+    } else if ($current_language == WEB_ROOT_URL.'/'.'ja') {
+        $recaptcha_url = 'https://www.google.com/recaptcha/api.js?hl=ja';
+    } else if ($current_language == WEB_ROOT_URL.'/'.'zh') {
+        $recaptcha_url = 'https://www.google.com/recaptcha/api.js?hl=zh-CN';
+    }
+?>
+
+<script src="<?php echo $recaptcha_url ?>" async defer></script>
+
 <main>
     <div class="PostContainer">
 

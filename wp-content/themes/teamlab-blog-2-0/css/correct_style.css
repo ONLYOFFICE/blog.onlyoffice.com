@@ -2298,6 +2298,9 @@ a.a2a_i span {
 
 
 /*-----------Comments--------*/
+div#comments .g-recaptcha {
+  margin-top: 21px;
+}
 div#comments li:before{
   display: none;
 }
@@ -2451,6 +2454,16 @@ div#comments .button{
 }
 div#comments .button:hover{
   background: #666666;
+}
+div#comments .button:disabled{
+  background: #444444;
+  opacity: 0.5;
+}
+div#comments .subscribe-to-comments {
+  display: flex;
+}
+div#comments #subscribe {
+  margin-right: 3px;
 }
 div#respond {
   background: #FFF;

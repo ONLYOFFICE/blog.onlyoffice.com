@@ -498,7 +498,7 @@ function add_image_class($class){
 add_filter('get_image_tag_class','add_image_class');
 
 
-/************ Recaptcha 
+/************ Recaptcha ************* */
 
             
 function verify_recaptcha($recaptchaResp){
@@ -532,7 +532,6 @@ function verify_recaptcha($recaptchaResp){
 
     return $success;
 }
-*************Recaptcha */
 
 /* Get comments
  */
