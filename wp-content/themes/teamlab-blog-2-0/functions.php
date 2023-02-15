@@ -903,3 +903,56 @@ add_filter( 'register_post_type_args', function( $args, $post_type ) {
     }
     return $args;
 }, 10, 2 );
+
+ /**
+ * Redirect pages
+ */
+function redirect_page() {
+    if (isset($_SERVER['HTTPS']) &&
+        ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+            isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+        $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+            $protocol = 'https://';
+        }
+        else {
+            $protocol = 'http://';
+        }
+
+    $currenturl = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    $currenturl_relative = wp_make_link_relative($currenturl);
+    
+    switch ($currenturl_relative) {
+        case '/blog/2021/09/7-best-sharepoint-alternatives-to-consider-in-2021/':
+            $urlto = home_url('/2021/09/best-sharepoint-alternatives/');
+            break;
+        case '/blog/2021/11/top-10-basecamp-alternatives-2021/':
+            $urlto = home_url('/2021/11/basecamp-alternatives/' );
+            break;
+        case '/blog/fr/2021/09/7-meilleures-alternatives-a-sharepoint-a-envisager-en-2021/':
+            $urlto = home_url('/fr/2021/09/meilleures-alternatives-a-sharepoint-a-envisager/' );
+            break;
+        case '/blog/es/2021/09/7-mejores-alternativas-a-sharepoint-para-tener-en-cuenta-en-2021/':
+            $urlto = home_url('/es/2021/09/mejores-alternativas-a-sharepoint/' );
+            break;
+        case '/blog/it/2021/09/7-migliori-alternative-a-sharepoint-nel-2021/':
+            $urlto = home_url('/it/2021/09/migliori-alternative-a-sharepoint/' );
+            break;
+        case '/blog/de/2022/12/beste-software-zur-automatisierung-von-dokumenten-2022/':
+            $urlto = home_url('/de/2022/12/beste-software-zur-automatisierung-von-dokumenten/' );
+            break;
+        case '/blog/de/2021/09/7-beste-alternativen-zu-sharepoint-2021/':
+            $urlto = home_url('/de/2021/09/beste-alternativen-zu-sharepoint/' );
+            break;
+        case '/blog/de/2021/11/die-10-besten-basecamp-alternativen-2021/':
+            $urlto = home_url('/de/2021/11/die-besten-basecamp-alternativen/' );
+            break;
+        
+        default:
+        return;
+    }
+    
+    if ($currenturl != $urlto)
+    exit( wp_redirect( $urlto ) );
+}
+
+add_action( 'template_redirect', 'redirect_page' );
