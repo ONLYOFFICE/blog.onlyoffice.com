@@ -7,6 +7,8 @@ if ( $Env:BRANCH_NAME -eq "production.blog") {
 }
 
 $wpConfigPhpPath = "$Env:WORKSPACE\wp-config.php"
+$commentsPhpPath = "$Env:WORKSPACE\wp-content\themes\teamlab-blog-2-0\comments.php"
+$functionsPhpPath = "$Env:WORKSPACE\wp-content\themes\teamlab-blog-2-0\functions.php"
 $REPLACE_STRING = Get-Content $Env:WORKSPACE$REPLACE_STRING_PATH
 $REPLACE_STRING_1 = echo $REPLACE_STRING[0]
 $REPLACE_STRING_2 = echo $REPLACE_STRING[1]
@@ -31,6 +33,8 @@ $REPLACE_STRING_8 = echo $REPLACE_STRING[7]
 (get-content $wpConfigPhpPath ) | %{$_ -replace "some_key6","$REPLACE_STRING_6"} | set-content $wpConfigPhpPath
 (get-content $wpConfigPhpPath ) | %{$_ -replace "some_key7","$REPLACE_STRING_7"} | set-content $wpConfigPhpPath
 (get-content $wpConfigPhpPath ) | %{$_ -replace "some_key8","$REPLACE_STRING_8"} | set-content $wpConfigPhpPath
+(get-content $commentsPhpPath ) | %{$_ -replace "recaptcha_public_key","$Env:recaptcha_public_key"} | set-content $commentsPhpPath
+(get-content $functionsPhpPath ) | %{$_ -replace "recaptcha_private_key","$Env:recaptcha_private_key"} | set-content $functionsPhpPath
 				
 if ( $REPLACE_STRING.Count -eq 7 ) { 
 	write-host "Not enought variables." 
