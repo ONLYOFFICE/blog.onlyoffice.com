@@ -748,6 +748,30 @@ msgstr "Nachricht:"
 msgid "Add comment"
 msgstr "Kommentar hinzufügen"
 
+#: wp-content/themes/teamlab-blog-2-0/comments.php:73
+msgid "Name is empty"
+msgstr "Der Name ist leer"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:400
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:22
+#: wp-content/themes/teamlab-blog-2-0/comments.php:78
+msgid "Email is empty"
+msgstr "E-Mail-Adresse ist leer"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:401
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:23
+#: wp-content/themes/teamlab-blog-2-0/comments.php:79
+msgid "Email is incorrect"
+msgstr "Die E-Mail-Adresse ist falsch"
+
+#: wp-content/themes/teamlab-blog-2-0/comments.php:89
+msgid "Message is empty"
+msgstr ""
+
+#: wp-content/themes/teamlab-blog-2-0/comments.php:89
+msgid "Wrong captcha"
+msgstr "Recaptcha ist nicht korrekt"
+
 #: wp-content/themes/teamlab-blog-2-0/download-block.php:3
 msgid "Download ONLYOFFICE desktop and mobile apps for"
 msgstr "ONLYOFFICE Desktop- und Mobile-Apps herunterladen für"
@@ -992,16 +1016,6 @@ msgstr "Ihre E-Mail*"
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:17
 msgid "Subscribe"
 msgstr "Abonnieren"
-
-#: wp-content/themes/teamlab-blog-2-0/header.php:400
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:22
-msgid "Email is empty"
-msgstr "Die E-Mail-Adresse fehlt"
-
-#: wp-content/themes/teamlab-blog-2-0/header.php:401
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:23
-msgid "Email is incorrect"
-msgstr "Die angegebene E-Mail-Adresse ist ungültig"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:403
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:24

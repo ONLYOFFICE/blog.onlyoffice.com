@@ -723,6 +723,30 @@ msgstr "Mensagem:"
 msgid "Add comment"
 msgstr "Adicione um comentário"
 
+#: wp-content/themes/teamlab-blog-2-0/comments.php:73
+msgid "Name is empty"
+msgstr "O nome está vazio"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:397
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:22
+#: wp-content/themes/teamlab-blog-2-0/comments.php:78
+msgid "Email is empty"
+msgstr "E-mail está vazio"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:398
+#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:23
+#: wp-content/themes/teamlab-blog-2-0/comments.php:79
+msgid "Email is incorrect"
+msgstr "E-mail está incorreto"
+
+#: wp-content/themes/teamlab-blog-2-0/comments.php:89
+msgid "Message is empty"
+msgstr ""
+
+#: wp-content/themes/teamlab-blog-2-0/comments.php:89
+msgid "Wrong captcha"
+msgstr "Recaptcha é incorreto"
+
 #: wp-content/themes/teamlab-blog-2-0/download-block.php:3
 msgid "Download ONLYOFFICE desktop and mobile apps for"
 msgstr "Baixe o ONLYOFFICE para desktop e aplicativos móveis para"
@@ -967,16 +991,6 @@ msgstr "Seu email*"
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:17
 msgid "Subscribe"
 msgstr "Se inscrever"
-
-#: wp-content/themes/teamlab-blog-2-0/header.php:397
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:22
-msgid "Email is empty"
-msgstr "E-mail está vazio"
-
-#: wp-content/themes/teamlab-blog-2-0/header.php:398
-#: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:23
-msgid "Email is incorrect"
-msgstr "Email está incorreto"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:400
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:24

@@ -1119,6 +1119,28 @@ msgstr "本文"
 msgid "Add comment"
 msgstr "配信"
 
+#: wp-content/themes/teamlab-blog-2-0/comments.php:73
+msgid "Name is empty"
+msgstr "名前が空です"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:400 wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:22
+#: wp-content/themes/teamlab-blog-2-0/comments.php:78
+msgid "Email is empty"
+msgstr "メールが入力されていません"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:401 wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:23
+#: wp-content/themes/teamlab-blog-2-0/comments.php:79
+msgid "Email is incorrect"
+msgstr "メールが正しくありません"
+
+#: wp-content/themes/teamlab-blog-2-0/comments.php:89
+msgid "Message is empty"
+msgstr ""
+
+#: wp-content/themes/teamlab-blog-2-0/comments.php:89
+msgid "Wrong captcha"
+msgstr "キャプチャが正しくありません"
+
 #: wp-content/themes/teamlab-blog-2-0/download-block.php:3
 msgid "Download ONLYOFFICE desktop and mobile apps for"
 msgstr "無料で ONLYOFFICEのデスクトップ版・モバイル版アプリをダウンロード"
@@ -1362,14 +1384,6 @@ msgstr "ONLYOFFICEの最新情報を入手"
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:16
 msgid "Your email*"
 msgstr "メールアドレス*"
-
-#: wp-content/themes/teamlab-blog-2-0/header.php:400 wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:22
-msgid "Email is empty"
-msgstr "メールアドレスは記入されていません"
-
-#: wp-content/themes/teamlab-blog-2-0/header.php:401 wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:23
-msgid "Email is incorrect"
-msgstr "メールアドレスを正しくご入力ください"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:403 wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:24
 msgid "Email is used"
