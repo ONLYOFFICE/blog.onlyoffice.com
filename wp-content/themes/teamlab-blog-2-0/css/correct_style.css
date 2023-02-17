@@ -2465,6 +2465,27 @@ div#comments .subscribe-to-comments {
 div#comments #subscribe {
   margin-right: 3px;
 }
+div#respond form#commentform .textinput.error .data-input,
+div#respond form#commentform .textarea.error,
+div#respond form#commentform .textinput.incorrect .data-input {
+  border-color: #cb0000;
+}
+div#respond form#commentform .textinput.error ~ .text-error,
+div#respond form#commentform .textarea.error ~ .text-error,
+div#respond form#commentform .g-recaptcha-error.error,
+div#respond form#commentform .textinput.incorrect ~ .text-incorrect {
+  display: block;
+}
+div#respond form#commentform .email,
+div#respond form#commentform .message {
+  margin-top: 21px;
+}
+div#respond form#commentform .text-error,
+div#respond form#commentform .text-incorrect {
+  display: none;
+  font-size: 11px;
+  color: #cb0000;
+}
 div#respond {
   background: #FFF;
   margin: 34px 0 0;

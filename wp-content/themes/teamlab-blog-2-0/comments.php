@@ -65,29 +65,34 @@
     <?php else : ?>
     <form action="<?php echo site_url('wp-comments-post.php') ?>" method="post" id="commentform">
         <?php if ( is_user_logged_in() ) : ?>
-        <p><?php printf(__('Logged in as <a class="account-name" href="%1$s">%2$s</a>', 'teamlab-blog-2-0'), get_option('siteurl') . '/wp-admin/profile.php', $user_identity); ?><a class="logout" href="<?php echo wp_logout_url(get_permalink()); ?>" title="<?php _e('Log out of this account', 'teamlab-blog-2-0'); ?>"><?php _e('Log out &raquo;', 'teamlab-blog-2-0'); ?></a></p>
+        <div><?php printf(__('Logged in as <a class="account-name" href="%1$s">%2$s</a>', 'teamlab-blog-2-0'), get_option('siteurl') . '/wp-admin/profile.php', $user_identity); ?><a class="logout" href="<?php echo wp_logout_url(get_permalink()); ?>" title="<?php _e('Log out of this account', 'teamlab-blog-2-0'); ?>"><?php _e('Log out &raquo;', 'teamlab-blog-2-0'); ?></a></div>
         <?php else : ?>
-        <p class="author">
+        <div class="author">
             <label for="author"><?php _e('Name:', 'teamlab-blog-2-0'); ?>&nbsp;<?php if ($req) _e('<span class="important">*</span>'); ?></label>
-            <div class="textinput"><input type="text" name="author" id="author" value="<?php echo esc_attr($comment_author); ?>" <?php if ($req) echo "aria-required='true'"; ?> /></div>
-        </p>
-        <p class="email">
+            <div class="textinput"><input type="text" name="author" id="author" class="data-input" value="<?php echo esc_attr($comment_author); ?>" <?php if ($req) echo "aria-required='true'"; ?> /></div>
+            <div class="text-error"><?php _e('Name is empty', 'teamlab-blog-2-0'); ?></div>
+        </div>
+        <div class="email">
             <label for="email"><?php _e('E-mail (will not be published):', 'teamlab-blog-2-0'); ?>&nbsp;<?php if ($req) _e('<span class="important">*</span>'); ?></label>
-            <div class="textinput"><input type="text" name="email" id="email" value="<?php echo esc_attr($comment_author_email); ?>" <?php if ($req) echo "aria-required='true'"; ?> /></div>
-        </p>
-        <p class="url disabled">
+            <div class="textinput"><input type="text" name="email" id="email" class="data-input" value="<?php echo esc_attr($comment_author_email); ?>" <?php if ($req) echo "aria-required='true'"; ?> /></div>
+            <div class="text-error"><?php _e('Email is empty', 'teamlab-blog-2-0'); ?></div>
+            <div class="text-incorrect"><?php _e('Email is incorrect', 'teamlab-blog-2-0'); ?></div>
+        </div>
+        <div class="url disabled">
             <label for="url" class="disabled"><?php _e('Website:'); ?></label>
             <div class="textinput disabled"><input type="text" name="url" id="url" value="<?php echo  esc_attr($comment_author_url); ?>" /></div>
-        </p>
+        </div>
         <?php endif; ?>
-        <p class="message">
-            <label for="comment"><?php _e('Message:', 'teamlab-blog-2-0'); ?></label>
-            <div class="textarea"><textarea name="comment" id="comment"></textarea></div>
-        </p>
+        <div class="message">
+            <label for="comment"><?php _e('Message:', 'teamlab-blog-2-0'); ?>&nbsp;<?php if ($req) _e('<span class="important">*</span>'); ?></label>
+            <div class="textarea"><textarea name="comment" id="comment" class="data-input"></textarea></div>
+            <div class="text-error"><?php _e('Message is empty', 'teamlab-blog-2-0'); ?></div>
+        </div>
         <?php do_action('comment_form', $post->ID); ?>
 
         <?php if (!is_user_logged_in() ) : ?>
             <div class="g-recaptcha" data-callback="recaptchaCallback" data-sitekey="recaptcha_public_key"></div>
+            <div class="text-error g-recaptcha-error"><?php _e('Wrong captcha', 'teamlab-blog-2-0'); ?></div>
         <?php endif; ?>
 
         <p class="submit">

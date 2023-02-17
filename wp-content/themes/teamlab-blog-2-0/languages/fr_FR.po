@@ -753,6 +753,18 @@ msgstr "Message :"
 msgid "Add comment"
 msgstr "Ajouter un comentaire"
 
+#: wp-content/themes/teamlab-blog-2-0/comments.php:73
+msgid "Name is empty"
+msgstr "Le nom est vide"
+
+#: wp-content/themes/teamlab-blog-2-0/comments.php:89
+msgid "Message is empty"
+msgstr ""
+
+#: wp-content/themes/teamlab-blog-2-0/comments.php:89
+msgid "Wrong captcha"
+msgstr "Incorrect"
+
 #: wp-content/themes/teamlab-blog-2-0/download-block.php:3
 msgid "Download ONLYOFFICE desktop and mobile apps for"
 msgstr "Télécharger les applications de bureau et mobiles ONLYOFFICE"
@@ -1000,11 +1012,13 @@ msgstr "S'inscrire"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:400
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:22
+#: wp-content/themes/teamlab-blog-2-0/comments.php:78
 msgid "Email is empty"
 msgstr "Le champ Email est vide"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:401
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:23
+#: wp-content/themes/teamlab-blog-2-0/comments.php:79
 msgid "Email is incorrect"
 msgstr "L'adresse mail est incorrecte"
 
