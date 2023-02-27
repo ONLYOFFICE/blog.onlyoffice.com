@@ -939,6 +939,8 @@ msgstr ""
 msgid "Jira"
 msgstr ""
 
+#: wp-content/themes/teamlab-blog-2-0/index.php:112
+#: wp-content/themes/teamlab-blog-2-0/index.php:177
 #: wp-content/themes/teamlab-blog-2-0/header.php:248
 msgid "For developers"
 msgstr "Per sviluppatori"
@@ -1104,17 +1106,12 @@ msgstr "Ricerca"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:106
 msgid "Category Topics"
-msgstr "Argomenti della categoria"
+msgstr "Categorie e argomenti"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:109
 #: wp-content/themes/teamlab-blog-2-0/index.php:148
 msgid "Product releases"
-msgstr "Rilasci del prodotto"
-
-#: wp-content/themes/teamlab-blog-2-0/index.php:112
-#: wp-content/themes/teamlab-blog-2-0/index.php:177
-msgid "For developers"
-msgstr "PER SVILUPPATORI"
+msgstr "Rilascio dei prodotti"
 
 #: wp-content/themes/teamlab-blog-2-0/index.php:115
 #: wp-content/themes/teamlab-blog-2-0/index.php:208
