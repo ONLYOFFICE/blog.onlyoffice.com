@@ -462,6 +462,17 @@ div.custom-select div.selector {
   color: #ff6f3d;
 }
 
+#compare_div,
+#oforms_div,
+.menu_pic_div {
+  display: block;
+  text-decoration: none;
+}
+
+.menu_pic_div:focus {
+  text-decoration: none;
+}
+
 #customer_stories_img {
   background-image: url("../images/img_for_header/vegan_in_leipzig_onlyoffice.jpg");
 }

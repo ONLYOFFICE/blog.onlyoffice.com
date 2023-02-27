@@ -181,20 +181,20 @@ $lang = $sitepress->get_current_language();
                                                 </ul>
                                             </li>
                                             <li id="navitem_oforms_third_level_menu">
-                                                <a id="navitem_features_see_it" class="dropdown-item" href="https://oforms.onlyoffice.com/"><?php _e('See it in action!', 'teamlab-blog-2-0'); ?></a>
-                                                <div id="oforms_div" class="menu_pic_div">
+                                                <a id="navitem_features_see_it" class="dropdown-item" href="<?php echo $current_language ?>/see-it-in-action.aspx"><?php _e('See it in action!', 'teamlab-blog-2-0'); ?></a>
+                                                <a id="oforms_div" class="menu_pic_div" href="<?php echo $current_language ?>/see-it-in-action.aspx">
                                                     <div id="see_it_img" class="menu_pic_img"></div>
                                                     <p id="see_it_action_header" class="menu_pic_header">
                                                         <?php _e('Curious to know what the interface looks like and try the main functionality?', 'teamlab-blog-2-0'); ?>
                                                     </p>
-                                                </div>
+                                                </a>
                                                 <a id="navitem_features_oforms" class="dropdown-item" href="https://oforms.onlyoffice.com/"><?php _e('OFORMs', 'teamlab-blog-2-0'); ?></a>
-                                                <div class="menu_pic_div">
+                                                <a class="menu_pic_div" href="https://oforms.onlyoffice.com/">
                                                     <div id="oforms_img" class="menu_pic_img"></div>
                                                     <p id="oforms_header" class="menu_pic_header">
                                                         <?php _e('OFORMS, free <span class="nowrap">ready-to-fill</span> out online document forms', 'teamlab-blog-2-0'); ?>
                                                     </p>
-                                                </div>
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -282,11 +282,11 @@ $lang = $sitepress->get_current_language();
                                                     </ul>
                                                     <div id="navitem_hosting_third_level_menu">
                                                         <a id="navitem_download_hosting" class="dropdown-item" href="<?php echo $current_language ?>/hosting-providers.aspx"><?php _e('Web hosting', 'teamlab-blog-2-0'); ?></a>
-                                                        <div id="compare_div" class="menu_pic_div">
+                                                        <a id="compare_div" class="menu_pic_div" href="<?php echo $current_language ?>/hosting-providers.aspx">
                                                             <p id="hosting_header" class="menu_pic_header">
                                                                 <?php _e('Get web hosting from some of the best providers', 'teamlab-blog-2-0'); ?>
                                                             </p>
-                                                        </div>
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </li>
