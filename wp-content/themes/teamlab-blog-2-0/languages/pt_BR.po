@@ -848,12 +848,12 @@ msgid "ONLYOFFICE 7.0 released"
 msgstr "ONLYOFFICE 7.0 lançou"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:120
-msgid "<b>ONLYOFFICE Docs v7.3 released:</b> enhanced forms, SmartArt, new security settings, Watch Window, and more"
-msgstr "<b>Lançado o ONLYOFFICE Docs v7.3:</b> formulários melhorados, SmartArt, novas configurações de segurança, Watch Window e muito mais"
+msgid "<b>ONLYOFFICE Workspace 12.5:</b> enhanced security, optimized document management, Dark theme, and more"
+msgstr "<b>ONLYOFFICE Workspace 12.5:</b> enhanced security, optimized document management, Dark theme, and more"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:129
-msgid "<b>ONLYOFFICE Docs v7.3 released</b>"
-msgstr "<b>ONLYOFFICE Docs v7.3 lançado</b>"
+msgid "<b>ONLYOFFICE Workspace 12.5</b> released"
+msgstr "<b>ONLYOFFICE Workspace 12.5</b> released"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:149
 #: wp-content/themes/teamlab-blog-2-0/searchform.php:9
