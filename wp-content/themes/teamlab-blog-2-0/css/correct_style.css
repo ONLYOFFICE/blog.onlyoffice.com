@@ -13,8 +13,8 @@ main{
 }
   
   /*---------Top-banner-------*/
-.advent-announce.push{
-  background: #27ABA3;
+.advent-announce {
+  background: #183e6b;
   background-repeat: no-repeat;
   padding: 0;
   text-align: center;
@@ -23,83 +23,69 @@ main{
   height: 56px;
   cursor: pointer;
 }
-.advent-announce.push a{
+
+.advent-announce.ja .advent-announce-text {
+  height: 20px;
+  max-width: 586px;
+  padding: 18px 0px;
+}
+
+.advent-announce.zh-hans .advent-announce-text {
+  height: 20px;
+  padding: 18px 0px;
+}
+
+.advent-announce a {
   position: relative;
   text-decoration: none;
   display: block;
 }
   
-.advent-announce.push .advent-announce-text > div{
+.advent-announce .advent-announce-text {
   position: relative;
   box-sizing: border-box;
   height: 56px;
-  max-width: 595px;
   color: #FFFFFF;
   text-align: center;
   margin: 0 auto;
+  display: inline-block;
+  font-size: 14px;
   font-weight: 400;
-  font-size: 15px;
   line-height: 20px;
+  letter-spacing: 0.01em;
+  padding: 7px 0px 8px;
+  max-width: 578px;
   text-decoration: none !important;
   padding: 7px 0px;
   white-space: initial;
   z-index: 10;
 }
 
-.advent-announce.push .advent-announce-text > div:before{
+.advent-announce .advent-announce-text:before {
   content: '';
   position: absolute;
-  top: -6px;
-  right: calc(100% + 13px);
-  background-image: url(../images/top_banner/onlyoffice_docs_cloud/icon-1.svg);
-  background-position: center;
+  top: 0;
+  left: -380px;
+  background-image: url(../images/top_banner/workspace-12-5/workspace-12-5-left.svg);
+  background-position-y: -3px;
   background-repeat: no-repeat;
-  background-size: contain;
-  width: 49px;
-  height: 48px;
+  width: 372px;
+  height: 56px;
 }
 
-.advent-announce.push .advent-announce-text > div:after{
+.advent-announce .advent-announce-text:after {
   content: '';
   position: absolute;
-  top: 50%;
-  left: calc(100% + 8px);
-  background-image: url(../images/top_banner/onlyoffice_docs_cloud/icon-2.svg);
-  background-position: center;
+  top: 0;
+  right: -366px;
+  background-image: url(../images/top_banner/workspace-12-5/workspace-12-5-right.svg);
+  background-position-y: -2px;
   background-repeat: no-repeat;
-  width: 20px;
-  height: 20px;
-  transform: translateY(-50%);
+  width: 356px;
+  height: 56px;
 }
 
-.advent-announce.push .advent-announce-text:before{
-  content: '';
-  background-image: url(../images/top_banner/onlyoffice_docs_cloud/desktop-left.svg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  position: absolute;
-  height: 30px;
-  width: 277px;
-  left: 41px;
-  top: 11px;
-  box-sizing: content-box;
-}
-
-.advent-announce.push .advent-announce-text:after{
-  content: '';
-  background-image: url(../images/top_banner/onlyoffice_docs_cloud/desktop-right.svg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  position: absolute;
-  height: 30px;
-  width: 273px;
-  right: 43px;
-  top: 11px;
-}
-
-.advent-announce.push .advent-announce-text b {
+.advent-announce .advent-announce-text b {
   font-weight: 700;
 }
 
