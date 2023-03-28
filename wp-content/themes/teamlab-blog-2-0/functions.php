@@ -882,29 +882,6 @@ function ampforwp_add_custom_css_example() { ?>
 }
 
  /**
- * WPGraphQL Custom Post Types
- */
-add_action( 'graphql_register_types', function() {
-    register_graphql_field( 'Post', 'discourse_permalink', [
-        'type' => 'String',
-        'description' => __( 'Discourse permalink', 'wp-graphql' ),
-        'resolve' => function( $post ) {
-            $discoursePermalink = get_post_meta( $post->ID, 'discourse_permalink', true );
-            return ! empty( $discoursePermalink ) ? $discoursePermalink : '';
-        }
-    ] );
-});
-
-add_filter( 'register_post_type_args', function( $args, $post_type ) {
-    if ( 'news' === $post_type ) {
-      $args['show_in_graphql'] = true;
-      $args['graphql_single_name'] = 'newsItem';
-      $args['graphql_plural_name'] = 'news';
-    }
-    return $args;
-}, 10, 2 );
-
- /**
  * Redirect pages
  */
 function redirect_page() {
