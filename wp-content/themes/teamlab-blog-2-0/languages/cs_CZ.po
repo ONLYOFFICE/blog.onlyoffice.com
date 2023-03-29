@@ -301,12 +301,12 @@ msgid "Hosting providers"
 msgstr "Poskytovatelé hostingu"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:120
-msgid "<b>ONLYOFFICE Docs v7.3 released:</b> enhanced forms, SmartArt, new security settings, Watch Window, and more"
-msgstr "<b>Vydána verze ONLYOFFICE Docs v7.3:</b> vylepšené formuláře, SmartArt, nová nastavení zabezpečení, Watch Window a další novinky"
+msgid "<b>ONLYOFFICE Workspace 12.5:</b> enhanced security, optimized document management, Dark theme, and more"
+msgstr "<b>ONLYOFFICE Workspace 12.5:</b> enhanced security, optimized document management, Dark theme, and more"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:129
-msgid "<b>ONLYOFFICE Docs v7.3 released</b>"
-msgstr "<b>Vydána verze ONLYOFFICE Docs v7.3</b>"
+msgid "<b>ONLYOFFICE Workspace 12.5</b> released"
+msgstr "<b>ONLYOFFICE Workspace 12.5</b> released"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/header.php:71 wp-content/themes/teamlab-blog-2-0/footer.php:108
 msgid "Government"

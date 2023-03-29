@@ -9428,16 +9428,16 @@ class SitePress
 			$directory_for_default_language = $setting_url[ 'directory_for_default_language' ];
 		}
 
-		// if ( $this->get_setting( 'language_negotiation_type' ) == 1 && ( $current_language != $default_language || $directory_for_default_language ) ) {
+		if ( $this->get_setting( 'language_negotiation_type' ) == 1 && ( $current_language != $default_language || $directory_for_default_language ) ) {
 
-		// 	foreach ( (array)$value as $k => $v ) {
-		// 		$value[ $current_language . '/' . $k ] = $v;
-		// 		unset( $value[ $k ] );
+			foreach ( (array)$value as $k => $v ) {
+				$value[ $current_language . '/' . $k ] = $v;
+				unset( $value[ $k ] );
 
-		// 	}
-		// 	$value[ $current_language . '/?$' ] = 'index.php';
+			}
+			$value[ $current_language . '/?$' ] = 'index.php';
 
-		// }
+		}
 		
 		return $value;
 	}

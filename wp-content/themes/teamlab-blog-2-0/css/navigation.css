@@ -108,6 +108,21 @@ nav .nav-down-triangle {
 .menuitem {
   white-space: nowrap;
 }
+#navitem_download_menu #navitem_fb_docs_ee,
+#navitem_download_menu #navitem_fb_workspace {
+  margin: 0 0 12px;
+}
+#navitem_download_menu #navitem_fb_workspace {
+  line-height: 34px;
+}
+#navitem_download_menu #navitem_fb_workspace:before {
+  top: 50%;
+  transform: translateY(-50%);
+}
+#navitem_download_menu #navitem_download_docs,
+#navitem_download_menu #navitem_download_workspace {
+  line-height: 34px;
+}
 #navitem_features,
 #navitem_download,
 #navitem_partners,
@@ -1200,14 +1215,6 @@ div.custom-select div.selector {
   }
 }
 @media screen and (max-width: 1360px) {
-  .advent-announce.push .advent-announce-text:before {
-    left: -49px;
-  }
-
-  .advent-announce.push .advent-announce-text:after {
-    right: -47px;
-  }
-
   #navitem_prices_menu {
     left: calc(50% - 280px);
   }
@@ -1221,14 +1228,6 @@ div.custom-select div.selector {
   }
 }
 @media screen and (max-width: 1200px) {
-  .advent-announce.push .advent-announce-text:before {
-    left: -124px;
-  }
-
-  .advent-announce.push .advent-announce-text:after {
-    right: -124px;
-  }
-
   #navitem_solutions_clients_workspace,
   #navitem_download_desktop {
     white-space: initial;
@@ -1257,54 +1256,54 @@ div.custom-select div.selector {
     top: 0;
   }
 
-  .advent-announce.push .advent-announce-text:before {
-    content: none;
-  }
-
-  .advent-announce.push .advent-announce-text:after {
-    top: 21px;
-    right: 14px;
-    background-image: url(../images/top_banner/onlyoffice_docs_cloud/desktop-right-mobile.svg);
-    background-size: contain;
-    width: 10px;
-    height: 10px;
-  }
-
-  .advent-announce.push .advent-announce-text > div {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
-    font-size: 12px;
-    line-height: 16px;
+  .advent-announce {
     height: 48px;
   }
 
-  .advent-announce.push .advent-announce-text > div:before {
-    top: -16px;
-    left: -72px;
-    width: 55px;
-    height: 56px;
+  .advent-announce a {
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
-  .advent-announce.push .advent-announce-text > div:after {
-    top: 18px;
-    background-image: url(../images/top_banner/onlyoffice_docs_cloud/icon-3.svg);
-    width: 8px;
-    height: 13px;
-    transform: initial;
+  .advent-announce .advent-announce-text {
+    background-color: transparent;
+    display: inline-block;
+    font-size: 12px;
+    height: auto;
+    line-height: 16px;
+    padding: 8px 0px 8px 0px;
+    white-space: normal;
+    width: auto !important;
+  }
+
+  .advent-announce .advent-announce-text:before {
+    background-position: right -1px;
+    background-size: auto 65px;
+    height: 48px;
+    left: -79px;
+    top: -9px;
+    width: 48px;
+  }
+
+  .advent-announce .advent-announce-text:after, 
+  .advent-announce .advent-announce-text:before {
+    height: 48px;
+  }
+
+  .advent-announce .advent-announce-text:after {
+    background-position-y: -6px;
+  }
+
+  .advent-announce .advent-announce-text b {
+    display: block;
   }
 
   .advent-desktop-hide {
     display: block;
   }
 
-  .advent-announce.push.advent-mobile-hide {
+  .advent-announce.advent-mobile-hide {
     display: none;
-  }
-
-  .advent-announce.push {
-    height: 48px;
   }
 
   .phone_wrapper {
@@ -1653,15 +1652,25 @@ div.custom-select div.selector {
   #navitem_download_menu #navitem_download_onpremises {
     padding: 6px 48px 0;
   }
+
+  #navitem_download_menu #navitem_docs_onpremises {
+    line-height: 1.6em;
+    padding: 6px 48px 0;
+  }
+
+  #navitem_download_menu .navitem_2nd_menu {
+    padding: 12px 0 24px;
+  }
+
+  #navitem_download_menu #navitem_fb_docs_ee,
+  #navitem_download_menu #navitem_fb_workspace {
+    margin: 0;
+  }
 }
 
 @media screen and (max-width: 592px) {
   ul.navitem_2nd_menu li a.nav_item_nowrap_link.second {
     padding: 4px 16px 4px 48px;
-  }
-
-  .advent-announce.push .advent-announce-text > div {
-    max-width: 188px;
   }
 
   nav > div > ul.all-menu-items {

@@ -882,29 +882,6 @@ function ampforwp_add_custom_css_example() { ?>
 }
 
  /**
- * WPGraphQL Custom Post Types
- */
-add_action( 'graphql_register_types', function() {
-    register_graphql_field( 'Post', 'discourse_permalink', [
-        'type' => 'String',
-        'description' => __( 'Discourse permalink', 'wp-graphql' ),
-        'resolve' => function( $post ) {
-            $discoursePermalink = get_post_meta( $post->ID, 'discourse_permalink', true );
-            return ! empty( $discoursePermalink ) ? $discoursePermalink : '';
-        }
-    ] );
-});
-
-add_filter( 'register_post_type_args', function( $args, $post_type ) {
-    if ( 'news' === $post_type ) {
-      $args['show_in_graphql'] = true;
-      $args['graphql_single_name'] = 'newsItem';
-      $args['graphql_plural_name'] = 'news';
-    }
-    return $args;
-}, 10, 2 );
-
- /**
  * Redirect pages
  */
 function redirect_page() {
@@ -945,6 +922,30 @@ function redirect_page() {
             break;
         case '/blog/de/2021/11/die-10-besten-basecamp-alternativen-2021/':
             $urlto = home_url('/de/2021/11/die-besten-basecamp-alternativen/' );
+            break;
+        case '/blog/2023/02/chatgpt-plugin-in-onlyoffice-docs/':
+            $urlto = home_url('/2023/02/what-is-chatgpt/' );
+            break;
+        case '/blog/de/2023/02/chatgpt-plugin-in-onlyoffice-docs/':
+            $urlto = home_url('/de/2023/02/was-ist-chatgpt/' );
+            break;
+        case '/blog/fr/2023/02/plugin-chatgpt-dans-onlyoffice-docs/':
+            $urlto = home_url('/fr/2023/02/c-est-quoi-chatgpt/' );
+            break;
+        case '/blog/es/2023/02/plugin-de-chatgpt-para-onlyoffice-docs/':
+            $urlto = home_url('/es/2023/02/que-es-chatgpt/' );
+            break;
+        case '/blog/pt-br/2023/02/plugin-chatgpt-no-onlyoffice-docs/':
+            $urlto = home_url('/pt-br/2023/02/o-que-e-chatgpt/' );
+            break;
+        case '/blog/it/2023/02/plugin-chatgpt-in-onlyoffice-docs/':
+            $urlto = home_url('/it/2023/02/cos-e-chatgpt/' );
+            break;
+        case '/blog/zh-hans/2023/02/chatgpt-plugin-in-onlyoffice-docs/':
+            $urlto = home_url('/zh-hans/2023/02/chatgpt/' );
+            break;
+        case '/blog/ja/2023/02/onlyoffice-docs-chatgpt/':
+            $urlto = home_url('/ja/2023/02/chatgpt/' );
             break;
         
         default:
