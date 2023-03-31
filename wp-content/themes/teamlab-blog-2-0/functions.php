@@ -994,9 +994,6 @@ add_filter( 'graphql_connection_max_query_amount', function ( int $max_amount, $
 	if ( empty( $info->fieldName ) ) {
 		return $max_amount;
 	}
-	if ( 'posts' !== $info->fieldName ) {
-		return $max_amount;
-	}
 	return 10000;
 }, 10, 5 );
 
