@@ -880,3 +880,80 @@ function ampforwp_add_custom_css_example() { ?>
     }
     <?php 
 }
+
+/**
+ * Redirect pages
+ */
+function redirect_page() {
+    if (isset($_SERVER['HTTPS']) &&
+        ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+            isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+        $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+            $protocol = 'https://';
+        }
+        else {
+            $protocol = 'http://';
+        }
+
+    $currenturl = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    $currenturl_relative = wp_make_link_relative($currenturl);
+
+    switch ($currenturl_relative) {
+        case '/blog/2021/09/7-best-sharepoint-alternatives-to-consider-in-2021/':
+            $urlto = home_url('/2021/09/best-sharepoint-alternatives/');
+            break;
+        case '/blog/2021/11/top-10-basecamp-alternatives-2021/':
+            $urlto = home_url('/2021/11/basecamp-alternatives/' );
+            break;
+        case '/blog/fr/2021/09/7-meilleures-alternatives-a-sharepoint-a-envisager-en-2021/':
+            $urlto = home_url('/fr/2021/09/meilleures-alternatives-a-sharepoint-a-envisager/' );
+            break;
+        case '/blog/es/2021/09/7-mejores-alternativas-a-sharepoint-para-tener-en-cuenta-en-2021/':
+            $urlto = home_url('/es/2021/09/mejores-alternativas-a-sharepoint/' );
+            break;
+        case '/blog/it/2021/09/7-migliori-alternative-a-sharepoint-nel-2021/':
+            $urlto = home_url('/it/2021/09/migliori-alternative-a-sharepoint/' );
+            break;
+        case '/blog/de/2022/12/beste-software-zur-automatisierung-von-dokumenten-2022/':
+            $urlto = home_url('/de/2022/12/beste-software-zur-automatisierung-von-dokumenten/' );
+            break;
+        case '/blog/de/2021/09/7-beste-alternativen-zu-sharepoint-2021/':
+            $urlto = home_url('/de/2021/09/beste-alternativen-zu-sharepoint/' );
+            break;
+        case '/blog/de/2021/11/die-10-besten-basecamp-alternativen-2021/':
+            $urlto = home_url('/de/2021/11/die-besten-basecamp-alternativen/' );
+            break;
+        case '/blog/2023/02/chatgpt-plugin-in-onlyoffice-docs/':
+            $urlto = home_url('/2023/02/what-is-chatgpt/' );
+            break;
+        case '/blog/de/2023/02/chatgpt-plugin-in-onlyoffice-docs/':
+            $urlto = home_url('/de/2023/02/was-ist-chatgpt/' );
+            break;
+        case '/blog/fr/2023/02/plugin-chatgpt-dans-onlyoffice-docs/':
+            $urlto = home_url('/fr/2023/02/c-est-quoi-chatgpt/' );
+            break;
+        case '/blog/es/2023/02/plugin-de-chatgpt-para-onlyoffice-docs/':
+            $urlto = home_url('/es/2023/02/que-es-chatgpt/' );
+            break;
+        case '/blog/pt-br/2023/02/plugin-chatgpt-no-onlyoffice-docs/':
+            $urlto = home_url('/pt-br/2023/02/o-que-e-chatgpt/' );
+            break;
+        case '/blog/it/2023/02/plugin-chatgpt-in-onlyoffice-docs/':
+            $urlto = home_url('/it/2023/02/cos-e-chatgpt/' );
+            break;
+        case '/blog/zh-hans/2023/02/chatgpt-plugin-in-onlyoffice-docs/':
+            $urlto = home_url('/zh-hans/2023/02/chatgpt/' );
+            break;
+        case '/blog/ja/2023/02/onlyoffice-docs-chatgpt/':
+            $urlto = home_url('/ja/2023/02/chatgpt/' );
+            break;
+
+        default:
+        return;
+    }
+
+    if ($currenturl != $urlto)
+    exit( wp_redirect( $urlto ) );
+}
+
+add_action( 'template_redirect', 'redirect_page' );
