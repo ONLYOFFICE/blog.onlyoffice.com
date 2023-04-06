@@ -1,11 +1,11 @@
-/******/ (function() { // webpackBootstrap
+/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./src/advanced-custom-fields-pro/assets/src/js/_acf-hooks.js":
 /*!********************************************************************!*\
   !*** ./src/advanced-custom-fields-pro/assets/src/js/_acf-hooks.js ***!
   \********************************************************************/
-/***/ (function() {
+/***/ (() => {
 
 (function (window, undefined) {
   'use strict';
@@ -249,7 +249,7 @@
 /*!********************************************************************!*\
   !*** ./src/advanced-custom-fields-pro/assets/src/js/_acf-modal.js ***!
   \********************************************************************/
-/***/ (function() {
+/***/ (() => {
 
 (function ($, undefined) {
   acf.models.Modal = acf.Model.extend({
@@ -309,6 +309,34 @@
     onClickClose: function (e, $el) {
       e.preventDefault();
       this.close();
+    },
+    /**
+     * Places focus within the popup.
+     */
+    focus: function () {
+      this.$el.find('.acf-icon').first().trigger('focus');
+    },
+    /**
+     * Locks focus within the modal.
+     *
+     * @param {boolean} locked True to lock focus, false to unlock.
+     */
+    lockFocusToModal: function (locked) {
+      let inertElement = $('#wpwrap');
+      if (!inertElement.length) {
+        return;
+      }
+      inertElement[0].inert = locked;
+      inertElement.attr('aria-hidden', locked);
+    },
+    /**
+     * Returns focus to the element that opened the popup
+     * if it still exists in the DOM.
+     */
+    returnFocusToOrigin: function () {
+      if (this.data.openedBy instanceof $ && this.data.openedBy.closest('body').length > 0) {
+        this.data.openedBy.trigger('focus');
+      }
     }
   });
 
@@ -332,7 +360,7 @@
 /*!********************************************************************!*\
   !*** ./src/advanced-custom-fields-pro/assets/src/js/_acf-model.js ***!
   \********************************************************************/
-/***/ (function() {
+/***/ (() => {
 
 (function ($, undefined) {
   // Cached regex to split keys for `addEvent`.
@@ -1200,7 +1228,7 @@
 /*!*********************************************************************!*\
   !*** ./src/advanced-custom-fields-pro/assets/src/js/_acf-notice.js ***!
   \*********************************************************************/
-/***/ (function() {
+/***/ (() => {
 
 (function ($, undefined) {
   var Notice = acf.Model.extend({
@@ -1315,13 +1343,28 @@
     wait: 'prepare',
     priority: 1,
     initialize: function () {
-      // vars
-      var $notice = $('.acf-admin-notice');
-
-      // move to avoid WP flicker
-      if ($notice.length) {
-        $('h1:first').after($notice);
-      }
+      const $notices = $('.acf-admin-notice');
+      $notices.each(function () {
+        // Move to avoid WP flicker.
+        if ($(this).length) {
+          $('h1:first').after($(this));
+        }
+        if ($(this).data('persisted')) {
+          let dismissed = acf.getPreference('dismissed-notices');
+          if (dismissed && typeof dismissed == 'object' && dismissed.includes($(this).data('persist-id'))) {
+            $(this).remove();
+          } else {
+            $(this).on('click', '.notice-dismiss', function (e) {
+              dismissed = acf.getPreference('dismissed-notices');
+              if (!dismissed || typeof dismissed != 'object') {
+                dismissed = [];
+              }
+              dismissed.push($(this).closest('.acf-admin-notice').data('persist-id'));
+              acf.setPreference('dismissed-notices', dismissed);
+            });
+          }
+        }
+      });
     }
   });
 })(jQuery);
@@ -1332,7 +1375,7 @@
 /*!********************************************************************!*\
   !*** ./src/advanced-custom-fields-pro/assets/src/js/_acf-panel.js ***!
   \********************************************************************/
-/***/ (function() {
+/***/ (() => {
 
 (function ($, undefined) {
   var panel = new acf.Model({
@@ -1366,7 +1409,7 @@
 /*!********************************************************************!*\
   !*** ./src/advanced-custom-fields-pro/assets/src/js/_acf-popup.js ***!
   \********************************************************************/
-/***/ (function() {
+/***/ (() => {
 
 (function ($, undefined) {
   acf.models.Popup = acf.Model.extend({
@@ -1507,7 +1550,7 @@
 /*!**********************************************************************!*\
   !*** ./src/advanced-custom-fields-pro/assets/src/js/_acf-tooltip.js ***!
   \**********************************************************************/
-/***/ (function() {
+/***/ (() => {
 
 (function ($, undefined) {
   acf.newTooltip = function (props) {
@@ -1810,7 +1853,7 @@
 /*!**************************************************************!*\
   !*** ./src/advanced-custom-fields-pro/assets/src/js/_acf.js ***!
   \**************************************************************/
-/***/ (function() {
+/***/ (() => {
 
 (function ($, undefined) {
   /**
@@ -4325,49 +4368,49 @@
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	!function() {
+/******/ 	(() => {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = function(module) {
+/******/ 		__webpack_require__.n = (module) => {
 /******/ 			var getter = module && module.__esModule ?
-/******/ 				function() { return module['default']; } :
-/******/ 				function() { return module; };
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
 /******/ 			__webpack_require__.d(getter, { a: getter });
 /******/ 			return getter;
 /******/ 		};
-/******/ 	}();
+/******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	!function() {
+/******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = function(exports, definition) {
+/******/ 		__webpack_require__.d = (exports, definition) => {
 /******/ 			for(var key in definition) {
 /******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
 /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
 /******/ 		};
-/******/ 	}();
+/******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	!function() {
-/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
-/******/ 	}();
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
-/******/ 	!function() {
+/******/ 	(() => {
 /******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = function(exports) {
+/******/ 		__webpack_require__.r = (exports) => {
 /******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
-/******/ 	}();
+/******/ 	})();
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
-!function() {
+(() => {
 "use strict";
 /*!*************************************************************!*\
   !*** ./src/advanced-custom-fields-pro/assets/src/js/acf.js ***!
@@ -4397,7 +4440,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-}();
+})();
+
 /******/ })()
 ;
 //# sourceMappingURL=acf.js.map
