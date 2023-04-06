@@ -41,8 +41,8 @@ class DiscoursePublishTest extends UnitTest {
 
         $register_actions = false;
         $this->publish    = new DiscoursePublish( new EmailNotification(), $register_actions );
-        $this->publish->setup_logger();
         $this->publish->setup_options( self::$plugin_options );
+        $this->publish->setup_logger();
   	}
 
     /**
@@ -313,7 +313,7 @@ class DiscoursePublishTest extends UnitTest {
         $discourse_username = 'angus2';
 
         // Setup the user
-        $user_id = $this->factory->user->create();
+        $user_id = self::factory()->user->create();
         add_user_meta( $user_id, 'discourse_username', $discourse_username, true );
 
         // Set up a response body for creating a new post
@@ -364,7 +364,7 @@ class DiscoursePublishTest extends UnitTest {
         $this->publish->setup_options( self::$plugin_options );
 
         // Setup the user
-        $user_id = $this->factory->user->create();
+        $user_id = self::factory()->user->create();
         add_user_meta( $user_id, 'discourse_username', $discourse_username, true );
 
         // Set up a response body for creating a new post
@@ -579,6 +579,12 @@ class DiscoursePublishTest extends UnitTest {
      * Exclude_tags prevents publication if excluded tag is present
      */
     public function test_exclude_tags_with_exclusionary_tag() {
+        if ( version_compare( get_bloginfo( 'version' ), '5.6', '<' ) ) {
+        $this->markTestSkipped(
+            'Not supported on WordPress version.'
+          );
+        }
+
         // Create the exclusionary tag
         $excluded_term = term_exists( 'dont_publish', 'post_tag' );
         if ( ! $excluded_term ) {
