@@ -162,7 +162,7 @@ class ActionScheduler {
 	 */
 	public function scheduleSingle( $actionName, $time, $args = [], $forceSchedule = false ) {
 		try {
-			if ( $forceSchedule || ! $this->isScheduled( $actionName ) ) {
+			if ( $forceSchedule || ! $this->isScheduled( $actionName, $args ) ) {
 				as_schedule_single_action( time() + $time, $actionName, $args, $this->actionSchedulerGroup );
 
 				return true;
@@ -223,7 +223,7 @@ class ActionScheduler {
 	 */
 	public function unschedule( $actionName, $args = [] ) {
 		try {
-			if ( as_next_scheduled_action( $actionName ) ) {
+			if ( as_next_scheduled_action( $actionName, $args ) ) {
 				as_unschedule_action( $actionName, $args, $this->actionSchedulerGroup );
 			}
 		} catch ( \Exception $e ) {
@@ -245,7 +245,7 @@ class ActionScheduler {
 	 */
 	public function scheduleRecurrent( $actionName, $time, $interval = 60, $args = [] ) {
 		try {
-			if ( ! $this->isScheduled( $actionName ) ) {
+			if ( ! $this->isScheduled( $actionName, $args ) ) {
 				as_schedule_recurring_action( time() + $time, $interval, $actionName, $args, $this->actionSchedulerGroup );
 
 				return true;

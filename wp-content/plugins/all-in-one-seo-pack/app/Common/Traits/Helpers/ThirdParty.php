@@ -294,6 +294,24 @@ trait ThirdParty {
 	}
 
 	/**
+	 * Check if is a BBpress post type.
+	 *
+	 * @since 4.2.8
+	 *
+	 * @param  string $postType The post type to check.
+	 * @return bool             Whether this is a bbPress post type.
+	 */
+	public function isBBPressPostType( $postType ) {
+		if ( ! class_exists( 'bbPress' ) ) {
+			return false;
+		}
+
+		$bbPressPostTypes = [ 'forum', 'topic', 'reply' ];
+
+		return in_array( $postType, $bbPressPostTypes, true );
+	}
+
+	/**
 	 * Returns ACF fields as an array of meta keys and values.
 	 *
 	 * @since 4.0.6
@@ -326,37 +344,44 @@ trait ThirdParty {
 			// 'taxonomy',
 		];
 
-		$types     = wp_parse_args( $types, $allowedTypes );
-		$acfFields = [];
-
+		$types        = wp_parse_args( $types, $allowedTypes );
 		$fieldObjects = get_field_objects( $post->ID );
-		if ( ! empty( $fieldObjects ) ) {
-			foreach ( $fieldObjects as $field ) {
-				if ( empty( $field['value'] ) ) {
-					continue;
-				}
 
-				if ( ! in_array( $field['type'], $types, true ) ) {
-					continue;
-				}
+		if ( empty( $fieldObjects ) ) {
+			return [];
+		}
 
-				if ( 'url' === $field['type'] ) {
-					// Url field
-					$value = "<a href='{$field['value']}'>{$field['value']}</a>";
-				} elseif ( 'image' === $field['type'] ) {
-					// Image field
-					$value = "<img src='{$field['value']['url']}'>";
-				} elseif ( 'gallery' === $field['type'] ) {
-					// Image field
-					$value = "<img src='{$field['value'][0]['url']}'>";
-				} else {
-					// Other fields
-					$value = $field['value'];
-				}
+		// Filter out any fields that are not in our allowed types.
+		$fields = array_filter( $fieldObjects, function( $object ) use ( $types ) {
+			return ! empty( $object['value'] ) && in_array( $object['type'], $types, true );
+		});
 
-				if ( $value ) {
-					$acfFields[ $field['name'] ] = $value;
-				}
+		// Create an array with the field names and values with added HTML markup.
+		$acfFields = [];
+		foreach ( $fields as $field ) {
+			if ( 'url' === $field['type'] ) {
+
+				// Url field
+				$value = "<a href='{$field['value']}'>{$field['value']}</a>";
+			} elseif ( 'image' === $field['type'] ) {
+
+				// Image format options are array, URL (string), id (int).
+				$imageUrl = is_array( $field['value'] ) ? $field['value']['url'] : $field['value'];
+				$imageUrl = is_numeric( $imageUrl ) ? wp_get_attachment_image_url( $imageUrl ) : $imageUrl;
+
+				$value = "<img src='{$imageUrl}'>";
+			} elseif ( 'gallery' === $field['type'] ) {
+
+				// Image field
+				$value = "<img src='{$field['value'][0]['url']}'>";
+			} else {
+
+				// Other fields
+				$value = $field['value'];
+			}
+
+			if ( $value ) {
+				$acfFields[ $field['name'] ] = $value;
 			}
 		}
 
@@ -407,7 +432,7 @@ trait ThirdParty {
 			return $accessToken;
 		}
 
-		$sbFacebookDataEncryptionInstance = new \CustomFacebookFeed\SB_Facebook_Data_Encryption;
+		$sbFacebookDataEncryptionInstance = new \CustomFacebookFeed\SB_Facebook_Data_Encryption();
 		$accessToken                      = $sbFacebookDataEncryptionInstance->maybe_decrypt( $oembedTokenData['access_token'] );
 
 		return $accessToken;
@@ -482,6 +507,39 @@ trait ThirdParty {
 	}
 
 	/**
+	 * Returns the WPML url format.
+	 *
+	 * @since 4.2.8
+	 *
+	 * @return string The format.
+	 */
+	public function getWpmlUrlFormat() {
+		global $sitepress;
+
+		if (
+			! $this->isWpmlActive() ||
+			empty( $sitepress ) ||
+			! method_exists( $sitepress, 'get_setting' )
+		) {
+			return '';
+		}
+
+		switch ( $sitepress->get_setting( 'language_negotiation_type' ) ) {
+			case WPML_LANGUAGE_NEGOTIATION_TYPE_DIRECTORY:
+			case 1:
+				return 'directory';
+			case WPML_LANGUAGE_NEGOTIATION_TYPE_DOMAIN:
+			case 2:
+				return 'domain';
+			case WPML_LANGUAGE_NEGOTIATION_TYPE_PARAMETER:
+			case 3:
+				return 'parameter';
+			default:
+				return '';
+		}
+	}
+
+	/**
 	 * Checks whether the WooCommerce Follow Up Emails plugin is active.
 	 *
 	 * @since 4.2.2
@@ -538,5 +596,21 @@ trait ThirdParty {
 
 		// This URL param is set when using plain permalinks.
 		return isset( $_GET['amp'] ) || preg_match( '/amp$/', untrailingslashit( $wp->request ) );
+	}
+
+	/**
+	 * If we're in a LearnPress lesson page, return the lesson ID.
+	 *
+	 * @since 4.3.1
+	 *
+	 * @return int|false
+	 */
+	public function getLearnPressLesson() {
+		global $lp_course_item;
+		if ( $lp_course_item && method_exists( $lp_course_item, 'get_id' ) ) {
+			return $lp_course_item->get_id();
+		}
+
+		return false;
 	}
 }

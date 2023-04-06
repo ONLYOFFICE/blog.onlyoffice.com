@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
 	xmlns:xhtml="http://www.w3.org/1999/xhtml"
 <?php if ( ! aioseo()->sitemap->helpers->excludeImages() ): ?>
-	xmlns:image="https://www.google.com/schemas/sitemap-image/1.1"
+	xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
 <?php endif; ?>
 >
 <?php foreach ( $entries as $entry ) {

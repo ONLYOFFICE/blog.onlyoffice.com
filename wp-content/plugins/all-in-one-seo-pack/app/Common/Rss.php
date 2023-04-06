@@ -35,11 +35,11 @@ class Rss {
 		add_action( 'wp_head', [ $this, 'rssFeedLinks' ], 3 );
 
 		if ( ! aioseo()->options->searchAppearance->advanced->crawlCleanup->feeds->global ) {
-			add_action( 'feed_links_show_posts_feed', '__return_false' );
+			add_filter( 'feed_links_show_posts_feed', '__return_false' );
 		}
 
 		if ( ! aioseo()->options->searchAppearance->advanced->crawlCleanup->feeds->globalComments ) {
-			add_action( 'feed_links_show_comments_feed', '__return_false' );
+			add_filter( 'feed_links_show_comments_feed', '__return_false' );
 		}
 
 		// Disable feeds that we no longer want on this site.
@@ -52,7 +52,7 @@ class Rss {
 	 * @since 4.0.0
 	 *
 	 * @param  string $content The post excerpt.
-	 * @return void
+	 * @return string          The post excerpt with prepended/appended content.
 	 */
 	public function addRssContentExcerpt( $content ) {
 		return $this->addRssContent( $content, 'excerpt' );

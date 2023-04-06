@@ -263,7 +263,8 @@ class PostSettings {
 				! $dynamicOptions->searchAppearance->postTypes->has( $postType ) ||
 				! $dynamicOptions->searchAppearance->postTypes->$postType->show ||
 				! $dynamicOptions->searchAppearance->postTypes->$postType->advanced->showMetaBox ||
-				'attachment' === $postType
+				'attachment' === $postType ||
+				aioseo()->helpers->isBBPressPostType( $postType )
 			) {
 				continue;
 			}
@@ -279,8 +280,8 @@ class PostSettings {
 	 *
 	 * @since 4.2.0
 	 *
-	 * @param string $postType The post type name.
-	 * @return array           The overview for the given post type.
+	 * @param  string $postType The post type name.
+	 * @return array            The overview for the given post type.
 	 */
 	public function getPostTypeOverview( $postType ) {
 		$overview = aioseo()->core->cache->get( $postType . '_overview_data' );

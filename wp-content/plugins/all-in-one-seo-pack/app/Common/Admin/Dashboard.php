@@ -29,12 +29,9 @@ class Dashboard {
 	 * @return void
 	 */
 	public function addDashboardWidgets() {
-		if ( ! $this->canShowWidgets() ) {
-			return;
-		}
-
 		// Add the SEO Setup widget.
 		if (
+			$this->canShowWidget( 'seoSetup' ) &&
 			apply_filters( 'aioseo_show_seo_setup', true ) &&
 			( aioseo()->access->isAdmin() || aioseo()->access->hasCapability( 'aioseo_setup_wizard' ) ) &&
 			! aioseo()->standalone->setupWizard->isCompleted()
@@ -56,6 +53,7 @@ class Dashboard {
 
 		// Add the Overview widget.
 		if (
+			$this->canShowWidget( 'seoOverview' ) &&
 			apply_filters( 'aioseo_show_seo_overview', true ) &&
 			( aioseo()->access->isAdmin() || aioseo()->access->hasCapability( 'aioseo_page_analysis' ) )
 		) {
@@ -69,16 +67,34 @@ class Dashboard {
 				]
 			);
 		}
+
+		// Add the News widget.
+		if (
+			$this->canShowWidget( 'seoNews' ) &&
+			apply_filters( 'aioseo_show_seo_news', true ) &&
+			aioseo()->access->isAdmin()
+		) {
+			wp_add_dashboard_widget(
+				'aioseo-rss-feed',
+				esc_html__( 'SEO News', 'all-in-one-seo-pack' ),
+				[
+					$this,
+					'displayRssDashboardWidget',
+				]
+			);
+		}
 	}
 
 	/**
 	 * Whether or not to show the widget.
 	 *
-	 * @since 4.0.0
+	 * @since   4.0.0
+	 * @version 4.2.8
 	 *
+	 * @param  string  $widget The widget to check if can show.
 	 * @return boolean True if yes, false otherwise.
 	 */
-	protected function canShowWidgets() {
+	protected function canShowWidget( $widget ) { // phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		return true;
 	}
 
@@ -138,13 +154,20 @@ class Dashboard {
 	}
 
 	/**
-	 * Get the RSS posts.
+	 * Display RSS Dashboard Widget
 	 *
-	 * @since 4.2.0
+	 * @since 4.0.0
 	 *
-	 * @return array The RSS posts.
+	 * @return void
 	 */
-	public function getAioseoRssFeed() {
+	public function displayRssDashboardWidget() {
+		// Check if the user has chosen not to display this widget through screen options.
+		$currentScreen = get_current_screen();
+		$hiddenWidgets = get_user_meta( get_current_user_id(), 'metaboxhidden_' . $currentScreen->id );
+		if ( $hiddenWidgets && count( $hiddenWidgets ) > 0 && is_array( $hiddenWidgets[0] ) && in_array( 'aioseo-rss-feed', $hiddenWidgets[0], true ) ) {
+			return;
+		}
+
 		include_once ABSPATH . WPINC . '/feed.php';
 
 		$rssItems = aioseo()->core->networkCache->get( 'rss_feed' );
@@ -155,8 +178,7 @@ class Dashboard {
 
 				return;
 			}
-
-			$rssItems = $rss->get_items( 0, 3 ); // Show three items.
+			$rssItems = $rss->get_items( 0, 4 ); // Show four items.
 			$cached   = [];
 			foreach ( $rssItems as $item ) {
 				$cached[] = [
@@ -170,7 +192,31 @@ class Dashboard {
 
 			aioseo()->core->networkCache->update( 'rss_feed', $cached, 12 * HOUR_IN_SECONDS );
 		}
+		?>
+		<ul>
+			<?php
+			if ( false === $rssItems ) {
+				echo '<li>' . esc_html( __( 'No articles were found.', 'all-in-one-seo-pack' ) ) . '</li>';
 
-		return $rssItems;
+				return;
+			}
+
+			foreach ( $rssItems as $item ) {
+				?>
+				<li>
+					<a target="_blank" href="<?php echo esc_url( $item['url'] ); ?>" rel="noopener noreferrer">
+						<?php echo esc_html( $item['title'] ); ?>
+					</a>
+					<span><?php echo esc_html( $item['date'] ); ?></span>
+					<div>
+						<?php echo esc_html( wp_strip_all_tags( $item['content'] ) ) . '...'; ?>
+					</div>
+				</li>
+				<?php
+			}
+
+			?>
+		</ul>
+		<?php
 	}
 }

@@ -1021,7 +1021,7 @@ class Tags {
 	 * @return string          The category title.
 	 */
 	private function getTaxonomyTitle( $postId = null ) {
-		$title = null;
+		$title = '';
 		if ( aioseo()->helpers->isWooCommerceActive() && is_product_category() ) {
 			$title = single_cat_title( '', false );
 		} elseif ( is_category() ) {
@@ -1060,7 +1060,7 @@ class Tags {
 			}
 		}
 
-		return wp_strip_all_tags( $title );
+		return wp_strip_all_tags( (string) $title );
 	}
 
 	/**

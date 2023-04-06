@@ -78,7 +78,7 @@ class Admin {
 	 * @since 4.0.0
 	 */
 	public function __construct() {
-		new SeoAnalysis;
+		new SeoAnalysis();
 
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		if (
@@ -187,8 +187,7 @@ class Admin {
 				'parent'     => $this->pageSlug
 			],
 			'aioseo-link-assistant'    => [
-				'menu_title' => esc_html__( 'Link Assistant', 'all-in-one-seo-pack' ) . $newIndicator,
-				'page_title' => esc_html__( 'Link Assistant', 'all-in-one-seo-pack' ),
+				'menu_title' => esc_html__( 'Link Assistant', 'all-in-one-seo-pack' ),
 				'capability' => 'aioseo_link_assistant_settings',
 				'parent'     => $this->pageSlug
 			],
@@ -202,6 +201,11 @@ class Admin {
 			],
 			'aioseo-seo-analysis'      => [
 				'menu_title' => esc_html__( 'SEO Analysis', 'all-in-one-seo-pack' ),
+				'parent'     => $this->pageSlug
+			],
+			'aioseo-search-statistics' => [
+				'menu_title' => esc_html__( 'Search Statistics', 'all-in-one-seo-pack' ) . $newIndicator,
+				'page_title' => esc_html__( 'Search Statistics', 'all-in-one-seo-pack' ),
 				'parent'     => $this->pageSlug
 			],
 			'aioseo-tools'             => [
@@ -412,6 +416,8 @@ class Admin {
 			];
 		}
 
+		$this->adminBarMenuItems[] = aioseo()->standalone->seoPreview->getAdminBarMenuItemNode();
+
 		$htmlSitemapRequested = aioseo()->htmlSitemap->isDedicatedPage;
 		if ( ! is_admin() && ! $htmlSitemapRequested ) {
 			$this->addPageAnalyzerMenuItems();
@@ -480,7 +486,7 @@ class Admin {
 			],
 			[
 				'id'    => 'aioseo-analyze-page-structureddata',
-				'title' => esc_html__( 'Google Structured Data Test', 'all-in-one-seo-pack' ),
+				'title' => esc_html__( 'Google Rich Results Test', 'all-in-one-seo-pack' ),
 				'href'  => 'https://search.google.com/test/rich-results?url=' . $url,
 			],
 			[
@@ -641,6 +647,14 @@ class Admin {
 			];
 		}
 
+		if ( current_user_can( $this->getPageRequiredCapability( 'aioseo-search-statistics' ) ) ) {
+			$submenu['index.php'][] = [
+				esc_html__( 'SEO Statistics', 'all-in-one-seo-pack' ),
+				$this->getPageRequiredCapability( 'aioseo-search-statistics' ),
+				admin_url( '/admin.php?page=aioseo-search-statistics' )
+			];
+		}
+
 		// We use the global submenu, because we are adding an external link here.
 		$count         = count( Models\Notification::getAllActiveNotifications() );
 		$firstPageSlug = $this->getFirstAvailablePageSlug();
@@ -745,6 +759,7 @@ class Admin {
 			'redirects',
 			'local-seo',
 			'seo-analysis',
+			'search-statistics',
 			'tools',
 			'feature-manager',
 			'monsterinsights',
@@ -815,8 +830,10 @@ class Admin {
 
 			$this->currentPage = $page;
 			add_action( 'admin_enqueue_scripts', [ $this, 'enqueueAssets' ], 11 );
-			add_action( 'admin_enqueue_scripts', [ $this, 'dequeueTagDivOptinBuilderScript' ], 99999 );
+			add_action( 'admin_enqueue_scripts', [ aioseo()->filters, 'dequeueThirdPartyAssets' ], 99999 );
+			add_action( 'admin_enqueue_scripts', [ aioseo()->filters, 'dequeueThirdPartyAssetsEarly' ], 0 );
 
+			add_action( 'in_admin_footer', [ $this, 'addFooterPromotion' ] );
 			add_filter( 'admin_footer_text', [ $this, 'addFooterText' ] );
 
 			// Only enqueue the media library if we need it in our module
@@ -871,11 +888,25 @@ class Admin {
 	}
 
 	/**
+	 * Outputs the element we can mount our footer promotion standalone Vue app on.
+	 * Also enqueues the assets.
+	 *
+	 * @since 4.3.4
+	 *
+	 * @return void
+	 */
+	public function addFooterPromotion() {
+		echo wp_kses_post( '<div id="aioseo-footer-links"></div>' );
+
+		aioseo()->core->assets->load( 'src/vue/standalone/footer-links/main.js' );
+	}
+
+	/**
 	 * Add footer text to the WordPress admin screens.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return void
+	 * @return string The footer text.
 	 */
 	public function addFooterText() {
 		$linkText = esc_html__( 'Give us a 5-star rating!', 'all-in-one-seo-pack' );
@@ -914,6 +945,8 @@ class Admin {
 		);
 
 		remove_filter( 'update_footer', 'core_update_footer' );
+
+		return '';
 	}
 
 	/**
@@ -1165,9 +1198,11 @@ class Admin {
 	*/
 	private function getScoreClass( $score ) {
 		$scoreClass = 50 < $score ? 'score-orange' : 'score-red';
+
 		if ( 0 === $score ) {
 			$scoreClass = 'score-none';
 		}
+
 		if ( $score >= 80 ) {
 			$scoreClass = 'score-green';
 		}
@@ -1184,17 +1219,6 @@ class Admin {
 	 */
 	public function loadTextDomain() {
 		aioseo()->helpers->loadTextDomain( 'all-in-one-seo-pack' );
-	}
-
-	/**
-	 * Dequeues a script from the tagDiv Opt-in Builder plugin that, accompanied by the Newspaper theme, crashes our menu pages.
-	 *
-	 * @since 4.1.9
-	 *
-	 * @return void
-	 */
-	public function dequeueTagDivOptinBuilderScript() {
-		wp_dequeue_script( 'tds_js_vue_files_last' );
 	}
 
 	/**

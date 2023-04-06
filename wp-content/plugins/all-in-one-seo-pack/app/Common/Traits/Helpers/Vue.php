@@ -85,6 +85,7 @@ trait Vue {
 					'redirect' => rawurldecode( base64_encode( admin_url( 'index.php?page=aioseo-connect' ) ) )
 				], defined( 'AIOSEO_CONNECT_URL' ) ? AIOSEO_CONNECT_URL : 'https://connect.aioseo.com' ),
 				'aio'               => [
+					'about'            => admin_url( 'admin.php?page=aioseo-about' ),
 					'dashboard'        => admin_url( 'admin.php?page=aioseo' ),
 					'featureManager'   => admin_url( 'admin.php?page=aioseo-feature-manager' ),
 					'linkAssistant'    => admin_url( 'admin.php?page=aioseo-link-assistant' ),
@@ -92,6 +93,7 @@ trait Vue {
 					'monsterinsights'  => admin_url( 'admin.php?page=aioseo-monsterinsights' ),
 					'redirects'        => admin_url( 'admin.php?page=aioseo-redirects' ),
 					'searchAppearance' => admin_url( 'admin.php?page=aioseo-search-appearance' ),
+					'searchStatistics' => admin_url( 'admin.php?page=aioseo-search-statistics' ),
 					'seoAnalysis'      => admin_url( 'admin.php?page=aioseo-seo-analysis' ),
 					'settings'         => admin_url( 'admin.php?page=aioseo-settings' ),
 					'sitemaps'         => admin_url( 'admin.php?page=aioseo-sitemaps' ),
@@ -138,7 +140,9 @@ trait Vue {
 				'isDev'               => $this->isDev(),
 				'isSsl'               => is_ssl(),
 				'hasUrlTrailingSlash' => '/' === user_trailingslashit( '' ),
-				'permalinkStructure'  => get_option( 'permalink_structure' )
+				'permalinkStructure'  => get_option( 'permalink_structure' ),
+				'dateFormat'          => get_option( 'date_format' ),
+				'timeFormat'          => get_option( 'time_format' )
 			],
 			'user'              => [
 				'canManage'      => aioseo()->access->canManage(),
@@ -160,6 +164,7 @@ trait Vue {
 				'force' => $showNotificationsDrawer ? true : false
 			] ),
 			'addons'            => aioseo()->addons->getAddons(),
+			'features'          => aioseo()->features->getFeatures(),
 			'version'           => AIOSEO_VERSION,
 			'wpVersion'         => $wp_version,
 			'helpPanel'         => aioseo()->help->getDocs(),
@@ -186,9 +191,10 @@ trait Vue {
 				'priority'                       => ! empty( $post->priority ) ? $post->priority : 'default',
 				'frequency'                      => ! empty( $post->frequency ) ? $post->frequency : 'default',
 				'permalink'                      => get_permalink( $postId ),
-				'permalinkPath'                  => aioseo()->helpers->leadingSlashIt( aioseo()->helpers->getPermalinkPath( get_permalink( $postId ) ) ),
+				'editlink'                       => aioseo()->helpers->getPostEditLink( $postId ),
 				'title'                          => ! empty( $post->title ) ? $post->title : aioseo()->meta->title->getPostTypeTitle( $postTypeObj->name ),
 				'description'                    => ! empty( $post->description ) ? $post->description : aioseo()->meta->description->getPostTypeDescription( $postTypeObj->name ),
+				'descriptionIncludeCustomFields' => apply_filters( 'aioseo_description_include_custom_fields', true, $post ),
 				'keywords'                       => ! empty( $post->keywords ) ? $post->keywords : wp_json_encode( [] ),
 				'keyphrases'                     => Models\Post::getKeyphrasesDefaults( $post->keyphrases ),
 				'page_analysis'                  => ! empty( $post->page_analysis )
@@ -251,10 +257,8 @@ trait Vue {
 				'redirects'                      => [
 					'modalOpen' => false
 				],
-				'options'                        => Models\Post::getOptionsDefaults( $post->options )
+				'options'                        => $post->options
 			];
-
-			$data['user']['siteAuthors'] = $this->getSiteAuthors();
 
 			if ( empty( $integration ) ) {
 				$data['integration'] = aioseo()->helpers->getPostPageBuilderName( $postId );
@@ -277,9 +281,13 @@ trait Vue {
 
 		if ( 'dashboard' === $page ) {
 			$data['setupWizard']['isCompleted'] = aioseo()->standalone->setupWizard->isCompleted();
-			$data['rssFeed']                    = aioseo()->dashboard->getAioseoRssFeed();
 			$data['seoOverview']                = aioseo()->postSettings->getPostTypesOverview();
 			$data['importers']                  = aioseo()->importExport->plugins();
+		}
+
+		if ( 'search-statistics' === $page ) {
+			$data['seoOverview']      = aioseo()->postSettings->getPostTypesOverview();
+			$data['searchStatistics'] = aioseo()->searchStatistics->getVueData();
 		}
 
 		if ( 'sitemaps' === $page ) {
@@ -420,7 +428,7 @@ trait Vue {
 		// First, we need to remove our filter, so that it doesn't run unintentionally.
 		remove_filter( 'robots_txt', [ aioseo()->robotsTxt, 'buildRules' ], 10000 );
 		$robotsTxt = apply_filters( 'robots_txt', '', true );
-		add_filter( 'robots_txt', [ aioseo()->robotsTxt, 'buildRules' ], 10000, 2 );
+		add_filter( 'robots_txt', [ aioseo()->robotsTxt, 'buildRules' ], 10000 );
 
 		if ( ! $robotsTxt ) {
 			return [];

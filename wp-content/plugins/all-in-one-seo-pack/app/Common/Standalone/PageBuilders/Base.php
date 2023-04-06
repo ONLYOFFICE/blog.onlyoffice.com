@@ -165,6 +165,18 @@ abstract class Base {
 	}
 
 	/**
+	 * Returns the page builder edit url for the given Post ID.
+	 *
+	 * @since 4.3.1
+	 *
+	 * @param  int    $postId The Post ID.
+	 * @return string         The Edit URL.
+	 */
+	public function getEditUrl( $postId ) { // phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		return '';
+	}
+
+	/**
 	 * Returns whether or not the given Post ID was built with the Page Builder.
 	 *
 	 * @since 4.1.7

@@ -171,6 +171,8 @@ abstract class Usage {
 			}
 		});
 
+		$settings = $this->filterPrivateSettings( $settings );
+
 		$internal = aioseo()->internalOptions->all();
 		array_walk_recursive( $internal, function( &$v ) {
 			if ( is_string( $v ) && strpos( $v, '&quot' ) !== false ) {
@@ -226,5 +228,25 @@ abstract class Usage {
 		];
 
 		return strtotime( 'next sunday' ) + array_sum( $tracking );
+	}
+
+	/**
+	 * Anonimizes or obfuscates the value of certain settings.
+	 *
+	 * @since 4.3.2
+	 *
+	 * @param  array $settings The settings.
+	 * @return array           The altered settings.
+	 */
+	private function filterPrivateSettings( $settings ) {
+		if ( ! empty( $settings['advanced']['openAiKey'] ) ) {
+			$settings['advanced']['openAiKey'] = true;
+		}
+
+		if ( ! empty( $settings['localBusiness']['maps']['apiKey'] ) ) {
+			$settings['localBusiness']['maps']['apiKey'] = true;
+		}
+
+		return $settings;
 	}
 }

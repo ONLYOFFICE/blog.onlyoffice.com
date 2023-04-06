@@ -61,7 +61,12 @@ class InternalOptions {
 			'wizard'            => [ 'type' => 'string' ],
 			'category'          => [ 'type' => 'string' ],
 			'categoryOther'     => [ 'type' => 'string' ],
-			'deprecatedOptions' => [ 'type' => 'array', 'default' => [] ]
+			'deprecatedOptions' => [ 'type' => 'array', 'default' => [] ],
+			'searchStatistics'  => [
+				'profile'    => [ 'type' => 'array', 'default' => [] ],
+				'trustToken' => [ 'type' => 'string' ],
+				'rolling'    => [ 'type' => 'string', 'default' => 'last28Days' ]
+			]
 		],
 		'integrations' => [
 			'semrush' => [

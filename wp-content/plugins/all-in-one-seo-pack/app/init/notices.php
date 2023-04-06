@@ -166,10 +166,11 @@ if ( ! function_exists( 'aioseo_wordpress_notice' ) ) {
 				echo wp_kses(
 					sprintf(
 							// Translators: 1 - Opening HTML bold tag, 2 - Closing HTML bold tag, 3 - The plugin name ("All in One SEO"), 4 - Opening HTML link tag, 5 - Closing HTML link tag.
-						__( '%1$sNote:%2$s %3$s will be discontinuing support for WordPress versions older than version 5.3 by the end of 2022. %4$sRead more for additional information.%5$s', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
+						__( '%1$sNote:%2$s %3$s will be discontinuing support for WordPress versions older than version 5.3 by the end of %4$s. %5$sRead more for additional information.%6$s', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
 						'<strong>',
 						'</strong>',
 						'AIOSEO',
+						date( 'Y' ),
 						'<a href="https://aioseo.com/docs/update-wordpress/?utm_source=WordPress&utm_medium=' . $medium . '&utm_campaign=outdated-wordpress-notice" target="_blank" rel="noopener noreferrer">', // phpcs:ignore Generic.Files.LineLength.MaxExceeded
 						'</a>'
 					),

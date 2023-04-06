@@ -58,8 +58,13 @@ class Localization {
 		}
 
 		$entry['languages'] = [];
+		$hiddenLanguages    = apply_filters( 'wpml_setting', [], 'hidden_languages' );
 		foreach ( $translations as $translation ) {
-			if ( empty( $translation->element_id ) || ! isset( self::$wpml['activeLanguages'][ $translation->language_code ] ) ) {
+			if (
+				empty( $translation->element_id ) ||
+				! isset( self::$wpml['activeLanguages'][ $translation->language_code ] ) ||
+				in_array( $translation->language_code, $hiddenLanguages, true )
+			) {
 				continue;
 			}
 
@@ -95,7 +100,7 @@ class Localization {
 		}
 
 		// Also include the main page as a translated variant, per Google's specifications, but only if we found at least one other language.
-		if ( ! empty( $entry['languages'] ) ) {
+		if ( ! empty( $entry['language'] ) && ! empty( $entry['languages'] ) ) {
 			$entry['languages'][] = [
 				'language' => $entry['language'],
 				'location' => $entry['loc']

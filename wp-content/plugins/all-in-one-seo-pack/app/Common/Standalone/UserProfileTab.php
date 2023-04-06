@@ -15,10 +15,7 @@ class UserProfileTab {
 	 * @since 4.2.2
 	 */
 	public function __construct() {
-		if (
-			! is_admin() ||
-			apply_filters( 'aioseo_user_profile_tab_disable', false )
-		) {
+		if ( ! is_admin() ) {
 			return;
 		}
 
@@ -34,6 +31,10 @@ class UserProfileTab {
 	 * @return void
 	 */
 	public function enqueueScript() {
+		if ( apply_filters( 'aioseo_user_profile_tab_disable', false ) ) {
+			return;
+		}
+
 		$screen = get_current_screen();
 		if ( ! in_array( $screen->id, [ 'user-edit', 'profile' ], true ) ) {
 			if ( 'follow-up_page_followup-emails-reports' === $screen->id ) {

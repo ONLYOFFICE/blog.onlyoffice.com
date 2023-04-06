@@ -33,11 +33,10 @@ class Assets {
 	 * @param Core $core The AIOSEO Core class.
 	 */
 	public function __construct( $core ) {
-		$this->core              = $core;
-		$this->version           = aioseo()->version;
-		$this->manifestFile      = AIOSEO_DIR . '/dist/' . aioseo()->versionPath . '/manifest.php';
-		$this->assetManifestFile = AIOSEO_DIR . '/dist/' . aioseo()->versionPath . '/manifest-assets.php';
-		$this->isDev             = aioseo()->isDev;
+		$this->core         = $core;
+		$this->version      = aioseo()->version;
+		$this->manifestFile = AIOSEO_DIR . '/dist/' . aioseo()->versionPath . '/manifest.php';
+		$this->isDev        = aioseo()->isDev;
 
 		if ( $this->isDev ) {
 			$this->domain = getenv( 'VITE_AIOSEO_DOMAIN' );

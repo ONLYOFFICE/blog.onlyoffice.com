@@ -33,6 +33,11 @@ class Breadcrumb {
 	 * @return array         The breadcrumb trail.
 	 */
 	public function post( $post ) {
+		// Check if page is the static homepage.
+		if ( aioseo()->helpers->isStaticHomePage() ) {
+			return $this->home();
+		}
+
 		if ( is_post_type_hierarchical( $post->post_type ) ) {
 			return $this->setPositions( $this->postHierarchical( $post ) );
 		}

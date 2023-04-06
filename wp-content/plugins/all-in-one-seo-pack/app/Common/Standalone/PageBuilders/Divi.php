@@ -75,7 +75,7 @@ class Divi extends Base {
 		add_action( 'wp_footer', [ $this, 'addContainers' ] );
 		add_action( 'wp_footer', [ $this, 'addIframeWatcher' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue' ] );
-		add_filter( 'script_loader_tag', [ $this, 'addEtTag' ], 10, 3 );
+		add_filter( 'script_loader_tag', [ $this, 'addEtTag' ], 10, 2 );
 	}
 
 	/**
@@ -166,5 +166,38 @@ class Divi extends Base {
 		}
 
 		return et_pb_is_pagebuilder_used( $postId );
+	}
+
+	/**
+	 * Returns the Divi edit url for the given Post ID.
+	 *
+	 * @since 4.3.1
+	 *
+	 * @param  int    $postId The Post ID.
+	 * @return string         The Edit URL.
+	 */
+	public function getEditUrl( $postId ) {
+		if ( ! function_exists( 'et_fb_get_vb_url' ) ) {
+			return '';
+		}
+
+		$isDiviLibrary = 'et_pb_layout' === get_post_type( $postId );
+		$editUrl       = $isDiviLibrary ? get_edit_post_link( $postId, 'raw' ) : get_permalink( $postId );
+
+		if ( et_pb_is_pagebuilder_used( $postId ) ) {
+			$editUrl = et_fb_get_vb_url( $editUrl );
+		} else {
+			if ( ! et_pb_is_allowed( 'divi_builder_control' ) ) {
+				// Prevent link when user lacks `Toggle Divi Builder` capability.
+				return '';
+			}
+
+			$editUrl = add_query_arg(
+				[ 'et_fb_activation_nonce' => wp_create_nonce( 'et_fb_activation_nonce_' . $postId ) ],
+				$editUrl
+			);
+		}
+
+		return $editUrl;
 	}
 }

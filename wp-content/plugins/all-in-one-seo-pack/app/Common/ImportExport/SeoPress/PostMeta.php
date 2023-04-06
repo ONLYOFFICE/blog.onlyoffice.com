@@ -143,11 +143,17 @@ class PostMeta {
 
 			switch ( $name ) {
 				case '_seopress_analysis_target_kw':
-					$keyphrase = [
-						'focus'      => [ 'keyphrase' => aioseo()->helpers->sanitizeOption( $value ) ],
+					$keyphrases     = array_map( 'trim', explode( ',', $value ) );
+					$keyphraseArray = [
+						'focus'      => [ 'keyphrase' => aioseo()->helpers->sanitizeOption( $keyphrases[0] ) ],
 						'additional' => []
 					];
-					$meta['keyphrases'] = wp_json_encode( $keyphrase );
+					unset( $keyphrases[0] );
+					foreach ( $keyphrases as $keyphrase ) {
+						$keyphraseArray['additional'][] = [ 'keyphrase' => aioseo()->helpers->sanitizeOption( $keyphrase ) ];
+					}
+
+					$meta['keyphrases'] = wp_json_encode( $keyphraseArray );
 					break;
 				case '_seopress_robots_snippet':
 				case '_seopress_robots_archive':

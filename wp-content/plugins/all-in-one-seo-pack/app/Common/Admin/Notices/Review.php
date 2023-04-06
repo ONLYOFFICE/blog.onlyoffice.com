@@ -30,7 +30,7 @@ class Review {
 	 */
 	public function maybeShowNotice() {
 		$dismissed = get_user_meta( get_current_user_id(), '_aioseo_plugin_review_dismissed', true );
-		if ( '1' === $dismissed || '2' === $dismissed ) {
+		if ( '3' === $dismissed || '4' === $dismissed ) {
 			return;
 		}
 
@@ -94,8 +94,11 @@ class Review {
 		);
 		$string2  = __( 'Yes I love it', 'all-in-one-seo-pack' );
 		$string3  = __( 'Not Really...', 'all-in-one-seo-pack' );
-		// Translators: 1 - The plugin name ("All in One SEO").
-		$string4  = sprintf( __( 'We\'re sorry to hear you aren\'t enjoying %1$s. We would love a chance to improve. Could you take a minute and let us know what we can do better?', 'all-in-one-seo-pack' ), AIOSEO_PLUGIN_NAME ); // phpcs:ignore Generic.Files.LineLength.MaxExceeded
+		$string4  = sprintf(
+					// Translators: 1 - The plugin name ("All in One SEO").
+			__( 'We\'re sorry to hear you aren\'t enjoying %1$s. We would love a chance to improve. Could you take a minute and let us know what we can do better?', 'all-in-one-seo-pack' ),
+			AIOSEO_PLUGIN_NAME
+		); // phpcs:ignore Generic.Files.LineLength.MaxExceeded
 		$string5  = __( 'Give feedback', 'all-in-one-seo-pack' );
 		$string6  = __( 'No thanks', 'all-in-one-seo-pack' );
 		$string7  = __( 'That\'s awesome! Could you please do me a BIG favor and give it a 5-star rating on WordPress to help us spread the word and boost our motivation?', 'all-in-one-seo-pack' );
@@ -301,7 +304,7 @@ class Review {
 		$relay = isset( $_POST['relay'] ) ? 'true' === wp_unslash( $_POST['relay'] ) : false; // phpcs:ignore HM.Security.ValidatedSanitizedInput.InputNotSanitized
 
 		if ( ! $delay ) {
-			update_user_meta( get_current_user_id(), '_aioseo_plugin_review_dismissed', $relay ? '2' : '1' );
+			update_user_meta( get_current_user_id(), '_aioseo_plugin_review_dismissed', $relay ? '4' : '3' );
 
 			return wp_send_json_success();
 		}

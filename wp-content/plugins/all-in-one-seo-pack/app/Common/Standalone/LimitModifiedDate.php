@@ -50,7 +50,7 @@ class LimitModifiedDate {
 	public function registerRestHooks() {
 		// Prevent REST API from dropping limit modified date value before updating the post.
 		foreach ( aioseo()->helpers->getPublicPostTypes( true ) as $postType ) {
-			add_action( "rest_pre_insert_$postType", [ $this, 'addLimitModifiedDateValue' ], 10, 2 );
+			add_filter( "rest_pre_insert_$postType", [ $this, 'addLimitModifiedDateValue' ], 10, 2 );
 		}
 	}
 

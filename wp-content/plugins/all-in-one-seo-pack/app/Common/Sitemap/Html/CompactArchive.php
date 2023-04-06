@@ -31,7 +31,7 @@ class CompactArchive {
 	 * @return string              The HTML for the compact archive.
 	 */
 	public function output( $attributes, $echo = true ) {
-		$dateArchives     = ( new Query )->archives();
+		$dateArchives     = ( new Query() )->archives();
 		$this->attributes = $attributes;
 
 		if ( 'asc' === strtolower( $this->attributes['order'] ) ) {

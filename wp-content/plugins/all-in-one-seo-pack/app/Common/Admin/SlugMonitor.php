@@ -32,7 +32,7 @@ class SlugMonitor {
 			return;
 		}
 
-		add_action( 'pre_post_update', [ $this, 'prePostUpdate' ], 10, 2 );
+		add_action( 'pre_post_update', [ $this, 'prePostUpdate' ] );
 
 		// WP 5.6+.
 		if ( function_exists( 'wp_after_insert_post' ) ) {

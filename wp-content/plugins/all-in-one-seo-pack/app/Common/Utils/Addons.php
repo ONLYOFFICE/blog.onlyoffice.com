@@ -355,7 +355,7 @@ class Addons {
 	 * @return bool True if yes, false if not.
 	 */
 	public function canUpdate() {
-		if ( ! current_user_can( 'update_plugins' ) ) {
+		if ( ! current_user_can( 'update_plugins' ) && ! aioseo()->helpers->isDoingWpCli() ) {
 			return false;
 		}
 

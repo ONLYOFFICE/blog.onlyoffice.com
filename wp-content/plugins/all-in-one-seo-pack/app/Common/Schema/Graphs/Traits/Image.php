@@ -39,7 +39,7 @@ trait Image {
 		}
 
 		$metaData = wp_get_attachment_metadata( $attachmentId );
-		if ( $metaData && ! empty( $metaData['width'] && ! empty( $metaData['height'] ) ) ) {
+		if ( $metaData && ! empty( $metaData['width'] ) && ! empty( $metaData['height'] ) ) {
 			$data['width']  = (int) $metaData['width'];
 			$data['height'] = (int) $metaData['height'];
 		}

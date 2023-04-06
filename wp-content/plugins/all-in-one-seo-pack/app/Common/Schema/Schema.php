@@ -108,7 +108,7 @@ class Schema {
 			return;
 		}
 
-		$this->helpers = new Helpers;
+		$this->helpers = new Helpers();
 	}
 
 	/**
@@ -167,10 +167,12 @@ class Schema {
 			'@graph'   => []
 		];
 
-		foreach ( $this->graphs as $graph ) {
-			$namespace = $this->getGraphNamespace( $graph );
+		// By determining the length of the array after every iteration, we are able to add additional graphs during runtime.
+		// e.g. The Article graph may require a Person graph to be output for the author.
+		for ( $i = 0; $i < count( $this->graphs ); $i++ ) {
+			$namespace = $this->getGraphNamespace( $this->graphs[ $i ] );
 			if ( $namespace ) {
-				$schema['@graph'][] = ( new $namespace )->get();
+				$schema['@graph'][] = ( new $namespace() )->get();
 			}
 		}
 
@@ -211,8 +213,10 @@ class Schema {
 	 * @return void
 	 */
 	protected function determineSmartGraphsAndContext( $isValidator = false ) {
-		$contextInstance = new Context;
-		$this->graphs    = array_merge( $this->graphs, $this->getDefaultGraphs() );
+		$this->graphs = array_merge( $this->graphs, $this->getDefaultGraphs() );
+
+		$contextInstance = new Context();
+		$this->context   = $contextInstance->defaults();
 
 		if ( aioseo()->helpers->isDynamicHomePage() ) {
 			$this->graphs[] = 'CollectionPage';
@@ -312,10 +316,11 @@ class Schema {
 	 *
 	 * @since 4.2.5
 	 *
-	 * @return string The default graph.
+	 * @param  null|WP_Post $post The post object.
+	 * @return string             The default graph.
 	 */
-	public function getDefaultPostTypeGraph() {
-		$post = aioseo()->helpers->getPost();
+	public function getDefaultPostTypeGraph( $post = null ) {
+		$post = $post ? $post : aioseo()->helpers->getPost();
 		if ( ! is_a( $post, 'WP_Post' ) ) {
 			return '';
 		}

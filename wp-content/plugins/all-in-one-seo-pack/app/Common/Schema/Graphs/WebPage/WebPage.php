@@ -46,11 +46,18 @@ class WebPage extends Graphs\Graph {
 		];
 
 		if ( is_singular() && ! is_page() ) {
-			$post   = aioseo()->helpers->getPost();
-			$author = get_author_posts_url( $post->post_author );
-			if ( ! empty( $author ) ) {
-				$data['author']  = $author . '#author';
-				$data['creator'] = $author . '#author';
+			$post = aioseo()->helpers->getPost();
+
+			if ( is_a( $post, 'WP_Post' ) ) {
+				$author = get_author_posts_url( $post->post_author );
+				if ( ! empty( $author ) ) {
+					if ( ! in_array( 'PersonAuthor', aioseo()->schema->graphs, true ) ) {
+						aioseo()->schema->graphs[] = 'PersonAuthor';
+					}
+
+					$data['author']  = [ '@id' => $author . '#author' ];
+					$data['creator'] = [ '@id' => $author . '#author' ];
+				}
 			}
 		}
 

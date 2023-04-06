@@ -80,7 +80,7 @@ class Image {
 			return;
 		}
 		// Action Scheduler hooks.
-		add_filter( 'init', [ $this, 'scheduleScan' ], 3001 );
+		add_action( 'init', [ $this, 'scheduleScan' ], 3001 );
 	}
 
 	/**

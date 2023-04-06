@@ -18,7 +18,9 @@ class PreUpdates {
 	 * @since 4.1.5
 	 */
 	public function __construct() {
-		if ( wp_doing_ajax() || wp_doing_cron() ) {
+		// We don't want an AJAX request check here since the plugin might be installed/activated for the first time via AJAX (e.g. EDD/BLC).
+		// If that's the case, the cache table needs to be created before the activation hook runs.
+		if ( wp_doing_cron() ) {
 			return;
 		}
 

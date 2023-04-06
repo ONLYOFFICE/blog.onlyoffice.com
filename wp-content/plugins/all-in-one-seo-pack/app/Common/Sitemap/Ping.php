@@ -24,7 +24,7 @@ class Ping {
 			return;
 		}
 
-		add_filter( 'init', [ $this, 'scheduleRecurring' ] );
+		add_action( 'init', [ $this, 'scheduleRecurring' ] );
 
 		// Ping sitemap on each post update.
 		add_action( 'save_post', [ $this, 'schedule' ], 1000, 2 );

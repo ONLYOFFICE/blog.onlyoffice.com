@@ -14,6 +14,24 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 trait WpContext {
 	/**
+	 * The original main query.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @var WP_Query
+	 */
+	public $originalQuery;
+
+	/**
+	 * The original main post variable.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @var WP_Post
+	 */
+	public $originalPost;
+
+	/**
 	 * Get the home page object.
 	 *
 	 * @since 4.1.1
@@ -72,7 +90,7 @@ trait WpContext {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return boolean Whether the current page is a taxonomy term archive.
+	 * @return bool Whether the current page is a taxonomy term archive.
 	 */
 	public function isTaxTerm() {
 		$object = get_queried_object();
@@ -85,7 +103,7 @@ trait WpContext {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return boolean Whether the current page is a static one.
+	 * @return bool Whether the current page is a static one.
 	 */
 	public function isStaticPage() {
 		return $this->isStaticHomePage() || $this->isStaticPostsPage() || $this->isWooCommerceShopPage();
@@ -96,8 +114,8 @@ trait WpContext {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  mixed   $post Pass in an optional post to check if its the static home page.
-	 * @return boolean       Whether the current page is the static homepage.
+	 * @param  mixed $post Pass in an optional post to check if its the static home page.
+	 * @return bool        Whether the current page is the static homepage.
 	 */
 	public function isStaticHomePage( $post = null ) {
 		static $isHomePage = null;
@@ -126,7 +144,7 @@ trait WpContext {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return boolean Whether the current page is the static posts page.
+	 * @return bool Whether the current page is the static posts page.
 	 */
 	public function isStaticPostsPage() {
 		return is_home() && ( 0 !== (int) get_option( 'page_for_posts' ) );
@@ -137,7 +155,7 @@ trait WpContext {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return boolean Whether the current page supports meta.
+	 * @return bool Whether the current page supports meta.
 	 */
 	public function supportsMeta() {
 		return ! is_date() && ! is_author() && ! is_search() && ! is_404();
@@ -148,7 +166,7 @@ trait WpContext {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  int          $postId The post ID.
+	 * @param  WP_Post|int  $postId The post ID.
 	 * @return WP_Post|null         The post object.
 	 */
 	public function getPost( $postId = false ) {
@@ -173,6 +191,12 @@ trait WpContext {
 			}
 		}
 
+		// Learnpress lessons load the course. So here we need to switch to the lesson.
+		$learnPressLesson = aioseo()->helpers->getLearnPressLesson();
+		if ( ! $postId && $learnPressLesson ) {
+			$postId = $learnPressLesson;
+		}
+
 		// We need to check these conditions and cannot always return get_post() because we'll return the first post on archive pages (dynamic homepage, term pages, etc.).
 		if (
 			$this->isScreenBase( 'post' ) ||
@@ -186,6 +210,19 @@ trait WpContext {
 	}
 
 	/**
+	 * Returns the current post ID.
+	 *
+	 * @since 4.3.1
+	 *
+	 * @return int|null The post ID.
+	 */
+	public function getPostId() {
+		$post = $this->getPost();
+
+		return is_object( $post ) && property_exists( $post, 'ID' ) ? $post->ID : null;
+	}
+
+	/**
 	 * Returns the post content after parsing it.
 	 *
 	 * @since 4.1.5
@@ -194,20 +231,45 @@ trait WpContext {
 	 * @return string            The post content.
 	 */
 	public function getPostContent( $post = null ) {
-		$post = ( $post && is_object( $post ) ) ? $post : $post = $this->getPost( $post );
+		$post = is_a( $post, 'WP_Post' ) ? $post : $this->getPost( $post );
 
 		static $content = [];
 		if ( isset( $content[ $post->ID ] ) ) {
 			return $content[ $post->ID ];
 		}
 
-		if ( empty( $post->post_content ) ) {
-			return $post->post_content;
-		}
-
 		$content[ $post->ID ] = $this->theContent( $post->post_content );
 
+		if ( apply_filters( 'aioseo_description_include_custom_fields', true, $post ) ) {
+			$content[ $post->ID ] .= $this->theContent( $this->getPostCustomFieldsContent( $post ) );
+		}
+
 		return $content[ $post->ID ];
+	}
+
+	/**
+	 * Gets the content from configured custom fields.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @param  WP_Post|int $post A post object or ID.
+	 * @return string            The content.
+	 */
+	public function getPostCustomFieldsContent( $post = null ) {
+		$post = is_a( $post, 'WP_Post' ) ? $post : $this->getPost( $post );
+
+		if ( ! aioseo()->dynamicOptions->searchAppearance->postTypes->has( $post->post_type ) ) {
+			return '';
+		}
+
+		$customFieldKeys = aioseo()->dynamicOptions->searchAppearance->postTypes->{$post->post_type}->customFields;
+		if ( empty( $customFieldKeys ) ) {
+			return '';
+		}
+
+		$customFieldKeys = explode( ' ', sanitize_text_field( $customFieldKeys ) );
+
+		return aioseo()->helpers->getCustomFieldsContent( $post, $customFieldKeys );
 	}
 
 	/**
@@ -242,16 +304,15 @@ trait WpContext {
 	 * @return string            The description.
 	 */
 	public function getDescriptionFromContent( $post = null ) {
-		$post = ( $post && is_object( $post ) ) ? $post : $post = $this->getPost( $post );
+		$post = is_a( $post, 'WP_Post' ) ? $post : $this->getPost( $post );
 
 		static $content = [];
 		if ( isset( $content[ $post->ID ] ) ) {
 			return $content[ $post->ID ];
 		}
 
-		if ( empty( $post->post_content ) || ! empty( $post->post_password ) ) {
-			$content[ $post->ID ] = '';
-
+		$content[ $post->ID ] = '';
+		if ( ! empty( $post->post_password ) ) {
 			return $content[ $post->ID ];
 		}
 
@@ -275,30 +336,24 @@ trait WpContext {
 	 * @return string            The custom field content.
 	 */
 	public function getCustomFieldsContent( $post = null, $keys = [] ) {
-		$post = ( $post && is_object( $post ) ) ? $post : $this->getPost( $post );
+		$post = is_a( $post, 'WP_Post' ) ? $post : $this->getPost( $post );
 
 		$customFieldContent = '';
 
-		$acfFields     = $this->getAcfContent( $post );
-		$acfFieldsKeys = [];
-
-		if ( ! empty( $acfFields ) ) {
-			foreach ( $acfFields as $acfField => $acfValue ) {
-				if ( in_array( $acfField, $keys, true ) ) {
-					$customFieldContent .= "{$acfValue} ";
-					$acfFieldsKeys[]     = $acfField;
-				}
-			}
-		}
-
+		$acfFields = $this->getAcfContent( $post );
 		foreach ( $keys as $key ) {
-			if ( in_array( $key, $acfFieldsKeys, true ) ) {
+			// Try ACF.
+			if ( isset( $acfFields[ $key ] ) ) {
+				$customFieldContent .= "{$acfFields[$key]} ";
 				continue;
 			}
 
+			// Fallback to post meta.
 			$value = get_post_meta( $post->ID, $key, true );
-
 			if ( $value ) {
+				if ( ! is_string( $value ) ) {
+					$value = strval( $value );
+				}
 				$customFieldContent .= "{$value} ";
 			}
 		}
@@ -311,8 +366,8 @@ trait WpContext {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  int     $postId The post ID.
-	 * @return boolean         If the page is special or not.
+	 * @param  int  $postId The post ID.
+	 * @return bool         If the page is special or not.
 	 */
 	public function isSpecialPage( $postId = false ) {
 		if (
@@ -409,8 +464,8 @@ trait WpContext {
 	 *
 	 * @since 4.0.13
 	 *
-	 * @param  string  $url The URL.
-	 * @return boolean      Whether the URL is a valid attachment.
+	 * @param  string $url The URL.
+	 * @return bool        Whether the URL is a valid attachment.
 	 */
 	public function isValidAttachment( $url ) {
 		$uploadDirUrl = aioseo()->helpers->escapeRegex( $this->getWpContentUrl() );
@@ -425,8 +480,8 @@ trait WpContext {
 	 *
 	 * @since 4.0.13
 	 *
-	 * @param  string       $url The attachment URL.
-	 * @return int|boolean       The attachment ID or false if no attachment could be found.
+	 * @param  string   $url The attachment URL.
+	 * @return int|bool      The attachment ID or false if no attachment could be found.
 	 */
 	public function attachmentUrlToPostId( $url ) {
 		$cacheName = 'attachment_url_to_post_id_' . sha1( "aioseo_attachment_url_to_post_id_$url" );
@@ -519,17 +574,34 @@ trait WpContext {
 	}
 
 	/**
+	 * Check if we are in the middle of a WP-CLI call.
+	 *
+	 * @since 4.2.8
+	 *
+	 * @return bool True if we are in the WP_CLI context.
+	 */
+	public function isDoingWpCli() {
+		return defined( 'WP_CLI' ) && WP_CLI;
+	}
+
+	/**
 	 * Checks whether we're on the given screen.
 	 *
-	 * @since 4.0.7
+	 * @since   4.0.7
+	 * @version 4.3.1
 	 *
-	 * @param  string  $screenName The screen name.
-	 * @return boolean             Whether we're on the given screen.
+	 * @param  string $screenName The screen name.
+	 * @param  string $comparison Check as a prefix.
+	 * @return bool               Whether we're on the given screen.
 	 */
-	public function isScreenBase( $screenName ) {
+	public function isScreenBase( $screenName, $comparison = '' ) {
 		$screen = $this->getCurrentScreen();
 		if ( ! $screen || ! isset( $screen->base ) ) {
 			return false;
+		}
+
+		if ( 'prefix' === $comparison ) {
+			return 0 === stripos( $screen->base, $screenName );
 		}
 
 		return $screen->base === $screenName;
@@ -540,9 +612,8 @@ trait WpContext {
 	 *
 	 * @since 4.0.17
 	 *
-	 * @param string $postType Post type slug
-	 *
-	 * @return bool
+	 * @param  string $postType Post type slug
+	 * @return bool             True if the current screen is a post type screen.
 	 */
 	public function isScreenPostType( $postType ) {
 		$screen = $this->getCurrentScreen();
@@ -602,7 +673,7 @@ trait WpContext {
 	}
 
 	/**
-	 * Gets current admin screen
+	 * Gets current admin screen.
 	 *
 	 * @since 4.0.17
 	 *
@@ -645,5 +716,134 @@ trait WpContext {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Returns which type of WordPress page we're seeing.
+	 * It will only work if {@see \WP_Query::$queried_object} has been set.
+	 *
+	 * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#filter-hierarchy
+	 *
+	 * @since 4.2.8
+	 *
+	 * @return string|null The template type or `null` if no match.
+	 */
+	public function getTemplateType() {
+		static $type = null;
+
+		if ( ! empty( $type ) ) {
+			return $type;
+		}
+
+		if ( is_attachment() ) {
+			$type = 'attachment';
+		} elseif ( is_single() ) {
+			$type = 'single';
+		} elseif (
+			is_page() ||
+			$this->isStaticPostsPage() ||
+			$this->isWooCommerceShopPage()
+		) {
+			$type = 'page';
+		} elseif ( is_author() ) { // An author page is an archive page, so it needs to be checked before `is_archive()`.
+			$type = 'author';
+		} elseif (
+			is_tax() ||
+			is_category() ||
+			is_tag()
+		) { // A taxonomy term page is an archive page, so it needs to be checked before `is_archive()`.
+			$type = 'taxonomy';
+		} elseif ( is_date() ) { // A date page is an archive page, so it needs to be checked before `is_archive()`.
+			$type = 'date';
+		} elseif ( is_archive() ) {
+			$type = 'archive';
+		} elseif ( is_home() && is_front_page() ) {
+			$type = 'dynamic_home';
+		} elseif ( is_search() ) {
+			$type = 'search';
+		}
+
+		return $type;
+	}
+
+	/**
+	 * Sets the given post as the queried object of the main query.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param  \WP_Post $post The post object.
+	 * @return void
+	 */
+	public function setWpQueryPost( $wpPost ) {
+		global $wp_query, $post;
+		$this->originalQuery = clone $wp_query;
+		$this->originalPost  = $post;
+
+		$wp_query->posts                 = [ $wpPost ];
+		$wp_query->post                  = $wpPost;
+		$wp_query->post_count            = 1;
+		$wp_query->get_queried_object_id = (int) $wpPost->ID;
+		$wp_query->queried_object        = $wpPost;
+		$wp_query->is_single             = true;
+		$wp_query->is_singular           = true;
+
+		if ( 'page' === $wpPost->post_type ) {
+			$wp_query->is_page = true;
+		}
+
+		$post = $wpPost;
+	}
+
+	/**
+	 * Sets the given term as the queried object of the main query.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  \WP_Term $term The term object.
+	 * @return void
+	 */
+	public function setWpQueryTerm( $term ) {
+		global $wp_query;
+		$this->originalQuery = clone $wp_query;
+
+		$term->term_id = $term->id;
+
+		$wp_query->get_queried_object_id = (int) $term->id;
+		$wp_query->queried_object        = $term;
+		$wp_query->is_tax                = true;
+
+		switch ( $term->taxonomy ) {
+			case 'category':
+				$wp_query->is_category = true;
+				break;
+			case 'post_tag':
+				$wp_query->is_tag = true;
+				break;
+			default:
+				break;
+		}
+	}
+
+	/**
+	 * Restores the main query back to the original query.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @return void
+	 */
+	public function restoreWpQuery() {
+		if ( null === $this->originalQuery ) {
+			return;
+		}
+
+		global $wp_query, $post;
+		$wp_query = clone $this->originalQuery;
+
+		if ( null !== $this->originalPost ) {
+			$post = $this->originalPost;
+		}
+
+		$this->originalQuery = null;
+		$this->originalPost = null;
 	}
 }

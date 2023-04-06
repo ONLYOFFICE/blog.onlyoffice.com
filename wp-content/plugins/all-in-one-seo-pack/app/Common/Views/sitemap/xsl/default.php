@@ -154,14 +154,16 @@ if ( '/sitemap.rss' === $sitemapPath ) {
 							<?php endif; ?>
 						</td>
 						<td class="datetime">
-							<?php 
-							aioseo()->templates->getTemplate(
-								'sitemap/xsl/partials/date-time.php',
-								[
-									'datetime' => $xslParams['datetime'],
-									'node'     => 'sitemap:loc'
-								]
-							);
+							<?php
+							if ( ! empty( $xslParams['datetime'] ) ) {
+								aioseo()->templates->getTemplate(
+									'sitemap/xsl/partials/date-time.php',
+									[
+										'datetime' => $xslParams['datetime'],
+										'node'     => 'sitemap:loc'
+									]
+								);
+							}
 							?>
 						</td>
 					</tr>
@@ -229,13 +231,15 @@ if ( '/sitemap.rss' === $sitemapPath ) {
 						</td>
 						<td class="datetime">
 							<?php 
-							aioseo()->templates->getTemplate(
-								'sitemap/xsl/partials/date-time.php',
-								[
-									'datetime' => $xslParams['datetime'],
-									'node'     => 'link'
-								]
-							);
+							if ( ! empty( $xslParams['datetime'] ) ) {
+								aioseo()->templates->getTemplate(
+									'sitemap/xsl/partials/date-time.php',
+									[
+										'datetime' => $xslParams['datetime'],
+										'node'     => 'link'
+									]
+								);
+							}
 							?>
 						</td>
 					</tr>
@@ -403,13 +407,15 @@ if ( '/sitemap.rss' === $sitemapPath ) {
 						</td>
 						<td class="datetime">
 							<?php 
-							aioseo()->templates->getTemplate(
-								'sitemap/xsl/partials/date-time.php',
-								[
-									'datetime' => $xslParams['datetime'],
-									'node'     => 'sitemap:loc'
-								]
-							);
+							if ( ! empty( $xslParams['datetime'] ) ) {
+								aioseo()->templates->getTemplate(
+									'sitemap/xsl/partials/date-time.php',
+									[
+										'datetime' => $xslParams['datetime'],
+										'node'     => 'sitemap:loc'
+									]
+								);
+							}
 							?>
 						</td>
 					</tr>
