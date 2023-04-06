@@ -59,6 +59,10 @@ $app->addAdminAjaxAction('fluentform-form-duplicate', function () use ($app) {
     Acl::verify('fluentform_forms_manager');
     (new \FluentForm\App\Modules\Form\Form($app))->duplicate();
 });
+$app->addAdminAjaxAction('fluentform-form-find-shortcode-locations', function () use ($app) {
+    Acl::verify('fluentform_forms_manager');
+    (new \FluentForm\App\Modules\Form\Form($app))->findFormLocations();
+});
 
 $app->addAdminAjaxAction('fluentform-convert-to-conversational', function () use ($app) {
     Acl::verify('fluentform_forms_manager');

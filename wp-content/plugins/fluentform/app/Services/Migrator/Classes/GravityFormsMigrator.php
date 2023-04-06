@@ -239,36 +239,43 @@ class GravityFormsMigrator extends BaseMigrator
      */
     private function getAddressArgs(array $field)
     {
+        $required = ArrayHelper::isTrue($field, 'isRequired');
         return [
             'address_line_1' => [
                 'name'    => $this->getInputName($field['inputs'][0]),
                 'label'   => $field['inputs'][0]['label'],
                 'visible' => ArrayHelper::get($field, 'inputs.0.isHidden', true),
+                'required' => $required,
             ],
             'address_line_2' => [
                 'name'    => $this->getInputName($field['inputs'][1]),
                 'label'   => $field['inputs'][1]['label'],
                 'visible' => ArrayHelper::get($field, 'inputs.1.isHidden', true),
+                'required' => $required,
             ],
             'city'           => [
                 'name'    => $this->getInputName($field['inputs'][2]),
                 'label'   => $field['inputs'][2]['label'],
                 'visible' => ArrayHelper::get($field, 'inputs.2.isHidden', true),
+                'required' => $required,
             ],
             'state'          => [
                 'name'    => $this->getInputName($field['inputs'][3]),
                 'label'   => $field['inputs'][3]['label'],
                 'visible' => ArrayHelper::get($field, 'inputs.3.isHidden', true),
+                'required' => $required,
             ],
             'zip'            => [
                 'name'    => $this->getInputName($field['inputs'][4]),
                 'label'   => $field['inputs'][4]['label'],
                 'visible' => ArrayHelper::get($field, 'inputs.4.isHidden', true),
+                'required' => $required,
             ],
             'country'        => [
                 'name'    => $this->getInputName($field['inputs'][5]),
                 'label'   => $field['inputs'][5]['label'],
                 'visible' => ArrayHelper::get($field, 'inputs.5.isHidden', true),
+                'required' => $required,
             ],
         ];
     }
@@ -616,12 +623,23 @@ class GravityFormsMigrator extends BaseMigrator
             return false;
         }
 
-        $submissions = \GFAPI::get_entries($formId);
+        /**
+         * Note - more-then 5000/6000 (based on sever) entries process make timout response / set default limit 1000
+         * @todo need silently async processing for support all entries migrate at a time, and improve frontend entry-migrate with more settings options
+         */
+        $totalEntries = \GFAPI::count_entries($formId);
+        $perPage = apply_filters('fluentform/entry_migration_max_limit', static::DEFAULT_ENTRY_MIGRATION_MAX_LIMIT, $this->key , $totalEntries, $formId);
+        $offset = 0;
+        $paging = [
+            'offset'    => $offset,
+            'page_size' => $perPage
+        ];
+        $submissions = \GFAPI::get_entries($formId, [], [], $paging);
         $entries = [];
         if (!is_array($submissions)) {
             return $entries;
         }
-        
+
         $fieldsMap = $this->getFields($form);
         foreach ($submissions as $submission) {
             $entry = [];
@@ -637,7 +655,7 @@ class GravityFormsMigrator extends BaseMigrator
                 // format entry value by field name
                 $finalValue = null;
                 if ("input_file" == $type && $value = $this->getSubmissionValue($id, $submission)) {
-                    $finalValue = $this->handleFileValue($value);
+                    $finalValue = $this->migrateFilesAndGetUrls($value);
                 } elseif ("repeater_field" == $type && $value = $this->getSubmissionValue($id, $submission)) {
                     if ($repeatData = (array)maybe_unserialize($value)) {
                         $finalValue = [];
@@ -667,6 +685,12 @@ class GravityFormsMigrator extends BaseMigrator
                     $finalValue = is_object($fieldModel) ? $fieldModel->get_value_export($submission, $id) : '';
                 }
                 $entry[$name] = $finalValue;
+            }
+            if ($created_at = ArrayHelper::get($submission, 'date_created')) {
+                $entry['created_at'] = $created_at;
+            }
+            if ($updated_at = ArrayHelper::get($submission, 'date_updated')) {
+                $entry['updated_at'] = $updated_at;
             }
             $entries[] = $entry;
         }
@@ -722,26 +746,4 @@ class GravityFormsMigrator extends BaseMigrator
     {
         return  isset($submission[$id]) ? $submission[$id] : "";
     }
-
-    protected function handleFileValue($url)
-    {
-        $value = [];
-        $file_name = 'ff-' . wp_basename($url);
-        $basDir = wp_upload_dir()['basedir'] . '/fluentform/';
-        $baseurl = wp_upload_dir()['baseurl'] . '/fluentform/';
-        if ((!file_exists($basDir)) || (file_exists($basDir) && !is_dir($basDir))) {
-            mkdir($basDir);
-        }
-
-        $destination = $basDir . $file_name;
-
-        require_once(ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php');
-        require_once(ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php');
-        $fileSystemDirect = new \WP_Filesystem_Direct(false);
-        if ($fileSystemDirect->copy($url, $destination, true)) {
-            $value[] = $baseurl .  $file_name;
-        }
-        return $value;
-    }
-
 }

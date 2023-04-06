@@ -446,7 +446,7 @@ class Helper
             return $input;
         }
         $settings = $formatters[$formatterName]['settings'];
-        $number = floatval(str_replace($settings['decimal'], '.', preg_replace('/[^\d' . preg_quote($settings['decimal']) . ']/', '', $input)));
+        $number = floatval(str_replace($settings['decimal'], '.', preg_replace('/[^-?\d' . preg_quote($settings['decimal']) . ']/', '', $input)));
 
         return number_format($number, $settings['precision'], '.', '');
     }
@@ -624,6 +624,15 @@ class Helper
 
         return $content;
     }
+    
+    public static function sanitizeOrderValue($orderType = '')
+    {
+        $orderBys = ['ASC', 'DESC'];
+        
+        $orderType = trim(strtoupper($orderType));
+        
+        return in_array($orderType, $orderBys) ? $orderType : 'DESC';
+    }
 
     public static function getForm($id)
     {
@@ -641,16 +650,25 @@ class Helper
     }
 
     // make tabular-grid value markdown format
-    public static function getTabularGridMarkdownValue($girdData, $field, $rowJoiner = '<br />', $colJoiner = ', ')
+    public static function getTabularGridFormatValue($girdData, $field, $rowJoiner = '<br />', $colJoiner = ', ', $type = '')
     {
+        if (!$girdData || !$field) {
+            return '';
+        }
         $girdRows = ArrayHelper::get($field, 'raw.settings.grid_rows', '');
         $girdCols = ArrayHelper::get($field, 'raw.settings.grid_columns', '');
         $value = '';
+        $lastRow = key(array_slice($girdData, -1, 1, true));
         foreach ($girdData as $row => $column) {
+            $_row = $row;
             if ($girdRows && isset($girdRows[$row])) {
                 $row = $girdRows[$row];
             }
-            $value .= '- *' . $row . '* :  ';
+            if ('markdown' === $type) {
+                $value .= '- *' . $row . '* :  ';
+            } else {
+                $value .= $row . ': ';
+            }
             if (is_array($column)) {
                 foreach ($column as $index => $item) {
                     $_colJoiner = $colJoiner;
@@ -668,7 +686,9 @@ class Helper
                 }
                 $value .= $column;
             }
-            $value .= $rowJoiner;
+            if ($_row != $lastRow) {
+                $value .= $rowJoiner;
+            }
         }
         return $value;
     }

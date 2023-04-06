@@ -93,6 +93,7 @@ $elements = [
     'select_country',
     'gdpr_agreement',
     'terms_and_condition',
+    'multi_payment_component',
 ];
 
 foreach ($elements as $element) {
@@ -134,7 +135,7 @@ foreach ($elements as $element) {
             }
         }
 
-        if (in_array($element, ['select', 'input_checkbox']) && is_array($response)) {
+        if (in_array($element, ['select', 'input_checkbox', 'multi_payment_component']) && is_array($response)) {
             return \FluentForm\App\Modules\Form\FormDataParser::formatCheckBoxValues($response, $field, $isLabel);
         }
 

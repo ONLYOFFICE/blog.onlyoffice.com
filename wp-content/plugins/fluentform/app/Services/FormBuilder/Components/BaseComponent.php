@@ -176,7 +176,7 @@ class BaseComponent
         $requiredClass = $this->getRequiredClass(ArrayHelper::get($data, 'settings.validation_rules', []));
         $classes = trim('ff-el-input--label ' . $requiredClass . $this->getAsteriskPlacement($form));
 
-        return "<div class='" . esc_attr($classes) . "'><label for='" . esc_attr($id) . "'>" . fluentform_sanitize_html($label) . '</label>' . $helpMessage . '</div>';
+        return "<div class='" . esc_attr($classes) . "'><label aria-label='" . esc_attr($label) . "' for='" . esc_attr($id) . "'>" . fluentform_sanitize_html($label) . '</label>' . $helpMessage . '</div>';
     }
 
     /**
@@ -198,9 +198,11 @@ class BaseComponent
 
         $validationRules = ArrayHelper::get($data, 'settings.validation_rules');
 
+        $requiredClass = $this->getRequiredClass($validationRules);
+
         $labelClass = trim(
             'ff-el-input--label ' .
-            $this->getRequiredClass($validationRules) .
+            $requiredClass .
             $this->getAsteriskPlacement($form)
         );
 
@@ -235,9 +237,10 @@ class BaseComponent
             $label = ArrayHelper::get($data, 'settings.label');
 
             $labelMarkup = sprintf(
-                "<div class='%s'><label %s>%s</label> %s</div>",
+                '<div class="%s"><label %s aria-label="%s">%s</label> %s</div>',
                 esc_attr($labelClass),
                 $forStr,
+                esc_attr($label),
                 fluentform_sanitize_html($label),
                 fluentform_sanitize_html($labelHelpText)
             );

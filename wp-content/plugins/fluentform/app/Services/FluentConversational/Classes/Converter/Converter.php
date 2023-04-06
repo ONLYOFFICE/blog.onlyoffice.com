@@ -27,6 +27,7 @@ class Converter
         $allowedFields = static::fieldTypes();
 
         foreach ($fields as $field) {
+            $field = apply_filters('fluentform_rendering_field_data_' . $field['element'], $field, $form);
             $question = [
                 'id'              => $field['uniqElKey'],
                 'name'            => ArrayHelper::get($field, 'attributes.name'),
@@ -35,6 +36,7 @@ class Converter
                 'ff_input_type'   => $field['element'],
                 'container_class' => ArrayHelper::get($field, 'settings.container_class'),
                 'placeholder'     => ArrayHelper::get($field, 'attributes.placeholder'),
+                'maxLength'       => ArrayHelper::get($field, 'attributes.maxlength'),
                 'required'        => ArrayHelper::get($field, 'settings.validation_rules.required.value'),
                 'requiredMsg'     => ArrayHelper::get($field, 'settings.validation_rules.required.message'),
                 'errorMessage'    => ArrayHelper::get($field, 'settings.validation_rules.required.message'),
@@ -491,6 +493,7 @@ class Converter
             $fieldTypes['payment_method'] = 'FlowFormPaymentMethodType';
             $fieldTypes['multi_payment_component'] = 'FlowFormPaymentType';
             $fieldTypes['custom_payment_component'] = 'FlowFormPaymentType';
+            $fieldTypes['item_quantity_component'] = 'FlowFormPaymentType';
             $fieldTypes['payment_summary_component'] = 'FlowFormPaymentSummaryType';
             $fieldTypes['subscription_payment_component'] = 'FlowFormSubscriptionType';
             $fieldTypes['payment_coupon'] = 'FlowFormCouponType';

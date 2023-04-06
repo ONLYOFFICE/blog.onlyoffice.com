@@ -168,6 +168,7 @@ class Form
             'disable_branding'      => 'no',
             'hide_media_on_mobile'  => 'no',
             'key_hint'              => 'yes',
+            'asteriskPlacement'        => $this->getAsteriskPlacement($formId)
         ];
 
         return wp_parse_args($settings, $defaults);
@@ -193,9 +194,12 @@ class Form
                 'progress_text'        => '{percent}% completed',
                 'long_text_help'       => '<b>Shift ⇧</b> + <b>Enter ↵</b> to make a line break.',
                 'invalid_prompt'       => 'Please fill out the field correctly',
+                'errorMaxLength'       => 'The maximum {maxLength} number of characters accept',
                 'default_placeholder'  => 'Type Your answer here',
                 'key_hint_text'        => 'Key',
                 'key_hint_tooltip'     => 'Press the key to select',
+                'choose_file'          => '<b>Choose file</b> or <b>drag here</b>',
+                'limit'                => 'Size limit: '
             ],
         ];
 
@@ -620,9 +624,28 @@ class Form
     private function renderFormHtml($formId, $providedKey = '')
     {
         $form = wpFluent()->table('fluentform_forms')->find($formId);
+
         if (! $form) {
             return '';
         }
+
+        $formSettings = wpFluent()
+            ->table('fluentform_form_meta')
+            ->where('form_id', $formId)
+            ->where('meta_key', 'formSettings')
+            ->first();
+
+        if (!$formSettings) {
+            return '';
+        }
+
+        $form->fields = json_decode($form->form_fields, true);
+
+        if (!$form->fields['fields']) {
+            return '';
+        }
+
+        $form->settings = json_decode($formSettings->value, true);
 
         $metaSettings = $this->getMetaSettings($formId);
 
@@ -633,6 +656,7 @@ class Form
             }
         }
 
+        $form = wpFluentForm()->applyFilters('fluentform_rendering_form', $form);
         $form = Converter::convert($form);
 
         $formSettings = wpFluent()
@@ -784,5 +808,28 @@ class Form
         }
 
         return $paymentConfig;
+    }
+
+    protected function getAsteriskPlacement($formId)
+    {
+        $asteriskPlacement = 'asterisk-right';
+
+        $formSettings = wpFluent()
+            ->table('fluentform_form_meta')
+            ->where('form_id', $formId)
+            ->where('meta_key', 'formSettings')
+            ->first();
+
+        if (! $formSettings) {
+            return '';
+        }
+
+        $formSettings = json_decode($formSettings->value, true);
+
+        if (isset($formSettings['layout']['asteriskPlacement'])) {
+            $asteriskPlacement = $formSettings['layout']['asteriskPlacement'];
+        }
+
+        return $asteriskPlacement;
     }
 }

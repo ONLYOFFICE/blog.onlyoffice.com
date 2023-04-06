@@ -26,7 +26,7 @@ class EmailNotificationActions
         });
 
         add_action('fluentform_integration_notify_notifications', [$this, 'notify'], 10, 4);
-        add_action('fluentform_process_payment', [$this, 'notifyOnSubmitPaymentForm'], 10, 3);
+        add_action('fluentform/notify_on_form_submit', [$this, 'notifyOnSubmitPaymentForm'], 10, 3);
     }
 
     public function notifyOnSubmitPaymentForm($submissionId, $submissionData, $form)

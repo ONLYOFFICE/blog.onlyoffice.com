@@ -42,7 +42,7 @@
                     <div class="ff_block_box text-center">
                         <h2><?php _e('Fluent Forms Video Tutorials', 'fluentform') ?></h2>
                         <div class="videoWrapper">
-                            <iframe width="1280" height="720" src="https://www.youtube.com/embed/M_r-4Ernjj0?list=PLXpD0vT4thWG7KlcCpGWDSs0t6Wvs7xIJ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="1280" height="720" src="https://www.youtube.com/embed/M_r-4Ernjj0?list=PLXpD0vT4thWEpMEGqaEQaxTQ34ac2xzfb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
                 </div>
@@ -75,4 +75,3 @@
         </div>
     </div>
 </div>
-		

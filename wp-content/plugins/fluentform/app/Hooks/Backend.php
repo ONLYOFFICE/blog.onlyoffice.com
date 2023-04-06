@@ -443,3 +443,8 @@ foreach ($autoIncludeRecaptcha as $input) {
         return false;
     });
 }
+
+//
+add_action('admin_init', function ()  {
+    (new \FluentForm\App\Modules\Registerer\AdminBar())->register();
+}, 9);

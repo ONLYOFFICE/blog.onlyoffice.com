@@ -205,7 +205,7 @@ class Form
                 'helpMessagePlacement'  => 'with_label',
                 'errorMessagePlacement' => 'inline',
                 'cssClassName'          => '',
-                'asteriskPlacement'     => 'asterisk-right',
+                'asteriskPlacement'     => 'asterisk-right'
             ],
             'delete_entry_on_submission' => 'no',
         ];
@@ -580,6 +580,9 @@ class Form
                 $extras[$meta->meta_key][] = $meta;
                 continue;
             }
+            if ("ffc_form_settings_generated_css" == $meta->meta_key || "ffc_form_settings_meta" == $meta->meta_key) {
+                $meta->value = str_replace('ff_conv_app_' . $formId, 'ff_conv_app_' . $newFormId, $meta->value);
+            }
             $metaData = [
                 'meta_key' => $meta->meta_key,
                 'value'    => $meta->value,
@@ -665,7 +668,7 @@ class Form
             'message' => __('Form has been successfully converted.', 'fluentform'),
         ], 200);
     }
-
+    
     private function getAdminPermalink($route, $form)
     {
         $baseUrl = admin_url('admin.php?page=fluent_forms');
@@ -741,5 +744,94 @@ class Form
             $extras['notifications'][$key] = $notification;
         }
         return $extras;
+    }
+    
+    public function findFormLocations()
+    {
+        $formId = intval($this->request->get('form_id'));
+    
+        $excluded = ['attachment'];
+        $post_types = get_post_types(['show_in_menu' => true], 'objects', 'or');
+        $postTypes = [];
+        foreach($post_types as $post_type) {
+            $postTypeName = $post_type->name;
+            if (in_array($postTypeName, $excluded)) {
+                continue;
+            }
+            $postTypes[] = $postTypeName;
+        }
+    
+        $params = array(
+            'post_type'      => $postTypes,
+            'posts_per_page' => -1
+        );
+    
+        $params = apply_filters('fluentform_find_shortcode_params', $params);
+        $formLocations = [];
+        $posts = get_posts($params);
+        foreach($posts as $post) {
+        
+            $formIds = self::getShortCodeIds($post->post_content);
+            if(!empty($formIds) && in_array($formId,$formIds)) {
+    
+                $postType = get_post_type_object($post->post_type);
+                $formLocations[] = [
+                    'id'        => $post->ID,
+                    'name'      => $postType->labels->singular_name,
+                    'title'     => (empty($post->post_title) ? $post->ID : $post->post_title),
+                    'edit_link' => sprintf("%spost.php?post=%s&action=edit", admin_url(), $post->ID),
+                ];
+            }
+        }
+        $data = [
+            'locations' => $formLocations,
+            'status'    => !empty($formLocations),
+        ];
+        wp_send_json($data, 200);
+    
+    }
+    
+    public static function getShortCodeIds($content)
+    {
+        $ids = [];
+        $tag = 'fluentform';
+        $selector = 'id';
+        
+        if (function_exists('parse_blocks')) {
+            $parsedBlocks = parse_blocks($content);
+            foreach ($parsedBlocks as $block) {
+                if (!ArrayHelper::exists($block, 'blockName') || ArrayHelper::exists($block, 'attrs.formId')) {
+                    continue;
+                }
+                $hasBlock = strpos($block['blockName'], 'fluentfom/guten-block') === 0;
+                if ($hasBlock) {
+                    $ids[] = intval($block['attrs']['formId']);
+                }
+            }
+        }
+
+        $hasShortCode = has_shortcode($content, $tag);
+        if(!$hasShortCode){
+            return $ids;
+        }
+
+        preg_match_all('/' . get_shortcode_regex() . '/', $content, $matches, PREG_SET_ORDER);
+        if (empty($matches)) {
+            return $ids;
+        }
+        
+        
+        foreach ($matches as $shortcode) {
+            if (count($shortcode) >= 2 && $tag === $shortcode[2]) {
+                $parsedCode = str_replace(['[', ']', '&#91;', '&#93;'], '', $shortcode[0]);
+                
+                $result = shortcode_parse_atts($parsedCode);
+                
+                if (!empty($result[$selector])) {
+                    $ids[] = $result[$selector];
+                }
+            }
+        }
+        return $ids;
     }
 }

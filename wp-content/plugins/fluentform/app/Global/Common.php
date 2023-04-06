@@ -292,7 +292,6 @@ function fluentform_sanitize_html($html)
         'width'           => [],
         'height'          => [],
         'src'             => [],
-        'srcdoc'          => [],
         'title'           => [],
         'frameborder'     => [],
         'allow'           => [],

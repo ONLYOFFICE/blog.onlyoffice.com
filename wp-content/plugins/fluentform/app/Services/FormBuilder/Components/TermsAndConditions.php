@@ -3,6 +3,7 @@
 namespace FluentForm\App\Services\FormBuilder\Components;
 
 use FluentForm\App\Helpers\Helper;
+use FluentForm\Framework\Helpers\ArrayHelper;
 
 class TermsAndConditions extends BaseComponent
 {
@@ -42,13 +43,19 @@ class TermsAndConditions extends BaseComponent
 
         $atts = $this->buildAttributes($data['attributes']);
         $checkbox = '';
+
+        $ariaRequired = 'false';
+        if (ArrayHelper::get($data, 'settings.validation_rules.required.value')) {
+            $ariaRequired = 'true';
+        }
+
         if ($data['settings']['has_checkbox']) {
-            $checkbox = "<span class='ff_tc_checkbox'><input {$atts} value='on'></span>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
+            $checkbox = "<span class='ff_tc_checkbox'><input {$atts} value='on' aria-invalid='false' aria-required={$ariaRequired}></span>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
         }
 
         $html = "<div class='" . esc_attr($cls) . "'>";
         $html .= "<div class='ff-el-form-check ff-el-tc'>";
-        $html .= "<label class='ff-el-form-check-label ff_tc_label' for={$uniqueId}>";
+        $html .= "<label aria-label='terms & conditions' class='ff-el-form-check-label ff_tc_label' for={$uniqueId}>";
         $html .= "{$checkbox} <div class='ff_t_c'>" . fluentform_sanitize_html($data['settings']['tnc_html']) . '</div>';
         $html .= '</label>';
         $html .= '</div>';

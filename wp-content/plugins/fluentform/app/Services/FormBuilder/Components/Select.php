@@ -60,7 +60,12 @@ class Select extends BaseComponent
         $atts = $this->buildAttributes($data['attributes']);
         $options = $this->buildOptions($data, $defaultValues);
 
-        $elMarkup = '<select ' . $atts . '>' . $options . '</select>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts, $options are escaped before being passed in.
+        $ariaRequired = 'false';
+        if (ArrayHelper::get($data, 'settings.validation_rules.required.value')) {
+            $ariaRequired = 'true';
+        }
+
+        $elMarkup = '<select ' . $atts . ' aria-invalid="false" aria-required=' . $ariaRequired . '>' . $options . '</select>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts, $options are escaped before being passed in.
 
         $html = $this->buildElementMarkup($elMarkup, $data, $form);
 

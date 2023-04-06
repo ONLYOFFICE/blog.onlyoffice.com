@@ -554,7 +554,9 @@ class CalderaMigrator extends BaseMigrator
     {
 
         $form = \Caldera_Forms::get_form($formId);
-        $data = \Caldera_Forms_Admin::get_entries($form, 1, 999);
+        $totalEntries = (new \Caldera_Forms_Entry_Entries($form, 9999))->get_total('active');
+        $max_limit = apply_filters('fluentform/entry_migration_max_limit', static::DEFAULT_ENTRY_MIGRATION_MAX_LIMIT, $this->key, $totalEntries, $formId);
+        $data = \Caldera_Forms_Admin::get_entries($form, 1, $max_limit);
         $nameKeyMap = $this->getFieldsNameMap($form);
         $entries = [];
         if (!is_array(ArrayHelper::get($data, 'entries'))) {

@@ -62,6 +62,7 @@ add_filter('fluentform_rendering_form', function ($form) {
 
     // place recaptcha below custom submit button
     $hasCustomSubmit = false;
+
     foreach ($form->fields['fields'] as $index => $field) {
         if ('custom_submit_button' == $field['element']) {
             $hasCustomSubmit = true;

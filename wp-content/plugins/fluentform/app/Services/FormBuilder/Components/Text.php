@@ -81,10 +81,12 @@ class Text extends BaseComponent
             $min = ArrayHelper::get($data, 'settings.validation_rules.min.value');
             if ($min || 0 == $min) {
                 $data['attributes']['min'] = $min;
+                $data['attributes']['aria-valuemin'] = $min;
             }
 
             if ($max = ArrayHelper::get($data, 'settings.validation_rules.max.value')) {
                 $data['attributes']['max'] = $max;
+                $data['attributes']['aria-valuemax'] = $max;
             }
 
             if ($formatter = ArrayHelper::get($data, 'settings.numeric_formatter')) {
@@ -127,7 +129,12 @@ class Text extends BaseComponent
 
     private function buildInputGroup($data, $form)
     {
-        $input = '<input ' . $this->buildAttributes($data['attributes'], $form) . '>';
+        $ariaRequired = 'false';
+        if (ArrayHelper::get($data, 'settings.validation_rules.required.value')) {
+            $ariaRequired = 'true';
+        }
+
+        $input = '<input ' . $this->buildAttributes($data['attributes'], $form) . ' aria-invalid="false" aria-required='.$ariaRequired.'>';
         $prefix = ArrayHelper::get($data, 'settings.prefix_label');
         $suffix = ArrayHelper::get($data, 'settings.suffix_label');
         if ($prefix || $suffix) {
