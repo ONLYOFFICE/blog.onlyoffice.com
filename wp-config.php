@@ -1,16 +1,16 @@
 <?php
 /**
- * Основные параметры WordPress.  
+ * Basic WordPress settings.  
  *
- * Скрипт для создания wp-config.php использует этот файл в процессе
- * установки. Необязательно использовать веб-интерфейс, можно
- * скопировать файл в "wp-config.php" и заполнить значения вручную.
+* The script to create wp-config.php uses this file in the process
+* settings. You don't have to use the web interface, you can
+* copy the file to "wp-config.php" and fill in the values manually.
  *
- * Этот файл содержит следующие параметры: 
+ * This file contains the following options:
  * 
- * * Настройки MySQL 
- * * Секретные ключи 
- * * Префикс таблиц базы данных
+ * * MySQL settings
+ * * Secret keys
+ * * Database table prefix
  * * ABSPATH
  *
  * @link https://codex.wordpress.org/Editing_wp-config.php
@@ -46,11 +46,11 @@ define( 'WP_AUTO_UPDATE_CORE', false );
 $GLOBALS['WEB_BLOG_FOLDER_URL'] = '/blog';
 
 /**#@+
- * Уникальные ключи и соли для аутентификации.
+ * Unique keys and salts for authentication.
  *
- * Смените значение каждой константы на уникальную фразу.
- * Можно сгенерировать их с помощью {@link https://api.wordpress.org/secret-key/1.1/salt/ сервиса ключей на WordPress.org}
- * Можно изменить их, чтобы сделать существующие файлы cookies недействительными. Пользователям потребуется авторизоваться снова.
+ * Change the value of each constant to a unique phrase.
+ * You can generate them using {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org key service}
+ * You can change them to invalidate existing cookies. Users will need to log in again.
  *
  * @since 2.6.0
  */
@@ -66,21 +66,21 @@ define( 'NONCE_SALT',       'some_key8' );
 /**#@-*/
 
 /**
- * Префикс таблиц в базе данных WordPress.
+ * Table prefix in the WordPress database.
  *
- * Можно установить несколько сайтов в одну базу данных, если использовать
- * разные префиксы. Пожалуйста, указывайте только цифры, буквы и знак подчеркивания.
+ * You can install multiple sites in one database if you use
+ * different prefixes. Please enter only numbers, letters and underscores.
  */
 $table_prefix = 'tm_';
 
 /**
- * Для разработчиков: Режим отладки WordPress.
+ * For Developers: WordPress Debug Mode.
  *
- * Измените это значение на true, чтобы включить отображение уведомлений при разработке.
- * Разработчикам плагинов и тем настоятельно рекомендуется использовать WP_DEBUG
- * в своём рабочем окружении.
+ * Change this value to true to enable display of notifications during development.
+ * Plugin and theme developers are strongly encouraged to use WP_DEBUG
+ * in their workspace.
  *
- * Информацию о других отладочных константах можно найти в Кодексе.
+ * Information on other debugging constants can be found in the Codex.
  *
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
@@ -88,13 +88,13 @@ define( 'WP_DEBUG', false );
 define('WP_TEMP_DIR', dirname(__FILE__) . '/wp-content/temp/');
 define ('WPLANG', '');
 
-/* Это всё, дальше не редактируем. Успехов! */
+/* That's it, no further editing. Good luck! */
 
-/** Абсолютный путь к директории WordPress. */
+/** Absolute path to the WordPress directory. */
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', dirname( __FILE__ ) . '/' );
 }
 
-/** Инициализирует переменные WordPress и подключает файлы. */
+/** Initializes WordPress variables and includes files. */
 require_once( ABSPATH . 'wp-settings.php' );
 add_filter('xmlrpc_enabled', '__return_false'); 

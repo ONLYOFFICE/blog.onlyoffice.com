@@ -181,7 +181,7 @@ function teamlab_blog_2_0_content_width() {
 }
 add_action( 'after_setup_theme', 'teamlab_blog_2_0_content_width', 0 );
 
-// Вывод первой картинки с поста
+// The output of the first image from the post
 function bloggood_ru_image() {
   global $post, $posts;
   $first_img = '';
@@ -190,7 +190,7 @@ function bloggood_ru_image() {
   $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches); // выдираем первый имагес
   $first_img = $matches [1] [0];
  
-// Если картинка в посте отсутствует, тогда выводим изображение по умолчанию (указать путь и имя к картинке)
+// If there is no image in the post, then display the default image (specify the path and name for the image)
   if(empty($first_img)){
     $template_uri = get_template_directory_uri();
    $first_img = $template_uri . "/images/blog_online_editors.jpg";
@@ -294,7 +294,7 @@ function search_tags_query($query) {
             $query->set('tax_query', [
                 'relation' => 'OR',
                 [
-                    'term_taxonomy' => 'post_tag', // или custom taxonomy какой-то, если нужно
+                    'term_taxonomy' => 'post_tag', // or some custom taxonomy if needed
                     'field' => 'name',
                     'terms' => $terms
                 ]

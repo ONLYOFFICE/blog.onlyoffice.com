@@ -7,7 +7,7 @@ get_header();
 ?>
 
 <?php
-// запрос
+// request
 
  $args = [
   'post_type' => 'news',
