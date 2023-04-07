@@ -81,7 +81,7 @@ class Frontend {
 
 		if ( is_search() ) {
 			$type      = 'search';
-			$reference = sanitize_text_field( get_search_query() );
+			$reference = htmlspecialchars( sanitize_text_field( get_search_query() ) );
 		}
 
 		if ( is_404() ) {
@@ -153,6 +153,11 @@ class Frontend {
 			return;
 		}
 
+		// We can only run after this action because we need all post types loaded.
+		if ( ! did_action( 'init' ) ) {
+			return;
+		}
+
 		$breadcrumbs = $this->getBreadcrumbs();
 		if ( empty( $breadcrumbs ) ) {
 			return;
@@ -162,7 +167,7 @@ class Frontend {
 
 		$display = '<div class="aioseo-breadcrumbs">';
 		foreach ( $breadcrumbs as $breadcrumb ) {
-			-- $breadcrumbsCount;
+			--$breadcrumbsCount;
 
 			$breadcrumbDisplay = $this->breadcrumbToDisplay( $breadcrumb );
 
@@ -203,7 +208,6 @@ class Frontend {
 	 */
 	protected function breadcrumbToDisplay( $item ) {
 		$templateItem = $this->getCrumbTemplate( $item );
-
 		if ( empty( $templateItem['template'] ) ) {
 			return;
 		}

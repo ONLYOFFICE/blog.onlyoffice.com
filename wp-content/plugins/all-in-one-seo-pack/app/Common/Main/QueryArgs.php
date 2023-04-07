@@ -479,11 +479,12 @@ class QueryArgs {
 		return [
 			'/^attribute_/',
 			'/_id$/',
+			'_wcsnonce',
 			'add-to-cart',
 			'add_coupon',
 			'item',
 			'key',
-			'_wcsnonce',
+			'orderby',
 			'post_type',
 			'product',
 			'product_cat',

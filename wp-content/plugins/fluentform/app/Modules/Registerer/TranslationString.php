@@ -144,6 +144,10 @@ class TranslationString
             'Share your form by unique URL or copy and paste the ' => __('Share your form by unique URL or copy and paste the ', 'fluentform'),
             ' to embed in your page and post' => __(' to embed in your page and post', 'fluentform'),
             'Loading Design... Please wait' => __('Loading Design... Please wait', 'fluentform'),
+            'File Upload Text' => __('File Upload Text', 'fluentform'),
+            'File Upload Size Limit Text' => __('File Upload Size Limit Text', 'fluentform'),
+            'Enter File Upload Field Size Limit text' => __('Enter File Upload Field Size Limit text', 'fluentform'),
+            'Enter File Upload Field text' => __('Enter File Upload Field text', 'fluentform'),
         );
 
         return apply_filters('fluentform/admin_i18n', $i18n);
@@ -342,6 +346,10 @@ class TranslationString
             'Page Design Style' => __('Page Design Style', 'fluentform'),
             'BG Color' => __('BG Color', 'fluentform'),
             'Choose Custom Color for your form page' => __('Choose Custom Color for your form page', 'fluentform'),
+            'Outer Shadow' => __('Outer Shadow', 'fluentform'),
+            'Inner Shadow' => __('Inner Shadow', 'fluentform'),
+            'Form Container Shadow' => __('Form Container Shadow', 'fluentform'),
+            'Choose Shadow for your form container' => __('Choose Shadow for your form container', 'fluentform'),
             'BG Image' => __('BG Image', 'fluentform'),
             'Background Image' => __('Background Image', 'fluentform'),
             'Page Background Image' => __('Page Background Image', 'fluentform'),

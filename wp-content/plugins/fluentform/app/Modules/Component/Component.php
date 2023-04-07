@@ -1041,8 +1041,9 @@ class Component
             ?>
             <script type="text/javascript">
                 <?php if (defined('ELEMENTOR_PRO_VERSION')): ?>
-                jQuery(document).on('elementor/popup/show', function(event, id, instance) {
-                    var ffForms = jQuery('#elementor-popup-modal-' + id).find('form.frm-fluent-form');
+
+                window.addEventListener('elementor/popup/show', function (e) {
+                    var ffForms = jQuery('#elementor-popup-modal-' + e.detail.id).find('form.frm-fluent-form');
 
                     /**
                      * Support conversation form in elementor popup

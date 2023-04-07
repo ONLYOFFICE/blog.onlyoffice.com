@@ -31,6 +31,22 @@ class Context {
 	}
 
 	/**
+	 * Returns the default context data.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @return array The context data.
+	 */
+	public function defaults() {
+		return [
+			'name'        => aioseo()->meta->title->getTitle(),
+			'description' => aioseo()->meta->description->getDescription(),
+			'url'         => aioseo()->helpers->getUrl(),
+			'breadcrumb'  => []
+		];
+	}
+
+	/**
 	 * Returns the context data for the homepage.
 	 *
 	 * @since 4.0.0
@@ -53,7 +69,12 @@ class Context {
 		// Homepage set to static page.
 		$post = aioseo()->helpers->getPost();
 		if ( ! $post ) {
-			return [];
+			return [
+				'name'        => '',
+				'description' => '',
+				'url'         => aioseo()->helpers->getUrl(),
+				'breadcrumb'  => [],
+			];
 		}
 
 		$context['object'] = $post;
@@ -71,7 +92,12 @@ class Context {
 	public function post() {
 		$post = aioseo()->helpers->getPost();
 		if ( ! $post ) {
-			return [];
+			return [
+				'name'        => '',
+				'description' => '',
+				'url'         => aioseo()->helpers->getUrl(),
+				'breadcrumb'  => [],
+			];
 		}
 
 		return [
@@ -93,7 +119,12 @@ class Context {
 	public function term() {
 		$term = get_queried_object();
 		if ( ! $term ) {
-			return [];
+			return [
+				'name'        => '',
+				'description' => '',
+				'url'         => aioseo()->helpers->getUrl(),
+				'breadcrumb'  => [],
+			];
 		}
 
 		return [
@@ -114,7 +145,12 @@ class Context {
 	public function author() {
 		$author = get_queried_object();
 		if ( ! $author ) {
-			return [];
+			return [
+				'name'        => '',
+				'description' => '',
+				'url'         => aioseo()->helpers->getUrl(),
+				'breadcrumb'  => [],
+			];
 		}
 
 		$title       = aioseo()->meta->title->getTitle();
@@ -148,7 +184,12 @@ class Context {
 	public function postArchive() {
 		$postType = get_queried_object();
 		if ( ! $postType ) {
-			return [];
+			return [
+				'name'        => '',
+				'description' => '',
+				'url'         => aioseo()->helpers->getUrl(),
+				'breadcrumb'  => [],
+			];
 		}
 
 		$title       = aioseo()->meta->title->getTitle();

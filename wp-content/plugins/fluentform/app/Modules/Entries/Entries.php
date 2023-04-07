@@ -34,12 +34,12 @@ class Entries extends EntryQuery
     {
         $formId = intval($this->request->get('form_id'));
 
-        $limit = $this->request->get('per_page', 10);
-        $page = $this->request->get('page', 1);
+        $limit = intval($this->request->get('per_page', 10));
+        $page = intval($this->request->get('page', 1));
         $offset = ($page - 1) * $limit;
 
-        $search = $this->request->get('search');
-        $status = $this->request->get('entry_status');
+        $search = sanitize_text_field($this->request->get('search'));
+        $status = sanitize_text_field($this->request->get('entry_status'));
 
         $query = wpFluent()->table('fluentform_submissions')
             ->select([
@@ -267,7 +267,7 @@ class Entries extends EntryQuery
             intval($this->request->get('form_id')),
             intval($this->request->get('current_page', 1)),
             intval($this->request->get('per_page', 10)),
-            sanitize_text_field($this->request->get('sort_by', 'DESC')),
+            Helper::sanitizeOrderValue($this->request->get('sort_by', 'DESC')),
             sanitize_text_field($this->request->get('entry_type', 'all')),
             sanitize_text_field($this->request->get('search')),
             $wheres
@@ -315,7 +315,7 @@ class Entries extends EntryQuery
             $this->status = $entry_type;
         }
 
-        $this->sort_by = sanitize_text_field($this->request->get('sort_by', 'ASC'));
+        $this->sort_by = Helper::sanitizeOrderValue($this->request->get('sort_by', 'ASC'));
 
         $this->search = sanitize_text_field($this->request->get('search'));
 

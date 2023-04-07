@@ -39,7 +39,7 @@ class EntryQuery
     {
         $query = $this->responseModel
             ->where('form_id', $this->formId)
-            ->orderBy('id', $this->sort_by);
+            ->orderBy('id', \FluentForm\App\Helpers\Helper::sanitizeOrderValue($this->sort_by));
 
         if ($this->per_page > 0) {
             $query = $query->limit($this->per_page);
@@ -126,7 +126,7 @@ class EntryQuery
 
         return $query->select('id')
             ->where('id', $operator, $entryId)
-            ->orderBy('id', $this->sort_by)
+            ->orderBy('id', \FluentForm\App\Helpers\Helper::sanitizeOrderValue($this->sort_by))
             ->first();
     }
 

@@ -36,7 +36,9 @@ class Post extends Model {
 		// 'schema_type_options',
 		'images',
 		'videos',
-		'options'
+		'open_ai',
+		'options',
+		'local_seo'
 	];
 
 	/**
@@ -82,7 +84,7 @@ class Post extends Model {
 		// WordPress deletes the attachment .zip file for the new plugin version after installing it, which triggers the "delete_post" hook.
 		// In-between the 4.1.8 to 4.1.9 update, the new Core class does not exist yet, causing the PHP error.
 		// TODO: Delete this in a future release.
-		$post = new self;
+		$post = new self();
 		if ( ! property_exists( aioseo(), 'core' ) ) {
 			return $post;
 		}
@@ -99,6 +101,9 @@ class Post extends Model {
 			$post = self::migrateRemovedQaSchema( $post );
 			$post = self::runDynamicMigrations( $post );
 		}
+
+		// Set options object.
+		$post = self::setOptionsDefaults( $post );
 
 		return apply_filters( 'aioseo_get_post', $post );
 	}
@@ -295,6 +300,47 @@ class Post extends Model {
 	}
 
 	/**
+	 * Sanitize the keyphrases posted data.
+	 *
+	 * @since 4.2.8
+	 *
+	 * @param  array $data An array containing the keyphrases field data.
+	 * @return array       The sanitized data.
+	 */
+	private static function sanitizeKeyphrases( $data ) {
+		if (
+			! empty( $data['focus']['analysis'] ) &&
+			is_array( $data['focus']['analysis'] )
+		) {
+			foreach ( $data['focus']['analysis'] as &$analysis ) {
+				// Remove unnecessary 'title' and 'description'.
+				unset( $analysis['title'] );
+				unset( $analysis['description'] );
+			}
+		}
+
+		if (
+			! empty( $data['additional'] ) &&
+			is_array( $data['additional'] )
+		) {
+			foreach ( $data['additional'] as &$additional ) {
+				if (
+					! empty( $additional['analysis'] ) &&
+					is_array( $additional['analysis'] )
+				) {
+					foreach ( $additional['analysis'] as &$additionalAnalysis ) {
+						// Remove unnecessary 'title' and 'description'.
+						unset( $additionalAnalysis['title'] );
+						unset( $additionalAnalysis['description'] );
+					}
+				}
+			}
+		}
+
+		return $data;
+	}
+
+	/**
 	 * Sanitize the page_analysis posted data.
 	 *
 	 * @since 4.2.7
@@ -304,8 +350,8 @@ class Post extends Model {
 	 */
 	private static function sanitizePageAnalysis( $data ) {
 		if (
-			empty( $data['analysis'] )
-			|| ! is_array( $data['analysis'] )
+			empty( $data['analysis'] ) ||
+			! is_array( $data['analysis'] )
 		) {
 			return $data;
 		}
@@ -343,7 +389,7 @@ class Post extends Model {
 		$thePost->keywords                    = ! empty( $data['keywords'] ) ? sanitize_text_field( $data['keywords'] ) : null;
 		$thePost->pillar_content              = isset( $data['pillar_content'] ) ? rest_sanitize_boolean( $data['pillar_content'] ) : 0;
 		// TruSEO
-		$thePost->keyphrases                  = ! empty( $data['keyphrases'] ) ? wp_json_encode( $data['keyphrases'] ) : null;
+		$thePost->keyphrases                  = ! empty( $data['keyphrases'] ) ? wp_json_encode( self::sanitizeKeyphrases( $data['keyphrases'] ) ) : null;
 		$thePost->page_analysis               = ! empty( $data['page_analysis'] ) ? wp_json_encode( self::sanitizePageAnalysis( $data['page_analysis'] ) ) : null;
 		$thePost->seo_score                   = ! empty( $data['seo_score'] ) ? sanitize_text_field( $data['seo_score'] ) : 0;
 		// Sitemap
@@ -387,8 +433,11 @@ class Post extends Model {
 		$thePost->schema                      = ! empty( $data['schema'] )
 			? wp_json_encode( self::getDefaultSchemaOptions( $data['schema'] ) )
 			: wp_json_encode( self::getDefaultSchemaOptions() );
-		$thePost->local_seo                   = ! empty( $data['local_seo'] ) ? wp_json_encode( $data['local_seo'] ) : null;
+		$thePost->local_seo                   = ! empty( $data['local_seo'] ) ? $data['local_seo'] : null;
 		$thePost->limit_modified_date         = isset( $data['limit_modified_date'] ) ? rest_sanitize_boolean( $data['limit_modified_date'] ) : 0;
+		$thePost->open_ai                     = ! empty( $data['open_ai'] )
+			? wp_json_encode( self::getDefaultOpenAiOptions( $data['open_ai'] ) )
+			: wp_json_encode( self::getDefaultOpenAiOptions() );
 		$thePost->updated                     = gmdate( 'Y-m-d H:i:s' );
 
 		// Before we determine the OG/Twitter image, we need to set the meta data cache manually because the changes haven't been saved yet.
@@ -528,11 +577,12 @@ class Post extends Model {
 	 *
 	 * @since 4.2.5
 	 *
-	 * @param  string $existingOptions The existing options in JSON.
-	 * @return string                  The existing options with defaults added in JSON.
+	 * @param  string       $existingOptions The existing options in JSON.
+	 * @param  null|WP_Post $post            The post object.
+	 * @return string                        The existing options with defaults added in JSON.
 	 */
-	public static function getDefaultSchemaOptions( $existingOptions = '' ) {
-		$defaultGraphName = aioseo()->schema->getDefaultPostTypeGraph();
+	public static function getDefaultSchemaOptions( $existingOptions = '', $post = null ) {
+		$defaultGraphName = aioseo()->schema->getDefaultPostTypeGraph( $post );
 
 		$defaults = [
 			'blockGraphs'  => [],
@@ -583,7 +633,7 @@ class Post extends Model {
 	 * @since 4.1.7
 	 *
 	 * @param  string $keyphrases The database keyphrases.
-	 * @return array              The defaults.
+	 * @return object             The defaults.
 	 */
 	public static function getKeyphrasesDefaults( $keyphrases = '' ) {
 		$keyphrases = json_decode( (string) $keyphrases );
@@ -618,14 +668,15 @@ class Post extends Model {
 	}
 
 	/**
-	 * Returns the defaults for the keyphrases column.
+	 * Returns the defaults for the options column.
 	 *
-	 * @since 4.2.2
+	 * @since   4.2.2
+	 * @version 4.2.9
 	 *
-	 * @param  string $options The database keyphrases.
-	 * @return array           The defaults.
+	 * @param  Post $post   The Post object.
+	 * @return Post         The modified Post object.
 	 */
-	public static function getOptionsDefaults( $options = '' ) {
+	public static function setOptionsDefaults( $post ) {
 		$defaults = [
 			'linkFormat' => [
 				'internalLinkCount'      => 0,
@@ -633,10 +684,46 @@ class Post extends Model {
 			]
 		];
 
-		if ( empty( $options ) ) {
+		if ( empty( $post->options ) ) {
+			$post->options = json_decode( wp_json_encode( $defaults ) );
+
+			return $post;
+		}
+
+		$post->options = json_decode( wp_json_encode( $post->options ), true );
+		$post->options = array_replace_recursive( $defaults, $post->options );
+		$post->options = json_decode( wp_json_encode( $post->options ) );
+
+		return $post;
+	}
+
+	/**
+	 * Returns the default Open AI options.
+	 *
+	 * @since 4.3.2
+	 *
+	 * @param  array $existingOptions The existing options.
+	 * @return array                  The default options.
+	 */
+	public static function getDefaultOpenAiOptions( $existingOptions = '' ) {
+		$defaults = [
+			'title'       => [
+				'suggestions' => [],
+				'usage'       => 0
+			],
+			'description' => [
+				'suggestions' => [],
+				'usage'       => 0
+			]
+		];
+
+		if ( empty( $existingOptions ) ) {
 			return json_decode( wp_json_encode( $defaults ) );
 		}
 
-		return $options;
+		$existingOptions = json_decode( wp_json_encode( $existingOptions ), true );
+		$existingOptions = array_replace_recursive( $defaults, $existingOptions );
+
+		return json_decode( wp_json_encode( $existingOptions ) );
 	}
 }

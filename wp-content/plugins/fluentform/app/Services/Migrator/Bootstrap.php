@@ -5,7 +5,7 @@ namespace FluentForm\App\Services\Migrator;
 use FluentForm\App\Services\Migrator\Classes\NinjaFormsMigrator;
 use FluentForm\App\Services\Migrator\Classes\CalderaMigrator;
 use FluentForm\App\Services\Migrator\Classes\GravityFormsMigrator;
-
+use FluentForm\App\Services\Migrator\Classes\WpFormsMigrator;
 class Bootstrap
 {
     protected $importer;
@@ -41,6 +41,12 @@ class Bootstrap
                 'key'  => 'gravityform',
             ];
         }
+        if ((new WpFormsMigrator())->exist()) {
+            $migratorLinks[] = [
+                'name' => 'WPForms',
+                'key'  => 'wpforms',
+            ];
+        }
         return $migratorLinks;
 
     }
@@ -58,6 +64,9 @@ class Bootstrap
                 break;
             case 'gravityform':
                 $this->importer = new GravityFormsMigrator();
+                break;
+            case 'wpforms':
+                $this->importer = new WpFormsMigrator();
                 break;
             default:
                 wp_send_json([
@@ -82,8 +91,10 @@ class Bootstrap
     public function importForms()
     {
         \FluentForm\App\Modules\Acl\Acl::verify(['fluentform_settings_manager', 'fluentform_forms_manager']);
-
+        
         $formIds = wpFluentForm('request')->get('form_ids');
+        $formIds = array_map('intval', $formIds);
+
         $this->setImporterType();
         $this->importer->import_forms($formIds);
 
@@ -93,8 +104,9 @@ class Bootstrap
     {
         \FluentForm\App\Modules\Acl\Acl::verify(['fluentform_settings_manager', 'fluentform_forms_manager']);
 
+
         $fluentFormId = intval(wpFluentForm('request')->get('imported_fluent_form_id'));
-        $importFormId = intval(wpFluentForm('request')->get('source_form_id'));
+        $importFormId = sanitize_text_field(wpFluentForm('request')->get('source_form_id'));
         $this->setImporterType();
         $this->importer->insertEntries($fluentFormId, $importFormId);
     }

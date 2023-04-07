@@ -382,7 +382,7 @@ class Menu
                     ->count();
 
                 if ($entriesCount) {
-                    $entriesTitle .= ' <span class="ff_unread_count" style="background: #ca4a20;color: white;border-radius: 8px;padding: 1px 8px;">' . $entriesCount . '</span>';
+                    $entriesTitle .= ' <span class="ff_unread_count" style="background: #3f9eff;color: white;border-radius: 8px;padding: 1px 8px;">' . $entriesCount . '</span>';
                 }
             }
 
@@ -804,7 +804,6 @@ class Menu
                 $this->app->appPath('Services/FormBuilder/ValidationRuleSettings.php')
             ),
             'conversational_form_fields' => array_keys(Converter::fieldTypes()),
-
             'form_editor_str'            => TranslationString::getEditorI18n(),
             'element_search_tags'        => $searchTags,
             'element_settings_placement' => $elementPlacements,

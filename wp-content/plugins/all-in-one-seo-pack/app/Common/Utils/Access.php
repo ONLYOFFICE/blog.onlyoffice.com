@@ -25,6 +25,7 @@ class Access {
 		'aioseo_page_redirects_manage',
 		'aioseo_redirects_settings',
 		'aioseo_seo_analysis_settings',
+		'aioseo_search_statistics_settings',
 		'aioseo_tools_settings',
 		'aioseo_feature_manager_settings',
 		'aioseo_page_analysis',

@@ -38,10 +38,10 @@ class Helpers {
 	 */
 	public function cleanAndParseData( $data, $parentKey = '' ) {
 		foreach ( $data as $k => &$v ) {
-			if ( is_array( $v ) ) {
-				$v = $this->cleanAndParseData( $v, $k );
-			} elseif ( is_numeric( $v ) || is_bool( $v ) ) {
+			if ( is_numeric( $v ) || is_bool( $v ) || is_null( $v ) ) {
 				// Do nothing.
+			} elseif ( is_array( $v ) ) {
+				$v = $this->cleanAndParseData( $v, $k );
 			} else {
 				// Check if the prop can contain some HTML tags.
 				if (
@@ -86,9 +86,13 @@ class Helpers {
 			return strcmp( $a['@type'], $b['@type'] );
 		} );
 
+		// Allow users to control the default json_encode flags.
+		// Some users report better SEO performance when non-Latin unicode characters are not escaped.
+		$jsonFlags = apply_filters( 'aioseo_schema_json_flags', 0 );
+
 		$json = isset( $_GET['aioseo-dev'] ) || $isValidator
 			? aioseo()->helpers->wpJsonEncode( $schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
-			: aioseo()->helpers->wpJsonEncode( $schema );
+			: aioseo()->helpers->wpJsonEncode( $schema, $jsonFlags );
 
 		return $json;
 	}

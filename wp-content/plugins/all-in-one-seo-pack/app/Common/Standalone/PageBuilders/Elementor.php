@@ -105,7 +105,7 @@ class Elementor extends Base {
 	 * @return boolean     Whether or not the Post was built with Elementor.
 	 */
 	public function isBuiltWith( $postId ) {
-		if ( ! class_exists( 'ElementorPlugin' ) ) {
+		if ( ! class_exists( '\Elementor\Plugin' ) ) {
 			return false;
 		}
 
@@ -115,6 +115,27 @@ class Elementor extends Base {
 		}
 
 		return ElementorPlugin::instance()->documents->get( $postId )->is_built_with_elementor();
+	}
+
+	/**
+	 * Returns the Elementor edit url for the given Post ID.
+	 *
+	 * @since 4.3.1
+	 *
+	 * @param  int    $postId The Post ID.
+	 * @return string         The Edit URL.
+	 */
+	public function getEditUrl( $postId ) {
+		if ( ! class_exists( '\Elementor\Plugin' ) ) {
+			return '';
+		}
+
+		$document = ElementorPlugin::instance()->documents->get( $postId );
+		if ( empty( $document ) || ! $document->is_editable_by_current_user() ) {
+			return '';
+		}
+
+		return esc_url( $document->get_edit_url() );
 	}
 
 	/**

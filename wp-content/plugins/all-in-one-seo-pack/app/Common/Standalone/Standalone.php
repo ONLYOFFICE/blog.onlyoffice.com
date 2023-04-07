@@ -28,6 +28,15 @@ class Standalone {
 	public $flyoutMenu = null;
 
 	/**
+	 * SeoPreview class instance.
+	 *
+	 * @since 4.2.8
+	 *
+	 * @var SeoPreview
+	 */
+	public $seoPreview = null;
+
+	/**
 	 * SetupWizard class instance.
 	 *
 	 * @since 4.2.7
@@ -60,21 +69,22 @@ class Standalone {
 	 * @since 4.2.0
 	 */
 	public function __construct() {
-		$this->headlineAnalyzer  = new HeadlineAnalyzer;
-		$this->flyoutMenu        = new FlyoutMenu;
-		$this->setupWizard       = new SetupWizard;
+		$this->headlineAnalyzer = new HeadlineAnalyzer();
+		$this->flyoutMenu       = new FlyoutMenu();
+		$this->seoPreview       = new SeoPreview();
+		$this->setupWizard      = new SetupWizard();
 
-		aioseo()->pro ? new ProStandalone\DetailsColumn : new DetailsColumn;
+		aioseo()->pro ? new ProStandalone\DetailsColumn() : new DetailsColumn();
 
-		new UserProfileTab;
-		new PublishPanel;
-		new LimitModifiedDate;
-		new Notifications;
+		new UserProfileTab();
+		new PublishPanel();
+		new LimitModifiedDate();
+		new Notifications();
 
 		$this->pageBuilderIntegrations = [
-			'elementor' => new PageBuilders\Elementor,
-			'divi'      => new PageBuilders\Divi,
-			'seedprod'  => new PageBuilders\SeedProd
+			'elementor' => new PageBuilders\Elementor(),
+			'divi'      => new PageBuilders\Divi(),
+			'seedprod'  => new PageBuilders\SeedProd()
 		];
 
 		$this->standaloneBlocks = [

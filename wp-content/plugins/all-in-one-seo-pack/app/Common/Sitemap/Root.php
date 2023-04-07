@@ -198,7 +198,7 @@ class Root {
 		$shouldIncludeHomepage = 'posts' === get_option( 'show_on_front' ) || ! in_array( 'page', $postTypes, true );
 
 		if ( $shouldIncludeHomepage ) {
-			$homePageEntry               = new \stdClass;
+			$homePageEntry               = new \stdClass();
 			$homePageEntry->lastModified = aioseo()->sitemap->helpers->lastModifiedPostTime();
 			array_unshift( $entries, $homePageEntry );
 		}
@@ -316,12 +316,15 @@ class Root {
 				}, $chunk );
 				$ids = implode( "', '", $ids );
 
-				$lastModified = aioseo()->core->db
-					->start( aioseo()->core->db->db->posts . ' as p', true )
-					->select( 'MAX(`p`.`post_modified_gmt`) as last_modified' )
-					->whereRaw( "( `p`.`ID` IN ( '$ids' ) )" )
-					->run()
-					->result();
+				$lastModified = null;
+				if ( ! apply_filters( 'aioseo_sitemap_lastmod_disable', false ) ) {
+					$lastModified = aioseo()->core->db
+						->start( aioseo()->core->db->db->posts . ' as p', true )
+						->select( 'MAX(`p`.`post_modified_gmt`) as last_modified' )
+						->whereRaw( "( `p`.`ID` IN ( '$ids' ) )" )
+						->run()
+						->result();
+				}
 
 				if ( ! empty( $lastModified[0]->last_modified ) ) {
 					$index['lastmod'] = aioseo()->helpers->dateTimeToIso8601( $lastModified[0]->last_modified );
@@ -337,19 +340,23 @@ class Root {
 			$termIds = implode( "', '", $termIds );
 
 			$termRelationshipsTable = aioseo()->core->db->db->prefix . 'term_relationships';
-			$lastModified = aioseo()->core->db
-				->start( aioseo()->core->db->db->posts . ' as p', true )
-				->select( 'MAX(`p`.`post_modified_gmt`) as last_modified' )
-				->whereRaw( "
-				( `p`.`ID` IN
-					(
-						SELECT `tr`.`object_id`
-						FROM `$termRelationshipsTable` as tr
-						WHERE `tr`.`term_taxonomy_id` IN ( '$termIds' )
-					)
-				)" )
-				->run()
-				->result();
+
+			$lastModified = null;
+			if ( ! apply_filters( 'aioseo_sitemap_lastmod_disable', false ) ) {
+				$lastModified = aioseo()->core->db
+					->start( aioseo()->core->db->db->posts . ' as p', true )
+					->select( 'MAX(`p`.`post_modified_gmt`) as last_modified' )
+					->whereRaw( "
+					( `p`.`ID` IN
+						(
+							SELECT `tr`.`object_id`
+							FROM `$termRelationshipsTable` as tr
+							WHERE `tr`.`term_taxonomy_id` IN ( '$termIds' )
+						)
+					)" )
+					->run()
+					->result();
+			}
 
 			if ( ! empty( $lastModified[0]->last_modified ) ) {
 				$index['lastmod'] = aioseo()->helpers->dateTimeToIso8601( $lastModified[0]->last_modified );

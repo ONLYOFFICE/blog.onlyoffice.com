@@ -199,7 +199,7 @@ class Notifications {
 
 		// Dismiss static notifications.
 		if ( in_array( 'notification-review', $slugs, true ) ) {
-			update_user_meta( get_current_user_id(), '_aioseo_notification_plugin_review_dismissed', true );
+			update_user_meta( get_current_user_id(), '_aioseo_notification_plugin_review_dismissed', '3' );
 		}
 
 		if ( in_array( 'notification-review-delay', $slugs, true ) ) {

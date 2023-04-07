@@ -40,7 +40,12 @@ class SelectCountry extends BaseComponent
 
         $activeList = ArrayHelper::get($data, 'settings.country_list.active_list');
 
-        $elMarkup = '<select ' . $this->buildAttributes($data['attributes']) . "><option value=''>" . wp_strip_all_tags($placeholder) . '</option>';
+        $ariaRequired = 'false';
+        if (ArrayHelper::get($data, 'settings.validation_rules.required.value')) {
+            $ariaRequired = 'true';
+        }
+
+        $elMarkup = '<select ' . $this->buildAttributes($data['attributes']) . "aria-invalid='false' aria-required=$ariaRequired><option value=''>" . wp_strip_all_tags($placeholder) . '</option>';
 
         if ('priority_based' == $activeList) {
             $selectCountries = ArrayHelper::get($data, 'settings.country_list.priority_based', []);

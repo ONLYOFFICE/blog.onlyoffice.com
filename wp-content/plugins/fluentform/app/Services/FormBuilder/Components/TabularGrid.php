@@ -50,7 +50,12 @@ class TabularGrid extends BaseComponent
                 }
                 $attributes = $this->buildAttributes($atts, $form);
 
-                $input = '<input ' . $attributes . " {$isChecked}>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $attributes is escaped before being passed in.
+                $ariaRequired = 'false';
+                if (ArrayHelper::get($data, 'settings.validation_rules.required.value')) {
+                    $ariaRequired = 'true';
+                }
+
+                $input = '<input aria-valuenow="'. $row['name'] .'-'. $column['label'] . '" ' . $attributes . " {$isChecked} aria-invalid='false' aria-required={$ariaRequired}>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $attributes is escaped before being passed in.
                 $elMarkup .= "<td data-label='" . fluentform_sanitize_html($column['label']) . "'>{$input}</td>";
             }
             $elMarkup .= '</tr>';

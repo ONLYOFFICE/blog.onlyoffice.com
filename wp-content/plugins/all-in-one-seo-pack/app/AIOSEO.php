@@ -213,7 +213,7 @@ namespace AIOSEO\Plugin {
 
 			// Internal Options.
 			$this->helpers                = $this->pro ? new Pro\Utils\Helpers() : new Lite\Utils\Helpers();
-			$this->internalNetworkOptions = ( $this->pro && is_multisite() ) ? new Pro\Options\InternalNetworkOptions() : new Common\Options\InternalNetworkOptions();
+			$this->internalNetworkOptions = ( $this->pro && $this->helpers->isPluginNetworkActivated() ) ? new Pro\Options\InternalNetworkOptions() : new Common\Options\InternalNetworkOptions();
 			$this->internalOptions        = $this->pro ? new Pro\Options\InternalOptions() : new Lite\Options\InternalOptions();
 
 			// Run pre-updates.
@@ -261,33 +261,33 @@ namespace AIOSEO\Plugin {
 				$translations = new Pro\Main\Translations(
 					'plugin',
 					'all-in-one-seo-pack',
-					'https://packages.translationspress.com/aioseo/all-in-one-seo-pack/packages.json'
+					'https://aioseo.com/aioseo-plugin/all-in-one-seo-pack/packages.json'
 				);
 				$translations->init();
 
 				$translations = new Pro\Main\Translations(
 					'plugin',
 					'aioseo-pro',
-					'https://packages.translationspress.com/aioseo/aioseo-pro/packages.json'
+					'https://aioseo.com/aioseo-plugin/aioseo-pro/packages.json'
 				);
 				$translations->init();
 			}
 
-			$this->thirdParty         = new Common\ThirdParty\ThirdParty();
 			$this->addons             = $this->pro ? new Pro\Utils\Addons() : new Common\Utils\Addons();
+			$this->features           = $this->pro ? new Pro\Utils\Features() : new Common\Utils\Features();
 			$this->tags               = $this->pro ? new Pro\Utils\Tags() : new Common\Utils\Tags();
 			$this->blocks             = new Common\Utils\Blocks();
 			$this->badBotBlocker      = new Common\Tools\BadBotBlocker();
 			$this->breadcrumbs        = $this->pro ? new Pro\Breadcrumbs\Breadcrumbs() : new Common\Breadcrumbs\Breadcrumbs();
 			$this->dynamicBackup      = $this->pro ? new Pro\Options\DynamicBackup() : new Common\Options\DynamicBackup();
 			$this->options            = $this->pro ? new Pro\Options\Options() : new Lite\Options\Options();
-			$this->networkOptions     = ( $this->pro && is_multisite() ) ? new Pro\Options\NetworkOptions() : new Common\Options\NetworkOptions();
+			$this->networkOptions     = ( $this->pro && $this->helpers->isPluginNetworkActivated() ) ? new Pro\Options\NetworkOptions() : new Common\Options\NetworkOptions();
 			$this->dynamicOptions     = $this->pro ? new Pro\Options\DynamicOptions() : new Common\Options\DynamicOptions();
 			$this->backup             = new Common\Utils\Backup();
 			$this->access             = $this->pro ? new Pro\Utils\Access() : new Common\Utils\Access();
 			$this->usage              = $this->pro ? new Pro\Admin\Usage() : new Lite\Admin\Usage();
 			$this->siteHealth         = $this->pro ? new Pro\Admin\SiteHealth() : new Common\Admin\SiteHealth();
-			$this->networkLicense     = $this->pro && is_multisite() ? new Pro\Admin\NetworkLicense() : null;
+			$this->networkLicense     = $this->pro && $this->helpers->isPluginNetworkActivated() ? new Pro\Admin\NetworkLicense() : null;
 			$this->license            = $this->pro ? new Pro\Admin\License() : null;
 			$this->autoUpdates        = $this->pro ? new Pro\Admin\AutoUpdates() : null;
 			$this->updates            = $this->pro ? new Pro\Main\Updates() : new Common\Main\Updates();
@@ -299,7 +299,7 @@ namespace AIOSEO\Plugin {
 			$this->notices            = $this->pro ? new Pro\Admin\Notices\Notices() : new Lite\Admin\Notices\Notices();
 			$this->wpNotices          = new Common\Admin\Notices\WpNotices();
 			$this->admin              = $this->pro ? new Pro\Admin\Admin() : new Lite\Admin\Admin();
-			$this->networkAdmin       = is_multisite() ? ( $this->pro ? new Pro\Admin\NetworkAdmin() : new Common\Admin\NetworkAdmin() ) : null;
+			$this->networkAdmin       = $this->helpers->isPluginNetworkActivated() ? ( $this->pro ? new Pro\Admin\NetworkAdmin() : new Common\Admin\NetworkAdmin() ) : null;
 			$this->activate           = $this->pro ? new Pro\Main\Activate() : new Common\Main\Activate();
 			$this->conflictingPlugins = $this->pro ? new Pro\Admin\ConflictingPlugins() : new Common\Admin\ConflictingPlugins();
 			$this->migration          = $this->pro ? new Pro\Migration\Migration() : new Common\Migration\Migration();
@@ -310,9 +310,11 @@ namespace AIOSEO\Plugin {
 			$this->categoryBase       = $this->pro ? new Pro\Main\CategoryBase() : null;
 			$this->postSettings       = $this->pro ? new Pro\Admin\PostSettings() : new Lite\Admin\PostSettings();
 			$this->standalone         = new Common\Standalone\Standalone();
+			$this->searchStatistics   = $this->pro ? new Pro\SearchStatistics\SearchStatistics() : new Common\SearchStatistics\SearchStatistics();
 			$this->slugMonitor        = new Common\Admin\SlugMonitor();
 			$this->schema             = $this->pro ? new Pro\Schema\Schema() : new Common\Schema\Schema();
 			$this->actionScheduler    = new Common\Utils\ActionScheduler();
+			$this->ai                 = $this->pro ? new Pro\Ai\Ai() : null;
 
 			if ( ! wp_doing_ajax() && ! wp_doing_cron() ) {
 				$this->rss       = new Common\Rss();

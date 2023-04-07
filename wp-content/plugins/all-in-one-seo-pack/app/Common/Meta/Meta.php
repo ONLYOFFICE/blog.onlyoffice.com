@@ -74,7 +74,7 @@ class Meta {
 		new Amp();
 		new Links();
 
-		add_action( 'delete_post', [ $this, 'deletePostMeta' ], 1000, 2 );
+		add_action( 'delete_post', [ $this, 'deletePostMeta' ], 1000 );
 	}
 
 	/**

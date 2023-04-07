@@ -23,16 +23,18 @@ class Core {
 	 * @var array
 	 */
 	private $aioseoTables = [
+		'aioseo_cache',
+		'aioseo_links',
+		'aioseo_links_suggestions',
 		'aioseo_notifications',
 		'aioseo_posts',
-		'aioseo_terms',
 		'aioseo_redirects',
+		'aioseo_redirects_404',
 		'aioseo_redirects_404_logs',
 		'aioseo_redirects_hits',
 		'aioseo_redirects_logs',
-		'aioseo_cache',
-		'aioseo_links',
-		'aioseo_links_suggestions'
+		'aioseo_terms',
+		'aioseo_search_statistics_objects'
 	];
 
 	/**

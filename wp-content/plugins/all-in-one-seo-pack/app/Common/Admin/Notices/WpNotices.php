@@ -19,7 +19,7 @@ class WpNotices {
 	 *
 	 * @var array
 	 */
-	private $notices;
+	private $notices = [];
 
 	/**
 	 * The cache key.
@@ -92,7 +92,7 @@ class WpNotices {
 	 */
 	public function getNotices() {
 		if ( empty( $this->notices ) ) {
-			$this->notices = aioseo()->core->cache->get( $this->cacheKey );
+			$this->notices = (array) aioseo()->core->cache->get( $this->cacheKey );
 		}
 
 		return ! empty( $this->notices ) ? $this->notices : [];

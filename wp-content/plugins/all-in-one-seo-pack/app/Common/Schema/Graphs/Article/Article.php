@@ -54,7 +54,10 @@ class Article extends Graphs\Graph {
 		];
 
 		if ( empty( $graphData->properties->author->name ) ) {
-			aioseo()->schema->graphs[] = 'PersonAuthor';
+			if ( ! in_array( 'PersonAuthor', aioseo()->schema->graphs, true ) ) {
+				aioseo()->schema->graphs[] = 'PersonAuthor';
+			}
+
 			$data['author'] = [
 				'@id' => get_author_posts_url( $post->post_author ) . '#author'
 			];

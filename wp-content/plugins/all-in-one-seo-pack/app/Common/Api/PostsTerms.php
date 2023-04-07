@@ -193,16 +193,7 @@ class PostsTerms {
 	 * @return string            The custom field content.
 	 */
 	private static function getAnalysisContent( $post = null ) {
-		$post            = ( $post && is_object( $post ) ) ? $post : aioseo()->helpers->getPost( $post );
-		$customFieldKeys = aioseo()->dynamicOptions->searchAppearance->postTypes->{$post->post_type}->customFields;
-
-		if ( empty( $customFieldKeys ) ) {
-			return get_post_field( 'post_content', $post->ID );
-		}
-
-		$customFieldKeys    = explode( ' ', sanitize_text_field( $customFieldKeys ) );
-		$customFieldContent = aioseo()->helpers->getCustomFieldsContent( $post->ID, $customFieldKeys );
-		$analysisContent    = $post->post_content . apply_filters( 'aioseo_analysis_content', $customFieldContent );
+		$analysisContent = apply_filters( 'aioseo_analysis_content', aioseo()->helpers->getPostContent( $post ) );
 
 		return sanitize_post_field( 'post_content', $analysisContent, $post->ID, 'display' );
 	}

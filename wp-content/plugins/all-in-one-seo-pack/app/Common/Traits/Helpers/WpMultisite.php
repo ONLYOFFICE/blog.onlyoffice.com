@@ -251,4 +251,29 @@ trait WpMultisite {
 
 		return restore_current_blog();
 	}
+
+	/**
+	 * Checks if the current plugin is network activated.
+	 *
+	 * @since 4.2.8
+	 *
+	 * @param  string|null $plugin The plugin to check for network activation.
+	 * @return bool                True if network activated, false if not.
+	 */
+	public function isPluginNetworkActivated( $plugin = null ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+		if ( ! is_multisite() ) {
+			return false;
+		}
+
+		$plugin = $plugin ? $plugin : plugin_basename( AIOSEO_FILE );
+
+		// If the plugin is not network activated, then no it's not network licensed.
+		if ( ! is_plugin_active_for_network( $plugin ) ) {
+			return false;
+		}
+
+		return true;
+	}
 }

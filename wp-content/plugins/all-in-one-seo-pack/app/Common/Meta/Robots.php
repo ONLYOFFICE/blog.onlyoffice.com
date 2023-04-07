@@ -242,8 +242,7 @@ class Robots {
 	private function archives() {
 		$dynamicOptions = aioseo()->dynamicOptions->noConflict();
 		$postType       = get_queried_object();
-
-		if ( $dynamicOptions->searchAppearance->archives->has( $postType->name ) ) {
+		if ( ! empty( $postType->name ) && $dynamicOptions->searchAppearance->archives->has( $postType->name ) ) {
 			$this->globalValues( [ 'archives', $postType->name ], true );
 		}
 	}

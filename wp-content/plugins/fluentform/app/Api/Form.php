@@ -22,15 +22,15 @@ class Form
 
         $atts = wp_parse_args($atts, $defaultAtts);
 
-        $perPage = ArrayHelper::get($atts, 'per_page', 10);
-        $search = ArrayHelper::get($atts, 'search', '');
-        $status = ArrayHelper::get($atts, 'status', 'all');
-        $filter_by = ArrayHelper::get($atts, 'filter_by', 'all');
+        $perPage = intval(ArrayHelper::get($atts, 'per_page', 10));
+        $search = sanitize_text_field(ArrayHelper::get($atts, 'search', ''));
+        $status = sanitize_text_field(ArrayHelper::get($atts, 'status', 'all'));
+        $filter_by = sanitize_text_field(ArrayHelper::get($atts, 'filter_by', 'all'));
         $dateRange = ArrayHelper::get($atts, 'date_range', []);
         $is_filter_by_conv_or_step_form = $filter_by && ('conv_form' == $filter_by || 'step_form' == $filter_by);
 
-        $shortColumn = ArrayHelper::get($atts, 'sort_column', 'id');
-        $sortBy = ArrayHelper::get($atts, 'sort_by', 'DESC');
+        $shortColumn = sanitize_sql_orderby(ArrayHelper::get($atts, 'sort_column', 'id'));
+        $sortBy = Helper::sanitizeOrderValue(ArrayHelper::get($atts, 'sort_by', 'DESC'));
 
         $query = wpFluent()->table('fluentform_forms')
             ->orderBy($shortColumn, $sortBy);
@@ -59,8 +59,8 @@ class Form
         }
 
         if ($dateRange) {
-            $query->where('created_at', '>=', $dateRange[0] . ' 00:00:01');
-            $query->where('created_at', '<=', $dateRange[1] . ' 23:59:59');
+            $query->where('created_at', '>=', sanitize_text_field($dateRange[0] . ' 00:00:01'));
+            $query->where('created_at', '<=', sanitize_text_field($dateRange[1] . ' 23:59:59'));
         }
 
         if ($search) {

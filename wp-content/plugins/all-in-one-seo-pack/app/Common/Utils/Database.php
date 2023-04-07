@@ -26,10 +26,12 @@ class Database {
 		'aioseo_notifications',
 		'aioseo_posts',
 		'aioseo_redirects',
+		'aioseo_redirects_404',
 		'aioseo_redirects_404_logs',
 		'aioseo_redirects_hits',
 		'aioseo_redirects_logs',
-		'aioseo_terms'
+		'aioseo_terms',
+		'aioseo_search_statistics_objects'
 	];
 
 	/**
@@ -270,6 +272,13 @@ class Database {
 	 * @var array
 	 */
 	private $models = [];
+
+	/**
+	 * The last query that ran, stringified.
+	 *
+	 * @since 4.3.0
+	 */
+	private $lastQuery = '';
 
 	/**
 	 * Prepares the database class for use.
@@ -563,6 +572,8 @@ class Database {
 				$this->query . "\r\n" . wp_debug_backtrace_summary()
 			);
 		}
+
+		$this->lastQuery = $this->query;
 
 		return $this->query;
 	}
@@ -886,6 +897,49 @@ class Database {
 	}
 
 	/**
+	 * Adds a WHERE BETWEEN clause.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param  mixed     A string or array to add to the where clause.
+	 * @return Database  Returns the Database class which can be method chained for more query building.
+	 */
+	public function whereBetween() {
+		$criteria = $this->prepArgs( func_get_args() );
+
+		foreach ( (array) $criteria as $field => $values ) {
+			if ( ! is_array( $values ) ) {
+				$values = [ $values ];
+			}
+
+			if ( count( $values ) === 0 ) {
+				continue;
+			}
+
+			foreach ( $values as &$value ) {
+				// Note: We can no longer check for `is_numeric` because a value like `61021e6242255` returns true and breaks the query.
+				if ( is_int( $value ) || is_float( $value ) ) {
+					// No change.
+					continue;
+				}
+
+				if ( is_null( $value ) || false !== stristr( $value, 'NULL' ) ) {
+					// Change to a true NULL value.
+					$value = null;
+					continue;
+				}
+
+				$value = sprintf( '%s', $this->escape( $value, $this->getEscapeOptions() | self::ESCAPE_QUOTE ) );
+			}
+
+			$values = implode( ' AND ', $values );
+			$this->whereRaw( "$field BETWEEN $values" );
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Adds a LEFT JOIN clause.
 	 *
 	 * @since 4.0.0
@@ -1115,7 +1169,7 @@ class Database {
 	 * @return Database         Returns the Database class which can be method chained for more query building.
 	 */
 	public function run( $reset = true, $return = 'results', $params = [] ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		if ( ! in_array( $return, [ 'results', 'col', 'var' ], true ) ) {
+		if ( ! in_array( $return, [ 'results', 'col', 'var', 'row' ], true ) ) {
 			$return = 'results';
 		}
 
@@ -1140,6 +1194,9 @@ class Database {
 				break;
 			case 'var':
 				$this->result = $this->db->get_var( $prepare );
+				break;
+			case 'row':
+				$this->result = $this->db->get_row( $prepare );
 				break;
 			default:
 				$this->result = $this->db->get_results( $prepare, $this->output );
@@ -1181,7 +1238,7 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return array|object This could be an array or an object based on what was set in the output property.
+	 * @return mixed This depends on what was set in the output property.
 	 */
 	public function result() {
 		return $this->result;
@@ -1323,12 +1380,38 @@ class Database {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string $sql The sql query to execute.
-	 * @return mixed       Could be an array or object depending on the result set.
+	 * @param  string $sql      The sql query to execute.
+	 * @param  bool   $results  Whether to return the results or not.
+	 * @param  bool   $useCache Whether to use the cache or not.
+	 * @return mixed            Could be an array or object depending on the result set.
 	 */
-	public function execute( $sql, $results = false ) {
+	public function execute( $sql, $results = false, $useCache = false ) {
+		$this->lastQuery = $sql;
+		$queryHash       = sha1( $sql );
+		$cacheTableName  = $this->getCacheTableName();
+
+		// Pull the result from the in-memory cache if everything checks out.
+		if (
+			$useCache &&
+			! $this->shouldResetCache &&
+			isset( $this->cache[ $cacheTableName ][ $queryHash ] )
+		) {
+			if ( $results ) {
+				$this->result = $this->cache[ $cacheTableName ][ $queryHash ];
+			}
+
+			return $this;
+		}
+
 		if ( $results ) {
-			$this->result = $this->db->get_results( $sql );
+			$this->result = $this->db->get_results( $sql, $this->output );
+
+			if ( $useCache ) {
+				$this->cache[ $cacheTableName ][ $queryHash ] = $this->result;
+
+				// Reset the cache trigger for the next run.
+				$this->shouldResetCache = false;
+			}
 
 			return $this;
 		}
@@ -1559,11 +1642,11 @@ class Database {
 	 * @param  string $cacheTableName The table name to check against.
 	 * @return string                 The cache key table name.
 	 */
-	private function getCacheTableName( $cacheTableName = null ) {
+	private function getCacheTableName( $cacheTableName = '' ) {
 		$cacheTableName = empty( $cacheTableName ) ? $this->table : $cacheTableName;
 
 		foreach ( $this->customTables as $tableName ) {
-			if ( false !== stripos( $cacheTableName, $this->prefix . $tableName ) ) {
+			if ( false !== stripos( (string) $cacheTableName, $this->prefix . $tableName ) ) {
 				$cacheTableName = $tableName;
 				break;
 			}

@@ -47,7 +47,7 @@ trait WpUri {
 	public function getUrl( $canonical = false ) {
 		$url = '';
 		if ( is_singular() ) {
-			$objectId = get_queried_object_id();
+			$objectId = aioseo()->helpers->getPostId();
 
 			if ( $canonical ) {
 				$url = wp_get_canonical_url( $objectId );
@@ -86,7 +86,7 @@ trait WpUri {
 	public function canonicalUrl() {
 		static $url = null;
 		if ( null !== $url ) {
-			return apply_filters( 'aioseo_canonical_url', $url );
+			return $url;
 		}
 
 		if ( is_404() || is_search() ) {

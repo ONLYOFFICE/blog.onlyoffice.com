@@ -15,7 +15,7 @@ class RobotsTxt {
 	 * @since 4.0.0
 	 */
 	public function __construct() {
-		add_filter( 'robots_txt', [ $this, 'buildRules' ], 10000, 2 );
+		add_filter( 'robots_txt', [ $this, 'buildRules' ], 10000 );
 
 		if ( ! is_admin() || wp_doing_ajax() || wp_doing_cron() ) {
 			return;
@@ -513,7 +513,7 @@ class RobotsTxt {
 		$rules = ob_get_clean();
 
 		// Add the filter back.
-		add_filter( 'robots_txt', [ $this, 'buildRules' ], 10000, 2 );
+		add_filter( 'robots_txt', [ $this, 'buildRules' ], 10000 );
 
 		return explode( "\n", $rules );
 	}

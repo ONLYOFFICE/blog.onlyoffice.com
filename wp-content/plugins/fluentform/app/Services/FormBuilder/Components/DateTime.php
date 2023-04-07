@@ -36,7 +36,12 @@ class DateTime extends BaseComponent
 
         $atts = $this->buildAttributes($data['attributes']);
 
-        $elMarkup = "<input data-type-datepicker data-format='" . esc_attr($dateFormat) . "' " . $atts . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
+        $ariaRequired = 'false';
+        if (ArrayHelper::get($data, 'settings.validation_rules.required.value')) {
+            $ariaRequired = 'true';
+        }
+
+        $elMarkup = "<input data-type-datepicker data-format='" . esc_attr($dateFormat) . "' " . $atts . " aria-invalid='false' aria-required={$ariaRequired}>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
 
         $config = $this->getDateFormatConfigJSON($data['settings'], $form);
         $customConfig = $this->getCustomConfig($data['settings']);

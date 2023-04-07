@@ -158,4 +158,20 @@ class PluginUpgraderSilentAjax extends \Plugin_Upgrader {
 		'searchWp'             => 'options-general.php?page=searchwp',
 		'affiliateWp'          => 'admin.php?page=affiliate-wp'
 	];
+
+	/**
+	 * An array of slugs that work in the network admin.
+	 *
+	 * @since 4.2.8
+	 *
+	 * @var array
+	 */
+	public $hasNetworkAdmin = [
+		'miLite'    => 'admin.php?page=monsterinsights_network',
+		'miPro'     => 'admin.php?page=monsterinsights_network',
+		'emLite'    => 'admin.php?page=exactmetrics_network',
+		'emPro'     => 'admin.php?page=exactmetrics_network',
+		'wpMail'    => 'admin.php?page=wp-mail-smtp',
+		'wpMailPro' => 'admin.php?page=wp-mail-smtp',
+	];
 }

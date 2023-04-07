@@ -21,11 +21,11 @@ class Submission
         $offset = $args['per_page'] * ($args['page'] - 1);
 
         $entryQuery = wpFluent()->table('fluentform_submissions')
-            ->orderBy('id', $args['sort_type'])
+            ->orderBy('id', \FluentForm\App\Helpers\Helper::sanitizeOrderValue($args['sort_type']))
             ->limit($args['per_page'])
             ->offset($offset);
 
-        $type = $args['entry_type'];
+        $type = sanitize_text_field($args['entry_type']);
 
         if ($type && 'all' != $type) {
             $entryQuery->where('status', $type);
@@ -35,7 +35,7 @@ class Submission
             $entryQuery->whereIn('form_id', $args['form_ids']);
         }
 
-        if ($searchString = $args['search']) {
+        if ($searchString = sanitize_text_field($args['search'])) {
             $entryQuery->where(function ($q) use ($searchString) {
                 $q->where('id', 'LIKE', "%{$searchString}%")
                     ->orWhere('response', 'LIKE', "%{$searchString}%")

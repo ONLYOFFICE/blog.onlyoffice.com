@@ -263,7 +263,9 @@ trait Strings {
 			$characterRegexPattern = "(?![$characterString])";
 		}
 
+		$string = aioseo()->helpers->decodeHtmlEntities( $string );
 		$string = preg_replace( "/{$characterRegexPattern}[\p{P}\d+]/u", '', $string );
+		$string = aioseo()->helpers->encodeOutputHtml( $string );
 
 		// Trim both internal and external whitespace.
 		return preg_replace( '/\s\s+/u', ' ', trim( $string ) );

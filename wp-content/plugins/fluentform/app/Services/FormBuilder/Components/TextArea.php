@@ -3,6 +3,7 @@
 namespace FluentForm\App\Services\FormBuilder\Components;
 
 use FluentForm\App\Helpers\Helper;
+use FluentForm\Framework\Helpers\ArrayHelper;
 
 class TextArea extends BaseComponent
 {
@@ -28,7 +29,12 @@ class TextArea extends BaseComponent
             $data['attributes']['tabindex'] = $tabIndex;
         }
 
-        $elMarkup = '<textarea %s>%s</textarea>';
+        $ariaRequired = 'false';
+        if (ArrayHelper::get($data, 'settings.validation_rules.required.value')) {
+            $ariaRequired = 'true';
+        }
+
+        $elMarkup = '<textarea aria-invalid="false" aria-required='. $ariaRequired .' %s>%s</textarea>';
 
         $atts = $this->buildAttributes($data['attributes']);
 

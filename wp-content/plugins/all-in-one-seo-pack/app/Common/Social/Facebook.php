@@ -228,10 +228,12 @@ class Facebook {
 		}
 
 		if ( is_post_type_archive() ) {
-			$postType       = get_queried_object();
-			$dynamicOptions = aioseo()->dynamicOptions->noConflict();
-			if ( $dynamicOptions->searchAppearance->archives->has( $postType->name ) ) {
-				$title = aioseo()->meta->title->helpers->prepare( aioseo()->dynamicOptions->searchAppearance->archives->{ $postType->name }->title );
+			$postType = get_queried_object();
+			if ( is_a( $postType, 'WP_Post_Type' ) ) {
+				$dynamicOptions = aioseo()->dynamicOptions->noConflict();
+				if ( $dynamicOptions->searchAppearance->archives->has( $postType->name ) ) {
+					$title = aioseo()->meta->title->helpers->prepare( aioseo()->dynamicOptions->searchAppearance->archives->{ $postType->name }->title );
+				}
 			}
 		}
 
@@ -268,10 +270,12 @@ class Facebook {
 		}
 
 		if ( is_post_type_archive() ) {
-			$postType       = get_queried_object();
-			$dynamicOptions = aioseo()->dynamicOptions->noConflict();
-			if ( $dynamicOptions->searchAppearance->archives->has( $postType->name ) ) {
-				$description = aioseo()->meta->description->helpers->prepare( aioseo()->dynamicOptions->searchAppearance->archives->{ $postType->name }->metaDescription );
+			$postType = get_queried_object();
+			if ( is_a( $postType, 'WP_Post_Type' ) ) {
+				$dynamicOptions = aioseo()->dynamicOptions->noConflict();
+				if ( $dynamicOptions->searchAppearance->archives->has( $postType->name ) ) {
+					$description = aioseo()->meta->description->helpers->prepare( aioseo()->dynamicOptions->searchAppearance->archives->{ $postType->name }->metaDescription );
+				}
 			}
 		}
 

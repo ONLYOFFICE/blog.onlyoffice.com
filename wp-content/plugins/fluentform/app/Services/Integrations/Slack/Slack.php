@@ -41,7 +41,7 @@ class Slack
                 continue;
             }
             if ('tabular_grid' == ArrayHelper::get($input, 'element', '')) {
-                $formData[$name] = Helper::getTabularGridMarkdownValue($formData[$name], $input);
+                $formData[$name] = Helper::getTabularGridFormatValue($formData[$name], $input, '<br />', ', ', 'markdown');
             }
         }
         $formData = FormDataParser::parseData((object) $formData, $inputs, $form->id);
