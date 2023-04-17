@@ -1046,3 +1046,13 @@ add_action( 'graphql_register_types', function() {
       }
     ]);
 });
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'Post', 'aioseoDescription', [ 
+      'type' => 'String',
+      'resolve' => function( $post ) {
+        $aioseoDescription = get_post_meta( $post->ID, '_aioseo_description', true );
+        return ! empty( $aioseoDescription ) ? $aioseoDescription : '';
+      }
+    ]);
+});
