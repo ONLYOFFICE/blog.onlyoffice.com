@@ -322,7 +322,7 @@ $generated_i18n_strings = [
 	// Reference: /src/vue/utils/tags.js:67
 	__( 'A short description for your product.', 'all-in-one-seo-pack' ),
 
-	// Reference: /src/vue/pages/about/views/AboutUs.vue:319
+	// Reference: /src/vue/pages/about/views/AboutUs.vue:327
 	__( 'A simple & powerful event calendar plugin for WordPress that comes with all the event management features including payments, scheduling, timezones, ticketing, recurring events, and more.', 'all-in-one-seo-pack' ),
 
 	// Reference: /src/vue/mixins/SeoSiteScore.js:19
@@ -890,7 +890,7 @@ $generated_i18n_strings = [
 	// Reference: /src/vue/pages/search-appearance/views/Advanced.vue:110
 	__( 'Atom Feed', 'all-in-one-seo-pack' ),
 
-	// Reference: /src/vue/mixins/Image.js:17
+	// Reference: /src/vue/mixins/Image.js:20
 	__( 'Attached Image', 'all-in-one-seo-pack' ),
 
 	// Reference: /src/vue/pages/search-appearance/views/Media.vue:47
@@ -1247,8 +1247,8 @@ $generated_i18n_strings = [
 	// Reference: /src/vue/standalone/setup-wizard/router/paths.js:55
 	__( 'Choose Features', 'all-in-one-seo-pack' ),
 
-	// Reference: /src/vue/mixins/Image.js:212
-	// Reference: /src/vue/mixins/Image.js:214
+	// Reference: /src/vue/mixins/Image.js:215
+	// Reference: /src/vue/mixins/Image.js:217
 	__( 'Choose Image', 'all-in-one-seo-pack' ),
 
 	// Reference: /src/vue/pages/search-appearance/views/Advanced.vue:80
@@ -1596,7 +1596,7 @@ $generated_i18n_strings = [
 	// Reference: /src/vue/pages/settings/views/lite/Breadcrumbs.vue:34
 	__( 'Custom HTML templates', 'all-in-one-seo-pack' ),
 
-	// Reference: /src/vue/mixins/Image.js:31
+	// Reference: /src/vue/mixins/Image.js:34
 	__( 'Custom Image', 'all-in-one-seo-pack' ),
 
 	// Reference: /src/vue/standalone/blocks/location-map/LocationMapSidebar.vue:22
@@ -1700,10 +1700,10 @@ $generated_i18n_strings = [
 	// Reference: /src/vue/pages/social-networks/views/Twitter.vue:37
 	__( 'Default Card Type', 'all-in-one-seo-pack' ),
 
-	// Reference: /src/vue/mixins/Image.js:15
+	// Reference: /src/vue/mixins/Image.js:18
 	__( 'Default Image (Set Below)', 'all-in-one-seo-pack' ),
 
-	// Reference: /src/vue/mixins/Image.js:28
+	// Reference: /src/vue/mixins/Image.js:31
 	__( 'Default Image Source (Set in Social Networks)', 'all-in-one-seo-pack' ),
 
 	// Reference: /src/vue/standalone/post-settings/views/Facebook.vue:70
@@ -2306,7 +2306,7 @@ $generated_i18n_strings = [
 	// Reference: /src/vue/pages/feature-manager/views/Main.vue:12
 	__( 'Feature Manager', 'all-in-one-seo-pack' ),
 
-	// Reference: /src/vue/mixins/Image.js:16
+	// Reference: /src/vue/mixins/Image.js:19
 	__( 'Featured Image', 'all-in-one-seo-pack' ),
 
 	// Reference: /src/vue/pages/about/views/lite/LiteVsPro.vue:25
@@ -2333,10 +2333,10 @@ $generated_i18n_strings = [
 	// Reference: /src/vue/standalone/setup-wizard/views/Success.vue:40
 	__( 'Finish Setup and Go to the Dashboard', 'all-in-one-seo-pack' ),
 
-	// Reference: /src/vue/mixins/Image.js:21
+	// Reference: /src/vue/mixins/Image.js:24
 	__( 'First Available Image', 'all-in-one-seo-pack' ),
 
-	// Reference: /src/vue/mixins/Image.js:18
+	// Reference: /src/vue/mixins/Image.js:21
 	__( 'First Image in Content', 'all-in-one-seo-pack' ),
 
 	// Reference: /src/app/tru-seo/analyzer/analysis/calculateFleschReading.js:75
@@ -2978,7 +2978,7 @@ $generated_i18n_strings = [
 	// Reference: /src/vue/components/common/core/PostColumn.vue:44
 	__( 'Image Alt Tag:', 'all-in-one-seo-pack' ),
 
-	// Reference: /src/vue/mixins/Image.js:19
+	// Reference: /src/vue/mixins/Image.js:22
 	__( 'Image from Custom Field', 'all-in-one-seo-pack' ),
 
 	// Reference: /src/vue/mixins/ToolsSettings.js:73
@@ -4367,7 +4367,7 @@ $generated_i18n_strings = [
 	// Reference: /src/vue/mixins/HeadlineResult.js:182
 	__( 'Positive headlines tend to get better engagement than neutral or negative ones.', 'all-in-one-seo-pack' ),
 
-	// Reference: /src/vue/mixins/Image.js:20
+	// Reference: /src/vue/mixins/Image.js:23
 	__( 'Post Author Image', 'all-in-one-seo-pack' ),
 
 	// Reference: /src/vue/pages/search-appearance/views/Advanced.vue:98

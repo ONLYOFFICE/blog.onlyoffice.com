@@ -93,7 +93,7 @@ abstract class Filters {
 	 */
 	public function removeEmojiDetectionScripts() {
 		global $wp_version;
-		if ( version_compare( $wp_version, '6.2', '>='  ) ) {
+		if ( version_compare( $wp_version, '6.2', '>=' ) ) {
 			remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
 		}
 	}
@@ -430,6 +430,12 @@ abstract class Filters {
 		if ( class_exists( '\Voxel\Controllers\Assets_Controller' ) ) {
 			wp_dequeue_script( 'vue' );
 			wp_dequeue_script( 'vx:backend.js' );
+		}
+
+		// Meta tags for seo plugin.
+		if ( class_exists( '\Pagup\MetaTags\Settings' ) ) {
+			wp_dequeue_script( 'pmt__vuejs' );
+			wp_dequeue_script( 'pmt__script' );
 		}
 	}
 

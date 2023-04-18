@@ -84,6 +84,17 @@ class Blocks {
 	 * @return void
 	 */
 	public function registerBlockEditorAssets() {
+		/**
+		 * For now, we're loading Legacy Widgets both on the Widgets and the Customize pages.
+		 *
+		 */
+		if (
+			aioseo()->helpers->isScreenBase( 'widgets' ) ||
+			aioseo()->helpers->isScreenBase( 'customize' )
+		) {
+			return;
+		}
+
 		aioseo()->core->assets->loadCss( 'src/vue/standalone/blocks/main.js', [], false );
 
 		$dependencies = [
