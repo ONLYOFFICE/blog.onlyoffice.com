@@ -211,8 +211,8 @@ class WPML_ST_MO_Downloader{
 
 			throw new Exception($load_xml_error_message);
 		} elseif($response['response']['code'] == 200){
-			$this->xml = new SimpleXMLElement(icl_gzdecode($response['body']));
-			//$this->xml = new SimpleXMLElement($response['body']);
+			// $this->xml = new SimpleXMLElement(icl_gzdecode($response['body']));
+			$this->xml = new SimpleXMLElement($response['body']);
 		}
     }
     
