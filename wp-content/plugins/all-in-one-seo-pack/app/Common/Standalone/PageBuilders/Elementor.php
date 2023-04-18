@@ -6,7 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Elementor\Plugin as ElementorPlugin;
 use Elementor\Controls_Manager as ControlsManager;
 use Elementor\Core\DocumentTypes\PageBase;
 
@@ -58,6 +57,37 @@ class Elementor extends Base {
 		add_action( 'elementor/editor/before_enqueue_scripts', [ $this, 'enqueue' ] );
 		add_action( 'elementor/documents/register_controls', [ $this, 'registerDocumentControls' ] );
 		add_action( 'elementor/editor/footer', [ $this, 'addContainers' ] );
+
+		// Add the SEO tab to the main Elementor panel.
+		add_action( 'elementor/editor/footer', [ $this, 'startCapturing' ], 0 );
+		add_action( 'elementor/editor/footer', [ $this, 'endCapturing' ], 999 );
+	}
+
+	/**
+	 * Start capturing buffer.
+	 *
+	 * @since 4.3.5
+	 *
+	 * @return void
+	 */
+	public function startCapturing() {
+		ob_start();
+	}
+
+	/**
+	 * End capturing buffer and add button.
+	 * This is a hack to add the SEO tab to the main Elementor panel.
+	 * We need to do this because Elementor doesn't provide a filter to add tabs to the main panel.
+	 *
+	 * @since 4.3.5
+	 *
+	 * @return void
+	 */
+	public function endCapturing() {
+		$output  = ob_get_clean();
+		$search  = '/(<div class="elementor-component-tab elementor-panel-navigation-tab" data-tab="global">.*<\/div>)/m';
+		$replace = '${1}<div class="elementor-component-tab elementor-panel-navigation-tab" data-tab="aioseo">SEO</div>';
+		echo preg_replace( $search, $replace, $output ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -88,7 +118,7 @@ class Elementor extends Base {
 		$document->start_controls_section(
 			'aioseo_section',
 			[
-				'label' => __( 'AIOSEO', 'all-in-one-seo-pack' ),
+				'label' => AIOSEO_PLUGIN_SHORT_NAME,
 				'tab'   => 'aioseo',
 			]
 		);
@@ -101,20 +131,16 @@ class Elementor extends Base {
 	 *
 	 * @since 4.1.7
 	 *
-	 * @param  int $postId The Post ID.
-	 * @return boolean     Whether or not the Post was built with Elementor.
+	 * @param  int     $postId The Post ID.
+	 * @return boolean         Whether or not the Post was built with Elementor.
 	 */
 	public function isBuiltWith( $postId ) {
-		if ( ! class_exists( '\Elementor\Plugin' ) ) {
+		$document = $this->getElementorDocument( $postId );
+		if ( ! $document ) {
 			return false;
 		}
 
-		$elementorPost = ElementorPlugin::instance()->documents->get( $postId );
-		if ( empty( $elementorPost ) ) {
-			return false;
-		}
-
-		return ElementorPlugin::instance()->documents->get( $postId )->is_built_with_elementor();
+		return $document->is_built_with_elementor();
 	}
 
 	/**
@@ -126,12 +152,8 @@ class Elementor extends Base {
 	 * @return string         The Edit URL.
 	 */
 	public function getEditUrl( $postId ) {
-		if ( ! class_exists( '\Elementor\Plugin' ) ) {
-			return '';
-		}
-
-		$document = ElementorPlugin::instance()->documents->get( $postId );
-		if ( empty( $document ) || ! $document->is_editable_by_current_user() ) {
+		$document = $this->getElementorDocument( $postId );
+		if ( ! $document || ! $document->is_editable_by_current_user() ) {
 			return '';
 		}
 
@@ -147,5 +169,30 @@ class Elementor extends Base {
 	 */
 	public function addContainers() {
 		echo '<div id="aioseo-admin"></div>';
+	}
+
+	/**
+	 * Returns the Elementor Document instance for the given Post ID.
+	 *
+	 * @since 4.3.5
+	 *
+	 * @param  int    $postId The Post ID.
+	 * @return object         The Elementor Document instance.
+	 */
+	private function getElementorDocument( $postId ) {
+		if (
+			! class_exists( '\Elementor\Plugin' ) ||
+			! is_object( \Elementor\Plugin::instance()->documents ) ||
+			! method_exists( \Elementor\Plugin::instance()->documents, 'get' )
+		) {
+			return false;
+		}
+
+		$elementorDocument = \Elementor\Plugin::instance()->documents->get( $postId );
+		if ( empty( $elementorDocument ) ) {
+			return false;
+		}
+
+		return $elementorDocument;
 	}
 }

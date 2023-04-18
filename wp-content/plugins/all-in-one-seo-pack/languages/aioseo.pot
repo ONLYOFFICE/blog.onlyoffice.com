@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the All in One SEO Pro plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: All in One SEO Pro 4.3.4\n"
+"Project-Id-Version: All in One SEO Pro 4.3.5.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/all-in-one-seo-pack\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-03-30T16:45:46+00:00\n"
+"POT-Creation-Date: 2023-04-13T20:13:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: all-in-one-seo-pack\n"
@@ -1254,16 +1254,16 @@ msgstr ""
 msgid "%1$s Sitemap %2$s"
 msgstr ""
 
-#: app/Common/Social/Twitter.php:236
+#: app/Common/Social/Twitter.php:249
 msgid "Written by"
 msgstr ""
 
-#: app/Common/Social/Twitter.php:245
+#: app/Common/Social/Twitter.php:258
 msgid "Est. reading time"
 msgstr ""
 
 #. Translators: 1 - The estimated reading time.
-#: app/Common/Social/Twitter.php:247
+#: app/Common/Social/Twitter.php:260
 msgid "%1$s minute"
 msgid_plural "%1$s minutes"
 msgstr[0] ""
@@ -3704,10 +3704,6 @@ msgstr ""
 msgid "vaporize"
 msgstr ""
 
-#: app/Common/Standalone/PageBuilders/Elementor.php:91
-msgid "AIOSEO"
-msgstr ""
-
 #. Translators: 1 - The singular label for the current post type.
 #: app/Common/Standalone/SeoPreview.php:146
 #: languages/aioseo-lite.php:1985
@@ -4020,7 +4016,7 @@ msgstr ""
 msgid "Inactive Plugins"
 msgstr ""
 
-#: app/Common/Traits/Helpers/Wp.php:217
+#: app/Common/Traits/Helpers/Wp.php:221
 msgid "Attachments"
 msgstr ""
 

@@ -6,12 +6,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AIOSEO\Plugin\Common\Traits;
+
 /**
  * Handles the Open Graph meta.
  *
  * @since 4.0.0
  */
 class Facebook {
+	use Traits\SocialProfiles;
+
 	/**
 	 * Returns the Open Graph image URL.
 	 *
@@ -356,13 +360,21 @@ class Facebook {
 	 */
 	public function getAuthor() {
 		$post = aioseo()->helpers->getPost();
-		if ( ! $post || ! aioseo()->options->social->facebook->general->showAuthor ) {
+		if ( ! is_a( $post, 'WP_Post' ) || ! aioseo()->options->social->facebook->general->showAuthor ) {
 			return '';
 		}
 
-		$postAuthor = get_the_author_meta( 'aioseo_facebook', $post->post_author );
+		$author       = '';
+		$userProfiles = $this->getUserProfiles( $post->post_author );
+		if ( ! empty( $userProfiles['facebookPageUrl'] ) ) {
+			$author = $userProfiles['facebookPageUrl'];
+		}
 
-		return ! empty( $postAuthor ) ? $postAuthor : aioseo()->options->social->facebook->advanced->authorUrl;
+		if ( empty( $author ) ) {
+			$author = aioseo()->options->social->facebook->advanced->authorUrl;
+		}
+
+		return $author;
 	}
 
 	/**

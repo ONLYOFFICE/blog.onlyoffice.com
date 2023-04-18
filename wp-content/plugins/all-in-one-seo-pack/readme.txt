@@ -4,7 +4,7 @@ Tags: SEO, Google Search Console, XML Sitemap, meta description, schema, meta ti
 Tested up to: 6.2
 Requires at least: 4.9
 Requires PHP: 5.6
-Stable tag: 4.3.4.1
+Stable tag: 4.3.5.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -197,7 +197,7 @@ Since redirect speed is important for SEO, we built in both Apache / NGINX serve
 * **SEO Settings Backup** - create a backup of your AIOSEO settings.
 * **Advanced SEO Import** / Export - easily import / export AIOSEO settings from one site to another.
 * **Redirection Importer** - import your SEO redirects from the Redirection plugin with our SEO migration wizard.
-* **Simple 301 Redirects Importer** - import your SEO redirects from Simple 301 redirets with our SEO migration wizard.
+* **Simple 301 Redirects Importer** - import your SEO redirects from Simple 301 redirects with our SEO migration wizard.
 * **Safe Redirection Manager** - easily import SEO redirects from safe redirect manager with our SEO migration wizard.
 * **301 Redirects** - easily import SEO redirects from 301 Redirects with our SEO migration wizard.
 * **CSV Sitemap Import** - import additional pages to your xml sitemaps using CSV.
@@ -256,6 +256,22 @@ Visit <a href="http://www.wpbeginner.com/" rel="friend" title="WPBeginner">WPBeg
 
 
 == Changelog ==
+
+**New in Version 4.3.5.1**
+
+* Fixed: Undefined function error when using WP 4.9 or 5.0.
+
+**New in Version 4.3.5**
+
+* New: Added a tab for AIOSEO in Elementor’s main navigation menu.
+* Fixed: Changes to the default schema graph for a post type/taxonomy now correctly propagate again to posts/terms using the default.
+* Fixed: Fatal error in rare cases when opening Elementor’s visual editor.
+* Fixed: Plugin conflict with Auto SEO Meta Keywords plugin where our menu pages no longer load correctly.
+* Fixed: Individual profile URLs did not take precedence over general URLs for Facebook/Twitter as the Facebook/Twitter author.
+* Fixed: Increased debounce timer for the TruSEO content analysis to prevent characters from being stripped from the SEO title.
+* Fixed: Rare PHP warning when scanning custom fields for videos in the Video Sitemap addon.
+* Fixed: Special redirects to the homepage not working due to query string triggering a loop.
+* Fixed: Missing dependencies warning for our blocks in the Widgets menu.
 
 **New in Version 4.3.4.1**
 
@@ -537,6 +553,6 @@ Additionally, AIOSEO can also provide you with data on the most frequently used 
 
 == Upgrade Notice ==
 
-= 4.3.4.1 =
+= 4.3.5.1 =
 
 This update adds major improvements and bug fixes.

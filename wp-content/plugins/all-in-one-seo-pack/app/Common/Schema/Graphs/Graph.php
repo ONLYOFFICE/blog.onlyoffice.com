@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AIOSEO\Plugin\Common\Traits as CommonTraits;
+
 /**
  * The base graph class.
  *
@@ -13,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 abstract class Graph {
 	use Traits\Image;
-	use Traits\SocialProfiles;
+	use CommonTraits\SocialProfiles;
 
 	/**
 	 * Returns the graph data.

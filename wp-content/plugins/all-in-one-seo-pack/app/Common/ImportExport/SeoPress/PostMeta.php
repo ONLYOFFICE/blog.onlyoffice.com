@@ -114,6 +114,9 @@ class PostMeta {
 			$aioseoPost->save();
 
 			aioseo()->migration->meta->migrateAdditionalPostMeta( $post->ID );
+
+			// Clear the Overview cache.
+			aioseo()->postSettings->clearPostTypeOverviewCache( $post->ID );
 		}
 
 		if ( count( $posts ) === $postsPerAction ) {

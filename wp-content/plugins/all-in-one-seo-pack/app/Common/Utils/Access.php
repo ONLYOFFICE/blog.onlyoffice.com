@@ -158,11 +158,11 @@ class Access {
 			}
 
 			$role = get_role( $key );
-			if ( empty( $role ) ) {
+			if ( ! is_a( $role, 'WP_Role' ) || ! is_array( $role->capabilities ) ) {
 				continue;
 			}
 
-			// Any Admin can remain.
+			// We don't need to remove the capabilities for administrators.
 			if ( $this->isAdmin( $key ) ) {
 				continue;
 			}
