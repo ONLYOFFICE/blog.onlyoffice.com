@@ -55,6 +55,10 @@ class PostObjectsConnectionOrderbyEnum {
 						'value'       => 'comment_count',
 						'description' => __( 'Order by the number of comments it has acquired', 'wp-graphql' ),
 					],
+					'META'     => [
+						'value'       => 'meta_value',
+						'description' => __( 'Order by date news', 'wp-graphql' ),
+					]
 				],
 			]
 		);
