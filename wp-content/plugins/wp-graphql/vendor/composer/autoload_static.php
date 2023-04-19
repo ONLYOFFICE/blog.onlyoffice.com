@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitc30e63153e573e990caf5cdae37963c4
+class ComposerStaticInit36cfe69df68a19ba3785e151e9870b26
 {
     public static $files = array (
         'a3ed03db03d57650e139da3e8903943c' => __DIR__ . '/../..' . '/access-functions.php',
@@ -406,6 +406,7 @@ class ComposerStaticInitc30e63153e573e990caf5cdae37963c4
         'WPGraphQL\\Type\\InterfaceType\\NodeWithTitle' => __DIR__ . '/../..' . '/src/Type/InterfaceType/NodeWithTitle.php',
         'WPGraphQL\\Type\\InterfaceType\\NodeWithTrackbacks' => __DIR__ . '/../..' . '/src/Type/InterfaceType/NodeWithTrackbacks.php',
         'WPGraphQL\\Type\\InterfaceType\\OneToOneConnection' => __DIR__ . '/../..' . '/src/Type/InterfaceType/OneToOneConnection.php',
+        'WPGraphQL\\Type\\InterfaceType\\PageInfo' => __DIR__ . '/../..' . '/src/Type/InterfaceType/PageInfo.php',
         'WPGraphQL\\Type\\InterfaceType\\Previewable' => __DIR__ . '/../..' . '/src/Type/InterfaceType/Previewable.php',
         'WPGraphQL\\Type\\InterfaceType\\TermNode' => __DIR__ . '/../..' . '/src/Type/InterfaceType/TermNode.php',
         'WPGraphQL\\Type\\InterfaceType\\UniformResourceIdentifiable' => __DIR__ . '/../..' . '/src/Type/InterfaceType/UniformResourceIdentifiable.php',
@@ -420,7 +421,6 @@ class ComposerStaticInitc30e63153e573e990caf5cdae37963c4
         'WPGraphQL\\Type\\ObjectType\\MediaSize' => __DIR__ . '/../..' . '/src/Type/ObjectType/MediaSize.php',
         'WPGraphQL\\Type\\ObjectType\\Menu' => __DIR__ . '/../..' . '/src/Type/ObjectType/Menu.php',
         'WPGraphQL\\Type\\ObjectType\\MenuItem' => __DIR__ . '/../..' . '/src/Type/ObjectType/MenuItem.php',
-        'WPGraphQL\\Type\\ObjectType\\PageInfo' => __DIR__ . '/../..' . '/src/Type/ObjectType/PageInfo.php',
         'WPGraphQL\\Type\\ObjectType\\Plugin' => __DIR__ . '/../..' . '/src/Type/ObjectType/Plugin.php',
         'WPGraphQL\\Type\\ObjectType\\PostObject' => __DIR__ . '/../..' . '/src/Type/ObjectType/PostObject.php',
         'WPGraphQL\\Type\\ObjectType\\PostTypeLabelDetails' => __DIR__ . '/../..' . '/src/Type/ObjectType/PostTypeLabelDetails.php',
@@ -459,9 +459,9 @@ class ComposerStaticInitc30e63153e573e990caf5cdae37963c4
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitc30e63153e573e990caf5cdae37963c4::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitc30e63153e573e990caf5cdae37963c4::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitc30e63153e573e990caf5cdae37963c4::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit36cfe69df68a19ba3785e151e9870b26::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit36cfe69df68a19ba3785e151e9870b26::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit36cfe69df68a19ba3785e151e9870b26::$classMap;
 
         }, null, ClassLoader::class);
     }

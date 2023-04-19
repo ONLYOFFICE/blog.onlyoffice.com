@@ -6,11 +6,11 @@
  * Description: GraphQL API for WordPress
  * Author: WPGraphQL
  * Author URI: http://www.wpgraphql.com
- * Version: 1.13.10
+ * Version: 1.14.1
  * Text Domain: wp-graphql
  * Domain Path: /languages/
  * Requires at least: 5.0
- * Tested up to: 6.1
+ * Tested up to: 6.2
  * Requires PHP: 7.1
  * License: GPL-3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -18,7 +18,7 @@
  * @package  WPGraphQL
  * @category Core
  * @author   WPGraphQL
- * @version  1.13.10
+ * @version  1.14.1
  */
 
 // Exit if accessed directly.
@@ -66,7 +66,6 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
  * @return void
  */
 function graphql_init_appsero_telemetry() {
-
 	// If the class doesn't exist, or code is being scanned by PHPSTAN, move on.
 	if ( ! class_exists( 'Appsero\Client' ) || defined( 'PHPSTAN' ) ) {
 		return;
