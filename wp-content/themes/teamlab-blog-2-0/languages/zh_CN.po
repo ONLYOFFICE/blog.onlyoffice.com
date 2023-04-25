@@ -1453,7 +1453,7 @@ msgstr "<b>ONLYOFFICE 协作空间现已发布：</b>更有效地与客户、业
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:129
 msgid "<b>ONLYOFFICE DocSpace</b> released"
-msgstr "<b>ONLYOFFICE 协作空间</b> がリリース！"
+msgstr "<b>ONLYOFFICE 协作空间</b> 现已发布"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:152 wp-content/themes/teamlab-blog-2-0/searchform.php:9
 msgid "Find news, tips and how-tos"
