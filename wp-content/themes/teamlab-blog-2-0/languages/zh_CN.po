@@ -1448,12 +1448,12 @@ msgid "(Edit)"
 msgstr "（编辑）"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:120
-msgid "<b>ONLYOFFICE Workspace 12.5:</b> enhanced security, optimized document management, Dark theme, and more"
-msgstr "<b>ONLYOFFICE 工作区 v12.5：</b>安全增强，文档管理优化，深色主题等等"
+msgid "<b>ONLYOFFICE DocSpace released:</b> improve document collaboration with offices, customers, and partners. <b>Use it for free!</b>"
+msgstr "<b>ONLYOFFICE 协作空间现已发布：</b>更有效地与客户、业务合作伙伴及承包商进行文档协作<b></b>"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:129
-msgid "<b>ONLYOFFICE Workspace 12.5</b> released"
-msgstr "<b>ONLYOFFICE 工作区 v12.5</b> 现已发布"
+msgid "<b>ONLYOFFICE DocSpace</b> released"
+msgstr "<b>ONLYOFFICE 协作空间</b> がリリース！"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:152 wp-content/themes/teamlab-blog-2-0/searchform.php:9
 msgid "Find news, tips and how-tos"

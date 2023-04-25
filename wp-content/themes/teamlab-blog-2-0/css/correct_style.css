@@ -14,7 +14,7 @@ main{
   
   /*---------Top-banner-------*/
 .advent-announce {
-  background: #183e6b;
+  background: #55b5dc;
   background-repeat: no-repeat;
   padding: 0;
   text-align: center;
@@ -24,15 +24,9 @@ main{
   cursor: pointer;
 }
 
-.advent-announce.ja .advent-announce-text {
-  height: 20px;
-  max-width: 586px;
-  padding: 18px 0px;
-}
-
 .advent-announce.zh-hans .advent-announce-text {
-  height: 20px;
-  padding: 18px 0px;
+  max-width: 572px;
+  line-height: 40px;
 }
 
 .advent-announce a {
@@ -44,17 +38,17 @@ main{
 .advent-announce .advent-announce-text {
   position: relative;
   box-sizing: border-box;
-  height: 56px;
+  height: 40px;
   color: #FFFFFF;
   text-align: center;
   margin: 0 auto;
   display: inline-block;
   font-size: 14px;
   font-weight: 400;
-  line-height: 20px;
+  line-height: 19px;
   letter-spacing: 0.01em;
   padding: 7px 0px 8px;
-  max-width: 578px;
+  max-width: 556px;
   text-decoration: none !important;
   padding: 7px 0px;
   white-space: initial;
@@ -65,11 +59,11 @@ main{
   content: '';
   position: absolute;
   top: 0;
-  left: -380px;
-  background-image: url(../images/top_banner/workspace-12-5/workspace-12-5-left.svg);
-  background-position-y: -3px;
+  left: -486px;
+  background-image: url(../images/top_banner/docspace/docspace-left.svg);
+  background-position-y: -5px;
   background-repeat: no-repeat;
-  width: 372px;
+  width: 476px;
   height: 56px;
 }
 
@@ -77,11 +71,11 @@ main{
   content: '';
   position: absolute;
   top: 0;
-  right: -366px;
-  background-image: url(../images/top_banner/workspace-12-5/workspace-12-5-right.svg);
-  background-position-y: -2px;
+  right: -445px;
+  background-image: url(../images/top_banner/docspace/docspace-right.svg);
+  background-position-y: 6px;
   background-repeat: no-repeat;
-  width: 356px;
+  width: 435px;
   height: 56px;
 }
 

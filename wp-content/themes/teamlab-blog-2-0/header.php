@@ -99,29 +99,31 @@ $lang = $sitepress->get_current_language();
 </head>
 <div class="advent-announce push advent-mobile-hide <?php echo $lang ?>">
     <?php
-        $banner_url = 'https://www.onlyoffice.com/blog/2023/03/onlyoffice-workspace-12-5-released/';
-        if($current_language == WEB_ROOT_URL.'/'.'fr'){
-            $banner_url = 'https://www.onlyoffice.com/blog/fr/2023/03/onlyoffice-workspace-12-5/';
-        }else if($current_language == WEB_ROOT_URL.'/'.'de'){
-            $banner_url = 'https://www.onlyoffice.com/blog/de/2023/03/onlyoffice-workspace-12-5-verbesserte-sicherheit-optimierte-dokumentenverwaltung-dunkelmodus-und-mehr/';
+        $banner_url = 'https://www.onlyoffice.com/blog/2023/04/meet-onlyoffice-docspace/';
+        if($current_language == WEB_ROOT_URL.'/'.'de'){
+            $banner_url = 'https://www.onlyoffice.com/blog/de/2023/04/docspace/';
         }else if($current_language == WEB_ROOT_URL.'/'.'es'){
-            $banner_url = 'https://www.onlyoffice.com/blog/es/2023/03/onlyoffice-workspace-12-5/';
+            $banner_url = 'https://www.onlyoffice.com/blog/es/2023/04/descubre-onlyoffice-docspace/';
+        }else if($current_language == WEB_ROOT_URL.'/'.'pt-br'){
+            $banner_url = 'https://www.onlyoffice.com/blog/pt-br/2023/04/conheca-o-onlyoffice-docspace/';
         }else if($current_language == WEB_ROOT_URL.'/'.'it'){
-            $banner_url = 'https://www.onlyoffice.com/blog/it/2023/03/onlyoffice-workspace-12-5/';
-        }else if($current_language == WEB_ROOT_URL.'/'.'zh'){
-            $banner_url = 'https://www.onlyoffice.com/blog/zh-hans/2023/03/onlyoffice-workspace-12-5-released/';
+            $banner_url = 'https://www.onlyoffice.com/blog/it/2023/04/onlyoffice-docspace/';
+        }else if($current_language == WEB_ROOT_URL.'/'.'ja'){
+            $banner_url = 'https://www.onlyoffice.com/blog/ja/2023/04/onlyoffice-docspace/';
+        }else if($current_language == WEB_ROOT_URL.'/'.'zh-hans'){
+            $banner_url = 'https://www.onlyoffice.com/blog/zh-hans/2023/04/meet-onlyoffice-docspace/';
         }
     ?>
     <a href="<?php echo $banner_url ?>">
         <div class="advent-announce-text">
-            <?php _e('<b>ONLYOFFICE Workspace 12.5:</b> enhanced security, optimized document management, Dark theme, and more', 'teamlab-blog-2-0'); ?>
+            <?php _e('<b>ONLYOFFICE DocSpace released:</b> improve document collaboration with offices, customers, and partners. <b>Use it for free!</b>', 'teamlab-blog-2-0'); ?>
         </div>
     </a>
 </div>
 <div class="advent-announce push advent-desktop-hide">
     <a  href="<?php echo $banner_url ?>">
         <div class="advent-announce-text">
-            <?php _e('<b>ONLYOFFICE Workspace 12.5</b> released', 'teamlab-blog-2-0'); ?>
+            <?php _e('<b>ONLYOFFICE DocSpace</b> released', 'teamlab-blog-2-0'); ?>
         </div>
     </a>
 </div>

@@ -1268,21 +1268,16 @@ div.custom-select div.selector {
   .advent-announce .advent-announce-text {
     background-color: transparent;
     display: inline-block;
-    font-size: 12px;
+    font-size: 13px;
     height: auto;
-    line-height: 16px;
-    padding: 8px 0px 8px 0px;
+    line-height: 18px;
+    padding: 6px 0;
     white-space: normal;
     width: auto !important;
   }
 
   .advent-announce .advent-announce-text:before {
-    background-position: right -1px;
-    background-size: auto 65px;
-    height: 48px;
-    left: -79px;
-    top: -9px;
-    width: 48px;
+    left: -490px;
   }
 
   .advent-announce .advent-announce-text:after, 
@@ -1291,7 +1286,8 @@ div.custom-select div.selector {
   }
 
   .advent-announce .advent-announce-text:after {
-    background-position-y: -6px;
+    right: -450px;
+    background-position-y: 2px;
   }
 
   .advent-announce .advent-announce-text b {
