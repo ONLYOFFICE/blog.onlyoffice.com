@@ -141,7 +141,7 @@
     opacity: 0;
   }
   .pushy-submenu-open > div > ul {
-    padding: 8px 0;
+    padding: 24px 0 0;
     visibility: visible;
   }
   .pushy-submenu-open .pushy-link {
@@ -159,12 +159,18 @@
 @media screen and (max-width: 592px){
   .pushy{
     box-sizing: border-box;
-    width: 267px;
+    width: calc(100% - 64px);
+    max-width: 100%;
+  }
+  .pushy-left {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    -ms-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
   }
   .pushy-open-left .push{
-    -webkit-transform: translate3d(267px, 0, 0);
-    -ms-transform: translate3d(267px, 0, 0);
-    transform: translate3d(267px, 0, 0);
+    -webkit-transform: translate3d(calc(100vw - 64px), 0, 0);
+    -ms-transform: translate3d(calc(100vw - 64px), 0, 0);
+    transform: translate3d(calc(100vw - 64px), 0, 0);
   }
 
   .pushy-submenu-closed #navitem_features, 
@@ -178,7 +184,7 @@
   .pushy-submenu-closed #navitem_integrations,
   .pushy-submenu-closed a.singin {
     font-size: 16px;
-    padding: 9px 36px 9px 18px;
+    padding: 16px 40px 16px 24px;
   }
 
   .pushy-submenu-open #navitem_features, 
@@ -189,9 +195,23 @@
   .pushy-submenu-open #navitem_prices, 
   .pushy-submenu-open #navitem_about,
   .pushy-submenu-open #navitem_developers,
-  .pushy-submenu-open #navitem_integrations,
   .pushy-submenu-open a.singin {
     font-size: 16px;
     padding: 6px 22px 12px 22px;
+  }
+
+  .pushy-submenu-open #navitem_integrations {
+    padding: 16px 40px 16px 24px;
+  }
+}
+
+@media screen and (max-width: 375px){
+  .pushy{
+    width: calc(100% - 32px);
+  }
+  .pushy-open-left .push{
+    -webkit-transform: translate3d(calc(100vw - 32px), 0, 0);
+    -ms-transform: translate3d(calc(100vw - 32px), 0, 0);
+    transform: translate3d(calc(100vw - 32px), 0, 0);
   }
 }

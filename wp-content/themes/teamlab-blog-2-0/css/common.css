@@ -124,6 +124,9 @@ header {
 .footer_menu.pt-br{
   grid-template-columns: 206px 253px 253px 1fr;
 }
+.footer_menu_item.zh-hans .ListSocLink{
+  gap: 12px;
+}
 .footer_menu p {
   font-size: 12px;
   margin: 0 0 8px;
@@ -428,6 +431,7 @@ input.vertical-bottom {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  gap: 16px;
   margin: 16px 0 0;
 }
 .ListSocLink li {
@@ -438,7 +442,6 @@ input.vertical-bottom {
   align-items: center;
   width: 40px;
   height: 40px;
-  margin: 0 16px 0 0;
   vertical-align: middle
 }
 .ListSocLink .twitter{
@@ -543,6 +546,22 @@ input.vertical-bottom {
   background-image: url("../images/line.svg");
   background-position-x: center;
   background-size: contain;
+}
+
+.ListSocLink li label.social_grey_kuaishou {
+  background-position-x: -550px;
+}
+
+.ListSocLink li label.social_grey_xiaohongshu {
+  background-position-x: -590px;
+}
+
+.ListSocLink li label.social_grey_csdn {
+  background-position-x: -670px;
+}
+
+.ListSocLink li label.social_grey_toutiao {
+  background-position-x: -630px;
 }
 
 
@@ -852,6 +871,14 @@ body.desktop .button.red.disabled:visited {
 
   .input-header .search-field:focus{
     width: calc(100vw - 110px);
+  }
+
+  .ListSocLink {
+    gap: 18px;
+  }
+
+  .footer_menu_item.zh-hans .ListSocLink {
+    gap: 18px;
   }
 }
 
@@ -1866,10 +1893,14 @@ body.desktop .button.red.disabled:visited {
   .narrowfooter{
     padding: 0 16px;
   }
+  .footer_menu_item.ja .ListSocLink,
+  .footer_menu_item.zh-hans .ListSocLink {
+    column-gap: 24px;
+  }
   .ListSocLink{
     justify-content: center;
     flex-wrap: wrap;
-    gap: 24px;
+    gap: 16px;
     margin-bottom: 0;
   }
   .ListSocLink li{
@@ -1911,6 +1942,18 @@ body.desktop .button.red.disabled:visited {
   .ListSocLink li.wechat .wechat_qr_code {
     left: -92px;
   }
+  .ListSocLink li label.social_grey_kuaishou {
+    background-position-x: -554px;
+  }
+  .ListSocLink li label.social_grey_xiaohongshu {
+    background-position-x: -594px;
+  }
+  .ListSocLink li label.social_grey_csdn {
+    background-position-x: -674px;
+  }
+  .ListSocLink li label.social_grey_toutiao {
+    background-position-x: -634px;
+  }
   .SocialLinks{
     margin-top: 14px;
   }
@@ -1946,7 +1989,9 @@ body.desktop .button.red.disabled:visited {
 .copyReserved span {
   display: block;
 }
-
+.footer_menu_item.zh-hans .copyReserved span {
+  display: inline-block;
+}
 }
 @media screen and (max-width: 320px){
   .PostContainer {

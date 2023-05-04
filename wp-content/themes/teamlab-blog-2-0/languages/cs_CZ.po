@@ -1055,3 +1055,47 @@ msgstr "pro-firmy"
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:34
 msgid "By clicking \"Subscribe\", you agree to the <u>rules for using the service and processing personal data.</u>"
 msgstr "Kliknutím na tlačítko \"Přihlásit se k odběru\" souhlasíte s <u>pravidly používání služby a zpracování osobních údajů.</u>"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:151
+msgid "Products"
+msgstr "Produkty"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:158
+msgid "Editors to integrate into your business platform"
+msgstr "Editory pro integraci do vaší podnikové platformy"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:160
+msgid "Platform to collaborate with your partners and clients"
+msgstr "Platforma pro spolupráci na dokumentech s vašimi partnery a klienty"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:162
+msgid "Platform to collaborate with your team"
+msgstr "Platforma pro spolupráci s vaším týme"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:164
+msgid "Ready-to-use apps to integrate Docs with your platform"
+msgstr "Aplikace připravené k použití pro integraci Docs s vaší platformo"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:179
+msgid "Perform your tasks online"
+msgstr "Provádějte své úkoly online"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:180
+msgid "Find and fill out oforms"
+msgstr "Vyhledejte a vyplňte oform"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:181
+msgid "Convert text files"
+msgstr "Převádějte textové soubory"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:182
+msgid "Convert spreadsheets"
+msgstr "Převádějte tabulky"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:183
+msgid "Convert presentations"
+msgstr "Převádějte prezentace"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:184
+msgid "Convert PDFs"
+msgstr "Převádějte soubory PDF"

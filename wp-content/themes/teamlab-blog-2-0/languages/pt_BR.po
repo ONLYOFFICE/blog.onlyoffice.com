@@ -1152,6 +1152,50 @@ msgstr "para-educacao"
 msgid "By clicking \"Subscribe\", you agree to the <u>rules for using the service and processing personal data.</u>"
 msgstr "Ao clicar em \"Assinar\", você concorda com as <u>regras de uso do serviço e processamento de dados pessoais.</u>"
 
+#: wp-content/themes/teamlab-blog-2-0/header.php:151
+msgid "Products"
+msgstr "Produtos"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:158
+msgid "Editors to integrate into your business platform"
+msgstr "Editores para integrar em sua plataforma de negócios"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:160
+msgid "Platform to collaborate with your partners and clients"
+msgstr "Plataforma para colaborar em documentos com seus parceiros e clientes"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:162
+msgid "Platform to collaborate with your team"
+msgstr "Plataforma para colaborar com sua equipe"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:164
+msgid "Ready-to-use apps to integrate Docs with your platform"
+msgstr "Aplicativos prontos para uso para integrar o Docs à sua plataforma"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:179
+msgid "Perform your tasks online"
+msgstr "Realize suas tarefas online"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:180
+msgid "Find and fill out oforms"
+msgstr "Encontre e preencha oforms"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:181
+msgid "Convert text files"
+msgstr "Converter arquivos de texto"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:182
+msgid "Convert spreadsheets"
+msgstr "Converter planilhas"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:183
+msgid "Convert presentations"
+msgstr "Converter apresentações"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:184
+msgid "Convert PDFs"
+msgstr "Converter PDFs"
+
 #: wp-includes/widgets/class-wp-widget-recent-posts.php:27
 msgid "Your site&#8217;s most recent Posts."
 msgstr ""

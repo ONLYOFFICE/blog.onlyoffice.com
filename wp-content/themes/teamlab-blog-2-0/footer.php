@@ -74,7 +74,7 @@ $lang = $sitepress->get_current_language();
 <!--                                </ul>-->
 <!--                            </div>-->
 <!--                        </li>-->
-                        <li class="footer-border">
+                        <li class="footer-border no_tablet_view">
                             <a id="footer_menu_solutions_bsz" class="footer-button">
                                 <h6><?php _e('Solutions', 'teamlab-blog-2-0'); ?></h6>
                             </a>
@@ -113,25 +113,26 @@ $lang = $sitepress->get_current_language();
                                 </ul>
                             </div>
                         </li>
-                    </div>
-                    <div group-menu>
-                        <li class="footer-border">
-                            <a id="footer_menu_perform" class="footer-button">
-                                <h6><?php _e('Perform your tasks', 'teamlab-blog-2-0'); ?></h6>
+                        <li class="footer-border tablet_view_only">
+                            <a id="footer_menu_support" class="footer-button">
+                                <h6><?php _e('Support', 'teamlab-blog-2-0'); ?></h6>
                             </a>
-                            <div id="navitem_footer_perform">
+                            <div id="navitem_footer_support">
                                 <ul>
                                     <li>
-                                        <p><a href="<?php echo $current_language ?>/text-file-converter.aspx"><?php _e('Convert text files', 'teamlab-blog-2-0'); ?></a></p>
+                                        <p><a href="<?php echo $current_language ?>/support-contact-form.aspx"><?php _e('Support contact form', 'teamlab-blog-2-0'); ?></a></p>
                                     </li>
                                     <li>
-                                        <p><a href="<?php echo $current_language ?>/spreadsheet-converter.aspx"><?php _e('Convert spreadsheets', 'teamlab-blog-2-0'); ?></a></p>
+                                        <p><a target="_blank" rel="noreferrer noopener" href="https://forum.onlyoffice.com/"><?php _e('Forum', 'teamlab-blog-2-0'); ?></a></p>
                                     </li>
                                     <li>
-                                        <p><a href="<?php echo $current_language ?>/presentation-converter.aspx"><?php _e('Convert presentations', 'teamlab-blog-2-0'); ?></a></p>
+                                        <p><a href="<?php echo $current_language ?>/demo-order.aspx"><?php _e('Order demo', 'teamlab-blog-2-0'); ?></a></p>
                                     </li>
                                     <li>
-                                        <p><a href="<?php echo $current_language ?>/pdf-converter.aspx"><?php _e('Convert PDFs', 'teamlab-blog-2-0'); ?></a></p>
+                                        <p><a href="<?php echo $current_language ?>/webinars.aspx"><?php _e('Webinars', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/training-courses.aspx"><?php _e('Training courses', 'teamlab-blog-2-0'); ?></a></p>
                                     </li>
                                 </ul>
                             </div>
@@ -139,6 +140,77 @@ $lang = $sitepress->get_current_language();
                     </div>
                     <div group-menu>
                         <li class="footer-border">
+                            <a id="footer_menu_perform" class="footer-button">
+                                <h6><?php _e('Features', 'teamlab-blog-2-0'); ?></h6>
+                            </a>
+                            <div id="navitem_footer_perform">
+                                <ul>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/document-editor.aspx"><?php _e('Document Editor', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/spreadsheet-editor.aspx"><?php _e('Spreadsheet Editor', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/presentation-editor.aspx"><?php _e('Presentation Editor', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/form-creator.aspx"><?php _e('Form creator', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/pdf-reader.aspx"><?php _e('PDF reader & converter', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/security.aspx"><?php _e('Security', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/app-directory"><?php _e('App Directory', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </div>
+                    <div group-menu>
+                        <li class="footer-border tablet_view_only">
+                            <a id="footer_menu_solutions_bsz" class="footer-button">
+                                <h6><?php _e('Solutions', 'teamlab-blog-2-0'); ?></h6>
+                            </a>
+                            <div id="navitem_footer_by_size">
+                                <ul>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/for-small-business.aspx"><?php _e('SMBs', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/for-enterprises.aspx"><?php _e('Enterprises', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/home-use.aspx"><?php _e('Home use', 'teamlab-blog-2-0'); ?></a></p>
+                                    <li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/for-developers.aspx"><?php _e('Developers', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/for-hosting-providers.aspx"><?php _e('Hosting providers', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/for-government.aspx"><?php _e('Government', 'teamlab-blog-2-0'); ?></a></p>
+                                    <li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/healthcare.aspx"><?php _e('Healthcare', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/for-research.aspx"><?php _e('Research', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/education.aspx"><?php _e('Education', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="<?php echo $current_language ?>/nonprofit-organizations.aspx"><?php _e('Nonprofits', 'teamlab-blog-2-0'); ?></a></p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="footer-border no_tablet_view">
                             <a id="footer_menu_support" class="footer-button">
                                 <h6><?php _e('Support', 'teamlab-blog-2-0'); ?></h6>
                             </a>
@@ -170,9 +242,6 @@ $lang = $sitepress->get_current_language();
                                 <ul>
                                     <li>
                                         <p><a target="_blank" rel="noreferrer noopener" href="https://helpcenter.onlyoffice.com/index.aspx"><?php _e('Help Center', 'teamlab-blog-2-0'); ?></a></p>
-                                    </li>
-                                    <li>
-                                        <p><a href="<?php echo $current_language ?>/app-directory.aspx"><?php _e('App Directory', 'teamlab-blog-2-0'); ?></a></p>
                                     </li>
                                     <?php if (!($current_language == WEB_ROOT_URL.'/'.'zh')) { ?>
                                         <li>
@@ -246,7 +315,7 @@ $lang = $sitepress->get_current_language();
                         </li>
                     </div>
                 </ul>
-                <div class="footer_menu_item fmi_social">
+                <div class="footer_menu_item fmi_social <?php echo $lang ?>">
                     <div class="SocialLinks">
                         <span>
                             <?php _e('Follow us on:', 'teamlab-blog-2-0'); ?>
@@ -257,9 +326,11 @@ $lang = $sitepress->get_current_language();
                                     <label title="Subscribe to our newsletters" class="social_grey_subscribe"></label>
                                 </a>
                             </li>
+                            <?php if ($current_language !== WEB_ROOT_URL.'/'.'zh') { ?>
                             <li><a target="_blank" href="https://www.facebook.com/pages/OnlyOffice/833032526736775" onmouseup="PageTrack('GoTo_facebook');" rel="noreferrer noopener" title="Follow us on Facebook" class="faceBook">
                                     <label class="social_grey_fb" title="Facebook"></label>
                                 </a></li>
+                            <?php } ?>
                             <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_twitter');" href="https://twitter.com/ONLY_OFFICE" title="Follow us on Twitter" class="twitter" rel="noreferrer noopener">
                                     <label class="social_grey_twi" title="Twitter"></label>
                                 </a></li>
@@ -275,9 +346,11 @@ $lang = $sitepress->get_current_language();
                             <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_medium');" href="https://medium.com/onlyoffice" title="Follow us on Medium" class="medium" rel="noreferrer noopener">
                                     <label title="Medium" class="social_grey_medium"></label>
                                 </a></li>
+                            <?php if ($current_language !== WEB_ROOT_URL.'/'.'zh') { ?>
                             <li><a rel="nofollow" target="_blank" onmouseup="PageTrack('GoTo_instagram');" class="medium" title="Follow us on Instagram" href="https://www.instagram.com/the_onlyoffice/" rel="noreferrer noopener">
                                     <label title="Instagram" class="social_grey_instagram"></label>
                                 </a></li>
+                            <?php } ?>
                             <li><a class="github" title="Follow us on GitHub" href="https://github.com/ONLYOFFICE/" onmouseup="PageTrack('GoTo_medium');" target="_blank" rel="noreferrer noopener">
                                     <label title="GitHub" class="social_grey_github"></label>
                                 </a></li>
@@ -306,6 +379,20 @@ $lang = $sitepress->get_current_language();
                                         </div>
                                     </a>
                                 </li>
+                            <?php } ?>
+                            <?php if ($current_language == WEB_ROOT_URL.'/'.'zh') { ?>
+                                <li><a class="kuaishou" title="在Kuaishou上关注我们" href="https://v.kuaishou.com/HEotRv" onmouseup="PageTrack('GoTo_medium');" target="_blank" rel="noreferrer noopener">
+                                    <label title="Kuaishou" class="social_grey_kuaishou"></label>
+                                </a></li>
+                                <li><a class="xiaohongshu" title="在Xiaohongshu上关注我们" href="https://www.xiaohongshu.com/user/profile/627e271800000000210253ec" onmouseup="PageTrack('GoTo_medium');" target="_blank" rel="noreferrer noopener">
+                                    <label title="Xiaohongshu" class="social_grey_xiaohongshu"></label>
+                                </a></li>
+                                <li><a class="csdn" title="在CSDN上关注我们" href="https://blog.csdn.net/m0_68274698" onmouseup="PageTrack('GoTo_medium');" target="_blank" rel="noreferrer noopener">
+                                    <label title="CSDN" class="social_grey_csdn"></label>
+                                </a></li>
+                                <li><a class="toutiao" title="在Toutiao上关注我们" href="https://www.toutiao.com/c/user/token/MS4wLjABAAAAituLIinbu_T7phDvBDiqiVsev4z3kjH95MZsEpnq7Lv2MnXBh-Sp9tuAHzFnI-Tk/" onmouseup="PageTrack('GoTo_medium');" target="_blank" rel="noreferrer noopener">
+                                    <label title="Toutiao" class="social_grey_toutiao"></label>
+                                </a></li>
                             <?php } ?>
                         </ul>
                     </div>

@@ -162,7 +162,7 @@ msgstr "Lecteur et convertisseur de PDF"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:216
 msgid "See it in action!"
-msgstr "Regardez-le en action !"
+msgstr "REGARDER EN ACTION"
 
 #: wp-content/themes/teamlab-blog-2-0/header.php:220
 msgid "Curious to know what the interface looks like and try the main functionality?"
@@ -1190,8 +1190,52 @@ msgstr "En cliquant sur \"S'abonner\", vous acceptez les <u>règles d'utilisatio
 msgid "Features"
 msgstr "FONCTIONNALITÉS"
 
+#: wp-content/themes/teamlab-blog-2-0/header.php:151
+msgid "Products"
+msgstr "Produits"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:158
+msgid "Editors to integrate into your business platform"
+msgstr "Éditeurs à intégrer dans votre plateforme d'entreprise"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:160
+msgid "Platform to collaborate with your partners and clients"
+msgstr "Plateforme de collaboration sur les documents avec vos partenaires et clients"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:162
+msgid "Platform to collaborate with your team"
+msgstr "Plateforme de collaboration avec votre équipe"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:164
+msgid "Ready-to-use apps to integrate Docs with your platform"
+msgstr "Des applications prêtes à l'emploi pour intégrer Docs à votre plateforme"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:179
+msgid "Perform your tasks online"
+msgstr "Effectuez vos tâches en ligne"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:180
+msgid "Find and fill out oforms"
+msgstr "Trouvez et remplissez des formulaires"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:181
+msgid "Convert text files"
+msgstr "Convertissez des documents texte"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:182
+msgid "Convert spreadsheets"
+msgstr "Convertissez des feuilles de calcul"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:183
+msgid "Convert presentations"
+msgstr "Convertissez des présentations"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:184
+msgid "Convert PDFs"
+msgstr "Convertissez des PDFs"
+
 msgid "Follow us on:"
-msgstr "Suivez-nous sur:"
+msgstr "Suivez-nous sur :"
 
 #~ msgid "<b>ONLYOFFICE 7.0:</b> <span>online forms</span>, password protection in sheets, collaboration improvements and much more"
 #~ msgstr "<b>ONLYOFFICE 7.0 :</b> <span>formulaires en ligne</span>, protection avec un mot de passe dans les feuilles de calcul, collaboration améliorée et plus encore"

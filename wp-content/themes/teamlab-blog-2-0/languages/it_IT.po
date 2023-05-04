@@ -260,7 +260,7 @@ msgstr "Centro assistenza"
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:66
 #: wp-content/themes/teamlab-blog-2-0/footer.php:163
 msgid "App Directory"
-msgstr "Cartella applicazione"
+msgstr ""
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:67
 #: wp-content/themes/teamlab-blog-2-0/footer.php:166 msgid "Compare to other
@@ -270,7 +270,7 @@ msgstr "Cartella applicazione"
 #: wp-content/themes/teamlab-blog-2-0/footer.php:169
 #: wp-content/themes/teamlab-blog-2-0/header.php:359
 msgid "Contribute"
-msgstr "Collabora"
+msgstr "Collabora con noi"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:69
 #: wp-content/themes/teamlab-blog-2-0/footer.php:145
@@ -291,17 +291,17 @@ msgstr "Contattaci"
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:77
 #: wp-content/themes/teamlab-blog-2-0/footer.php:213
 msgid "Sales questions"
-msgstr "Richiesta vendita"
+msgstr "Questioni d'acquisto"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:81
 #: wp-content/themes/teamlab-blog-2-0/footer.php:218
 msgid "Partner inquiries"
-msgstr "Richieste collaborazione"
+msgstr "Richieste di partnership"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:85
 #: wp-content/themes/teamlab-blog-2-0/footer.php:222
 msgid "Press inquiries"
-msgstr "Richieste interviste"
+msgstr "Richieste stampa"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:89
 #: wp-content/themes/teamlab-blog-2-0/footer.php:226
@@ -1170,6 +1170,50 @@ msgstr "per-l-istruzione"
 #: wp-content/themes/teamlab-blog-2-0/subscribe-blue.php:34
 msgid "By clicking \"Subscribe\", you agree to the <u>rules for using the service and processing personal data.</u>"
 msgstr "Cliccando su \"Iscriviti\", accetti <u>le regole per l'utilizzo del servizio e il trattamento dei dati personali.</u>"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:151
+msgid "Products"
+msgstr "Prodotti"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:158
+msgid "Editors to integrate into your business platform"
+msgstr "Editor da integrare nella tua piattaforma aziendale"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:160
+msgid "Platform to collaborate with your partners and clients"
+msgstr "Piattaforma per collaborare sui documenti con i tuoi partner e clienti"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:162
+msgid "Platform to collaborate with your team"
+msgstr "Piattaforma per collaborare con il tuo team"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:164
+msgid "Ready-to-use apps to integrate Docs with your platform"
+msgstr "App pronte all'uso per integrare Docs con la tua piattaforma"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:179
+msgid "Perform your tasks online"
+msgstr "Esegui le tue attività online"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:180
+msgid "Find and fill out oforms"
+msgstr "Trova e compila i moduli"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:181
+msgid "Convert text files"
+msgstr "Converti file di testo"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:182
+msgid "Convert spreadsheets"
+msgstr "Converti fogli di calcolo"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:183
+msgid "Convert presentations"
+msgstr "Converti presentazioni"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:184
+msgid "Convert PDFs"
+msgstr "Converti PDF"
 
 #~ msgid "<b>ONLYOFFICE 7.0:</b> <span>online forms</span>, password protection in sheets, collaboration improvements and much more"
 #~ msgstr "<b>ONLYOFFICE 7.0:</b> <span>moduli online</span>, protezione con password nei fogli di calcolo, miglioramenti della collaborazione e altro ancora"

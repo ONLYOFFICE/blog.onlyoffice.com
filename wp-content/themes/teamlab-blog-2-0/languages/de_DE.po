@@ -1185,6 +1185,50 @@ msgstr "Wenn Sie auf \"Abonnieren\" klicken, erklären Sie sich mit den <u>Regel
 msgid "Features"
 msgstr "FUNKTIONEN"
 
+#: wp-content/themes/teamlab-blog-2-0/header.php:151
+msgid "Products"
+msgstr "Produkte"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:158
+msgid "Editors to integrate into your business platform"
+msgstr "Editoren zur Integration in Ihre Unternehmensplattform"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:160
+msgid "Platform to collaborate with your partners and clients"
+msgstr "Plattform für die Zusammenarbeit an Dokumenten mit Ihren Partnern und Kunden"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:162
+msgid "Platform to collaborate with your team"
+msgstr "Plattform für die Zusammenarbeit mit Ihrem Team"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:164
+msgid "Ready-to-use apps to integrate Docs with your platform"
+msgstr "Gebrauchsfertige Anwendungen zur Integration von Docs mit Ihrer Plattform"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:179
+msgid "Perform your tasks online"
+msgstr "Erledigen Sie Ihre Aufgaben online"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:180
+msgid "Find and fill out oforms"
+msgstr "Finden und ausfüllen Sie Formulare"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:181
+msgid "Convert text files"
+msgstr "Konvertieren Sie Textdateien"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:182
+msgid "Convert spreadsheets"
+msgstr "Konvertieren Sie Tabellenkalkulationen"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:183
+msgid "Convert presentations"
+msgstr "Konvertieren Sie Präsentationen"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:184
+msgid "Convert PDFs"
+msgstr "Konvertieren Sie PDF"
+
 #~ msgid "<b>ONLYOFFICE 7.0:</b> <span>online forms</span>, password protection in sheets, collaboration improvements and much more"
 #~ msgstr "<b>ONLYOFFICE 7.0:</b> <span>Online-Formulare</span>, Passwortschutz in Tabellenkalkulationen, verbesserte Zusammenarbeit und vieles mehr"
 
