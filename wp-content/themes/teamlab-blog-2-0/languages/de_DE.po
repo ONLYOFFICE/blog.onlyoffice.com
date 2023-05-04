@@ -669,8 +669,8 @@ msgid "No results matching your query could be found"
 msgstr "Keine Ergebnisse gefunden, die Ihrer Anfrage entsprechen"
 
 #: wp-content/themes/teamlab-blog-2-0/cloud-block.php:3
-msgid "Try ONLYOFFICE in the cloud"
-msgstr "ONLYOFFICE in der Cloud testen"
+msgid "Use ONLYOFFICE for free"
+msgstr "Benutzen Sie ONLYOFFICE kostenlos"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:17
 msgid "This post is password protected. Enter the password to view any comments."

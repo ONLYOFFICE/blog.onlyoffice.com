@@ -1041,8 +1041,8 @@ msgid "No results matching your query could be found"
 msgstr "一致する情報は見つかりませんでした"
 
 #: wp-content/themes/teamlab-blog-2-0/cloud-block.php:3
-msgid "Try ONLYOFFICE in the cloud"
-msgstr "ONLYOFFICEをクラウドで</br>お試しください"
+  msgid "Use ONLYOFFICE for free"
+  msgstr "ONLYOFFICEを完全無料で使う"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:17
 msgid "This post is password protected. Enter the password to view any comments."

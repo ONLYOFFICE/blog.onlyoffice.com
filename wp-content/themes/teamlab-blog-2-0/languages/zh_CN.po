@@ -1256,8 +1256,8 @@ msgid "No results matching your query could be found"
 msgstr "没有找到和您查询相匹配的结果"
 
 #: wp-content/themes/teamlab-blog-2-0/cloud-block.php:3
-msgid "Try ONLYOFFICE in the cloud"
-msgstr "试试云端的ONLYOFFICE"
+msgid "Use ONLYOFFICE for free"
+msgstr "免费使用 ONLYOFFICE"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:17
 msgid "This post is password protected. Enter the password to view any comments."
