@@ -67,15 +67,11 @@ nav > div > ul > li {
   position: relative;
 }
 nav > div > ul > li > a {
-  padding: 21px 8px;
+  padding: 28px 20px;
   display: inline-block;
   height: 29px;
   text-transform: uppercase;
   border-bottom-color: #f94a0c;
-}
-nav > div > ul > li > a.fr_FR {
-  padding-left: 7px;
-  padding-right: 7px;
 }
 nav > div > ul a.singin {
   border: 1px solid #aaaaaa;
@@ -110,7 +106,7 @@ nav .nav-down-triangle {
 }
 #navitem_download_menu #navitem_fb_docs_ee,
 #navitem_download_menu #navitem_fb_workspace {
-  margin: 0 0 12px;
+  margin: 0;
 }
 #navitem_download_menu #navitem_fb_workspace {
   line-height: 34px;
@@ -118,10 +114,6 @@ nav .nav-down-triangle {
 #navitem_download_menu #navitem_fb_workspace:before {
   top: 50%;
   transform: translateY(-50%);
-}
-#navitem_download_menu #navitem_download_docs,
-#navitem_download_menu #navitem_download_workspace {
-  line-height: 34px;
 }
 #navitem_features,
 #navitem_download,
@@ -165,17 +157,6 @@ nav .nav-down-triangle {
   margin: 0;
   padding: 0;
   list-style-type: none;
-}
-
-#navitem_integrations_nextcloud,
-#navitem_integrations_owncloud,
-#navitem_integrations_confluence,
-#navitem_integrations_alfresco,
-#navitem_integrations_moodle,
-#navitem_integrations_others {
-  font-weight: 400;
-  margin: 0 0 12px;
-  padding: 0 64px;
 }
 
 a.dropdown-item {
@@ -378,7 +359,6 @@ a#banners {
   text-align: left;
 }
 ul.navitem_2nd_menu {
-  padding: 0 0 10px;
   margin: 0;
 }
 ul.navitem_2nd_menu li a.nav_2nd_menu_link {
@@ -460,7 +440,7 @@ div.custom-select div.selector {
 .menu_pic_div .menu_pic_img {
   background-repeat: no-repeat;
   background-size: contain;
-  height: 88px;
+  height: 90px;
   margin-bottom: 16px;
   width: 180px;
 }
@@ -477,7 +457,6 @@ div.custom-select div.selector {
   color: #ff6f3d;
 }
 
-#compare_div,
 #oforms_div,
 .menu_pic_div {
   display: block;
@@ -508,11 +487,192 @@ div.custom-select div.selector {
 #hosting_img {
   background-image: url("../images/img_for_header/onlyoffice_7.2/hosting.svg");
 }
-#for_education_img {
-  background-image: url("../images/img_for_header/menu_for_developers.png");
-}
 #education_eve_img{
   background-image: url("../images/img_for_header/onlyoffice_7.2/events.svg")
+}
+.tablet_view_only {
+  display: none;
+}
+.no_tablet_view {
+  display: block;
+}
+#navitem_solutions_clients_workspace {
+  white-space: initial;
+}
+a.dropdown-item {
+  position: relative;
+}
+a.dropdown-item:before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 32px;
+  top: 0;
+  background-image: url("../images/img_for_header/onlyoffice_7.2/icons.svg");
+  background-repeat: no-repeat;
+}
+#navitem_solutions_clients_apps:before {
+  background-position-y: -52px;
+}
+#navitem_solutions_clients_mobile_ios:before {
+  background-position-y: -78px;
+}
+#navitem_features_docspace:before,
+#navitem_download_docspace:before,
+#navitem_fb_docs_ee:before {
+  background-position-y: -1170px
+}
+#navitem_features_workspace:before {
+  background-position-y: -25px;
+}
+#navitem_features_connectors:before {
+  background-position-y: -1196px;
+}
+#navitem_features_form_creator:before {
+  background-position-y: -728px;
+}
+#navitem_features_pdf_reader:before {
+  background-position-y: -756px;
+}
+#navitem_fb_docs_enterprice:before,
+#navitem_download_docs_ee:before {
+  background-position-y: -782px;
+}
+#navitem_features_fill_forms:before {
+  background-position-y: -702px;
+}
+#navitem_features_convert_text:before {
+  background-position-y: -1222px;
+}
+#navitem_features_convert_speadsheets:before {
+  background-position-y: -1248px;
+}
+#navitem_features_convert_presentations:before {
+  background-position-y: -1274px;
+}
+#navitem_features_convert_pdf:before {
+  background-position-y: -1326px;
+}
+#navitem_fb_docs_cloud:before {
+  background-position-y: -1092px;
+}
+#navitem_fb_workspace:before {
+  background-position-y: -26px;
+}
+#navitem_developer_edition:before,
+#navitem_document_developer:before,
+#navitem_download_docs_de:before {
+  background-position-y: -806px;
+}
+#navitem_fd_conversion_api:before {
+  background-position-y: -1092px;
+}
+#navitem_fd_doc_builder:before {
+  background-position-y: -834px;
+}
+#navitem_fd_api:before {
+  background-position-y: -885px;
+}
+#navitem_fd_pricing:before {
+  background-position-y: -1300px;
+}
+#navitem_fd_get:before {
+  background-position-y: -1014px;
+}
+#navitem_download_builder:before {
+  background-position-y: -834px;
+}
+#navitem_download_docs_ce:before {
+  background-position-y: -964px;
+}
+#navitem_download_code_git:before {
+  background-position-y: -936px;
+}
+#navitem_about_compare:before {
+  background-position-y: -754px;
+}
+#navitem_solutions_clients_mobile_android:before {
+  background-position-y: -104px;
+}
+#navitem_features_workspace:before {
+  background-position-y: -25px;
+}
+#navitem_link_personal:before{
+  background-position-y: -1352px;
+}
+#navitem_download_desktop:before{
+  background-position-y: -156px;
+}
+#navitem_download_products:before{
+  background-position-y: -130px;
+}
+#navitem_hosters:before{
+  background-position-y: -182px;
+}
+#navitem_resellers:before{
+  background-position-y: -208px;
+}
+#navitem_hosting_providers:before {
+  background-image: url("../images/img_for_header/menu_hosting_providers.svg");
+}
+#navitem_technology_partners:before {
+  background-position-y: -1144px;
+}
+#navitem_find_partners:before{
+  background-position-y: -676px;
+}
+#navitem_submit_request:before{
+  background-position-y: -262px;
+}
+#navitem_about_about:before{
+  background-position-y: -286px;
+}
+#navitem_about_customers:before{
+  background-position-y: -364px;
+}
+#navitem_about_contribute:before{
+  background-position-y: -338px;
+}
+#navitem_about_vacancies:before{
+  background-position-y: -650px;
+}
+#navitem_about_awards:before{
+  background-position-y: -390px;
+}
+#navitem_about_events:before{
+  background-position-y: -468px;
+}
+#navitem_about_giftshop:before{
+  background-position-y: -520px;
+}
+#navitem_about_contacts:before{
+  background-position-y: -546px;
+}
+#navitem_about_blog:before{
+  background-position-y: -312px;
+}
+#navitem_about_forum:before{
+  background-position-y: -858px;
+}
+#navitem_about_pressdownloads:before{
+  background-position-y: -416px;
+}
+#navitem_about_helpcenter:before{
+  background-position-y: -598px;
+}
+#navitem_about_whitepapers:before{
+  background-position-y: -442px;
+}
+#navitem_about_webinars:before{
+  background-position-y: -572px;
+}
+#navitem_about_training_courses:before{
+  background-position-y: -494px;
+}
+#navitem_features_security:before{
+  background-position-y: -650px;
 }
 
 @media screen and (min-width: 1024px) {
@@ -639,31 +799,45 @@ div.custom-select div.selector {
   #navitem_about_menu .dropdown-content > li {
     min-width: 246px;
   }
-  #navitem_about_menu .dropdown-content>li:last-of-type {
-    min-width: 312px;
-  }
-  #navitem_download_menu .dropdown-content > li:first-of-type {
+  #navitem_about_menu .dropdown-content>li:last-of-type,
+  #navitem_download_menu .dropdown-content > li:first-of-type,
+  #navitem_developers_menu .dropdown-content>li:first-of-type,
+  #navitem_security_third_level_menu {
     min-width: 312px;
   }
   #navitem_download_menu .download-last-area ul.download-inner-list>li {
     min-width: 312px;
-    padding: 0 0 28px;
+    padding: 0 0 8px;
   }
   #navitem_download_menu .dropdown-content > li:last-of-type {
     min-width: 272px;
     border-right: 0 none;
   }
   #navitem_features_menu #navitem_oforms_third_level_menu {
-    max-width: 312px;
+    width: max-content;
+    min-width: 312px;
+    max-width: 520px;
   }
   #navitem_download_menu .navitem_2nd_menu {
-    padding: 0 0 24px;
+    padding: 16px 0 24px;
   }
-  #navitem_features_menu .dropdown-content > li:first-of-type {
-    min-width: 280px;
+  #navitem_download_docspace,
+  #navitem_download_docs_ee,
+  #navitem_docspace_signup,
+  #navitem_docs_de_onpremises,
+  #navitem_download_docs_de {
+    margin: 0;
   }
+  #navitem_download_menu #navitem_download_docspace,
+  #navitem_download_menu #navitem_download_docs_ee,
+  #navitem_download_menu #navitem_fb_workspace,
+  #navitem_download_menu #navitem_download_docs_de {
+    cursor: default;
+  }
+  #navitem_features_menu .dropdown-content > li:first-of-type,
   #navitem_features_menu .dropdown-content > li:nth-of-type(2) {
-    min-width: 272px;
+    min-width: 312px;
+    max-width: 312px;
   }
   #navitem_features_menu .dropdown-content > li:last-of-type {
     min-width: 272px;
@@ -676,31 +850,15 @@ div.custom-select div.selector {
   #navitem_prices_menu #navitem_reseller_third_level_menu {
     padding: 32px 0;
   }
-  #navitem_download_menu .download-last-area .download-inner-list {
-    display: flex;
-  }
-  #navitem_download_menu .dropdown-content>li:last-of-type {
-    background-color: #ffffff;
-    min-width: 627px;
-    padding: 32px 0 0;
-  }
   #navitem_download_menu .download-last-area ul.download-inner-list>li:last-child:before {
     background-color: #ebebeb;
     content: "";
     display: block;
-    height: 179px;
-    left: 0px;
+    height: 1px;
+    left: 32px;
     position: absolute;
     top: 0px;
-    width: 1px;
-  }
-  #navitem_download_menu .download-last-area #navitem_hosting_third_level_menu {
-    background-color: #f9f9f9;
-    background-image: url("../images/img_for_header/onlyoffice_7.2/hosting.svg");
-    background-size: 180px 90px;
-    background-repeat: no-repeat;
-    background-position: 32px 32px;
-    height: 168px;
+    width: calc(100% - 64px);
   }
   .narrowheader.cs #navitem_download_menu .dropdown-content>li:first-of-type:before {
     left: 342px;
@@ -720,17 +878,9 @@ div.custom-select div.selector {
   .narrowheader.pt-br #navitem_download_menu .dropdown-content>li:first-of-type:before {
     left: 506px;
   }
-  #navitem_download_menu #navitem_download_hosting {
-    margin: 0 0 8px;
-    padding: 32px 32px 0 228px;
-  }
   .arrowheader.fr  #navitem_download_menu .dropdown-content>li:first-of-type ul.navitem_2nd_menu li a.nav_item_nowrap_link.second,
   .narrowheader.es #navitem_download_menu .dropdown-content>li:first-of-type ul.navitem_2nd_menu li a.nav_item_nowrap_link.second {
     padding: 0px 24px 0px 8px;
-  }
-  #navitem_download_menu .download-last-area #navitem_hosting_third_level_menu .menu_pic_div {
-    margin: 0;
-    padding: 0 32px 0 228px;
   }
   #navitem_features_menu .dropdown-content > li:last-of-type,
   #navitem_prices_menu .dropdown-content > li:last-of-type,
@@ -757,14 +907,11 @@ div.custom-select div.selector {
   }
 
   #navitem_prices_menu .dropdown-content > li {
-    min-width: 236px;
-  }
-  #navitem_prices_menu .dropdown-content > li:last-of-type{
-    min-width: 236px;
+    min-width: 312px;
   }
 
   #navitem_prices_menu #navitem_docs_third_level_menu {
-    padding: 32px 0;
+    padding: 32px 0 8px;
   }
 
   #navitem_prices_menu #navitem_docs_third_level_menu .navitem_2nd_menu {
@@ -793,7 +940,6 @@ div.custom-select div.selector {
   }
 
   #navitem_features_oforms,
-  #navitem_education_for_business,
   #navitem_download_hostiog,
   #navitem_education_eve_events {
     white-space: initial;
@@ -885,173 +1031,6 @@ div.custom-select div.selector {
     padding: 0 32px 0 68px;
     text-decoration: none;
     white-space: nowrap;
-    position: relative;
-  }
-  a.dropdown-item:before {
-    content: "";
-    display: block;
-    width: 24px;
-    height: 24px;
-    position: absolute;
-    left: 32px;
-    top: 0;
-    background-image: url("../images/img_for_header/onlyoffice_7.2/icons.svg");
-    background-repeat: no-repeat;
-  }
-  #navitem_solutions_clients_apps:before {
-    background-position-y: -52px;
-  }
-  #navitem_solutions_clients_mobile_ios:before {
-    background-position-y: -78px;
-  }
-  #navitem_features_docs_overview:before {
-    background-position-y: -936px;
-  }
-  #navitem_features_spreadsheet_editor:before {
-    background-position-y: -1065px;
-  }
-  #navitem_features_presentation_editor:before {
-    background-position-y: -1014px;
-  }
-  #navitem_features_form_creator:before {
-    background-position-y: -728px;
-  }
-  #navitem_features_pdf_reader:before {
-    background-position-y: -756px;
-  }
-  #navitem_fb_docs_ee:before {
-    background-position-y: -806px;
-  }
-  #navitem_fb_docs_cloud:before {
-    background-position-y: -1092px;
-  }
-  #navitem_fb_workspace:before {
-    background-position-y: -25px;
-  }
-  #navitem_document_developer:before {
-    background-position-y: -832px;
-  }
-  #navitem_fd_conversion_api:before {
-    background-position-y: -1118px;
-  }
-  #navitem_fd_doc_builder:before {
-    background-position-y: -858px;
-  }
-  #navitem_fd_get:before {
-    background-position-y: -1040px;
-  }
-  #navitem_fd_api:before {
-    background-position-y: -908px;
-  }
-  #navitem_developer_edition:before {
-    background-position-y: -832px;
-  }
-  #navitem_integrations_docs_cloud:before,
-  #navitem_download_docs_de:before {
-    background-position-y: -832px;
-  }
-  #navitem_download_builder:before {
-    background-position-y: -858px;
-  }
-  #navitem_download_docs_ce:before {
-    background-position-y: -988px;
-  }
-  #navitem_download_download_bundles:before {
-    background-position-y: -1144px;
-  }
-  #navitem_download_code_git:before {
-    background-position-y: -962px;
-  }
-  #navitem_about_compare:before {
-    background-position-y: -780px;
-  }
-  #navitem_solutions_clients_mobile_android:before {
-    background-position-y: -104px;
-  }
-  #navitem_features_workspace:before {
-    background-position-y: -25px;
-  }
-  #navitem_link_personal:before{
-    background-position-y: -572px;
-  }
-  #navitem_download_desktop:before{
-    background-position-y: -156px;
-  }
-  #navitem_download_products:before{
-    background-position-y: -130px;
-  }
-  #navitem_hosters:before{
-    background-position-y: -182px;
-  }
-  #navitem_resellers:before{
-    background-position-y: -208px;
-  }
-  #navitem_technology_partners:before {
-    background-position-y: -1171px;
-  }
-  #navitem_find_partners:before{
-    background-position-y: -702px;
-  }
-  #navitem_submit_request:before{
-    background-position-y: -260px;
-  }
-  #navitem_about_about:before{
-    background-position-y: -286px;
-  }
-  #navitem_about_customers:before{
-    background-position-y: -364px;
-  }
-  #navitem_about_contribute:before{
-    background-position-y: -338px;
-  }
-  #navitem_about_vacancies:before{
-    background-position-y: -676px;
-  }
-  #navitem_about_awards:before{
-    background-position-y: -390px;
-  }
-  #navitem_about_events:before{
-    background-position-y: -468px;
-  }
-  #navitem_about_giftshop:before{
-    background-position-y: -520px;
-  }
-  #navitem_about_contacts:before{
-    background-position-y: -546px;
-  }
-  #navitem_about_blog:before{
-    background-position-y: -312px;
-  }
-  #navitem_about_forum:before{
-    background-position-y: -884px;
-  }
-  #navitem_about_pressdownloads:before{
-    background-position-y: -416px;
-  }
-  #navitem_about_helpcenter:before{
-    background-position-y: -625px;
-  }
-  #navitem_about_whitepapers:before{
-    background-position-y: -442px;
-  }
-  #navitem_about_webinars:before{
-    background-position-y: -598px;
-  }
-  #navitem_about_training_courses:before{
-    background-position-y: -494px;
-  }
-  #navitem_features_security:before{
-    background-position-y: -650px;
-  }
-  #navitem_integrations_nextcloud:before,
-  #navitem_integrations_owncloud:before,
-  #navitem_integrations_alfresco:before,
-  #navitem_integrations_moodle:before,
-  #navitem_integrations_others:before,
-  #navitem_education_for_business:before,
-  #navitem_integrations_confluence:before
-  {
-    background-position-y: 22px;
   }
   #navitem_features_docs_editions,
   #navitem_solutions_clients_workspace,
@@ -1061,17 +1040,17 @@ div.custom-select div.selector {
   #navitem_download_docs,
   #navitem_download_workspace,
   #navitem_about_resources,
-  #navitem_download_for_community {
-    background-color: #f5f5f5;
-    padding-left: 12px;
+  #navitem_download_for_community,
+  #navitem_features_perform_task {
+    padding: 0;
     margin: 0 32px 16px;
     color: #666666;
     font-weight: 600;
     font-size: 13px;
     text-transform: uppercase;
-    border-radius: 5px;
-    line-height: 32px;
+    line-height: 1.6em;
     letter-spacing: 0.04em;
+    cursor: default;
   }
   #navitem_features_docs_editions:before,
   #navitem_solutions_clients_workspace:before,
@@ -1085,18 +1064,12 @@ div.custom-select div.selector {
   /*#navitem_developers_menu:before,*/
   /*#navitem_integrations_menu a.dropdown-item:before,*/
   /*#navitem_prices_menu a.dropdown-item:before,*/
-  #navitem_hosting_third_level_menu a.dropdown-item:before,
   #navitem_education_events_third_level_menu a.dropdown-item:before,
   #navitem_reseller_third_level_menu a.dropdown-item:before,
   #navitem_education_eve_events_third_level_menu a.dropdown-item:before,
   #navitem_about_resources:before,
   #navitem_download_for_community:before,
-  #navitem_integrations_nextcloud:before,
-  #navitem_integrations_owncloud:before,
-  #navitem_integrations_confluence:before,
-  #navitem_integrations_alfresco:before,
-  #navitem_integrations_moodle:before,
-  #navitem_integrations_others:before {
+  #navitem_features_perform_task:before {
     content: none;
   }
   #navitem_solutions_clients_apps,
@@ -1107,37 +1080,39 @@ div.custom-select div.selector {
   #navitem_about_menu a.dropdown-item{
     margin-bottom: 24px;
   }
-  #navitem_features_menu .dropdown-content > li:last-of-type,
   #navitem_integrations_menu .dropdown-content > li:last-of-type,
   #navitem_developers_menu .dropdown-content > li:last-of-type,
   #navitem_prices_menu .dropdown-content > li:last-of-type,
   #navitem_partnership_menu .dropdown-content > li:last-of-type{
     background: #f9f9f9;
   }
-
-  #navitem_oforms_third_level_menu a.dropdown-item,
-  /*#navitem_integrations_menu a.dropdown-item,*/
-  #navitem_developers_third_level_menu a.dropdown-item,
-  #navitem_reseller_third_level_menu a.dropdown-item,
-  #navitem_hosting_third_level_menu a.dropdown-item,
-  #navitem_education_third_level_menu a.dropdown-item,
-  #navitem_education_eve_events_third_level_menu a.dropdown-item,
-  #navitem_education_events_third_level_menu a.dropdown-item{
-    padding: 0 32px;
+  #navitem_fb_docs_ee,
+  #navitem_fb_docs_enterprice {
     margin-bottom: 16px;
+  }
+  #navitem_features_see_it,
+  #navitem_prices_reseller,
+  #navitem_education_eve_events {
+    margin: 0 0 16px;
+    padding: 0 32px;
+  }
+  #navitem_features_docs_overview, 
+  #navitem_features_docspace, 
+  #navitem_features_workspace, 
+  #navitem_features_connectors {
+    margin: 0 0 8px;
+    white-space: initial;
+  }
+  #navitem_features_menu .features_info {
+    color: #666;
+    padding: 0 32px 24px;
+    font-size: 14px;
+    line-height: 1.5em;
+    white-space: initial;
   }
   #navitem_download_menu .download-last-area ul.download-inner-list>li:last-child {
     position: relative;
-  }
-  #navitem_download_menu .download-last-area ul.download-inner-list>li:last-child:before {
-    background-color: #ebebeb;
-    content: "";
-    display: block;
-    height: 179px;
-    left: 0px;
-    position: absolute;
-    top: 0px;
-    width: 1px;
+    padding: 32px 0 8px;
   }
   #navitem_download_menu .dropdown-content>li:first-of-type:before {
     content: "";
@@ -1146,7 +1121,6 @@ div.custom-select div.selector {
     width: 1px;
     background-color: #ebebeb;
     position: absolute;
-    height: 179px;
     left: 312px;
     top: 32px;
   }
@@ -1164,9 +1138,20 @@ div.custom-select div.selector {
   /*#navitem_features_menu .dropdown-content > li:first-of-type:before {*/
   /*  left: 350px;*/
   /*}*/
-  #navitem_features_menu .dropdown-content > li:first-of-type > ul {
-    border-right: 1px solid #ebebeb;
-    height: 410px;
+  #navitem_features_menu .dropdown-content > li:first-of-type,
+  #navitem_features_menu .dropdown-content > li:nth-child(2) {
+    position: relative;
+  }
+  #navitem_features_menu .dropdown-content > li:first-of-type:before,
+  #navitem_features_menu .dropdown-content > li:nth-child(2)::before {
+    content: "";
+    display: block;
+    height: calc(100% - 64px);
+    width: 1px;
+    background-color: #ebebeb;
+    position: absolute;
+    top: 32px;
+    left: 312px;
   }
   #navitem_download_menu .dropdown-content > li:first-of-type > ul {
     height: 100%;
@@ -1239,10 +1224,16 @@ div.custom-select div.selector {
   }
 }
 @media screen and (max-width: 1024px) {
+  .tablet_view_only {
+    display: block;
+  }
+  .no_tablet_view {
+    display: none;
+  }
   nav > div > ul.all-menu-items {
     display: block;
     height: 100%;
-    padding-top: 0;
+    padding-top: 8px;
   }
   nav .pushy-content {
     padding: 0;
@@ -1394,14 +1385,46 @@ div.custom-select div.selector {
   }
 
   ul.navitem_2nd_menu li a.nav_item_nowrap_link {
-    display: inline-block;
+    display: block;
     color: #444444;
     line-height: 1.6em;
-    padding: 6px 8px 6px 48px;
+    padding: 8px 24px 8px 56px;
   }
 
   ul.navitem_2nd_menu li a.nav_item_nowrap_link#navitem_download_signup {
     padding: 0px 48px 0px 8px;
+  }
+
+  #navitem_docspace_signup {
+    padding: 8px 24px 0 56px;
+  }
+
+  #navitem_download_signin,
+  #navitem_download_signup {
+    display: inline-block;
+  }
+
+  #navitem_download_signin {
+    padding: 6px 8px 6px 56px;
+  }
+
+  #navitem_download_menu .download-inner-list > li:first-child {
+    padding: 0px 0 16px;
+  }
+
+  #navitem_download_menu .download-inner-list > li:first-child:after {
+    content: "";
+    display: block;
+    height: 1px;
+    width: calc(100% - 48px);
+    background-color: #ebebeb;
+    position: absolute;
+    bottom: 0;
+    left: 24px;
+  }
+
+  #navitem_download_menu .download-inner-list > li:last-child {
+    padding: 40px 0 0;
   }
 
   .pushy-submenu > a,
@@ -1427,7 +1450,7 @@ div.custom-select div.selector {
     background-size: auto 100%;
     position: absolute;
     right: 14px;
-    top: 18px;
+    top: 21px;
     -webkit-transition: 0.1s linear;
     -moz-transition: 0.1s linear;
     -o-transition: 0.1s linear;
@@ -1448,7 +1471,7 @@ div.custom-select div.selector {
     transition: 0.1s linear;
     background-image: url(../images/arrow-red.svg);
     left: 14px;
-    top: 18px;
+    top: 14px;
   }
   .menuitem:hover:before {
     background-image: url(../images/arrow-red.svg);
@@ -1456,7 +1479,59 @@ div.custom-select div.selector {
 
   nav a.dropdown-item {
     line-height: 24px;
-    padding: 0 36px;
+    padding: 0px 24px 0 58px;
+  }
+
+  nav a.dropdown-item:before {
+    left: 24px;
+  }
+
+  #navitem_fb_docs_ee,
+  #navitem_fb_docs_enterprice {
+    margin: 0 0 16px;
+  }
+
+  #navitem_prices_menu #navitem_fb_workspace {
+    margin: 0 0 40px;
+  }
+
+  nav a.dropdown-item.mobile_no_link:before,
+  #navitem_features_see_it:before,
+  #navitem_education_eve_events:before,
+  #navitem_prices_reseller:before {
+    content: none;
+  }
+
+  #navitem_features_see_it,
+  #navitem_education_eve_events,
+  #navitem_prices_reseller {
+    padding: 0 32px;
+  }
+
+  #navitem_prices_menu #navitem_prices_workspace {
+    padding: 40px 0 0;
+  }
+
+  #navitem_prices_menu #navitem_prices_workspace:before {
+    content: "";
+    display: block;
+    height: 1px;
+    width: 100%;
+    background-color: #ebebeb;
+    position: absolute;
+    bottom: 0;
+    transform: none;
+    left: 0;
+  }
+
+  #navitem_features_menu .features_info {
+    font-size: 14px;
+    line-height: 14px;
+    padding: 0 24px 24px;
+  }
+
+  #navitem_about_menu #navitem_about_third_level_menu {
+    padding: 0px 0 8px;
   }
 
   nav a.dropdown-item,
@@ -1484,46 +1559,27 @@ div.custom-select div.selector {
   #navitem_integrations,
   a.singin {
     display: block;
+    white-space: normal;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 16px;
     letter-spacing: 0.03em;
     line-height: 1.33em;
-    padding: 12px 36px 12px 18px;
-    white-space: normal;
+    padding: 16px 40px 16px 24px;
   }
 
-  /*#navitem_features:hover,*/
-  /*#navitem_download:hover,*/
-  /*#navitem_partners:hover,*/
-  /*#navitem_solutions:hover,*/
-  /*#navitem_prices:hover,*/
-  /*#navitem_about:hover,*/
-  /*#navitem_developers:hover,*/
-  /*#navitem_integrations:hover,*/
-  /*a.singin:hover,*/
-  /*#navitem_features.active,*/
-  /*#navitem_download.active,*/
-  /*#navitem_partners.active,*/
-  /*#navitem_solutions.active,*/
-  /*#navitem_prices.active,*/
-  /*#navitem_about.active,*/
-  /*#navitem_developers.active,*/
-  /*#navitem_integrations.active,*/
-  /*a.singin.active,*/
-  /*#navitem_features.active:hover,*/
-  /*#navitem_download.active:hover,*/
-  /*#navitem_partners.active:hover,*/
-  /*#navitem_solutions.active:hover,*/
-  /*#navitem_prices.active:hover,*/
-  /*#navitem_about.active:hover,*/
-  /*#navitem_developers.active:hover,*/
-  /*#navitem_integrations.active:hover,*/
-  /*a.singin.active:hover {*/
-  /*  color: #ff6f3d;*/
-  /*  padding: 12px 36px 12px 18px;*/
-  /*  letter-spacing: 0.03em;*/
-  /*  white-space: normal;*/
-  /*}*/
+  #navitem_features.active,
+  #navitem_download.active,
+  #navitem_partners.active,
+  #navitem_solutions.active,
+  #navitem_prices.active,
+  #navitem_about.active,
+  #navitem_developers.active {
+    background-color: unset;
+    border-color: #f2f2f2;
+    color: #ff6f3d;
+    padding: 8px 22px 16px 22px;
+  }
+
   #navitem_solutions_saas_mobile,
   #navitem_solutions_server_enterprice_mobile,
   #navitem_solutions_connectors_mobile,
@@ -1566,18 +1622,6 @@ div.custom-select div.selector {
     white-space: normal;
     padding: 7px 36px;
   }
-  #compare_div,
-  #customer_stories_div,
-  #latest_release_div,
-  #reseller_div,
-  #oforms_div,
-  #for_education_div,
-  #for_business_div,
-  #education_eve_div,
-  #navitem_about_resources,
-  #navitem_features_menu .menu_pic_div {
-    display: none;
-  }
   #navitem_features_docs_editions,
   #navitem_fb_other_integrations,
   #navitem_solutions_clients_workspace,
@@ -1586,17 +1630,16 @@ div.custom-select div.selector {
   #navitem_download_docs,
   #navitem_download_workspace,
   #navitem_about_resources,
-  #navitem_download_for_community {
-    background-color: #f5f5f5;
-    padding-left: 8px !important;
-    margin: 0 16px 24px;
-    color: #666666;
+  #navitem_download_for_community,
+  #navitem_features_perform_task {
+    color: #666;
     font-weight: 600;
     font-size: 13px;
-    text-transform: uppercase;
-    border-radius: 5px;
-    line-height: 32px;
+    line-height: 1.6em;
     letter-spacing: 0.04em;
+    margin: 0 24px 24px;
+    padding: 0;
+    text-transform: uppercase;
   }
   .navitem_solutions a.dropdown-item,
   #navitem_link_personal,
@@ -1611,60 +1654,102 @@ div.custom-select div.selector {
     margin-bottom: 24px;
   }
 
-  #navitem_solutions_clients_workspace {
-    line-height: 32px;
+  #navitem_developers_menu #navitem_features_see_it,
+  #navitem_partnership_menu #navitem_education_eve_events,
+  #navitem_prices_menu #navitem_prices_reseller {
+    margin-bottom: 16px;
   }
 
-  #navitem_editors_third_level_menu .dropdown-item,
-  #navitem_education_for_business {
+  #navitem_developers_menu #navitem_security_third_level_menu,
+  #navitem_partnership_menu #navitem_education_eve_events_third_level_menu,
+  #navitem_prices_menu #navitem_reseller_third_level_menu {
+    background-color: #f9f9f9;
+    padding: 32px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+
+  #navitem_download_docspace {
+    margin: 0;
+  }
+
+  #navitem_features_menu .dropdown-content>li:first-child,
+  #navitem_download_menu .dropdown-content>li:first-child {
+    padding: 0 0 16px;
+  }
+
+  #navitem_download_menu .dropdown-content>li:nth-child(2),
+  #navitem_features_menu .dropdown-content>li:nth-child(2) {
+    padding: 40px 0 16px;
+  }
+
+  #navitem_features_menu .dropdown-content>li:nth-child(3) {
+    padding: 40px 0 8px;
+  }
+
+  #navitem_features_menu .dropdown-content>li:first-child:after,
+  #navitem_features_menu .dropdown-content>li:nth-child(2):after,
+  #navitem_download_menu .dropdown-content>li:first-child:after {
+    content: "";
+    display: block;
+    height: 1px;
+    width: calc(100% - 48px);
+    background-color: #ebebeb;
+    position: absolute;
+    bottom: 0;
+    left: 24px;
+  }
+
+  #navitem_editors_third_level_menu .dropdown-item {
     white-space: nowrap;
   }
-
-  #navitem_integrations_nextcloud,
-  #navitem_integrations_owncloud,
-  #navitem_integrations_confluence,
-  #navitem_integrations_alfresco,
-  #navitem_integrations_moodle,
-  #navitem_integrations_others {
-    padding: 0 36px;
-  }
-
-  #navitem_integrations_nextcloud {
-    padding: 2px 36px 0;
-  }
-
-  #navitem_integrations_others {
-    padding: 0 36px 11px;
-  }
     
-  #navitem_download_menu .navitem_2nd_menu {
-    padding: 2px 0 11px;
-  }
-
-  #navitem_download_menu .navitem_2nd_menu li:first-child {
-    margin-bottom: 12px;
-  }
-
   #navitem_download_menu #navitem_download_onpremises {
-    padding: 6px 48px 0;
-  }
-
-  #navitem_download_menu #navitem_docs_onpremises {
-    line-height: 1.6em;
-    padding: 6px 48px 0;
+    padding: 8px 24px 0 56px;
   }
 
   #navitem_download_menu .navitem_2nd_menu {
-    padding: 12px 0 24px;
+    padding: 8px 0 32px;
+  }
+
+  #navitem_docs_de_onpremises {
+    padding: 8px 24px 0 56px;
   }
 
   #navitem_download_menu #navitem_fb_docs_ee,
-  #navitem_download_menu #navitem_fb_workspace {
+  #navitem_download_menu #navitem_fb_workspace,
+  #navitem_download_menu #navitem_download_docs_de {
     margin: 0;
+  }
+
+  #navitem_download_docs_ee {
+    margin: 0;
+  }
+
+  #navitem_docs_onpremises {
+    display: block;
+    color: #444444;
+    line-height: 1.6em;
+    padding: 8px 24px 0 56px;
+  }
+
+  .menu_pic_div {
+    margin: 12px 32px 0 32px;
+  }
+
+  #oforms_div {
+    margin: 12px 32px 0 32px;
   }
 }
 
 @media screen and (max-width: 592px) {
+  .tablet_view_only {
+    display: none;
+  }
+  .no_tablet_view {
+    display: block;
+  }
   ul.navitem_2nd_menu li a.nav_item_nowrap_link.second {
     padding: 4px 16px 4px 48px;
   }
@@ -1675,9 +1760,5 @@ div.custom-select div.selector {
 
   .menuitem.active:before {
     top: 12px;
-  }
-
-  ul.navitem_2nd_menu li a.nav_item_nowrap_link#navitem_download_signup {
-    padding: 4px 16px 4px 48px;
   }
 }

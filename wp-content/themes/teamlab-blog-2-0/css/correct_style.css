@@ -322,7 +322,6 @@ main{
 }
 
 .ja .input-header .search-field{
-  box-sizing: content-box;
   width: 220px;
 }
 
@@ -752,6 +751,18 @@ margin: 16px auto;
 }
 .icons-item .wdgt-fosstodon {
   background-position-x: -397px;
+}
+.icons-item .wdgt-kuaishou {
+  background-position-x: -554px;
+}
+.icons-item .wdgt-xiaohongshu {
+  background-position-x: -594px;
+}
+.icons-item .wdgt-csdn {
+  background-position-x: -674px;
+}
+.icons-item .wdgt-toutiao {
+  background-position-x: -634px;
 }
 .icons-item .wdgt-tiktok {
   background-image: url("../images/social-tiktok.svg");
