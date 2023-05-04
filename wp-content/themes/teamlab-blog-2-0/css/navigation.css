@@ -1762,3 +1762,10 @@ a.dropdown-item:before {
     top: 12px;
   }
 }
+
+@media screen and (max-width: 399px) {
+  ul.navitem_2nd_menu li a.nav_item_nowrap_link#navitem_download_signup {
+    display: block;
+    padding: 4px 16px 4px 56px;
+  }
+}
