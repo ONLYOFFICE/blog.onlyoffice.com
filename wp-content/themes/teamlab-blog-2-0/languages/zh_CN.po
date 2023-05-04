@@ -1623,6 +1623,42 @@ msgstr "您已经订阅了。 请检查您的垃圾邮件文件夹。"
 msgid "Enjoy reading ONLYOFFICE blog!"
 msgstr "请享受阅读ONLYOFFICE博客!"
 
+#: wp-content/themes/teamlab-blog-2-0/header.php:151
+msgid "Products"
+msgstr "产品"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:191
+msgid "Enterprise"
+msgstr "企业"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:158
+msgid "Editors to integrate into your business platform"
+msgstr "可集成到您的商业平台的编辑器"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:159
+msgid "DocSpace"
+msgstr "协作空间"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:160
+msgid "Platform to collaborate with your partners and clients"
+msgstr "与合作伙伴和客户协作处理文档的平台"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:162
+msgid "Platform to collaborate with your team"
+msgstr "团队协作平台"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:164
+msgid "Ready-to-use apps to integrate Docs with your platform"
+msgstr "即用型应用程序，可将文档与您的平台进行集成"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:179
+msgid "Perform your tasks online"
+msgstr "在线处理任务"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:180
+msgid "Find and fill out oforms"
+msgstr "查找并填写oform表单"
+
 #: wp-content/themes/teamlab-blog-2-0/templates/activation.php:44 wp-content/themes/teamlab-blog-2-0/templates/activation.php:74
 msgid "/"
 msgstr ""

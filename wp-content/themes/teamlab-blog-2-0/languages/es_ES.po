@@ -293,7 +293,7 @@ msgstr "Solicitar llamada"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:95
 msgid "Follow us on:"
-msgstr "Síganos en:"
+msgstr "Síguenos en:"
 
 #: wp-content/themes/teamlab-blog-2-0/ampforwp/footer.php:125
 #: wp-content/themes/teamlab-blog-2-0/footer.php:266
@@ -1190,6 +1190,50 @@ msgstr "Ver todos los <div class=\"no-wrap\">entradas&nbsp;<div class=\"grey-arr
 #: wp-content/themes/teamlab-blog-2-0/header.php:162
 msgid "Features"
 msgstr "CARACTERÍSTICAS"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:151
+msgid "Products"
+msgstr "Productos"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:158
+msgid "Editors to integrate into your business platform"
+msgstr "Editores para integrar en tu plataforma empresarial"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:160
+msgid "Platform to collaborate with your partners and clients"
+msgstr "Plataforma para colaborar en documentos con tus socios y clientes"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:162
+msgid "Platform to collaborate with your team"
+msgstr "Plataforma para colaborar con tu equipo"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:164
+msgid "Ready-to-use apps to integrate Docs with your platform"
+msgstr "Aplicaciones listas para usar para integrar Docs con tu plataforma"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:179
+msgid "Perform your tasks online"
+msgstr "Realiza tus tareas en línea"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:180
+msgid "Find and fill out oforms"
+msgstr "Busca y rellena formularios"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:181
+msgid "Convert text files"
+msgstr "Convierte archivos de texto"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:182
+msgid "Convert spreadsheets"
+msgstr "Convierte hojas de cálculo"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:183
+msgid "Convert presentations"
+msgstr "Convierte presentaciones"
+
+#: wp-content/themes/teamlab-blog-2-0/header.php:184
+msgid "Convert PDFs"
+msgstr "Convierte PDFs"
 
 #~ msgid "<b>ONLYOFFICE 7.0:</b> <span>online forms</span>, password protection in sheets, collaboration improvements and much more"
 #~ msgstr "<b>ONLYOFFICE 7.0:</b> <span>formularios en línea</span>, protección con contraseña en las hojas de cálculo, mejoras en la colaboración y mucho más"
