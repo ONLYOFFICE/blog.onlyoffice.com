@@ -679,8 +679,8 @@ msgstr ""
 "que coincidan con su búsqueda"
 
 #: wp-content/themes/teamlab-blog-2-0/cloud-block.php:3
-msgid "Try ONLYOFFICE in the cloud"
-msgstr "Probar ONLYOFFICE en la nube"
+msgid "Use ONLYOFFICE for free"
+msgstr "Utiliza ONLYOFFICE gratis"
 
 #: wp-content/themes/teamlab-blog-2-0/comments.php:17
 msgid "This post is password protected. Enter the password to view any comments."
