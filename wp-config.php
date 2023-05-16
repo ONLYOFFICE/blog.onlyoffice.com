@@ -41,6 +41,8 @@ define('WEB_ROOT_URL', 'root1');
 
 define( 'WP_AUTO_UPDATE_CORE', false );
 
+define('WP_CONTENT_URL', 'https://static-blog.teamlab.info/wp-content');
+
 $GLOBALS['WEB_BLOG_FOLDER_URL'] = '/blog';
 
 /**#@+
