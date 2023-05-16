@@ -4,7 +4,7 @@ Contributors : TrinityAudio
 Tags: Text to Speech, Audio Player, player, Content to audio, TTS, Text to Audio, Text to voice, Voiceover, Accessibility, Audio, Turn text into audio, audio narrator
 Requires at least: 5.2
 Requires PHP: 7.2
-Tested up to: 6.1
+Tested up to: 6.2
 Stable tag: trunk
 License: GPLv3 ONLY
 License URI : https://www.gnu.org/licenses/gpl-3.0.html
@@ -132,6 +132,8 @@ Generated audio posts will be available for consumption regardless of package st
     Yes we do! Visit the plugin settings and choose a theme that matches your design (for example “Coda dark”).
 = Do the plugin support pages and custom posts? =
     Currently, the plugin integration supports only posts. However, our JS integration is flexible and supports any type of page. Check out our [pricing page](https://www.trinityaudio.ai/pricing-trinity-audio) to learn more and enjoy our 30-day money-back guarantee.
+= Do you support third party themes (like Divi)? =
+    We support most third party theme, Divi included. Please make sure to go over the Advanced Settings when configuring the plugin
 = I have migrated my site and the plugin doesn’t work - what should I do? =
     If you’ve registered before and are now migrating to a new database or hosting service, please insert your previous Recovery Token while installing the plugin again. Your Recovery Token can be found in your previous admin panel, under Trinity Audio -> Info -> Recovery Token. If you can’t found it, reach out to our support and we’ll gladly help you [support@trinityaudio.ai](mailto:support@trinityaudio.ai)
 = The player is reading text that it shouldn’t - how to fix it? =
@@ -156,6 +158,78 @@ Generated audio posts will be available for consumption regardless of package st
 
 
 == Changelog ==
+= 5.4.8 =
+ *Release Date - May 16, 2023*
+ * Fixed voiceId warnings
+
+= 5.4.7 =
+ *Release Date - May 12, 2023*
+ * Fixed post language selection
+
+= 5.4.6 =
+ *Release Date - Apr 17, 2023*
+ * Fixes for text reading
+
+= 5.4.5 =
+ *Release Date - Apr 10, 2023*
+ * Fixes for update functionality
+ * Improvements for saving
+ * Added the trinity_audio_clean_text_raw filter to overrides content for player
+
+= 5.4.4 =
+ *Release Date - Mar 14, 2023*
+ * Fixed Simple HTML DOM conflict
+
+= 5.4.3 =
+ *Release Date - Feb 23, 2023*
+ * Improved bulk update
+
+= 5.4.2 =
+ *Release Date - Feb 20, 2023*
+ * Added support for third-party themes like Divi
+
+ = 5.4.1 =
+ *Release Date - Feb 19, 2023*
+ * Increasing timeout for migration
+
+ = 5.4.0 =
+ *Release Date - Feb 14, 2023*
+ * Reworked text reading to support elementor themes
+ * Improved migration
+ * Improved performance on admin page
+
+= 5.3.12 =
+*Release Date - Feb 13, 2023*
+* Removed account key from registration screen
+
+= 5.3.11 =
+*Release Date - Feb 9, 2023*
+* Fixed bug when article doesn't have any text
+
+= 5.3.10 =
+*Release Date - Jan 31, 2023*
+* Improved UX when service couldn't be accessed
+
+= 5.3.9 =
+*Release Date - Jan 31, 2023*
+* Fixed Skip HTML tags
+
+= 5.3.8 =
+*Release Date - Dec 8, 2022*
+* Account key improvements
+
+= 5.3.7 =
+*Release Date - Dec 7, 2022*
+* Show account key during registration process
+
+= 5.3.6 =
+*Release Date - Dec 5, 2022*
+* Fixed for WP 6.1.1
+
+= 5.3.5 =
+*Release Date - Dec 1, 2022*
+* Fixed form fields
+
 = 5.3.4 =
 *Release Date - Nov 23, 2022*
 * Subscription panel fixes and improvements

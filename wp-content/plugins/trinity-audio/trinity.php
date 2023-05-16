@@ -8,7 +8,7 @@
    * Plugin Name:       Trinity Audio
    * Plugin URI:        https://wordpress.org/plugins/trinity-audio/
    * Description:       This plugin generates an audio version of the post, for absolutely FREE. You can choose the language and the gender of the voice reading your content. You also have the option to add Trinity Audio's player on select posts or have it audiofy all of your content. In both cases, it only takes a few simple clicks to get it done. The plugin is built through collaboration with the Amazon Polly team.
-   * Version:           5.3.4
+   * Version:           5.4.8
    * Author:            Trinity Audio
    * Author URI:        https://trinityaudio.ai/
    * License:           GPL-3.0 ONLY
@@ -31,6 +31,7 @@
 
   add_action('plugins_loaded', 'trinity_plugin_loaded');
 
+  // triggers by admin.js checkIfPostsBulkUpdateRequested only after cleaning shortcodes or skip HTML tags
   add_action('admin_post_' . TRINITY_AUDIO_BULK_UPDATE, 'trinity_bulk_update');
 
   add_filter('the_content', 'trinity_content_filter', 99999);
@@ -118,7 +119,7 @@
     add_option(TRINITY_AUDIO_ADD_POST_EXCERPT, '', '', true);
     add_option(TRINITY_AUDIO_SKIP_TAGS, [], '', true);
     add_option(TRINITY_AUDIO_ALLOW_SHORTCODES, [], '', true);
-    add_option(TRINITY_AUDIO_CHECK_FOR_LOOP, 1, '', true);
+    add_option(TRINITY_AUDIO_CHECK_FOR_LOOP, 0, '', true);
     add_option(TRINITY_AUDIO_TRANSLATE, 0, '', true);
     add_option(TRINITY_AUDIO_FIRST_CHANGES_SAVE, 0, '', true);
   }
@@ -130,7 +131,8 @@
 
     // Check if we're inside the main loop.
     $is_single     = is_single();
-    $in_the_loop   = in_the_loop(); // $in_the_loop   = trinity_get_check_for_loop() ? in_the_loop() : true;.
+    $in_the_loop   = in_the_loop() ?: !!trinity_get_check_for_loop();
+
     $is_main_query = is_main_query();
     if (!($is_single && $in_the_loop && $is_main_query)) {
       wp_add_inline_script("the_content-hook-script", "console.debug('TRINITY_WP', 'Skip player from rendering', 'is single: $is_single, is main loop: $in_the_loop, is main query: $is_main_query', 'TS: $date');");
@@ -154,8 +156,6 @@
     if ($is_enabled && $posthash && !$is_no_text && is_singular()) {
       $player_label = trinity_get_player_label();
 
-      $audio_part = trinity_include_audio_player();
-
       // messages for admin only.
       if (trinity_is_user_admin()) {
         if (!$bulk_update) {
@@ -168,8 +168,8 @@
         if ($fist_time_install) {
           $content = '
             <div style="font-size: 14px;">
-              <div style="margin: 10px 0;">We\'re excited that you\'ve decided to join the audio future! Please note that our servers might take up to 5
-                minutes to update before you can start using the plugin. Almost there!</div>
+              <div style="margin: 10px 0;">We\'re excited that you\'ve decided to join the audio future! Please note that it might take a few minutes for the player to render properly. Almost there!
+                minute to update before you can start using the plugin. Almost there!</div>
             </div>' . $content;
         }
 
@@ -180,6 +180,8 @@
       }
 
       if ($bulk_update && !$fist_time_install) {
+        $audio_part = trinity_include_audio_player();
+
         if (!$audio_part) {
           $content .= "<script>console.warn('TRINITY_WP', 'Do not include player for post ID: $post_id, no text for playback was found. TS: $date')</script>";
         } else {
@@ -202,10 +204,10 @@
           }
         }
       } else {
-        wp_add_inline_script("the_content-hook-script", "console.warn('TRINITY_WP', 'Hide player in for post ID: $post_id, bulk update: $bulk_update, first time install: $fist_time_install', 'TS: $date')");
+        wp_add_inline_script("the_content-hook-script", "console.warn('TRINITY_WP', 'Hide player for post ID: $post_id, bulk update: $bulk_update, first time install: $fist_time_install', 'TS: $date')");
       }
     } else {
-      wp_add_inline_script("the_content-hook-script", "console.warn('TRINITY_WP', 'Hide player in for post ID: $post_id, enabled: $is_enabled, posthash: $posthash, is no text: $is_no_text', 'TS: $date')");
+      wp_add_inline_script("the_content-hook-script", "console.warn('TRINITY_WP', 'Hide player for post ID: $post_id, enabled: $is_enabled, posthash: $posthash, is no text: $is_no_text', 'TS: $date')");
     }
 
     return $content;

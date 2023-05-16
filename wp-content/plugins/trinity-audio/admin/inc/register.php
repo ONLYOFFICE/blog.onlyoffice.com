@@ -45,19 +45,6 @@
                   By clicking REGISTER, you agree that you have read our <a href="<?= trinity_add_utm_to_url('https://trinityaudio.ai/privacy-policy/') ?>">Privacy Policy</a>
                 </p>
 
-                <div style="display: none">
-                  <p style="margin-top: 10px" class="description">
-                    If you've registered on <a href="<?php echo trinity_add_utm_to_url(TRINITY_AUDIO_DASHBOARD_URL); ?>" target="_blank">Trinity Dashboard</a> and bought a plan in order to connect your Wordpress installation please provide an Account Key.
-                  </p>
-                  <label for="<?php echo TRINITY_AUDIO_PUBLISHER_TOKEN; ?>">
-                    <span>Account Key (optional):</span>
-                  </label>
-                  <input type="text" class="custom-input"
-                    name="<?php echo TRINITY_AUDIO_PUBLISHER_TOKEN; ?>"
-                    id="<?php echo TRINITY_AUDIO_PUBLISHER_TOKEN; ?>"
-                    spellcheck="false" style="width: 100%"/>
-                </div>
-
                 <div class="recover-install-key" style="display: none">
                     <h4 class="site-migration">
                         Site migration/re-install

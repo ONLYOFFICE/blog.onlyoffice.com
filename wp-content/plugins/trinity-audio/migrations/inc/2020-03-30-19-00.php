@@ -1,6 +1,8 @@
 <?php
   // Use hardcoded values only, don't rely on consts, as they can change in time
 
+  if (!trinity_should_migrate_for('2.1.0')) return;
+
   $new_map = [
     'en'     => 'en-US',
     'de'     => 'de-DE',

@@ -53,7 +53,6 @@
         <section>
           <div class="section-title">Textual Configuration</div>
           <div class="trinity-section-body">
-
             <div class="section-form-group">
               <label class="section-form-title" for="<?php echo TRINITY_AUDIO_ADD_POST_TITLE; ?>">
                 Add post title to audio:
@@ -91,7 +90,6 @@
         <section>
           <div class="section-title">Player Settings</div>
           <div class="trinity-section-body">
-
             <div class="section-form-group">
               <div class="section-form-title">
                 Player position:
@@ -143,6 +141,18 @@
               <?php trinity_new_post_default(); ?>
             </div>
 
+          </div>
+        </section>
+        <section>
+          <div class="section-title">Advanced Settings</div>
+          <div class="trinity-section-body">
+            <div class="section-form-group">
+              <label class="section-form-title" for="<?php echo TRINITY_AUDIO_CHECK_FOR_LOOP; ?>">
+                Render player with 3rd party theme posts, e.g. Divi, Bespoke, etc.
+              </label>
+
+              <?php trinity_check_for_loop(); ?>
+            </div>
           </div>
         </section>
       </div>
@@ -320,31 +330,18 @@
 
   function trinity_check_for_loop() {
     $checked = trinity_get_check_for_loop() ? 'checked' : '';
-    echo "<input type='checkbox' name='" . TRINITY_AUDIO_CHECK_FOR_LOOP . "' id='" . TRINITY_AUDIO_CHECK_FOR_LOOP . "' $checked value='1'>";
 
-    echo '<p class="description">Render player if <strong>in_the_loop()</strong> is true. Can help publishers, using posts injected by other services in not standard WordPress way</p>';
-  }
+    echo "<label for='" . TRINITY_AUDIO_CHECK_FOR_LOOP . "' class='custom-checkbox'>
+        <div class='text-label'>Enable</div>
+        <input type='checkbox' name='" . TRINITY_AUDIO_CHECK_FOR_LOOP . "' id='" . TRINITY_AUDIO_CHECK_FOR_LOOP . "' $checked>
+        <div class='custom-hitbox'></div>
+      </label>";
 
-  function trinity_activate_for_all_posts() {
-    $is_checked = !!trinity_get_is_bulk_updated();
-    $checked    = $is_checked ? '' : 'checked';
-    $disabled   = $checked ? 'disabled=disabled' : '';
-
-    echo "<div>
-            <input type='checkbox' name='trinity_audio_activate_for_all_posts' id='trinity_audio_activate_for_all_posts' " . $checked . ' ' . $disabled . " value='1'>
-            <span class='trinity-status-wrapper'>
-              <span class='status error'>
-                  <span class='dashicons dashicons-dismiss'
-                        style='color: red'></span>
-                  <span>A problem occurred while activating. Please try again later</span>
-              </span>
-              <span class='status progress'>
-                  <span class='dashicons dashicons-update'></span>
-                  <span class='description'></span>
-              </span>
-            </span>
-          </div>
-         ";
+    $email = TRINITY_AUDIO_SUPPORT_EMAIL;
+    echo "<p class='description' style='color: red'>
+Enable this checkbox when using 3rd party themes such as Divi.
+Note! - Please verify that the player appears as you expect it. In case you are not sure, reach out to our <a href='mailto:$email'>support</a>
+        </p>";
   }
 
   function trinity_show_warning_need_to_activate() {

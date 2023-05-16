@@ -70,11 +70,11 @@
   const TRINITY_AUDIO_BULK_UPDATE_NUM_POSTS_FAILED  = 'trinity_audio_bulk_update_num_posts_failed';
   const TRINITY_AUDIO_BULK_UPDATE_HEARTBEAT         = 'trinity_audio_bulk_update_heartbeat';
   const TRINITY_AUDIO_FIRST_TIME_INSTALL            = 'trinity_audio_first_time_install';
+  const TRINITY_AUDIO_MIGRATION_PROGRESS            = 'trinity_audio_migration_progress';
   const TRINITY_AUDIO_CHECK_FOR_LOOP                = 'trinity_audio_check_for_loop';
   const TRINITY_AUDIO_TERMS_OF_SERVICE              = 'trinity_audio_terms_of_service';
-  const TRINITY_AUDIO_PRIVACY_STATEMENT             = 'trinity_audio_privacy_statement';
   const TRINITY_AUDIO_EMAIL_SUBSCRIPTION            = 'trinity_audio_email_subscription';
-  const TRINITY_AUDIO_RECOVER_INSTALLKEY            = 'TRINITY_AUDIO_RECOVER_INSTALLKEY';
+  const TRINITY_AUDIO_RECOVER_INSTALLKEY            = 'trinity_audio_recover_installkey';
   const TRINITY_AUDIO_FIRST_CHANGES_SAVE            = 'trinity_audio_first_changes_save';
   const TRINITY_AUDIO_IS_ACCOUNT_KEY_LINKED         = 'trinity_audio_is_account_linked';
   const TRINITY_AUDIO_TRANSLATE                     = 'trinity_audio_translate';
