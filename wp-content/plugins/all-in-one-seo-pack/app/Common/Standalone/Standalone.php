@@ -46,6 +46,15 @@ class Standalone {
 	public $setupWizard = null;
 
 	/**
+	 * PrimaryTerm class instance.
+	 *
+	 * @since 4.3.6
+	 *
+	 * @var PrimaryTerm
+	 */
+	public $primaryTerm = null;
+
+	/**
 	 * List of page builder integration class instances.
 	 *
 	 * @since 4.2.7
@@ -73,6 +82,7 @@ class Standalone {
 		$this->flyoutMenu       = new FlyoutMenu();
 		$this->seoPreview       = new SeoPreview();
 		$this->setupWizard      = new SetupWizard();
+		$this->primaryTerm      = aioseo()->pro ? new ProStandalone\PrimaryTerm() : new PrimaryTerm();
 
 		aioseo()->pro ? new ProStandalone\DetailsColumn() : new DetailsColumn();
 

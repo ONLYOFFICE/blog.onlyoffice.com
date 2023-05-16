@@ -18,8 +18,8 @@ class SiteHealth {
 	 * @since 4.0.0
 	 */
 	public function __construct() {
-		add_filter( 'site_status_tests', [ $this, 'registerTests' ], 0, 1 );
-		add_filter( 'debug_information', [ $this, 'addDebugInfo' ], 0, 1 );
+		add_filter( 'site_status_tests', [ $this, 'registerTests' ], 0 );
+		add_filter( 'debug_information', [ $this, 'addDebugInfo' ], 0 );
 	}
 
 	/**

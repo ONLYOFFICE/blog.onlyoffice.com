@@ -424,7 +424,7 @@ class Model implements \JsonSerializable {
 	 */
 	#[\ReturnTypeWillChange]
 	// The attribute above omits a deprecation notice from PHP 8.1 that is thrown because the return type of jsonSerialize() isn't "mixed".
-	// Once PHP 5.6 is our minimum supported version, this can be removed in favour of overriding the return type in the method signature like this -
+	// Once PHP 7.x is our minimum supported version, this can be removed in favour of overriding the return type in the method signature like this -
 	// public function jsonSerialize() : array
 	public function jsonSerialize() {
 		$array = [];

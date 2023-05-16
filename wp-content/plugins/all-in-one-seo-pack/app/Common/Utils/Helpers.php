@@ -224,4 +224,21 @@ class Helpers {
 
 		return $string;
 	}
+
+	/**
+	 * Return the version number with a filter to enable users to hide the version.
+	 *
+	 * @since 4.3.7
+	 *
+	 * @return string The current version or empty if the filter is active. Using ?aioseo-dev will override the filter.
+	 */
+	public function getAioseoVersion() {
+		$version = aioseo()->version;
+
+		if ( ! $this->isDev() && apply_filters( 'aioseo_hide_version_number', false ) ) {
+			$version = '';
+		}
+
+		return $version;
+	}
 }

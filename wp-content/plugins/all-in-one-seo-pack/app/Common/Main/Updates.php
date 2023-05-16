@@ -1,7 +1,7 @@
 <?php
 namespace AIOSEO\Plugin\Common\Main;
 
-use \AIOSEO\Plugin\Common\Models;
+use AIOSEO\Plugin\Common\Models;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -187,6 +187,10 @@ class Updates {
 
 		if ( version_compare( $lastActiveVersion, '4.2.8', '<' ) ) {
 			$this->migrateDashboardWidgetsOptions();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.3.6', '<' ) ) {
+			$this->addPrimaryTermColumn();
 		}
 
 		do_action( 'aioseo_run_updates', $lastActiveVersion );
@@ -1389,6 +1393,23 @@ class Updates {
 		}
 
 		aioseo()->options->advanced->dashboardWidgets = $widgets;
+	}
+
+	/**
+	 * Adds the primary_term column to the aioseo_posts table.
+	 *
+	 * @since 4.3.6
+	 *
+	 * @return void
+	 */
+	private function addPrimaryTermColumn() {
+		if ( ! aioseo()->core->db->columnExists( 'aioseo_posts', 'primary_term' ) ) {
+			$tableName = aioseo()->core->db->db->prefix . 'aioseo_posts';
+			aioseo()->core->db->execute(
+				"ALTER TABLE {$tableName}
+				ADD `primary_term` longtext DEFAULT NULL AFTER `page_analysis`"
+			);
+		}
 	}
 
 	/**

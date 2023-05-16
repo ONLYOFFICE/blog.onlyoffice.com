@@ -40,6 +40,7 @@ class PostMeta {
 		'_seopress_social_fb_title'      => 'og_title',
 		'_seopress_titles_desc'          => 'description',
 		'_seopress_titles_title'         => 'title',
+		'_seopress_robots_primary_cat'   => 'primary_term'
 	];
 
 	/**
@@ -177,6 +178,12 @@ class PostMeta {
 				case '_seopress_social_fb_img':
 					$meta['og_image_type']        = 'custom_image';
 					$meta[ $this->mappedMeta[ $name ] ] = esc_url( $value );
+					break;
+				case '_seopress_robots_primary_cat':
+					$taxonomy                           = 'category';
+					$options                            = new \stdClass();
+					$options->$taxonomy                 = (int) $value;
+					$meta[ $this->mappedMeta[ $name ] ] = wp_json_encode( $options );
 					break;
 				case '_seopress_titles_title':
 				case '_seopress_titles_desc':

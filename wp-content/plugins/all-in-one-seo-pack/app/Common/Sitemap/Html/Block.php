@@ -20,6 +20,7 @@ class Block {
 	public function __construct() {
 		$this->register();
 	}
+
 	/**
 	 * Registers the block.
 	 *

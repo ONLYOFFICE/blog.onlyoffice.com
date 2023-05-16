@@ -1,6 +1,8 @@
 <?php
   // Use hardcoded values only, don't rely on consts, as they can change in time
 
+  if (!trinity_should_migrate_for('1.2.5')) return;
+
   // in order to show checkbox for "Activate for all posts"
   delete_option('trinity_audio_bulk_update_heartbeat');
   delete_option('trinity_audio_bulk_update_num_posts_updated');

@@ -1,0 +1,1 @@
+import{_ as o,o as e,c as t,x as s}from"./_plugin-vue_export-helper.2d9794a3.js";const c={},a={class:"aioseo-table-column"};function _(n,r){return e(),t("div",a,[s(n.$slots,"default")])}const f=o(c,[["render",_]]);const l={},u={class:"aioseo-table-row"};function i(n,r){return e(),t("div",u,[s(n.$slots,"default")])}const d=o(l,[["render",i]]);export{f as T,d as a};

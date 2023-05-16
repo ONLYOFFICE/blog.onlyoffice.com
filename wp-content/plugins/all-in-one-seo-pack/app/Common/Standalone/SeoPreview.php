@@ -142,8 +142,11 @@ class SeoPreview {
 				is_object( $wpObject ) &&
 				is_object( $labels )
 			) {
-				// Translators: 1 - The singular label for the current post type.
-				$editObjectBtnText      = sprintf( esc_html__( 'Edit %1$s', 'all-in-one-seo-pack' ), $labels->singular_name );
+				$editObjectBtnText = sprintf(
+					// Translators: 1 - A noun for something that's being edited ("Post", "Page", "Article", "Product", etc.).
+					esc_html__( 'Edit %1$s', 'all-in-one-seo-pack' ),
+					$labels->singular_name
+				);
 				$editGoogleSnippetUrl   = $this->getEditSnippetUrl( $templateType, 'google', $wpObject );
 				$editFacebookSnippetUrl = $this->getEditSnippetUrl( $templateType, 'facebook', $wpObject );
 				$editTwitterSnippetUrl  = $this->getEditSnippetUrl( $templateType, 'twitter', $wpObject );

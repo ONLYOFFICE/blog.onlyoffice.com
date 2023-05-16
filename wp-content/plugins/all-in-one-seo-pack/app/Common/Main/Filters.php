@@ -145,7 +145,7 @@ abstract class Filters {
 	 * @param  WP_Post $originalPost The original post object.
 	 * @return void
 	 */
-	public function duplicatePost( $newPostId, $originalPost ) {
+	public function duplicatePost( $newPostId, $originalPost = null ) {
 		$originalPostId     = is_object( $originalPost ) ? $originalPost->ID : $originalPost;
 		$originalAioseoPost = Models\Post::getPost( $originalPostId );
 		if ( ! $originalAioseoPost->exists() ) {
@@ -180,7 +180,7 @@ abstract class Filters {
 	 * @param  mixed   $metaValue The meta value.
 	 * @return void
 	 */
-	public function rewriteAndRepublish( $postId, $metaKey, $metaValue ) {
+	public function rewriteAndRepublish( $postId, $metaKey = '', $metaValue = '' ) {
 		if ( '_dp_has_rewrite_republish_copy' !== $metaKey ) {
 			return;
 		}
@@ -202,7 +202,7 @@ abstract class Filters {
 	 * @param  \WP_Product $originalProduct The original product.
 	 * @return void
 	 */
-	public function scheduleDuplicateProduct( $newProduct, $originalProduct ) {
+	public function scheduleDuplicateProduct( $newProduct, $originalProduct = null ) {
 		self::$originalProductId = $originalProduct->get_id();
 		add_action( 'wp_insert_post', [ $this, 'duplicateProduct' ], 10, 2 );
 	}
@@ -216,7 +216,7 @@ abstract class Filters {
 	 * @param  \WP_Post $post   The new post object.
 	 * @return void
 	 */
-	public function duplicateProduct( $postId, $post ) {
+	public function duplicateProduct( $postId, $post = null ) {
 		if ( ! self::$originalProductId || 'product' !== $post->post_type ) {
 			return;
 		}
@@ -258,32 +258,37 @@ abstract class Filters {
 	}
 
 	/**
-	 * Action links for the plugins page.
+	 * Registers our row meta for the plugins page.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return array The array of actions.
+	 * @param  array  $actions    List of existing actions.
+	 * @param  string $pluginFile The plugin file.
+	 * @return array              List of action links.
 	 */
-	abstract public function pluginRowMeta( $actions, $pluginFile );
+	abstract public function pluginRowMeta( $actions, $pluginFile = '' );
 
 	/**
-	 * Action links for the plugins page.
+	 * Registers our action links for the plugins page.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return array The array of actions.
+	 * @param  array  $actions    List of existing actions.
+	 * @param  string $pluginFile The plugin file.
+	 * @return array              List of action links.
 	 */
-	abstract public function pluginActionLinks( $actions, $pluginFile );
+	abstract public function pluginActionLinks( $actions, $pluginFile = '' );
 
 	/**
-	 * Parse the action links.
+	 * Parses the action links.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  array  $actions
-	 * @param  string $pluginFile
-	 * @param
-	 * @return array
+	 * @param  array  $actions     The actions.
+	 * @param  string $pluginFile  The plugin file.
+	 * @param  array  $actionLinks The action links.
+	 * @param  string $position    The position.
+	 * @return array               The parsed actions.
 	 */
 	protected function parseActionLinks( $actions, $pluginFile, $actionLinks = [], $position = 'after' ) {
 		if ( empty( $this->plugin ) ) {

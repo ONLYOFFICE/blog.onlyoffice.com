@@ -40,7 +40,7 @@ if ( ! function_exists( 'aioseo_php_notice' ) ) {
 				<?php
 				echo wp_kses(
 					sprintf(
-							// Translators: 1 - Opening HTML bold tag, 2 - Closing HTML bold tag, 3 - The plugin name ("All in One SEO"), 4 - Opening HTML link tag, 5 - Closing HTML link tag.
+							// Translators: 1 - Opening HTML bold tag, 2 - Closing HTML bold tag, 3 - The short plugin name ("AIOSEO"), 4 - Opening HTML link tag, 5 - Closing HTML link tag.
 						__( '%1$sNote:%2$s %3$s plugin is disabled on your site until you fix the issue. %4$sRead more for additional information.%5$s', 'all-in-one-seo-pack' ),
 						'<strong>',
 						'</strong>',
@@ -83,7 +83,7 @@ if ( ! function_exists( 'aioseo_php_notice_deprecated' ) ) {
 				<?php
 				echo wp_kses(
 					sprintf(
-							// Translators: 1 - Opening HTML bold tag, 2 - Closing HTML bold tag, 3 - Opening HTML link tag, 4 - Closing HTML link tag.
+						// Translators: 1 - Opening HTML bold tag, 2 - Closing HTML bold tag, 3 - Opening HTML link tag, 4 - Closing HTML link tag.
 						__( 'Your site is running an %1$soutdated version%2$s of PHP that is no longer supported and may cause issues with %3$s. Please contact your web hosting provider to update your PHP version or switch to a %4$srecommended WordPress hosting company%5$s.', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
 						'<strong>',
 						'</strong>',
@@ -105,7 +105,8 @@ if ( ! function_exists( 'aioseo_php_notice_deprecated' ) ) {
 				<?php
 				echo wp_kses(
 					sprintf(
-							// Translators: 1 - Opening HTML bold tag, 2 - Closing HTML bold tag, 3 - The plugin name ("All in One SEO"), 4 - Opening HTML link tag, 5 - Closing HTML link tag.
+						// phpcs:ignore Generic.Files.LineLength.MaxExceeded
+						// Translators: 1 - Opening HTML bold tag, 2 - Closing HTML bold tag, 3 - The PHP version, 4 - The current year, 5 - The short plugin name ("AIOSEO"), 6 - Opening HTML link tag, 7 - Closing HTML link tag.
 						__( '%1$sNote:%2$s Support for PHP %3$s will be discontinued in %4$s. After this, if no further action is taken, %5$s functionality will be disabled. %6$sRead more for additional information.%7$s', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
 						'<strong>',
 						'</strong>',
@@ -165,7 +166,8 @@ if ( ! function_exists( 'aioseo_wordpress_notice' ) ) {
 				<?php
 				echo wp_kses(
 					sprintf(
-							// Translators: 1 - Opening HTML bold tag, 2 - Closing HTML bold tag, 3 - The plugin name ("All in One SEO"), 4 - Opening HTML link tag, 5 - Closing HTML link tag.
+						// phpcs:ignore Generic.Files.LineLength.MaxExceeded
+						// Translators: 1 - Opening HTML bold tag, 2 - Closing HTML bold tag, 3 - The short plugin name ("AIOSEO"), 4 - The current year, 5 - Opening HTML link tag, 6 - Closing HTML link tag.
 						__( '%1$sNote:%2$s %3$s will be discontinuing support for WordPress versions older than version 5.3 by the end of %4$s. %5$sRead more for additional information.%6$s', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
 						'<strong>',
 						'</strong>',
@@ -220,7 +222,7 @@ if ( ! function_exists( 'aioseo_lite_notice' ) ) {
 				<p>%2$s</p>
 			</div>',
 			esc_html__( 'Heads up!', 'all-in-one-seo-pack' ),
-			// Translators: 1 - The plugin name ("All in One SEO"), 2 - Same as previous, 3 - Same as previous.
+			// Translators: 1 - "AIOSEO Pro", 2 - "AIOSEO Lite".
 			sprintf( esc_html__( 'Your site already has %1$s activated. If you want to switch to %2$s, please first go to Plugins > Installed Plugins and deactivate %1$s. Then, you can activate %2$s.', 'all-in-one-seo-pack' ), 'AIOSEO Pro', 'AIOSEO Lite' ) // phpcs:ignore Generic.Files.LineLength.MaxExceeded
 		);
 

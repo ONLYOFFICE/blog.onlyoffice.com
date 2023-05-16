@@ -78,7 +78,6 @@ class PostSettings {
 
 			aioseo()->core->assets->load( 'src/vue/standalone/post-settings/main.js', [], aioseo()->helpers->getVueData( $page ) );
 			aioseo()->core->assets->load( 'src/vue/standalone/link-format/main.js', [], aioseo()->helpers->getVueData( $page ) );
-			aioseo()->admin->enqueueAioseoModalPortal();
 		}
 
 		$screen = get_current_screen();
@@ -342,7 +341,7 @@ class PostSettings {
 	 * @param  WP_Query $query   The WP_Query instance (passed by reference).
 	 * @return array             The clauses array updated.
 	 */
-	public function changeClausesToFilterPosts( $clauses, $query ) {
+	public function changeClausesToFilterPosts( $clauses, $query = null ) {
 		if ( ! is_admin() || ! $query->is_main_query() ) {
 			return $clauses;
 		}

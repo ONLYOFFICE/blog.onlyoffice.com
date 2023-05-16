@@ -125,6 +125,11 @@ class Features {
 			[
 				'license_level' => 'elite',
 				'section'       => 'search-statistics',
+				'feature'       => 'content-rankings'
+			],
+			[
+				'license_level' => 'elite',
+				'section'       => 'search-statistics',
 				'feature'       => 'post-detail'
 			],
 			[

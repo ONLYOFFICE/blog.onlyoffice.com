@@ -27,8 +27,9 @@ class SearchStatistics {
 			'rolling'             => aioseo()->internalOptions->internal->searchStatistics->rolling,
 			'authedSite'          => null,
 			'data'                => [
-				'seoStatistics' => $this->getSeoOverviewData(),
-				'keywords'      => $this->getKeywordsData()
+				'seoStatistics'   => $this->getSeoOverviewData(),
+				'keywords'        => $this->getKeywordsData(),
+				'contentRankings' => $this->getContentRankingsData()
 			]
 		];
 
@@ -360,13 +361,13 @@ class SearchStatistics {
 					'rows' => $pageRows
 				],
 				'paginated'  => [
-					'rows'    => $pageRows,
-					'totals'  => [
+					'rows'              => $pageRows,
+					'totals'            => [
 						'page'  => 1,
 						'pages' => 292,
 						'total' => 2914
 					],
-					'filters' => [
+					'filters'           => [
 						[
 							'slug'   => 'all',
 							'name'   => 'All',
@@ -381,6 +382,17 @@ class SearchStatistics {
 							'slug'   => 'topWinning',
 							'name'   => 'Top Winning',
 							'active' => false
+						]
+					],
+					'additionalFilters' => [
+						[
+							'name'    => 'postType',
+							'options' => [
+								[
+									'label' => __( 'All Content Types', 'all-in-one-seo-pack' ),
+									'value' => ''
+								]
+							]
 						]
 					]
 				],
@@ -678,6 +690,299 @@ class SearchStatistics {
 					'top10'  => '43.90',
 					'top50'  => '22.50',
 					'top100' => '2.50'
+				]
+			]
+		];
+	}
+
+	/**
+	 * Returns the Content Rankings data.
+	 *
+	 * @since 4.3.6
+	 *
+	 * @param  array $dateRange The date range.
+	 * @return array            The Content Rankings data.
+	 */
+	protected function getContentRankingsData( $dateRange = [] ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		return [
+			'paginated' => [
+				'rows'              => [
+					'/'                       => [
+						'points'       => [
+							'2022-04' => 13655,
+							'2022-05' => 12683,
+							'2022-06' => 13923,
+							'2022-07' => 13031,
+							'2022-08' => 10978,
+							'2022-09' => 9726,
+							'2022-10' => 13943,
+							'2022-11' => 21813,
+							'2022-12' => 11163,
+							'2023-01' => 4442,
+							'2023-02' => 4798,
+							'2023-03' => 5405
+						],
+						'page'         => '/',
+						'peak'         => 21813,
+						'decayPercent' => 75,
+						'decay'        => 16407,
+						'recovering'   => false,
+						'context'      => [
+							'lastUpdated' => 'December 6, 2021'
+						],
+						'postTitle'    => 'Homepage',
+						'postId'       => 0
+					],
+					'/high-ranking-page/'     => [
+						'points'       => [
+							'2022-04' => 18426,
+							'2022-05' => 18435,
+							'2022-06' => 19764,
+							'2022-07' => 14769,
+							'2022-08' => 6486,
+							'2022-09' => 11984,
+							'2022-10' => 11539,
+							'2022-11' => 9939,
+							'2022-12' => 5340,
+							'2023-01' => 3965,
+							'2023-02' => 3799,
+							'2023-03' => 5440
+						],
+						'page'         => '/high-ranking-page/',
+						'peak'         => 19764,
+						'decayPercent' => 72,
+						'decay'        => 14323,
+						'recovering'   => false,
+						'context'      => [
+							'lastUpdated' => 'November 17, 2022'
+						],
+						'postTitle'    => 'High Ranking Page',
+						'postId'       => 0
+					],
+					'/pricing/'               => [
+						'points'       => [
+							'2022-04' => 5356,
+							'2022-05' => 5425,
+							'2022-06' => 5165,
+							'2022-07' => 5479,
+							'2022-08' => 4995,
+							'2022-09' => 4466,
+							'2022-10' => 4545,
+							'2022-11' => 5361,
+							'2022-12' => 3092,
+							'2023-01' => 1948,
+							'2023-02' => 1630,
+							'2023-03' => 2341
+						],
+						'page'         => '/pricing/',
+						'peak'         => 5479,
+						'decayPercent' => 57,
+						'decay'        => 3137,
+						'recovering'   => false,
+						'context'      => [
+							'lastUpdated' => 'December 8, 2021'
+						],
+						'postTitle'    => 'Pricing',
+						'postId'       => 0
+					],
+					'/features-and-benefits/' => [
+						'points'       => [
+							'2022-04' => 1272,
+							'2022-05' => 4151,
+							'2022-06' => 6953,
+							'2022-07' => 7785,
+							'2022-08' => 4177,
+							'2022-09' => 3378,
+							'2022-10' => 2553,
+							'2022-11' => 3971,
+							'2022-12' => 2143,
+							'2023-01' => 2335,
+							'2023-02' => 1666,
+							'2023-03' => 4892
+						],
+						'page'         => '/features-and-benefits/',
+						'peak'         => 7785,
+						'decayPercent' => 37,
+						'decay'        => 2893,
+						'recovering'   => false,
+						'context'      => [
+							'lastUpdated' => 'February 7, 2022'
+						],
+						'postTitle'    => 'Features and Benefits',
+						'postId'       => 0
+					],
+					'/documentation/'         => [
+						'points'       => [
+							'2022-04' => 594,
+							'2022-05' => 385,
+							'2022-06' => 337,
+							'2022-07' => 378,
+							'2022-08' => 714,
+							'2022-09' => 2637,
+							'2022-10' => 2831,
+							'2022-11' => 2907,
+							'2022-12' => 1851,
+							'2023-01' => 277,
+							'2023-02' => 226,
+							'2023-03' => 175
+						],
+						'page'         => '/documentation/',
+						'peak'         => 2907,
+						'decayPercent' => 93,
+						'decay'        => 2731,
+						'recovering'   => false,
+						'context'      => [
+							'lastUpdated' => 'January 7, 2022'
+						],
+						'postTitle'    => 'Documentation',
+						'postId'       => 0
+					],
+					'/blog/'                  => [
+						'points'       => [
+							'2022-04' => 2956,
+							'2022-05' => 2363,
+							'2022-06' => 2347,
+							'2022-07' => 2154,
+							'2022-08' => 2604,
+							'2022-09' => 1995,
+							'2022-10' => 1528,
+							'2022-11' => 1578,
+							'2022-12' => 1458,
+							'2023-01' => 927,
+							'2023-02' => 629,
+							'2023-03' => 592
+						],
+						'page'         => '/blog/',
+						'peak'         => 2956,
+						'decayPercent' => 79,
+						'decay'        => 2363,
+						'recovering'   => false,
+						'context'      => [
+							'lastUpdated' => 'April 21, 2022'
+						],
+						'postTitle'    => 'Blog',
+						'postId'       => 0
+					],
+					'/blog/my-best-content/'  => [
+						'points'       => [
+							'2022-04' => 1889,
+							'2022-05' => 1714,
+							'2022-06' => 2849,
+							'2022-07' => 4175,
+							'2022-08' => 5343,
+							'2022-09' => 6360,
+							'2022-10' => 6492,
+							'2022-11' => 6955,
+							'2022-12' => 6930,
+							'2023-01' => 5880,
+							'2023-02' => 5211,
+							'2023-03' => 4683
+						],
+						'page'         => '/blog/my-best-content/',
+						'peak'         => 6955,
+						'decayPercent' => 32,
+						'decay'        => 2272,
+						'recovering'   => false,
+						'context'      => [
+							'lastUpdated' => 'April 22, 2022'
+						],
+						'postTitle'    => 'My Best Content',
+						'postId'       => 0
+					],
+					'/contact-us/'            => [
+						'points'       => [
+							'2022-04' => 3668,
+							'2022-05' => 3699,
+							'2022-06' => 4934,
+							'2022-07' => 5488,
+							'2022-08' => 5092,
+							'2022-09' => 5526,
+							'2022-10' => 4694,
+							'2022-11' => 4791,
+							'2022-12' => 3989,
+							'2023-01' => 4089,
+							'2023-02' => 4189,
+							'2023-03' => 4289
+						],
+						'page'         => '/contact-us/',
+						'peak'         => 5526,
+						'decayPercent' => 34,
+						'decay'        => 1907,
+						'recovering'   => true,
+						'context'      => [
+							'lastUpdated' => 'January 28, 2022'
+						],
+						'postTitle'    => 'Contact Us',
+						'postId'       => 0
+					],
+					'/support/'               => [
+						'points'       => [
+							'2022-04' => 2715,
+							'2022-05' => 2909,
+							'2022-06' => 2981,
+							'2022-07' => 2988,
+							'2022-08' => 2586,
+							'2022-09' => 2592,
+							'2022-10' => 2391,
+							'2022-11' => 2446,
+							'2022-12' => 2045,
+							'2023-01' => 1239,
+							'2023-02' => 1077,
+							'2023-03' => 1198
+						],
+						'page'         => '/support/',
+						'peak'         => 2988,
+						'decayPercent' => 59,
+						'decay'        => 1789,
+						'recovering'   => false,
+						'context'      => [
+							'lastUpdated' => 'February 21, 2021'
+						],
+						'postTitle'    => 'Support',
+						'postId'       => 0
+					],
+					'/blog/top-10-contents/'  => [
+						'points'       => [
+							'2022-04' => 1889,
+							'2022-05' => 1714,
+							'2022-06' => 2849,
+							'2022-07' => 4175,
+							'2022-08' => 5343,
+							'2022-09' => 6360,
+							'2022-10' => 6492,
+							'2022-11' => 6955,
+							'2022-12' => 6930,
+							'2023-01' => 5880,
+							'2023-02' => 5211,
+							'2023-03' => 4683
+						],
+						'page'         => '/blog/top-10-contents/',
+						'peak'         => 6955,
+						'decayPercent' => 32,
+						'decay'        => 2272,
+						'recovering'   => false,
+						'context'      => [
+							'lastUpdated' => 'October 14, 2022'
+						],
+						'postTitle'    => 'Top 10 Contents',
+						'postId'       => 0
+					],
+				],
+				'totals'            => [
+					'page'  => 1,
+					'pages' => 215,
+					'total' => 4296
+				],
+				'additionalFilters' => [
+					[
+						'name'    => 'postType',
+						'options' => [
+							[
+								'label' => __( 'All Content Types', 'all-in-one-seo-pack' ),
+								'value' => ''
+							]
+						]
+					]
 				]
 			]
 		];

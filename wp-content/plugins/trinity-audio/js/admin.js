@@ -24,6 +24,13 @@ function dashboardComponentFailed() {
   trinitySendMetric('wordpress.component.load.failed');
 }
 
+function isAllowedForPageName(name) {
+  const searchParams = new URLSearchParams(location.search);
+  const pageName = searchParams.get('page');
+
+  return pageName === name;
+}
+
 (function ($) {
     const id = '#trinity-admin';
     let isBulkTriggered = false;
@@ -58,7 +65,10 @@ function dashboardComponentFailed() {
         localStorage.removeItem(TRINITY_LOCAL_STORAGE_POSTS_BULK_UPDATE_KEY);
     }
 
-    function checkProgress(allowRerunCheckProgrees) {
+    function checkProgress(allowRerunCheckProgress) {
+        // reduce unneeded polling
+        if (!isAllowedForPageName('trinity_audio')) return;
+
         $.ajax({
             type: 'GET',
             url: ajaxurl,
@@ -82,7 +92,7 @@ function dashboardComponentFailed() {
                     });
                     trinityDisableFieldsWhichProduceBulkUpdate();
 
-                    if (allowRerunCheckProgrees) setTimeout(checkProgress, 1000, allowRerunCheckProgrees);
+                    if (allowRerunCheckProgress) setTimeout(checkProgress, 1000, allowRerunCheckProgress);
                 }
                 // Hide progress bar only after inProgress was true
                 else if (bulkUpdateResponse.inProgress === false && isBulkTriggered) {
@@ -251,7 +261,25 @@ function updateVoiceId(voices) {
   }
 }
 
-function trinityAudioOnSettingsFormSubmit(form, isInitialSave) {
+async function isFormValid() {
+  return (await TRINITY_UNIT_CONFIGURATION.validate()).isValid;
+}
+
+// check if we need to disable/enable save button
+setInterval(async () => {
+  if (!window.TRINITY_UNIT_CONFIGURATION) return;
+
+  const isValid = await isFormValid();
+  $('.trinity-page .save-button').toggleClass('disabled', !isValid);
+}, 1000);
+
+async function trinityAudioOnSettingsFormSubmit(form, isInitialSave) {
+    const isValid = await isFormValid();
+    if (!isValid) { // should not go here, since button should be disabled when a form is not valid...
+      console.error('Can not submit a form, since it is not valid');
+      return;
+    }
+
     trinitySendMetric('wordpress.settings.submit');
 
     try {

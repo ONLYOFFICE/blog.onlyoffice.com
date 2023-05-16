@@ -528,7 +528,7 @@ class Notices {
 	 * @param  mixed  $newValue   The new value.
 	 * @return void
 	 */
-	public function maybeResetBlogVisibility( $optionName, $oldValue, $newValue ) {
+	public function maybeResetBlogVisibility( $optionName, $oldValue = '', $newValue = '' ) {
 		if ( 'blog_public' === $optionName ) {
 			if ( 1 === intval( $newValue ) ) {
 				$notification = Models\Notification::getNotificationByName( 'blog-visibility' );

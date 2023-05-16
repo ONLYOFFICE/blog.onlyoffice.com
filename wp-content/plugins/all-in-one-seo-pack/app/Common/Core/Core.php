@@ -51,7 +51,7 @@ class Core {
 	 *
 	 * @since 4.2.7
 	 *
-	 * @var Utils\Filesystem
+	 * @var Utils\Assets
 	 */
 	public $assets = null;
 
@@ -124,8 +124,15 @@ class Core {
 	 * @return void
 	 */
 	public function uninstallDb( $force = false ) {
+		// Don't call `aioseo()->options` as it's not loaded during uninstall.
+		$aioseoOptions = get_option( 'aioseo_options', '' );
+		$aioseoOptions = json_decode( $aioseoOptions, true );
+
 		// Confirm that user has decided to remove all data, otherwise stop.
-		if ( ! $force && ! aioseo()->options->advanced->uninstall ) {
+		if (
+			! $force &&
+			empty( $aioseoOptions['advanced']['uninstall'] )
+		) {
 			return;
 		}
 
@@ -167,5 +174,26 @@ class Core {
 		}
 
 		return $tables;
+	}
+
+	/**
+	 * Check if the current request is uninstalling (deleting) AIOSEO.
+	 *
+	 * @since 4.3.7
+	 *
+	 * @return bool Whether AIOSEO is being uninstalled/deleted or not.
+	 */
+	public function isUninstalling() {
+		if (
+			defined( 'AIOSEO_FILE' ) &&
+			defined( 'WP_UNINSTALL_PLUGIN' )
+		) {
+			// Make sure `plugin_basename()` exists.
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+			return WP_UNINSTALL_PLUGIN === plugin_basename( AIOSEO_FILE );
+		}
+
+		return false;
 	}
 }

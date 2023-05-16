@@ -18,7 +18,7 @@ class SeoAnalysis {
 	 * @since 4.2.6
 	 */
 	public function __construct() {
-		add_action( 'save_post', [ $this, 'bustStaticHomepageResults' ], 10, 1 );
+		add_action( 'save_post', [ $this, 'bustStaticHomepageResults' ] );
 	}
 
 	/**

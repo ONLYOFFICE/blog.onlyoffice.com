@@ -167,7 +167,7 @@ class Social {
 	 * @param  WP_Post $post   The post object.
 	 * @return void
 	 */
-	public function scheduleBustOgCachePost( $postId, $post ) {
+	public function scheduleBustOgCachePost( $postId, $post = null ) {
 		if ( ! aioseo()->helpers->isSbCustomFacebookFeedActive() || ! aioseo()->helpers->isValidPost( $post ) ) {
 			return;
 		}

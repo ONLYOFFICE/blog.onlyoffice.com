@@ -124,6 +124,9 @@ class VueSettings {
 			'searchShowMoreSeparators'      => false,
 			'overviewPostType'              => 'post',
 		],
+		'dismissedAlerts' => [
+			'searchStatisticsContentRankings' => false
+		],
 		'internalTabs'    => [
 			'authorArchives'    => 'title-description',
 			'dateArchives'      => 'title-description',
@@ -141,6 +144,7 @@ class VueSettings {
 			'linkAssistantDomainsReport'         => 20,
 			'searchStatisticsSeoStatistics'      => 20,
 			'searchStatisticsKeywordRankings'    => 20,
+			'searchStatisticsContentRankings'    => 20,
 			'searchStatisticsPostDetailKeywords' => 20
 		]
 	];
