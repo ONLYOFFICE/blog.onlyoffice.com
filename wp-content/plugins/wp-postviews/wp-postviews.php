@@ -3,7 +3,7 @@
 Plugin Name: WP-PostViews
 Plugin URI: https://lesterchan.net/portfolio/programming/php/
 Description: Enables you to display how many times a post/page had been viewed.
-Version: 1.76.1
+Version: 1.77
 Author: Lester 'GaMerZ' Chan
 Author URI: https://lesterchan.net
 Text Domain: wp-postviews
@@ -11,7 +11,7 @@ Text Domain: wp-postviews
 
 
 /*
-	Copyright 2017  Lester Chan  (email : lesterchan@gmail.com)
+	Copyright 2023  Lester Chan  (email : lesterchan@gmail.com)
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -105,6 +105,12 @@ function process_postviews() {
 					, 'Sogou' => 'spider'
 					, 'soso.com' => 'sosospider'
 					, 'Yandex' => 'yandex'
+					, 'Ahrefs' => 'AhrefsBot'
+					, 'Bing' => 'bingbot'
+					, 'Apple' => 'applebot'
+					, 'GitCrawler' => 'GitCrawlerBot'
+					, 'Bytedance' => 'Bytespider'
+					, 'webmeup' => 'BLEXBot'
 				);
 				$useragent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
 				foreach ( $bots as $name => $lookfor ) {
@@ -122,7 +128,6 @@ function process_postviews() {
 		}
 	}
 }
-
 
 ### Function: Calculate Post Views With WP_CACHE Enabled
 add_action('wp_enqueue_scripts', 'wp_postview_cache_count_enqueue');
@@ -159,8 +164,8 @@ function wp_postview_cache_count_enqueue() {
 
 		$should_count = apply_filters( 'postviews_should_count', $should_count, (int) $post->ID );
 		if ( $should_count ) {
-			wp_enqueue_script( 'wp-postviews-cache', plugins_url( 'postviews-cache.js', __FILE__ ), array( 'jquery' ), '1.68', true );
-			wp_localize_script( 'wp-postviews-cache', 'viewsCacheL10n', array( 'admin_ajax_url' => admin_url( 'admin-ajax.php' ), 'post_id' => (int) $post->ID ) );
+			wp_enqueue_script( 'wp-postviews-cache', plugins_url( 'postviews-cache.js', __FILE__ ), array(), '1.68', true );
+			wp_localize_script( 'wp-postviews-cache', 'viewsCacheL10n', array( 'admin_ajax_url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'wp_postviews_nonce' ), 'post_id' => (int) $post->ID ) );
 		}
 	}
 }
@@ -785,7 +790,14 @@ function postviews_page_most_stats($content) {
 add_action( 'wp_ajax_postviews', 'increment_views' );
 add_action( 'wp_ajax_nopriv_postviews', 'increment_views' );
 function increment_views() {
-	if ( empty( $_GET['postviews_id'] ) ) {
+	$security = check_ajax_referer( 'wp_postviews_nonce', 'nonce' );
+
+	if ( false === $security ) {
+		wp_send_json_error();
+		wp_die();
+	}
+
+	if ( ! isset( $_POST['postviews_id'] ) || empty( $_POST['postviews_id'] ) ) {
 		return;
 	}
 
@@ -799,13 +811,13 @@ function increment_views() {
 		return;
 	}
 
-	$post_id = (int) sanitize_key( $_GET['postviews_id'] );
+	$post_id = (int) sanitize_key( $_POST['postviews_id'] );
 	if( $post_id > 0 ) {
-		$post_views = get_post_custom( $post_id );
-		$post_views = (int) $post_views['views'][0];
-		update_post_meta( $post_id, 'views', ( $post_views + 1 ) );
-		do_action( 'postviews_increment_views_ajax', ( $post_views + 1 ) );
-		echo ( $post_views + 1 );
+		$post_views = (int) get_post_meta( $post_id, 'views', true );
+		$post_views = $post_views + 1;
+		update_post_meta( $post_id, 'views', $post_views );
+		do_action( 'postviews_increment_views_ajax', $post_views );
+		wp_send_json_success( [ 'views' => $post_views ] );
 		exit();
 	}
 }
@@ -1018,4 +1030,19 @@ function views_activation( $network_wide ) {
 ### Function: Parse View Options
 function views_options_parse( $key ) {
 	return ! empty( $_POST[ $key ] ) ? $_POST[ $key ] : null;
+}
+
+
+### Function: Register views meta field to use it in REST API
+add_action('rest_api_init', 'register_rest_views_field');
+function register_rest_views_field(){
+	register_rest_field('post', 'views', array(
+		'get_callback' => function ($post) {
+			if (!$post_views = get_post_meta($post['id'], 'views', true)) {
+				$post_views = 0;
+			}
+
+			return (int) $post_views;
+		}
+	));
 }
