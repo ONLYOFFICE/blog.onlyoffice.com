@@ -1,5 +1,5 @@
 <?php 
-/**
+/** 
  * Basic WordPress settings.  
  *
 * The script to create wp-config.php uses this file in the process
