@@ -4,7 +4,7 @@ Donate link: https://money.yandex.ru/to/41001288941320
 License: GPLv3 or later
 Tags: syntax highlighter, syntax, highlighter, highlighting, crayon, code highlighter, bbpress
 Requires at least: 5.7
-Tested up to: 6.0
+Tested up to: 6.2
 Stable tag: trunk
 
 Reincarnation of Crayon Syntax Highlighter. Syntax Highlighter supporting multiple languages, themes, fonts, highlighting from a URL, or post text.
@@ -332,6 +332,26 @@ Contact me at http://twitter.com/crayonsyntax or crayon.syntax@gmail.com.
 5. Theme Editor.
 
 == Changelog ==
+
+= 2.8.33 =
+* FIXED
+    * Copy button should work even without "Toggle plain text" button.
+
+= 2.8.32 =
+* FIXED
+    * Enabled "Copy" button for touch screens.
+
+= 2.8.31 =
+* FIXED
+    * Removed my_custom_render
+    
+= 2.8.30 =
+* FIXED
+    * Made Urvanov_Syntax_Highlighter_Plugin::my_custom_render public and static.
+
+= 2.8.29 =
+* FIXED
+    * Check HTTP_USER_AGENT existance in `$_SERVER` array
 
 = 2.8.28 =
 * ADDED
