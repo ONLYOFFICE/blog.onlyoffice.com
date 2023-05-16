@@ -1,10 +1,10 @@
 name: "Test deploy"
 
 on:
-  #workflow_dispatch:
+  workflow_dispatch:
   push:
     branches:
-      - ga_test_deploy
+      - deploy_test_blog
 
 jobs:
   deploy:
