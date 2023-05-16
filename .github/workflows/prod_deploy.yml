@@ -1,0 +1,60 @@
+name: "Prod deploy"
+
+on:
+  #workflow_dispatch:
+  push:
+    branches:
+      - deploy_prod_blog
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Prepare
+        id: prepare
+        run: |
+          rm -rf .git .github .jenkins .gitignore .htaccess .prettierignore Changelog.md README.md web.config
+          sed -i 's^name-database^${{ secrets.DB_NAME_POST }}^' wp-config.php
+          sed -i 's^user-database^${{ secrets.DB_USER_POST }}^' wp-config.php
+          sed -i 's^password-database^${{ secrets.DB_PASS_POST }}^' wp-config.php
+          sed -i 's^host1^${{ secrets.DB_HOST_POST }}^' wp-config.php
+          sed -i 's^root1^${{ secrets.DOMAIN_NAME_POST }}^' wp-config.php
+          
+          sed -i 's^some_key1^${{ secrets.SOMEKEY1_POST }}^' wp-config.php
+          sed -i 's^some_key2^${{ secrets.SOMEKEY2_POST }}^' wp-config.php
+          sed -i 's^some_key3^${{ secrets.SOMEKEY3_POST }}^' wp-config.php
+          sed -i 's^some_key4^${{ secrets.SOMEKEY4_POST }}^' wp-config.php
+          sed -i 's^some_key5^${{ secrets.SOMEKEY5_POST }}^' wp-config.php
+          sed -i 's^some_key6^${{ secrets.SOMEKEY6_POST }}^' wp-config.php
+          sed -i 's^some_key7^${{ secrets.SOMEKEY7_POST }}^' wp-config.php
+          sed -i 's^some_key8^${{ secrets.SOMEKEY8_POST }}^' wp-config.php
+        shell: bash
+
+      - name: Copy files to host
+        id: copy
+        uses: appleboy/scp-action@v0.1.4
+        with: 
+          host: ${{ secrets.SERVER_HOST_POST }}
+          username: ${{ secrets.USERNAME_POST }}
+          key: ${{ secrets.SSH_KEY_POST }}
+          source: "*"
+          target: "/tmp/deploy/wppost"
+          overwrite: true
+      
+      - name: Deploy
+        id: deploy
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SERVER_HOST_POST }}
+          username: ${{ secrets.USERNAME_POST }}
+          key: ${{ secrets.SSH_KEY_POST }}
+          script: |
+            datestamp=$(date +"%Y%m%d_%H%M%S")
+            sudo find /tmp/deploy/wppost/ -type d -exec chmod 755 {} \;
+            sudo find /tmp/deploy/wppost/ -type f -exec chmod 644 {} \;
+            sudo rm -rf /var/www/wppost_backup*
+            sudo mv /var/www/wppost /var/www/wppost_backup_$datestamp
+            sudo mv /tmp/deploy/wppost /var/www/wppost
+            sudo chown -R www-data:www-data /var/www/wppost/
