@@ -29,16 +29,21 @@ class Output {
 		$charset       = aioseo()->helpers->getCharset();
 		$excludeImages = aioseo()->sitemap->helpers->excludeImages();
 		$generation    = ! isset( aioseo()->sitemap->isStatic ) || aioseo()->sitemap->isStatic ? __( 'statically', 'all-in-one-seo-pack' ) : __( 'dynamically', 'all-in-one-seo-pack' );
+		$version       = aioseo()->helpers->getAioseoVersion();
+
+		if ( ! empty( $version ) ) {
+			$version = 'v' . $version;
+		}
 
 		echo '<?xml version="1.0" encoding="' . esc_attr( $charset ) . "\"?>\r\n";
 		echo '<!-- ' . sprintf(
 			// Translators: 1 - "statically" or "dynamically", 2 - The date, 3 - The time, 4 - The plugin name ("All in One SEO"), 5 - Currently installed version.
-			esc_html__( 'This sitemap was %1$s generated on %2$s at %3$s by %4$s v%5$s - the original SEO plugin for WordPress.', 'all-in-one-seo-pack' ),
+			esc_html__( 'This sitemap was %1$s generated on %2$s at %3$s by %4$s %5$s - the original SEO plugin for WordPress.', 'all-in-one-seo-pack' ),
 			esc_html( $generation ),
 			esc_html( date_i18n( get_option( 'date_format' ) ) ),
 			esc_html( date_i18n( get_option( 'time_format' ) ) ),
 			esc_html( AIOSEO_PLUGIN_NAME ),
-			esc_html( AIOSEO_VERSION )
+			esc_html( $version )
 		) . ' -->';
 
 		if ( 'rss' === aioseo()->sitemap->type ) {

@@ -228,7 +228,7 @@ class Head {
 		echo "\n\t\t<!-- " . sprintf(
 			'%1$s %2$s',
 			esc_html( AIOSEO_PLUGIN_NAME ),
-			aioseo()->version // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			aioseo()->helpers->getAioseoVersion() // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		) . " - aioseo.com -->\n";
 
 		foreach ( $views as $view ) {

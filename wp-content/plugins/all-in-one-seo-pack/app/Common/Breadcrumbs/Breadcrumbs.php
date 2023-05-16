@@ -80,11 +80,11 @@ namespace AIOSEO\Plugin\Common\Breadcrumbs {
 		 *
 		 * @since 4.1.1
 		 *
-		 * @param array $crumbs A single crumb or an array of crumbs.
+		 * @param  array $crumbs A single crumb or an array of crumbs.
 		 * @return void
 		 */
 		public function addCrumbs( $crumbs ) {
-			if ( ! is_array( $crumbs ) ) {
+			if ( empty( $crumbs ) || ! is_array( $crumbs ) ) {
 				return;
 			}
 
@@ -112,9 +112,7 @@ namespace AIOSEO\Plugin\Common\Breadcrumbs {
 			$this->breadcrumbs = [];
 
 			// Add breadcrumb prefix.
-			if ( 0 < strlen( aioseo()->options->breadcrumbs->breadcrumbPrefix ) ) {
-				$this->addCrumbs( $this->getPrefixCrumb( $type, $reference ) );
-			}
+			$this->addCrumbs( $this->getPrefixCrumb( $type, $reference ) );
 
 			// Set a home page in the beginning of the breadcrumb.
 			$this->addCrumbs( $this->maybeGetHomePageCrumb( $type, $reference ) );
@@ -192,6 +190,10 @@ namespace AIOSEO\Plugin\Common\Breadcrumbs {
 		 * @return array             A crumb.
 		 */
 		public function getPrefixCrumb( $type, $reference ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+			if ( empty( aioseo()->options->breadcrumbs->breadcrumbPrefix ) ) {
+				return [];
+			}
+
 			return $this->makeCrumb( aioseo()->options->breadcrumbs->breadcrumbPrefix, '', 'prefix' );
 		}
 
@@ -538,7 +540,8 @@ namespace AIOSEO\Plugin\Common\Breadcrumbs {
 			}
 
 			foreach ( $taxonomies as $taxonomy ) {
-				$terms = wp_get_object_terms( $post->ID, $taxonomy );
+				$primaryTerm = aioseo()->standalone->primaryTerm->getPrimaryTerm( $post->ID, $taxonomy );
+				$terms       = wp_get_object_terms( $post->ID, $taxonomy );
 				// Use the first taxonomy with terms.
 				if ( empty( $terms ) ) {
 					continue;
@@ -552,6 +555,12 @@ namespace AIOSEO\Plugin\Common\Breadcrumbs {
 
 					// Merge the current term to be used in the breadcrumbs.
 					$ancestors = array_merge( $ancestors, [ $term->term_id ] );
+
+					// If the current term is the primary term, use it.
+					if ( is_a( $primaryTerm, 'WP_Term' ) && $primaryTerm->term_id === $term->term_id ) {
+						$termHierarchy = $ancestors;
+						break;
+					}
 
 					$termHierarchy = ( count( $termHierarchy ) < count( $ancestors ) ) ? $ancestors : $termHierarchy;
 				}

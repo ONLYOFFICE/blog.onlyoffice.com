@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Options trait.
+ * Assets trait.
  *
  * @since 4.1.9
  */
@@ -110,7 +110,7 @@ trait Assets {
 	 * @param  string $handle The handle for the script.
 	 * @return string         The modified tag.
 	 */
-	public function scriptLoaderTag( $tag, $handle, $src ) {
+	public function scriptLoaderTag( $tag, $handle = '', $src = '' ) {
 		if ( $this->skipModuleTag( $handle ) ) {
 			return $tag;
 		}
@@ -280,7 +280,9 @@ trait Assets {
 	 * @return string The dev URL.
 	 */
 	private function getDevUrl() {
-		return 'https://' . $this->domain . ':' . $this->port . '/';
+		$protocol = is_ssl() ? 'https://' : 'http://';
+
+		return $protocol . $this->domain . ':' . $this->port . '/';
 	}
 
 	/**

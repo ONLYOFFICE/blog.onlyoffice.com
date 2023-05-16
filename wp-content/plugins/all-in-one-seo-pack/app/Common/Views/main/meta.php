@@ -55,7 +55,7 @@ endif;
 
 // Add our generator output.
 ?>
-		<meta name="generator" content="<?php echo sprintf( '%1$s (%2$s) %3$s', esc_html( AIOSEO_PLUGIN_NAME ), esc_html( AIOSEO_PLUGIN_SHORT_NAME ), aioseo()->version ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, Generic.Files.LineLength.MaxExceeded ?> " />
+		<meta name="generator" content="<?php echo trim( sprintf( '%1$s (%2$s) %3$s', esc_html( AIOSEO_PLUGIN_NAME ), esc_html( AIOSEO_PLUGIN_SHORT_NAME ), aioseo()->helpers->getAioseoVersion() ) ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, Generic.Files.LineLength.MaxExceeded ?>" />
 <?php
 
 // This adds the miscellaneous verification to the head tag inside our comments.

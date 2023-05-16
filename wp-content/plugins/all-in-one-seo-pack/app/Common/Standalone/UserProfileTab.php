@@ -20,7 +20,7 @@ class UserProfileTab {
 		}
 
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueueScript' ] );
-		add_action( 'profile_update', [ $this, 'updateUserSocialProfiles' ], 10, 1 );
+		add_action( 'profile_update', [ $this, 'updateUserSocialProfiles' ] );
 	}
 
 	/**

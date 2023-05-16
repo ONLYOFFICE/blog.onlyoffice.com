@@ -8,6 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use AIOSEO\Plugin\Common\Models;
 use AIOSEO\Plugin\Common\Migration;
+use AIOSEO\Plugin\Common\Traits;
 
 /**
  * Abstract class that Pro and Lite both extend.
@@ -15,6 +16,8 @@ use AIOSEO\Plugin\Common\Migration;
  * @since 4.0.0
  */
 class Admin {
+	use Traits\Admin;
+
 	/**
 	 * The page slug for the sidebar.
 	 *
@@ -139,12 +142,11 @@ class Admin {
 			add_action( 'admin_init', [ $this, 'addPluginScripts' ] );
 
 			// Add redirects messages to trashed posts.
-			add_filter( 'bulk_post_updated_messages', [ $this, 'appendTrashedMessage' ], 10, 2 );
+			add_filter( 'bulk_post_updated_messages', [ $this, 'appendTrashedMessage' ] );
 
 			$this->registerLinkFormatHooks();
 
 			add_action( 'admin_footer', [ $this, 'addAioseoModalPortal' ] );
-			add_action( 'admin_enqueue_scripts', [ $this, 'enqueueAioseoModalPortal' ], 11 );
 		}
 
 		$this->loadTextDomain();
@@ -314,7 +316,7 @@ class Admin {
 				'title'          => esc_html__( 'Insert/edit link', 'all-in-one-seo-pack' ),
 				'update'         => esc_html__( 'Update', 'all-in-one-seo-pack' ),
 				'save'           => esc_html__( 'Add Link', 'all-in-one-seo-pack' ),
-				'noTitle'        => esc_html__( '(no title)', 'all-in-one-seo-pack' ),
+				'noTitle'        => esc_html__( '(no title)' ), // phpcs:ignore AIOSEO.Wp.I18n.MissingArgDomain
 				'labelTitle'     => esc_html__( 'Title', 'all-in-one-seo-pack' ),
 				'noMatchesFound' => esc_html__( 'No results found.', 'all-in-one-seo-pack' ),
 				'linkSelected'   => esc_html__( 'Link selected.', 'all-in-one-seo-pack' ),
@@ -888,20 +890,6 @@ class Admin {
 	}
 
 	/**
-	 * Outputs the element we can mount our footer promotion standalone Vue app on.
-	 * Also enqueues the assets.
-	 *
-	 * @since 4.3.4
-	 *
-	 * @return void
-	 */
-	public function addFooterPromotion() {
-		echo wp_kses_post( '<div id="aioseo-footer-links"></div>' );
-
-		aioseo()->core->assets->load( 'src/vue/standalone/footer-links/main.js' );
-	}
-
-	/**
 	 * Add footer text to the WordPress admin screens.
 	 *
 	 * @since 4.0.0
@@ -1138,7 +1126,7 @@ class Admin {
 	 * @param  array $messages The original messages.
 	 * @return array           The modified messages.
 	 */
-	public function appendTrashedMessage( $messages, $counts ) {
+	public function appendTrashedMessage( $messages ) {
 		// Let advanced users override this.
 		if ( apply_filters( 'aioseo_redirects_disable_trashed_posts_suggestions', false ) ) {
 			return $messages;
@@ -1230,16 +1218,5 @@ class Admin {
 	 */
 	public function addAioseoModalPortal() {
 		echo '<div id="aioseo-modal-portal"></div>';
-	}
-
-	/**
-	 * Add the assets for the modal portal.
-	 *
-	 * @since 4.2.5
-	 *
-	 * @return void
-	 */
-	public function enqueueAioseoModalPortal() {
-		aioseo()->core->assets->load( 'src/vue/standalone/modal-portal/main.js' );
 	}
 }

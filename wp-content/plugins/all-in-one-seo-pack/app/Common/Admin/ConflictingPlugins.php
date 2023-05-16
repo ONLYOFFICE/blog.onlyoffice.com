@@ -96,6 +96,7 @@ class ConflictingPlugins {
 					'Yoast SEO'         => 'wordpress-seo/wp-seo.php',
 					'Yoast SEO Premium' => 'wordpress-seo-premium/wp-seo-premium.php',
 					'Rank Math SEO'     => 'seo-by-rank-math/rank-math.php',
+					'Rank Math SEO Pro' => 'seo-by-rank-math-pro/rank-math-pro.php',
 					'SEOPress'          => 'wp-seopress/seopress.php',
 					'The SEO Framework' => 'autodescription/autodescription.php',
 				];

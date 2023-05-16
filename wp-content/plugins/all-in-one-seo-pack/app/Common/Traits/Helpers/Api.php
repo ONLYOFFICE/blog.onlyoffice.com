@@ -74,7 +74,7 @@ trait Api {
 	 *
 	 * @param  string         $url  The URL to send the request to.
 	 * @param  array          $args The args to use in the request.
-	 * @return array|WP_Error       The response as an array or WP_Error on failure.
+	 * @return array|\WP_Error      The response as an array or WP_Error on failure.
 	 */
 	public function wpRemotePost( $url, $args = [] ) {
 		return wp_remote_post( $url, array_replace_recursive( $this->getWpApiRequestDefaults(), $args ) );
@@ -87,7 +87,7 @@ trait Api {
 	 *
 	 * @param  string         $url  The URL to send the request to.
 	 * @param  array          $args The args to use in the request.
-	 * @return array|WP_Error       The response as an array or WP_Error on failure.
+	 * @return array|\WP_Error      The response as an array or WP_Error on failure.
 	 */
 	public function wpRemoteGet( $url, $args = [] ) {
 		return wp_remote_get( $url, array_replace_recursive( $this->getWpApiRequestDefaults(), $args ) );

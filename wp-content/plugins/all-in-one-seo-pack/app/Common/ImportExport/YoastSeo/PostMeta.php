@@ -119,6 +119,23 @@ class PostMeta {
 				$name  = $record->meta_key;
 				$value = $record->meta_value;
 
+				// Handles primary taxonomy terms.
+				// We need to handle it separately because it's stored in a different format.
+				if ( false !== stripos( $name, '_yoast_wpseo_primary_' ) ) {
+					sscanf( $name, '_yoast_wpseo_primary_%s', $taxonomy );
+					if ( null === $taxonomy ) {
+						continue;
+					}
+
+					$options = new \stdClass();
+					if ( isset( $meta['primary_term'] ) ) {
+						$options = json_decode( $meta['primary_term'] );
+					}
+
+					$options->$taxonomy   = (int) $value;
+					$meta['primary_term'] = wp_json_encode( $options );
+				}
+
 				if ( ! in_array( $name, array_keys( $mappedMeta ), true ) ) {
 					continue;
 				}

@@ -88,7 +88,7 @@ class SeedProd extends Base {
 	 * @param  string $handle The style's registered handle.
 	 * @return string         The tag.
 	 */
-	public function replaceStyleTag( $tag, $handle ) {
+	public function replaceStyleTag( $tag, $handle = '' ) {
 		if ( ! $this->isBuilderScreen() ) {
 			return $tag;
 		}

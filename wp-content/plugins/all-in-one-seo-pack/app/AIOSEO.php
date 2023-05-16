@@ -93,7 +93,9 @@ namespace AIOSEO\Plugin {
 			$this->constants();
 			$this->includes();
 			$this->preLoad();
-			$this->load();
+			if ( ! $this->core->isUninstalling() ) {
+				$this->load();
+			}
 		}
 
 		/**

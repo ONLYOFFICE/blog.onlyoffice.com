@@ -121,7 +121,11 @@ class Breadcrumb {
 			$breadcrumb = [];
 			switch ( $tag ) {
 				case '%category%':
-					$term = get_category_by_slug( $object );
+					$term = aioseo()->standalone->primaryTerm->getPrimaryTerm( $post->ID, 'category' );
+					if ( ! $term ) {
+						$term = get_category_by_slug( $object );
+					}
+
 					if ( ! $term ) {
 						break;
 					}
@@ -133,7 +137,7 @@ class Breadcrumb {
 					$breadcrumb = [
 						'name'        => $term->name,
 						'description' => aioseo()->meta->description->getDescription(),
-						'url'         => $url[0],
+						'url'         => get_term_link( $term ),
 						'type'        => 'CollectionPage'
 					];
 

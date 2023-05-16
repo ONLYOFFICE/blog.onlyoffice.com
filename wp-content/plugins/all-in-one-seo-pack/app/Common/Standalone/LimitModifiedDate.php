@@ -81,7 +81,7 @@ class LimitModifiedDate {
 	 * @param  WP_REST_Request $restRequest  The request.
 	 * @return Object                        The modified post data.
 	 */
-	public function addLimitModifiedDateValue( $preparedPost, $restRequest ) {
+	public function addLimitModifiedDateValue( $preparedPost, $restRequest = null ) {
 		if ( 'PUT' !== $restRequest->get_method() ) {
 			return $preparedPost;
 		}
@@ -105,7 +105,7 @@ class LimitModifiedDate {
 	 * @param  array $unsanitizedData The unsanitized post data.
 	 * @return array                  The modified sanitized post data.
 	 */
-	public function resetModifiedDate( $sanitizedData, $unsanitizedData ) {
+	public function resetModifiedDate( $sanitizedData, $unsanitizedData = [] ) {
 		// If the ID isn't set, a new post is being inserted.
 		if ( ! isset( $unsanitizedData['ID'] ) ) {
 			return $sanitizedData;

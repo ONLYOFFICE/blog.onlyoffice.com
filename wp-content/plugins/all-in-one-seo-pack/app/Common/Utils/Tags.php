@@ -371,26 +371,26 @@ class Tags {
 				'id'          => 'taxonomy_title',
 				// Translators: 1 - The type of page (Post, Page, Category, Tag, etc.).
 				'name'        => sprintf( __( '%1$s Title', 'all-in-one-seo-pack' ), 'Category' ),
-				'description' => __( 'Current or first category title.', 'all-in-one-seo-pack' )
+				'description' => __( 'The title of the primary term, first assigned term or the current term.', 'all-in-one-seo-pack' )
 			],
 			[
 				'id'          => 'taxonomy_description',
 				// Translators: 1 - The singular name of the current taxonomy.
 				'name'        => sprintf( __( '%1$s Description', 'all-in-one-seo-pack' ), 'Category' ),
-				'description' => __( 'Current or first category description.', 'all-in-one-seo-pack' )
+				'description' => __( 'The description of the primary term, first assigned term or the current term.', 'all-in-one-seo-pack' )
 			],
 			[
 				'id'          => 'category_link',
 				// Translators: 1 - The type of page (Post, Page, Category, Tag, etc.).
 				'name'        => sprintf( __( '%1$s Link', 'all-in-one-seo-pack' ), 'Category' ),
-				'description' => __( 'Current or first category link (name as text).', 'all-in-one-seo-pack' ),
+				'description' => __( 'Current or first term link (name as text).', 'all-in-one-seo-pack' ),
 				'html'        => true
 			],
 			[
 				'id'          => 'category_link_alt',
 				// Translators: 1 - The type of page (Post, Page, Category, Tag, etc.).
 				'name'        => sprintf( __( '%1$s Link (Alt)', 'all-in-one-seo-pack' ), 'Category' ),
-				'description' => __( 'Current or first category link (link as text).', 'all-in-one-seo-pack' ),
+				'description' => __( 'Current or first term link (link as text).', 'all-in-one-seo-pack' ),
 				'html'        => true
 			],
 			[
@@ -1000,9 +1000,9 @@ class Tags {
 			case 'separator_sa':
 				return aioseo()->helpers->decodeHtmlEntities( aioseo()->options->searchAppearance->global->separator );
 			case 'search_term':
-				global $s;
+				$search = get_search_query();
 
-				return empty( $s ) && $sampleData ? __( 'Example search string', 'all-in-one-seo-pack' ) : esc_attr( stripslashes( $s ) );
+				return empty( $search ) && $sampleData ? __( 'Example search string', 'all-in-one-seo-pack' ) : esc_attr( stripslashes( $search ) );
 			case 'custom_field':
 				return $sampleData ? __( 'Sample Custom Field Value', 'all-in-one-seo-pack' ) : '';
 			case 'tax_name':
@@ -1046,6 +1046,13 @@ class Tags {
 				if ( ! $taxonomy->hierarchical ) {
 					continue;
 				}
+
+				$primaryTerm = aioseo()->standalone->primaryTerm->getPrimaryTerm( $postId, $taxonomySlug );
+				if ( $primaryTerm ) {
+					$postTerms[] = get_term( $primaryTerm, $taxonomySlug );
+					continue;
+				}
+
 				$postTaxonomyTerms = get_the_terms( $postId, $taxonomySlug );
 				if ( is_array( $postTaxonomyTerms ) ) {
 					$postTerms = array_merge( $postTerms, $postTaxonomyTerms );
@@ -1164,11 +1171,18 @@ class Tags {
 			if ( ! $taxonomy ) {
 				return '';
 			}
-			$terms = get_the_terms( $post->ID, $taxonomy->name );
-			if ( ! $terms ) {
-				return '';
+
+			$term = aioseo()->standalone->primaryTerm->getPrimaryTerm( $post->ID, $taxonomy->name );
+			if ( ! $term ) {
+				$terms = get_the_terms( $post->ID, $taxonomy->name );
+				if ( ! $terms || is_wp_error( $terms ) ) {
+					return '';
+				}
+
+				$term = array_shift( $terms );
 			}
-			$termName = $terms[0]->name;
+
+			$termName = $term->name;
 		}
 
 		return '%|%' . $termName;

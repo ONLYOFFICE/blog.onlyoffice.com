@@ -137,7 +137,6 @@ abstract class Base {
 		aioseo()->core->assets->enqueueCss( 'src/vue/assets/scss/integrations/main.scss', [], 'src/vue/assets/scss/integrations/main.scss' );
 
 		aioseo()->admin->addAioseoModalPortal();
-		aioseo()->admin->enqueueAioseoModalPortal();
 		aioseo()->main->enqueueTranslations();
 	}
 

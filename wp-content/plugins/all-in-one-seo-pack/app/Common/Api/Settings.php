@@ -76,6 +76,28 @@ class Settings {
 	}
 
 	/**
+	 * Dismisses an alert.
+	 *
+	 * @since 4.3.6
+	 *
+	 * @param  \WP_REST_Request  $request The REST Request
+	 * @return \WP_REST_Response          The response.
+	 */
+	public static function dismissAlert( $request ) {
+		$body   = $request->get_json_params();
+		$alert  = ! empty( $body['alert'] ) ? sanitize_text_field( $body['alert'] ) : null;
+		$alerts = aioseo()->settings->dismissedAlerts;
+		if ( array_key_exists( $alert, $alerts ) ) {
+			$alerts[ $alert ] = true;
+			aioseo()->settings->dismissedAlerts = $alerts;
+		}
+
+		return new \WP_REST_Response( [
+			'success' => true
+		], 200 );
+	}
+
+	/**
 	 * Toggles a table's items per page setting.
 	 *
 	 * @since 4.2.5
@@ -497,23 +519,11 @@ class Settings {
 				aioseo()->helpers->switchToBlog( $siteOrNetwork );
 
 				// Check if the user is forcefully wanting to add a deprecated option.
-				$allDeprecatedOptions = aioseo()->internalOptions->getAllDeprecatedOptions();
-				$deprecatedOptions    = aioseo()->internalOptions->internal->deprecatedOptions;
+				$allDeprecatedOptions = aioseo()->internalOptions->getAllDeprecatedOptions() ?: [];
 				$enableOptions        = array_keys( array_filter( $data ) );
+				$enabledDeprecated    = array_intersect( $allDeprecatedOptions, $enableOptions );
 
-				foreach ( $enableOptions as $key => $option ) {
-					if ( ! in_array( $option, $allDeprecatedOptions, true ) ) {
-						unset( $enableOptions[ $key ] );
-					}
-				}
-
-				sort( $enableOptions );
-				sort( $deprecatedOptions );
-
-				$hasChanged = $deprecatedOptions !== $enableOptions;
-				if ( $hasChanged ) {
-					aioseo()->internalOptions->internal->deprecatedOptions = $enableOptions;
-				}
+				aioseo()->internalOptions->internal->deprecatedOptions = array_values( $enabledDeprecated );
 
 				aioseo()->helpers->restoreCurrentBlog();
 				break;

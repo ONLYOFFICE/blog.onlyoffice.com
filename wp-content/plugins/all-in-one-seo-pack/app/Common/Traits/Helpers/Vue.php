@@ -85,7 +85,7 @@ trait Vue {
 					'redirect' => rawurldecode( base64_encode( admin_url( 'index.php?page=aioseo-connect' ) ) )
 				], defined( 'AIOSEO_CONNECT_URL' ) ? AIOSEO_CONNECT_URL : 'https://connect.aioseo.com' ),
 				'aio'               => [
-					'about'            => admin_url( 'admin.php?page=aioseo-about' ),
+					'about'            => is_network_admin() ? network_admin_url( 'admin.php?page=aioseo-about' ) : admin_url( 'admin.php?page=aioseo-about' ),
 					'dashboard'        => admin_url( 'admin.php?page=aioseo' ),
 					'featureManager'   => admin_url( 'admin.php?page=aioseo-feature-manager' ),
 					'linkAssistant'    => admin_url( 'admin.php?page=aioseo-link-assistant' ),

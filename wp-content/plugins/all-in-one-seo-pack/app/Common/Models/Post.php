@@ -38,7 +38,8 @@ class Post extends Model {
 		'videos',
 		'open_ai',
 		'options',
-		'local_seo'
+		'local_seo',
+		'primary_term'
 	];
 
 	/**
@@ -448,6 +449,7 @@ class Post extends Model {
 			? wp_json_encode( self::getDefaultOpenAiOptions( $data['open_ai'] ) )
 			: wp_json_encode( self::getDefaultOpenAiOptions() );
 		$thePost->updated                     = gmdate( 'Y-m-d H:i:s' );
+		$thePost->primary_term                = ! empty( $data['primary_term'] ) ? $data['primary_term'] : null;
 
 		// Before we determine the OG/Twitter image, we need to set the meta data cache manually because the changes haven't been saved yet.
 		aioseo()->meta->metaData->bustPostCache( $thePost->post_id, $thePost );
@@ -687,9 +689,12 @@ class Post extends Model {
 	 */
 	public static function setOptionsDefaults( $post ) {
 		$defaults = [
-			'linkFormat' => [
+			'linkFormat'  => [
 				'internalLinkCount'      => 0,
 				'linkAssistantDismissed' => false
+			],
+			'primaryTerm' => [
+				'productEducationDismissed' => false
 			]
 		];
 

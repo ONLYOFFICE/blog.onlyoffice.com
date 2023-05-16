@@ -4,7 +4,7 @@ Tags: SEO, Google Search Console, XML Sitemap, meta description, schema, meta ti
 Tested up to: 6.2
 Requires at least: 4.9
 Requires PHP: 5.6
-Stable tag: 4.3.5.1
+Stable tag: 4.3.7
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -132,7 +132,7 @@ Since redirect speed is important for SEO, we built in both Apache / NGINX serve
 ### ✨ Full All in One SEO Feature List ###
 
 * **WordPress SEO Setup Wizard** - Properly setup WordPress SEO in less than 10 minutes.
-* **On-page SEO Optimization** - optimize SEO code markup (without hiring a developer)
+* **On-page SEO Optimization** - optimize SEO code markup (without hiring a developer).
 * **TruSEO score** - detailed content & readability analysis to help you optimize your pages for higher SEO rankings.
 * **Smart Meta Title & Description** - Automatic SEO generation, dynamic SEO smart tags, and more.
 * **Unlimited SEO Keywords** - our SEO content analyzer helps you optimize your pages for unlimited SEO keywords.
@@ -183,7 +183,7 @@ Since redirect speed is important for SEO, we built in both Apache / NGINX serve
 * **Twitter SEO** - SEO optimize your website preview on Twitter.
 * **Pinterest SEO** - SEO optimize your website preview on Pinterest.
 * **Open Graph Support** - improve your SEO with open graph meta data.
-* **Knowledge Panel SEO** - improve website SEO apperance by adding social media profile links for Facebook, Twitter, Wikpedia, Instagram, LinkedIn, Yelp, YouTube, and more.
+* **Knowledge Panel SEO** - improve website SEO apperance by adding social media profile links for Facebook, Twitter, Wikipedia, Instagram, LinkedIn, Yelp, YouTube, and more.
 * **SEO Webmaster Tool Content** - Connect your WordPress site with various webmaster tools to improve SEO rankings.
 * **Semrush SEO integration** - See additional SEO keywords and relevant SEO keyphrases with our Semrush SEO integration.
 * **OpenAI Integration** - Use the power of ChatGPT to write compelling SEO titles and meta descriptions to improve your SEO rankings.
@@ -256,6 +256,33 @@ Visit <a href="http://www.wpbeginner.com/" rel="friend" title="WPBeginner">WPBeg
 
 
 == Changelog ==
+
+**New in Version 4.3.7**
+
+* Updated: Added default arg values to filters/actions to prevent fatal errors in PHP 8 when hooks are called incorrectly by third-party themes or plugins.
+* Updated: Improved map preview in Local SEO by showing the address entered under Business Info.
+* Fixed: AI Title/Description Generator now allows non-admin users to generate SEO Titles and Meta Descriptions.
+* Fixed: PHP error when removing all plugin data on uninstall.
+* Fixed: PHP error when trying to deactivate RankMath as conflicting SEO plugin through our notice.
+* Fixed: Added filter to hide and remove version number from AIOSEO generator.
+* Fixed: URLs containing the word ‘null’ or encoded urls in the 404 redirect logs can now be deleted.
+* Fixed: Redirect source url is now normalized to be always relative.
+* Fixed: Conflict with Fiscomm PURS E-Fiscalisation plugin.
+* Fixed: Conflict with Elementor and AIOSEO’s Search Term tag.
+* Fixed: Headline Analyzer now correctly pushes previously analyzed headline to the top of the results if it is analyzed again.
+* Fixed: Content Rankings report in Search Statistics no longer breaks the ordering of results on pagination.
+* Fixed: PHP warning when activating an addon plugin.
+* Fixed: Editing text in Table of Contents block now saves correctly without errors in the console.
+* Fixed: Fixed glitchy ripple animation on tab component.
+
+**New in Version 4.3.6.1**
+
+* New: Content Rankings - This new Search Statistics report provides valuable insights into the performance of your content in search results and helps you optimize your posts for better results. 📊
+* New: Primary Term – You can now indicate a preferred term in case multiple terms are assigned to a post. This primary term will them be used in the trail of our breadcrumbs block and schema.
+* Updated: The UI of the plugin has been given a fresh lick of paint to bring it better in line with the default WordPress styles, mainly by making things just a notch smaller.
+* Fixed: Focus Keyphrase graph in Search Statistics post detail page sometimes is blank.
+* Fixed: Various plugin conflicts where tab menu no longer works due to Vue version mismatches.
+* Fixed: PHP deprecation warning in Local SEO addon.
 
 **New in Version 4.3.5.1**
 
@@ -360,7 +387,7 @@ Visit <a href="http://www.wpbeginner.com/" rel="friend" title="WPBeginner">WPBeg
 * Fixed: Schema Validator now correctly includes FAQ schema if an FAQ graph has been added to the post.
 * Fixed: Emoji picker should now always open correctly on the first click.
 * Fixed: Breadcrumbs trail sometimes containing encoded characters on search archive pages.
-* Fixed: Post Report in Link Assistant sometimes showed a blank page rather than actual results.
+* Fixed: Post Detail page in Link Assistant sometimes showed a blank page rather than actual results.
 * Fixed: Links table now correctly refreshes after adding a link suggestion in the Block Editor/Classic Editor.
 * Fixed: Image SEO now correctly applies casing/punctuation settings when title/alt tag/caption/description does not contain a smart tag.
 * Fixed: Image SEO no longer incorrectly encodes quotation marks in the image caption/description.
@@ -368,7 +395,7 @@ Visit <a href="http://www.wpbeginner.com/" rel="friend" title="WPBeginner">WPBeg
 * Fixed: Redirects modal is now correctly styled and padded in Elementor.
 * Fixed: PHP notice when ACF image field returns a previously unexpected value format.
 * Fixed: Removed smart tags delete button while searching for a smart tag.
-* Fixed: Model close button is now visible again when using Elementor's dark mode.
+* Fixed: Modal close button is now visible again when using Elementor's dark mode.
 * Fixed: Resolved a few deprecation console warnings for the Link Format in the Block Editor.
 * Fixed: aioseo_canonical_hook running consecutive times.
 
@@ -435,7 +462,7 @@ Visit <a href="http://www.wpbeginner.com/" rel="friend" title="WPBeginner">WPBeg
 
 **New in Version 4.2.6.1**
 
-* Fixed: PHP error sometimes thrown when accessing admin in multisite installations.
+* Fixed: PHP error sometimes thrown when accessing the admin panel in multisite installations.
 
 **New in Version 4.2.6**
 
@@ -553,6 +580,6 @@ Additionally, AIOSEO can also provide you with data on the most frequently used 
 
 == Upgrade Notice ==
 
-= 4.3.5.1 =
+= 4.3.7 =
 
 This update adds major improvements and bug fixes.

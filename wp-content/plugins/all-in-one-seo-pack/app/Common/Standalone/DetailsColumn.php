@@ -155,7 +155,7 @@ class DetailsColumn {
 	 * @param  int    $postId     The current rows, post id.
 	 * @return void
 	 */
-	public function renderColumn( $columnName, $postId ) {
+	public function renderColumn( $columnName, $postId = 0 ) {
 		if ( ! current_user_can( 'edit_post', $postId ) && ! current_user_can( 'aioseo_manage_seo' ) ) {
 			return;
 		}

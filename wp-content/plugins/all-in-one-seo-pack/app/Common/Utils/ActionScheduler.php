@@ -99,7 +99,7 @@ class ActionScheduler {
 	 * @param  \ActionScheduler_Action $action   Class instance.
 	 * @return void
 	 */
-	public function cleanup( $actionId, $action ) {
+	public function cleanup( $actionId, $action = null ) {
 		if (
 			// Bail if this isn't one of our actions or if we're in a dev environment.
 			'aioseo' !== $action->get_group() ||
@@ -160,7 +160,7 @@ class ActionScheduler {
 	 * @param  bool    $forceSchedule Whether we should schedule a new action regardless of whether one is already set.
 	 * @return boolean                Whether the action was scheduled.
 	 */
-	public function scheduleSingle( $actionName, $time, $args = [], $forceSchedule = false ) {
+	public function scheduleSingle( $actionName, $time = 0, $args = [], $forceSchedule = false ) {
 		try {
 			if ( $forceSchedule || ! $this->isScheduled( $actionName, $args ) ) {
 				as_schedule_single_action( time() + $time, $actionName, $args, $this->actionSchedulerGroup );

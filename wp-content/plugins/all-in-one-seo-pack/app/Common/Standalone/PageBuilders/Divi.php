@@ -102,10 +102,9 @@ class Divi extends Base {
 	 *
 	 * @param  string $tag    The <script> tag for the enqueued script.
 	 * @param  string $handle The script's registered handle.
-	 * @param  string $src    The script's source URL.
 	 * @return string         The tag.
 	 */
-	public function addEtTag( $tag, $handle ) {
+	public function addEtTag( $tag, $handle = '' ) {
 		$scriptHandles = [
 			'aioseo/js/src/vue/standalone/divi/main.js',
 			'aioseo/js/src/vue/standalone/app/main.js'

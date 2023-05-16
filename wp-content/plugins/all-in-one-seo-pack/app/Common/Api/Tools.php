@@ -30,7 +30,7 @@ class Tools {
 		if ( ! aioseo()->robotsTxt->importPhysicalRobotsTxt( $network ) ) {
 			return new \WP_REST_Response( [
 				'success' => false,
-				'message' => __( 'There was an error importing the physical robots.txt file.', 'all-in-one-seo-pack' )
+				'message' => 'There was an error importing the physical robots.txt file.'
 			], 400 );
 		}
 
@@ -118,7 +118,7 @@ class Tools {
 		) ) {
 			return new \WP_REST_Response( [
 				'success' => false,
-				'message' => __( 'Unable to send debug email, please check your email send settings and try again.', 'all-in-one-seo-pack' )
+				'message' => 'Unable to send debug email, please check your email send settings and try again.'
 			], 400 );
 		}
 

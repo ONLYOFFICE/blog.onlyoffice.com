@@ -139,6 +139,12 @@ class Analyze {
 		$headlines = aioseo()->internalOptions->internal->headlineAnalysis->headlines;
 		$headlines = array_reverse( $headlines, true );
 
+		// Remove a headline from the list if it already exists.
+		// This will ensure the new analysis is the first and open/highlighted.
+		if ( array_key_exists( $headline, $headlines ) ) {
+			unset( $headlines[ $headline ] );
+		}
+
 		$headlines[ $headline ] = wp_json_encode( $result );
 
 		$headlines = array_reverse( $headlines, true );
