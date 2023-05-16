@@ -1,10 +1,10 @@
 name: "Test deploy"
 
 on:
-  workflow_dispatch:
+  #workflow_dispatch:
   push:
     branches:
-      - deploy_test_blog
+      - ga_test_deploy
 
 jobs:
   deploy:
@@ -16,26 +16,21 @@ jobs:
         id: prepare
         run: |
           rm -rf .git .github .jenkins .gitignore .htaccess .prettierignore Changelog.md README.md web.config
+          sed -i 's^name-database^${{ secrets.DB_NAME }}^' wp-config.php
+          sed -i 's^user-database^${{ secrets.DB_USER }}^' wp-config.php
+          sed -i 's^password-database^${{ secrets.DB_PASS }}^' wp-config.php
+          sed -i 's^host1^${{ secrets.DB_HOST }}^' wp-config.php
+          sed -i 's^root1^${{ secrets.DOMAIN_NAME }}^' wp-config.php
           
-          sed -i "s^name-database^${{ secrets.DB_NAME }}^" wp-config.php
-          sed -i "s^user-database^${{ secrets.DB_USER }}" wp-config.php
-          sed -i "s^password-database^${{ secrets.DB_PASS }}^" wp-config.php
-          sed -i "s^host1^${{ secrets.DB_HOST }}^" wp-config.php
-          sed -i "s^root1^${{ secrets.DOMAIN_NAME }}^" wp-config.php
-          
-          sed -i "s^some_key1^${{ secrets.SOMEKEY1 }}^" wp-config.php
-          sed -i "s^some_key2^${{ secrets.SOMEKEY2 }}" wp-config.php
-          sed -i "s^some_key3^${{ secrets.SOMEKEY3 }}^" wp-config.php
-          sed -i "s^some_key4^${{ secrets.SOMEKEY4 }}^" wp-config.php
-          sed -i "s^some_key5^${{ secrets.SOMEKEY5 }}^" wp-config.php
-          sed -i "s^some_key6^${{ secrets.SOMEKEY6 }}^" wp-config.php
-          sed -i "s^some_key7^${{ secrets.SOMEKEY7 }}^" wp-config.php
-          sed -i "s^some_key8^${{ secrets.SOMEKEY8 }}^" wp-config.php
-            
-          mkdir -p /tmp/app
-
-          tar -czpf /tmp/app/blog.tar.gz .
-          echo ${{ secrets.SCRIPT }} > /tmp/app/deploy.sh
+          sed -i 's^some_key1^${{ secrets.SOMEKEY1 }}^' wp-config.php
+          sed -i 's^some_key2^${{ secrets.SOMEKEY2 }}^' wp-config.php
+          sed -i 's^some_key3^${{ secrets.SOMEKEY3 }}^' wp-config.php
+          sed -i 's^some_key4^${{ secrets.SOMEKEY4 }}^' wp-config.php
+          sed -i 's^some_key5^${{ secrets.SOMEKEY5 }}^' wp-config.php
+          sed -i 's^some_key6^${{ secrets.SOMEKEY6 }}^' wp-config.php
+          sed -i 's^some_key7^${{ secrets.SOMEKEY7 }}^' wp-config.php
+          sed -i 's^some_key8^${{ secrets.SOMEKEY8 }}^' wp-config.php
+        shell: bash
 
       - name: Copy files to host
         id: copy
@@ -44,8 +39,9 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          source: "/tmp/app/blog.tar.gz,/tmp/app/deploy.sh"
-          target: "/tmp/deploy/wp/"
+          source: "*"
+          target: "/tmp/deploy/wp"
+          overwrite: true
       
       - name: Deploy
         id: deploy
@@ -54,4 +50,11 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          script: sudo bash /tmp/deploy/wp/deploy.sh |& tee -a > /tmp/deploy/wp/deploy.log
+          script: |
+            datestamp=$(date +"%Y%m%d_%H%M%S")
+            sudo find /tmp/deploy/wp/ -type d -exec chmod 755 {} \;
+            sudo find /tmp/deploy/wp/ -type f -exec chmod 644 {} \;
+            sudo rm -rf /var/www/wp_backup*
+            sudo mv /var/www/wp /var/www/wp_backup_$datestamp
+            sudo mv /tmp/deploy/wp /var/www/wp
+            sudo chown -R www-data:www-data /var/www/wp/
