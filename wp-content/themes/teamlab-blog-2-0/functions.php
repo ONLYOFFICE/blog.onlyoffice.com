@@ -679,7 +679,6 @@ function language_selector($available_langs_keys) {
         $output .= "<li class=\"option "
                     . $lng[1]
                     . "\"><a href=\" "
-                    . WEB_ROOT_URL
                     . (($lng[0] != $default_lang || $lng[1] == "en-GB")? "/".$lng[0] : "")
                     . "\">"
                     . "</a></li>";
