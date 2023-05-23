@@ -2,13 +2,18 @@
 
 namespace FluentForm\App\Services\FormBuilder\Components;
 
+use FluentForm\App\Helpers\Helper;
+use FluentForm\Framework\Helpers\ArrayHelper;
+
 class TermsAndConditions extends BaseComponent
 {
     /**
      * Compile and echo the html element
-     * @param  array $data [element data]
-     * @param  stdClass $form [Form Object]
-     * @return viod
+     *
+     * @param array     $data [element data]
+     * @param \stdClass $form [Form Object]
+     *
+     * @return void
      */
     public function compile($data, $form)
     {
@@ -21,7 +26,7 @@ class TermsAndConditions extends BaseComponent
             $this->getDefaultContainerClass()
             . ' ' . @$data['settings']['container_class']
             . ' ' . $hasConditions
-            .' ff-el-input--content'
+            . ' ff-el-input--content'
         );
 
         $uniqueId = $this->getUniqueId($data['attributes']['name']);
@@ -32,23 +37,30 @@ class TermsAndConditions extends BaseComponent
             $data['attributes']['class']
         );
 
-        if($tabIndex = \FluentForm\App\Helpers\Helper::getNextTabIndex()) {
+        if ($tabIndex = Helper::getNextTabIndex()) {
             $data['attributes']['tabindex'] = $tabIndex;
         }
 
         $atts = $this->buildAttributes($data['attributes']);
         $checkbox = '';
-        if ($data['settings']['has_checkbox']) {
-            $checkbox = "<span class='ff_tc_checkbox'><input {$atts} value='on'></span>";
+
+        $ariaRequired = 'false';
+        if (ArrayHelper::get($data, 'settings.validation_rules.required.value')) {
+            $ariaRequired = 'true';
         }
 
-        $html = "<div class='{$cls}'>";
+        if ($data['settings']['has_checkbox']) {
+            $checkbox = "<span class='ff_tc_checkbox'><input {$atts} value='on' aria-invalid='false' aria-required={$ariaRequired}></span>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
+        }
+
+        $html = "<div class='" . esc_attr($cls) . "'>";
         $html .= "<div class='ff-el-form-check ff-el-tc'>";
-        $html .= "<label class='ff-el-form-check-label ff_tc_label' for={$uniqueId}>";
-        $html .= "{$checkbox} <div class='ff_t_c'>{$data['settings']['tnc_html']}</div>";
-        $html .= "</label>";
-        $html .= "</div>";
-        $html .= "</div>";
-        echo apply_filters('fluentform_rendering_field_html_'.$elementName, $html, $data, $form);
+        $html .= "<label aria-label='terms & conditions' class='ff-el-form-check-label ff_tc_label' for={$uniqueId}>";
+        $html .= "{$checkbox} <div class='ff_t_c'>" . fluentform_sanitize_html($data['settings']['tnc_html']) . '</div>';
+        $html .= '</label>';
+        $html .= '</div>';
+        $html .= '</div>';
+
+        $this->printContent('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
     }
 }

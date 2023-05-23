@@ -19,7 +19,7 @@ trait Options {
 	 *
 	 * @return void
 	 */
-	protected function init() {
+	public function init() {
 		parent::init();
 
 		$dbOptions = $this->getDbOptions( $this->optionsName . '_lite' );
@@ -32,13 +32,13 @@ trait Options {
 			$this->addValueToValuesArray( $this->liteDefaults, $dbOptions )
 		);
 
-		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$cachedOptions = aioseo()->core->optionsCache->getOptions( $this->optionsName );
 		$dbOptions     = array_replace_recursive(
 			$cachedOptions,
 			$mergedDefaults
 		);
 
-		aioseo()->optionsCache->setOptions( $this->optionsName, $dbOptions );
+		aioseo()->core->optionsCache->setOptions( $this->optionsName, $dbOptions );
 	}
 
 	/**
@@ -67,7 +67,7 @@ trait Options {
 		$defaults    = empty( $defaults ) ? $this->liteDefaults : $defaults;
 
 		// We're creating a new array here because it was setting it by reference.
-		$cachedOptions = aioseo()->optionsCache->getOptions( $this->optionsName );
+		$cachedOptions = aioseo()->core->optionsCache->getOptions( $this->optionsName );
 		$optionsBefore = json_decode( wp_json_encode( $cachedOptions ), true );
 
 		parent::update( $this->optionsName, $options );

@@ -153,14 +153,14 @@ define('URVANOV_SYNTAX_HIGHLIGHTER_MINIFY', TRUE);
 
 // These are overridden by functions since v1.1.1
 $URVANOV_SYNTAX_HIGHLIGHTER_VERSION = '1.1.1';
-$URVANOV_SYNTAX_HIGHLIGHTER_DATE = '27th September, 2011';
-$URVANOV_SYNTAX_HIGHLIGHTER_AUTHOR = 'Aram Kocharyan';
-$URVANOV_SYNTAX_HIGHLIGHTER_AUTHOR_SITE = 'http://aramk.com';
-$URVANOV_SYNTAX_HIGHLIGHTER_DONATE = 'http://bit.ly/crayondonate';
-$URVANOV_SYNTAX_HIGHLIGHTER_WEBSITE = 'https://github.com/aramk/crayon-syntax-highlighter';
-$URVANOV_SYNTAX_HIGHLIGHTER_EMAIL = 'crayon.syntax@gmail.com';
+$URVANOV_SYNTAX_HIGHLIGHTER_DATE = '22th August, 2020';
+$URVANOV_SYNTAX_HIGHLIGHTER_AUTHOR = 'Fedor Urvanov';
+$URVANOV_SYNTAX_HIGHLIGHTER_AUTHOR_SITE = 'https://urvanov.ru';
+$URVANOV_SYNTAX_HIGHLIGHTER_DONATE = 'https://money.yandex.ru/to/41001288941320';
+$URVANOV_SYNTAX_HIGHLIGHTER_WEBSITE = 'https://github.com/urvanov-ru/crayon-syntax-highlighter';
+$URVANOV_SYNTAX_HIGHLIGHTER_EMAIL = 'fedor@urvanov.ru';
 $URVANOV_SYNTAX_HIGHLIGHTER_TWITTER = 'http://twitter.com/crayonsyntax';
-$URVANOV_SYNTAX_HIGHLIGHTER_GIT = 'http://github.com/aramk/urvanov-syntax-highlighter';
+$URVANOV_SYNTAX_HIGHLIGHTER_GIT = 'https://github.com/urvanov-ru/crayon-syntax-highlighter';
 $URVANOV_SYNTAX_HIGHLIGHTER_PLUGIN_WP = 'https://wordpress.org/plugins/urvanov-syntax-highlighter/';
 
 

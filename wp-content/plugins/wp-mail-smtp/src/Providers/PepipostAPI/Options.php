@@ -43,15 +43,17 @@ class Options extends OptionsAbstract {
 				)
 			),
 			'https://wpmailsmtp.com/go/pepipost/',
-			'https://wpmailsmtp.com/docs/how-to-set-up-the-pepipost-mailer-in-wp-mail-smtp'
+			esc_url( wp_mail_smtp()->get_utm_url( 'https://wpmailsmtp.com/docs/how-to-set-up-the-pepipost-mailer-in-wp-mail-smtp/', 'Pepipost documentation' ) )
 		);
 
 		$api_key = PluginOptions::init()->get( self::SLUG, 'api_key' );
 
 		if ( empty( $api_key ) ) {
-			$description .= '</p><p class="buttonned"><a href="https://wpmailsmtp.com/go/pepipost/" target="_blank" rel="noopener noreferrer" class="wp-mail-smtp-btn wp-mail-smtp-btn-md wp-mail-smtp-btn-blueish">' .
-								esc_html__( 'Get Started with Pepipost', 'wp-mail-smtp' ) .
-							'</a></p>';
+			$description .= sprintf(
+				'</p><p class="buttonned"><a href="%1$s" target="_blank" rel="noopener noreferrer" class="wp-mail-smtp-btn wp-mail-smtp-btn-md wp-mail-smtp-btn-blueish">%2$s</a></p>',
+				'https://wpmailsmtp.com/go/pepipost/',
+				esc_html__( 'Get Started with Pepipost', 'wp-mail-smtp' )
+			);
 		}
 
 		parent::__construct(
@@ -94,7 +96,7 @@ class Options extends OptionsAbstract {
 				<label for="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-api_key"><?php esc_html_e( 'API Key', 'wp-mail-smtp' ); ?></label>
 			</div>
 			<div class="wp-mail-smtp-setting-field">
-				<?php if ( $this->options->is_const_defined( $this->get_slug(), 'api_key' ) ) : ?>
+				<?php if ( $this->connection_options->is_const_defined( $this->get_slug(), 'api_key' ) ) : ?>
 					<input type="text" disabled value="****************************************"
 						id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-api_key"
 					/>
@@ -102,7 +104,7 @@ class Options extends OptionsAbstract {
 				<?php else : ?>
 					<input type="password" spellcheck="false"
 						name="wp-mail-smtp[<?php echo esc_attr( $this->get_slug() ); ?>][api_key]"
-						value="<?php echo esc_attr( $this->options->get( $this->get_slug(), 'api_key' ) ); ?>"
+						value="<?php echo esc_attr( $this->connection_options->get( $this->get_slug(), 'api_key' ) ); ?>"
 						id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-api_key"
 					/>
 				<?php endif; ?>

@@ -18,7 +18,7 @@ use AIOSEO\Vendor\Gelf\Message;
  *
  * @author Matt Lehner <mlehner@gmail.com>
  */
-class GelfMessageFormatter extends \AIOSEO\Vendor\Monolog\Formatter\NormalizerFormatter
+class GelfMessageFormatter extends NormalizerFormatter
 {
     const DEFAULT_MAX_LENGTH = 32766;
     /**
@@ -40,7 +40,7 @@ class GelfMessageFormatter extends \AIOSEO\Vendor\Monolog\Formatter\NormalizerFo
     /**
      * Translates Monolog log levels to Graylog2 log priorities.
      */
-    private $logLevels = array(\AIOSEO\Vendor\Monolog\Logger::DEBUG => 7, \AIOSEO\Vendor\Monolog\Logger::INFO => 6, \AIOSEO\Vendor\Monolog\Logger::NOTICE => 5, \AIOSEO\Vendor\Monolog\Logger::WARNING => 4, \AIOSEO\Vendor\Monolog\Logger::ERROR => 3, \AIOSEO\Vendor\Monolog\Logger::CRITICAL => 2, \AIOSEO\Vendor\Monolog\Logger::ALERT => 1, \AIOSEO\Vendor\Monolog\Logger::EMERGENCY => 0);
+    private $logLevels = array(Logger::DEBUG => 7, Logger::INFO => 6, Logger::NOTICE => 5, Logger::WARNING => 4, Logger::ERROR => 3, Logger::CRITICAL => 2, Logger::ALERT => 1, Logger::EMERGENCY => 0);
     public function __construct($systemName = null, $extraPrefix = null, $contextPrefix = 'ctxt_', $maxLength = null)
     {
         parent::__construct('U.u');
@@ -58,7 +58,7 @@ class GelfMessageFormatter extends \AIOSEO\Vendor\Monolog\Formatter\NormalizerFo
         if (!isset($record['datetime'], $record['message'], $record['level'])) {
             throw new \InvalidArgumentException('The record should at least contain datetime, message and level keys, ' . \var_export($record, \true) . ' given');
         }
-        $message = new \AIOSEO\Vendor\Gelf\Message();
+        $message = new Message();
         $message->setTimestamp($record['datetime'])->setShortMessage((string) $record['message'])->setHost($this->systemName)->setLevel($this->logLevels[$record['level']]);
         // message length + system name length + 200 for padding / metadata
         $len = 200 + \strlen((string) $record['message']) + \strlen($this->systemName);

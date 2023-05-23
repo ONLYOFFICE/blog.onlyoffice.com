@@ -155,9 +155,9 @@ class Sitemap {
 		$excludedTerms = aioseo()->options->sitemap->general->advancedSettings->excludeTerms;
 		if ( ! empty( $this->oldOptions['modules']['aiosp_sitemap_options']['aiosp_sitemap_excl_terms'] ) ) {
 			foreach ( $this->oldOptions['modules']['aiosp_sitemap_options']['aiosp_sitemap_excl_terms'] as $taxonomy ) {
-				foreach ( $taxonomy['terms'] as $k => $id ) {
+				foreach ( $taxonomy['terms'] as $id ) {
 					$term = get_term( $id );
-					if ( ! is_object( $term ) ) {
+					if ( ! is_a( $term, 'WP_Term' ) ) {
 						continue;
 					}
 
@@ -358,7 +358,8 @@ class Sitemap {
 				if ( ! $options->has( $lastOption, false ) ) {
 					$error = true;
 					break;
-				};
+				}
+
 				if ( count( $values['newOption'] ) - 1 !== $i ) {
 					$options = $options->$lastOption;
 				}
@@ -400,10 +401,10 @@ class Sitemap {
 				}
 			}
 
-			$wpfs = aioseo()->helpers->wpfs();
-			if ( count( $detectedFiles ) && is_object( $wpfs ) ) {
+			$fs = aioseo()->core->fs;
+			if ( count( $detectedFiles ) && $fs->isWpfsValid() ) {
 				foreach ( $detectedFiles as $file ) {
-					@$wpfs->delete( $file, false, 'f' );
+					$fs->fs->delete( $file, false, 'f' );
 				}
 			}
 

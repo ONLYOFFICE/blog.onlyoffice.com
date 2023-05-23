@@ -11,14 +11,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 4.1.1
  */
-class Block extends \AIOSEO\Plugin\Common\Utils\Blocks {
+class Block {
 	/**
 	 * Class constructor.
 	 *
 	 * @since 4.1.1
 	 */
 	public function __construct() {
-		parent::__construct();
+		$this->register();
 	}
 
 	/**
@@ -29,7 +29,7 @@ class Block extends \AIOSEO\Plugin\Common\Utils\Blocks {
 	 * @return void
 	 */
 	public function register() {
-		register_block_type(
+		aioseo()->blocks->registerBlock(
 			'aioseo/breadcrumbs', [
 				'render_callback' => [ $this, 'render' ]
 			]
@@ -46,7 +46,7 @@ class Block extends \AIOSEO\Plugin\Common\Utils\Blocks {
 	 */
 	public function render( $blockAttributes ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$postId = ! empty( $_GET['post_id'] ) ? wp_unslash( $_GET['post_id'] ) : false; // phpcs:ignore HM.Security.ValidatedSanitizedInput.InputNotSanitized
-		if ( $this->isGBEditor() && ! empty( $postId ) ) {
+		if ( aioseo()->blocks->isGBEditor() && ! empty( $postId ) ) {
 			return aioseo()->breadcrumbs->frontend->sideDisplay( false, 'post' === get_post_type( $postId ) ? 'post' : 'single', get_post( $postId ) );
 		}
 

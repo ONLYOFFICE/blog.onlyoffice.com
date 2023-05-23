@@ -14,18 +14,23 @@ use AIOSEO\Plugin\Common\Traits\Helpers as TraitHelpers;
  * @since 4.0.0
  */
 class Helpers {
-	use TraitHelpers\ActionScheduler;
+	use TraitHelpers\Api;
 	use TraitHelpers\Arrays;
 	use TraitHelpers\Constants;
+	use TraitHelpers\Deprecated;
 	use TraitHelpers\DateTime;
 	use TraitHelpers\Language;
+	use TraitHelpers\PostType;
+	use TraitHelpers\Request;
 	use TraitHelpers\Shortcodes;
 	use TraitHelpers\Strings;
 	use TraitHelpers\Svg;
 	use TraitHelpers\ThirdParty;
+	use TraitHelpers\Url;
 	use TraitHelpers\Vue;
 	use TraitHelpers\Wp;
 	use TraitHelpers\WpContext;
+	use TraitHelpers\WpMultisite;
 	use TraitHelpers\WpUri;
 
 	/**
@@ -62,6 +67,7 @@ class Helpers {
 
 		// Return the new URL.
 		$url = add_query_arg( $args, $url );
+
 		return $esc ? esc_url( $url ) : $url;
 	}
 
@@ -73,49 +79,7 @@ class Helpers {
 	 * @return boolean True if we are, false if not.
 	 */
 	public function isDev() {
-		return defined( 'AIOSEO_DEV_VERSION' ) || isset( $_REQUEST['aioseo-dev'] ); // phpcs:ignore HM.Security.NonceVerification.Recommended
-	}
-
-	/**
-	 * Request the remote URL via wp_remote_post and return a json decoded response.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @param array  $body    The content to retrieve from the remote URL.
-	 * @param array  $headers The headers to send to the remote URL.
-	 *
-	 * @return string|bool Json decoded response on success, false on failure.
-	 */
-	public function sendRequest( $url, $body = [], $headers = [] ) {
-		$body = wp_json_encode( $body );
-
-		// Build the headers of the request.
-		$headers = wp_parse_args(
-			$headers,
-			[
-				'Content-Type' => 'application/json'
-			]
-		);
-
-		// Setup variable for wp_remote_post.
-		$post = [
-			'headers'   => $headers,
-			'body'      => $body,
-			'sslverify' => $this->isDev() ? false : true,
-			'timeout'   => 20
-		];
-
-		// Perform the query and retrieve the response.
-		$response     = wp_remote_post( $url, $post );
-		$responseBody = wp_remote_retrieve_body( $response );
-
-		// Bail out early if there are any errors.
-		if ( is_wp_error( $responseBody ) ) {
-			return false;
-		}
-
-		// Return the json decoded content.
-		return json_decode( $responseBody );
+		return aioseo()->isDev || isset( $_REQUEST['aioseo-dev'] ); // phpcs:ignore HM.Security.NonceVerification.Recommended
 	}
 
 	/**
@@ -148,8 +112,8 @@ class Helpers {
 		$server = sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) );
 
 		if (
-			stripos( $server, 'Flywheel' ) !== false ||
-			stripos( $server, 'nginx' ) !== false
+			false !== stripos( $server, 'Flywheel' ) ||
+			false !== stripos( $server, 'nginx' )
 		) {
 			return true;
 		}
@@ -195,6 +159,7 @@ class Helpers {
 		}
 		$i = floor( log( $bytes ) / log( 1024 ) );
 		$sizes = [ 'B', 'KB', 'MB', 'GB', 'TB' ];
+
 		return [
 			'original' => $bytes,
 			'readable' => sprintf( '%.02F', $bytes / pow( 1024, $i ) ) * 1 . ' ' . $sizes[ $i ]
@@ -217,6 +182,7 @@ class Helpers {
 				return (bool) $value;
 			case 'string':
 				$value = aioseo()->helpers->decodeHtmlEntities( $value );
+
 				return aioseo()->helpers->encodeOutputHtml( wp_strip_all_tags( wp_check_invalid_utf8( trim( $value ) ) ) );
 			case 'integer':
 				return intval( $value );
@@ -227,6 +193,7 @@ class Helpers {
 				foreach ( (array) $value as $child ) {
 					$sanitized[] = aioseo()->helpers->sanitizeOption( $child );
 				}
+
 				return $sanitized;
 			default:
 				return false;
@@ -248,12 +215,13 @@ class Helpers {
 		}
 
 		$string = trim( $string );
-		if ( is_serialized( $string ) && false === $this->stringContains( $string, 'O:' ) ) {
+		if ( is_serialized( $string ) && ! $this->stringContains( $string, 'O:' ) ) {
 			// We want to add extra hardening for PHP versions greater than 5.6.
 			return version_compare( PHP_VERSION, '7.0', '<' )
 				? @unserialize( $string )
 				: @unserialize( $string, [ 'allowed_classes' => false ] ); // phpcs:disable PHPCompatibility.FunctionUse.NewFunctionParameters.unserialize_optionsFound
 		}
+
 		return $string;
 	}
 }

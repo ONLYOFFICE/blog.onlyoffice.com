@@ -62,7 +62,7 @@ namespace AIOSEO\Vendor\Monolog\Handler;
  * @method bool hasInfoThatPasses($message)
  * @method bool hasDebugThatPasses($message)
  */
-class TestHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandler
+class TestHandler extends AbstractProcessingHandler
 {
     protected $records = array();
     protected $recordsByLevel = array();

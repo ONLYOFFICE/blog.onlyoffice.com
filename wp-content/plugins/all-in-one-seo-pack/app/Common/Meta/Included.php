@@ -28,6 +28,37 @@ class Included {
 			return false;
 		}
 
+		if ( ! $this->isQueriedObjectPublic() ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Checks whether the queried object is public.
+	 *
+	 * @since 4.2.2
+	 *
+	 * @return bool Whether the queried object is public.
+	 */
+	protected function isQueriedObjectPublic() {
+		$queriedObject = get_queried_object();
+
+		if ( is_a( $queriedObject, 'WP_Post' ) ) {
+			return aioseo()->helpers->isPostTypePublic( $queriedObject->post_type );
+		}
+
+		// Check if the current page is a post type archive page.
+		if ( is_a( $queriedObject, 'WP_Post_Type' ) ) {
+			return aioseo()->helpers->isPostTypePublic( $queriedObject->name );
+		}
+
+		if ( is_a( $queriedObject, 'WP_Term' ) ) {
+			return aioseo()->helpers->isTaxonomyPublic( $queriedObject->taxonomy );
+		}
+
+		// Return true in all other cases (e.g. search page, date archive, etc.).
 		return true;
 	}
 
@@ -103,6 +134,7 @@ class Included {
 		if ( in_array( (int) $term->term_id, $ids, true ) ) {
 			return true;
 		}
+
 		return false;
 	}
 }

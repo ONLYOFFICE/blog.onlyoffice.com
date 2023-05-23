@@ -1,43 +1,63 @@
 <?php 
 global $sitepress, $WPML_ST_MO_Downloader;
 
-$language = isset($_GET['download_mo']) ? $_GET['download_mo']  : false;
+$language = isset( $_GET['download_mo'] ) ? filter_var( $_GET['download_mo'], FILTER_SANITIZE_STRING ) : false;
 $active_languages = $sitepress->get_active_languages();
-$version = isset($_GET['version']) ? $_GET['version'] : false;
+$version = isset( $_GET['version'] ) ? filter_var( $_GET['version'], FILTER_SANITIZE_STRING ) : false;
 
-if(isset($_POST['action']) && $_POST['action']=='icl_admo_add_translations' && wp_verify_nonce($_POST['_wpnonce'], 'icl_adm_save_translations')){
+$translations = array();
+if ( isset( $active_languages[ $language ] ) ) {
+	try {
+		$WPML_ST_MO_Downloader->load_xml();
+		$WPML_ST_MO_Downloader->get_translation_files();
+		$version_projects = explode( ';', $version );
+		$types            = array();
+		foreach ( $version_projects as $project ) {
+			$exp     = explode( '|', $project );
+			$types[] = $exp[0];
+		}
+		$translations = $WPML_ST_MO_Downloader->get_translations( $language, array( 'types' => $types ) );
 
-    $translations_add = array();
-    if(!empty($_POST['add_new'])){
-        $new_translations = unserialize(base64_decode($_POST['add_new']));        
-        foreach($new_translations as $tr){
-            $translations_add[] = array(
-                'string'        => $tr['string'],
-                'translation'   => $tr['new'],
-                'name'          => $tr['name'] 
-            );
-        }        
-        if(!empty($translations_add)){
-            $user_messages[] = sprintf(_n('%d new translation was added.', '%d new translations were added.', count($translations_add), 'wpml-string-translation'), count($translations_add));
-        }
-    }
-    if(!empty($_POST['selected'])){
-        $translations_updated = 0;
-        foreach($_POST['selected'] as $idx => $v){
-            if(!empty($v)){
-                $translations_add[] = array(
-                    'string'        => base64_decode($_POST['string'][$idx]),
-                    'translation'   => base64_decode($_POST['translation'][$idx]),
-                    'name'          => base64_decode($_POST['name'][$idx]) 
-                );                
-                $translations_updated++;
-            }
-        }
-        if($translations_updated){
-                        $user_messages[] = sprintf(_n('%d translation was updated.', '%d translations were updated.', $translations_updated, 'wpml-string-translation'), $translations_updated);
+	} catch ( Exception $error ) {
+		$user_errors[] = $error->getMessage();
+	}
+}
 
-        }
-    }
+$user_messages = [];
+if ( isset( $_POST['action'] ) && $_POST['action'] == 'icl_admo_add_translations' && wp_verify_nonce( $_POST['_wpnonce'], 'icl_adm_save_translations' ) ) {
+	$translations_add = array();
+	if ( ! empty( $_POST['add_new'] ) && array_key_exists( 'new', $translations ) ) {
+	    $new_translations = $translations['new'];
+	    foreach ( $new_translations as $tr ) {
+		    $translations_add[] = array(
+			    'string'          => filter_var( $tr['string'], FILTER_SANITIZE_STRING ),
+			    'translation'     => filter_var( $tr['new'], FILTER_SANITIZE_STRING ),
+			    'name'            => filter_var( $tr['name'], FILTER_SANITIZE_STRING ),
+			    'gettext_context' => filter_var( $tr['gettext_context'], FILTER_SANITIZE_STRING ),
+		    );
+	    }
+		if ( ! empty( $translations_add ) ) {
+			$user_messages[] = sprintf( _n( '%d new translation was added.', '%d new translations were added.', count( $translations_add ), 'wpml-string-translation' ), count( $translations_add ) );
+		}
+	}
+	if ( ! empty( $_POST['selected'] ) ) {
+		$translations_updated = 0;
+		foreach ( $_POST['selected'] as $idx => $v ) {
+			if ( ! empty( $v ) ) {
+				$translations_add[] = array(
+					'string'          => filter_var( base64_decode( $_POST['string'][ $idx ] ), FILTER_SANITIZE_STRING ),
+					'translation'     => filter_var( base64_decode( $_POST['translation'][ $idx ] ), FILTER_SANITIZE_STRING ),
+					'name'            => filter_var( base64_decode( $_POST['name'] [ $idx ] ), FILTER_SANITIZE_STRING ),
+					'gettext_context' => filter_var( base64_decode( $_POST['gettext_context'][ $idx ] ), FILTER_SANITIZE_STRING ),
+				);
+				$translations_updated ++;
+			}
+		}
+		if ( $translations_updated ) {
+			$user_messages[] = sprintf( _n( '%d translation was updated.', '%d translations were updated.', $translations_updated, 'wpml-string-translation' ), $translations_updated );
+
+		}
+	}
     if($translations_add){
         $WPML_ST_MO_Downloader->save_translations($translations_add, $_POST['language'], $_POST['version']);    
     }else{
@@ -46,36 +66,24 @@ if(isset($_POST['action']) && $_POST['action']=='icl_admo_add_translations' && w
 
 }
 
-if(isset($active_languages[$language])){
-    try{
-        $WPML_ST_MO_Downloader->load_xml();
-        $WPML_ST_MO_Downloader->get_translation_files();
-        $version_projects = explode(';', $version);
-        $types = array();
-        foreach($version_projects as $project){
-            $exp = explode('|', $project);
-            $types[] = $exp[0];
-        }        
-        $translations = $WPML_ST_MO_Downloader->get_translations($language, array('types' => $types));
-        
-    }catch(Exception $error){
-        $user_errors[] =  $error->getMessage();
-    }
-}
+
 
 ?>
 
 <div class="wrap">
-    <div id="icon-wpml" class="icon32"><br /></div>
     <h2><?php _e('Auto-download WordPress translations', 'wpml-string-translation') ?></h2>    
     
     <?php if(!empty($translations_updated) || !empty($translations_add)):?>
     
         <p><strong><?php _e('Success!', 'wpml-string-translation') ?></strong></p>
-        <?php foreach($user_messages as $umessage): ?>
-        <p><?php echo $umessage ?></p>
-        <?php endforeach; ?>    
-        <a href="<?php echo admin_url('admin.php?page=' . ICL_PLUGIN_FOLDER . '/menu/theme-localization.php'); ?>" class="button-secondary"><?php _e('Check other languages') ?></a>
+	    <?php
+	    foreach ( $user_messages as $umessage ) {
+		    ?>
+            <p><?php echo $umessage ?></p>
+		    <?php
+	    }
+	    ?>
+        <a href="<?php echo admin_url('admin.php?page=' . ICL_PLUGIN_FOLDER . '/menu/theme-localization.php'); ?>" class="button-secondary"><?php _e('Check other languages', 'wpml-string-translation') ?></a>
         
     <?php elseif(!$version): ?>
         <div class="error">
@@ -134,6 +142,7 @@ if(isset($active_languages[$language])){
                     <?php echo esc_html($translation['string']) ?>
                     <input type="hidden" name="string[<?php echo $idx ?>]" value="<?php echo base64_encode($translation['string']); ?>" />
                     <input type="hidden" name="name[<?php echo $idx ?>]" value="<?php echo base64_encode($translation['name']); ?>" />
+                    <input type="hidden" name="gettext_context[<?php echo $idx ?>]" value="<?php echo base64_encode($translation['gettext_context']); ?>" />
                 </td>
                 <td colspan="2">
                     <?php echo wp_text_diff($translation['translation'], $translation['new']); ?>
@@ -187,7 +196,7 @@ if(isset($active_languages[$language])){
         </table>
         
         <p>        
-            <label><input type="checkbox" name="add_new" value="<?php echo base64_encode(serialize($translations['new'])); ?>" checked="checked" />&nbsp;<?php _e('Add the new translations.', 'wpml-string-translation'); ?></label>
+            <label><input type="checkbox" name="add_new" value="1" checked="checked" />&nbsp;<?php _e('Add the new translations.', 'wpml-string-translation'); ?></label>
         </p>
         <?php endif; ?>
         
@@ -201,7 +210,7 @@ if(isset($active_languages[$language])){
     <?php else: ?>
     
         <p><?php _e('There is nothing to be updated or to be added.', 'wpml-string-translation') ?></p>
-        <p><a href="<?php echo admin_url('admin.php?page=' . ICL_PLUGIN_FOLDER . '/menu/theme-localization.php'); ?>" class="button-secondary"><?php _e('Check other languages') ?></a></p>
+        <p><a href="<?php echo admin_url('admin.php?page=' . ICL_PLUGIN_FOLDER . '/menu/theme-localization.php'); ?>" class="button-secondary"><?php _e('Check other languages', 'wpml-string-translation') ?></a></p>
     
     <?php endif; ?>
     

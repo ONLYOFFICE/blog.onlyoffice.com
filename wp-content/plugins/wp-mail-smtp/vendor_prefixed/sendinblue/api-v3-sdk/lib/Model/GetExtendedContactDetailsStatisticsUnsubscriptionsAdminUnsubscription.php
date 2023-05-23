@@ -51,13 +51,13 @@ class GetExtendedContactDetailsStatisticsUnsubscriptionsAdminUnsubscription impl
      *
      * @var string[]
      */
-    protected static $swaggerTypes = ['eventTime' => '\\DateTime', 'ip' => 'string'];
+    protected static $swaggerTypes = ['eventTime' => 'string', 'ip' => 'string'];
     /**
      * Array of property to format mappings. Used for (de)serialization
      *
      * @var string[]
      */
-    protected static $swaggerFormats = ['eventTime' => 'date-time', 'ip' => null];
+    protected static $swaggerFormats = ['eventTime' => null, 'ip' => null];
     /**
      * Array of property to type mappings. Used for (de)serialization
      *
@@ -160,9 +160,6 @@ class GetExtendedContactDetailsStatisticsUnsubscriptionsAdminUnsubscription impl
         if ($this->container['eventTime'] === null) {
             $invalidProperties[] = "'eventTime' can't be null";
         }
-        if ($this->container['ip'] === null) {
-            $invalidProperties[] = "'ip' can't be null";
-        }
         return $invalidProperties;
     }
     /**
@@ -178,7 +175,7 @@ class GetExtendedContactDetailsStatisticsUnsubscriptionsAdminUnsubscription impl
     /**
      * Gets eventTime
      *
-     * @return \DateTime
+     * @return string
      */
     public function getEventTime()
     {
@@ -187,7 +184,7 @@ class GetExtendedContactDetailsStatisticsUnsubscriptionsAdminUnsubscription impl
     /**
      * Sets eventTime
      *
-     * @param \DateTime $eventTime UTC date-time of the event
+     * @param string $eventTime UTC date-time of the event
      *
      * @return $this
      */

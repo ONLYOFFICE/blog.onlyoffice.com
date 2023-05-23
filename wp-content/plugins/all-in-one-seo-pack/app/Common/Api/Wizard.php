@@ -26,6 +26,7 @@ class Wizard {
 		$body           = $request->get_json_params();
 		$section        = ! empty( $body['section'] ) ? sanitize_text_field( $body['section'] ) : null;
 		$wizard         = ! empty( $body['wizard'] ) ? $body['wizard'] : null;
+		$network        = ! empty( $body['network'] ) ? $body['network'] : false;
 		$options        = aioseo()->options->noConflict();
 		$dynamicOptions = aioseo()->dynamicOptions->noConflict();
 
@@ -49,7 +50,7 @@ class Wizard {
 				if ( ! $notification->exists() ) {
 					Models\Notification::addNotification( [
 						'slug'              => uniqid(),
-						'notification_name' => 'install-mi',
+						'notification_name' => 'import-failed',
 						'title'             => __( 'SEO Plugin Import Failed', 'all-in-one-seo-pack' ),
 						'content'           => __( 'Unfortunately, there was an error importing your SEO plugin settings. This could be due to an incompatibility in the version installed. Make sure you are on the latest version of the plugin and try again.', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
 						'type'              => 'error',
@@ -143,8 +144,8 @@ class Wizard {
 				$options->searchAppearance->global->schema->contactType = $additionalInformation['contactType'];
 			}
 
-			if ( ! empty( $additionalInformation['contactManual'] ) ) {
-				$options->searchAppearance->global->schema->contactManual = $additionalInformation['contactManual'];
+			if ( ! empty( $additionalInformation['contactTypeManual'] ) ) {
+				$options->searchAppearance->global->schema->contactTypeManual = $additionalInformation['contactTypeManual'];
 			}
 
 			if ( ! empty( $additionalInformation['socialShareImage'] ) ) {
@@ -228,21 +229,21 @@ class Wizard {
 
 		// Save the features section.
 		if ( 'features' === $section && ! empty( $wizard['features'] ) ) {
-			$features = $wizard['features'];
+			$features   = $wizard['features'];
+			$pluginData = aioseo()->helpers->getPluginData();
 
 			// Install MI.
 			if ( in_array( 'analytics', $features, true ) ) {
 				$cantInstall = false;
-				$pluginData  = aioseo()->helpers->getPluginData();
 				if ( ! $pluginData['miPro']['activated'] && ! $pluginData['miLite']['activated'] ) {
 					if ( $pluginData['miPro']['installed'] ) {
-						aioseo()->addons->installAddon( 'miPro' );
+						aioseo()->addons->installAddon( 'miPro', $network );
 
 						// Stop the redirect from happening.
 						delete_transient( '_monsterinsights_activation_redirect' );
 					} else {
 						if ( $pluginData['miPro']['installed'] || aioseo()->addons->canInstall() ) {
-							aioseo()->addons->installAddon( 'miLite' );
+							aioseo()->addons->installAddon( 'miLite', $network );
 
 							// Stop the redirect from happening.
 							delete_transient( '_monsterinsights_activation_redirect' );
@@ -272,6 +273,40 @@ class Wizard {
 							'button2_action'    => 'http://action#notification/install-mi-reminder',
 							'start'             => gmdate( 'Y-m-d H:i:s' )
 						] );
+					}
+				}
+			}
+
+			// Install OM.
+			if ( in_array( 'conversion-tools', $features, true ) ) {
+				if ( ! $pluginData['optinMonster']['activated'] ) {
+					if ( aioseo()->addons->canInstall() ) {
+						// Install and/or activate.
+						aioseo()->addons->installAddon( 'optinMonster', $network );
+
+						// Stop the redirect from happening.
+						delete_transient( 'optin_monster_api_activation_redirect' );
+					} else {
+						$notification = Models\Notification::getNotificationByName( 'install-om' );
+						if ( ! $notification->exists() ) {
+							Models\Notification::addNotification( [
+								'slug'              => uniqid(),
+								'notification_name' => 'install-om',
+								'title'             => __( 'Install OptinMonster', 'all-in-one-seo-pack' ),
+								'content'           => sprintf(
+									// Translators: 1 - The plugin short name ("AIOSEO").
+									__( 'You selected to install the free OptinMonster Conversion Tools plugin during the setup of %1$s, but there was an issue during installation. Click below to manually install.', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
+									AIOSEO_PLUGIN_SHORT_NAME
+								),
+								'type'              => 'info',
+								'level'             => [ 'all' ],
+								'button1_label'     => __( 'Install OptinMonster', 'all-in-one-seo-pack' ),
+								'button1_action'    => $pluginData['optinMonster']['wpLink'],
+								'button2_label'     => __( 'Remind Me Later', 'all-in-one-seo-pack' ),
+								'button2_action'    => 'http://action#notification/install-om-reminder',
+								'start'             => gmdate( 'Y-m-d H:i:s' )
+							] );
+						}
 					}
 				}
 			}
@@ -341,10 +376,12 @@ class Wizard {
 			if ( ! empty( $smartRecommendations['accountInfo'] ) && ! aioseo()->internalOptions->internal->siteAnalysis->connectToken ) {
 				$url      = defined( 'AIOSEO_CONNECT_DIRECT_URL' ) ? AIOSEO_CONNECT_DIRECT_URL : 'https://aioseo.com/wp-json/aioseo-lite-connect/v1/connect/';
 				$response = wp_remote_post( $url, [
-					'headers' => [
+					'timeout'    => 10,
+					'headers'    => array_merge( [
 						'Content-Type' => 'application/json'
-					],
-					'body'    => wp_json_encode( [
+					], aioseo()->helpers->getApiHeaders() ),
+					'user-agent' => aioseo()->helpers->getApiUserAgent(),
+					'body'       => wp_json_encode( [
 						'accountInfo' => $smartRecommendations['accountInfo'],
 						'homeurl'     => home_url()
 					] )

@@ -2,6 +2,7 @@
 
 namespace WPMailSMTP\Providers;
 
+use WPMailSMTP\ConnectionInterface;
 use WPMailSMTP\Options;
 
 /**
@@ -64,14 +65,41 @@ abstract class OptionsAbstract implements OptionsInterface {
 	protected $supports;
 
 	/**
+	 * The Connection object.
+	 *
+	 * @since 3.7.0
+	 *
+	 * @var ConnectionInterface
+	 */
+	protected $connection;
+
+	/**
+	 * The connection options object.
+	 *
+	 * @since 3.7.0
+	 *
+	 * @var Options
+	 */
+	protected $connection_options;
+
+	/**
 	 * ProviderAbstract constructor.
 	 *
 	 * @since 1.0.0
 	 * @since 2.3.0 Added supports parameter.
 	 *
-	 * @param array $params The mailer options parameters.
+	 * @param array               $params     The mailer options parameters.
+	 * @param ConnectionInterface $connection The Connection object.
 	 */
-	public function __construct( $params ) {
+	public function __construct( $params, $connection = null ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
+
+		if ( ! is_null( $connection ) ) {
+			$this->connection = $connection;
+		} else {
+			$this->connection = wp_mail_smtp()->get_connections_manager()->get_primary_connection();
+		}
+
+		$this->connection_options = $this->connection->get_options();
 
 		if (
 			empty( $params['slug'] ) ||
@@ -132,7 +160,7 @@ abstract class OptionsAbstract implements OptionsInterface {
 
 		$this->supports = ( ! empty( $params['supports'] ) ) ? $params['supports'] : $this->get_supports_defaults();
 
-		$this->options = new Options();
+		$this->options = Options::init();
 	}
 
 	/**
@@ -199,8 +227,8 @@ abstract class OptionsAbstract implements OptionsInterface {
 			</div>
 			<div class="wp-mail-smtp-setting-field">
 				<input name="wp-mail-smtp[<?php echo esc_attr( $this->get_slug() ); ?>][host]" type="text"
-					value="<?php echo esc_attr( $this->options->get( $this->get_slug(), 'host' ) ); ?>"
-					<?php echo $this->options->is_const_defined( $this->get_slug(), 'host' ) ? 'disabled' : ''; ?>
+					value="<?php echo esc_attr( $this->connection_options->get( $this->get_slug(), 'host' ) ); ?>"
+					<?php echo $this->connection_options->is_const_defined( $this->get_slug(), 'host' ) ? 'disabled' : ''; ?>
 					id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-host" spellcheck="false"
 				/>
 			</div>
@@ -216,8 +244,8 @@ abstract class OptionsAbstract implements OptionsInterface {
 				<label for="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-enc-none">
 					<input type="radio" id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-enc-none"
 						name="wp-mail-smtp[<?php echo esc_attr( $this->get_slug() ); ?>][encryption]" value="none"
-						<?php echo $this->options->is_const_defined( $this->get_slug(), 'encryption' ) ? 'disabled' : ''; ?>
-						<?php checked( 'none', $this->options->get( $this->get_slug(), 'encryption' ) ); ?>
+						<?php echo $this->connection_options->is_const_defined( $this->get_slug(), 'encryption' ) ? 'disabled' : ''; ?>
+						<?php checked( 'none', $this->connection_options->get( $this->get_slug(), 'encryption' ) ); ?>
 					/>
 					<?php esc_html_e( 'None', 'wp-mail-smtp' ); ?>
 				</label>
@@ -225,8 +253,8 @@ abstract class OptionsAbstract implements OptionsInterface {
 				<label for="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-enc-ssl">
 					<input type="radio" id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-enc-ssl"
 						name="wp-mail-smtp[<?php echo esc_attr( $this->get_slug() ); ?>][encryption]" value="ssl"
-						<?php echo $this->options->is_const_defined( $this->get_slug(), 'encryption' ) ? 'disabled' : ''; ?>
-						<?php checked( 'ssl', $this->options->get( $this->get_slug(), 'encryption' ) ); ?>
+						<?php echo $this->connection_options->is_const_defined( $this->get_slug(), 'encryption' ) ? 'disabled' : ''; ?>
+						<?php checked( 'ssl', $this->connection_options->get( $this->get_slug(), 'encryption' ) ); ?>
 					/>
 					<?php esc_html_e( 'SSL', 'wp-mail-smtp' ); ?>
 				</label>
@@ -234,8 +262,8 @@ abstract class OptionsAbstract implements OptionsInterface {
 				<label for="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-enc-tls">
 					<input type="radio" id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-enc-tls"
 						name="wp-mail-smtp[<?php echo esc_attr( $this->get_slug() ); ?>][encryption]" value="tls"
-						<?php echo $this->options->is_const_defined( $this->get_slug(), 'encryption' ) ? 'disabled' : ''; ?>
-						<?php checked( 'tls', $this->options->get( $this->get_slug(), 'encryption' ) ); ?>
+						<?php echo $this->connection_options->is_const_defined( $this->get_slug(), 'encryption' ) ? 'disabled' : ''; ?>
+						<?php checked( 'tls', $this->connection_options->get( $this->get_slug(), 'encryption' ) ); ?>
 					/>
 					<?php esc_html_e( 'TLS', 'wp-mail-smtp' ); ?>
 				</label>
@@ -253,15 +281,15 @@ abstract class OptionsAbstract implements OptionsInterface {
 			</div>
 			<div class="wp-mail-smtp-setting-field">
 				<input name="wp-mail-smtp[<?php echo esc_attr( $this->get_slug() ); ?>][port]" type="number"
-					value="<?php echo esc_attr( $this->options->get( $this->get_slug(), 'port' ) ); ?>"
-					<?php echo $this->options->is_const_defined( $this->get_slug(), 'port' ) ? 'disabled' : ''; ?>
+					value="<?php echo esc_attr( $this->connection_options->get( $this->get_slug(), 'port' ) ); ?>"
+					<?php echo $this->connection_options->is_const_defined( $this->get_slug(), 'port' ) ? 'disabled' : ''; ?>
 					id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-port" class="small-text" spellcheck="false"
 				/>
 			</div>
 		</div>
 
 		<!-- PHPMailer SMTPAutoTLS -->
-		<div id="wp-mail-smtp-setting-row-<?php echo esc_attr( $this->get_slug() ); ?>-autotls" class="wp-mail-smtp-setting-row wp-mail-smtp-setting-row-checkbox-toggle wp-mail-smtp-clear <?php echo $this->options->is_const_defined( $this->get_slug(), 'encryption' ) || 'tls' === $this->options->get( $this->get_slug(), 'encryption' ) ? 'inactive' : ''; ?>">
+		<div id="wp-mail-smtp-setting-row-<?php echo esc_attr( $this->get_slug() ); ?>-autotls" class="wp-mail-smtp-setting-row wp-mail-smtp-setting-row-checkbox-toggle wp-mail-smtp-clear <?php echo $this->connection_options->is_const_defined( $this->get_slug(), 'encryption' ) || 'tls' === $this->connection_options->get( $this->get_slug(), 'encryption' ) ? 'inactive' : ''; ?>">
 			<div class="wp-mail-smtp-setting-label">
 				<label for="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-autotls"><?php esc_html_e( 'Auto TLS', 'wp-mail-smtp' ); ?></label>
 			</div>
@@ -269,15 +297,15 @@ abstract class OptionsAbstract implements OptionsInterface {
 				<label for="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-autotls">
 					<input type="checkbox" id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-autotls"
 						name="wp-mail-smtp[<?php echo esc_attr( $this->get_slug() ); ?>][autotls]" value="yes"
-						<?php echo $this->options->is_const_defined( $this->get_slug(), 'autotls' ) ? 'disabled' : ''; ?>
-						<?php checked( true, (bool) $this->options->get( $this->get_slug(), 'autotls' ) ); ?>
+						<?php echo $this->connection_options->is_const_defined( $this->get_slug(), 'autotls' ) ? 'disabled' : ''; ?>
+						<?php checked( true, (bool) $this->connection_options->get( $this->get_slug(), 'autotls' ) ); ?>
 					/>
 					<span class="wp-mail-smtp-setting-toggle-switch"></span>
 					<span class="wp-mail-smtp-setting-toggle-checked-label"><?php esc_html_e( 'On', 'wp-mail-smtp' ); ?></span>
 					<span class="wp-mail-smtp-setting-toggle-unchecked-label"><?php esc_html_e( 'Off', 'wp-mail-smtp' ); ?></span>
 				</label>
 				<p class="desc">
-					<?php esc_html_e( 'By default TLS encryption is automatically used if the server supports it, which is recommended. In some cases, due to server misconfigurations, this can cause issues and may need to be disabled.', 'wp-mail-smtp' ); ?>
+					<?php esc_html_e( 'By default, TLS encryption is automatically used if the server supports it (recommended). In some cases, due to server misconfigurations, this can cause issues and may need to be disabled.', 'wp-mail-smtp' ); ?>
 				</p>
 			</div>
 		</div>
@@ -291,8 +319,8 @@ abstract class OptionsAbstract implements OptionsInterface {
 				<label for="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-auth">
 					<input type="checkbox" id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-auth"
 						name="wp-mail-smtp[<?php echo esc_attr( $this->get_slug() ); ?>][auth]" value="yes"
-						<?php echo $this->options->is_const_defined( $this->get_slug(), 'auth' ) ? 'disabled' : ''; ?>
-						<?php checked( true, (bool) $this->options->get( $this->get_slug(), 'auth' ) ); ?>
+						<?php echo $this->connection_options->is_const_defined( $this->get_slug(), 'auth' ) ? 'disabled' : ''; ?>
+						<?php checked( true, (bool) $this->connection_options->get( $this->get_slug(), 'auth' ) ); ?>
 					/>
 					<span class="wp-mail-smtp-setting-toggle-switch"></span>
 					<span class="wp-mail-smtp-setting-toggle-checked-label"><?php esc_html_e( 'On', 'wp-mail-smtp' ); ?></span>
@@ -302,26 +330,26 @@ abstract class OptionsAbstract implements OptionsInterface {
 		</div>
 
 		<!-- SMTP Username -->
-		<div id="wp-mail-smtp-setting-row-<?php echo esc_attr( $this->get_slug() ); ?>-user" class="wp-mail-smtp-setting-row wp-mail-smtp-setting-row-text wp-mail-smtp-clear <?php echo ! $this->options->is_const_defined( $this->get_slug(), 'auth' ) && ! $this->options->get( $this->get_slug(), 'auth' ) ? 'inactive' : ''; ?>">
+		<div id="wp-mail-smtp-setting-row-<?php echo esc_attr( $this->get_slug() ); ?>-user" class="wp-mail-smtp-setting-row wp-mail-smtp-setting-row-text wp-mail-smtp-clear <?php echo ! $this->connection_options->is_const_defined( $this->get_slug(), 'auth' ) && ! $this->connection_options->get( $this->get_slug(), 'auth' ) ? 'inactive' : ''; ?>">
 			<div class="wp-mail-smtp-setting-label">
 				<label for="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-user"><?php esc_html_e( 'SMTP Username', 'wp-mail-smtp' ); ?></label>
 			</div>
 			<div class="wp-mail-smtp-setting-field">
 				<input name="wp-mail-smtp[<?php echo esc_attr( $this->get_slug() ); ?>][user]" type="text"
-					value="<?php echo esc_attr( $this->options->get( $this->get_slug(), 'user' ) ); ?>"
-					<?php echo $this->options->is_const_defined( $this->get_slug(), 'user' ) ? 'disabled' : ''; ?>
+					value="<?php echo esc_attr( $this->connection_options->get( $this->get_slug(), 'user' ) ); ?>"
+					<?php echo $this->connection_options->is_const_defined( $this->get_slug(), 'user' ) ? 'disabled' : ''; ?>
 					id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-user" spellcheck="false" autocomplete="new-password"
 				/>
 			</div>
 		</div>
 
 		<!-- SMTP Password -->
-		<div id="wp-mail-smtp-setting-row-<?php echo esc_attr( $this->get_slug() ); ?>-pass" class="wp-mail-smtp-setting-row wp-mail-smtp-setting-row-password wp-mail-smtp-clear <?php echo ! $this->options->is_const_defined( $this->get_slug(), 'auth' ) && ! $this->options->get( $this->get_slug(), 'auth' ) ? 'inactive' : ''; ?>">
+		<div id="wp-mail-smtp-setting-row-<?php echo esc_attr( $this->get_slug() ); ?>-pass" class="wp-mail-smtp-setting-row wp-mail-smtp-setting-row-password wp-mail-smtp-clear <?php echo ! $this->connection_options->is_const_defined( $this->get_slug(), 'auth' ) && ! $this->connection_options->get( $this->get_slug(), 'auth' ) ? 'inactive' : ''; ?>">
 			<div class="wp-mail-smtp-setting-label">
 				<label for="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-pass"><?php esc_html_e( 'SMTP Password', 'wp-mail-smtp' ); ?></label>
 			</div>
 			<div class="wp-mail-smtp-setting-field">
-				<?php if ( $this->options->is_const_defined( $this->get_slug(), 'pass' ) ) : ?>
+				<?php if ( $this->connection_options->is_const_defined( $this->get_slug(), 'pass' ) ) : ?>
 					<input type="text" value="*************" disabled id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-pass"/>
 
 					<?php $this->display_const_set_message( 'WPMS_SMTP_PASS' ); ?>
@@ -352,15 +380,19 @@ abstract class OptionsAbstract implements OptionsInterface {
 					</p>
 				<?php else : ?>
 					<input name="wp-mail-smtp[<?php echo esc_attr( $this->get_slug() ); ?>][pass]" type="password"
-						value="<?php echo esc_attr( $this->options->get( $this->get_slug(), 'pass' ) ); ?>"
+						value="<?php echo esc_attr( $this->connection_options->get( $this->get_slug(), 'pass' ) ); ?>"
 						id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-pass" spellcheck="false" autocomplete="new-password"
 					/>
 					<p class="desc">
 						<?php esc_html_e( 'The password is encrypted in the database, but for improved security we recommend using your site\'s WordPress configuration file to set your password.', 'wp-mail-smtp' ); ?>
 						<br>
-						<a href="https://wpmailsmtp.com/docs/how-to-secure-smtp-settings-by-using-constants/" target="_blank" rel="noopener noreferrer">
-							<strong><?php esc_html_e( 'Learn More', 'wp-mail-smtp' ); ?></strong>
-						</a>
+						<?php
+						printf(
+							'<a href="%1$s" target="_blank" rel="noopener noreferrer"><strong>%2$s</strong></a>',
+							esc_url( wp_mail_smtp()->get_utm_url( 'https://wpmailsmtp.com/docs/how-to-secure-smtp-settings-by-using-constants/', 'SMTP Password - Learn More' ) ),
+							esc_html__( 'Learn More', 'wp-mail-smtp' )
+						)
+						?>
 					</p>
 				<?php endif; ?>
 			</div>
@@ -472,19 +504,8 @@ abstract class OptionsAbstract implements OptionsInterface {
 	 * @param string $constant Constant name.
 	 */
 	protected function display_const_set_message( $constant ) {
-		?>
 
-		<p class="desc">
-			<?php
-			printf( /* translators: %1$s - constant that was used; %2$s - file where it was used. */
-				esc_html__( 'The value of this field was set using a constant %1$s most likely inside %2$s of your WordPress installation.', 'wp-mail-smtp' ),
-				'<code>' . esc_attr( $constant ) . '</code>',
-				'<code>wp-config.php</code>'
-			);
-			?>
-		</p>
-
-		<?php
+		printf( '<p class="desc">%s</p>', $this->options->get_const_set_message( $constant ) ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**

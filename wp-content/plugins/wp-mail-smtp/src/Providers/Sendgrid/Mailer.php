@@ -2,6 +2,8 @@
 
 namespace WPMailSMTP\Providers\Sendgrid;
 
+use WPMailSMTP\ConnectionInterface;
+use WPMailSMTP\Helpers\Helpers;
 use WPMailSMTP\MailCatcherInterface;
 use WPMailSMTP\Providers\MailerAbstract;
 use WPMailSMTP\WP;
@@ -36,14 +38,15 @@ class Mailer extends MailerAbstract {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param MailCatcherInterface $phpmailer The MailCatcher object.
+	 * @param MailCatcherInterface $phpmailer  The MailCatcher object.
+	 * @param ConnectionInterface  $connection The Connection object.
 	 */
-	public function __construct( $phpmailer ) {
+	public function __construct( $phpmailer, $connection = null ) {
 
 		// We want to prefill everything from MailCatcher class, which extends PHPMailer.
-		parent::__construct( $phpmailer );
+		parent::__construct( $phpmailer, $connection );
 
-		$this->set_header( 'Authorization', 'Bearer ' . $this->options->get( $this->mailer, 'api_key' ) );
+		$this->set_header( 'Authorization', 'Bearer ' . $this->connection_options->get( $this->mailer, 'api_key' ) );
 		$this->set_header( 'content-type', 'application/json' );
 	}
 
@@ -244,7 +247,7 @@ class Mailer extends MailerAbstract {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $attachments
+	 * @param array $attachments The array of attachments data.
 	 */
 	public function set_attachments( $attachments ) {
 
@@ -252,23 +255,10 @@ class Mailer extends MailerAbstract {
 			return;
 		}
 
-		$data = array();
+		$data = [];
 
 		foreach ( $attachments as $attachment ) {
-			$file = false;
-
-			/*
-			 * We are not using WP_Filesystem API as we can't reliably work with it.
-			 * It is not always available, same as credentials for FTP.
-			 */
-			try {
-				if ( is_file( $attachment[0] ) && is_readable( $attachment[0] ) ) {
-					$file = file_get_contents( $attachment[0] ); // phpcs:ignore
-				}
-			}
-			catch ( \Exception $e ) {
-				$file = false;
-			}
+			$file = $this->get_attachment_file_content( $attachment );
 
 			if ( $file === false ) {
 				continue;
@@ -276,20 +266,20 @@ class Mailer extends MailerAbstract {
 
 			$filetype = str_replace( ';', '', trim( $attachment[4] ) );
 
-			$data[] = array(
-				'content'     => base64_encode( $file ), // string, 1 character.
+			$data[] = [
+				'content'     => base64_encode( $file ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 				'type'        => $filetype, // string, no ;, no CRLF.
-				'filename'    => empty( $attachment[2] ) ? 'file-' . wp_hash( microtime() ) . '.' . $filetype : trim( $attachment[2] ), // required string, no CRLF.
-				'disposition' => in_array( $attachment[6], array( 'inline', 'attachment' ), true ) ? $attachment[6] : 'attachment', // either inline or attachment.
+				'filename'    => $this->get_attachment_file_name( $attachment ), // required string, no CRLF.
+				'disposition' => in_array( $attachment[6], [ 'inline', 'attachment' ], true ) ? $attachment[6] : 'attachment', // either inline or attachment.
 				'content_id'  => empty( $attachment[7] ) ? '' : trim( (string) $attachment[7] ), // string, no CRLF.
-			);
+			];
 		}
 
 		if ( ! empty( $data ) ) {
 			$this->set_body_param(
-				array(
+				[
 					'attachments' => $data,
-				)
+				]
 			);
 		}
 	}
@@ -352,33 +342,29 @@ class Mailer extends MailerAbstract {
 	 *
 	 * @return string
 	 */
-	public function get_response_error() { // phpcs:ignore
+	public function get_response_error() { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh, Generic.Metrics.NestingLevel.MaxExceeded
 
-		$body = (array) wp_remote_retrieve_body( $this->response );
+		$error_text[] = $this->error_message;
 
-		$error_text = array();
+		if ( ! empty( $this->response ) ) {
+			$body = wp_remote_retrieve_body( $this->response );
 
-		if ( ! empty( $body['errors'] ) ) {
-			foreach ( $body['errors'] as $error ) {
-				if ( property_exists( $error, 'message' ) ) {
-					// Prepare additional information from SendGrid API.
-					$extra = '';
-					if ( property_exists( $error, 'field' ) && ! empty( $error->field ) ) {
-						$extra .= $error->field . '; ';
+			if ( ! empty( $body->errors ) && is_array( $body->errors ) ) {
+				foreach ( $body->errors as $error ) {
+					if ( ! empty( $error->message ) ) {
+						$message     = $error->message;
+						$code        = ! empty( $error->field ) ? $error->field : '';
+						$description = ! empty( $error->help ) ? $error->help : '';
+
+						$error_text[] = Helpers::format_error_message( $message, $code, $description );
 					}
-					if ( property_exists( $error, 'help' ) && ! empty( $error->help ) ) {
-						$extra .= $error->help;
-					}
-
-					// Assign both the main message and perhaps extra information, if exists.
-					$error_text[] = $error->message . ( ! empty( $extra ) ? ' - ' . $extra : '' );
 				}
+			} else {
+				$error_text[] = WP::wp_remote_get_response_error_message( $this->response );
 			}
-		} elseif ( ! empty( $this->error_message ) ) {
-			$error_text[] = $this->error_message;
 		}
 
-		return implode( '<br>', array_map( 'esc_textarea', $error_text ) );
+		return implode( WP::EOL, array_map( 'esc_textarea', array_filter( $error_text ) ) );
 	}
 
 	/**
@@ -400,7 +386,7 @@ class Mailer extends MailerAbstract {
 	 */
 	public function is_mailer_complete() {
 
-		$options = $this->options->get_group( $this->mailer );
+		$options = $this->connection_options->get_group( $this->mailer );
 
 		// API key is the only required option.
 		if ( ! empty( $options['api_key'] ) ) {

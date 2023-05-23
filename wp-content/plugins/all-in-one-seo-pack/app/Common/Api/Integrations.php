@@ -25,6 +25,12 @@ class Integrations {
 	public static function semrushGetKeyphrases( $request ) {
 		$body       = $request->get_json_params();
 		$keyphrases = Semrush::getKeyphrases( $body['keyphrase'], $body['database'] );
+		if ( false === $keyphrases ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'Tokens expired and could not be refreshed.'
+			], 400 );
+		}
 
 		return new \WP_REST_Response( [
 			'success'    => true,
@@ -50,7 +56,13 @@ class Integrations {
 			], 400 );
 		}
 
-		Semrush::authenticate( $body['code'] );
+		$success = Semrush::authenticate( $body['code'] );
+		if ( ! $success ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'Authentication failed.'
+			], 400 );
+		}
 
 		return new \WP_REST_Response( [
 			'success' => true,
@@ -67,7 +79,13 @@ class Integrations {
 	 * @return \WP_REST_Response          The response.
 	 */
 	public static function semrushRefresh() {
-		Semrush::refreshTokens();
+		$success = Semrush::refreshTokens();
+		if ( ! $success ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'API tokens could not be refreshed.'
+			], 400 );
+		}
 
 		return new \WP_REST_Response( [
 			'success' => true,

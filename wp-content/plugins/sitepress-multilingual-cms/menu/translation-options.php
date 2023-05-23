@@ -1,15 +1,22 @@
 <div class="wrap">
-    <div id="icon-wpml" class="icon32"><br /></div>
-    <h2><?php echo __('Translation options', 'sitepress') ?></h2>
-    <br />
-    <?php include dirname(__FILE__) . '/_posts_sync_options.php'; ?>
+	<h2><?php echo __( 'Settings', 'sitepress' ); ?></h2>
+	<br />
 
-    <?php if(defined('WPML_ST_VERSION')): ?>
-    <?php  include WPML_ST_PATH . '/menu/_slug-translation-options.php'; ?>
-    <?php endif; ?>
+	<?php
+	require __DIR__ . '/_posts_sync_options.php';
+	require __DIR__ . '/_login_translation_options.php';
 
-    <br clear="all" />
-    <?php include dirname(__FILE__) . '/_custom_types_translation.php'; ?>
+	if ( defined( 'WPML_ST_PATH' ) ) {
+		include WPML_ST_PATH . '/menu/_slug-translation-options.php';
+	}
+	?>
 
-    <?php do_action('icl_menu_footer'); ?>
+	<br clear="all" />
+	<?php
+	require __DIR__ . '/_custom_types_translation.php';
+
+	do_action( 'icl_tm_menu_mcsetup' );
+
+	do_action( 'icl_menu_footer' );
+	?>
 </div>

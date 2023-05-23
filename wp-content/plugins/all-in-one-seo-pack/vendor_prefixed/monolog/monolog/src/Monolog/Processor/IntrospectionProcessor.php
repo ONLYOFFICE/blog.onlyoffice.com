@@ -22,15 +22,15 @@ use AIOSEO\Vendor\Monolog\Logger;
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-class IntrospectionProcessor implements \AIOSEO\Vendor\Monolog\Processor\ProcessorInterface
+class IntrospectionProcessor implements ProcessorInterface
 {
     private $level;
     private $skipClassesPartials;
     private $skipStackFramesCount;
     private $skipFunctions = array('call_user_func', 'call_user_func_array');
-    public function __construct($level = \AIOSEO\Vendor\Monolog\Logger::DEBUG, array $skipClassesPartials = array(), $skipStackFramesCount = 0)
+    public function __construct($level = Logger::DEBUG, array $skipClassesPartials = array(), $skipStackFramesCount = 0)
     {
-        $this->level = \AIOSEO\Vendor\Monolog\Logger::toMonologLevel($level);
+        $this->level = Logger::toMonologLevel($level);
         $this->skipClassesPartials = \array_merge(array('AIOSEO\\Vendor\\Monolog\\'), $skipClassesPartials);
         $this->skipStackFramesCount = $skipStackFramesCount;
     }

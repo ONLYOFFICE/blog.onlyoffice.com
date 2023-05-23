@@ -1,39 +1,49 @@
 /* <![CDATA[*/
-jQuery(document).ready(function () {
-    jQuery('a.icl-admin-message-hide').on('click', function (event) {
+jQuery(function () {
+    jQuery('.icl-admin-message-hide').on('click', function (event) {
 
-		if (typeof(event.preventDefault) !== 'undefined' ) {
-			event.preventDefault();
-		} else {
-			event.returnValue = false;
+        if (typeof (event.preventDefault) !== 'undefined') {
+            event.preventDefault();
+        } else {
+            event.returnValue = false;
+        }
+
+        var messageBox = jQuery(this).closest('.otgs-is-dismissible');
+        if (messageBox) {
+			var messageID = messageBox.attr('id');
+
+			jQuery.ajax({
+										url:      ajaxurl,
+										type:     'POST',
+										data:     {
+											action:                 'icl-hide-admin-message',
+											'icl-admin-message-id': messageID,
+											nonce:                  icl_admin_notifier_strings.iclHideAdminMessageNonce,
+										},
+										dataType: 'json',
+										success:  function (ret) {
+
+											if (ret && ret.text && typeof ret.text == 'string' && ret.text.length > 0) {
+												messageBox.fadeOut('slow', function () {
+													messageBox.removeAttr('class');
+													if (ret.type) {
+														messageBox.addClass(ret.type);
+													}
+													messageBox.html(ret.text);
+													messageBox.fadeIn();
+												});
+											} else {
+												messageBox.fadeOut(undefined, function () {
+													messageBox.remove();
+												});
+											}
+										},
+									});
 		}
+	});
 
-		var messagebox = jQuery(this).parent().parent();
-
-
-        jQuery.ajax({
-            url: ajaxurl,
-            type: 'POST',
-            data: {
-                action: 'icl-hide-admin-message',
-                'icl-admin-message-id': jQuery(this).parent().parent().attr('id')
-            },
-            dataType: 'json',
-            success: function (ret) {
-
-                if (ret) {
-                    messagebox.fadeOut('slow', function() {
-                        messagebox.removeAttr('class');
-                        if(ret.type) messagebox.addClass(ret.type);
-                        messagebox.html(ret.text);
-                        messagebox.fadeIn();
-                    });
-                } else {
-                    messagebox.fadeOut();
-                }
-            }
-        });
-    });
+	// @deprecated, cannot find any place in project where this classname for event is used.
+	// Probably can be safely removed in the future.
 	jQuery('a.icl-admin-message-link').on('click', function (event) {
 
 		if (typeof(event.preventDefault) !== 'undefined' ) {
@@ -46,7 +56,8 @@ jQuery(document).ready(function () {
 			ajaxurl,
 			{
 				action: 'icl-hide-admin-message',
-				'icl-admin-message-id': jQuery(this).parent().parent().attr('id')
+				'icl-admin-message-id': jQuery(this).parent().parent().attr('id'),
+				nonce:                  icl_admin_notifier_strings.iclHideAdminMessageNonce,
 			},
 			function (response) {
 			}

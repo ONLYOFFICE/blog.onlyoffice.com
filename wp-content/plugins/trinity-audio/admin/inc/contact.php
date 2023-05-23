@@ -112,7 +112,6 @@
                   Feedback
                 </label>
                 <?php  trinity_feedback_message(); ?>
-                <br />
                 <div style="width: 66%">
                   <button class="trinity-feedback-button">Send</button>
                 </div>

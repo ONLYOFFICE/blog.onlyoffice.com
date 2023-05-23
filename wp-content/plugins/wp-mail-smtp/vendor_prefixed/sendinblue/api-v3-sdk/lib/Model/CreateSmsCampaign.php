@@ -51,13 +51,13 @@ class CreateSmsCampaign implements \WPMailSMTP\Vendor\SendinBlue\Client\Model\Mo
      *
      * @var string[]
      */
-    protected static $swaggerTypes = ['name' => 'string', 'sender' => 'string', 'content' => 'string', 'recipients' => 'WPMailSMTP\\Vendor\\SendinBlue\\Client\\Model\\CreateSmsCampaignRecipients', 'scheduledAt' => '\\DateTime'];
+    protected static $swaggerTypes = ['name' => 'string', 'sender' => 'string', 'content' => 'string', 'recipients' => 'WPMailSMTP\\Vendor\\SendinBlue\\Client\\Model\\CreateSmsCampaignRecipients', 'scheduledAt' => 'string'];
     /**
      * Array of property to format mappings. Used for (de)serialization
      *
      * @var string[]
      */
-    protected static $swaggerFormats = ['name' => null, 'sender' => null, 'content' => null, 'recipients' => null, 'scheduledAt' => 'date-time'];
+    protected static $swaggerFormats = ['name' => null, 'sender' => null, 'content' => null, 'recipients' => null, 'scheduledAt' => null];
     /**
      * Array of property to type mappings. Used for (de)serialization
      *
@@ -166,8 +166,8 @@ class CreateSmsCampaign implements \WPMailSMTP\Vendor\SendinBlue\Client\Model\Mo
         if ($this->container['sender'] === null) {
             $invalidProperties[] = "'sender' can't be null";
         }
-        if (\mb_strlen($this->container['sender']) > 11) {
-            $invalidProperties[] = "invalid value for 'sender', the character length must be smaller than or equal to 11.";
+        if (\mb_strlen($this->container['sender']) > 15) {
+            $invalidProperties[] = "invalid value for 'sender', the character length must be smaller than or equal to 15.";
         }
         if ($this->container['content'] === null) {
             $invalidProperties[] = "'content' can't be null";
@@ -217,14 +217,14 @@ class CreateSmsCampaign implements \WPMailSMTP\Vendor\SendinBlue\Client\Model\Mo
     /**
      * Sets sender
      *
-     * @param string $sender Name of the sender. The number of characters is limited to 11
+     * @param string $sender Name of the sender. **The number of characters is limited to 11 for alphanumeric characters and 15 for numeric characters**
      *
      * @return $this
      */
     public function setSender($sender)
     {
-        if (\mb_strlen($sender) > 11) {
-            throw new \InvalidArgumentException('invalid length for $sender when calling CreateSmsCampaign., must be smaller than or equal to 11.');
+        if (\mb_strlen($sender) > 15) {
+            throw new \InvalidArgumentException('invalid length for $sender when calling CreateSmsCampaign., must be smaller than or equal to 15.');
         }
         $this->container['sender'] = $sender;
         return $this;
@@ -274,7 +274,7 @@ class CreateSmsCampaign implements \WPMailSMTP\Vendor\SendinBlue\Client\Model\Mo
     /**
      * Gets scheduledAt
      *
-     * @return \DateTime
+     * @return string
      */
     public function getScheduledAt()
     {
@@ -283,7 +283,7 @@ class CreateSmsCampaign implements \WPMailSMTP\Vendor\SendinBlue\Client\Model\Mo
     /**
      * Sets scheduledAt
      *
-     * @param \DateTime $scheduledAt UTC date-time on which the campaign has to run (YYYY-MM-DDTHH:mm:ss.SSSZ). Prefer to pass your timezone in date-time format for accurate result.
+     * @param string $scheduledAt UTC date-time on which the campaign has to run (YYYY-MM-DDTHH:mm:ss.SSSZ). Prefer to pass your timezone in date-time format for accurate result.
      *
      * @return $this
      */

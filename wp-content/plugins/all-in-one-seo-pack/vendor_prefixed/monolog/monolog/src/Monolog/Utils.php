@@ -18,7 +18,7 @@ class Utils
     public static function getClass($object)
     {
         $class = \get_class($object);
-        return 'c' === $class[0] && 0 === \strpos($class, "class@anonymous\0") ? \get_parent_class($class) . '@anonymous' : $class;
+        return 'c' === $class[0] && 0 === \strpos($class, "class@anonymous\x00") ? \get_parent_class($class) . '@anonymous' : $class;
     }
     /**
      * Makes sure if a relative path is passed in it is turned into an absolute path
@@ -147,7 +147,7 @@ class Utils
      * Function converts the input in place in the passed variable so that it
      * can be used as a callback for array_walk_recursive.
      *
-     * @param mixed &$data Input to check and convert if needed
+     * @param mixed $data Input to check and convert if needed, passed by ref
      * @private
      */
     public static function detectAndCleanUtf8(&$data)

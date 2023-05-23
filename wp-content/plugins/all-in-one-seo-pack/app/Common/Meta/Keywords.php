@@ -33,22 +33,26 @@ class Keywords {
 
 		if ( is_front_page() && ! aioseo()->helpers->isStaticHomePage() ) {
 			$keywords = $this->extractMetaKeywords( aioseo()->options->searchAppearance->global->keywords );
+
 			return $this->prepareKeywords( $keywords );
 		}
 
 		if ( $dynamicContent && ! $isStaticArchive ) {
 			if ( is_date() ) {
 				$keywords = $this->extractMetaKeywords( aioseo()->options->searchAppearance->archives->date->advanced->keywords );
+
 				return $this->prepareKeywords( $keywords );
 			}
 
 			if ( is_author() ) {
 				$keywords = $this->extractMetaKeywords( aioseo()->options->searchAppearance->archives->author->advanced->keywords );
+
 				return $this->prepareKeywords( $keywords );
 			}
 
 			if ( is_search() ) {
 				$keywords = $this->extractMetaKeywords( aioseo()->options->searchAppearance->archives->search->advanced->keywords );
+
 				return $this->prepareKeywords( $keywords );
 			}
 
@@ -56,6 +60,7 @@ class Keywords {
 			$dynamicOptions = aioseo()->dynamicOptions->noConflict();
 			if ( $postType && $dynamicOptions->searchAppearance->archives->has( $postType->name ) ) {
 				$keywords = $this->extractMetaKeywords( aioseo()->dynamicOptions->searchAppearance->archives->{ $postType->name }->advanced->keywords );
+
 				return $this->prepareKeywords( $keywords );
 			}
 
@@ -162,6 +167,7 @@ class Keywords {
 		$keywords = stripslashes( $keywords );
 		$keywords = str_replace( '"', '', $keywords );
 		$keywords = wp_filter_nohtml_kses( $keywords );
+
 		return apply_filters( 'aioseo_keywords', $keywords );
 	}
 
@@ -175,6 +181,7 @@ class Keywords {
 	 */
 	public function keywordStringToList( $keywords ) {
 		$keywords = str_replace( '"', '', $keywords );
+
 		return ! empty( $keywords ) ? explode( ',', $keywords ) : [];
 	}
 
@@ -189,6 +196,7 @@ class Keywords {
 	 */
 	public function getUniqueKeywords( $keywords, $toString = true ) {
 		$keywords = $this->keywordsToLowerCase( $keywords );
+
 		return $toString ? implode( ',', $keywords ) : $keywords;
 	}
 
@@ -210,6 +218,7 @@ class Keywords {
 				$smallKeywords[] = trim( aioseo()->helpers->toLowercase( $keyword ) );
 			}
 		}
+
 		return array_unique( $smallKeywords );
 	}
 

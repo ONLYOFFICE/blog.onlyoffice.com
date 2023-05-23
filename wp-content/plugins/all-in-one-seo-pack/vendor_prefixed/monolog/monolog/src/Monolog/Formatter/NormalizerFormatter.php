@@ -17,7 +17,7 @@ use AIOSEO\Vendor\Monolog\Utils;
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-class NormalizerFormatter implements \AIOSEO\Vendor\Monolog\Formatter\FormatterInterface
+class NormalizerFormatter implements FormatterInterface
 {
     const SIMPLE_DATE = "Y-m-d H:i:s";
     protected $dateFormat;
@@ -81,7 +81,7 @@ class NormalizerFormatter implements \AIOSEO\Vendor\Monolog\Formatter\FormatterI
         }
         if (\is_object($data)) {
             // TODO 2.0 only check for Throwable
-            if ($data instanceof \Exception || \PHP_VERSION_ID > 70000 && $data instanceof \Throwable) {
+            if ($data instanceof Exception || \PHP_VERSION_ID > 70000 && $data instanceof \Throwable) {
                 return $this->normalizeException($data);
             }
             // non-serializable objects that implement __toString stringified
@@ -91,7 +91,7 @@ class NormalizerFormatter implements \AIOSEO\Vendor\Monolog\Formatter\FormatterI
                 // the rest is json-serialized in some way
                 $value = $this->toJson($data, \true);
             }
-            return \sprintf("[object] (%s: %s)", \AIOSEO\Vendor\Monolog\Utils::getClass($data), $value);
+            return \sprintf("[object] (%s: %s)", Utils::getClass($data), $value);
         }
         if (\is_resource($data)) {
             return \sprintf('[resource] (%s)', \get_resource_type($data));
@@ -101,10 +101,10 @@ class NormalizerFormatter implements \AIOSEO\Vendor\Monolog\Formatter\FormatterI
     protected function normalizeException($e)
     {
         // TODO 2.0 only check for Throwable
-        if (!$e instanceof \Exception && !$e instanceof \Throwable) {
-            throw new \InvalidArgumentException('Exception/Throwable expected, got ' . \gettype($e) . ' / ' . \AIOSEO\Vendor\Monolog\Utils::getClass($e));
+        if (!$e instanceof Exception && !$e instanceof \Throwable) {
+            throw new \InvalidArgumentException('Exception/Throwable expected, got ' . \gettype($e) . ' / ' . Utils::getClass($e));
         }
-        $data = array('class' => \AIOSEO\Vendor\Monolog\Utils::getClass($e), 'message' => $e->getMessage(), 'code' => (int) $e->getCode(), 'file' => $e->getFile() . ':' . $e->getLine());
+        $data = array('class' => Utils::getClass($e), 'message' => $e->getMessage(), 'code' => (int) $e->getCode(), 'file' => $e->getFile() . ':' . $e->getLine());
         if ($e instanceof \SoapFault) {
             if (isset($e->faultcode)) {
                 $data['faultcode'] = $e->faultcode;
@@ -141,6 +141,6 @@ class NormalizerFormatter implements \AIOSEO\Vendor\Monolog\Formatter\FormatterI
      */
     protected function toJson($data, $ignoreErrors = \false)
     {
-        return \AIOSEO\Vendor\Monolog\Utils::jsonEncode($data, null, $ignoreErrors);
+        return Utils::jsonEncode($data, null, $ignoreErrors);
     }
 }

@@ -19,9 +19,9 @@ use AIOSEO\Vendor\Monolog\ResettableInterface;
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-abstract class AbstractHandler implements \AIOSEO\Vendor\Monolog\Handler\HandlerInterface, \AIOSEO\Vendor\Monolog\ResettableInterface
+abstract class AbstractHandler implements HandlerInterface, ResettableInterface
 {
-    protected $level = \AIOSEO\Vendor\Monolog\Logger::DEBUG;
+    protected $level = Logger::DEBUG;
     protected $bubble = \true;
     /**
      * @var FormatterInterface
@@ -32,7 +32,7 @@ abstract class AbstractHandler implements \AIOSEO\Vendor\Monolog\Handler\Handler
      * @param int|string $level  The minimum logging level at which this handler will be triggered
      * @param bool       $bubble Whether the messages that are handled can bubble up the stack or not
      */
-    public function __construct($level = \AIOSEO\Vendor\Monolog\Logger::DEBUG, $bubble = \true)
+    public function __construct($level = Logger::DEBUG, $bubble = \true)
     {
         $this->setLevel($level);
         $this->bubble = $bubble;
@@ -85,7 +85,7 @@ abstract class AbstractHandler implements \AIOSEO\Vendor\Monolog\Handler\Handler
     /**
      * {@inheritdoc}
      */
-    public function setFormatter(\AIOSEO\Vendor\Monolog\Formatter\FormatterInterface $formatter)
+    public function setFormatter(FormatterInterface $formatter)
     {
         $this->formatter = $formatter;
         return $this;
@@ -108,7 +108,7 @@ abstract class AbstractHandler implements \AIOSEO\Vendor\Monolog\Handler\Handler
      */
     public function setLevel($level)
     {
-        $this->level = \AIOSEO\Vendor\Monolog\Logger::toMonologLevel($level);
+        $this->level = Logger::toMonologLevel($level);
         return $this;
     }
     /**
@@ -155,7 +155,7 @@ abstract class AbstractHandler implements \AIOSEO\Vendor\Monolog\Handler\Handler
     public function reset()
     {
         foreach ($this->processors as $processor) {
-            if ($processor instanceof \AIOSEO\Vendor\Monolog\ResettableInterface) {
+            if ($processor instanceof ResettableInterface) {
                 $processor->reset();
             }
         }
@@ -167,6 +167,6 @@ abstract class AbstractHandler implements \AIOSEO\Vendor\Monolog\Handler\Handler
      */
     protected function getDefaultFormatter()
     {
-        return new \AIOSEO\Vendor\Monolog\Formatter\LineFormatter();
+        return new LineFormatter();
     }
 }

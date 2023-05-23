@@ -15,8 +15,8 @@ if ($notices) {
     echo '<div class="ff_global_notices">';
     foreach ($notices as $noticeKey => $notice) :
         ?>
-        <div class="ff_global_notice ff_notice_<?php echo $notice['type']; ?>">
-            <?php echo $notice['message']; ?>
+        <div class="ff_global_notice ff_notice_<?php echo esc_attr($notice['type']); ?>">
+            <?php echo esc_html($notice['message']); ?>
         </div>
     <?php
     endforeach;

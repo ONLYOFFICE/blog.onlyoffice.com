@@ -1,7 +1,7 @@
 <?php do_action('fluentform_global_menu'); ?>
 <div class="ff_addon_wrapper ff_block">
     <div class="ff_addon_header">
-        <img style="width: 100px; height: 100px;" src="<?php echo $logo; ?>"/>
+        <img style="width: 100px; height: 100px;" src="<?php echo esc_url($logo); ?>"/>
         <h1>Making Email Deliverability Easy and Fast for Your WordPress</h1>
         <p>
             <a target="_blank" href="https://wordpress.org/plugins/fluent-smtp/" rel="nofollow">FluentSMTP</a> is the ultimate WP Mail Plugin that connects with your Email Service Provider natively and makes
@@ -18,13 +18,13 @@
         <?php else: ?>
         <h3>FluentSMTP plugin has been activated and running</h3>
         <br />
-        <a href="<?php echo $setup_url; ?>" class="ff_addon_btn">View FluentSMTP Settings</a>
+        <a href="<?php echo esc_url($setup_url); ?>" class="ff_addon_btn">View FluentSMTP Settings</a>
         <?php endif; ?>
 
     </div>
     <?php if (!$is_installed): ?>
         <div class="ff_addon_body">
-            <img class="ff_addon_banner" src="<?php echo $banner_image; ?>"/>
+            <img class="ff_addon_banner" src="<?php echo esc_url($banner_image); ?>"/>
         </div>
         <div class="ff_addon_feature_card ff_block_box">
             <div class="ff_addon_header_ff">FluentSMTP - The ultimate SMTP & Email Service Connection Plugin for

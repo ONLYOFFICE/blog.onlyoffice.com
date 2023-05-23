@@ -8,12 +8,12 @@ class ProcessExteriorModule
 {
     public function handleExteriorPages()
     {
-        if(defined('CT_VERSION')) {
+        if (defined('CT_VERSION')) {
             // oxygen page compatibility
-            remove_action( 'wp_head', 'oxy_print_cached_css', 999999 );
+            remove_action('wp_head', 'oxy_print_cached_css', 999999);
         }
 
-        $this->renderFormPreview(intval($_GET['preview_id']));
+        $this->renderFormPreview(intval(wpFluentForm('request')->get('preview_id')));
     }
 
     public function renderFormPreview($form_id)
@@ -26,9 +26,9 @@ class ProcessExteriorModule
 
             $form = wpFluent()->table('fluentform_forms')->find($form_id);
             if ($form) {
-                echo \FluentForm\View::make('frameless.show_review', [
+                \FluentForm\View::render('frameless.show_review', [
                     'form_id' => $form_id,
-                    'form' => $form
+                    'form'    => $form,
                 ]);
                 exit();
             }

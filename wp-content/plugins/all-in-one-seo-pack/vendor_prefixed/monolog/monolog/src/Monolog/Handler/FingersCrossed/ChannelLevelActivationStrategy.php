@@ -31,7 +31,7 @@ use AIOSEO\Vendor\Monolog\Logger;
  *
  * @author Mike Meessen <netmikey@gmail.com>
  */
-class ChannelLevelActivationStrategy implements \AIOSEO\Vendor\Monolog\Handler\FingersCrossed\ActivationStrategyInterface
+class ChannelLevelActivationStrategy implements ActivationStrategyInterface
 {
     private $defaultActionLevel;
     private $channelToActionLevel;
@@ -41,7 +41,7 @@ class ChannelLevelActivationStrategy implements \AIOSEO\Vendor\Monolog\Handler\F
      */
     public function __construct($defaultActionLevel, $channelToActionLevel = array())
     {
-        $this->defaultActionLevel = \AIOSEO\Vendor\Monolog\Logger::toMonologLevel($defaultActionLevel);
+        $this->defaultActionLevel = Logger::toMonologLevel($defaultActionLevel);
         $this->channelToActionLevel = \array_map('AIOSEO\\Vendor\\Monolog\\Logger::toMonologLevel', $channelToActionLevel);
     }
     public function isHandlerActivated(array $record)

@@ -1,17 +1,17 @@
-<div class="wrap ff_form_wrap ff_screen_<?php echo $route; ?>">
+<div class="wrap ff_form_wrap ff_screen_<?php echo esc_attr($route); ?>">
 	<?php do_action('fluentform_before_form_screen_wrapper', $form_id, $route); ?>
 	
 	<div class="form_internal_menu">
 
-        <div title="<?php echo $form->title; ?>" class="ff_form_name" id="js-ff-nav-title">
-			<span><?php echo $form->title; ?></span>
+        <div title="<?php echo esc_html($form->title); ?>" class="ff_form_name" id="js-ff-nav-title">
+			<span><?php echo esc_html($form->title); ?></span>
 		</div>
 
 		<ul class="ff_setting_menu">
 			<?php foreach ($menu_items as $menu_index => $menu_item): ?>
 				<li class="<?php if ($route == $menu_item['slug']) echo "active"; ?>">
-                    <a href="<?php echo $menu_item['url']; ?><?php if (isset($menu_item['hash'])) echo "#{$menu_item['hash']}"; ?>">
-                        <?php echo $menu_item['title']; ?>
+                    <a href="<?php echo esc_url($menu_item['url']); ?><?php if (isset($menu_item['hash'])) echo "#". esc_attr($menu_item['hash']); ?>">
+                        <?php echo esc_html($menu_item['title']); ?>
                     </a>
                 </li>
 			<?php endforeach; ?>

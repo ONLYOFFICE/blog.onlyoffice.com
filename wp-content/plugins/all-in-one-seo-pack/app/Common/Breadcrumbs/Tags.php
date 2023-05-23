@@ -71,6 +71,7 @@ class Tags {
 	 * @return string       The value of the tag.
 	 */
 	public function getTagValue( $tag, $item ) {
+		$product = false;
 		if ( 0 === stripos( $tag['id'], 'breadcrumb_wc_product_' ) ) {
 			$product = wc_get_product( $item['reference'] );
 			if ( ! $product ) {
@@ -84,11 +85,11 @@ class Tags {
 			case 'breadcrumb_separator':
 				return aioseo()->breadcrumbs->frontend->getSeparator();
 			case 'breadcrumb_wc_product_price':
-				return wc_price( $product->get_price() );
+				return $product ? wc_price( $product->get_price() ) : '';
 			case 'breadcrumb_wc_product_sku':
-				return $product->get_sku();
+				return $product ? $product->get_sku() : '';
 			case 'breadcrumb_wc_product_brand':
-				return aioseo()->helpers->getWooCommerceBrand( $product->get_id() );
+				return $product ? aioseo()->helpers->getWooCommerceBrand( $product->get_id() ) : '';
 			case 'breadcrumb_author_first_name':
 				return $item['reference']->first_name;
 			case 'breadcrumb_author_last_name':
@@ -125,13 +126,13 @@ class Tags {
 			],
 			[
 				'id'          => 'breadcrumb_post_title',
-				// Translators: 1 - The post type single name.
+				// Translators: 1 - The type of page (Post, Page, Category, Tag, etc.).
 				'name'        => sprintf( __( '%1$s Title', 'all-in-one-seo-pack' ), 'Post' ),
 				'description' => __( 'The original title of the current post.', 'all-in-one-seo-pack' )
 			],
 			[
 				'id'          => 'breadcrumb_taxonomy_title',
-				// Translators: 1 - The name of a taxonomy.
+				// Translators: 1 - The type of page (Post, Page, Category, Tag, etc.).
 				'name'        => sprintf( __( '%1$s Title', 'all-in-one-seo-pack' ), 'Category' ),
 				// Translators: 1 - The name of a taxonomy.
 				'description' => sprintf( __( 'The %1$s title.', 'all-in-one-seo-pack' ), 'Category' )

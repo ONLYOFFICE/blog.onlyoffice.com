@@ -18,10 +18,10 @@ use AIOSEO\Vendor\Doctrine\CouchDB\CouchDBClient;
  *
  * @author Markus Bachmann <markus.bachmann@bachi.biz>
  */
-class DoctrineCouchDBHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandler
+class DoctrineCouchDBHandler extends AbstractProcessingHandler
 {
     private $client;
-    public function __construct(\AIOSEO\Vendor\Doctrine\CouchDB\CouchDBClient $client, $level = \AIOSEO\Vendor\Monolog\Logger::DEBUG, $bubble = \true)
+    public function __construct(CouchDBClient $client, $level = Logger::DEBUG, $bubble = \true)
     {
         $this->client = $client;
         parent::__construct($level, $bubble);
@@ -35,6 +35,6 @@ class DoctrineCouchDBHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProc
     }
     protected function getDefaultFormatter()
     {
-        return new \AIOSEO\Vendor\Monolog\Formatter\NormalizerFormatter();
+        return new NormalizerFormatter();
     }
 }

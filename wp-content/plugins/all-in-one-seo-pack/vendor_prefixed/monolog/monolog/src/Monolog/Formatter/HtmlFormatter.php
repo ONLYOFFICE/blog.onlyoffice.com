@@ -19,12 +19,12 @@ use AIOSEO\Vendor\Monolog\Utils;
  *
  * @author Tiago Brito <tlfbrito@gmail.com>
  */
-class HtmlFormatter extends \AIOSEO\Vendor\Monolog\Formatter\NormalizerFormatter
+class HtmlFormatter extends NormalizerFormatter
 {
     /**
      * Translates Monolog log levels to html color priorities.
      */
-    protected $logLevels = array(\AIOSEO\Vendor\Monolog\Logger::DEBUG => '#cccccc', \AIOSEO\Vendor\Monolog\Logger::INFO => '#468847', \AIOSEO\Vendor\Monolog\Logger::NOTICE => '#3a87ad', \AIOSEO\Vendor\Monolog\Logger::WARNING => '#c09853', \AIOSEO\Vendor\Monolog\Logger::ERROR => '#f0ad4e', \AIOSEO\Vendor\Monolog\Logger::CRITICAL => '#FF7708', \AIOSEO\Vendor\Monolog\Logger::ALERT => '#C12A19', \AIOSEO\Vendor\Monolog\Logger::EMERGENCY => '#000000');
+    protected $logLevels = array(Logger::DEBUG => '#cccccc', Logger::INFO => '#468847', Logger::NOTICE => '#3a87ad', Logger::WARNING => '#c09853', Logger::ERROR => '#f0ad4e', Logger::CRITICAL => '#FF7708', Logger::ALERT => '#C12A19', Logger::EMERGENCY => '#000000');
     /**
      * @param string $dateFormat The format of the timestamp: one supported by DateTime::format
      */
@@ -112,8 +112,8 @@ class HtmlFormatter extends \AIOSEO\Vendor\Monolog\Formatter\NormalizerFormatter
         }
         $data = $this->normalize($data);
         if (\version_compare(\PHP_VERSION, '5.4.0', '>=')) {
-            return \AIOSEO\Vendor\Monolog\Utils::jsonEncode($data, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE, \true);
+            return Utils::jsonEncode($data, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE, \true);
         }
-        return \str_replace('\\/', '/', \AIOSEO\Vendor\Monolog\Utils::jsonEncode($data, null, \true));
+        return \str_replace('\\/', '/', Utils::jsonEncode($data, null, \true));
     }
 }

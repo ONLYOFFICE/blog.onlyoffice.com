@@ -49,7 +49,7 @@ class Query {
 				$orderBy .= ' ASC';
 		}
 
-		$query = aioseo()->db
+		$query = aioseo()->core->db
 			->start( 'posts' )
 			->select( $fields )
 			->where( 'post_status', 'publish' )
@@ -82,8 +82,8 @@ class Query {
 	 */
 	public function terms( $taxonomy, $attributes = [] ) {
 		$fields                 = 't.term_id, t.name, tt.parent';
-		$termRelationshipsTable = aioseo()->db->db->prefix . 'term_relationships';
-		$termTaxonomyTable      = aioseo()->db->db->prefix . 'term_taxonomy';
+		$termRelationshipsTable = aioseo()->core->db->db->prefix . 'term_relationships';
+		$termTaxonomyTable      = aioseo()->core->db->db->prefix . 'term_taxonomy';
 
 		$orderBy = '';
 		switch ( $attributes['order_by'] ) {
@@ -107,7 +107,7 @@ class Query {
 				$orderBy .= ' ASC';
 		}
 
-		$query = aioseo()->db
+		$query = aioseo()->core->db
 			->start( 'terms as t' )
 			->select( $fields )
 			->join( 'term_taxonomy as tt', 't.term_id = tt.term_id' )
@@ -160,11 +160,11 @@ class Query {
 		if ( $shouldSort ) {
 			if ( 'asc' === strtolower( $attributes['order'] ) ) {
 				usort( $terms, function( $term1, $term2 ) {
-					return $term1->timestamp > $term2->timestamp;
+					return $term1->timestamp > $term2->timestamp ? 1 : 0;
 				} );
 			} else {
 				usort( $terms, function( $term1, $term2 ) {
-					return $term1->timestamp < $term2->timestamp;
+					return $term1->timestamp < $term2->timestamp ? 1 : 0;
 				} );
 			}
 		}
@@ -180,7 +180,7 @@ class Query {
 	 * @return array The date archives.
 	 */
 	public function archives() {
-		$result = aioseo()->db
+		$result = aioseo()->core->db
 			->start( 'posts', false, 'SELECT DISTINCT' )
 			->select( 'YEAR(post_date) AS year, MONTH(post_date) AS month' )
 			->where( 'post_type', 'post' )
@@ -208,9 +208,9 @@ class Query {
 	 * @return int         The publish date timestamp.
 	 */
 	public function getTermPublishDate( $termId ) {
-		$termRelationshipsTable = aioseo()->db->db->prefix . 'term_relationships';
+		$termRelationshipsTable = aioseo()->core->db->db->prefix . 'term_relationships';
 
-		$post = aioseo()->db
+		$post = aioseo()->core->db
 			->start( 'posts as p' )
 			->select( 'MIN(`p`.`post_date_gmt`) as publish_date' )
 			->whereRaw( "
@@ -257,6 +257,7 @@ class Query {
 
 			$excludedObjects = esc_sql( implode( ', ', $ids ) );
 		}
+
 		return $excludedObjects;
 	}
 }

@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Help {
 	/**
-	 * Source of notifications content.
+	 * Source of the documentation content.
 	 *
 	 * @since 4.0.0
 	 *
@@ -45,20 +45,20 @@ class Help {
 	}
 
 	/**
-	 * Get docs from the cache.
+	 * Get docs from the network cache.
 	 *
 	 * @since 4.0.0
 	 *
 	 * @return array Docs data.
 	 */
 	public function getDocs() {
-		$aioseoAdminHelpDocs          = aioseo()->transients->get( 'admin_help_docs' );
+		$aioseoAdminHelpDocs          = aioseo()->core->networkCache->get( 'admin_help_docs' );
 		$aioseoAdminHelpDocsCacheTime = WEEK_IN_SECONDS;
-		if ( false === $aioseoAdminHelpDocs ) {
-			$request = wp_remote_get( $this->getUrl() );
+		if ( null === $aioseoAdminHelpDocs ) {
+			$request = aioseo()->helpers->wpRemoteGet( $this->getUrl() );
 
 			if ( is_wp_error( $request ) ) {
-				return false;
+				return [];
 			}
 
 			$response = $request['response'];
@@ -67,9 +67,9 @@ class Help {
 				$aioseoAdminHelpDocsCacheTime = 10 * MINUTE_IN_SECONDS;
 			}
 			$aioseoAdminHelpDocs = wp_remote_retrieve_body( $request );
-			aioseo()->transients->update( 'admin_help_docs', $aioseoAdminHelpDocs, $aioseoAdminHelpDocsCacheTime );
+			aioseo()->core->networkCache->update( 'admin_help_docs', $aioseoAdminHelpDocs, $aioseoAdminHelpDocsCacheTime );
 		}
 
-		return $aioseoAdminHelpDocs;
+		return $aioseoAdminHelpDocs ? json_decode( $aioseoAdminHelpDocs, true ) : [];
 	}
 }

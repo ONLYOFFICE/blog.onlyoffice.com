@@ -17,7 +17,7 @@ use AIOSEO\Vendor\Monolog\ResettableInterface;
  *
  * @author Lenar Lõhmus <lenar@city.ee>
  */
-class GroupHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractHandler
+class GroupHandler extends AbstractHandler
 {
     protected $handlers;
     /**
@@ -27,7 +27,7 @@ class GroupHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractHandler
     public function __construct(array $handlers, $bubble = \true)
     {
         foreach ($handlers as $handler) {
-            if (!$handler instanceof \AIOSEO\Vendor\Monolog\Handler\HandlerInterface) {
+            if (!$handler instanceof HandlerInterface) {
                 throw new \InvalidArgumentException('The first argument of the GroupHandler must be an array of HandlerInterface instances.');
             }
         }
@@ -84,7 +84,7 @@ class GroupHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractHandler
     {
         parent::reset();
         foreach ($this->handlers as $handler) {
-            if ($handler instanceof \AIOSEO\Vendor\Monolog\ResettableInterface) {
+            if ($handler instanceof ResettableInterface) {
                 $handler->reset();
             }
         }
@@ -92,7 +92,7 @@ class GroupHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractHandler
     /**
      * {@inheritdoc}
      */
-    public function setFormatter(\AIOSEO\Vendor\Monolog\Formatter\FormatterInterface $formatter)
+    public function setFormatter(FormatterInterface $formatter)
     {
         foreach ($this->handlers as $handler) {
             $handler->setFormatter($formatter);

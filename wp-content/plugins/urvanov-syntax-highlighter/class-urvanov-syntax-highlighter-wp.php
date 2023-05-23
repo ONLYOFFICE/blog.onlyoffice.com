@@ -137,7 +137,7 @@ class Urvanov_Syntax_Highlighter_Settings_WP {
         }
         if (!self::$js_strings) {
             self::$js_strings = array(
-                'copy' => Urvanov_Syntax_Highlighter_Global::urvanov__('Press %s to Copy, %s to Paste'),
+                'copy' => Urvanov_Syntax_Highlighter_Global::urvanov__('Copied to the clipboard'),
                 'minimize' => Urvanov_Syntax_Highlighter_Global::urvanov__('Click To Expand Code')
             );
         }
@@ -1024,7 +1024,7 @@ class Human {
         // Preview checkbox
         self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::PREVIEW, Urvanov_Syntax_Highlighter_Global::urvanov__('Enable Live Preview')), FALSE, FALSE);
         echo '</select><span class="urvanov-syntax-highlighter-span-10"></span>';
-        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::ENQUEUE_THEMES, Urvanov_Syntax_Highlighter_Global::urvanov__('Enqueue themes in the header (more efficient).') . self::help_button('http://aramk.com/blog/2012/01/07/enqueuing-themes-and-fonts-in-crayon/')));
+        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::ENQUEUE_THEMES, Urvanov_Syntax_Highlighter_Global::urvanov__('Enqueue themes in the header (more efficient).') . self::help_button('https://github.com/urvanov-ru/crayon-syntax-highlighter/wiki/Enqueuing-Themes-and-Fonts-in-Crayon')));
         // Check if theme from db is loaded
         if ($missing_theme) {
             echo '<span class="urvanov-syntax-highlighter-error">', sprintf(Urvanov_Syntax_Highlighter_Global::urvanov__('The selected theme with id %s could not be loaded'), '<strong>' . $db_theme . '</strong>'), '. </span>';
@@ -1055,7 +1055,7 @@ class Human {
             return;
         }
         echo '<div style="height:10px;"></div>';
-        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::ENQUEUE_FONTS, Urvanov_Syntax_Highlighter_Global::urvanov__('Enqueue fonts in the header (more efficient).') . self::help_button('http://aramk.com/blog/2012/01/07/enqueuing-themes-and-fonts-in-crayon/')));
+        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::ENQUEUE_FONTS, Urvanov_Syntax_Highlighter_Global::urvanov__('Enqueue fonts in the header (more efficient).') . self::help_button('https://github.com/urvanov-ru/crayon-syntax-highlighter/wiki/Enqueuing-Themes-and-Fonts-in-Crayon')));
     }
 
     public static function code($editor = FALSE) {
@@ -1095,19 +1095,19 @@ class Human {
     }
 
     public static function tags() {
-        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::INLINE_TAG, Urvanov_Syntax_Highlighter_Global::urvanov__('Capture Inline Tags') . self::help_button('http://aramk.com/blog/2012/03/07/inline-crayons/')));
-        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::INLINE_WRAP, Urvanov_Syntax_Highlighter_Global::urvanov__('Wrap Inline Tags') . self::help_button('http://aramk.com/blog/2012/03/07/inline-crayons/')));
+        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::INLINE_TAG, Urvanov_Syntax_Highlighter_Global::urvanov__('Capture Inline Tags') . self::help_button('https://github.com/urvanov-ru/crayon-syntax-highlighter/wiki/Inline-Tags,-%60Backquotes%60-and-Crayons-in-Comments')));
+        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::INLINE_WRAP, Urvanov_Syntax_Highlighter_Global::urvanov__('Wrap Inline Tags') . self::help_button('https://github.com/urvanov-ru/crayon-syntax-highlighter/wiki/Inline-Tags,-%60Backquotes%60-and-Crayons-in-Comments')));
         self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::CODE_TAG_CAPTURE, Urvanov_Syntax_Highlighter_Global::urvanov__('Capture &lt;code&gt; as')), FALSE);
         echo ' ';
         self::dropdown(Urvanov_Syntax_Highlighter_Settings::CODE_TAG_CAPTURE_TYPE, FALSE);
-        echo self::help_button('http://aramk.com/blog/2012/03/07/inline-crayons/') . '<br/>';
-        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::BACKQUOTE, Urvanov_Syntax_Highlighter_Global::urvanov__('Capture `backquotes` as &lt;code&gt;') . self::help_button('http://aramk.com/blog/2012/03/07/inline-crayons/')));
-        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::CAPTURE_PRE, Urvanov_Syntax_Highlighter_Global::urvanov__('Capture &lt;pre&gt; tags as Crayons') . self::help_button('http://aramk.com/blog/2011/12/27/mini-tags-in-crayon/')));
+        echo self::help_button('https://github.com/urvanov-ru/crayon-syntax-highlighter/wiki/Inline-Tags,-%60Backquotes%60-and-Crayons-in-Comments') . '<br/>';
+        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::BACKQUOTE, Urvanov_Syntax_Highlighter_Global::urvanov__('Capture `backquotes` as &lt;code&gt;') . self::help_button('https://github.com/urvanov-ru/crayon-syntax-highlighter/wiki/Inline-Tags,-%60Backquotes%60-and-Crayons-in-Comments')));
+        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::CAPTURE_PRE, Urvanov_Syntax_Highlighter_Global::urvanov__('Capture &lt;pre&gt; tags as Crayons') . self::help_button('https://github.com/urvanov-ru/crayon-syntax-highlighter/wiki/Mini-Tags-and-Plain-Tags-in-Crayon')));
 
-        echo '<div class="note" style="width: 350px;">', sprintf(Urvanov_Syntax_Highlighter_Global::urvanov__("Using this markup for Mini Tags and Inline tags is now %sdeprecated%s! Use the %sTag Editor%s instead and convert legacy tags."), '<a href="http://aramk.com/blog/2011/12/27/mini-tags-in-crayon/" target="_blank">', '</a>', '<a href="http://aramk.com/blog/2012/03/25/urvanov-syntax-highlighter-tag-editor/" target="_blank">', '</a>'), '</div>';
-        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::CAPTURE_MINI_TAG, Urvanov_Syntax_Highlighter_Global::urvanov__('Capture Mini Tags like [php][/php] as Crayons.') . self::help_button('http://aramk.com/blog/2011/12/27/mini-tags-in-crayon/')));
-        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::INLINE_TAG_CAPTURE, Urvanov_Syntax_Highlighter_Global::urvanov__('Capture Inline Tags like {php}{/php} inside sentences.') . self::help_button('http://aramk.com/blog/2012/03/07/inline-crayons/')));
-        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::PLAIN_TAG, Urvanov_Syntax_Highlighter_Global::urvanov__('Enable [plain][/plain] tag.') . self::help_button('http://aramk.com/blog/2011/12/27/mini-tags-in-crayon/')));
+        echo '<div class="note" style="width: 350px;">', sprintf(Urvanov_Syntax_Highlighter_Global::urvanov__("Using this markup for Mini Tags and Inline tags is now %sdeprecated%s! Use the %sTag Editor%s instead and convert legacy tags."), '<a href="https://github.com/urvanov-ru/crayon-syntax-highlighter/wiki/Mini-Tags-and-Plain-Tags-in-Crayon" target="_blank">', '</a>', '<a href="http://aramk.com/blog/2012/03/25/urvanov-syntax-highlighter-tag-editor/" target="_blank">', '</a>'), '</div>';
+        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::CAPTURE_MINI_TAG, Urvanov_Syntax_Highlighter_Global::urvanov__('Capture Mini Tags like [php][/php] as Crayons.') . self::help_button('https://github.com/urvanov-ru/crayon-syntax-highlighter/wiki/Mini-Tags-and-Plain-Tags-in-Crayon')));
+        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::INLINE_TAG_CAPTURE, Urvanov_Syntax_Highlighter_Global::urvanov__('Capture Inline Tags like {php}{/php} inside sentences.') . self::help_button('https://github.com/urvanov-ru/crayon-syntax-highlighter/wiki/Inline-Tags,-%60Backquotes%60-and-Crayons-in-Comments')));
+        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::PLAIN_TAG, Urvanov_Syntax_Highlighter_Global::urvanov__('Enable [plain][/plain] tag.') . self::help_button('https://github.com/urvanov-ru/crayon-syntax-highlighter/wiki/Mini-Tags-and-Plain-Tags-in-Crayon')));
     }
 
     public static function files() {
@@ -1205,8 +1205,8 @@ class Human {
         $developer = '<strong>' . Urvanov_Syntax_Highlighter_Global::urvanov__('Developer') . ':</strong> ' . '<a href="' . $URVANOV_SYNTAX_HIGHLIGHTER_AUTHOR_SITE . '" target="_blank">' . $URVANOV_SYNTAX_HIGHLIGHTER_AUTHOR . '</a>';
         $translators = '<strong>' . Urvanov_Syntax_Highlighter_Global::urvanov__('Translators') . ':</strong> ' .
             '
-            Arabic (<a href="http://djennadhamza.eb2a.com/" target="_blank">Djennad Hamza</a>),
-            Chinese Simplified (<a href="http://smerpup.com/" target="_blank">Dezhi Liu</a>, <a href="http://neverno.me/" target="_blank">Jash Yin</a>),
+            Arabic (Djennad Hamza),
+            Chinese Simplified (<a href="http://smerpup.com/" target="_blank">Dezhi Liu</a>, Jash Yin),
             Chinese Traditional (<a href="http://www.arefly.com/" target="_blank">Arefly</a>),
             Dutch (<a href="https://twitter.com/RobinRoelofsen" target="_blank">Robin Roelofsen</a>, <a href="https://twitter.com/#!/chilionsnoek" target="_blank">Chilion Snoek</a>),
             French (<a href="https://vhf.github.io" target="_blank">Victor Felder</a>),
@@ -1224,7 +1224,7 @@ class Human {
             Slovak (<a href="https://twitter.com/#!/webhostgeeks" target="_blank">webhostgeeks</a>),
             Slovenian (<a href="http://jodlajodla.si/" target="_blank">Jan Su&#353;nik</a>),
             Spanish (<a href="http://www.hbravo.com/" target="_blank">Hermann Bravo</a>),
-            Tamil (<a href="http://kks21199.mrgoogleglass.com/" target="_blank">KKS21199</a>),
+            Tamil (KKS21199),
             Turkish (<a href="http://hakanertr.wordpress.com" target="_blank">Hakan</a>),
             Ukrainian (<a href="http://getvoip.com/blog" target="_blank">Michael Yunat</a>)';
 

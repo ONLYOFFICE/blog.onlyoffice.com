@@ -51,13 +51,13 @@ class GetSmsEventReportEvents implements \WPMailSMTP\Vendor\SendinBlue\Client\Mo
      *
      * @var string[]
      */
-    protected static $swaggerTypes = ['phoneNumber' => 'string', 'date' => '\\DateTime', 'messageId' => 'string', 'event' => 'string', 'reason' => 'string', 'reply' => 'string', 'tag' => 'string'];
+    protected static $swaggerTypes = ['phoneNumber' => 'string', 'date' => 'string', 'messageId' => 'string', 'event' => 'string', 'reason' => 'string', 'reply' => 'string', 'tag' => 'string'];
     /**
      * Array of property to format mappings. Used for (de)serialization
      *
      * @var string[]
      */
-    protected static $swaggerFormats = ['phoneNumber' => null, 'date' => 'date-time', 'messageId' => null, 'event' => null, 'reason' => null, 'reply' => null, 'tag' => null];
+    protected static $swaggerFormats = ['phoneNumber' => null, 'date' => null, 'messageId' => null, 'event' => null, 'reason' => null, 'reply' => null, 'tag' => null];
     /**
      * Array of property to type mappings. Used for (de)serialization
      *
@@ -180,18 +180,6 @@ class GetSmsEventReportEvents implements \WPMailSMTP\Vendor\SendinBlue\Client\Mo
     public function listInvalidProperties()
     {
         $invalidProperties = [];
-        if ($this->container['phoneNumber'] === null) {
-            $invalidProperties[] = "'phoneNumber' can't be null";
-        }
-        if ($this->container['date'] === null) {
-            $invalidProperties[] = "'date' can't be null";
-        }
-        if ($this->container['messageId'] === null) {
-            $invalidProperties[] = "'messageId' can't be null";
-        }
-        if ($this->container['event'] === null) {
-            $invalidProperties[] = "'event' can't be null";
-        }
         $allowedValues = $this->getEventAllowableValues();
         if (!\is_null($this->container['event']) && !\in_array($this->container['event'], $allowedValues, \true)) {
             $invalidProperties[] = \sprintf("invalid value for 'event', must be one of '%s'", \implode("', '", $allowedValues));
@@ -232,7 +220,7 @@ class GetSmsEventReportEvents implements \WPMailSMTP\Vendor\SendinBlue\Client\Mo
     /**
      * Gets date
      *
-     * @return \DateTime
+     * @return string
      */
     public function getDate()
     {
@@ -241,7 +229,7 @@ class GetSmsEventReportEvents implements \WPMailSMTP\Vendor\SendinBlue\Client\Mo
     /**
      * Sets date
      *
-     * @param \DateTime $date UTC date-time on which the event has been generated
+     * @param string $date UTC date-time on which the event has been generated
      *
      * @return $this
      */
@@ -290,7 +278,7 @@ class GetSmsEventReportEvents implements \WPMailSMTP\Vendor\SendinBlue\Client\Mo
     public function setEvent($event)
     {
         $allowedValues = $this->getEventAllowableValues();
-        if (!\in_array($event, $allowedValues, \true)) {
+        if (!\is_null($event) && !\in_array($event, $allowedValues, \true)) {
             throw new \InvalidArgumentException(\sprintf("Invalid value for 'event', must be one of '%s'", \implode("', '", $allowedValues)));
         }
         $this->container['event'] = $event;

@@ -33,6 +33,7 @@
     delete_option(TRINITY_AUDIO_BULK_UPDATE_HEARTBEAT);
     delete_option(TRINITY_AUDIO_TRANSLATE);
     delete_option(TRINITY_AUDIO_FIRST_CHANGES_SAVE);
+    delete_option(TRINITY_AUDIO_VOICE_ID);
 
     trinity_send_stat(TRINITY_AUDIO_UPDATE_PLUGIN_DETAILS_URL, 'deleted', false);
   } catch (Exception $e) {

@@ -18,13 +18,13 @@ use AIOSEO\Vendor\Monolog\Logger;
  * @author Christophe Coevoet <stof@notk.org>
  * @author Kirill chEbba Chebunin <iam@chebba.org>
  */
-class WildfireFormatter extends \AIOSEO\Vendor\Monolog\Formatter\NormalizerFormatter
+class WildfireFormatter extends NormalizerFormatter
 {
     const TABLE = 'table';
     /**
      * Translates Monolog log levels to Wildfire levels.
      */
-    private $logLevels = array(\AIOSEO\Vendor\Monolog\Logger::DEBUG => 'LOG', \AIOSEO\Vendor\Monolog\Logger::INFO => 'INFO', \AIOSEO\Vendor\Monolog\Logger::NOTICE => 'INFO', \AIOSEO\Vendor\Monolog\Logger::WARNING => 'WARN', \AIOSEO\Vendor\Monolog\Logger::ERROR => 'ERROR', \AIOSEO\Vendor\Monolog\Logger::CRITICAL => 'ERROR', \AIOSEO\Vendor\Monolog\Logger::ALERT => 'ERROR', \AIOSEO\Vendor\Monolog\Logger::EMERGENCY => 'ERROR');
+    private $logLevels = array(Logger::DEBUG => 'LOG', Logger::INFO => 'INFO', Logger::NOTICE => 'INFO', Logger::WARNING => 'WARN', Logger::ERROR => 'ERROR', Logger::CRITICAL => 'ERROR', Logger::ALERT => 'ERROR', Logger::EMERGENCY => 'ERROR');
     /**
      * {@inheritdoc}
      */

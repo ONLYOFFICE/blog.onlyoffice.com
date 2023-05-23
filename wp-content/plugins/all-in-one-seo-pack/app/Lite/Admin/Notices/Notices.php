@@ -63,6 +63,7 @@ class Notices extends CommonNotices\Notices {
 			if ( $notification->exists() ) {
 				Models\Notification::deleteNotificationByName( 'woo-upsell' );
 			}
+
 			return;
 		}
 

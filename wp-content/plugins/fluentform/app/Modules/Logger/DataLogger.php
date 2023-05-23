@@ -120,8 +120,8 @@ class DataLogger
 
     public function getAllLogs()
     {
-        $limit = intval($_REQUEST['per_page']);
-        $pageNumber = intval($_REQUEST['page_number']);
+        $limit = intval($this->app->request->get('per_page'));
+        $pageNumber = intval($this->app->request->get('page_number'));
 
         $skip = ($pageNumber - 1) * $limit;
 
@@ -138,19 +138,19 @@ class DataLogger
         // ->whereIn('fluentform_logs.source_type', ['submission_item', 'form_item']);
 
 
-        if ($parentSourceId = ArrayHelper::get($_REQUEST, 'parent_source_id')) {
+        if ($parentSourceId = $this->app->request->get('parent_source_id')) {
             $logsQuery = $logsQuery->where('fluentform_logs.parent_source_id', intval($parentSourceId));
         }
 
-        if ($status = ArrayHelper::get($_REQUEST, 'status')) {
+        if ($status = $this->app->request->get('status')) {
             $logsQuery = $logsQuery->where('fluentform_logs.status', sanitize_text_field($status));
         }
 
-        if ($component = ArrayHelper::get($_REQUEST, 'component')) {
+        if ($component = $this->app->request->get('component')) {
             $logsQuery = $logsQuery->where('fluentform_logs.component', sanitize_text_field($component));
         }
 
-        if ($formId = ArrayHelper::get($_REQUEST, 'form_id')) {
+        if ($formId = $this->app->request->get('form_id')) {
             $logsQuery = $logsQuery->where('fluentform_forms.id', intval($formId));
         }
 
@@ -180,8 +180,8 @@ class DataLogger
 
     public function getApiLogs()
     {
-        $limit = intval($_REQUEST['per_page']);
-        $pageNumber = intval($_REQUEST['page_number']);
+        $limit = intval($this->app->request->get('per_page'));
+        $pageNumber = intval($this->app->request->get('page_number'));
 
         $skip = ($pageNumber - 1) * $limit;
         global $wpdb;
@@ -200,15 +200,15 @@ class DataLogger
             ->orderBy('ff_scheduled_actions.id', 'DESC');
 
 
-        if ($formId = ArrayHelper::get($_REQUEST, 'form_id')) {
+        if ($formId = $this->app->request->get('form_id')) {
             $logsQuery = $logsQuery->where('ff_scheduled_actions.form_id', intval($formId));
         }
 
-        if ($status = ArrayHelper::get($_REQUEST, 'status')) {
+        if ($status = $this->app->request->get('status')) {
             $logsQuery = $logsQuery->where('ff_scheduled_actions.status', $status);
         }
 
-        if ($component = ArrayHelper::get($_REQUEST, 'component')) {
+        if ($component = $this->app->request->get('component')) {
             $logsQuery = $logsQuery->where('ff_scheduled_actions.action', $component);
         }
 
@@ -236,7 +236,7 @@ class DataLogger
     public function deleteLogsByIds($ids = [])
     {
         if (!$ids) {
-            $ids = wp_unslash($_REQUEST['log_ids']);
+            $ids = wp_unslash($this->app->request->get('log_ids'));
         }
 
         if (!$ids) {
@@ -257,7 +257,7 @@ class DataLogger
     public function deleteApiLogsByIds($ids = [])
     {
         if (!$ids) {
-            $ids = wp_unslash($_REQUEST['log_ids']);
+            $ids = wp_unslash($this->app->request->get('log_ids'));
         }
 
         if (!$ids) {

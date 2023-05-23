@@ -493,7 +493,7 @@
                 filtered = css;
             } else {
                 // Filter all others for UrvanovSyntaxHighlighter CSS
-                filtered = css.filter('[href*="urvanov-syntax-highlighter-syntax-highlighter"], [href*="min/"]');
+                filtered = css.filter('[href*="urvanov-syntax-highlighter"], [href*="min/"]');
             }
             filtered.each(function () {
                 var string = base.getHtmlString($(this));
@@ -508,15 +508,11 @@
             }
 
             var plain = urvanov_syntax_highlighters[uid].plain;
+            
+            var plainTextCode = plain[0].value;
 
-            base.togglePlain(uid, true, true);
-            toggleToolbar(uid, true);
-
-            var key = urvanov_syntax_highlighters[uid].mac ? '\u2318' : 'CTRL';
-            var text = strings.copy;
-            text = text.replace(/%s/, key + '+C');
-            text = text.replace(/%s/, key + '+V');
-            urvanovSyntaxHighlighterInfo(uid, text);
+            navigator.clipboard.writeText(plainTextCode)
+                .then(value => urvanovSyntaxHighlighterInfo(uid, strings.copy));
             return false;
         };
 

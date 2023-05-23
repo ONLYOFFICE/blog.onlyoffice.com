@@ -3,6 +3,7 @@
 namespace WPMailSMTP;
 
 use WPMailSMTP\Helpers\Crypto;
+use WPMailSMTP\Reports\Emails\Summary as SummaryReportEmail;
 use WPMailSMTP\UsageTracking\UsageTracking;
 
 /**
@@ -27,7 +28,7 @@ class Options {
 	 * @var array Map of all the default options of the plugin.
 	 */
 	private static $map = [
-		'mail'        => [
+		'mail'                 => [
 			'from_name',
 			'from_email',
 			'mailer',
@@ -35,7 +36,7 @@ class Options {
 			'from_name_force',
 			'from_email_force',
 		],
-		'smtp'        => [
+		'smtp'                 => [
 			'host',
 			'port',
 			'encryption',
@@ -44,43 +45,56 @@ class Options {
 			'user',
 			'pass',
 		],
-		'gmail'       => [
+		'gmail'                => [
 			'client_id',
 			'client_secret',
 		],
-		'outlook'     => [
+		'outlook'              => [
 			'client_id',
 			'client_secret',
 		],
-		'zoho'        => [
+		'zoho'                 => [
 			'domain',
 			'client_id',
 			'client_secret',
 		],
-		'amazonses'   => [
+		'amazonses'            => [
 			'client_id',
 			'client_secret',
 			'region',
 		],
-		'mailgun'     => [
+		'mailgun'              => [
 			'api_key',
 			'domain',
 			'region',
 		],
-		'sendgrid'    => [
+		'sendgrid'             => [
 			'api_key',
+			'domain',
 		],
-		'smtpcom'     => [
+		'sparkpost'            => [
+			'api_key',
+			'region',
+		],
+		'postmark'             => [
+			'server_api_token',
+			'message_stream',
+		],
+		'smtpcom'              => [
 			'api_key',
 			'channel',
 		],
-		'sendinblue'  => [
+		'sendinblue'           => [
+			'api_key',
+			'domain',
+		],
+		'sendlayer'            => [
 			'api_key',
 		],
-		'pepipostapi' => [
+		'pepipostapi'          => [
 			'api_key',
 		],
-		'pepipost'    => [
+		'pepipost'             => [
 			'host',
 			'port',
 			'encryption',
@@ -88,9 +102,49 @@ class Options {
 			'user',
 			'pass',
 		],
-		'license'     => [
+		'license'              => [
 			'key',
 		],
+		'alert_email'          => [
+			'enabled',
+			'connections',
+		],
+		'alert_slack_webhook'  => [
+			'enabled',
+			'connections',
+		],
+		'alert_twilio_sms'     => [
+			'enabled',
+			'connections',
+		],
+		'alert_custom_webhook' => [
+			'enabled',
+			'connections',
+		],
+	];
+
+	/**
+	 * List of all mailers (except PHP default mailer 'mail').
+	 *
+	 * @since 3.3.0
+	 *
+	 * @var string[]
+	 */
+	public static $mailers = [
+		'sendlayer',
+		'smtpcom',
+		'sendinblue',
+		'amazonses',
+		'gmail',
+		'mailgun',
+		'outlook',
+		'postmark',
+		'sendgrid',
+		'sparkpost',
+		'zoho',
+		'smtp',
+		'pepipost',
+		'pepipostapi',
 	];
 
 	/**
@@ -103,34 +157,40 @@ class Options {
 	const META_KEY = 'wp_mail_smtp';
 
 	/**
-	 * All the plugin options.
+	 * All instances of Options class that should be notified about options update.
 	 *
-	 * @since 1.0.0
+	 * @since 3.7.0
+	 *
+	 * @var Options[]
+	 */
+	protected static $update_observers;
+
+	/**
+	 * Options data.
+	 *
+	 * @since 3.7.0
 	 *
 	 * @var array
 	 */
-	private $_options = array();
+	protected $options = [];
 
 	/**
 	 * Init the Options class.
 	 * TODO: add a flag to process without retrieving const values.
 	 *
 	 * @since 1.0.0
+	 * @since 3.3.0 Deprecated instantiation via new keyword. `Options::init()` must be used.
 	 */
 	public function __construct() {
+
+		// Store all class instances that will be notified about options update.
+		static::$update_observers[] = $this;
+
 		$this->populate_options();
 	}
 
 	/**
-	 * Initialize all the options, used for chaining.
-	 *
-	 * One-liner:
-	 *      Options::init()->get('smtp', 'host');
-	 *      Options::init()->is_mailer_active( 'pepipost' );
-	 *
-	 * Or multiple-usage:
-	 *      $options = new Options();
-	 *      $options->get('smtp', 'host');
+	 * Initialize all the options.
 	 *
 	 * @since 1.0.0
 	 *
@@ -148,6 +208,18 @@ class Options {
 	}
 
 	/**
+	 * Whether current class is a main options.
+	 *
+	 * @since 3.7.0
+	 *
+	 * @var bool
+	 */
+	protected function is_main_options() {
+
+		return true;
+	}
+
+	/**
 	 * Default options that are saved on plugin activation.
 	 *
 	 * @since 1.3.0
@@ -157,20 +229,23 @@ class Options {
 	 */
 	public static function get_defaults() {
 
-		return array(
-			'mail' => array(
+		return [
+			'mail'    => [
 				'from_email'       => get_option( 'admin_email' ),
 				'from_name'        => get_bloginfo( 'name' ),
 				'mailer'           => 'mail',
 				'return_path'      => false,
 				'from_email_force' => true,
 				'from_name_force'  => false,
-			),
-			'smtp' => array(
+			],
+			'smtp'    => [
 				'autotls' => true,
 				'auth'    => true,
-			),
-		);
+			],
+			'general' => [
+				SummaryReportEmail::SETTINGS_SLUG => ! is_multisite() ? false : true,
+			],
+		];
 	}
 
 	/**
@@ -181,7 +256,7 @@ class Options {
 	 */
 	protected function populate_options() {
 
-		$this->_options = apply_filters( 'wp_mail_smtp_populate_options', get_option( self::META_KEY, [] ) );
+		$this->options = apply_filters( 'wp_mail_smtp_populate_options', get_option( static::META_KEY, [] ) );
 	}
 
 	/**
@@ -195,7 +270,7 @@ class Options {
 	 */
 	public function get_all() {
 
-		$options = $this->_options;
+		$options = $this->options;
 
 		foreach ( $options as $group => $g_value ) {
 			foreach ( $g_value as $key => $value ) {
@@ -203,7 +278,7 @@ class Options {
 			}
 		}
 
-		return apply_filters( 'wp_mail_smtp_options_get_all', $options );
+		return $this->is_main_options() ? apply_filters( 'wp_mail_smtp_options_get_all', $options ) : $options;
 	}
 
 	/**
@@ -227,7 +302,7 @@ class Options {
 		 * Get the values saved in DB.
 		 * If plugin is configured with constants right from the start - this will not have all the values.
 		 */
-		$options = isset( $this->_options[ $group ] ) ? $this->_options[ $group ] : array();
+		$options = isset( $this->options[ $group ] ) ? $this->options[ $group ] : array();
 
 		// We need to process certain constants-aware options through actual constants.
 		if ( isset( self::$map[ $group ] ) ) {
@@ -236,7 +311,7 @@ class Options {
 			}
 		}
 
-		return apply_filters( 'wp_mail_smtp_options_get_group', $options, $group );
+		return $this->is_main_options() ? apply_filters( 'wp_mail_smtp_options_get_group', $options, $group ) : $options;
 	}
 
 	/**
@@ -266,9 +341,9 @@ class Options {
 		// We don't have a const value.
 		if ( $value === null ) {
 			// Ordinary database or default values.
-			if ( isset( $this->_options[ $group ] ) ) {
+			if ( isset( $this->options[ $group ] ) ) {
 				// Get the options key of a group.
-				if ( isset( $this->_options[ $group ][ $key ] ) ) {
+				if ( isset( $this->options[ $group ][ $key ] ) ) {
 					$value = $this->get_existing_option_value( $group, $key );
 				} else {
 					$value = $this->postprocess_key_defaults( $group, $key );
@@ -292,7 +367,7 @@ class Options {
 			$value = stripslashes( $value );
 		}
 
-		return apply_filters( 'wp_mail_smtp_options_get', $value, $group, $key );
+		return $this->is_main_options() ? apply_filters( 'wp_mail_smtp_options_get', $value, $group, $key ) : $value;
 	}
 
 	/**
@@ -309,13 +384,13 @@ class Options {
 
 		if ( $group === 'smtp' && $key === 'pass' ) {
 			try {
-				return Crypto::decrypt( $this->_options[ $group ][ $key ] );
+				return Crypto::decrypt( $this->options[ $group ][ $key ] );
 			} catch ( \Exception $e ) {
-				return $this->_options[ $group ][ $key ];
+				return $this->options[ $group ][ $key ];
 			}
 		}
 
-		return $this->_options[ $group ][ $key ];
+		return $this->options[ $group ][ $key ];
 	}
 
 	/**
@@ -351,7 +426,7 @@ class Options {
 				break;
 
 			case 'region':
-				$value = $group === 'mailgun' ? 'US' : $value;
+				$value = $group === 'mailgun' || $group === 'sparkpost' ? 'US' : $value;
 				break;
 
 			case 'auth':
@@ -383,6 +458,7 @@ class Options {
 	 * @since 1.6.0 Added Sendinblue.
 	 * @since 1.7.0 Added Do Not Send.
 	 * @since 1.8.0 Added Pepipost API.
+	 * @since 3.6.0 Added Debug Events Retention Period.
 	 *
 	 * @param string $group
 	 * @param string $key
@@ -458,6 +534,16 @@ class Options {
 					case 'pass':
 						/** @noinspection PhpUndefinedConstantInspection */
 						$return = $this->is_const_defined( $group, $key ) ? WPMS_SMTP_PASS : $value;
+						break;
+				}
+
+				break;
+
+			case 'sendlayer':
+				switch ( $key ) {
+					case 'api_key':
+						/** No inspection comment @noinspection PhpUndefinedConstantInspection */
+						$return = $this->is_const_defined( $group, $key ) ? WPMS_SENDLAYER_API_KEY : $value;
 						break;
 				}
 
@@ -551,6 +637,38 @@ class Options {
 						/** @noinspection PhpUndefinedConstantInspection */
 						$return = $this->is_const_defined( $group, $key ) ? WPMS_SENDGRID_API_KEY : $value;
 						break;
+					case 'domain':
+						/** @noinspection PhpUndefinedConstantInspection */
+						$return = $this->is_const_defined( $group, $key ) ? WPMS_SENDGRID_DOMAIN : $value;
+						break;
+				}
+
+				break;
+
+			case 'sparkpost':
+				switch ( $key ) {
+					case 'api_key':
+						/** No inspection comment @noinspection PhpUndefinedConstantInspection */
+						$return = $this->is_const_defined( $group, $key ) ? WPMS_SPARKPOST_API_KEY : $value;
+						break;
+					case 'region':
+						/** No inspection comment @noinspection PhpUndefinedConstantInspection */
+						$return = $this->is_const_defined( $group, $key ) ? WPMS_SPARKPOST_REGION : $value;
+						break;
+				}
+
+				break;
+
+			case 'postmark':
+				switch ( $key ) {
+					case 'server_api_token':
+						/** No inspection comment @noinspection PhpUndefinedConstantInspection */
+						$return = $this->is_const_defined( $group, $key ) ? WPMS_POSTMARK_SERVER_API_TOKEN : $value;
+						break;
+					case 'message_stream':
+						/** No inspection comment @noinspection PhpUndefinedConstantInspection */
+						$return = $this->is_const_defined( $group, $key ) ? WPMS_POSTMARK_MESSAGE_STREAM : $value;
+						break;
 				}
 
 				break;
@@ -575,6 +693,10 @@ class Options {
 						/** @noinspection PhpUndefinedConstantInspection */
 						$return = $this->is_const_defined( $group, $key ) ? WPMS_SENDINBLUE_API_KEY : $value;
 						break;
+					case 'domain':
+						/** @noinspection PhpUndefinedConstantInspection */
+						$return = $this->is_const_defined( $group, $key ) ? WPMS_SENDINBLUE_DOMAIN : $value;
+						break;
 				}
 
 				break;
@@ -584,6 +706,51 @@ class Options {
 					case 'api_key':
 						/** @noinspection PhpUndefinedConstantInspection */
 						$return = $this->is_const_defined( $group, $key ) ? WPMS_PEPIPOST_API_KEY : $value;
+						break;
+				}
+
+			case 'alert_email':
+				switch ( $key ) {
+					case 'connections':
+						$return = $this->is_const_defined( $group, $key ) ? [ [ 'send_to' => WPMS_ALERT_EMAIL_SEND_TO ] ] : $value;
+						break;
+				}
+
+				break;
+
+			case 'alert_slack_webhook':
+				switch ( $key ) {
+					case 'connections':
+						$return = $this->is_const_defined( $group, $key ) ? [ [ 'webhook_url' => WPMS_ALERT_SLACK_WEBHOOK_URL ] ] : $value;
+						break;
+				}
+
+				break;
+
+			case 'alert_twilio_sms':
+				switch ( $key ) {
+					case 'connections':
+						if ( $this->is_const_defined( $group, $key ) ) {
+							$return = [
+								[
+									'account_sid'       => WPMS_ALERT_TWILIO_SMS_ACCOUNT_SID,
+									'auth_token'        => WPMS_ALERT_TWILIO_SMS_AUTH_TOKEN,
+									'from_phone_number' => WPMS_ALERT_TWILIO_SMS_FROM_PHONE_NUMBER,
+									'to_phone_number'   => WPMS_ALERT_TWILIO_SMS_TO_PHONE_NUMBER,
+								],
+							];
+						} else {
+							$return = $value;
+						}
+						break;
+				}
+
+				break;
+
+			case 'alert_custom_webhook':
+				switch ( $key ) {
+					case 'connections':
+						$return = $this->is_const_defined( $group, $key ) ? [ [ 'webhook_url' => WPMS_ALERT_CUSTOM_WEBHOOK_URL ] ] : $value;
 						break;
 				}
 
@@ -604,6 +771,22 @@ class Options {
 					case 'do_not_send':
 						/** @noinspection PhpUndefinedConstantInspection */
 						$return = $this->is_const_defined( $group, $key ) ? WPMS_DO_NOT_SEND : $value;
+						break;
+					case SummaryReportEmail::SETTINGS_SLUG:
+						/** No inspection comment @noinspection PhpUndefinedConstantInspection */
+						$return = $this->is_const_defined( $group, $key ) ?
+							$this->parse_boolean( WPMS_SUMMARY_REPORT_EMAIL_DISABLED ) :
+							$value;
+						break;
+				}
+
+				break;
+
+			case 'debug_events':
+				switch ( $key ) {
+					case 'retention_period':
+						/** @noinspection PhpUndefinedConstantInspection */
+						$return = $this->is_const_defined( $group, $key ) ? intval( WPMS_DEBUG_EVENTS_RETENTION_PERIOD ) : $value;
 						break;
 				}
 
@@ -711,6 +894,15 @@ class Options {
 
 				break;
 
+			case 'sendlayer':
+				switch ( $key ) {
+					case 'api_key':
+						$return = defined( 'WPMS_SENDLAYER_API_KEY' ) && WPMS_SENDLAYER_API_KEY;
+						break;
+				}
+
+				break;
+
 			case 'gmail':
 				switch ( $key ) {
 					case 'client_id':
@@ -785,6 +977,33 @@ class Options {
 					case 'api_key':
 						$return = defined( 'WPMS_SENDGRID_API_KEY' ) && WPMS_SENDGRID_API_KEY;
 						break;
+					case 'domain':
+						$return = defined( 'WPMS_SENDGRID_DOMAIN' ) && WPMS_SENDGRID_DOMAIN;
+						break;
+				}
+
+				break;
+
+			case 'sparkpost':
+				switch ( $key ) {
+					case 'api_key':
+						$return = defined( 'WPMS_SPARKPOST_API_KEY' ) && WPMS_SPARKPOST_API_KEY;
+						break;
+					case 'region':
+						$return = defined( 'WPMS_SPARKPOST_REGION' ) && WPMS_SPARKPOST_REGION;
+						break;
+				}
+
+				break;
+
+			case 'postmark':
+				switch ( $key ) {
+					case 'server_api_token':
+						$return = defined( 'WPMS_POSTMARK_SERVER_API_TOKEN' ) && WPMS_POSTMARK_SERVER_API_TOKEN;
+						break;
+					case 'message_stream':
+						$return = defined( 'WPMS_POSTMARK_MESSAGE_STREAM' ) && WPMS_POSTMARK_MESSAGE_STREAM;
+						break;
 				}
 
 				break;
@@ -806,6 +1025,9 @@ class Options {
 					case 'api_key':
 						$return = defined( 'WPMS_SENDINBLUE_API_KEY' ) && WPMS_SENDINBLUE_API_KEY;
 						break;
+					case 'domain':
+						$return = defined( 'WPMS_SENDINBLUE_DOMAIN' ) && WPMS_SENDINBLUE_DOMAIN;
+						break;
 				}
 
 				break;
@@ -814,6 +1036,45 @@ class Options {
 				switch ( $key ) {
 					case 'api_key':
 						$return = defined( 'WPMS_PEPIPOST_API_KEY' ) && WPMS_PEPIPOST_API_KEY;
+						break;
+				}
+
+				break;
+
+			case 'alert_email':
+				switch ( $key ) {
+					case 'connections':
+						$return = defined( 'WPMS_ALERT_EMAIL_SEND_TO' ) && WPMS_ALERT_EMAIL_SEND_TO;
+						break;
+				}
+
+				break;
+
+			case 'alert_slack_webhook':
+				switch ( $key ) {
+					case 'connections':
+						$return = defined( 'WPMS_ALERT_SLACK_WEBHOOK_URL' ) && WPMS_ALERT_SLACK_WEBHOOK_URL;
+						break;
+				}
+
+				break;
+
+			case 'alert_twilio_sms':
+				switch ( $key ) {
+					case 'connections':
+						$return = defined( 'WPMS_ALERT_TWILIO_SMS_ACCOUNT_SID' ) && WPMS_ALERT_TWILIO_SMS_ACCOUNT_SID &&
+											defined( 'WPMS_ALERT_TWILIO_SMS_AUTH_TOKEN' ) && WPMS_ALERT_TWILIO_SMS_AUTH_TOKEN &&
+											defined( 'WPMS_ALERT_TWILIO_SMS_FROM_PHONE_NUMBER' ) && WPMS_ALERT_TWILIO_SMS_FROM_PHONE_NUMBER &&
+											defined( 'WPMS_ALERT_TWILIO_SMS_TO_PHONE_NUMBER' ) && WPMS_ALERT_TWILIO_SMS_TO_PHONE_NUMBER;
+						break;
+				}
+
+				break;
+
+			case 'alert_custom_webhook':
+				switch ( $key ) {
+					case 'connections':
+						$return = defined( 'WPMS_ALERT_CUSTOM_WEBHOOK_URL' ) && WPMS_ALERT_CUSTOM_WEBHOOK_URL;
 						break;
 				}
 
@@ -833,6 +1094,18 @@ class Options {
 					case 'do_not_send':
 						/** @noinspection PhpUndefinedConstantInspection */
 						$return = defined( 'WPMS_DO_NOT_SEND' ) && WPMS_DO_NOT_SEND;
+						break;
+					case SummaryReportEmail::SETTINGS_SLUG:
+						$return = defined( 'WPMS_SUMMARY_REPORT_EMAIL_DISABLED' );
+						break;
+				}
+
+				break;
+
+			case 'debug_events';
+				switch ( $key ) {
+					case 'retention_period':
+						$return = defined( 'WPMS_DEBUG_EVENTS_RETENTION_PERIOD' );
 						break;
 				}
 
@@ -866,17 +1139,36 @@ class Options {
 		$options = $this->process_mailer_specific_options( $options );
 		$options = apply_filters( 'wp_mail_smtp_options_set', $options );
 
-		// Whether to update existing options or to add these options only once if they don't exist yet.
-		if ( $once ) {
-			add_option( self::META_KEY, $options, '', 'no' ); // Do not autoload these options.
-		} else {
-			update_option( self::META_KEY, $options, 'no' );
-		}
-
-		// Now we need to re-cache values.
-		$this->populate_options();
+		$this->save_options( $options, $once );
 
 		do_action( 'wp_mail_smtp_options_set_after', $options );
+	}
+
+	/**
+	 * Save options to DB.
+	 *
+	 * @since 3.7.0
+	 *
+	 * @param array $options Options to save.
+	 * @param bool  $once    Whether to update existing options or to add these options only once.
+	 */
+	protected function save_options( $options, $once ) {
+
+		// Whether to update existing options or to add these options only once if they don't exist yet.
+		if ( $once ) {
+			add_option( static::META_KEY, $options, '', 'no' ); // Do not autoload these options.
+		} else {
+			if ( is_multisite() && WP::use_global_plugin_settings() ) {
+				update_blog_option( get_main_site_id(), static::META_KEY, $options );
+			} else {
+				update_option( static::META_KEY, $options, 'no' );
+			}
+		}
+
+		// Now we need to re-cache values of all instances.
+		foreach ( static::$update_observers as $observer ) {
+			$observer->populate_options();
+		}
 	}
 
 	/**
@@ -888,7 +1180,7 @@ class Options {
 	 *
 	 * @return array
 	 */
-	private function process_generic_options( $options ) { // phpcs:ignore
+	protected function process_generic_options( $options ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded, Generic.Metrics.NestingLevel.MaxExceeded
 
 		foreach ( (array) $options as $group => $keys ) {
 			foreach ( $keys as $option_name => $option_value ) {
@@ -896,8 +1188,14 @@ class Options {
 					case 'mail':
 						switch ( $option_name ) {
 							case 'from_name':
-							case 'mailer':
 								$options[ $group ][ $option_name ] = sanitize_text_field( $option_value );
+								break;
+							case 'mailer':
+								$mailer = sanitize_text_field( $option_value );
+
+								$mailer = in_array( $mailer, self::$mailers, true ) ? $mailer : 'mail';
+
+								$options[ $group ][ $option_name ] = $mailer;
 								break;
 							case 'from_email':
 								if ( filter_var( $option_value, FILTER_VALIDATE_EMAIL ) ) {
@@ -921,9 +1219,21 @@ class Options {
 							case 'do_not_send':
 							case 'am_notifications_hidden':
 							case 'email_delivery_errors_hidden':
+							case 'dashboard_widget_hidden':
 							case 'uninstall':
 							case UsageTracking::SETTINGS_SLUG:
+							case SummaryReportEmail::SETTINGS_SLUG:
 								$options[ $group ][ $option_name ] = (bool) $option_value;
+								break;
+						}
+
+					case 'debug_events':
+						switch ( $option_name ) {
+							case 'email_debug':
+								$options[ $group ][ $option_name ] = (bool) $option_value;
+								break;
+							case 'retention_period':
+								$options[ $group ][ $option_name ] = (int) $option_value;
 								break;
 						}
 				}
@@ -942,12 +1252,12 @@ class Options {
 	 *
 	 * @return array
 	 */
-	private function process_mailer_specific_options( $options ) { // phpcs:ignore
+	protected function process_mailer_specific_options( $options ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded, Generic.Metrics.NestingLevel.MaxExceeded
 
 		if (
 			! empty( $options['mail']['mailer'] ) &&
 			isset( $options[ $options['mail']['mailer'] ] ) &&
-			in_array( $options['mail']['mailer'], [ 'pepipost', 'pepipostapi', 'smtp', 'sendgrid', 'smtpcom', 'sendinblue', 'mailgun', 'gmail', 'outlook', 'zoho' ], true )
+			in_array( $options['mail']['mailer'], self::$mailers, true )
 		) {
 
 			$mailer = $options['mail']['mailer'];
@@ -957,7 +1267,7 @@ class Options {
 					case 'host': // smtp.
 					case 'user': // smtp.
 					case 'encryption': // smtp.
-					case 'region': // mailgun/amazonses.
+					case 'region': // mailgun/amazonses/sparkpost.
 						$options[ $mailer ][ $option_name ] = $this->is_const_defined( $mailer, $option_name ) ? '' : sanitize_text_field( $option_value );
 						break; // smtp.
 					case 'port':
@@ -978,16 +1288,18 @@ class Options {
 						if ( $mailer === 'smtp' && ! $this->is_const_defined( 'smtp', 'pass' ) ) {
 							try {
 								$options[ $mailer ][ $option_name ] = Crypto::encrypt( $option_value );
-							} catch ( \Exception $e ) {} // phpcs:ignore
+							} catch ( \Exception $e ) {} // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch, Squiz.Commenting.EmptyCatchComment.Missing, Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace
 						}
 						break;
 
-					case 'api_key': // mailgun/sendgrid/sendinblue/pepipostapi/smtpcom.
-					case 'domain': // mailgun/zoho.
+					case 'api_key': // mailgun/sendgrid/sendinblue/pepipostapi/smtpcom/sparkpost/sendlayer.
+					case 'domain': // mailgun/zoho/sendgrid/sendinblue.
 					case 'client_id': // gmail/outlook/amazonses/zoho.
 					case 'client_secret': // gmail/outlook/amazonses/zoho.
 					case 'auth_code': // gmail/outlook.
 					case 'channel': // smtpcom.
+					case 'server_api_token': // postmark.
+					case 'message_stream': // postmark.
 						$options[ $mailer ][ $option_name ] = $this->is_const_defined( $mailer, $option_name ) ? '' : sanitize_text_field( $option_value );
 						break;
 
@@ -1111,7 +1423,7 @@ class Options {
 	 */
 	public function get_all_raw() {
 
-		$options = $this->_options;
+		$options = $this->options;
 
 		foreach ( $options as $group => $g_value ) {
 			foreach ( $g_value as $key => $value ) {
@@ -1120,5 +1432,111 @@ class Options {
 		}
 
 		return $options;
+	}
+
+	/**
+	 * Parse boolean value from string.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string|boolean $value String or boolean value.
+	 *
+	 * @return boolean
+	 */
+	public function parse_boolean( $value ) {
+
+		// Return early if it's boolean.
+		if ( is_bool( $value ) ) {
+			return $value;
+		}
+
+		$value = trim( $value );
+
+		return $value === 'true';
+	}
+
+	/**
+	 * Get a message of a constant that was set inside wp-config.php file.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $constant Constant name.
+	 *
+	 * @return string
+	 */
+	public function get_const_set_message( $constant ) {
+
+		return sprintf( /* translators: %1$s - constant that was used; %2$s - file where it was used. */
+			esc_html__( 'The value of this field was set using a constant %1$s most likely inside %2$s of your WordPress installation.', 'wp-mail-smtp' ),
+			'<code>' . esc_html( $constant ) . '</code>',
+			'<code>wp-config.php</code>'
+		);
+	}
+
+	/**
+	 * Whether option was changed.
+	 * Can be used only before option save to DB.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $new_value Submitted value (e.g from $_POST).
+	 * @param string $group     Group key.
+	 * @param string $key       Option key.
+	 *
+	 * @return bool
+	 */
+	public function is_option_changed( $new_value, $group, $key ) {
+
+		$old_value = $this->get( $group, $key );
+
+		return $old_value !== $new_value;
+	}
+
+	/**
+	 * Whether constant was changed.
+	 * Can be used only for insecure options.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $group Group key.
+	 * @param string $key   Option key.
+	 *
+	 * @return bool
+	 */
+	public function is_const_changed( $group, $key ) {
+
+		if ( ! $this->is_const_defined( $group, $key ) ) {
+			return false;
+		}
+
+		// Prevent double options update on multiple function call for same option.
+		static $cache = [];
+
+		$cache_key = $group . '_' . $key;
+
+		if ( isset( $cache[ $cache_key ] ) ) {
+			return $cache[ $cache_key ];
+		}
+
+		$value = $this->get( $group, $key );
+
+		// Get old value from DB.
+		add_filter( 'wp_mail_smtp_options_is_const_enabled', '__return_false', PHP_INT_MAX );
+		$old_value = $this->get( $group, $key );
+		remove_filter( 'wp_mail_smtp_options_is_const_enabled', '__return_false', PHP_INT_MAX );
+
+		$changed = $value !== $old_value;
+
+		// Save new constant value to DB.
+		if ( $changed ) {
+			$old_opt = $this->get_all_raw();
+
+			$old_opt[ $group ][ $key ] = $value;
+			$this->set( $old_opt );
+		}
+
+		$cache[ $cache_key ] = $changed;
+
+		return $changed;
 	}
 }

@@ -15,6 +15,51 @@ use AIOSEO\Plugin\Common\Models;
  */
 class Meta {
 	/**
+	 * MetaData class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var MetaData
+	 */
+	public $metaData = null;
+
+	/**
+	 * Title class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Title
+	 */
+	public $title = null;
+
+	/**
+	 * Description class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Description
+	 */
+	public $description = null;
+
+	/**
+	 * Keywords class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Keywords
+	 */
+	public $keywords = null;
+
+	/**
+	 * Robots class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Robots
+	 */
+	public $robots = null;
+
+	/**
 	 * Class constructor.
 	 *
 	 * @since 4.0.0
@@ -24,10 +69,12 @@ class Meta {
 		$this->title        = new Title();
 		$this->description  = new Description();
 		$this->keywords     = new Keywords();
-		$this->amp          = new Amp();
-		$this->links        = new Links();
+		$this->robots       = new Robots();
 
-		add_action( 'delete_post', [ $this, 'deletePostMeta' ], 1000, 2 );
+		new Amp();
+		new Links();
+
+		add_action( 'delete_post', [ $this, 'deletePostMeta' ], 1000 );
 	}
 
 	/**

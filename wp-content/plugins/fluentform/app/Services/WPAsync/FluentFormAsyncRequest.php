@@ -29,13 +29,13 @@ class FluentFormAsyncRequest
 
     /**
      * $app Instance of Application/Framework
-     * @var FluentForm\Framework\Foundation\Application
+     * @var \FluentForm\Framework\Foundation\Application
      */
     protected $app = null;
 
     /**
      * Construct the Object
-     * @param FluentForm\Framework\Foundation\Application $app
+     * @param \FluentForm\Framework\Foundation\Application $app
      */
     public function __construct(Application $app)
     {
@@ -54,7 +54,7 @@ class FluentFormAsyncRequest
             'timeout' => 0.1,
             'blocking' => false,
             'body' => $data,
-            'cookies' => $_COOKIE,
+            'cookies' => wpFluentForm('request')->cookie(),
             'sslverify' => apply_filters('fluentform_https_local_ssl_verify', false),
         );
 
@@ -69,10 +69,7 @@ class FluentFormAsyncRequest
 
     public function handleBackgroundCall()
     {
-        $originId = false;
-        if(isset($_REQUEST['origin_id'])) {
-            $originId = intval($_REQUEST['origin_id']);
-        }
+        $originId = wpFluentForm('request')->get('origin_id', false);
 
         $this->processActions($originId);
         echo 'success';

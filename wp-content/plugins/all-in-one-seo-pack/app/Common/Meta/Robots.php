@@ -96,32 +96,39 @@ class Robots {
 	 */
 	public function meta() {
 		if ( is_category() || is_tag() || is_tax() ) {
-			return $this->term();
+			$this->term();
+
+			return $this->metaHelper();
 		}
 
 		if ( is_home() && 'posts' === get_option( 'show_on_front' ) ) {
 			$this->globalValues();
+
 			return $this->metaHelper();
 		}
 
 		$post = aioseo()->helpers->getPost();
 		if ( $post ) {
 			$this->post();
+
 			return $this->metaHelper();
 		}
 
 		if ( is_author() ) {
 			$this->globalValues( [ 'archives', 'author' ] );
+
 			return $this->metaHelper();
 		}
 
 		if ( is_date() ) {
 			$this->globalValues( [ 'archives', 'date' ] );
+
 			return $this->metaHelper();
 		}
 
 		if ( is_search() ) {
 			$this->globalValues( [ 'archives', 'search' ] );
+
 			return $this->metaHelper();
 		}
 
@@ -131,6 +138,7 @@ class Robots {
 
 		if ( is_archive() ) {
 			$this->archives();
+
 			return $this->metaHelper();
 		}
 	}
@@ -142,11 +150,12 @@ class Robots {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return string The robots meta tag value.
+	 * @param  bool         $array Whether or not to return the value as an array.
+	 * @return array|string        The robots meta tag value.
 	 */
-	protected function metaHelper() {
+	public function metaHelper( $array = false ) {
 		$pageNumber = aioseo()->helpers->getPageNumber();
-		if ( 1 < $pageNumber || 0 < (int) get_query_var( 'cpage', 0 ) ) {
+		if ( 1 < $pageNumber || aioseo()->helpers->getCommentPageNumber() ) {
 			if (
 				aioseo()->options->searchAppearance->advanced->globalRobotsMeta->default ||
 				aioseo()->options->searchAppearance->advanced->globalRobotsMeta->noindexPaginated
@@ -173,8 +182,9 @@ class Robots {
 			$this->attributes['nofollow'] = 'nofollow';
 		}
 
-		$this->attributes = apply_filters( 'aioseo_robots_meta', $this->attributes );
-		return implode( ', ', array_filter( $this->attributes ) );
+		$this->attributes = array_filter( apply_filters( 'aioseo_robots_meta', $this->attributes ) );
+
+		return $array ? $this->attributes : implode( ', ', $this->attributes );
 	}
 
 	/**
@@ -182,15 +192,17 @@ class Robots {
 	 *
 	 * @since 4.0.0
 	 *
+	 * @param  \WP_Post|null $post The post object.
 	 * @return void
 	 */
-	private function post() {
+	public function post( $post = null ) {
 		$dynamicOptions = aioseo()->dynamicOptions->noConflict();
-		$post           = aioseo()->helpers->getPost();
+		$post           = aioseo()->helpers->getPost( $post );
 		$metaData       = aioseo()->meta->metaData->getMetaData( $post );
 
 		if ( ! empty( $metaData ) && ! $metaData->robots_default ) {
 			$this->metaValues( $metaData );
+
 			return;
 		}
 
@@ -204,19 +216,20 @@ class Robots {
 	 *
 	 * @since 4.0.6
 	 *
-	 * @return string The robots meta tag value.
+	 * @param  \WP_Term|null $term The term object if any.
+	 * @return void
 	 */
-	private function term() {
+	public function term( $term = null ) {
 		$dynamicOptions = aioseo()->dynamicOptions->noConflict();
-		$term           = get_queried_object();
+		$term           = is_a( $term, 'WP_Term' ) ? $term : get_queried_object();
 
 		if ( $dynamicOptions->searchAppearance->taxonomies->has( $term->taxonomy ) ) {
 			$this->globalValues( [ 'taxonomies', $term->taxonomy ], true );
-			return$this->metaHelper();
+
+			return;
 		}
 
 		$this->globalValues();
-		return $this->metaHelper();
 	}
 
 	/**
@@ -229,8 +242,7 @@ class Robots {
 	private function archives() {
 		$dynamicOptions = aioseo()->dynamicOptions->noConflict();
 		$postType       = get_queried_object();
-
-		if ( $dynamicOptions->searchAppearance->archives->has( $postType->name ) ) {
+		if ( ! empty( $postType->name ) && $dynamicOptions->searchAppearance->archives->has( $postType->name ) ) {
 			$this->globalValues( [ 'archives', $postType->name ], true );
 		}
 	}
@@ -247,11 +259,14 @@ class Robots {
 	protected function globalValues( $optionOrder = [], $isDynamicOption = false ) {
 		$robotsMeta = [];
 		if ( count( $optionOrder ) ) {
-			$options = $isDynamicOption ? aioseo()->dynamicOptions->noConflict()->searchAppearance : aioseo()->options->noConflict()->searchAppearance;
+			$options = $isDynamicOption
+				? aioseo()->dynamicOptions->noConflict( true )->searchAppearance
+				: aioseo()->options->noConflict()->searchAppearance;
+
 			foreach ( $optionOrder as $option ) {
 				if ( ! $options->has( $option, false ) ) {
 					return;
-				};
+				}
 				$options = $options->$option;
 			}
 
@@ -367,6 +382,7 @@ class Robots {
 	 */
 	private function isPasswordProtected() {
 		$post = aioseo()->helpers->getPost();
+
 		return is_object( $post ) && $post->post_password;
 	}
 }

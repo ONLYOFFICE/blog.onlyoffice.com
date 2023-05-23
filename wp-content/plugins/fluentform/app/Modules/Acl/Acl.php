@@ -6,9 +6,9 @@ use FluentForm\Framework\Helpers\ArrayHelper;
 
 class Acl
 {
-    static $capability = '';
-    
-    static $role = '';
+    public static $capability = '';
+
+    public static $role = '';
 
     public static function getPermissionSet()
     {
@@ -56,9 +56,9 @@ class Acl
      * Verify if current user has a fluentform permission.
      *
      * @param $permission
-     * @param null $formId
+     * @param null   $formId
      * @param string $message
-     * @param bool $json
+     * @param bool   $json
      *
      * @throws \Exception
      */
@@ -67,16 +67,15 @@ class Acl
         $formId = null,
         $message = 'You do not have permission to perform this action.',
         $json = true
-    )
-    {
-    	static::verifyNonce();
+    ) {
+        static::verifyNonce();
 
         $allowed = static::hasPermission($permission, $formId);
-        
+
         if (!$allowed) {
             if ($json) {
                 wp_send_json_error([
-                    'message' => $message
+                    'message' => $message,
                 ], 422);
             } else {
                 throw new \Exception($message);
@@ -87,7 +86,7 @@ class Acl
     public static function hasPermission($permissions, $formId = false)
     {
         $userCapability = static::getCurrentUserCapability();
-        
+
         if ($userCapability) {
             return $userCapability;
         } else {
@@ -148,15 +147,15 @@ class Acl
         }
 
         $capabilities = get_option('_fluentform_form_permission');
-        
+
         if (is_string($capabilities)) {
             $capabilities = (array) $capabilities;
         }
-        
+
         if (!$capabilities) {
             return false;
         }
-        
+
         foreach ($capabilities as $capability) {
             if ($user->has_cap($capability)) {
                 return $capability;
@@ -173,68 +172,68 @@ class Acl
         return static::$role = $user->roles[0];
     }
 
-	public static function verifyNonce($key = 'fluent_forms_admin_nonce')
-	{
-		if (!wp_doing_ajax()) {
-			return;
-		}
+    public static function verifyNonce($key = 'fluent_forms_admin_nonce')
+    {
+        if (!wp_doing_ajax()) {
+            return;
+        }
 
-		$nonce = ArrayHelper::get($_REQUEST, $key);
+        $nonce = wpFluentForm('request')->get($key);
 
-		if (!wp_verify_nonce($nonce, $key)) {
-			$message = apply_filters('fluentform_nonce_error', __('Nonce verification failed, please try again.', 'fluentform'));
+        if (!wp_verify_nonce($nonce, $key)) {
+            $message = apply_filters('fluentform_nonce_error', __('Nonce verification failed, please try again.', 'fluentform'));
 
-			wp_send_json_error([
-				'message' => $message
-			], 422);
-		}
-	}
+            wp_send_json_error([
+                'message' => $message,
+            ], 422);
+        }
+    }
 
     public static function getReadablePermissions()
     {
         return [
             'fluentform_dashboard_access' => [
-                'title' => __('View Forms', 'fluentform'),
-                'depends' => []
+                'title'   => __('View Forms', 'fluentform'),
+                'depends' => [],
             ],
             'fluentform_forms_manager' => [
-                'title' => __('Manage Forms', 'fluentform'),
-                'depends' => [
-                    'fluentform_dashboard_access'
-                ]
-            ],
-            'fluentform_entries_viewer' => [
-                'title' => __('View Entries', 'fluentform'),
-                'depends' => [
-                    'fluentform_dashboard_access'
-                ]
-            ],
-            'fluentform_manage_entries' => [
-                'title' => __('Manage Entries', 'fluentform'),
-                'depends' => [
-                    'fluentform_entries_viewer'
-                ]
-            ],
-            'fluentform_view_payments' => [
-                'title' => __('View Payments', 'fluentform'),
+                'title'   => __('Manage Forms', 'fluentform'),
                 'depends' => [
                     'fluentform_dashboard_access',
-                    'fluentform_entries_viewer'
-                ]
+                ],
+            ],
+            'fluentform_entries_viewer' => [
+                'title'   => __('View Entries', 'fluentform'),
+                'depends' => [
+                    'fluentform_dashboard_access',
+                ],
+            ],
+            'fluentform_manage_entries' => [
+                'title'   => __('Manage Entries', 'fluentform'),
+                'depends' => [
+                    'fluentform_entries_viewer',
+                ],
+            ],
+            'fluentform_view_payments' => [
+                'title'   => __('View Payments', 'fluentform'),
+                'depends' => [
+                    'fluentform_dashboard_access',
+                    'fluentform_entries_viewer',
+                ],
             ],
             'fluentform_manage_payments' => [
-                'title' => __('Manage Payments', 'fluentform'),
+                'title'   => __('Manage Payments', 'fluentform'),
                 'depends' => [
-                    'fluentform_view_payments'
-                ]
+                    'fluentform_view_payments',
+                ],
             ],
             'fluentform_settings_manager' => [
-                'title' => __('Manage Settings', 'fluentform'),
-                'depends' => []
+                'title'   => __('Manage Settings', 'fluentform'),
+                'depends' => [],
             ],
             'fluentform_full_access' => [
-                'title'   => __('Full Access', 'fluent-crm'),
-                'depends' => []
+                'title'   => __('Full Access', 'fluentform'),
+                'depends' => [],
             ],
         ];
     }

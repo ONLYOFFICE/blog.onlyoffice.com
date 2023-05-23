@@ -24,9 +24,6 @@ class Connect {
 
 		add_action( 'admin_menu', [ $this, 'addDashboardPage' ] );
 		add_action( 'admin_init', [ $this, 'maybeLoadConnect' ] );
-
-		// Create the plugin upgrader with our custom skin.
-		$this->installer = new Utils\PluginUpgraderSilentAjax( new Utils\PluginUpgraderSkin() );
 	}
 
 	/**
@@ -74,6 +71,7 @@ class Connect {
 
 		if ( 'aioseo-connect-pro' === wp_unslash( $_GET['page'] ) ) { // phpcs:ignore HM.Security.ValidatedSanitizedInput.InputNotSanitized
 			$this->loadConnectPro();
+
 			return;
 		}
 
@@ -122,44 +120,7 @@ class Connect {
 		remove_all_actions( 'admin_notices' );
 		remove_all_actions( 'all_admin_notices' );
 
-		// Scripts.
-		aioseo()->helpers->enqueueScript(
-			'aioseo-vendors',
-			'js/chunk-vendors.js'
-		);
-		aioseo()->helpers->enqueueScript(
-			'aioseo-common',
-			'js/chunk-common.js'
-		);
-		aioseo()->helpers->enqueueScript(
-			'aioseo-connect-script',
-			'js/connect.js'
-		);
-
-		// Styles.
-		$rtl = is_rtl() ? '.rtl' : '';
-		aioseo()->helpers->enqueueStyle(
-			'aioseo-vendors',
-			"css/chunk-vendors$rtl.css"
-		);
-		aioseo()->helpers->enqueueStyle(
-			'aioseo-common',
-			"css/chunk-common$rtl.css"
-		);
-		// aioseo()->helpers->enqueueStyle(
-		//  'aioseo-connect-style',
-		//  "css/connect$rtl.css"
-		// );
-		// aioseo()->helpers->enqueueStyle(
-		//  'aioseo-connect-vendors-style',
-		//  "css/chunk-connect-vendors$rtl.css"
-		// );
-
-		wp_localize_script(
-			'aioseo-connect-script',
-			'aioseo',
-			aioseo()->helpers->getVueData()
-		);
+		aioseo()->core->assets->load( 'src/vue/standalone/connect/main.js', [], aioseo()->helpers->getVueData() );
 	}
 
 	/**
@@ -174,44 +135,7 @@ class Connect {
 		remove_all_actions( 'admin_notices' );
 		remove_all_actions( 'all_admin_notices' );
 
-		// Scripts.
-		aioseo()->helpers->enqueueScript(
-			'aioseo-vendors',
-			'js/chunk-vendors.js'
-		);
-		aioseo()->helpers->enqueueScript(
-			'aioseo-common',
-			'js/chunk-common.js'
-		);
-		aioseo()->helpers->enqueueScript(
-			'aioseo-connect-pro-script',
-			'js/connect-pro.js'
-		);
-
-		// Styles.
-		$rtl = is_rtl() ? '.rtl' : '';
-		aioseo()->helpers->enqueueStyle(
-			'aioseo-vendors',
-			"css/chunk-vendors$rtl.css"
-		);
-		aioseo()->helpers->enqueueStyle(
-			'aioseo-common',
-			"css/chunk-common$rtl.css"
-		);
-		// aioseo()->helpers->enqueueStyle(
-		//  'aioseo-connect-pro-style',
-		//  "css/connect-pro$rtl.css"
-		// );
-		// aioseo()->helpers->enqueueStyle(
-		//  'aioseo-connect-pro-vendors-style',
-		//  "css/chunk-connect-pro-vendors$rtl.css"
-		// );
-
-		wp_localize_script(
-			'aioseo-connect-pro-script',
-			'aioseo',
-			aioseo()->helpers->getVueData()
-		);
+		aioseo()->core->assets->load( 'src/vue/standalone/connect-pro/main.js', [], aioseo()->helpers->getVueData() );
 	}
 
 	/**
@@ -250,7 +174,9 @@ class Connect {
 	 * @return void
 	 */
 	public function connectContent() {
-		echo '<div id="aioseo-app"></div>';
+		echo '<div id="aioseo-app">';
+		aioseo()->templates->getTemplate( 'admin/settings-page.php' );
+		echo '</div>';
 	}
 
 	/**
@@ -299,6 +225,7 @@ class Connect {
 		if ( ! is_wp_error( $active ) ) {
 			// Deactivate plugin.
 			deactivate_plugins( plugin_basename( AIOSEO_FILE ), false, false );
+
 			return [
 				'error' => esc_html__( 'Pro version is already installed.', 'all-in-one-seo-pack' )
 			];
@@ -330,6 +257,9 @@ class Connect {
 			'redirect' => rawurldecode( base64_encode( $redirect ? $redirect : admin_url( 'admin.php?page=aioseo-settings' ) ) ),
 			'v'        => 1,
 		], defined( 'AIOSEO_UPGRADE_URL' ) ? AIOSEO_UPGRADE_URL : 'https://upgrade.aioseo.com' );
+
+		// We're storing the ID of the user who is installing Pro so that we can add capabilties for him after upgrading.
+		aioseo()->core->cache->update( 'connect_active_user', get_current_user_id(), 15 * MINUTE_IN_SECONDS );
 
 		return [
 			'url' => $url,
@@ -410,6 +340,9 @@ class Connect {
 		if ( ! is_wp_error( $active ) ) {
 			aioseo()->internalOptions->internal->connect->reset();
 
+			// Because the regular activation hooks won't run, we need to add capabilities for the installing user so that he doesn't run into an error on the first request.
+			aioseo()->activate->addCapabilitiesOnUpgrade();
+
 			deactivate_plugins( plugin_basename( AIOSEO_FILE ), false, $network );
 
 			wp_send_json_success( $success );
@@ -420,7 +353,10 @@ class Connect {
 		if ( false === $creds ) {
 			wp_send_json_error( $error );
 		}
-		if ( ! aioseo()->helpers->wpfs( $creds ) ) {
+
+		$fs = aioseo()->core->fs->noConflict();
+		$fs->init( $creds );
+		if ( ! $fs->isWpfsValid() ) {
 			wp_send_json_error( $error );
 		}
 
@@ -453,6 +389,9 @@ class Connect {
 		}
 
 		aioseo()->internalOptions->internal->connect->reset();
+
+		// Because the regular activation hooks won't run, we need to add capabilities for the installing user so that he doesn't run into an error on the first request.
+		aioseo()->activate->addCapabilitiesOnUpgrade();
 
 		deactivate_plugins( plugin_basename( AIOSEO_FILE ), false, $network );
 

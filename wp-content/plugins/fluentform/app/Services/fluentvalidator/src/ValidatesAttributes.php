@@ -11,8 +11,8 @@ trait ValidatesAttributes
     /**
      * Require a certain number of parameters to be present.
      *
-     * @param int $count
-     * @param array $parameters
+     * @param int    $count
+     * @param array  $parameters
      * @param string $rule
      *
      * @return void
@@ -32,7 +32,7 @@ trait ValidatesAttributes
      * Get the size of an attribute.
      *
      * @param string $attribute
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return mixed
      */
@@ -86,9 +86,9 @@ trait ValidatesAttributes
     protected function convertValuesToBoolean($values)
     {
         return array_map(function ($value) {
-            if ($value === 'true') {
+            if ('true' === $value) {
                 return true;
-            } elseif ($value === 'false') {
+            } elseif ('false' === $value) {
                 return false;
             }
 
@@ -100,7 +100,7 @@ trait ValidatesAttributes
      * Validate that a required attribute exists.
      *
      * @param string $attribute
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return bool
      */
@@ -108,12 +108,12 @@ trait ValidatesAttributes
     {
         if (is_null($value)) {
             return false;
-        } elseif (is_string($value) && trim($value) === '') {
+        } elseif (is_string($value) && '' === trim($value)) {
             return false;
         } elseif ((is_array($value) || $value instanceof Countable) && count($value) < 1) {
             return false;
         } elseif ($value instanceof File) {
-            return (string) $value->getPath() != '';
+            return '' != (string) $value->getPath();
         }
 
         return true;
@@ -123,8 +123,8 @@ trait ValidatesAttributes
      * Validate that an attribute exists when another attribute has a given value.
      *
      * @param string $attribute
-     * @param mixed $value
-     * @param mixed $parameters
+     * @param mixed  $value
+     * @param mixed  $parameters
      *
      * @return bool
      */
@@ -151,21 +151,21 @@ trait ValidatesAttributes
      * Validate that an attribute is a valid e-mail address.
      *
      * @param string $attribute
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return bool
      */
     protected function validateEmail($attribute, $value)
     {
-        return ! ! is_email($value);
+        return !!is_email($value);
     }
 
     /**
      * Validate the size of an attribute.
      *
      * @param string $attribute
-     * @param mixed $value
-     * @param array $parameters
+     * @param mixed  $value
+     * @param array  $parameters
      *
      * @return bool
      */
@@ -180,8 +180,8 @@ trait ValidatesAttributes
      * Validate the size of an attribute is greater than a minimum value.
      *
      * @param string $attribute
-     * @param mixed $value
-     * @param array $parameters
+     * @param mixed  $value
+     * @param array  $parameters
      *
      * @return bool
      */
@@ -196,8 +196,8 @@ trait ValidatesAttributes
      * Validate the size of an attribute is less than a maximum value.
      *
      * @param string $attribute
-     * @param mixed $value
-     * @param array $parameters
+     * @param mixed  $value
+     * @param array  $parameters
      *
      * @return bool
      */
@@ -212,8 +212,8 @@ trait ValidatesAttributes
      * Validate that two attributes match.
      *
      * @param string $attribute
-     * @param mixed $value
-     * @param array $parameters
+     * @param mixed  $value
+     * @param array  $parameters
      *
      * @return bool
      */
@@ -230,7 +230,7 @@ trait ValidatesAttributes
      * Validate that an attribute is a valid URL.
      *
      * @param string $attribute
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return bool
      */
@@ -244,7 +244,7 @@ trait ValidatesAttributes
      * Validate that an attribute is numeric.
      *
      * @param string $attribute
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return bool
      */
@@ -257,14 +257,14 @@ trait ValidatesAttributes
      * Validate the guessed extension of a file upload is in a set of file extensions.
      *
      * @param string $attribute
-     * @param mixed $value
-     * @param array $parameters
+     * @param mixed  $value
+     * @param array  $parameters
      *
      * @return bool
      */
     protected function validateMimes($attribute, $value, $parameters)
     {
-        if (! $this->isValidFileInstance($value)) {
+        if (!$this->isValidFileInstance($value)) {
             return false;
         }
 
@@ -275,7 +275,7 @@ trait ValidatesAttributes
         /**
          * @var $value \FluentForm\Framework\Request\File
          */
-        return $value->getPath() != '' && in_array($value->guessExtension(), $parameters);
+        return '' != $value->getPath() && in_array($value->guessExtension(), $parameters);
     }
 
     /**
@@ -304,19 +304,36 @@ trait ValidatesAttributes
             return false;
         }
 
-        return strtolower($value->getClientOriginalExtension()) === 'php';
+        return 'php' === strtolower($value->getClientOriginalExtension());
     }
 
     /**
      * Validate that an attribute exists even if not filled.
      *
      * @param string $attribute
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return bool
      */
     protected function validatePresent($attribute, $value)
     {
         return Arr::has($this->data, $attribute);
+    }
+
+    /**
+     * Validate that an attribute has a given number of digits.
+     *
+     * @param string $attribute
+     * @param mixed  $value
+     * @param array  $parameters
+     *
+     * @return bool
+     */
+    public function validateDigits($attribute, $value, $parameters)
+    {
+        $this->requireParameterCount(1, $parameters, 'digits');
+
+        return $this->validateNumeric($attribute, $value)
+                    && strlen((string) $value) == $parameters[0];
     }
 }

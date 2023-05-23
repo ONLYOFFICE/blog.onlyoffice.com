@@ -60,6 +60,7 @@ class Helpers extends ImportExport\Helpers {
 
 		// Strip out all remaining tags.
 		$string = aioseo()->helpers->pregReplace( '/%[^\%\s]*\([^\%]*\)%/i', '', aioseo()->helpers->pregReplace( '/%[^\%\s]*%/i', '', $string ) );
+
 		return trim( $string );
 	}
 
@@ -136,6 +137,7 @@ class Helpers extends ImportExport\Helpers {
 
 		// Strip all other tags.
 		$macros['%%[^%]*%%'] = '';
+
 		return $macros;
 	}
 }

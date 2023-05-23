@@ -31,6 +31,7 @@ class Shortcode {
 	 */
 	public function render( $attributes ) {
 		$attributes = aioseo()->htmlSitemap->frontend->getAttributes( $attributes );
+
 		return aioseo()->htmlSitemap->frontend->output( false, $attributes );
 	}
 }

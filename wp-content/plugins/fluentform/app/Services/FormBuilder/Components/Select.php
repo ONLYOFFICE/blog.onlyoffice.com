@@ -9,9 +9,11 @@ class Select extends BaseComponent
 {
     /**
      * Compile and echo the html element
-     * @param array $data [element data]
-     * @param stdClass $form [Form Object]
-     * @return viod
+     *
+     * @param array     $data [element data]
+     * @param \stdClass $form [Form Object]
+     *
+     * @return void
      */
     public function compile($data, $form)
     {
@@ -20,14 +22,14 @@ class Select extends BaseComponent
 
         $data['attributes']['id'] = $this->makeElementId($data, $form);
 
-        $isMulti = ArrayHelper::get($data, 'settings.enable_select_2') == 'yes';
+        $isMulti = 'yes' == ArrayHelper::get($data, 'settings.enable_select_2');
 
         if (ArrayHelper::get($data['attributes'], 'multiple')) {
             $data['attributes']['name'] = $data['attributes']['name'] . '[]';
             wp_enqueue_script('choices');
             wp_enqueue_style('ff_choices');
             $data['attributes']['class'] .= ' ff_has_multi_select';
-        } else if ($isMulti) {
+        } elseif ($isMulti) {
             wp_enqueue_script('choices');
             wp_enqueue_style('ff_choices');
             $data['attributes']['class'] .= ' ff_has_multi_select';
@@ -39,56 +41,67 @@ class Select extends BaseComponent
 
         $data['attributes']['data-calc_value'] = 0;
 
-        if (!isset($data['attributes']['class'])) {
+        if (! isset($data['attributes']['class'])) {
             $data['attributes']['class'] = '';
         }
 
         $data['attributes']['class'] = trim('ff-el-form-control ' . $data['attributes']['class']);
 
-        if ($tabIndex = \FluentForm\App\Helpers\Helper::getNextTabIndex()) {
+        if ($tabIndex = Helper::getNextTabIndex()) {
             $data['attributes']['tabindex'] = $tabIndex;
         }
 
-        $defaultValues = (array)$this->extractValueFromAttributes($data);
+        $defaultValues = (array) $this->extractValueFromAttributes($data);
 
         if ($dynamicValues = $this->extractDynamicValues($data, $form)) {
             $defaultValues = $dynamicValues;
         }
 
-        $elMarkup = "<select " . $this->buildAttributes($data['attributes']) . ">" . $this->buildOptions($data, $defaultValues) . "</select>";
+        $atts = $this->buildAttributes($data['attributes']);
+        $options = $this->buildOptions($data, $defaultValues);
+
+        $ariaRequired = 'false';
+        if (ArrayHelper::get($data, 'settings.validation_rules.required.value')) {
+            $ariaRequired = 'true';
+        }
+
+        $elMarkup = '<select ' . $atts . ' aria-invalid="false" aria-required=' . $ariaRequired . '>' . $options . '</select>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts, $options are escaped before being passed in.
 
         $html = $this->buildElementMarkup($elMarkup, $data, $form);
-        echo apply_filters('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
+
+        $this->printContent('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
     }
 
     /**
      * Build options for select
+     *
      * @param array $options
+     *
      * @return string/html [compiled options]
      */
     protected function buildOptions($data, $defaultValues)
     {
-        if (!$formattedOptions = ArrayHelper::get($data, 'settings.advanced_options')) {
+        if (! $formattedOptions = ArrayHelper::get($data, 'settings.advanced_options')) {
             $options = ArrayHelper::get($data, 'options', []);
             $formattedOptions = [];
             foreach ($options as $value => $label) {
                 $formattedOptions[] = [
                     'label'      => $label,
                     'value'      => $value,
-                    'calc_value' => ''
+                    'calc_value' => '',
                 ];
             }
         }
 
-        if(ArrayHelper::get($data, 'settings.randomize_options') == 'yes') {
+        if ('yes' == ArrayHelper::get($data, 'settings.randomize_options')) {
             shuffle($formattedOptions);
         }
 
         $opts = '';
-        if (!empty($data['settings']['placeholder'])) {
-            $opts .= '<option value="">' . $data['settings']['placeholder'] . '</option>';
-        } else if (!empty($data['attributes']['placeholder'])) {
-            $opts .= '<option value="">' . $data['attributes']['placeholder'] . '</option>';
+        if (! empty($data['settings']['placeholder'])) {
+            $opts .= '<option value="">' . wp_strip_all_tags($data['settings']['placeholder']) . '</option>';
+        } elseif (! empty($data['attributes']['placeholder'])) {
+            $opts .= '<option value="">' . wp_strip_all_tags($data['attributes']['placeholder']) . '</option>';
         }
 
         foreach ($formattedOptions as $option) {
@@ -104,7 +117,7 @@ class Select extends BaseComponent
                 'value'                  => ArrayHelper::get($option, 'value'),
             ];
 
-            $opts .= "<option " . $this->buildAttributes($atts) . " {$selected}>{$option['label']}</option>";
+            $opts .= '<option ' . $this->buildAttributes($atts) . " {$selected}>" . wp_strip_all_tags($option['label']) . '</option>';
         }
 
         return $opts;

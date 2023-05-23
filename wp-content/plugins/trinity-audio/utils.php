@@ -1,5 +1,6 @@
 <?php
   require_once __DIR__ . '/inc/logs.php';
+  require_once __DIR__ . '/inc/constants.php';
 
   function trinity_handle_error($response, $url, $body = '', $user_error_message = '', $die = true) {
     if (is_wp_error($response)) {
@@ -86,4 +87,8 @@
     trinity_log("Request time to $url took $diff ms", '', '', TRINITY_AUDIO_ERROR_TYPES::warn);
 
     return true;
+  }
+
+  function trinity_is_dev_env() {
+    return TRINITY_AUDIO_SERVICE !== 'https://audio.trinityaudio.ai';
   }

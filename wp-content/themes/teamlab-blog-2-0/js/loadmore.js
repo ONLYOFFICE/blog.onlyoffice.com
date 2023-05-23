@@ -3,11 +3,19 @@ jQuery(function($){
 		ajaxLoad(this.id, "cicle-wrapper");
 	});
 
+	$('#true_loadmore_mobile').click(function(){
+		ajaxLoad(this.id, "cicle-wrapper");
+	});
+
 	$('#true_loadmore_press').click(function(){
 		ajaxLoad2(this.id, "cicle-wrapper-press");
 	});
 
 	$('#true_loadmore_tags').click(function(){
+		ajaxLoad(this.id, "loadmore-tag");
+	});
+
+	$('#true_loadmore_tags_mobile').click(function(){
 		ajaxLoad(this.id, "loadmore-tag");
 	});
 });

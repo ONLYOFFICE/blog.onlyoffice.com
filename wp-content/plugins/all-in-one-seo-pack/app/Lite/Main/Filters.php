@@ -45,7 +45,6 @@ class Filters extends CommonMain\Filters {
 	public function pluginActionLinks( $actions, $pluginFile ) {
 		$actionLinks = [
 			'settings'   => [
-				// Translators: This is an action link users can click to open the General Settings menu.
 				'label' => __( 'SEO Settings', 'all-in-one-seo-pack' ),
 				'url'   => get_admin_url( null, 'admin.php?page=aioseo-settings' ),
 			],

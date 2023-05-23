@@ -6,33 +6,35 @@
  * Returns an array of countries and codes.
  *
  * @author      WooThemes
+ *
  * @category    i18n
  * @package     fluentform/i18n
+ *
  * @version     2.5.0
  */
 
-return array(
-    'input_name' => array(
-        'general' => array(
+return [
+    'input_name' => [
+        'general' => [
             'admin_field_label',
             'name_fields',
             'label_placement',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'container_class',
             'name',
             'conditional_logics',
-        ),
-    ),
-    'input_email' => array(
-        'general' => array(
+        ],
+    ],
+    'input_email' => [
+        'general' => [
             'label',
             'label_placement',
             'admin_field_label',
             'placeholder',
             'validation_rules',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'value',
             'container_class',
             'class',
@@ -43,10 +45,10 @@ return array(
             'suffix_label',
             'name',
             'conditional_logics',
-        ),
-    ),
-    'input_text' => array(
-        'general' => array(
+        ],
+    ],
+    'input_text' => [
+        'general' => [
             'label',
             'label_placement',
             'admin_field_label',
@@ -56,8 +58,8 @@ return array(
             'data-mask-reverse',
             'data-clear-if-not-match',
             'validation_rules',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'value',
             'container_class',
             'class',
@@ -69,12 +71,12 @@ return array(
             'is_unique',
             'unique_validation_message',
             'conditional_logics',
-        ),
-        'generalExtras' => array(),
-        'advancedExtras' => array(),
-    ),
-    'textarea' => array(
-        'general' => array(
+        ],
+        'generalExtras'  => [],
+        'advancedExtras' => [],
+    ],
+    'textarea' => [
+        'general' => [
             'label',
             'label_placement',
             'admin_field_label',
@@ -82,8 +84,8 @@ return array(
             'rows',
             'cols',
             'validation_rules',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'value',
             'container_class',
             'class',
@@ -91,48 +93,48 @@ return array(
             'name',
             'maxlength',
             'conditional_logics',
-        )
-    ),
-    'address' => array(
-        'general' => array(
+        ],
+    ],
+    'address' => [
+        'general' => [
             'label',
             'admin_field_label',
             'address_fields',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'class',
             'name',
             'conditional_logics',
-        ),
-    ),
-    'select_country' => array(
-        'general' => array(
+        ],
+    ],
+    'select_country' => [
+        'general' => [
             'label',
             'label_placement',
             'admin_field_label',
             'enable_select_2',
             'placeholder',
             'validation_rules',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'container_class',
             'class',
             'country_list',
             'help_message',
             'name',
             'conditional_logics',
-        ),
-    ),
-    'input_number' => array(
-        'general' => array(
+        ],
+    ],
+    'input_number' => [
+        'general' => [
             'label',
             'label_placement',
             'admin_field_label',
             'placeholder',
             'validation_rules',
-            'numeric_formatter'
-        ),
-        'advanced' => array(
+            'numeric_formatter',
+        ],
+        'advanced' => [
             'value',
             'container_class',
             'class',
@@ -142,11 +144,11 @@ return array(
             'suffix_label',
             'name',
             'conditional_logics',
-            'calculation_settings'
-        ),
-    ),
-    'select' => array(
-        'general' => array(
+            'calculation_settings',
+        ],
+    ],
+    'select' => [
+        'general' => [
             'label',
             'label_placement',
             'admin_field_label',
@@ -156,18 +158,18 @@ return array(
             'enable_select_2',
             'max_selection',
             'validation_rules',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'dynamic_default_value',
             'container_class',
             'class',
             'help_message',
             'name',
             'conditional_logics',
-        ),
-    ),
-    'input_radio' => array(
-        'general' => array(
+        ],
+    ],
+    'input_radio' => [
+        'general' => [
             'label',
             'label_placement',
             'admin_field_label',
@@ -175,18 +177,18 @@ return array(
             'advanced_options',
             'randomize_options',
             'validation_rules',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'dynamic_default_value',
             'container_class',
             'help_message',
             'name',
             'layout_class',
             'conditional_logics',
-        ),
-    ),
-    'input_checkbox' => array(
-        'general' => array(
+        ],
+    ],
+    'input_checkbox' => [
+        'general' => [
             'label',
             'label_placement',
             'admin_field_label',
@@ -194,60 +196,60 @@ return array(
             'advanced_options',
             'randomize_options',
             'validation_rules',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'dynamic_default_value',
             'container_class',
             'help_message',
             'name',
             'layout_class',
             'conditional_logics',
-        ),
-    ),
-    'input_url' => array(
-        'general' => array(
+        ],
+    ],
+    'input_url' => [
+        'general' => [
             'label',
             'label_placement',
             'admin_field_label',
             'placeholder',
             'validation_rules',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'value',
             'container_class',
             'class',
             'help_message',
             'name',
             'conditional_logics',
-        ),
-    ),
-    'input_password' => array(
-        'general' => array(
+        ],
+    ],
+    'input_password' => [
+        'general' => [
             'label',
             'label_placement',
             'admin_field_label',
             'placeholder',
             'validation_rules',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'value',
             'container_class',
             'class',
             'help_message',
             'name',
             'conditional_logics',
-        ),
-    ),
-    'input_date' => array(
-        'general' => array(
+        ],
+    ],
+    'input_date' => [
+        'general' => [
             'label',
             'label_placement',
             'admin_field_label',
             'placeholder',
             'date_format',
             'validation_rules',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'value',
             'container_class',
             'class',
@@ -255,197 +257,209 @@ return array(
             'name',
             'date_config',
             'conditional_logics',
-        ),
-    ),
-    'input_file' => array(
-        'general' => array(
+        ],
+    ],
+    'input_file' => [
+        'general' => [
             'label',
             'btn_text',
             'label_placement',
             'admin_field_label',
             'validation_rules',
-        ),
-        'advanced' => array(
+            'file_location_type',
+            'upload_file_location',
+        ],
+        'advanced' => [
             'container_class',
             'class',
             'help_message',
             'name',
             'conditional_logics',
-        ),
-    ),
-    'input_image' => array(
-        'general' => array(
+        ],
+    ],
+    'input_image' => [
+        'general' => [
             'label',
             'btn_text',
             'label_placement',
             'admin_field_label',
             'validation_rules',
-        ),
-        'advanced' => array(
+            'file_location_type',
+            'upload_file_location',
+        ],
+        'advanced' => [
             'container_class',
             'class',
             'help_message',
             'name',
             'conditional_logics',
-        ),
-    ),
-    'input_repeat' => array(
-        'general' => array(
+        ],
+    ],
+    'input_repeat' => [
+        'general' => [
             'label',
             'label_placement',
             'admin_field_label',
             'multi_column',
             'repeat_fields',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'container_class',
             'name',
             'conditional_logics',
-            'max_repeat_field'
-        ),
-    ),
-    'input_hidden' => array(
-        'general' => array(
+            'max_repeat_field',
+        ],
+    ],
+    'input_hidden' => [
+        'general' => [
             'admin_field_label',
             'value',
             'name',
-        ),
-    ),
-    'section_break' => array(
-        'general' => array(
+        ],
+    ],
+    'section_break' => [
+        'general' => [
             'label',
             'description',
             'align',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'class',
             'conditional_logics',
-        ),
-    ),
-    'recaptcha' => array(
-        'general' => array(
+        ],
+    ],
+    'recaptcha' => [
+        'general' => [
             'label',
             'label_placement',
             'name',
             'validation_rules',
-        ),
-    ),
-    'hcaptcha' => array(
-        'general' => array(
+        ],
+    ],
+    'hcaptcha' => [
+        'general' => [
             'label',
             'label_placement',
             'name',
             'validation_rules',
-        ),
-    ),
-    'custom_html' => array(
-        'general' => array(
+        ],
+    ],
+    'turnstile' => [
+        'general' => [
+            'label',
+            'label_placement',
+            'name',
+            'validation_rules'
+        ],
+    ],
+    'custom_html' => [
+        'general' => [
             'html_codes',
             'conditional_logics',
-            'container_class'
-        ),
-    ),
-    'shortcode' => array(
-        'general' => array(
+            'container_class',
+        ],
+    ],
+    'shortcode' => [
+        'general' => [
             'shortcode',
-        ),
-        'generalExtras' => array(
-            'message' => array(
+        ],
+        'generalExtras' => [
+            'message' => [
                 'template' => 'infoBlock',
-                'text' => 'Hello',
-            ),
-        ),
-        'advanced' => array(
+                'text'     => 'Hello',
+            ],
+        ],
+        'advanced' => [
             'class',
             'conditional_logics',
-        ),
-    ),
-    'terms_and_condition' => array(
-        'general' => array(
+        ],
+    ],
+    'terms_and_condition' => [
+        'general' => [
             'admin_field_label',
             'validation_rules',
             'tnc_html',
             'has_checkbox',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'container_class',
             'class',
             'name',
             'conditional_logics',
-        ),
-    ),
-    'action_hook' => array(
-        'general' => array(
+        ],
+    ],
+    'action_hook' => [
+        'general' => [
             'hook_name',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'class',
             'conditional_logics',
-        ),
-    ),
-    'form_step' => array(
-        'general' => array(
+        ],
+    ],
+    'form_step' => [
+        'general' => [
             'prev_btn',
             'next_btn',
             'class',
-        ),
-    ),
-    'button' => array(
-        'general' => array(
+        ],
+    ],
+    'button' => [
+        'general' => [
             'btn_text',
             'button_ui',
             'button_style',
             'button_size',
             'align',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'container_class',
             'class',
             'help_message',
             'conditional_logics',
-        ),
-        'generalExtras' => array(
-            'btn_text' => array(
-                'template' => 'inputText',
-                'label' => __('Button Text', 'fluentform'),
+        ],
+        'generalExtras' => [
+            'btn_text' => [
+                'template'  => 'inputText',
+                'label'     => __('Button Text', 'fluentform'),
                 'help_text' => __('Form submission button text.', 'fluentform'),
-            )
-        )
-    ),
-    'step_start' => array(
-        'general' => array(
+            ],
+        ],
+    ],
+    'step_start' => [
+        'general' => [
             'class',
             'progress_indicator',
             'step_titles',
             'disable_auto_focus',
             'enable_auto_slider',
             'enable_step_data_persistency',
-            'enable_step_page_resume'
-        ),
-    ),
-    'step_end' => array(
-        'general' => array(
+            'enable_step_page_resume',
+        ],
+    ],
+    'step_end' => [
+        'general' => [
             'class',
             'prev_btn',
-        ),
-    ),
-    'ratings' => array(
-        'general' => array(
+        ],
+    ],
+    'ratings' => [
+        'general' => [
             'label',
             'label_placement',
             'admin_field_label',
             'options',
             'show_text',
-            'validation_rules'
-        ),
-        'advanced' => array(
+            'validation_rules',
+        ],
+        'advanced' => [
             'help_message',
             'name',
             'conditional_logics',
-        ),
-    ),
-    'tabular_grid' => array(
-        'general' => array(
+        ],
+    ],
+    'tabular_grid' => [
+        'general' => [
             'label',
             'label_placement',
             'admin_field_label',
@@ -453,42 +467,42 @@ return array(
             'grid_columns',
             'grid_rows',
             'validation_rules',
-        ),
-        'advanced' => array(
+        ],
+        'advanced' => [
             'container_class',
             'help_message',
             'name',
             'conditional_logics',
-        ),
-    ),
-    'gdpr_agreement' => array(
-        'general' => array(
+        ],
+    ],
+    'gdpr_agreement' => [
+        'general' => [
             'admin_field_label',
             'tnc_html',
             'required_field_message',
-            'container_class'
-        ),
-        'advanced' => array(
+            'container_class',
+        ],
+        'advanced' => [
             'class',
             'name',
             'conditional_logics',
-        ),
-        'generalExtras' => array(
-            'tnc_html' => array(
-                'template' => 'inputTextarea',
-                'label' => __('Description', 'fluentform'),
+        ],
+        'generalExtras' => [
+            'tnc_html' => [
+                'template'  => 'inputTextarea',
+                'label'     => __('Description', 'fluentform'),
                 'help_text' => __('Write HTML content for GDPR agreement checkbox', 'fluentform'),
-                'rows' => 5,
-                'cols' => 3,
-            )
-        ),
-    ),
-    'container' => array(
-        'general' => array(
+                'rows'      => 5,
+                'cols'      => 3,
+            ],
+        ],
+    ],
+    'container' => [
+        'general' => [
             'container_class',
-            'conditional_logics'
-        ),
-        'advanced' => []
-    )
-);
-
+            'conditional_logics',
+            'container_width',
+        ],
+        'advanced' => [],
+    ],
+];

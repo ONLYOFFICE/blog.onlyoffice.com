@@ -7,7 +7,7 @@ get_header();
 ?>
 
 <?php
-// запрос
+// request
 
  $args = [
   'post_type' => 'news',
@@ -22,7 +22,7 @@ get_header();
  $wp_query = new WP_Query($args); ?>
 
 <main>
-<div class="SingleContainer">
+<div class="SingleContainer InThePressContainer">
   <div class="breadcrumbs-single">
           <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
              <span property="itemListElement" typeof="ListItem">

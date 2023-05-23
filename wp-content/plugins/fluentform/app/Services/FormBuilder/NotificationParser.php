@@ -6,36 +6,41 @@ use FluentForm\App\Services\FormBuilder\ShortCodeParser;
 
 class NotificationParser
 {
-	protected static $cache = null;
+    protected static $cache = null;
 
-	/**
-	 * Parse Norifications
-	 * @param array $notifications
-     * @param int $insertId
-     * @param array $data
+    /**
+     * Parse Norifications
+     *
+     * @param array  $notifications
+     * @param int    $insertId
+     * @param array  $data
      * @param object $form
-	 * @return  bool $cache
-	 */
-	public static function parse($notifications, $insertId, $data, $form, $cache = true)
+     *
+     * @return bool $cache
+     */
+    public static function parse($notifications, $insertId, $data, $form, $cache = true)
     {
-    	if ($cache && !is_null(static::$cache)) {
-    		return static::$cache;
-    	}
+        if ($cache && ! is_null(static::$cache)) {
+            return static::$cache;
+        }
 
         foreach ($notifications as &$notification) {
             static::setRecepient($notification, $data);
 
-        	$notification = ShortCodeParser::parse(
-        		$notification, $insertId, $data, $form
-        	);
-		}
+            $notification = ShortCodeParser::parse(
+                $notification,
+                $insertId,
+                $data,
+                $form
+            );
+        }
 
         return $cache ? (static::$cache = $notifications) : $notifications;
     }
 
     protected static function setRecepient(&$notification, $data)
     {
-        if (isset($notification['sendTo']) && $notification['sendTo']['type'] == 'field') {
+        if (isset($notification['sendTo']) && 'field' == $notification['sendTo']['type']) {
             $notification['sendTo']['email'] = $data[$notification['sendTo']['field']];
         }
     }

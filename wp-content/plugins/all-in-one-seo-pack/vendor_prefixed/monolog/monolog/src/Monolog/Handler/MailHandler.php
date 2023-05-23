@@ -15,7 +15,7 @@ namespace AIOSEO\Vendor\Monolog\Handler;
  *
  * @author Gyula Sallai
  */
-abstract class MailHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandler
+abstract class MailHandler extends AbstractProcessingHandler
 {
     /**
      * {@inheritdoc}

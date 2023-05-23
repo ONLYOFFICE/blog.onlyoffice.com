@@ -10,39 +10,40 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
- // phpcs:disable
+// phpcs:disable
 ?>
 
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel><?php
-	if( ! $isYandexBot ) {
+	if ( ! $isYandexBot ) {
 		?>
 
-		<title><?php aioseo()->sitemap->output->escapeAndEcho( $title, false ) ?></title>
+		<title><?php aioseo()->sitemap->output->escapeAndEcho( $title, false ); ?></title>
 		<link><?php aioseo()->sitemap->output->escapeAndEcho( $link ); ?></link>
 		<?php if ( $description ) {
 		?><description><?php aioseo()->sitemap->output->escapeAndEcho( $description ); ?></description>
 		<?php }
-		?><?php if ( array_key_exists( 'pubDate', $entries[0] ) || ! $entries[0]['pubDate'] ) {
+		?><?php if ( ! empty( $entries[0]['pubDate'] ) ) {
 		?><lastBuildDate><?php aioseo()->sitemap->output->escapeAndEcho( $entries[0]['pubDate'] ); ?></lastBuildDate>
 		<?php }
 		?><docs>https://validator.w3.org/feed/docs/rss2.html</docs>
-		<ttl>0</ttl>
+		<atom:link href="<?php echo aioseo()->sitemap->helpers->getUrl( 'rss' ); ?>" rel="self" type="application/rss+xml" />
+		<ttl><?php aioseo()->sitemap->output->escapeAndEcho( $ttl ); ?></ttl>
 
 <?php }
 foreach ( $entries as $entry ) {
-		if ( ! is_array( $entry ) || ! array_key_exists( 'guid', $entry ) || ! $entry['guid'] ) {
+		if ( empty( $entry['guid'] ) ) {
 			continue;
 			}?>
 		<item>
 			<guid><?php aioseo()->sitemap->output->escapeAndEcho( $entry['guid'] ); ?></guid>
 			<link><?php aioseo()->sitemap->output->escapeAndEcho( $entry['guid'] ); ?></link><?php
-			if ( array_key_exists( 'title', $entry ) && $entry['title'] ) {
+			if ( ! empty( $entry['title'] ) ) {
 				?>
 
 			<title><?php aioseo()->sitemap->output->escapeAndEcho( $entry['title'], false ); ?></title><?php
 			}
-			if ( array_key_exists( 'pubDate', $entry ) && $entry['pubDate'] ) {
+			if ( ! empty( $entry['pubDate'] ) ) {
 				?>
 
 			<pubDate><?php aioseo()->sitemap->output->escapeAndEcho( $entry['pubDate'] ); ?></pubDate><?php

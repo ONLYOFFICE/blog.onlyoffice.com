@@ -14,6 +14,50 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 4.0.0
  */
 class Social {
+	/**
+	 * The name of the action to bust the OG cache.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var string
+	 */
+	private $bustOgCacheActionName = 'aioseo_og_cache_bust_post';
+
+	/**
+	 * Image class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Image
+	 */
+	public $image = null;
+
+	/**
+	 * Facebook class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Facebook
+	 */
+	public $facebook = null;
+
+	/**
+	 * Twitter class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Twitter
+	 */
+	public $twitter = null;
+
+	/**
+	 * Output class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Output
+	 */
+	public $output = null;
 
 	/**
 	 * Class constructor.
@@ -40,41 +84,19 @@ class Social {
 	 * @since 4.0.0
 	 */
 	protected function hooks() {
-		if ( ! is_admin() || wp_doing_ajax() ) {
-			add_filter( 'language_attributes', [ $this, 'addAttributes' ] );
-		}
+		add_action( $this->bustOgCacheActionName, [ $this, 'bustOgCachePost' ] );
 
 		// To avoid duplicate sets of meta tags.
 		add_filter( 'jetpack_enable_open_graph', '__return_false' );
-		// Adds special filters.
-		add_filter( 'user_contactmethods', [ $this, 'addContactMethods' ] );
 
-		// @TODO: [V4+] Needs access token for authentication.
+		if ( ! is_admin() ) {
+			add_filter( 'language_attributes', [ $this, 'addAttributes' ] );
+
+			return;
+		}
+
 		// Forces a refresh of the Facebook cache.
-		//add_action( 'post_updated', [ $this, 'forceFbRefreshCache' ], 10, 2 );
-	}
-
-	/**
-	 * Returns the social media contact methods.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @param  array $contactMethods The contact methods.
-	 * @return array $contactMethods The filtered contact methods.
-	 */
-	public function addContactMethods( $contactMethods ) {
-		if ( aioseo()->options->social->twitter->general->enable && aioseo()->options->social->twitter->general->showAuthor ) {
-			$contactMethods['aioseo_contact_methods_header'] = AIOSEO_PLUGIN_NAME;
-			$contactMethods['aioseo_twitter']                = 'Twitter'; // @TODO: Will need to migrate these from old installs. `twitter` becomes `aioseo_twitter`
-		}
-
-		if ( aioseo()->options->social->facebook->general->enable && aioseo()->options->social->facebook->general->showAuthor ) {
-			if ( ! isset( $contactMethods['aioseo_contact_methods_header'] ) ) {
-				$contactMethods['aioseo_contact_methods_header'] = AIOSEO_PLUGIN_NAME;
-			}
-			$contactMethods['aioseo_facebook'] = 'Facebook'; // @TODO: Will need to migrate these from old installs. `facebook` becomes `aioseo_facebook`
-		}
-		return $contactMethods;
+		add_action( 'post_updated', [ $this, 'scheduleBustOgCachePost' ], 10, 2 );
 	}
 
 	/**
@@ -132,37 +154,83 @@ class Social {
 				$htmlTag .= "\n\t$attr ";
 			}
 		}
+
 		return $htmlTag;
 	}
 
 	/**
-	 * Forces FaceBook Open Graph to refresh on update.
+	 * Schedule a ping to bust the OG cache.
 	 *
-	 * @since 4.0.0
-	 *
-	 * @see https://developers.facebook.com/docs/sharing/opengraph/using-objects#update
+	 * @since 4.2.0
 	 *
 	 * @param  int     $postId The post ID.
 	 * @param  WP_Post $post   The post object.
 	 * @return void
 	 */
-	public function forceFbRefreshCache( $postId, $post ) {
-		if ( 'publish' !== $post->post_status ) {
+	public function scheduleBustOgCachePost( $postId, $post ) {
+		if ( ! aioseo()->helpers->isSbCustomFacebookFeedActive() || ! aioseo()->helpers->isValidPost( $post ) ) {
 			return;
 		}
 
-		$postUrl = urldecode( get_permalink( $postId ) );
+		if ( aioseo()->actionScheduler->isScheduled( $this->bustOgCacheActionName, [ 'postId' => $postId ] ) ) {
+			return;
+		}
 
-		// @TODO: [V4+] Needs access token for authentication.
-		$endpoint = sprintf(
+		// Schedule the new ping.
+		aioseo()->actionScheduler->scheduleAsync( $this->bustOgCacheActionName, [ 'postId' => $postId ] );
+	}
+
+	/**
+	 * Pings Facebook and asks them to bust the OG cache for a particular post.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @see https://developers.facebook.com/docs/sharing/opengraph/using-objects#update
+	 *
+	 * @param  int  $postId The post ID.
+	 * @return void
+	 */
+	public function bustOgCachePost( $postId ) {
+		$post              = get_post( $postId );
+		$customAccessToken = apply_filters( 'aioseo_facebook_access_token', '' );
+
+		if (
+			! aioseo()->helpers->isValidPost( $post ) ||
+			( ! aioseo()->helpers->isSbCustomFacebookFeedActive() && ! $customAccessToken )
+		) {
+			return;
+		}
+
+		$permalink = get_permalink( $postId );
+		$this->bustOgCacheHelper( $permalink );
+	}
+
+	/**
+	 * Helper function for bustOgCache().
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param  string $permalink The permalink.
+	 * @return void
+	 */
+	protected function bustOgCacheHelper( $permalink ) {
+		$accessToken = aioseo()->helpers->getSbAccessToken();
+		$accessToken = apply_filters( 'aioseo_facebook_access_token', $accessToken );
+		if ( ! $accessToken ) {
+			return;
+		}
+
+		$url = sprintf(
 			'https://graph.facebook.com/?%s',
 			http_build_query(
 				[
-					'id'     => $postUrl,
-					'scrape' => true,
+					'id'           => $permalink,
+					'scrape'       => true,
+					'access_token' => $accessToken
 				]
 			)
 		);
-		wp_remote_post( $endpoint, [ 'blocking' => false ] );
+
+		wp_remote_post( $url, [ 'blocking' => false ] );
 	}
 }

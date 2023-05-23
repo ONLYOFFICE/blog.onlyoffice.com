@@ -6,13 +6,13 @@ class SetupModule
 {
     public function installPlugin($repoSlug)
     {
-        if(!current_user_can('install_plugins')) {
+        if (!current_user_can('install_plugins')) {
             wp_send_json([
-                'message' => __('Sorry! you do not have permission to install plugin', 'fluentform')
+                'message' => __('Sorry! you do not have permission to install plugin', 'fluentform'),
             ], 423);
         }
 
-        if($repoSlug == 'fluent-smtp') {
+        if ('fluent-smtp' == $repoSlug) {
             $info = $this->installFluentSMTP();
             wp_send_json($info);
         }
@@ -29,9 +29,9 @@ class SetupModule
         $this->backgroundInstaller($plugin, $plugin_id);
 
         return [
-            'is_installed'     => defined('FLUENTMAIL'),
-            'config_url' => admin_url('options-general.php?page=fluent-mail#/'),
-            'message'   => __('FluentSMTP plugin has been installed and activated successfully', 'fluent-crm')
+            'is_installed' => defined('FLUENTMAIL'),
+            'config_url'   => admin_url('options-general.php?page=fluent-mail#/'),
+            'message'      => __('FluentSMTP plugin has been installed and activated successfully', 'fluentform'),
         ];
     }
 
@@ -47,7 +47,7 @@ class SetupModule
 
             $skin = new \Automatic_Upgrader_Skin();
             $upgrader = new \WP_Upgrader($skin);
-            $installed_plugins = array_reduce(array_keys(\get_plugins()), array($this, 'associate_plugin_file'), array());
+            $installed_plugins = array_reduce(array_keys(\get_plugins()), [$this, 'associate_plugin_file'], []);
             $plugin_slug = $plugin_to_install['repo-slug'];
             $plugin_file = isset($plugin_to_install['file']) ? $plugin_to_install['file'] : $plugin_slug . '.php';
             $installed = false;
@@ -67,9 +67,9 @@ class SetupModule
                 try {
                     $plugin_information = plugins_api(
                         'plugin_information',
-                        array(
+                        [
                             'slug'   => $plugin_slug,
-                            'fields' => array(
+                            'fields' => [
                                 'short_description' => false,
                                 'sections'          => false,
                                 'requires'          => false,
@@ -83,8 +83,8 @@ class SetupModule
                                 'donate_link'       => false,
                                 'author_profile'    => false,
                                 'author'            => false,
-                            ),
-                        )
+                            ],
+                        ]
                     );
 
                     if (is_wp_error($plugin_information)) {
@@ -105,17 +105,17 @@ class SetupModule
                     }
 
                     $result = $upgrader->install_package(
-                        array(
+                        [
                             'source'                      => $working_dir,
                             'destination'                 => WP_PLUGIN_DIR,
                             'clear_destination'           => false,
                             'abort_if_destination_exists' => false,
                             'clear_working'               => true,
-                            'hook_extra'                  => array(
+                            'hook_extra'                  => [
                                 'type'   => 'plugin',
                                 'action' => 'install',
-                            ),
-                        )
+                            ],
+                        ]
                     );
 
                     if (is_wp_error($result)) {
@@ -123,7 +123,6 @@ class SetupModule
                     }
 
                     $activate = true;
-
                 } catch (\Exception $e) {
                 }
 

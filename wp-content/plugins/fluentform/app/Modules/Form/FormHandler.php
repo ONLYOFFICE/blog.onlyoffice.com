@@ -8,6 +8,7 @@ use FluentForm\App\Modules\Activator;
 use FluentForm\App\Modules\Entries\Entries;
 use FluentForm\App\Modules\ReCaptcha\ReCaptcha;
 use FluentForm\App\Modules\HCaptcha\HCaptcha;
+use FluentForm\App\Modules\Turnstile\Turnstile;
 use FluentForm\App\Services\Browser\Browser;
 use FluentForm\App\Services\FormBuilder\ShortCodeParser;
 use FluentForm\Framework\Foundation\Application;
@@ -17,16 +18,22 @@ use FluentForm\Framework\Helpers\ArrayHelper;
 class FormHandler
 {
     /**
+     * App instance
+     *
      * @var \FluentForm\Framework\Foundation\Application
      */
     protected $app;
 
     /**
+     * Request object
+     *
      * @var \FluentForm\Framework\Request\Request
      */
     protected $request;
 
     /**
+     * Form Data
+     *
      * @var array $formData
      */
     protected $formData;
@@ -53,6 +60,7 @@ class FormHandler
      * Set the form using it's ID.
      *
      * @param $formId
+     *
      * @return $this
      */
     public function setForm($formId)
@@ -69,7 +77,7 @@ class FormHandler
         // Parse the url encoded data from the request object.
         parse_str($this->app->request->get('data'), $data);
 
-        $data['_wp_http_referer'] = urldecode( $data['_wp_http_referer'] );
+        $data['_wp_http_referer'] = urldecode($data['_wp_http_referer']);
 
         // Merge it back again to the request object.
         $this->app->request->merge(['data' => $data]);
@@ -80,8 +88,8 @@ class FormHandler
 
         if (!$this->form) {
             wp_send_json([
-                'errors' => [],
-                'message' => 'Sorry, No corresponding form found'
+                'errors'  => [],
+                'message' => 'Sorry, No corresponding form found',
             ], 423);
         }
 
@@ -109,6 +117,8 @@ class FormHandler
         }
 
         $insertId = wpFluent()->table('fluentform_submissions')->insert($insertData);
+
+        do_action('fluentform/notify_on_form_submit', $insertId, $this->formData, $this->form);
 
         $uidHash = md5(wp_generate_uuid4() . $insertId);
         Helper::setSubmissionMeta($insertId, '_entry_uid_hash', $uidHash, $formId);
@@ -165,8 +175,8 @@ class FormHandler
 
         return [
             'insert_id' => $insertId,
-            'result' => $returnData,
-            'error' => $error
+            'result'    => $returnData,
+            'error'     => $error,
         ];
     }
 
@@ -181,7 +191,6 @@ class FormHandler
             $form->settings = $formSettings ? json_decode($formSettings->value, true) : [];
         }
 
-
         $confirmation = apply_filters(
             'fluentform_form_submission_confirmation',
             $form->settings['confirmation'],
@@ -189,35 +198,33 @@ class FormHandler
             $form
         );
 
-        if ($confirmation['redirectTo'] == 'samePage') {
-
+        if ('samePage' == $confirmation['redirectTo']) {
             $confirmation['messageToShow'] = apply_filters('fluentform_submission_message_parse', $confirmation['messageToShow'], $insertId, $formData, $form);
-
 
             $message = ShortCodeParser::parse(
                 $confirmation['messageToShow'],
                 $insertId,
                 $formData,
-                $form
+                $form,
+                false,
+                true
             );
-
 
             $message = $message ? $message : 'The form has been successfully submitted.';
 
             $returnData = [
                 'message' => do_shortcode($message),
-                'action' => $confirmation['samePageFormBehavior'],
+                'action'  => $confirmation['samePageFormBehavior'],
             ];
-
         } else {
             $redirectUrl = Arr::get($confirmation, 'customUrl');
 
-            if ($confirmation['redirectTo'] == 'customPage') {
+            if ('customPage' == $confirmation['redirectTo']) {
                 $redirectUrl = get_permalink($confirmation['customPage']);
             }
 
             if (
-                (Arr::get($confirmation, 'enable_query_string') == 'yes') &&
+                ('yes' == Arr::get($confirmation, 'enable_query_string')) &&
                 Arr::get($confirmation, 'query_strings')
             ) {
                 if (strpos($redirectUrl, '?')) {
@@ -237,11 +244,11 @@ class FormHandler
                 $isUrlParser
             );
 
-            if($isUrlParser) {
+            if ($isUrlParser) {
                 /*
                  * For Empty Redirect Value
                  */
-                if(strpos($redirectUrl, '=&') || substr($redirectUrl, -1) == '=') {
+                if (strpos($redirectUrl, '=&') || '=' == substr($redirectUrl, -1)) {
                     $urlArray = explode('?', $redirectUrl);
                     $baseUrl = array_shift($urlArray);
 
@@ -252,7 +259,7 @@ class FormHandler
                     $params = [];
                     foreach ($queryParams as $queryParam) {
                         $paramArray = explode('=', $queryParam);
-                        if(!empty($paramArray[1])) {
+                        if (!empty($paramArray[1])) {
                             $params[$paramArray[0]] = $paramArray[1];
                         }
                     }
@@ -265,12 +272,14 @@ class FormHandler
                 ArrayHelper::get($confirmation, 'redirectMessage', ''),
                 $insertId,
                 $formData,
-                $form
+                $form,
+                false,
+                true
             );
 
             $returnData = [
                 'redirectUrl' => wp_sanitize_redirect(urldecode($redirectUrl)),
-                'message' => $message
+                'message'     => $message,
             ];
         }
 
@@ -286,11 +295,12 @@ class FormHandler
      * Validate form data.
      *
      * @param $fields
+     *
      * @return bool
      */
     private function validate(&$fields)
     {
-		$this->preventMaliciousAttacks();
+        $this->preventMaliciousAttacks();
 
         $this->validateRestrictions($fields);
 
@@ -298,12 +308,12 @@ class FormHandler
 
         $this->validateReCaptcha();
         $this->validateHCaptcha();
-//        dd('ok');
+        $this->validateTurnstile();
 
         foreach ($fields as $fieldName => $field) {
-            if(isset($this->formData[$fieldName])) {
+            if (isset($this->formData[$fieldName])) {
                 $element = $field['element'];
-                $this->formData[$fieldName] = apply_filters('fluentform_input_data_'.$element, $this->formData[$fieldName], $field, $this->formData, $this->form);
+                $this->formData[$fieldName] = apply_filters('fluentform_input_data_' . $element, $this->formData[$fieldName], $field, $this->formData, $this->form);
             }
         }
 
@@ -348,7 +358,7 @@ class FormHandler
                     $errors[$inputName] = [];
                 }
 
-                if(is_string($error)) {
+                if (is_string($error)) {
                     $error = [$error];
                 }
 
@@ -358,8 +368,12 @@ class FormHandler
 
         $errors = apply_filters('fluentform_validation_errors', $errors, $this->formData, $this->form, $fields);
 
-        if(Helper::getFormMeta($this->form->id, '_has_user_registration') == 'yes') {
+        if ('yes' == Helper::getFormMeta($this->form->id, '_has_user_registration') && !get_current_user_id()) {
             $errors = apply_filters('fluentform_validation_user_registration_errors', $errors, $this->formData, $this->form, $fields);
+        }
+
+        if ('yes' == Helper::getFormMeta($this->form->id, '_has_user_update') && get_current_user_id()) {
+            $errors = apply_filters('fluentform_validation_user_update_errors', $errors, $this->formData, $this->form, $fields);
         }
 
         if ($errors) {
@@ -383,8 +397,8 @@ class FormHandler
             if (!wp_verify_nonce($nonce, 'fluentform-submit-form')) {
                 $errors = $this->app->applyFilters('fluentForm_nonce_error', [
                     '_fluentformnonce' => [
-                        __('Nonce verification failed, please try again.', 'fluentform')
-                    ]
+                        __('Nonce verification failed, please try again.', 'fluentform'),
+                    ],
                 ]);
                 wp_send_json(['errors' => $errors], 422);
             }
@@ -394,12 +408,12 @@ class FormHandler
     protected function handleSpamError()
     {
         $settings = get_option('_fluentform_global_form_settings');
-        if (!$settings || ArrayHelper::get($settings, 'misc.akismet_validation') != 'validation_failed') {
+        if (!$settings || 'validation_failed' != ArrayHelper::get($settings, 'misc.akismet_validation')) {
             return;
         }
 
-        $errors =  [
-            '_fluentformakismet' => __('Submission marked as spammed. Please try again', 'fluentform')
+        $errors = [
+            '_fluentformakismet' => __('Submission marked as spammed. Please try again', 'fluentform'),
         ];
 
         wp_send_json(['errors' => $errors], 422);
@@ -426,11 +440,12 @@ class FormHandler
      */
     private function validateReCaptcha()
     {
-        if (FormFieldsParser::hasElement($this->form, 'recaptcha')) {
+        $autoInclude = apply_filters('ff_has_auto_recaptcha', false);
+        if (FormFieldsParser::hasElement($this->form, 'recaptcha') || $autoInclude) {
             $keys = get_option('_fluentform_reCaptcha_details');
             $token = Arr::get($this->formData, 'g-recaptcha-response');
             $version = 'v2_visible';
-            if(!empty($keys['api_version'])) {
+            if (!empty($keys['api_version'])) {
                 $version = $keys['api_version'];
             }
             $isValid = ReCaptcha::validate($token, $keys['secretKey'], $version);
@@ -439,9 +454,9 @@ class FormHandler
                 wp_send_json([
                     'errors' => [
                         'g-recaptcha-response' => [
-                            __('reCaptcha verification failed, please try again.', 'fluentform')
-                        ]
-                    ]
+                            __('reCaptcha verification failed, please try again.', 'fluentform'),
+                        ],
+                    ],
                 ], 422);
             }
         }
@@ -452,8 +467,9 @@ class FormHandler
      */
     private function validateHCaptcha()
     {
+        $autoInclude = apply_filters('ff_has_auto_hcaptcha', false);
         FormFieldsParser::resetData();
-        if (FormFieldsParser::hasElement($this->form, 'hcaptcha')) {
+        if (FormFieldsParser::hasElement($this->form, 'hcaptcha') || $autoInclude) {
             $keys = get_option('_fluentform_hCaptcha_details');
             $token = Arr::get($this->formData, 'h-captcha-response');
             $isValid = HCaptcha::validate($token, $keys['secretKey']);
@@ -462,9 +478,33 @@ class FormHandler
                 wp_send_json([
                     'errors' => [
                         'h-captcha-response' => [
-                            __('hCaptcha verification failed, please try again.', 'fluentform')
-                        ]
-                    ]
+                            __('hCaptcha verification failed, please try again.', 'fluentform'),
+                        ],
+                    ],
+                ], 422);
+            }
+        }
+    }
+
+    /**
+     * Validate turnstile.
+     */
+    private function validateTurnstile()
+    {
+        $autoInclude = apply_filters('ff_has_auto_turnstile', false);
+        if (FormFieldsParser::hasElement($this->form, 'turnstile') || $autoInclude) {
+            $keys = get_option('_fluentform_turnstile_details');
+            $token = Arr::get($this->formData, 'cf-turnstile-response');
+
+            $isValid = Turnstile::validate($token, $keys['secretKey']);
+
+            if (!$isValid) {
+                wp_send_json([
+                    'errors' => [
+                        'cf-turnstile-response' => [
+                            __('Turnstile verification failed, please try again.', 'fluentform'),
+                        ],
+                    ],
                 ], 422);
             }
         }
@@ -485,8 +525,8 @@ class FormHandler
         $this->form->settings = $formSettings ? json_decode($formSettings->value, true) : [];
 
         $isAllowed = [
-            'status' => true,
-            'message' => ''
+            'status'  => true,
+            'message' => '',
         ];
 
         // This will check the following restriction settings.
@@ -499,9 +539,9 @@ class FormHandler
             wp_send_json([
                 'errors' => [
                     'restricted' => [
-                        $isAllowed['message']
-                    ]
-                ]
+                        $isAllowed['message'],
+                    ],
+                ],
             ], 422);
         }
 
@@ -525,7 +565,7 @@ class FormHandler
             if (!FormFieldsParser::hasRequiredFields($this->form, $fields)) {
                 // Filter out the form data which doesn't have values.
                 $filteredFormData = array_filter(
-                // Filter out the other meta fields that aren't actual inputs.
+                    // Filter out the other meta fields that aren't actual inputs.
                     array_intersect_key($this->formData, $fields)
                 );
 
@@ -549,9 +589,9 @@ class FormHandler
                                         ? 'Sorry! You can\'t submit an empty form.'
                                         : $m,
                                     'fluentform'
-                                )
-                            ]
-                        ]
+                                ),
+                            ],
+                        ],
                     ], 422);
                 }
             }
@@ -562,6 +602,7 @@ class FormHandler
      * Prepare the data to be inserted to the database.
      *
      * @param boolean $formData
+     *
      * @return array
      */
     public function prepareInsertData($formData = false)
@@ -583,9 +624,9 @@ class FormHandler
             $serialNumber = $previousItem->serial_number + 1;
         }
 
-        $browser = new Browser;
+        $browser = new Browser();
 
-        $inputConfigs = FormFieldsParser::getEntryInputs($this->form, array('admin_label', 'raw'));
+        $inputConfigs = FormFieldsParser::getEntryInputs($this->form, ['admin_label', 'raw']);
 
         $this->formData = apply_filters('fluentform_insert_response_data', $formData, $formId, $inputConfigs);
 
@@ -596,18 +637,17 @@ class FormHandler
         }
 
         $response = [
-            'form_id' => $formId,
+            'form_id'       => $formId,
             'serial_number' => $serialNumber,
-            'response' => json_encode($this->formData),
-            'source_url' => site_url(Arr::get($formData, '_wp_http_referer')),
-            'user_id' => get_current_user_id(),
-            'browser' => $browser->getBrowser(),
-            'device' => $browser->getPlatform(),
-            'ip' => $ipAddress,
-            'created_at' => current_time('mysql'),
-            'updated_at' => current_time('mysql')
+            'response'      => json_encode($this->formData, JSON_UNESCAPED_UNICODE),
+            'source_url'    => site_url(Arr::get($formData, '_wp_http_referer')),
+            'user_id'       => get_current_user_id(),
+            'browser'       => $browser->getBrowser(),
+            'device'        => $browser->getPlatform(),
+            'ip'            => $ipAddress,
+            'created_at'    => current_time('mysql'),
+            'updated_at'    => current_time('mysql'),
         ];
-
 
         return apply_filters('fluentform_filter_insert_data', $response);
     }
@@ -616,8 +656,9 @@ class FormHandler
      * Delegate the validation rules & messages to the
      * ones that the validation library recognizes.
      *
-     * @param  $rules
-     * @param  $messages
+     * @param $rules
+     * @param $messages
+     *
      * @return array
      */
     protected function delegateValidations($rules, $messages, $search = [], $replace = [])
@@ -638,35 +679,35 @@ class FormHandler
         return [$rules, $messages];
     }
 
-	/**
-	 * Prevents malicious attacks when the submission
-	 * count exceeds in an allowed interval.
-	 */
-	public function preventMaliciousAttacks()
-	{
-		$prevent = apply_filters('fluentform/prevent_malicious_attacks', true, $this->form->id);
+    /**
+     * Prevents malicious attacks when the submission
+     * count exceeds in an allowed interval.
+     */
+    public function preventMaliciousAttacks()
+    {
+        $prevent = apply_filters('fluentform/prevent_malicious_attacks', true, $this->form->id);
 
-		if ($prevent) {
-			$maxSubmissionCount = apply_filters('fluentform/max_submission_count', 5, $this->form->id);
-			$minSubmissionInterval = apply_filters('fluentform/min_submission_interval', 30, $this->form->id);
+        if ($prevent) {
+            $maxSubmissionCount = apply_filters('fluentform/max_submission_count', 5, $this->form->id);
+            $minSubmissionInterval = apply_filters('fluentform/min_submission_interval', 30, $this->form->id);
 
-			$interval = date('Y-m-d H:i:s', strtotime(current_time('mysql')) - $minSubmissionInterval);
+            $interval = date('Y-m-d H:i:s', strtotime(current_time('mysql')) - $minSubmissionInterval);
 
-			$submissionCount = wpFluent()->table('fluentform_submissions')
-				->where('status', '!=', 'trashed')
-				->where('ip', $this->app->request->getIp())
-				->where('created_at', '>=', $interval)
-				->count();
+            $submissionCount = wpFluent()->table('fluentform_submissions')
+                ->where('status', '!=', 'trashed')
+                ->where('ip', $this->app->request->getIp())
+                ->where('created_at', '>=', $interval)
+                ->count();
 
-			if ($submissionCount >= $maxSubmissionCount) {
-				wp_send_json([
-					'errors' => [
-						'restricted' => [
-							__(apply_filters('fluentform/too_many_requests', 'Too Many Requests.', $this->form->id), 'fluentform')
-						]
-					]
-				], 429);
-			}
-		}
-	}
+            if ($submissionCount >= $maxSubmissionCount) {
+                wp_send_json([
+                    'errors' => [
+                        'restricted' => [
+                            __(apply_filters('fluentform/too_many_requests', 'Too Many Requests.', $this->form->id), 'fluentform'),
+                        ],
+                    ],
+                ], 429);
+            }
+        }
+    }
 }

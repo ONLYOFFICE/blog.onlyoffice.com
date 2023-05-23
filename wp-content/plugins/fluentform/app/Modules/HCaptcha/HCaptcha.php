@@ -9,8 +9,8 @@ class HCaptcha
     /**
      * Verify hCaptcha response.
      *
-     * @param string $token response from the user.
-     * @param null $secret provided or already stored secret key.
+     * @param string $token  response from the user.
+     * @param null   $secret provided or already stored secret key.
      *
      * @return bool
      */
@@ -24,10 +24,9 @@ class HCaptcha
             'method' => 'POST',
             'body'   => [
                 'secret'   => $secret,
-                'response' => $token
+                'response' => $token,
             ],
         ]);
-
 
         $isValid = false;
 

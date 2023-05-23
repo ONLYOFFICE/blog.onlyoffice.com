@@ -14,13 +14,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <?php foreach ( $entries as $entry ) {
-	if ( ! is_array( $entry ) || ! array_key_exists( 'loc', $entry ) || ! $entry['loc'] ) {
+	if ( empty( $entry['loc'] ) ) {
 		continue;
 	}
 	?>
 	<sitemap>
 		<loc><?php aioseo()->sitemap->output->escapeAndEcho( $entry['loc'] ); ?></loc><?php
-	if ( array_key_exists( 'lastmod', $entry ) && $entry['lastmod'] ) {
+	if ( ! empty( $entry['lastmod'] ) ) {
 			?>
 
 		<lastmod><?php aioseo()->sitemap->output->escapeAndEcho( $entry['lastmod'] ); ?></lastmod><?php

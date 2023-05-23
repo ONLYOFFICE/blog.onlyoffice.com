@@ -151,8 +151,8 @@
                                             <tbody>
                                             <?php foreach ($submissions as $submission): ?>
                                                 <tr>
-                                                    <td><?php echo $submission->title; ?></td>
-                                                    <td><?php echo $submission->total; ?></td>
+                                                    <td><?php echo esc_html($submission->title); ?></td>
+                                                    <td><?php echo esc_attr($submission->total); ?></td>
                                                 </tr>
                                             <?php endforeach; ?>
                                             </tbody>
@@ -176,8 +176,8 @@
                                                 <tbody>
                                                 <?php foreach ($payments as $payment): ?>
                                                     <tr>
-                                                        <td><?php echo $payment->title; ?></td>
-                                                        <td><?php echo $payment->readable_amount; ?></td>
+                                                        <td><?php echo esc_html($payment->title); ?></td>
+                                                        <td><?php echo esc_attr($payment->readable_amount); ?></td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                                 </tbody>
@@ -199,7 +199,7 @@
                                         );
                                         $generateText = apply_filters('fluentform_email_summary_body_text', $generateText, $submissions);
                                         ?>
-                                        <?php echo $generateText;; ?> .
+                                        <?php echo wp_kses_post($generateText); ?> .
                                     </td>
                                 </tr>
                             </table>
@@ -225,7 +225,7 @@
                                 $footerText = apply_filters('fluentform_email_summary_footer_text', $generateText);
                                 ?>
                                 <p>
-                                    <?php echo $footerText; ?>
+                                    <?php echo wp_kses_post($footerText); ?>
                                 </p>
                             </td>
                         </tr>

@@ -1,6 +1,11 @@
 <?php
 namespace AIOSEO\Plugin\Common\Utils;
 
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Class Templates
  *
@@ -69,7 +74,7 @@ class Templates {
 			// Try paths, in order.
 			foreach ( $this->paths as $path ) {
 				$template = trailingslashit( $this->addPluginPath( $path ) ) . $templateName;
-				if ( file_exists( $template ) ) {
+				if ( aioseo()->core->fs->exists( $template ) ) {
 					break;
 				}
 			}
@@ -85,9 +90,9 @@ class Templates {
 	 * @param  null   $data         Data passed down to the template.
 	 * @return void
 	 */
-	public function getTemplate( $templateName, $data = null ) {
+	public function getTemplate( $templateName, $data = null ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$template = $this->locateTemplate( $templateName );
-		if ( ! empty( $template ) and file_exists( $template ) ) {
+		if ( ! empty( $template ) and aioseo()->core->fs->exists( $template ) ) {
 			include $template;
 		}
 	}

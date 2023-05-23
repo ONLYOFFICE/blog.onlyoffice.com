@@ -66,11 +66,9 @@ class GoogleAnalytics {
 			is_user_logged_in()
 		) {
 			$currentUser = wp_get_current_user();
-			if ( ! empty( $currentUser ) ) {
-				$intersect = array_intersect( $excludeUsers, $currentUser->roles );
-				if ( ! empty( $intersect ) ) {
-					return true;
-				}
+			$intersect   = array_intersect( $excludeUsers, $currentUser->roles );
+			if ( ! empty( $intersect ) ) {
+				return true;
 			}
 		}
 
@@ -205,7 +203,7 @@ class GoogleAnalytics {
 	 * @return string The autotrack.js URL.
 	 */
 	public function autoTrackUrl() {
-		return apply_filters( 'aioseo_google_autotrack', plugin_dir_url( AIOSEO_FILE ) . 'app/Common/Assets/js/autotrack.js' );
+		return apply_filters( 'aioseo_google_autotrack', aioseo()->core->assets->jsUrl( 'src/app/autotrack/autotrack.js' ) );
 	}
 
 	/**

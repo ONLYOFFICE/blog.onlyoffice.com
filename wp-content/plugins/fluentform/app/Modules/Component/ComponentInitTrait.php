@@ -18,13 +18,13 @@ trait ComponentInitTrait
 
         // Hook to add search keywords for the component
         add_filter('fluent_editor_element_search_tags', [$this, '_fluentEditorElementSearchTagsCallback']);
-        
+
         // Hook for component's editor items/options placement settings
         add_filter('fluent_editor_element_settings_placement', [$this, '_fluentEditorElementSettingsPlacementCallback']);
-        
+
         // Hook for component's customization settings
         add_filter('fluent_editor_element_customization_settings', [$this, '_fluentEditorElementCustomizationSettingsCallback']);
-        
+
         // Hook for response data preperation on form submission
         add_filter('fluentform_insert_response_data', [$this, '_fluentformInsertResponseDataCallback'], 10, 3);
 
@@ -33,43 +33,43 @@ trait ComponentInitTrait
 
         // Component render/compile hook (for form)
         add_action('fluentform_render_item_' . $this->element(), [$this, '_elementRenderHookCallback'], 10, 2);
-        
+
         // Component's used element response transformation hook (for entries)
         add_filter('fluentform_response_render_' . $this->element(), [$this, '_elementEntryFormatCallback'], 10, 3);
     }
 
     /**
      * Validate certain required properties
-     * 
+     *
      * @return void
      */
     private function _fluentFormValidateComponent()
     {
         $name = $this->name();
-        if (!$name || !is_string($name)) {
+        if (! $name || ! is_string($name)) {
             wp_die('The name must be a valid string.');
         }
 
         $label = $this->label();
-        if (!$label || !is_string($label)) {
+        if (! $label || ! is_string($label)) {
             wp_die('The label must be a valid string.');
         }
 
         $element = $this->element();
-        if (!$element || !is_string($element)) {
+        if (! $element || ! is_string($element)) {
             $elements = 'text_input, text_email, textarea';
             wp_die("The element must be one of the available elements, i.e: $elements e.t.c.");
         }
 
         $template = $this->template();
-        if (!$template || !is_string($template)) {
+        if (! $template || ! is_string($template)) {
             $templates = 'inputText, selectCountry. addressFields';
             wp_die("The template must be one of the available templates, i.e: $templates e.t.c.");
         }
 
         $group = $this->group();
         $groups = ['general', 'advanced', 'container'];
-        if (!$group || !in_array($group, $groups)) {
+        if (! $group || ! in_array($group, $groups)) {
             wp_die('Invalid group, available groups: ' . implode(', ', $groups) . '.');
         }
     }
@@ -77,7 +77,8 @@ trait ComponentInitTrait
     /**
      * Add the component in fluentform editor's components array.
      *
-     * @param  array $components
+     * @param array $components
+     *
      * @return array $components
      */
     public function _fluentEditorComponenstCallback($components)
@@ -90,28 +91,28 @@ trait ComponentInitTrait
         $template = $this->template();
         $iconClass = $this->elementIconClass();
         $validationRules = $this->validationRules();
-        
+
         $settings = $this->settings([
-            'label' => $label,
-            'container_class' => '',
-            'label_placement' => '',
-            'help_message' => '',
-            'admin_field_label' => $label,
+            'label'              => $label,
+            'container_class'    => '',
+            'label_placement'    => '',
+            'help_message'       => '',
+            'admin_field_label'  => $label,
             'conditional_logics' => [],
-            'validation_rules' => $validationRules
+            'validation_rules'   => $validationRules,
         ]);
 
         $attributes = $this->attributes([
-            'id' => "",
-            'name' => $name,
-            'class' => '',
-            'value' => '',
+            'id'          => '',
+            'name'        => $name,
+            'class'       => '',
+            'value'       => '',
             'placeholder' => '',
         ]);
 
         $editorOptions = $this->options([
-            'title' => $label,
-            'template' => $template,
+            'title'      => $label,
+            'template'   => $template,
             'icon_class' => $iconClass,
         ]);
 
@@ -120,10 +121,10 @@ trait ComponentInitTrait
         }
 
         $components[$group][] = [
-            'index' => $index,
-            'element' => $element,
-            'settings' => $settings,
-            'attributes' => $attributes,
+            'index'          => $index,
+            'element'        => $element,
+            'settings'       => $settings,
+            'attributes'     => $attributes,
             'editor_options' => $editorOptions,
         ];
 
@@ -132,15 +133,16 @@ trait ComponentInitTrait
 
     /**
      * Add the keywords for the component to search in the editor.
-     * 
-     * @param  array $keywords
+     *
+     * @param array $keywords
+     *
      * @return array $keywords
      */
     public function _fluentEditorElementSearchTagsCallback($keywords)
     {
         $newKeywords = $this->searchBy();
 
-        if (!$newKeywords) {
+        if (! $newKeywords) {
             return $keywords;
         }
 
@@ -151,7 +153,8 @@ trait ComponentInitTrait
         }
 
         $keywords[$element] = array_merge(
-            $existingKeywords, $newKeywords
+            $existingKeywords,
+            $newKeywords
         );
 
         return $keywords;
@@ -159,8 +162,9 @@ trait ComponentInitTrait
 
     /**
      * Configure placements of input customization options in editor.
-     * 
-     * @param  array $placemenSettings
+     *
+     * @param array $placemenSettings
+     *
      * @return array $placemenSettings
      */
     public function _fluentEditorElementSettingsPlacementCallback($placementSettings)
@@ -184,16 +188,18 @@ trait ComponentInitTrait
         ];
 
         $placementSettings[$this->element()] = array_merge_recursive(
-            $this->placementSettings($default), $placementSettings
+            $this->placementSettings($default),
+            $placementSettings
         );
-        
+
         return $placementSettings;
     }
 
     /**
      * Configure input customization options/items in the editor.
-     * 
-     * @param  array $customizationSettings
+     *
+     * @param array $customizationSettings
+     *
      * @return array $customizationSettings
      */
     public function _fluentEditorElementCustomizationSettingsCallback($customizationSettings)
@@ -204,9 +210,10 @@ trait ComponentInitTrait
     /**
      * Prepare the submission data for the element on Form Submission.
      *
-     * @param  array $formData
-     * @param  int   $formId
-     * @param  array $inputConfigs
+     * @param array $formData
+     * @param int   $formId
+     * @param array $inputConfigs
+     *
      * @return array $formData
      */
     public function _fluentformInsertResponseDataCallback($formData, $formId, $inputConfigs)
@@ -217,8 +224,9 @@ trait ComponentInitTrait
     /**
      * Add the component type in fluentform field
      * types to be available in FormFieldParser.
-     * 
-     * @param  array $types
+     *
+     * @param array $types
+     *
      * @return array $types
      */
     public function _fluentformFormInputTypesCallback($types)
@@ -229,8 +237,9 @@ trait ComponentInitTrait
     /**
      * Render the component.
      *
-     * @param array $data
-     * @param stdClass $form
+     * @param array    $data
+     * @param \stdClass $form
+     *
      * @return void
      */
     public function _elementRenderHookCallback($item, $form)
@@ -240,10 +249,11 @@ trait ComponentInitTrait
 
     /**
      * Element's entry value transformation.
-     * 
-     * @param  mixed $value
-     * @param  string $field
-     * @param  int $formId
+     *
+     * @param mixed  $value
+     * @param string $field
+     * @param int    $formId
+     *
      * @return mixed $value
      */
     public function _elementEntryFormatCallback($value, $field, $formId)

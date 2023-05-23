@@ -217,6 +217,21 @@ jQuery(document).ready(function ($) {
             }
         });
         jQuery.dropdownToggle({
+            dropdownID: "navitem_developers_menu",
+            switcherSelector: "#navitem_developers",
+            simpleToggle: true,
+            showFunction: function (switcherObj, dropdownItem) {
+                if (dropdownItem.is(":hidden")) {
+                    switcherObj.addClass("active");
+                } else {
+                    switcherObj.removeClass("active");
+                }
+            },
+            hideFunction: function () {
+                $("#navitem_developers").removeClass("active");
+            }
+        });
+        jQuery.dropdownToggle({
             dropdownID: "navitem_partnership_menu",
             switcherSelector: "#navitem_partners",
             simpleToggle: true,

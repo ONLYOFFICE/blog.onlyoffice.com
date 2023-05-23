@@ -1,1479 +1,1594 @@
 <?php
 
-$defaultElements = array(
-    'general' => array(
-        'input_name' => array(
-            'index' => 0,
-            'element' => 'input_name',
-            'attributes' => array(
-                'name' => 'names',
-                'data-type' => 'name-element'
-            ),
-            'settings' => array(
-                'container_class' => '',
-                'admin_field_label' => 'Name',
-                'conditional_logics' => array(),
-                'label_placement' => 'top'
-            ),
-            'fields' => array(
-//                'title' => array(
-//                    'attributes' => array(
-//                    ),
-//                    'settings' => array(
-//                        'disabled' => false,
-//                        'container_class' => '',
-//                        'label' => __('Title', 'fluentform'),
-//                        'visible' => false,
-//                        'validation_rules' => array(),
-//                        'calc_value_status' => false,
-//                    ),
-//                    'editor_options' => array(
-//                        'template' => 'inputText'
-//                    ),
-//                ),
-                'first_name' => array(
-                    'element' => 'input_text',
-                    'attributes' => array(
-                        'type' => 'text',
-                        'name' => 'first_name',
-                        'value' => '',
-                        'id' => '',
-                        'class' => '',
+$defaultElements = [
+    'general' => [
+        'input_name' => [
+            'index'      => 0,
+            'element'    => 'input_name',
+            'attributes' => [
+                'name'      => 'names',
+                'data-type' => 'name-element',
+            ],
+            'settings' => [
+                'container_class'    => '',
+                'admin_field_label'  => 'Name',
+                'conditional_logics' => [],
+                'label_placement'    => 'top',
+            ],
+            'fields' => [
+                //                'title' => array(
+                //                    'attributes' => array(
+                //                    ),
+                //                    'settings' => array(
+                //                        'disabled' => false,
+                //                        'container_class' => '',
+                //                        'label' => __('Title', 'fluentform'),
+                //                        'visible' => false,
+                //                        'validation_rules' => array(),
+                //                        'calc_value_status' => false,
+                //                    ),
+                //                    'editor_options' => array(
+                //                        'template' => 'inputText'
+                //                    ),
+                //                ),
+                'first_name' => [
+                    'element'    => 'input_text',
+                    'attributes' => [
+                        'type'        => 'text',
+                        'name'        => 'first_name',
+                        'value'       => '',
+                        'id'          => '',
+                        'class'       => '',
                         'placeholder' => __('First Name', 'fluentform'),
-                        'maxlength' => '',
-                    ),
-                    'settings' => array(
-                        'container_class' => '',
-                        'label' => __('First Name', 'fluentform'),
-                        'help_message' => '',
-                        'visible' => true,
-                        'validation_rules' => array(
-                            'required' => array(
-                                'value' => false,
+                        'maxlength'   => '',
+                    ],
+                    'settings' => [
+                        'container_class'  => '',
+                        'label'            => __('First Name', 'fluentform'),
+                        'help_message'     => '',
+                        'visible'          => true,
+                        'validation_rules' => [
+                            'required' => [
+                                'value'   => false,
                                 'message' => __('This field is required', 'fluentform'),
-                            ),
-                        ),
-                        'conditional_logics' => array(),
-                    ),
-                    'editor_options' => array(
-                        'template' => 'inputText'
-                    ),
-                ),
-                'middle_name' => array(
-                    'element' => 'input_text',
-                    'attributes' => array(
-                        'type' => 'text',
-                        'name' => 'middle_name',
-                        'value' => '',
-                        'id' => '',
-                        'class' => '',
+                            ],
+                        ],
+                        'conditional_logics' => [],
+                    ],
+                    'editor_options' => [
+                        'template' => 'inputText',
+                    ],
+                ],
+                'middle_name' => [
+                    'element'    => 'input_text',
+                    'attributes' => [
+                        'type'        => 'text',
+                        'name'        => 'middle_name',
+                        'value'       => '',
+                        'id'          => '',
+                        'class'       => '',
                         'placeholder' => __('Middle Name', 'fluentform'),
-                        'required' => false,
-                        'maxlength' => '',
-                    ),
-                    'settings' => array(
-                        'container_class' => '',
-                        'label' => __('Middle Name', 'fluentform'),
-                        'help_message' => '',
-                        'error_message' => '',
-                        'visible' => false,
-                        'validation_rules' => array(
-                            'required' => array(
-                                'value' => false,
+                        'required'    => false,
+                        'maxlength'   => '',
+                    ],
+                    'settings' => [
+                        'container_class'  => '',
+                        'label'            => __('Middle Name', 'fluentform'),
+                        'help_message'     => '',
+                        'error_message'    => '',
+                        'visible'          => false,
+                        'validation_rules' => [
+                            'required' => [
+                                'value'   => false,
                                 'message' => __('This field is required', 'fluentform'),
-                            ),
-                        ),
-                        'conditional_logics' => array(),
-                    ),
-                    'editor_options' => array(
-                        'template' => 'inputText'
-                    ),
-                ),
-                'last_name' => array(
-                    'element' => 'input_text',
-                    'attributes' => array(
-                        'type' => 'text',
-                        'name' => 'last_name',
-                        'value' => '',
-                        'id' => '',
-                        'class' => '',
+                            ],
+                        ],
+                        'conditional_logics' => [],
+                    ],
+                    'editor_options' => [
+                        'template' => 'inputText',
+                    ],
+                ],
+                'last_name' => [
+                    'element'    => 'input_text',
+                    'attributes' => [
+                        'type'        => 'text',
+                        'name'        => 'last_name',
+                        'value'       => '',
+                        'id'          => '',
+                        'class'       => '',
                         'placeholder' => __('Last Name', 'fluentform'),
-                        'required' => false,
-                        'maxlength' => '',
-                    ),
-                    'settings' => array(
-                        'container_class' => '',
-                        'label' => __('Last Name', 'fluentform'),
-                        'help_message' => '',
-                        'error_message' => '',
-                        'visible' => true,
-                        'validation_rules' => array(
-                            'required' => array(
-                                'value' => false,
+                        'required'    => false,
+                        'maxlength'   => '',
+                    ],
+                    'settings' => [
+                        'container_class'  => '',
+                        'label'            => __('Last Name', 'fluentform'),
+                        'help_message'     => '',
+                        'error_message'    => '',
+                        'visible'          => true,
+                        'validation_rules' => [
+                            'required' => [
+                                'value'   => false,
                                 'message' => __('This field is required', 'fluentform'),
-                            ),
-                        ),
-                        'conditional_logics' => array(),
-                    ),
-                    'editor_options' => array(
-                        'template' => 'inputText'
-                    ),
-                ),
-            ),
-            'editor_options' => array(
-                'title' => 'Name Fields',
-                'element' => 'name-fields',
+                            ],
+                        ],
+                        'conditional_logics' => [],
+                    ],
+                    'editor_options' => [
+                        'template' => 'inputText',
+                    ],
+                ],
+            ],
+            'editor_options' => [
+                'title'      => 'Name Fields',
+                'element'    => 'name-fields',
                 'icon_class' => 'ff-edit-name',
-                'template' => 'nameFields'
-            ),
-        ),
-        'input_email' => array(
-            'index' => 1,
-            'element' => 'input_email',
-            'attributes' => array(
-                'type' => 'email',
-                'name' => 'email',
-                'value' => '',
-                'id' => '',
-                'class' => '',
+                'template'   => 'nameFields',
+            ],
+        ],
+        'input_email' => [
+            'index'      => 1,
+            'element'    => 'input_email',
+            'attributes' => [
+                'type'        => 'email',
+                'name'        => 'email',
+                'value'       => '',
+                'id'          => '',
+                'class'       => '',
                 'placeholder' => 'Email Address',
-            ),
-            'settings' => array(
-                'container_class' => '',
-                'label' => __('Email', 'fluentform'),
-                'label_placement' => '',
-                'help_message' => '',
+            ],
+            'settings' => [
+                'container_class'   => '',
+                'label'             => __('Email', 'fluentform'),
+                'label_placement'   => '',
+                'help_message'      => '',
                 'admin_field_label' => '',
-                'prefix_label' => '',
-                'suffix_label' => '',
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+                'prefix_label'      => '',
+                'suffix_label'      => '',
+                'validation_rules'  => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
-                    ),
-                    'email' => array(
-                        'value' => true,
+                    ],
+                    'email' => [
+                        'value'   => true,
                         'message' => __('This field must contain a valid email', 'fluentform'),
-                    ),
-                ),
-                'conditional_logics' => array(),
-                'is_unique' => 'no',
-                'unique_validation_message' => __('Email address need to be unique.', 'fluentform')
-            ),
-            'editor_options' => array(
-                'title' => __('Email Address', 'fluentform'),
+                    ],
+                ],
+                'conditional_logics'        => [],
+                'is_unique'                 => 'no',
+                'unique_validation_message' => __('Email address need to be unique.', 'fluentform'),
+            ],
+            'editor_options' => [
+                'title'      => __('Email Address', 'fluentform'),
                 'icon_class' => 'ff-edit-email',
-                'template' => 'inputText'
-            ),
-        ),
-        'input_text' => array(
-            'index' => 2,
-            'element' => 'input_text',
-            'attributes' => array(
-                'type' => 'text',
-                'name' => 'input_text',
-                'value' => '',
-                'class' => '',
+                'template'   => 'inputText',
+            ],
+        ],
+        'input_text' => [
+            'index'      => 2,
+            'element'    => 'input_text',
+            'attributes' => [
+                'type'        => 'text',
+                'name'        => 'input_text',
+                'value'       => '',
+                'class'       => '',
                 'placeholder' => '',
-                'maxlength' => '',
-            ),
-            'settings' => array(
-                'container_class' => '',
-                'label' => __('Text Input', 'fluentform'),
-                'label_placement' => '',
+                'maxlength'   => '',
+            ],
+            'settings' => [
+                'container_class'   => '',
+                'label'             => __('Text Input', 'fluentform'),
+                'label_placement'   => '',
                 'admin_field_label' => '',
-                'help_message' => '',
-                'prefix_label' => '',
-                'suffix_label' => '',
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+                'help_message'      => '',
+                'prefix_label'      => '',
+                'suffix_label'      => '',
+                'validation_rules'  => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
-                    ),
-                ),
-                'conditional_logics' => array(),
-                'is_unique' => 'no',
-                'unique_validation_message' => __('This value need to be unique.', 'fluentform')
-            ),
-            'editor_options' => array(
-                'title' => __('Simple Text', 'fluentform'),
+                    ],
+                ],
+                'conditional_logics'        => [],
+                'is_unique'                 => 'no',
+                'unique_validation_message' => __('This value need to be unique.', 'fluentform'),
+            ],
+            'editor_options' => [
+                'title'      => __('Simple Text', 'fluentform'),
                 'icon_class' => 'ff-edit-text',
-                'template' => 'inputText'
-            )
-        ),
-        'input_mask' => array(
-            'index' => 2,
-            'element' => 'input_text',
-            'attributes' => array(
-                'type' => 'text',
-                'name' => 'input_mask',
-                'data-mask' => '',
-                'value' => '',
-                'class' => '',
+                'template'   => 'inputText',
+            ],
+        ],
+        'input_mask' => [
+            'index'      => 2,
+            'element'    => 'input_text',
+            'attributes' => [
+                'type'        => 'text',
+                'name'        => 'input_mask',
+                'data-mask'   => '',
+                'value'       => '',
+                'class'       => '',
                 'placeholder' => '',
-            ),
-            'settings' => array(
-                'container_class' => '',
-                'label' => __('Mask Input', 'fluentform'),
-                'label_placement' => '',
-                'admin_field_label' => '',
-                'help_message' => '',
-                'temp_mask' => '',
-                'prefix_label' => '',
-                'suffix_label' => '',
-                'data-mask-reverse' => 'no',
+            ],
+            'settings' => [
+                'container_class'         => '',
+                'label'                   => __('Mask Input', 'fluentform'),
+                'label_placement'         => '',
+                'admin_field_label'       => '',
+                'help_message'            => '',
+                'temp_mask'               => '',
+                'prefix_label'            => '',
+                'suffix_label'            => '',
+                'data-mask-reverse'       => 'no',
                 'data-clear-if-not-match' => 'no',
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+                'validation_rules'        => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
-                    ),
-                ),
-                'conditional_logics' => array(),
-            ),
-            'editor_options' => array(
-                'title' => __('Mask Input', 'fluentform'),
+                    ],
+                ],
+                'conditional_logics' => [],
+            ],
+            'editor_options' => [
+                'title'      => __('Mask Input', 'fluentform'),
                 'icon_class' => 'ff-edit-mask',
-                'template' => 'inputText'
-            )
-        ),
-        'textarea' => array(
-            'index' => 3,
-            'element' => 'textarea',
-            'attributes' => array(
-                'name' => 'description',
-                'value' => '',
-                'id' => '',
-                'class' => '',
+                'template'   => 'inputText',
+            ],
+        ],
+        'textarea' => [
+            'index'      => 3,
+            'element'    => 'textarea',
+            'attributes' => [
+                'name'        => 'description',
+                'value'       => '',
+                'id'          => '',
+                'class'       => '',
                 'placeholder' => '',
-                'rows' => 3,
-                'cols' => 2,
-                'maxlength' => ''
-            ),
-            'settings' => array(
-                'container_class' => '',
-                'label' => __('Textarea', 'fluentform'),
+                'rows'        => 3,
+                'cols'        => 2,
+                'maxlength'   => '',
+            ],
+            'settings' => [
+                'container_class'   => '',
+                'label'             => __('Textarea', 'fluentform'),
                 'admin_field_label' => '',
-                'label_placement' => '',
-                'help_message' => '',
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+                'label_placement'   => '',
+                'help_message'      => '',
+                'validation_rules'  => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
-                    ),
-                ),
-                'conditional_logics' => array()
-            ),
-            'editor_options' => array(
-                'title' => __('Text Area', 'fluentform'),
+                    ],
+                ],
+                'conditional_logics' => [],
+            ],
+            'editor_options' => [
+                'title'      => __('Text Area', 'fluentform'),
                 'icon_class' => 'ff-edit-textarea',
-                'template' => 'inputTextarea'
-            ),
-        ),
-        'address' => array(
-            'index' => 4,
-            'element' => 'address',
-            'attributes' => array(
-                'id' => '',
-                'class' => '',
-                'name' => 'address_1',
-                'data-type' => 'address-element'
-            ),
-            'settings' => array(
-                'label' => __('Address', 'fluentform'),
+                'template'   => 'inputTextarea',
+            ],
+        ],
+        'address' => [
+            'index'      => 4,
+            'element'    => 'address',
+            'attributes' => [
+                'id'        => '',
+                'class'     => '',
+                'name'      => 'address_1',
+                'data-type' => 'address-element',
+            ],
+            'settings' => [
+                'label'                 => __('Address', 'fluentform'),
                 'enable_g_autocomplete' => 'no',
-                'admin_field_label' => 'Address',
-                'field_order' => array(
-                    array('id' => 1, 'value' => 'address_line_1'),
-                    array('id' => 2, 'value' => 'address_line_2'),
-                    array('id' => 3, 'value' => 'city'),
-                    array('id' => 4, 'value' => 'state'),
-                    array('id' => 5, 'value' => 'zip'),
-                    array('id' => 6, 'value' => 'country'),
-                ),
-                'conditional_logics' => array(),
-            ),
-            'fields' => array(
-                'address_line_1' => array(
-                    'element' => 'input_text',
-                    'attributes' => array(
-                        'type' => 'text',
-                        'name' => 'address_line_1',
-                        'value' => '',
-                        'id' => '',
-                        'class' => '',
+                'admin_field_label'     => 'Address',
+                'field_order'           => [
+                    ['id' => 1, 'value' => 'address_line_1'],
+                    ['id' => 2, 'value' => 'address_line_2'],
+                    ['id' => 3, 'value' => 'city'],
+                    ['id' => 4, 'value' => 'state'],
+                    ['id' => 5, 'value' => 'zip'],
+                    ['id' => 6, 'value' => 'country'],
+                ],
+                'conditional_logics' => [],
+            ],
+            'fields' => [
+                'address_line_1' => [
+                    'element'    => 'input_text',
+                    'attributes' => [
+                        'type'        => 'text',
+                        'name'        => 'address_line_1',
+                        'value'       => '',
+                        'id'          => '',
+                        'class'       => '',
                         'placeholder' => __('Address Line 1', 'fluentform'),
-                    ),
-                    'settings' => array(
-                        'container_class' => '',
-                        'label' => __('Address Line 1', 'fluentform'),
+                    ],
+                    'settings' => [
+                        'container_class'   => '',
+                        'label'             => __('Address Line 1', 'fluentform'),
                         'admin_field_label' => '',
-                        'help_message' => '',
-                        'visible' => true,
-                        'validation_rules' => array(
-                            'required' => array(
-                                'value' => false,
+                        'help_message'      => '',
+                        'visible'           => true,
+                        'validation_rules'  => [
+                            'required' => [
+                                'value'   => false,
                                 'message' => __('This field is required', 'fluentform'),
-                            ),
-                        ),
-                        'conditional_logics' => array(),
-                    ),
-                    'editor_options' => array(
-                        'template' => 'inputText'
-                    ),
-                ),
-                'address_line_2' => array(
-                    'element' => 'input_text',
-                    'attributes' => array(
-                        'type' => 'text',
-                        'name' => 'address_line_2',
-                        'value' => '',
-                        'id' => '',
-                        'class' => '',
+                            ],
+                        ],
+                        'conditional_logics' => [],
+                    ],
+                    'editor_options' => [
+                        'template' => 'inputText',
+                    ],
+                ],
+                'address_line_2' => [
+                    'element'    => 'input_text',
+                    'attributes' => [
+                        'type'        => 'text',
+                        'name'        => 'address_line_2',
+                        'value'       => '',
+                        'id'          => '',
+                        'class'       => '',
                         'placeholder' => __('Address Line 2', 'fluentform'),
-                    ),
-                    'settings' => array(
-                        'container_class' => '',
-                        'label' => __('Address Line 2', 'fluentform'),
+                    ],
+                    'settings' => [
+                        'container_class'   => '',
+                        'label'             => __('Address Line 2', 'fluentform'),
                         'admin_field_label' => '',
-                        'help_message' => '',
-                        'visible' => true,
-                        'validation_rules' => array(
-                            'required' => array(
-                                'value' => false,
+                        'help_message'      => '',
+                        'visible'           => true,
+                        'validation_rules'  => [
+                            'required' => [
+                                'value'   => false,
                                 'message' => __('This field is required', 'fluentform'),
-                            ),
-                        ),
-                        'conditional_logics' => array(),
-                    ),
-                    'editor_options' => array(
-                        'template' => 'inputText'
-                    ),
-                ),
-                'city' => array(
-                    'element' => 'input_text',
-                    'attributes' => array(
-                        'type' => 'text',
-                        'name' => 'city',
-                        'value' => '',
-                        'id' => '',
-                        'class' => '',
+                            ],
+                        ],
+                        'conditional_logics' => [],
+                    ],
+                    'editor_options' => [
+                        'template' => 'inputText',
+                    ],
+                ],
+                'city' => [
+                    'element'    => 'input_text',
+                    'attributes' => [
+                        'type'        => 'text',
+                        'name'        => 'city',
+                        'value'       => '',
+                        'id'          => '',
+                        'class'       => '',
                         'placeholder' => __('City', 'fluentform'),
-                    ),
-                    'settings' => array(
-                        'container_class' => '',
-                        'label' => __('City', 'fluentform'),
+                    ],
+                    'settings' => [
+                        'container_class'   => '',
+                        'label'             => __('City', 'fluentform'),
                         'admin_field_label' => '',
-                        'help_message' => '',
-                        'error_message' => '',
-                        'visible' => true,
-                        'validation_rules' => array(
-                            'required' => array(
-                                'value' => false,
+                        'help_message'      => '',
+                        'error_message'     => '',
+                        'visible'           => true,
+                        'validation_rules'  => [
+                            'required' => [
+                                'value'   => false,
                                 'message' => __('This field is required', 'fluentform'),
-                            ),
-                        ),
-                        'conditional_logics' => array(),
-                    ),
-                    'editor_options' => array(
-                        'template' => 'inputText'
-                    ),
-                ),
-                'state' => array(
-                    'element' => 'input_text',
-                    'attributes' => array(
-                        'type' => 'text',
-                        'name' => 'state',
-                        'value' => '',
-                        'id' => '',
-                        'class' => '',
+                            ],
+                        ],
+                        'conditional_logics' => [],
+                    ],
+                    'editor_options' => [
+                        'template' => 'inputText',
+                    ],
+                ],
+                'state' => [
+                    'element'    => 'input_text',
+                    'attributes' => [
+                        'type'        => 'text',
+                        'name'        => 'state',
+                        'value'       => '',
+                        'id'          => '',
+                        'class'       => '',
                         'placeholder' => __('State', 'fluentform'),
-                    ),
-                    'settings' => array(
-                        'container_class' => '',
-                        'label' => __('State', 'fluentform'),
+                    ],
+                    'settings' => [
+                        'container_class'   => '',
+                        'label'             => __('State', 'fluentform'),
                         'admin_field_label' => '',
-                        'help_message' => '',
-                        'error_message' => '',
-                        'visible' => true,
-                        'validation_rules' => array(
-                            'required' => array(
-                                'value' => false,
+                        'help_message'      => '',
+                        'error_message'     => '',
+                        'visible'           => true,
+                        'validation_rules'  => [
+                            'required' => [
+                                'value'   => false,
                                 'message' => __('This field is required', 'fluentform'),
-                            ),
-                        ),
-                        'conditional_logics' => array(),
-                    ),
-                    'editor_options' => array(
-                        'template' => 'inputText'
-                    ),
-                ),
-                'zip' => array(
-                    'element' => 'input_text',
-                    'attributes' => array(
-                        'type' => 'text',
-                        'name' => 'zip',
-                        'value' => '',
-                        'id' => '',
-                        'class' => '',
+                            ],
+                        ],
+                        'conditional_logics' => [],
+                    ],
+                    'editor_options' => [
+                        'template' => 'inputText',
+                    ],
+                ],
+                'zip' => [
+                    'element'    => 'input_text',
+                    'attributes' => [
+                        'type'        => 'text',
+                        'name'        => 'zip',
+                        'value'       => '',
+                        'id'          => '',
+                        'class'       => '',
                         'placeholder' => __('Zip', 'fluentform'),
-                        'required' => false,
-                    ),
-                    'settings' => array(
-                        'container_class' => '',
-                        'label' => __('Zip Code', 'fluentform'),
+                        'required'    => false,
+                    ],
+                    'settings' => [
+                        'container_class'   => '',
+                        'label'             => __('Zip Code', 'fluentform'),
                         'admin_field_label' => '',
-                        'help_message' => '',
-                        'error_message' => '',
-                        'visible' => true,
-                        'validation_rules' => array(
-                            'required' => array(
-                                'value' => false,
+                        'help_message'      => '',
+                        'error_message'     => '',
+                        'visible'           => true,
+                        'validation_rules'  => [
+                            'required' => [
+                                'value'   => false,
                                 'message' => __('This field is required', 'fluentform'),
-                            ),
-                        ),
-                        'conditional_logics' => array(),
-                    ),
-                    'editor_options' => array(
-                        'template' => 'inputText'
-                    ),
-                ),
-                'country' => array(
-                    'element' => 'select_country',
-                    'attributes' => array(
-                        'name' => 'country',
-                        'value' => '',
-                        'id' => '',
-                        'class' => '',
+                            ],
+                        ],
+                        'conditional_logics' => [],
+                    ],
+                    'editor_options' => [
+                        'template' => 'inputText',
+                    ],
+                ],
+                'country' => [
+                    'element'    => 'select_country',
+                    'attributes' => [
+                        'name'        => 'country',
+                        'value'       => '',
+                        'id'          => '',
+                        'class'       => '',
                         'placeholder' => __('Select Country', 'fluentform'),
-                        'required' => false,
-                    ),
-                    'settings' => array(
-                        'container_class' => '',
-                        'label' => __('Country', 'fluentform'),
+                        'required'    => false,
+                    ],
+                    'settings' => [
+                        'container_class'   => '',
+                        'label'             => __('Country', 'fluentform'),
                         'admin_field_label' => '',
-                        'help_message' => '',
-                        'error_message' => '',
-                        'visible' => true,
-                        'validation_rules' => array(
-                            'required' => array(
-                                'value' => false,
+                        'help_message'      => '',
+                        'error_message'     => '',
+                        'visible'           => true,
+                        'validation_rules'  => [
+                            'required' => [
+                                'value'   => false,
                                 'message' => __('This field is required', 'fluentform'),
-                            ),
-                        ),
-                        'country_list' => array(
-                            'active_list' => 'all',
-                            'visible_list' => array(),
-                            'hidden_list' => array(),
-                        ),
-                        'conditional_logics' => array()
-                    ),
-                    'options' => array(
+                            ],
+                        ],
+                        'country_list' => [
+                            'active_list'  => 'all',
+                            'visible_list' => [],
+                            'hidden_list'  => [],
+                        ],
+                        'conditional_logics' => [],
+                    ],
+                    'options' => [
                         'US' => 'US of America',
-                        'UK' => 'United Kingdom'
-                    ),
-                    'editor_options' => array(
-                        'title' => 'Country List',
-                        'element' => 'country-list',
+                        'UK' => 'United Kingdom',
+                    ],
+                    'editor_options' => [
+                        'title'      => 'Country List',
+                        'element'    => 'country-list',
                         'icon_class' => 'icon-text-width',
-                        'template' => 'selectCountry'
-                    ),
-                ),
-            ),
-            'editor_options' => array(
-                'title' => __('Address Fields', 'fluentform'),
-                'element' => 'address-fields',
+                        'template'   => 'selectCountry',
+                    ],
+                ],
+            ],
+            'editor_options' => [
+                'title'      => __('Address Fields', 'fluentform'),
+                'element'    => 'address-fields',
                 'icon_class' => 'ff-edit-address',
-                'template' => 'addressFields'
-            ),
-        ),
-        'input_number' => array(
-            'index' => 6,
-            'element' => 'input_number',
-            'attributes' => array(
-                'type' => 'number',
-                'name' => 'numeric-field',
-                'value' => '',
-                'id' => '',
-                'class' => '',
-                'placeholder' => ''
-            ),
-            'settings' => array(
-                'container_class' => '',
-                'label' => __('Numeric Field', 'fluentform'),
+                'template'   => 'addressFields',
+            ],
+        ],
+        'input_number' => [
+            'index'      => 6,
+            'element'    => 'input_number',
+            'attributes' => [
+                'type'        => 'number',
+                'name'        => 'numeric-field',
+                'value'       => '',
+                'id'          => '',
+                'class'       => '',
+                'placeholder' => '',
+            ],
+            'settings' => [
+                'container_class'   => '',
+                'label'             => __('Numeric Field', 'fluentform'),
                 'admin_field_label' => '',
-                'label_placement' => '',
-                'help_message' => '',
-                'number_step' => '',
-                'prefix_label' => '',
-                'suffix_label' => '',
+                'label_placement'   => '',
+                'help_message'      => '',
+                'number_step'       => '',
+                'prefix_label'      => '',
+                'suffix_label'      => '',
                 'numeric_formatter' => '',
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+                'validation_rules'  => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
-                    ),
-                    'numeric' => array(
-                        'value' => true,
+                    ],
+                    'numeric' => [
+                        'value'   => true,
                         'message' => __('This field must contain numeric value', 'fluentform'),
-                    ),
-                    'min' => array(
-                        'value' => '',
+                    ],
+                    'min' => [
+                        'value'   => '',
                         'message' => __('Minimum value is ', 'fluentform'),
-                    ),
-                    'max' => array(
-                        'value' => '',
+                    ],
+                    'max' => [
+                        'value'   => '',
                         'message' => __('Maximum value is ', 'fluentform'),
-                    ),
-                ),
-                'conditional_logics' => array(),
-                'calculation_settings' => array(
-                    'status' => false,
-                    'formula' => ''
-                ),
-            ),
-            'editor_options' => array(
-                'title' => __('Numeric Field', 'fluentform'),
+                    ],
+                    'digits' => [
+                        'value'   => '',
+                        'message' => __('The number of digits has to be ', 'fluentform'),
+                    ],
+                ],
+                'conditional_logics'   => [],
+                'calculation_settings' => [
+                    'status'  => false,
+                    'formula' => '',
+                ],
+            ],
+            'editor_options' => [
+                'title'      => __('Numeric Field', 'fluentform'),
                 'icon_class' => 'ff-edit-numeric',
-                'template' => 'inputText'
-            ),
-        ),
-        'select' => array(
-            'index' => 7,
-            'element' => 'select',
-            'attributes' => array(
-                'name' => 'dropdown',
+                'template'   => 'inputText',
+            ],
+        ],
+        'select' => [
+            'index'      => 7,
+            'element'    => 'select',
+            'attributes' => [
+                'name'  => 'dropdown',
                 'value' => '',
-                'id' => '',
+                'id'    => '',
                 'class' => '',
-            ),
-            'settings' => array(
+            ],
+            'settings' => [
                 'dynamic_default_value' => '',
-                'label' => __('Dropdown', 'fluentform'),
-                'admin_field_label' => '',
-                'help_message' => '',
-                'container_class' => '',
-                'label_placement' => '',
-                'placeholder' => '- Select -',
-                'advanced_options' => array(
+                'label'                 => __('Dropdown', 'fluentform'),
+                'admin_field_label'     => '',
+                'help_message'          => '',
+                'container_class'       => '',
+                'label_placement'       => '',
+                'placeholder'           => '- Select -',
+                'advanced_options'      => [
                     [
-                        'label' => 'Option 1',
-                        'value' => 'Option 1',
-                        'calc_value' => ''
+                        'label'      => 'Option 1',
+                        'value'      => 'Option 1',
+                        'calc_value' => '',
                     ],
                     [
-                        'label' => 'Option 2',
-                        'value' => 'Option 2',
-                        'calc_value' => ''
-                    ]
-                ),
-                'calc_value_status' => false,
+                        'label'      => 'Option 2',
+                        'value'      => 'Option 2',
+                        'calc_value' => '',
+                    ],
+                ],
+                'calc_value_status'  => false,
                 'enable_image_input' => false,
-                'values_visible' => false,
-                'enable_select_2' => 'no',
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+                'values_visible'     => false,
+                'enable_select_2'    => 'no',
+                'validation_rules'   => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
-                    ),
-                ),
-                'conditional_logics' => array(),
-                'randomize_options' => 'no',
-            ),
-            'editor_options' => array(
-                'title' => __('Dropdown', 'fluentform'),
+                    ],
+                ],
+                'conditional_logics' => [],
+                'randomize_options'  => 'no',
+            ],
+            'editor_options' => [
+                'title'      => __('Dropdown', 'fluentform'),
                 'icon_class' => 'ff-edit-dropdown',
-                'element' => 'select',
-                'template' => 'select'
-            )
-        ),
-        'input_radio' => array(
-            'index' => 8,
-            'element' => 'input_radio',
-            'attributes' => array(
-                'type' => 'radio',
-                'name' => 'input_radio',
+                'element'    => 'select',
+                'template'   => 'select',
+            ],
+        ],
+        'input_radio' => [
+            'index'      => 8,
+            'element'    => 'input_radio',
+            'attributes' => [
+                'type'  => 'radio',
+                'name'  => 'input_radio',
                 'value' => '',
-            ),
-            'settings' => array(
+            ],
+            'settings' => [
                 'dynamic_default_value' => '',
-                'container_class' => '',
-                'label' => __('Radio Field', 'fluentform'),
-                'admin_field_label' => '',
-                'label_placement' => '',
-                'display_type' => '',
-                'help_message' => '',
-                'randomize_options' => 'no',
-                'advanced_options' => array(
+                'container_class'       => '',
+                'label'                 => __('Radio Field', 'fluentform'),
+                'admin_field_label'     => '',
+                'label_placement'       => '',
+                'display_type'          => '',
+                'help_message'          => '',
+                'randomize_options'     => 'no',
+                'advanced_options'      => [
                     [
-                        'label' => 'Yes',
-                        'value' => 'yes',
+                        'label'      => 'Yes',
+                        'value'      => 'yes',
                         'calc_value' => '',
-                        'image' => ''
+                        'image'      => '',
                     ],
                     [
-                        'label' => 'No',
-                        'value' => 'no',
+                        'label'      => 'No',
+                        'value'      => 'no',
                         'calc_value' => '',
-                        'image' => ''
-                    ]
-                ),
-                'calc_value_status' => false,
+                        'image'      => '',
+                    ],
+                ],
+                'calc_value_status'  => false,
                 'enable_image_input' => false,
-                'values_visible' => false,
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+                'values_visible'     => false,
+                'validation_rules'   => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
-                    ),
-                ),
-                'conditional_logics' => array(),
-                'layout_class' => ''
-            ),
-            'editor_options' => array(
-                'title' => __('Radio Field', 'fluentform'),
+                    ],
+                ],
+                'conditional_logics' => [],
+                'layout_class'       => '',
+            ],
+            'editor_options' => [
+                'title'      => __('Radio Field', 'fluentform'),
                 'icon_class' => 'ff-edit-radio',
-                'element' => 'input-radio',
-                'template' => 'inputCheckable'
-            ),
-        ),
-        'input_checkbox' => array(
-            'index' => 9,
-            'element' => 'input_checkbox',
-            'attributes' => array(
-                'type' => 'checkbox',
-                'name' => 'checkbox',
-                'value' => array(),
-            ),
-            'settings' => array(
+                'element'    => 'input-radio',
+                'template'   => 'inputCheckable',
+            ],
+        ],
+        'input_checkbox' => [
+            'index'      => 9,
+            'element'    => 'input_checkbox',
+            'attributes' => [
+                'type'  => 'checkbox',
+                'name'  => 'checkbox',
+                'value' => [],
+            ],
+            'settings' => [
                 'dynamic_default_value' => '',
-                'container_class' => '',
-                'label' => __('Checkbox Field', 'fluentform'),
-                'admin_field_label' => '',
-                'label_placement' => '',
-                'display_type' => '',
-                'help_message' => '',
-                'advanced_options' => array(
+                'container_class'       => '',
+                'label'                 => __('Checkbox Field', 'fluentform'),
+                'admin_field_label'     => '',
+                'label_placement'       => '',
+                'display_type'          => '',
+                'help_message'          => '',
+                'advanced_options'      => [
                     [
-                        'label' => 'Item 1',
-                        'value' => 'Item 1',
+                        'label'      => 'Item 1',
+                        'value'      => 'Item 1',
                         'calc_value' => '',
-                        'image' => ''
+                        'image'      => '',
                     ],
                     [
-                        'label' => 'Item 2',
-                        'value' => 'Item 2',
+                        'label'      => 'Item 2',
+                        'value'      => 'Item 2',
                         'calc_value' => '',
-                        'image' => ''
+                        'image'      => '',
                     ],
                     [
-                        'label' => 'Item 3',
-                        'value' => 'Item 3',
+                        'label'      => 'Item 3',
+                        'value'      => 'Item 3',
                         'calc_value' => '',
-                        'image' => ''
-                    ]
-                ),
-                'calc_value_status' => false,
+                        'image'      => '',
+                    ],
+                ],
+                'calc_value_status'  => false,
                 'enable_image_input' => false,
-                'values_visible' => false,
-                'randomize_options' => 'no',
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+                'values_visible'     => false,
+                'randomize_options'  => 'no',
+                'validation_rules'   => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
-                    ),
-                ),
-                'conditional_logics' => array(),
-                'layout_class' => ''
-            ),
-            'editor_options' => array(
-                'title' => __('Check Box', 'fluentform'),
+                    ],
+                ],
+                'conditional_logics' => [],
+                'layout_class'       => '',
+            ],
+            'editor_options' => [
+                'title'      => __('Check Box', 'fluentform'),
                 'icon_class' => 'ff-edit-checkbox-1',
-                'template' => 'inputCheckable'
-            ),
-        ),
-        'multi_select' => array(
-            'index' => 10,
-            'element' => 'select',
-            'attributes' => array(
-                'name' => 'multi_select',
-                'value' => array(),
-                'id' => '',
-                'class' => '',
+                'template'   => 'inputCheckable',
+            ],
+        ],
+        'multi_select' => [
+            'index'      => 10,
+            'element'    => 'select',
+            'attributes' => [
+                'name'        => 'multi_select',
+                'value'       => [],
+                'id'          => '',
+                'class'       => '',
                 'placeholder' => '',
-                'multiple' => true,
-            ),
-            'settings' => array(
+                'multiple'    => true,
+            ],
+            'settings' => [
                 'dynamic_default_value' => '',
-                'help_message' => '',
-                'container_class' => '',
-                'label' => __('Multiselect', 'fluentform'),
-                'admin_field_label' => '',
-                'label_placement' => '',
-                'placeholder' => '',
-                'max_selection' => '',
-                'advanced_options' => array(
+                'help_message'          => '',
+                'container_class'       => '',
+                'label'                 => __('Multiselect', 'fluentform'),
+                'admin_field_label'     => '',
+                'label_placement'       => '',
+                'placeholder'           => '',
+                'max_selection'         => '',
+                'advanced_options'      => [
                     [
-                        'label' => 'Option 1',
-                        'value' => 'Option 1',
-                        'calc_value' => ''
+                        'label'      => 'Option 1',
+                        'value'      => 'Option 1',
+                        'calc_value' => '',
                     ],
                     [
-                        'label' => 'Option 2',
-                        'value' => 'Option 2',
-                        'calc_value' => ''
-                    ]
-                ),
-                'calc_value_status' => false,
+                        'label'      => 'Option 2',
+                        'value'      => 'Option 2',
+                        'calc_value' => '',
+                    ],
+                ],
+                'calc_value_status'  => false,
                 'enable_image_input' => false,
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+                'randomize_options'  => 'no',
+                'validation_rules'   => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
-                    ),
-                ),
-                'conditional_logics' => array(),
-            ),
-            'editor_options' => array(
-                'title' => __('Multiple Choice', 'fluentform'),
+                    ],
+                ],
+                'conditional_logics' => [],
+            ],
+            'editor_options' => [
+                'title'      => __('Multiple Choice', 'fluentform'),
                 'icon_class' => 'ff-edit-multiple-choice',
-                'element' => 'select',
-                'template' => 'select'
-            )
-        ),
-        'input_url' => array(
-            'index' => 11,
-            'element' => 'input_url',
-            'attributes' => array(
-                'type' => 'url',
-                'name' => 'url',
-                'value' => '',
-                'class' => '',
+                'element'    => 'select',
+                'template'   => 'select',
+            ],
+        ],
+        'input_url' => [
+            'index'      => 11,
+            'element'    => 'input_url',
+            'attributes' => [
+                'type'        => 'url',
+                'name'        => 'url',
+                'value'       => '',
+                'class'       => '',
                 'placeholder' => '',
-            ),
-            'settings' => array(
-                'container_class' => '',
-                'label' => __('URL', 'fluentform'),
+            ],
+            'settings' => [
+                'container_class'   => '',
+                'label'             => __('URL', 'fluentform'),
                 'admin_field_label' => '',
-                'label_placement' => '',
-                'help_message' => '',
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+                'label_placement'   => '',
+                'help_message'      => '',
+                'validation_rules'  => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
-                    ),
-                    'url' => array(
-                        'value' => true,
+                    ],
+                    'url' => [
+                        'value'   => true,
                         'message' => __('This field must contain a valid url', 'fluentform'),
-                    ),
-                ),
-                'conditional_logics' => array(),
-            ),
-            'editor_options' => array(
-                'title' => __('Website URL', 'fluentform'),
+                    ],
+                ],
+                'conditional_logics' => [],
+            ],
+            'editor_options' => [
+                'title'      => __('Website URL', 'fluentform'),
                 'icon_class' => 'ff-edit-website-url',
-                'template' => 'inputText'
-            )
-        ),
-        'input_date' => array(
-            'index' => 13,
-            'element' => 'input_date',
-            'attributes' => array(
-                'type' => 'text',
-                'name' => 'datetime',
-                'value' => '',
-                'id' => '',
-                'class' => '',
+                'template'   => 'inputText',
+            ],
+        ],
+        'input_date' => [
+            'index'      => 13,
+            'element'    => 'input_date',
+            'attributes' => [
+                'type'        => 'text',
+                'name'        => 'datetime',
+                'value'       => '',
+                'id'          => '',
+                'class'       => '',
                 'placeholder' => '',
-            ),
-            'settings' => array(
-                'container_class' => '',
-                'label' => __('Date / Time', 'fluentform'),
+            ],
+            'settings' => [
+                'container_class'   => '',
+                'label'             => __('Date / Time', 'fluentform'),
                 'admin_field_label' => '',
-                'label_placement' => '',
-                'date_config' => '',
-                'date_format' => 'd/m/Y',
-                'help_message' => '',
-                'is_time_enabled' => true,
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+                'label_placement'   => '',
+                'date_config'       => '',
+                'date_format'       => 'd/m/Y',
+                'help_message'      => '',
+                'is_time_enabled'   => true,
+                'validation_rules'  => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
-                    )
-                ),
-                'conditional_logics' => array(),
-            ),
-            'editor_options' => array(
-                'title' => __('Time & Date', 'fluentform'),
+                    ],
+                ],
+                'conditional_logics' => [],
+            ],
+            'editor_options' => [
+                'title'      => __('Time & Date', 'fluentform'),
                 'icon_class' => 'ff-edit-date',
-                'template' => 'inputText'
-            ),
-        ),
-        'input_image' => array(
-            'index' => 15,
-            'element' => 'input_image',
-            'attributes' => array(
-                'type' => 'file',
-                'name' => 'image-upload',
-                'value' => '',
-                'id' => '',
-                'class' => '',
+                'template'   => 'inputText',
+            ],
+        ],
+        'input_image' => [
+            'index'      => 15,
+            'element'    => 'input_image',
+            'attributes' => [
+                'type'   => 'file',
+                'name'   => 'image-upload',
+                'value'  => '',
+                'id'     => '',
+                'class'  => '',
                 'accept' => 'image/*',
-            ),
-            'settings' => array(
-                'container_class' => '',
-                'label' => __('Image Upload', 'fluentform'),
-                'admin_field_label' => '',
-                'label_placement' => '',
-                'btn_text' => 'Choose File',
-                'help_message' => '',
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+            ],
+            'settings' => [
+                'container_class'      => '',
+                'label'                => __('Image Upload', 'fluentform'),
+                'admin_field_label'    => '',
+                'label_placement'      => '',
+                'btn_text'             => 'Choose File',
+                'upload_file_location' => 'default',
+                'file_location_type'   => 'follow_global_settings',
+                'help_message'         => '',
+                'validation_rules'     => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
-                    ),
-                    'max_file_size' => array(
-                        'value' => 1048576,
+                    ],
+                    'max_file_size' => [
+                        'value'      => 1048576,
                         '_valueFrom' => 'MB',
-                        'message' => __('Maximum file size limit is 1MB', 'fluentform')
-                    ),
-                    'max_file_count' => array(
-                        'value' => 1,
-                        'message' => __('You can upload maximum 1 image', 'fluentform')
-                    ),
-                    'allowed_image_types' => array(
-                        'value' => array(),
-                        'message' => __('Allowed image types does not match', 'fluentform')
-                    )
-                ),
-                'conditional_logics' => array(),
-            ),
-            'editor_options' => array(
-                'title' => __('Image Upload', 'fluentform'),
+                        'message'    => __('Maximum file size limit is 1MB', 'fluentform'),
+                    ],
+                    'max_file_count' => [
+                        'value'   => 1,
+                        'message' => __('You can upload maximum 1 image', 'fluentform'),
+                    ],
+                    'allowed_image_types' => [
+                        'value'   => [],
+                        'message' => __('Allowed image types does not match', 'fluentform'),
+                    ],
+                ],
+                'conditional_logics' => [],
+            ],
+            'editor_options' => [
+                'title'      => __('Image Upload', 'fluentform'),
                 'icon_class' => 'ff-edit-images',
-                'template' => 'inputFile'
-            ),
-        ),
-        'input_file' => array(
-            'index' => 16,
-            'element' => 'input_file',
-            'attributes' => array(
-                'type' => 'file',
-                'name' => 'file-upload',
+                'template'   => 'inputFile',
+            ],
+        ],
+        'input_file' => [
+            'index'      => 16,
+            'element'    => 'input_file',
+            'attributes' => [
+                'type'  => 'file',
+                'name'  => 'file-upload',
                 'value' => '',
-                'id' => '',
+                'id'    => '',
                 'class' => '',
-            ),
-            'settings' => array(
-                'container_class' => '',
-                'label' => __('File Upload', 'fluentform'),
-                'admin_field_label' => '',
-                'label_placement' => '',
-                'btn_text' => 'Choose File',
-                'help_message' => '',
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+            ],
+            'settings' => [
+                'container_class'      => '',
+                'label'                => __('File Upload', 'fluentform'),
+                'admin_field_label'    => '',
+                'label_placement'      => '',
+                'btn_text'             => 'Choose File',
+                'help_message'         => '',
+                'upload_file_location' => 'default',
+                'file_location_type'   => 'follow_global_settings',
+                'validation_rules'     => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
-                    ),
-                    'max_file_size' => array(
-                        'value' => 1048576,
+                    ],
+                    'max_file_size' => [
+                        'value'      => 1048576,
                         '_valueFrom' => 'MB',
-                        'message' => __('Maximum file size limit is 1MB', 'fluentform')
-                    ),
-                    'max_file_count' => array(
-                        'value' => 1,
-                        'message' => __('You can upload maximum 1 file', 'fluentform')
-                    ),
-                    'allowed_file_types' => array(
-                        'value' => array(),
-                        'message' => __('Invalid file type', 'fluentform')
-                    )
-                ),
-                'conditional_logics' => array(),
-            ),
-            'editor_options' => array(
-                'title' => __('File Upload', 'fluentform'),
+                        'message'    => __('Maximum file size limit is 1MB', 'fluentform'),
+                    ],
+                    'max_file_count' => [
+                        'value'   => 1,
+                        'message' => __('You can upload maximum 1 file', 'fluentform'),
+                    ],
+                    'allowed_file_types' => [
+                        'value'   => [],
+                        'message' => __('Invalid file type', 'fluentform'),
+                    ],
+                ],
+                'conditional_logics' => [],
+            ],
+            'editor_options' => [
+                'title'      => __('File Upload', 'fluentform'),
                 'icon_class' => 'ff-edit-files',
-                'template' => 'inputFile'
-            ),
-        ),
-        'select_country' => array(
-            'index' => 5,
-            'element' => 'select_country',
-            'attributes' => array(
-                'name' => 'country-list',
-                'value' => '',
-                'id' => '',
-                'class' => '',
+                'template'   => 'inputFile',
+            ],
+        ],
+        'select_country' => [
+            'index'      => 5,
+            'element'    => 'select_country',
+            'attributes' => [
+                'name'        => 'country-list',
+                'value'       => '',
+                'id'          => '',
+                'class'       => '',
                 'placeholder' => __('Select Country', 'fluentform'),
-            ),
-            'settings' => array(
-                'container_class' => '',
-                'label' => __('Country', 'fluentform'),
+            ],
+            'settings' => [
+                'container_class'   => '',
+                'label'             => __('Country', 'fluentform'),
                 'admin_field_label' => '',
-                'label_placement' => '',
-                'help_message' => '',
-                'enable_select_2' => 'no',
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+                'label_placement'   => '',
+                'help_message'      => '',
+                'enable_select_2'   => 'no',
+                'validation_rules'  => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
-                    ),
-                ),
-                'country_list' => array(
-                    'active_list' => 'all',
-                    'visible_list' => array(),
-                    'hidden_list' => array(),
-                ),
-                'conditional_logics' => array(),
-            ),
-            'options' => array(
+                    ],
+                ],
+                'country_list' => [
+                    'active_list'  => 'all',
+                    'visible_list' => [],
+                    'hidden_list'  => [],
+                ],
+                'conditional_logics' => [],
+            ],
+            'options' => [
                 'US' => 'United States of America',
-            ),
-            'editor_options' => array(
-                'title' => __('Country List', 'fluentform'),
-                'element' => 'country-list',
+            ],
+            'editor_options' => [
+                'title'      => __('Country List', 'fluentform'),
+                'element'    => 'country-list',
                 'icon_class' => 'ff-edit-country',
-                'template' => 'selectCountry'
-            ),
-        ),
-        'custom_html' => array(
-            'index' => 20,
-            'element' => 'custom_html',
-            'attributes' => array(),
-            'settings' => array(
-                'html_codes' => '<p>Some description about this section</p>',
-                'conditional_logics' => array(),
-                'container_class' => ''
-            ),
-            'editor_options' => array(
-                'title' => __('Custom HTML', 'fluentform'),
+                'template'   => 'selectCountry',
+            ],
+        ],
+        'custom_html' => [
+            'index'      => 17,
+            'element'    => 'custom_html',
+            'attributes' => [],
+            'settings'   => [
+                'html_codes'         => '<p>Some description about this section</p>',
+                'conditional_logics' => [],
+                'container_class'    => '',
+            ],
+            'editor_options' => [
+                'title'      => __('Custom HTML', 'fluentform'),
                 'icon_class' => 'ff-edit-html',
-                'template' => 'customHTML',
-            )
-        ),
-    ),
-    'advanced' => array(
-        'ratings' => array(
-            'index' => 8,
-            'element' => 'ratings',
-            'attributes' => array(
+                'template'   => 'customHTML',
+            ],
+        ],
+    ],
+    'advanced' => [
+        'ratings' => [
+            'index'      => 8,
+            'element'    => 'ratings',
+            'attributes' => [
                 'class' => '',
                 'value' => 0,
-                'name' => 'ratings',
-            ),
-            'settings' => array(
-                'label' => __('Ratings', 'fluentform'),
-                'show_text' => 'no',
-                'help_message' => '',
-                'label_placement' => '',
-                'admin_field_label' => '',
-                'container_class' => '',
-                'conditional_logics' => array(),
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+                'name'  => 'ratings',
+            ],
+            'settings' => [
+                'label'              => __('Ratings', 'fluentform'),
+                'show_text'          => 'no',
+                'help_message'       => '',
+                'label_placement'    => '',
+                'admin_field_label'  => '',
+                'container_class'    => '',
+                'conditional_logics' => [],
+                'validation_rules'   => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
-                    ),
-                ),
-            ),
-            'options' => array(
+                    ],
+                ],
+            ],
+            'options' => [
                 '1' => __('Nice', 'fluentform'),
                 '2' => __('Good', 'fluentform'),
                 '3' => __('Very Good', 'fluentform'),
                 '4' => __('Awesome', 'fluentform'),
                 '5' => __('Amazing', 'fluentform'),
-            ),
-            'editor_options' => array(
-                'title' => __('Ratings', 'fluentform'),
+            ],
+            'editor_options' => [
+                'title'      => __('Ratings', 'fluentform'),
                 'icon_class' => 'ff-edit-rating',
-                'template' => 'ratings',
-            ),
-        ),
-        'input_hidden' => array(
-            'index' => 0,
-            'element' => 'input_hidden',
-            'attributes' => array(
-                'type' => 'hidden',
-                'name' => 'hidden',
+                'template'   => 'ratings',
+            ],
+        ],
+        'input_hidden' => [
+            'index'      => 0,
+            'element'    => 'input_hidden',
+            'attributes' => [
+                'type'  => 'hidden',
+                'name'  => 'hidden',
                 'value' => '',
-            ),
-            'settings' => array(
-                'admin_field_label' => ''
-            ),
-            'editor_options' => array(
-                'title' => __('Hidden Field', 'fluentform'),
-                'icon_class' => 'ff-edit-hidden-field',
-                'template' => 'inputHidden',
-            ),
-        ),
-        'tabular_grid' => array(
-            'index' => 9,
-            'element' => 'tabular_grid',
-            'attributes' => array(
-                'name' => 'tabular_grid',
-                'data-type' => 'tabular-element'
-            ),
-            'settings' => array(
-                'tabular_field_type' => 'checkbox',
-                'container_class' => '',
-                'label' => __('Checkbox Grid', 'fluentform'),
+            ],
+            'settings' => [
                 'admin_field_label' => '',
-                'label_placement' => '',
-                'help_message' => '',
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+            ],
+            'editor_options' => [
+                'title'      => __('Hidden Field', 'fluentform'),
+                'icon_class' => 'ff-edit-hidden-field',
+                'template'   => 'inputHidden',
+            ],
+        ],
+        'tabular_grid' => [
+            'index'      => 9,
+            'element'    => 'tabular_grid',
+            'attributes' => [
+                'name'      => 'tabular_grid',
+                'data-type' => 'tabular-element',
+            ],
+            'settings' => [
+                'tabular_field_type' => 'checkbox',
+                'container_class'    => '',
+                'label'              => __('Checkbox Grid', 'fluentform'),
+                'admin_field_label'  => '',
+                'label_placement'    => '',
+                'help_message'       => '',
+                'validation_rules'   => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
                         'per_row' => false,
-                    ),
-                ),
-                'conditional_logics' => array(),
-                'grid_columns' => array(
-                    'Column-1' => 'Column 1'
-                ),
-                'grid_rows' => array(
-                    'Row-1' => 'Row 1'
-                ),
-                'selected_grids' => array()
-            ),
-            'editor_options' => array(
-                'title' => __('Checkable Grid', 'fluentform'),
+                    ],
+                ],
+                'conditional_logics' => [],
+                'grid_columns'       => [
+                    'Column-1' => 'Column 1',
+                ],
+                'grid_rows' => [
+                    'Row-1' => 'Row 1',
+                ],
+                'selected_grids' => [],
+            ],
+            'editor_options' => [
+                'title'      => __('Checkable Grid', 'fluentform'),
                 'icon_class' => 'ff-edit-checkable-grid',
-                'template' => 'checkableGrids'
-            ),
-        ),
-        'section_break' => array(
-            'index' => 1,
-            'element' => 'section_break',
-            'attributes' => array(
-                'id' => '',
-                'class' => '',
-            ),
-            'settings' => array(
-                'label' => __('Section Break', 'fluentform'),
-                'description' => __('Some description about this section', 'fluentform'),
-                'align' => 'left',
-                'conditional_logics' => array(),
-            ),
-            'editor_options' => array(
-                'title' => __('Section Break', 'fluentform'),
-                'icon_class' => 'ff-edit-section-break',
-                'template' => 'sectionBreak',
-            ),
-        ),
-        'input_password' => array(
-            'index' => 12,
-            'element' => 'input_password',
-            'attributes' => array(
-                'type' => 'password',
-                'name' => 'password',
-                'value' => '',
-                'id' => '',
-                'class' => '',
-                'placeholder' => '',
-            ),
-            'settings' => array(
-                'container_class' => '',
-                'label' => __('Password', 'fluentform'),
-                'admin_field_label' => '',
-                'label_placement' => '',
-                'help_message' => '',
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
-                        'message' => __('This field is required', 'fluentform'),
-                    ),
-                ),
-                'conditional_logics' => array(),
-            ),
-            'editor_options' => array(
-                'title' => __('Password Field', 'fluentform'),
-                'icon_class' => 'ff-edit-password',
-                'template' => 'inputText'
-            ),
-        ),
-        'form_step' => array(
-            'index' => 7,
-            'element' => 'form_step',
+                'template'   => 'checkableGrids',
+            ],
+        ],
+        'section_break' => [
+            'index'      => 1,
+            'element'    => 'section_break',
             'attributes' => [
-                'id' => '',
+                'id'    => '',
+                'class' => '',
+            ],
+            'settings' => [
+                'label'              => __('Section Break', 'fluentform'),
+                'description'        => __('Some description about this section', 'fluentform'),
+                'align'              => 'left',
+                'conditional_logics' => [],
+            ],
+            'editor_options' => [
+                'title'      => __('Section Break', 'fluentform'),
+                'icon_class' => 'ff-edit-section-break',
+                'template'   => 'sectionBreak',
+            ],
+        ],
+        'input_password' => [
+            'index'      => 11,
+            'element'    => 'input_password',
+            'attributes' => [
+                'type'        => 'password',
+                'name'        => 'password',
+                'value'       => '',
+                'id'          => '',
+                'class'       => '',
+                'placeholder' => '',
+            ],
+            'settings' => [
+                'container_class'   => '',
+                'label'             => __('Password', 'fluentform'),
+                'admin_field_label' => '',
+                'label_placement'   => '',
+                'help_message'      => '',
+                'validation_rules'  => [
+                    'required' => [
+                        'value'   => false,
+                        'message' => __('This field is required', 'fluentform'),
+                    ],
+                ],
+                'conditional_logics' => [],
+            ],
+            'editor_options' => [
+                'title'      => __('Password Field', 'fluentform'),
+                'icon_class' => 'ff-edit-password',
+                'template'   => 'inputText',
+            ],
+        ],
+        'form_step' => [
+            'index'      => 7,
+            'element'    => 'form_step',
+            'attributes' => [
+                'id'    => '',
                 'class' => '',
             ],
             'settings' => [
                 'prev_btn' => [
-                    'type' => 'default',
-                    'text' => __('Previous', 'fluentform'),
+                    'type'    => 'default',
+                    'text'    => __('Previous', 'fluentform'),
                     'img_url' => '',
                 ],
                 'next_btn' => [
-                    'type' => 'default',
-                    'text' => __('Next', 'fluentform'),
+                    'type'    => 'default',
+                    'text'    => __('Next', 'fluentform'),
                     'img_url' => '',
                 ],
             ],
             'editor_options' => [
-                'title' => __('Form Step', 'fluentform'),
+                'title'      => __('Form Step', 'fluentform'),
                 'icon_class' => 'ff-edit-step',
-                'template' => 'formStep',
+                'template'   => 'formStep',
             ],
-        ),
-        'terms_and_condition' => array(
-            'index' => 5,
-            'element' => 'terms_and_condition',
-            'attributes' => array(
-                'type' => 'checkbox',
-                'name' => 'terms-n-condition',
+        ],
+        'terms_and_condition' => [
+            'index'      => 5,
+            'element'    => 'terms_and_condition',
+            'attributes' => [
+                'type'  => 'checkbox',
+                'name'  => 'terms-n-condition',
                 'value' => false,
                 'class' => '',
-            ),
-            'settings' => array(
-                'tnc_html' => 'I have read and agree to the <a target="_blank" rel="noopener" href="#">Terms and Conditions</a> and <a target="_blank" rel="noopener" href="#">Privacy Policy</a>',
-                'has_checkbox' => true,
+            ],
+            'settings' => [
+                'tnc_html'          => 'I have read and agree to the <a target="_blank" rel="noopener" href="#">Terms and Conditions</a> and <a target="_blank" rel="noopener" href="#">Privacy Policy</a>',
+                'has_checkbox'      => true,
                 'admin_field_label' => __('Terms and Conditions', 'fluentform'),
-                'container_class' => '',
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => false,
+                'container_class'   => '',
+                'validation_rules'  => [
+                    'required' => [
+                        'value'   => false,
                         'message' => __('This field is required', 'fluentform'),
-                    ),
-                ),
-                'conditional_logics' => array(),
-            ),
-            'editor_options' => array(
-                'title' => __('Terms & Conditions', 'fluentform'),
+                    ],
+                ],
+                'conditional_logics' => [],
+            ],
+            'editor_options' => [
+                'title'      => __('Terms & Conditions', 'fluentform'),
                 'icon_class' => 'ff-edit-terms-condition',
-                'template' => 'termsCheckbox'
-            ),
-        ),
-        'gdpr_agreement' => array(
-            'index' => 10,
-            'element' => 'gdpr_agreement',
-            'attributes' => array(
-                'type' => 'checkbox',
-                'name' => 'gdpr-agreement',
+                'template'   => 'termsCheckbox',
+            ],
+        ],
+        'gdpr_agreement' => [
+            'index'      => 10,
+            'element'    => 'gdpr_agreement',
+            'attributes' => [
+                'type'  => 'checkbox',
+                'name'  => 'gdpr-agreement',
                 'value' => false,
                 'class' => 'ff_gdpr_field',
-            ),
-            'settings' => array(
-                'label' => __('GDPR Agreement', 'fluentform'),
-                'tnc_html' => __('I consent to have this website store my submitted information so they can respond to my inquiry', 'fluentform'),
+            ],
+            'settings' => [
+                'label'             => __('GDPR Agreement', 'fluentform'),
+                'tnc_html'          => __('I consent to have this website store my submitted information so they can respond to my inquiry', 'fluentform'),
                 'admin_field_label' => __('GDPR Agreement', 'fluentform'),
-                'has_checkbox' => true,
-                'container_class' => '',
-                'validation_rules' => array(
-                    'required' => array(
-                        'value' => true,
+                'has_checkbox'      => true,
+                'container_class'   => '',
+                'validation_rules'  => [
+                    'required' => [
+                        'value'   => true,
                         'message' => __('This field is required', 'fluentform'),
-                    ),
-                ),
+                    ],
+                ],
                 'required_field_message' => '',
-                'conditional_logics' => array(),
-            ),
-            'editor_options' => array(
-                'title' => __('GDPR Agreement', 'fluentform'),
+                'conditional_logics'     => [],
+            ],
+            'editor_options' => [
+                'title'      => __('GDPR Agreement', 'fluentform'),
                 'icon_class' => 'ff-edit-gdpr',
-                'template' => 'termsCheckbox'
-            ),
-        ),
-        'recaptcha' => array(
-            'index' => 2,
-            'element' => 'recaptcha',
-            'attributes' => array('name' => 'recaptcha'),
-            'settings' => array(
-                'label' => '',
-                'label_placement' => '',
-                'validation_rules' => array(),
-            ),
-            'editor_options' => array(
-                'title' => __('reCaptcha', 'fluentform'),
-                'icon_class' => 'ff-edit-recaptha',
+                'template'   => 'termsCheckbox',
+            ],
+        ],
+        'recaptcha' => [
+            'index'      => 2,
+            'element'    => 'recaptcha',
+            'attributes' => ['name' => 'g-recaptcha-response'],
+            'settings'   => [
+                'label'            => '',
+                'label_placement'  => '',
+                'validation_rules' => [],
+            ],
+            'editor_options' => [
+                'title'              => __('reCaptcha', 'fluentform'),
+                'icon_class'         => 'ff-edit-recaptha',
                 'why_disabled_modal' => 'recaptcha',
-                'template' => 'recaptcha',
-            ),
-        ),
-        'hcaptcha' => array(
-            'index' => 2,
-            'element' => 'hcaptcha',
-            'attributes' => array('name' => 'hcaptcha'),
-            'settings' => array(
-                'label' => '',
-                'label_placement' => '',
-                'validation_rules' => array(),
-            ),
-            'editor_options' => array(
-                'title' => __('hCaptcha', 'fluentform'),
-                'icon_class' => 'ff-edit-recaptha',
+                'template'           => 'recaptcha',
+            ],
+        ],
+        'hcaptcha' => [
+            'index'      => 3,
+            'element'    => 'hcaptcha',
+            'attributes' => ['name' => 'h-captcha-response'],
+            'settings'   => [
+                'label'            => '',
+                'label_placement'  => '',
+                'validation_rules' => [],
+            ],
+            'editor_options' => [
+                'title'              => __('hCaptcha', 'fluentform'),
+                'icon_class'         => 'ff-edit-recaptha',
                 'why_disabled_modal' => 'hcaptcha',
-                'template' => 'hcaptcha',
-            ),
-        ),
-        'shortcode' => array(
-            'index' => 4,
-            'element' => 'shortcode',
-            'attributes' => array(
-                'id' => '',
-                'class' => ''
-            ),
-            'settings' => array(
-                'shortcode' => '[your_shorcode_here]',
-                'conditional_logics' => array(),
-            ),
-            'editor_options' => array(
-                'title' => __('Shortcode', 'fluentform'),
+                'template'           => 'hcaptcha',
+            ],
+        ],
+        'turnstile' => [
+            'index'      => 3,
+            'element'    => 'turnstile',
+            'attributes' => ['name' => 'cf-turnstile-response'],
+            'settings'   => [
+                'label'            => '',
+                'label_placement'  => '',
+                'validation_rules' => []
+            ],
+            'editor_options' => [
+                'title'              => __('Turnstile', 'fluentform'),
+                'icon_class'         => 'ff-edit-recaptha',
+                'why_disabled_modal' => 'turnstile',
+                'template'           => 'turnstile',
+            ],
+        ],
+        'shortcode' => [
+            'index'      => 4,
+            'element'    => 'shortcode',
+            'attributes' => [
+                'id'    => '',
+                'class' => '',
+            ],
+            'settings' => [
+                'shortcode'          => '[your_shorcode_here]',
+                'conditional_logics' => [],
+            ],
+            'editor_options' => [
+                'title'      => __('Shortcode', 'fluentform'),
                 'icon_class' => 'ff-edit-shortcode',
-                'template' => 'shortcode',
-            )
-        ),
-        'action_hook' => array(
-            'index' => 6,
-            'element' => 'action_hook',
-            'attributes' => array(
-                'id' => '',
-                'class' => ''
-            ),
-            'settings' => array(
-                'hook_name' => 'YOUR_CUSTOM_HOOK_NAME',
-                'conditional_logics' => array(),
-            ),
-            'editor_options' => array(
-                'title' => __('Action Hook', 'fluentform'),
+                'template'   => 'shortcode',
+            ],
+        ],
+        'action_hook' => [
+            'index'      => 6,
+            'element'    => 'action_hook',
+            'attributes' => [
+                'id'    => '',
+                'class' => '',
+            ],
+            'settings' => [
+                'hook_name'          => 'YOUR_CUSTOM_HOOK_NAME',
+                'conditional_logics' => [],
+            ],
+            'editor_options' => [
+                'title'      => __('Action Hook', 'fluentform'),
                 'icon_class' => 'ff-edit-action-hook',
-                'template' => 'actionHook'
-            )
-        ),
-    ),
-    'container' => array(
-        'container_1_col' => array(
-            'index' => 1,
-            'element' => 'container',
-            'attributes' => array(),
-            'settings' => array(
-                'container_class' => '',
-                'conditional_logics' => array()
-            ),
-            'columns' => array(
-                array('fields' => array())
-            ),
-            'editor_options' =>
-                array(
-                    'title' => __('One Column Container', 'fluentform'),
-                    'icon_class' => 'dashicons dashicons-align-center',
-                ),
-        ),
-        'container_2_col' => array(
-            'index' => 1,
-            'element' => 'container',
-            'attributes' => array(),
-            'settings' => array(
-                'container_class' => '',
-                'conditional_logics' => array()
-            ),
-            'columns' => array(
-                array('fields' => array()),
-                array('fields' => array()),
-            ),
-            'editor_options' =>
-                array(
-                    'title' => __('Two Column Container', 'fluentform'),
-                    'icon_class' => 'ff-edit-column-2',
-                ),
-        ),
-        'container_3_col' => array(
-            'index' => 2,
-            'element' => 'container',
-            'attributes' => array(),
-            'settings' => array(
-                'container_class' => '',
-                'conditional_logics' => array()
-            ),
-            'columns' => array(
-                array('fields' => array()),
-                array('fields' => array()),
-                array('fields' => array()),
-            ),
-            'editor_options' => array(
-                'title' => __('Three Column Container', 'fluentform'),
-                'icon_class' => 'ff-edit-three-column',
-            ),
-        ),
-        'container_4_col' => array(
-            'index' => 3,
-            'element' => 'container',
-            'attributes' => array(),
-            'settings' => array(
-                'container_class' => '',
-                'conditional_logics' => array()
-            ),
-            'columns' => array(
-                array('fields' => array()),
-                array('fields' => array()),
-                array('fields' => array()),
-                array('fields' => array()),
-            ),
-            'editor_options' => array(
-                'title' => __('Four Column Container', 'fluentform'),
-                'icon_class' => 'ff-edit-three-column',
-            ),
-        ),
-        'container_5_col' => array(
-            'index' => 5,
-            'element' => 'container',
-            'attributes' => array(),
-            'settings' => array(
-                'container_class' => '',
-                'conditional_logics' => array()
-            ),
-            'columns' => array(
-                array('fields' => array()),
-                array('fields' => array()),
-                array('fields' => array()),
-                array('fields' => array()),
-                array('fields' => array()),
-            ),
-            'editor_options' => array(
-                'title' => __('Five Column Container', 'fluentform'),
-                'icon_class' => 'ff-edit-three-column',
-            ),
-        ),
-        'container_6_col' => array(
-            'index' => 6,
-            'element' => 'container',
-            'attributes' => array(),
-            'settings' => array(
-                'container_class' => '',
-                'conditional_logics' => array()
-            ),
-            'columns' => array(
-                array('fields' => array()),
-                array('fields' => array()),
-                array('fields' => array()),
-                array('fields' => array()),
-                array('fields' => array()),
-                array('fields' => array()),
-            ),
-            'editor_options' => array(
-                'title' => __('Six Column Container', 'fluentform'),
-                'icon_class' => 'ff-edit-three-column',
-            ),
-        )
-    )
-);
-
-
-if (!defined('FLUENTFORMPRO')) {
-    $defaultElements['general']['phone'] = [
-        'index' => 15,
-        'element' => 'phone',
-        'attributes' => [],
-        'settings' => [],
-        'editor_options' => [
-            'title' => 'Phone Field',
-            'icon_class' => 'el-icon-phone-outline',
-            'template' => 'inputText'
+                'template'   => 'actionHook',
+            ],
         ],
-    ];
-
-    $defaultElements['advanced']['net_promoter_score'] = [
-        'index' => 19,
-        'element' => 'net_promoter_score',
-        'attributes' => array(),
-        'settings' => array(),
-        'options' => array(),
-        'editor_options' => array(
-            'title' => 'Net Promoter Score',
-            'icon_class' => 'ff-edit-rating',
-            'template' => 'net_promoter',
-        )
-    ];
-
-    $defaultElements['advanced']['repeater_field'] = [
-        'index' => 19,
-        'element' => 'repeater_field',
-        'attributes' => array(),
-        'settings' => array(),
-        'options' => array(),
-        'editor_options' => array(
-            'title' => 'Repeat Field',
-            'icon_class' => 'ff-edit-repeat',
-            'template' => 'fieldsRepeatSettings'
-        )
-    ];
-
-    $defaultElements['advanced']['rangeslider'] = [
-        'index' => 15,
-        'element' => 'rangeslider',
-        'attributes' => [],
-        'settings' => [],
-        'editor_options' => [
-            'title' => 'Range Slider',
-            'icon_class' => 'dashicons dashicons-leftright',
-            'template' => 'inputSlider'
-        ],
-    ];
-
-
-    $defaultElements['advanced']['color-picker'] = [
-        'index' => 15,
-        'element' => 'color-picker',
-        'attributes' => [],
-        'settings' => [],
-        'editor_options' => [
-            'title' => 'Color Picker',
-            'icon_class' => 'ff-edit-tint',
-            'template' => 'inputText'
-        ],
-    ];
-
-    $defaultElements['payments'] = array(
-        'multi_payment_component' => [
-            'index' => 6,
-            'element' => 'multi_payment_component',
+    ],
+    'container' => [
+        'container_1_col' => [
+            'index'      => 1,
+            'element'    => 'container',
             'attributes' => [],
-            'settings' => [],
-            'editor_options' => array(
-                'title' => __('Payment Field', 'fluentform'),
+            'settings'   => [
+                'container_class'    => '',
+                'conditional_logics' => [],
+            ],
+            'columns' => [
+                ['width' => '', 'left' => '', 'fields' => []],
+            ],
+            'editor_options' => [
+                'title'      => __('One Column Container', 'fluentform'),
+                'icon_class' => 'dashicons dashicons-align-center',
+            ],
+        ],
+        'container_2_col' => [
+            'index'      => 1,
+            'element'    => 'container',
+            'attributes' => [],
+            'settings'   => [
+                'container_class'    => '',
+                'conditional_logics' => [],
+                'container_width'    => '',
+            ],
+            'columns' => [
+                ['width' => 50, 'fields' => []],
+                ['width' => 50, 'fields' => []],
+            ],
+            'editor_options' => [
+                'title'      => __('Two Column Container', 'fluentform'),
+                'icon_class' => 'ff-edit-column-2',
+            ],
+        ],
+        'container_3_col' => [
+            'index'      => 2,
+            'element'    => 'container',
+            'attributes' => [],
+            'settings'   => [
+                'container_class'    => '',
+                'conditional_logics' => [],
+                'container_width'    => '',
+            ],
+            'columns' => [
+                ['width' => 33.33, 'fields' => []],
+                ['width' => 33.33, 'fields' => []],
+                ['width' => 33.33, 'fields' => []],
+            ],
+            'editor_options' => [
+                'title'      => __('Three Column Container', 'fluentform'),
+                'icon_class' => 'ff-edit-three-column',
+            ],
+        ],
+        'container_4_col' => [
+            'index'      => 3,
+            'element'    => 'container',
+            'attributes' => [],
+            'settings'   => [
+                'container_class'    => '',
+                'conditional_logics' => [],
+                'container_width'    => '',
+            ],
+            'columns' => [
+                ['width' => 25, 'fields' => []],
+                ['width' => 25, 'fields' => []],
+                ['width' => 25, 'fields' => []],
+                ['width' => 25, 'fields' => []],
+            ],
+            'editor_options' => [
+                'title'      => __('Four Column Container', 'fluentform'),
+                'icon_class' => 'ff-edit-three-column',
+            ],
+        ],
+        'container_5_col' => [
+            'index'      => 5,
+            'element'    => 'container',
+            'attributes' => [],
+            'settings'   => [
+                'container_class'    => '',
+                'conditional_logics' => [],
+                'container_width'    => '',
+            ],
+            'columns' => [
+                ['width' => 20, 'fields' => []],
+                ['width' => 20, 'fields' => []],
+                ['width' => 20, 'fields' => []],
+                ['width' => 20, 'fields' => []],
+                ['width' => 20, 'fields' => []],
+            ],
+            'editor_options' => [
+                'title'      => __('Five Column Container', 'fluentform'),
+                'icon_class' => 'ff-edit-three-column',
+            ],
+        ],
+        'container_6_col' => [
+            'index'      => 6,
+            'element'    => 'container',
+            'attributes' => [],
+            'settings'   => [
+                'container_class'    => '',
+                'conditional_logics' => [],
+                'container_width'    => '',
+            ],
+            'columns' => [
+                ['width' => 16.67, 'fields' => []],
+                ['width' => 16.67, 'fields' => []],
+                ['width' => 16.67, 'fields' => []],
+                ['width' => 16.67, 'fields' => []],
+                ['width' => 16.67, 'fields' => []],
+                ['width' => 16.67, 'fields' => []],
+            ],
+            'editor_options' => [
+                'title'      => __('Six Column Container', 'fluentform'),
+                'icon_class' => 'ff-edit-three-column',
+            ],
+        ],
+    ],
+];
+
+if (! defined('FLUENTFORMPRO')) {
+    $defaultElements['general']['phone'] = [
+        'index'          => 17,
+        'element'        => 'phone',
+        'attributes'     => [],
+        'settings'       => [],
+        'editor_options' => [
+            'title'      => __('Phone Field', 'fluentform'),
+            'icon_class' => 'el-icon-phone-outline',
+            'template'   => 'inputText',
+        ],
+    ];
+    $defaultElements['advanced']['net_promoter_score'] = [
+        'index'          => 14,
+        'element'        => 'net_promoter_score',
+        'attributes'     => [],
+        'settings'       => [],
+        'options'        => [],
+        'editor_options' => [
+            'title'      => __('Net Promoter Score', 'fluentform'),
+            'icon_class' => 'ff-edit-rating',
+            'template'   => 'net_promoter',
+        ],
+    ];
+    $defaultElements['advanced']['quiz_score'] = [
+        'index'          => 19,
+        'element'        => 'quiz_score',
+        'attributes'     => [],
+        'settings'       => [],
+        'options'        => [],
+        'editor_options' => [
+            'title'      => __('Quiz Score', 'fluentform'),
+            'icon_class' => 'el-icon-postcard',
+            'template'   => 'inputHidden',
+        ],
+    ];
+    $defaultElements['advanced']['cpt_selection'] = [
+        'index'          => 18,
+        'element'        => 'cpt_selection',
+        'attributes'     => [],
+        'settings'       => [],
+        'options'        => [],
+        'editor_options' => [
+            'title'      => __('Post/CPT Selection', 'fluentform'),
+            'icon_class' => 'ff-edit-dropdown',
+            'element'    => 'select',
+            'template'   => 'select',
+        ],
+    ];
+    $defaultElements['advanced']['save_progress_button'] = [
+        'index'          => 20,
+        'element'        => 'save_progress_button',
+        'attributes'     => [],
+        'settings'       => [],
+        'options'        => [],
+        'editor_options' => [
+            'title'      => __('Save & Resume', 'fluentform'),
+            'icon_class' => 'dashicons dashicons-arrow-right-alt',
+            'template'   => 'customButton',
+        ],
+    ];
+    $defaultElements['advanced']['rich_text_input'] = [
+        'index'          => 19,
+        'element'        => 'rich_text_input',
+        'attributes'     => [],
+        'settings'       => [],
+        'options'        => [],
+        'editor_options' => [
+            'title'      => __('Rich Text Input', 'fluentform'),
+            'icon_class' => 'ff-edit-textarea',
+            'template'   => 'inputTextarea',
+        ],
+    ];
+    $defaultElements['advanced']['chained_select'] = [
+        'index'          => 15,
+        'element'        => 'chained_select',
+        'attributes'     => [],
+        'settings'       => [],
+        'options'        => [],
+        'editor_options' => [
+            'title'      => __('Chained Select Field', 'fluentform'),
+            'icon_class' => 'ff-edit-link',
+            'template'   => 'chainedSelect',
+        ],
+    ];
+    $defaultElements['advanced']['repeater_field'] = [
+        'index'          => 17,
+        'element'        => 'repeater_field',
+        'attributes'     => [],
+        'settings'       => [],
+        'options'        => [],
+        'editor_options' => [
+            'title'      => __('Repeat Field', 'fluentform'),
+            'icon_class' => 'ff-edit-repeat',
+            'template'   => 'fieldsRepeatSettings',
+        ],
+    ];
+    $defaultElements['advanced']['rangeslider'] = [
+        'index'          => 13,
+        'element'        => 'rangeslider',
+        'attributes'     => [],
+        'settings'       => [],
+        'editor_options' => [
+            'title'      => __('Range Slider', 'fluentform'),
+            'icon_class' => 'dashicons dashicons-leftright',
+            'template'   => 'inputSlider',
+        ],
+    ];
+    $defaultElements['advanced']['color-picker'] = [
+        'index'          => 16,
+        'element'        => 'color-picker',
+        'attributes'     => [],
+        'settings'       => [],
+        'editor_options' => [
+            'title'      => __('Color Picker', 'fluentform'),
+            'icon_class' => 'ff-edit-tint',
+            'template'   => 'inputText',
+        ],
+    ];
+    $defaultElements['payments'] = [
+        'multi_payment_component' => [
+            'index'          => 6,
+            'element'        => 'multi_payment_component',
+            'attributes'     => [],
+            'settings'       => [],
+            'editor_options' => [
+                'title'      => __('Payment Field', 'fluentform'),
                 'icon_class' => 'ff-edit-shopping-cart',
-                'element' => 'input-radio',
-                'template' => 'inputMultiPayment'
-            ),
+                'element'    => 'input-radio',
+                'template'   => 'inputMultiPayment',
+            ],
+        ],
+        'subscription_payment_component' => [
+            'index'          => 6,
+            'element'        => 'subscription_payment_component',
+            'attributes'     => [],
+            'settings'       => [],
+            'editor_options' => [
+                'title'      => __('Subscription Field', 'fluentform'),
+                'icon_class' => 'ff-edit-shopping-cart',
+                'element'    => 'input-radio',
+                'template'   => 'inputSubscriptionPayment',
+            ],
         ],
         'custom_payment_component' => [
-            'index' => 6,
-            'element' => 'custom_payment_component',
-            'attributes' => [],
-            'settings' => [],
-            'editor_options' => array(
-                'title' => __('Custom Payment Amount', 'fluentform'),
+            'index'          => 6,
+            'element'        => 'custom_payment_component',
+            'attributes'     => [],
+            'settings'       => [],
+            'editor_options' => [
+                'title'      => __('Custom Payment Amount', 'fluentform'),
                 'icon_class' => 'ff-edit-keyboard-o',
-                'template' => 'inputText'
-            )
+                'template'   => 'inputText',
+            ],
         ],
         'item_quantity_component' => [
-            'index' => 6,
-            'element' => 'item_quantity_component',
-            'attributes' => [],
-            'settings' => [],
-            'editor_options' => array(
-                'title' => __('Item Quantity', 'fluentform'),
+            'index'          => 6,
+            'element'        => 'item_quantity_component',
+            'attributes'     => [],
+            'settings'       => [],
+            'editor_options' => [
+                'title'      => __('Item Quantity', 'fluentform'),
                 'icon_class' => 'ff-edit-keyboard-o',
-                'template' => 'inputText'
-            ),
+                'template'   => 'inputText',
+            ],
         ],
         'payment_method' => [
-            'index' => 6,
-            'element' => 'payment_method',
-            'attributes' => [],
-            'settings' => [],
-            'editor_options' => array(
-                'title' => 'Payment Method Field',
+            'index'          => 6,
+            'element'        => 'payment_method',
+            'attributes'     => [],
+            'settings'       => [],
+            'editor_options' => [
+                'title'      => __('Payment Method Field', 'fluentform'),
                 'icon_class' => 'ff-edit-credit-card',
-                'template' => 'inputPaymentMethods'
-            ),
-        ]
-    );
+                'template'   => 'inputPaymentMethods',
+            ],
+        ],
+        'payment_summary_component' => [
+            'index'          => 6,
+            'element'        => 'payment_summary_component',
+            'attributes'     => [],
+            'settings'       => [],
+            'editor_options' => [
+                'title'      => __('Payment Summary', 'fluentform'),
+                'icon_class' => 'ff-edit-html',
+                'template'   => 'customHTML',
+            ],
+        ],
+        'payment_coupon' => [
+            'index'          => 6,
+            'element'        => 'payment_coupon',
+            'attributes'     => [],
+            'settings'       => [],
+            'editor_options' => [
+                'title'      => __('Coupon', 'fluentform'),
+                'icon_class' => 'el-icon-postcard',
+                'template'   => 'inputText',
+            ],
+        ],
+    ];
 }
-
 
 return $defaultElements;

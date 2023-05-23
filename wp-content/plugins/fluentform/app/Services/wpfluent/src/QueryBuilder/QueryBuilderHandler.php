@@ -564,7 +564,7 @@ class QueryBuilderHandler
      */
     public function limit($limit)
     {
-        $this->statements['limit'] = $limit;
+        $this->statements['limit'] = intval($limit);
 
         return $this;
     }
@@ -576,7 +576,7 @@ class QueryBuilderHandler
      */
     public function offset($offset)
     {
-        $this->statements['offset'] = $offset;
+        $this->statements['offset'] = intval($offset);
 
         return $this;
     }
@@ -1104,9 +1104,9 @@ class QueryBuilderHandler
      */
     public function paginate($perPage = null, $columns = array('*'))
     {
-        $currentPage = intval($_GET['page']) ?: 1;
+        $currentPage = intval(wpFluentForm('request')->get('page')) ?: 1;
 
-        $perPage = $perPage ?: intval($_REQUEST['per_page']) ?: 15;
+        $perPage = $perPage ?: intval(wpFluentForm('request')->get('per_page')) ?: 15;
 
         $skip = $perPage * ($currentPage - 1);
 

@@ -16,7 +16,7 @@ use AIOSEO\Vendor\Monolog\ResettableInterface;
  *
  * @author Simon Mönch <sm@webfactory.de>
  */
-class UidProcessor implements \AIOSEO\Vendor\Monolog\Processor\ProcessorInterface, \AIOSEO\Vendor\Monolog\ResettableInterface
+class UidProcessor implements ProcessorInterface, ResettableInterface
 {
     private $uid;
     public function __construct($length = 7)

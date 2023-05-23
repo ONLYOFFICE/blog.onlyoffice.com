@@ -13,6 +13,60 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 abstract class Importer {
 	/**
+	 * Imports the settings.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @return void
+	 */
+	protected function importSettings() {}
+
+	/**
+	 * Imports the post meta.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @return void
+	 */
+	protected function importPostMeta() {}
+
+	/**
+	 * Imports the term meta.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @return void
+	 */
+	protected function importTermMeta() {}
+
+	/**
+	 * PostMeta class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Object
+	 */
+	protected $postMeta = null;
+
+	/**
+	 * TermMeta class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Object
+	 */
+	protected $termMeta = null;
+
+	/**
+	 * Helpers class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Object
+	 */
+	public $helpers = null;
+
+	/**
 	 * Starts the import.
 	 *
 	 * @since 4.0.0
@@ -25,6 +79,7 @@ abstract class Importer {
 			$this->importSettings();
 			$this->importPostMeta();
 			$this->importTermMeta();
+
 			return;
 		}
 

@@ -35,7 +35,7 @@ class ErrorHandler
     private $reservedMemory;
     private $lastFatalTrace;
     private static $fatalErrors = array(\E_ERROR, \E_PARSE, \E_CORE_ERROR, \E_COMPILE_ERROR, \E_USER_ERROR);
-    public function __construct(\AIOSEO\Vendor\Psr\Log\LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
@@ -50,10 +50,11 @@ class ErrorHandler
      * @param  int|false       $fatalLevel     a LogLevel::* constant, or false to disable fatal error handling
      * @return ErrorHandler
      */
-    public static function register(\AIOSEO\Vendor\Psr\Log\LoggerInterface $logger, $errorLevelMap = array(), $exceptionLevel = null, $fatalLevel = null)
+    public static function register(LoggerInterface $logger, $errorLevelMap = array(), $exceptionLevel = null, $fatalLevel = null)
     {
         //Forces the autoloader to run for LogLevel. Fixes an autoload issue at compile-time on PHP5.3. See https://github.com/Seldaek/monolog/pull/929
         \class_exists('AIOSEO\\Vendor\\Psr\\Log\\LogLevel', \true);
+        /** @phpstan-ignore-next-line */
         $handler = new static($logger);
         if ($errorLevelMap !== \false) {
             $handler->registerErrorHandler($errorLevelMap);
@@ -92,14 +93,14 @@ class ErrorHandler
     }
     protected function defaultErrorLevelMap()
     {
-        return array(\E_ERROR => \AIOSEO\Vendor\Psr\Log\LogLevel::CRITICAL, \E_WARNING => \AIOSEO\Vendor\Psr\Log\LogLevel::WARNING, \E_PARSE => \AIOSEO\Vendor\Psr\Log\LogLevel::ALERT, \E_NOTICE => \AIOSEO\Vendor\Psr\Log\LogLevel::NOTICE, \E_CORE_ERROR => \AIOSEO\Vendor\Psr\Log\LogLevel::CRITICAL, \E_CORE_WARNING => \AIOSEO\Vendor\Psr\Log\LogLevel::WARNING, \E_COMPILE_ERROR => \AIOSEO\Vendor\Psr\Log\LogLevel::ALERT, \E_COMPILE_WARNING => \AIOSEO\Vendor\Psr\Log\LogLevel::WARNING, \E_USER_ERROR => \AIOSEO\Vendor\Psr\Log\LogLevel::ERROR, \E_USER_WARNING => \AIOSEO\Vendor\Psr\Log\LogLevel::WARNING, \E_USER_NOTICE => \AIOSEO\Vendor\Psr\Log\LogLevel::NOTICE, \E_STRICT => \AIOSEO\Vendor\Psr\Log\LogLevel::NOTICE, \E_RECOVERABLE_ERROR => \AIOSEO\Vendor\Psr\Log\LogLevel::ERROR, \E_DEPRECATED => \AIOSEO\Vendor\Psr\Log\LogLevel::NOTICE, \E_USER_DEPRECATED => \AIOSEO\Vendor\Psr\Log\LogLevel::NOTICE);
+        return array(\E_ERROR => LogLevel::CRITICAL, \E_WARNING => LogLevel::WARNING, \E_PARSE => LogLevel::ALERT, \E_NOTICE => LogLevel::NOTICE, \E_CORE_ERROR => LogLevel::CRITICAL, \E_CORE_WARNING => LogLevel::WARNING, \E_COMPILE_ERROR => LogLevel::ALERT, \E_COMPILE_WARNING => LogLevel::WARNING, \E_USER_ERROR => LogLevel::ERROR, \E_USER_WARNING => LogLevel::WARNING, \E_USER_NOTICE => LogLevel::NOTICE, \E_STRICT => LogLevel::NOTICE, \E_RECOVERABLE_ERROR => LogLevel::ERROR, \E_DEPRECATED => LogLevel::NOTICE, \E_USER_DEPRECATED => LogLevel::NOTICE);
     }
     /**
      * @private
      */
     public function handleException($e)
     {
-        $this->logger->log($this->uncaughtExceptionLevel === null ? \AIOSEO\Vendor\Psr\Log\LogLevel::ERROR : $this->uncaughtExceptionLevel, \sprintf('Uncaught Exception %s: "%s" at %s line %s', \AIOSEO\Vendor\Monolog\Utils::getClass($e), $e->getMessage(), $e->getFile(), $e->getLine()), array('exception' => $e));
+        $this->logger->log($this->uncaughtExceptionLevel === null ? LogLevel::ERROR : $this->uncaughtExceptionLevel, \sprintf('Uncaught Exception %s: "%s" at %s line %s', Utils::getClass($e), $e->getMessage(), $e->getFile(), $e->getLine()), array('exception' => $e));
         if ($this->previousExceptionHandler) {
             \call_user_func($this->previousExceptionHandler, $e);
         }
@@ -115,7 +116,7 @@ class ErrorHandler
         }
         // fatal error codes are ignored if a fatal error handler is present as well to avoid duplicate log entries
         if (!$this->hasFatalErrorHandler || !\in_array($code, self::$fatalErrors, \true)) {
-            $level = isset($this->errorLevelMap[$code]) ? $this->errorLevelMap[$code] : \AIOSEO\Vendor\Psr\Log\LogLevel::CRITICAL;
+            $level = isset($this->errorLevelMap[$code]) ? $this->errorLevelMap[$code] : LogLevel::CRITICAL;
             $this->logger->log($level, self::codeToString($code) . ': ' . $message, array('code' => $code, 'message' => $message, 'file' => $file, 'line' => $line));
         } else {
             // http://php.net/manual/en/function.debug-backtrace.php
@@ -140,10 +141,10 @@ class ErrorHandler
         $this->reservedMemory = null;
         $lastError = \error_get_last();
         if ($lastError && \in_array($lastError['type'], self::$fatalErrors, \true)) {
-            $this->logger->log($this->fatalLevel === null ? \AIOSEO\Vendor\Psr\Log\LogLevel::ALERT : $this->fatalLevel, 'Fatal Error (' . self::codeToString($lastError['type']) . '): ' . $lastError['message'], array('code' => $lastError['type'], 'message' => $lastError['message'], 'file' => $lastError['file'], 'line' => $lastError['line'], 'trace' => $this->lastFatalTrace));
-            if ($this->logger instanceof \AIOSEO\Vendor\Monolog\Logger) {
+            $this->logger->log($this->fatalLevel === null ? LogLevel::ALERT : $this->fatalLevel, 'Fatal Error (' . self::codeToString($lastError['type']) . '): ' . $lastError['message'], array('code' => $lastError['type'], 'message' => $lastError['message'], 'file' => $lastError['file'], 'line' => $lastError['line'], 'trace' => $this->lastFatalTrace));
+            if ($this->logger instanceof Logger) {
                 foreach ($this->logger->getHandlers() as $handler) {
-                    if ($handler instanceof \AIOSEO\Vendor\Monolog\Handler\AbstractHandler) {
+                    if ($handler instanceof AbstractHandler) {
                         $handler->close();
                     }
                 }

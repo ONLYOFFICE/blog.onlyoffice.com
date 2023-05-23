@@ -161,7 +161,7 @@ class Browser
 	 */
 	public function reset()
 	{
-		$this->_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "";
+		$this->_agent = sanitize_text_field(wpFluentForm('request')->server('HTTP_USER_AGENT'));
 		$this->_browser_name = self::BROWSER_UNKNOWN;
 		$this->_version = self::VERSION_UNKNOWN;
 		$this->_platform = self::PLATFORM_UNKNOWN;

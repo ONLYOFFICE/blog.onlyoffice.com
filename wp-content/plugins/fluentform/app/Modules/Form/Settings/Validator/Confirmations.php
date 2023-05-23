@@ -27,7 +27,7 @@ class Confirmations
         // Validate and process response.
         if ($validator->validate()->fails()) {
             wp_send_json_error([
-                'errors' => $validator->errors()
+                'errors' => $validator->errors(),
             ], 422);
         }
 
@@ -45,14 +45,14 @@ class Confirmations
             [
                 'redirectTo' => 'required',
                 'customPage' => 'required_if:redirectTo,customPage',
-                'customUrl' => 'required_if:redirectTo,customUrl',
+                'customUrl'  => 'required_if:redirectTo,customUrl',
             ],
             [
-                'redirectTo.required' => __('The Confirmation Type field is required.', 'fluentform'),
+                'redirectTo.required'    => __('The Confirmation Type field is required.', 'fluentform'),
                 'customPage.required_if' => __('The Page field is required when Confirmation Type is Page.', 'fluentform'),
-                'customUrl.required_if' => __('The Redirect URL field is required when Confirmation Type is Redirect.', 'fluentform'),
-                'customUrl.required' => __('The Redirect URL format is invalid.', 'fluentform'),
-            ]
+                'customUrl.required_if'  => __('The Redirect URL field is required when Confirmation Type is Redirect.', 'fluentform'),
+                'customUrl.required'     => __('The Redirect URL format is invalid.', 'fluentform'),
+            ],
         ];
     }
 
@@ -66,7 +66,7 @@ class Confirmations
     public static function conditionalValidations(FluentValidator $validator)
     {
         $validator->sometimes('customUrl', 'required', function ($input) {
-            return $input['redirectTo'] === 'customUrl';
+            return 'customUrl' === $input['redirectTo'];
         });
 
         return $validator;

@@ -20,7 +20,7 @@ use AIOSEO\Vendor\Monolog\Handler\Slack\SlackRecord;
  * @author Haralan Dobrev <hkdobrev@gmail.com>
  * @see    https://api.slack.com/incoming-webhooks
  */
-class SlackWebhookHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandler
+class SlackWebhookHandler extends AbstractProcessingHandler
 {
     /**
      * Slack Webhook token
@@ -44,11 +44,11 @@ class SlackWebhookHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcess
      * @param  bool        $bubble                 Whether the messages that are handled can bubble up the stack or not
      * @param  array       $excludeFields          Dot separated list of fields to exclude from slack message. E.g. ['context.field1', 'extra.field2']
      */
-    public function __construct($webhookUrl, $channel = null, $username = null, $useAttachment = \true, $iconEmoji = null, $useShortAttachment = \false, $includeContextAndExtra = \false, $level = \AIOSEO\Vendor\Monolog\Logger::CRITICAL, $bubble = \true, array $excludeFields = array())
+    public function __construct($webhookUrl, $channel = null, $username = null, $useAttachment = \true, $iconEmoji = null, $useShortAttachment = \false, $includeContextAndExtra = \false, $level = Logger::CRITICAL, $bubble = \true, array $excludeFields = array())
     {
         parent::__construct($level, $bubble);
         $this->webhookUrl = $webhookUrl;
-        $this->slackRecord = new \AIOSEO\Vendor\Monolog\Handler\Slack\SlackRecord($channel, $username, $useAttachment, $iconEmoji, $useShortAttachment, $includeContextAndExtra, $excludeFields, $this->formatter);
+        $this->slackRecord = new SlackRecord($channel, $username, $useAttachment, $iconEmoji, $useShortAttachment, $includeContextAndExtra, $excludeFields, $this->formatter);
     }
     public function getSlackRecord()
     {
@@ -66,16 +66,16 @@ class SlackWebhookHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcess
     protected function write(array $record)
     {
         $postData = $this->slackRecord->getSlackData($record);
-        $postString = \AIOSEO\Vendor\Monolog\Utils::jsonEncode($postData);
+        $postString = Utils::jsonEncode($postData);
         $ch = \curl_init();
         $options = array(\CURLOPT_URL => $this->webhookUrl, \CURLOPT_POST => \true, \CURLOPT_RETURNTRANSFER => \true, \CURLOPT_HTTPHEADER => array('Content-type: application/json'), \CURLOPT_POSTFIELDS => $postString);
         if (\defined('CURLOPT_SAFE_UPLOAD')) {
             $options[\CURLOPT_SAFE_UPLOAD] = \true;
         }
         \curl_setopt_array($ch, $options);
-        \AIOSEO\Vendor\Monolog\Handler\Curl\Util::execute($ch);
+        Curl\Util::execute($ch);
     }
-    public function setFormatter(\AIOSEO\Vendor\Monolog\Formatter\FormatterInterface $formatter)
+    public function setFormatter(FormatterInterface $formatter)
     {
         parent::setFormatter($formatter);
         $this->slackRecord->setFormatter($formatter);

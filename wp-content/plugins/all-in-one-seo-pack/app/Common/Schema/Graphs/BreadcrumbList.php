@@ -61,6 +61,7 @@ class BreadcrumbList extends Graph {
 
 			$data['itemListElement'][] = $listItem;
 		}
+
 		return $data;
 	}
 }

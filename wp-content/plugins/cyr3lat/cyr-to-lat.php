@@ -4,8 +4,8 @@ Plugin Name: Cyr to Lat enhanced
 Plugin URI: http://wordpress.org/plugins/cyr3lat/
 Description: Converts Cyrillic, European and Georgian characters in post, term slugs and media file names to Latin characters. Useful for creating human-readable URLs. Based on the original plugin by Anton Skorobogatov.
 Author: Sol, Sergey Biryukov, Nikolay Karev, Dmitri Gogelia
-Author URI: http://karevn.com/
-Version: 3.5
+Author URI: http://web-profile.net/
+Version: 3.7
 */ 
 
 function ctl_sanitize_title($title) {
@@ -50,10 +50,8 @@ function ctl_sanitize_title($title) {
 			$iso9_table['ъ'] = 'a';
 			break;
 		case 'uk':
-			$iso9_table['И'] = 'Y';
-			$iso9_table['и'] = 'y';
-			break;
 		case 'uk_ua':
+		case 'uk_UA':
 			$iso9_table['И'] = 'Y';
 			$iso9_table['и'] = 'y';
 			break;
@@ -68,7 +66,8 @@ function ctl_sanitize_title($title) {
 		}
 	}
 
-	$term = $is_term ? $wpdb->get_var("SELECT slug FROM {$wpdb->terms} WHERE name = '$title'") : '';
+	$term_query = $wpdb->prepare("SELECT slug FROM {$wpdb->terms} WHERE name = '%s'", $title);
+	$term = $is_term ? $wpdb->get_var($term_query) : '';
 	if ( empty($term) ) {
 		$title = strtr($title, apply_filters('ctl_table', $iso9_table));
 		if (function_exists('iconv')){
@@ -90,7 +89,8 @@ add_filter('sanitize_file_name', 'ctl_sanitize_title');
 function ctl_convert_existing_slugs() {
 	global $wpdb;
 
-	$posts = $wpdb->get_results("SELECT ID, post_name FROM {$wpdb->posts} WHERE post_name REGEXP('[^A-Za-z0-9\-]+') AND post_status IN ('publish', 'future', 'private')");
+	$posts_query = $wpdb->prepare("SELECT ID, post_name FROM {$wpdb->posts} WHERE post_name REGEXP('[^A-Za-z0-9\-]+') AND post_status IN ('publish', 'future', 'private')");
+	$posts = $wpdb->get_results($posts_query);
 	foreach ( (array) $posts as $post ) {
 		$sanitized_name = ctl_sanitize_title(urldecode($post->post_name));
 		if ( $post->post_name != $sanitized_name ) {
@@ -99,7 +99,8 @@ function ctl_convert_existing_slugs() {
 		}
 	}
 
-	$terms = $wpdb->get_results("SELECT term_id, slug FROM {$wpdb->terms} WHERE slug REGEXP('[^A-Za-z0-9\-]+') ");
+	$terms_query = $wpdb->prepare("SELECT term_id, slug FROM {$wpdb->terms} WHERE slug REGEXP('[^A-Za-z0-9\-]+')");
+	$terms = $wpdb->get_results($terms_query);
 	foreach ( (array) $terms as $term ) {
 		$sanitized_slug = ctl_sanitize_title(urldecode($term->slug));
 		if ( $term->slug != $sanitized_slug ) {

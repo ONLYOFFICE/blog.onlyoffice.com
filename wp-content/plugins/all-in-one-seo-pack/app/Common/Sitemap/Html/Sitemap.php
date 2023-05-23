@@ -183,6 +183,7 @@ namespace {
 		 */
 		function aioseo_html_sitemap( $attributes = [], $echo = true ) {
 			$attributes = aioseo()->htmlSitemap->frontend->getAttributes( $attributes );
+
 			return aioseo()->htmlSitemap->frontend->output( $echo, $attributes );
 		}
 	}

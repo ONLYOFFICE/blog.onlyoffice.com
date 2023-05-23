@@ -36,7 +36,7 @@ class Frontend {
 	 * @since 4.1.3
 	 */
 	public function __construct() {
-		$this->query = new Query;
+		$this->query = new Query();
 	}
 
 	/**
@@ -69,6 +69,7 @@ class Frontend {
 		$attributes['show_label']     = filter_var( $attributes['show_label'], FILTER_VALIDATE_BOOLEAN );
 		$attributes['nofollow_links'] = filter_var( $attributes['nofollow_links'], FILTER_VALIDATE_BOOLEAN );
 		$attributes['is_admin']       = filter_var( $attributes['is_admin'], FILTER_VALIDATE_BOOLEAN );
+
 		return $attributes;
 	}
 
@@ -82,6 +83,7 @@ class Frontend {
 	 */
 	private function formatDate( $date ) {
 		$dateFormat = apply_filters( 'aioseo_html_sitemap_date_format', get_option( 'date_format' ) );
+
 		return date_i18n( $dateFormat, strtotime( $date ) );
 	}
 
@@ -104,7 +106,7 @@ class Frontend {
 		foreach ( $posts as $post ) {
 			$entry = [
 				'id'     => $post->ID,
-				'title'  => $post->post_title,
+				'title'  => get_the_title( $post ),
 				'loc'    => get_permalink( $post->ID ),
 				'date'   => $this->formatDate( $post->post_date_gmt ),
 				'parent' => ! empty( $post->post_parent ) ? $post->post_parent : null
@@ -113,7 +115,7 @@ class Frontend {
 			$entries[] = $entry;
 		}
 
-		return $entries;
+		return apply_filters( 'aioseo_html_sitemap_posts', $entries, $postType );
 	}
 
 	/**
@@ -141,7 +143,7 @@ class Frontend {
 			];
 		}
 
-		return $entries;
+		return apply_filters( 'aioseo_html_sitemap_terms', $entries, $taxonomy );
 	}
 
 	/**
@@ -154,6 +156,8 @@ class Frontend {
 	 * @return string|void       The HTML sitemap.
 	 */
 	public function output( $echo = true, $attributes = [] ) {
+		$this->attributes = $attributes;
+
 		if ( ! aioseo()->options->sitemap->html->enable ) {
 			return;
 		}
@@ -167,15 +171,13 @@ class Frontend {
 			$attributes = $this->getAttributes();
 		}
 
-		// Setting this allows us to use the helper functions of the general sitemap.
-		$this->attributes = $attributes;
-
+		$noResultsMessage = esc_html__( 'No posts/terms could be found.', 'all-in-one-seo-pack' );
 		if ( empty( $this->attributes['post_types'] ) && empty( $this->attributes['taxonomies'] ) ) {
-			$message = esc_html__( 'No posts/terms could be found.', 'all-in-one-seo-pack' );
 			if ( $echo ) {
-				echo $message; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $noResultsMessage; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
-			return $message;
+
+			return $noResultsMessage;
 		}
 
 		// TODO: Consider moving all remaining HTML code below to a dedicated view instead of printing it in PHP.
@@ -186,6 +188,7 @@ class Frontend {
 
 		$sitemap .= '<style>.aioseo-html-sitemap.labels-hidden ul { margin: 0; }</style>';
 
+		$hasPosts  = false;
 		$postTypes = $this->getIncludedObjects( $this->attributes['post_types'] );
 		foreach ( $postTypes as $postType ) {
 			if ( 'attachment' === $postType ) {
@@ -201,6 +204,8 @@ class Frontend {
 			if ( empty( $posts ) ) {
 				continue;
 			}
+
+			$hasPosts = true;
 
 			$postTypeObject = get_post_type_object( $postType );
 			$label          = ! empty( $postTypeObject->label ) ? $postTypeObject->label : ucfirst( $postType );
@@ -222,6 +227,7 @@ class Frontend {
 			}
 		}
 
+		$hasTerms   = false;
 		$taxonomies = $this->getIncludedObjects( $this->attributes['taxonomies'], false );
 		foreach ( $taxonomies as $taxonomy ) {
 			// Check if post type is still registered.
@@ -233,6 +239,8 @@ class Frontend {
 			if ( empty( $terms ) ) {
 				continue;
 			}
+
+			$hasTerms = true;
 
 			$taxonomyObject = get_taxonomy( $taxonomy );
 			$label          = ! empty( $taxonomyObject->label ) ? $taxonomyObject->label : ucfirst( $taxonomy );
@@ -256,9 +264,15 @@ class Frontend {
 
 		$sitemap .= '</div>';
 
+		// Check if we actually were able to fetch any results.
+		if ( ! $hasPosts && ! $hasTerms ) {
+			$sitemap = $noResultsMessage;
+		}
+
 		if ( $echo ) {
 			echo $sitemap; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
+
 		return $sitemap;
 	}
 
@@ -272,6 +286,7 @@ class Frontend {
 	 */
 	private function generateLabel( $label ) {
 		$labelTag = ! empty( $this->attributes['label_tag'] ) ? $this->attributes['label_tag'] : 'h4';
+
 		return $this->attributes['show_label']
 			? sprintf( '<%2$s>%1$s</%2$s>', esc_attr( $label ), wp_kses_post( $labelTag ) )
 			: '';
@@ -290,6 +305,7 @@ class Frontend {
 		foreach ( $objects as $object ) {
 			$list .= $this->generateListItem( $object ) . '</li>';
 		}
+
 		return $list . '</ul></div>';
 	}
 
@@ -332,6 +348,7 @@ class Frontend {
 
 			$li .= '</a>';
 		}
+
 		return $li;
 	}
 
@@ -352,13 +369,7 @@ class Frontend {
 
 		$list = '<ul>';
 		foreach ( $objects as $object ) {
-			$list .= $this->generateListItem(
-				$object,
-				[
-					'publication_date' => $this->attributes['publication_date'],
-					'nofollow_links'   => $this->attributes['nofollow_links']
-				]
-			);
+			$list .= $this->generateListItem( $object );
 
 			if ( ! empty( $object['children'] ) ) {
 				$list .= $this->generateHierarchicalTree( $object );
@@ -366,6 +377,7 @@ class Frontend {
 			$list .= '</li>';
 		}
 		$list .= '</ul>';
+
 		return $list;
 	}
 
@@ -384,23 +396,14 @@ class Frontend {
 		$tree = '<ul>';
 		foreach ( $object['children'] as $child ) {
 			$nestedLevel++;
-			$tree .= $this->generateListItem(
-				$child,
-				[
-					'publication_date' => $this->attributes['publication_date'],
-					'nofollow_links'   => $this->attributes['nofollow_links']
-				]
-			);
+			$tree .= $this->generateListItem( $child );
 			if ( ! empty( $child['children'] ) ) {
 				$tree .= $this->generateHierarchicalTree( $child );
 			}
-
-			// Because the list is closed off after the loop ends, we must keep track of the nest level so that all nested lists are closed.
-			for ( $i = 0; $i < $nestedLevel; $i++ ) {
-				$tree .= '</ul>';
-				$nestedLevel--;
-			}
+			$tree .= '</li>';
 		}
+		$tree .= '</ul>';
+
 		return $tree;
 	}
 
@@ -408,61 +411,40 @@ class Frontend {
 	 * Builds the structure for hierarchical objects that have a parent.
 	 *
 	 * @since 4.1.3
+	 * @version 4.2.8
 	 *
 	 * @param  array $objects The list of hierarchical objects.
-	 * @param  int   $parent  ID of the parent node.
 	 * @return array          Multidimensional array with the hierarchical structure.
 	 */
 	private function buildHierarchicalTree( $objects ) {
-		$objects = json_decode( wp_json_encode( $objects ) );
-		foreach ( $objects as $index => $child ) {
-			if ( $child->parent ) {
-				foreach ( $objects as $parent ) {
-					// Find the parent among the other objects.
-					if ( (int) $child->parent === (int) $parent->id ) {
-						$parent->children[] = $child;
-						unset( $objects[ $index ] );
-						continue 2;
-					}
-					// If one of the objects already has children, try to recursively find the parent for the current child among those children.
-					if ( ! empty( $parent->children ) ) {
-						list( $children, $found ) = $this->findParentAmongChildren( $parent->children, $child );
-						if ( $found ) {
-							$parent->children = $children;
-							unset( $objects[ $index ] );
-							continue 2;
-						}
-					}
-				}
-			}
-		}
-		$objects = array_values( json_decode( wp_json_encode( $objects ), true ) );
-		return $objects;
-	}
+		$topLevelIds = [];
+		$objects     = json_decode( wp_json_encode( $objects ) );
 
-	/**
-	 * Recursive helper function for buildHierarchicalTree().
-	 * Finds the parent for child objects whose parent is a child of another object.
-	 *
-	 * @since 4.1.3
-	 *
-	 * @param  array $parentChildren The child objects of the potential parent object.
-	 * @param  array $child          The child object.
-	 * @return array                 The parent's children + whether the parent was found.
-	 */
-	private function findParentAmongChildren( $parentChildren, $child ) {
-		$found = false;
-		foreach ( $parentChildren as $parentChild ) {
-			if ( (int) $child->parent === (int) $parentChild->id ) {
-				$parentChild->children[] = $child;
-				$found                   = true;
-				break;
+		foreach ( $objects as $listItem ) {
+
+			// Create an array of top level IDs for later reference.
+			if ( empty( $listItem->parent ) ) {
+				array_push( $topLevelIds, $listItem->id );
 			}
-			if ( ! empty( $parentChild->children ) ) {
-				return $this->findParentAmongChildren( $parentChild->children, $child );
+
+			// Create an array of children that belong to the current item.
+			$children = array_filter( $objects, function( $child ) use ( $listItem ) {
+				if ( ! empty( $child->parent ) ) {
+					return absint( $child->parent ) === absint( $listItem->id );
+				}
+			} );
+
+			if ( ! empty( $children ) ) {
+				$listItem->children = $children;
 			}
 		}
-		return [ $parentChildren, $found ];
+
+		// Remove child objects from the root level since they've all been nested.
+		$objects = array_filter( $objects, function ( $item ) use ( $topLevelIds ) {
+			return in_array( $item->id, $topLevelIds, true );
+		} );
+
+		return array_values( json_decode( wp_json_encode( $objects ), true ) );
 	}
 
 	/**
@@ -479,20 +461,23 @@ class Frontend {
 			return $objects;
 		}
 
-		$exploded = explode( ',', $objects );
-		if ( ! empty( $exploded ) ) {
-			$objects = array_map( function( $object ) {
-				return trim( $object );
-			}, $exploded );
-
-			$publicObjects = $arePostTypes
-				? aioseo()->helpers->getPublicPostTypes( true )
-				: aioseo()->helpers->getPublicTaxonomies( true );
-
-			$objects = array_filter( $objects, function( $object ) use ( $publicObjects ) {
-				return in_array( $object, $publicObjects, true );
-			});
+		if ( empty( $objects ) ) {
+			return [];
 		}
+
+		$exploded = explode( ',', $objects );
+		$objects  = array_map( function( $object ) {
+			return trim( $object );
+		}, $exploded );
+
+		$publicObjects = $arePostTypes
+			? aioseo()->helpers->getPublicPostTypes( true )
+			: aioseo()->helpers->getPublicTaxonomies( true );
+
+		$objects = array_filter( $objects, function( $object ) use ( $publicObjects ) {
+			return in_array( $object, $publicObjects, true );
+		});
+
 		return $objects;
 	}
 }

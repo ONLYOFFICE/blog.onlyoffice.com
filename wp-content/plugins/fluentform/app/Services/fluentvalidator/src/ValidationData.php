@@ -9,7 +9,9 @@ class ValidationData
         $data = Arr::dot(static::initializeAttributeOnData($attribute, $masterData));
 
         return array_merge($data, static::extractValuesForWildcards(
-            $masterData, $data, $attribute
+            $masterData,
+            $data,
+            $attribute
         ));
     }
 
@@ -17,7 +19,7 @@ class ValidationData
      * Gather a copy of the attribute data filled with any missing attributes.
      *
      * @param string $attribute
-     * @param array $masterData
+     * @param array  $masterData
      *
      * @return array
      */
@@ -27,7 +29,7 @@ class ValidationData
 
         $data = static::extractDataFromPath($explicitPath, $masterData);
 
-        if (! fluentform_mb_strpos($attribute, '*') !== false || substr($attribute, -1) === '*') {
+        if (false !== !fluentform_mb_strpos($attribute, '*') || '*' === substr($attribute, -1)) {
             return $data;
         }
 
@@ -37,8 +39,8 @@ class ValidationData
     /**
      * Get all of the exact attribute values for a given wildcard attribute.
      *
-     * @param array $masterData
-     * @param array $data
+     * @param array  $masterData
+     * @param array  $data
      * @param string $attribute
      *
      * @return array
@@ -50,7 +52,7 @@ class ValidationData
         $pattern = str_replace('\*', '[^\.]+', preg_quote($attribute));
 
         foreach ($data as $key => $value) {
-            if ((bool) preg_match('/^'.$pattern.'/', $key, $matches)) {
+            if ((bool) preg_match('/^' . $pattern . '/', $key, $matches)) {
                 $keys[] = $matches[0];
             }
         }
@@ -72,7 +74,7 @@ class ValidationData
      * Used to extract a sub-section of the data for faster iteration.
      *
      * @param string $attribute
-     * @param array $masterData
+     * @param array  $masterData
      *
      * @return array
      */
@@ -82,7 +84,7 @@ class ValidationData
 
         $value = Arr::get($masterData, $attribute, '__missing__');
 
-        if ($value != '__missing__') {
+        if ('__missing__' != $value) {
             Arr::set($results, $attribute, $value);
         }
 
@@ -108,19 +110,19 @@ class ValidationData
     /**
      * Set an item on an array or object using dot notation.
      *
-     * @param mixed $target
+     * @param mixed        $target
      * @param string|array $key
-     * @param mixed $value
-     * @param bool $overwrite
+     * @param mixed        $value
+     * @param bool         $overwrite
      *
      * @return mixed
      */
-    function data_set(&$target, $key, $value, $overwrite = true)
+    public function data_set(&$target, $key, $value, $overwrite = true)
     {
         $segments = is_array($key) ? $key : explode('.', $key);
 
         if (($segment = array_shift($segments)) === '*') {
-            if (! Arr::accessible($target)) {
+            if (!Arr::accessible($target)) {
                 $target = [];
             }
 
@@ -135,22 +137,22 @@ class ValidationData
             }
         } elseif (Arr::accessible($target)) {
             if ($segments) {
-                if (! Arr::exists($target, $segment)) {
+                if (!Arr::exists($target, $segment)) {
                     $target[$segment] = [];
                 }
 
                 static::data_set($target[$segment], $segments, $value, $overwrite);
-            } elseif ($overwrite || ! Arr::exists($target, $segment)) {
+            } elseif ($overwrite || !Arr::exists($target, $segment)) {
                 $target[$segment] = $value;
             }
         } elseif (is_object($target)) {
             if ($segments) {
-                if (! isset($target->{$segment})) {
+                if (!isset($target->{$segment})) {
                     $target->{$segment} = [];
                 }
 
                 static::data_set($target->{$segment}, $segments, $value, $overwrite);
-            } elseif ($overwrite || ! isset($target->{$segment})) {
+            } elseif ($overwrite || !isset($target->{$segment})) {
                 $target->{$segment} = $value;
             }
         } else {

@@ -16,7 +16,7 @@ namespace AIOSEO\Vendor\Monolog\Formatter;
  *
  * @author Andrew Lawson <adlawson@gmail.com>
  */
-class ScalarFormatter extends \AIOSEO\Vendor\Monolog\Formatter\NormalizerFormatter
+class ScalarFormatter extends NormalizerFormatter
 {
     /**
      * {@inheritdoc}

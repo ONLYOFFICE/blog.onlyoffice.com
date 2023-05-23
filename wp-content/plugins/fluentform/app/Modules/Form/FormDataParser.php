@@ -25,7 +25,10 @@ class FormDataParser
         $fields = $fields ? $fields : FormFieldsParser::getEntryInputs($form);
 
         $entry->user_inputs = static::parseData(
-            json_decode($entry->response), $fields, $form->id, $isHtml
+            json_decode($entry->response),
+            $fields,
+            $form->id,
+            $isHtml
         );
 
         return $entry;
@@ -35,7 +38,10 @@ class FormDataParser
     {
         if (is_null(static::$data)) {
             static::$data = static::parseData(
-                json_decode($submission->response), $fields, $form->id, $isHtml
+                json_decode($submission->response),
+                $fields,
+                $form->id,
+                $isHtml
             );
         }
 
@@ -47,6 +53,7 @@ class FormDataParser
     public static function parseData($response, $fields, $formId, $isHtml = false)
     {
         $trans = [];
+
         foreach ($fields as $field_key => $field) {
             if (isset($response->{$field_key})) {
                 $value = apply_filters(
@@ -68,7 +75,7 @@ class FormDataParser
     public static function formatValue($value)
     {
         if (is_array($value) || is_object($value)) {
-            return fluentImplodeRecursive(', ', array_filter(array_values((array)$value)));
+            return fluentImplodeRecursive(', ', array_filter(array_values((array) $value)));
         }
 
         return $value;
@@ -85,7 +92,7 @@ class FormDataParser
         }
 
         if (!$isHtml) {
-            return fluentImplodeRecursive(', ', array_filter(array_values((array)$values)));
+            return fluentImplodeRecursive(', ', array_filter(array_values((array) $values)));
         }
         if ($form_id && \FluentForm\App\Helpers\Helper::isEntryAutoDeleteEnabled($form_id)) {
             return '';
@@ -114,12 +121,12 @@ class FormDataParser
         }
 
         if (!$isHtml) {
-            return fluentImplodeRecursive(', ', array_filter(array_values((array)$values)));
+            return fluentImplodeRecursive(', ', array_filter(array_values((array) $values)));
         }
         if ($form_id && \FluentForm\App\Helpers\Helper::isEntryAutoDeleteEnabled($form_id)) {
             return '';
         }
-        if (count($values) == 1) {
+        if (1 == count($values)) {
             $value = $values[0];
             if (!$value) {
                 return '';
@@ -161,23 +168,24 @@ class FormDataParser
                 <div class="ff_entry_table_wrapper">
                     <table class="ff_entry_table_field ff-table">
                         <thead>
-                        <tr>
-                            <?php foreach ($repeatColumns as $repeatColumn) : ?>
-                                <th><?php echo ArrayHelper::get($repeatColumn, 'settings.label'); ?></th>
-                            <?php endforeach; ?>
-                        </tr>
+                            <tr>
+                                <?php foreach ($repeatColumns as $repeatColumn) : ?>
+                                <th><?php echo fluentform_sanitize_html(ArrayHelper::get($repeatColumn, 'settings.label')); ?>
+                                </th>
+                                <?php endforeach; ?>
+                            </tr>
                         </thead>
 
                         <tbody>
-                        <?php for ($i = 0; $i < $rows; $i++) : ?>
+                            <?php for ($i = 0; $i < $rows; $i++) : ?>
                             <tr>
                                 <?php for ($j = 0; $j < $columns; $j++) : ?>
-                                    <td>
-                                        <?php echo $value[$j][$i] ?>
-                                    </td>
+                                <td>
+                                    <?php echo fluentform_sanitize_html($value[$j][$i]); ?>
+                                </td>
                                 <?php endfor; ?>
                             </tr>
-                        <?php endfor; ?>
+                            <?php endfor; ?>
                         </tbody>
                     </table>
                 </div>
@@ -185,7 +193,6 @@ class FormDataParser
             }
             return ob_get_clean();
         } catch (Exception $e) {
-
         }
 
         return $value;
@@ -202,7 +209,7 @@ class FormDataParser
         }
 
         if (is_array($value)) {
-            $value = (object)$value;
+            $value = (object) $value;
         }
         try {
             if (empty($field['raw'])) {
@@ -215,12 +222,11 @@ class FormDataParser
             $elMarkup = "<table class='ff-table'><thead><tr><th></th><th   style='text-align: center;'>{$columnHeaders}</th></tr></thead><tbody>";
 
             foreach (static::makeTabularData($field['raw']) as $row) {
-
-                $elMarkup .= "<tr>";
+                $elMarkup .= '<tr>';
                 $elMarkup .= "<td>{$row['label']}</td>";
                 foreach ($row['columns'] as $column) {
                     $isChecked = '';
-                    if ($fieldType == 'radio') {
+                    if ('radio' == $fieldType) {
                         if (isset($value->{$row['name']})) {
                             $isChecked = $value->{$row['name']} == $column['name'] ? 'checked' : '';
                         }
@@ -233,16 +239,15 @@ class FormDataParser
                     if ($isChecked) {
                         $icon = '✔';
                     }
-                    $elMarkup .= "<td style='text-align: center;'>" . $icon . "</td>";
+                    $elMarkup .= "<td style='text-align: center;'>" . $icon . '</td>';
                 }
-                $elMarkup .= "</tr>";
+                $elMarkup .= '</tr>';
             }
 
-            $elMarkup .= "</tbody></table>";
+            $elMarkup .= '</tbody></table>';
 
             return $elMarkup;
         } catch (Exception $e) {
-
         }
         return '';
     }
@@ -257,13 +262,13 @@ class FormDataParser
             $table[$rowKey] = [
                 'name'    => $rowKey,
                 'label'   => $rowValue,
-                'columns' => []
+                'columns' => [],
             ];
 
             foreach ($columns as $columnKey => $columnValue) {
                 $table[$rowKey]['columns'][] = [
                     'name'  => $columnKey,
-                    'label' => $columnValue
+                    'label' => $columnValue,
                 ];
             }
         }
@@ -281,7 +286,7 @@ class FormDataParser
     public static function formatName($value)
     {
         if (is_array($value) || is_object($value)) {
-            return fluentImplodeRecursive(' ', array_filter(array_values((array)$value)));
+            return fluentImplodeRecursive(' ', array_filter(array_values((array) $value)));
         }
 
         return $value;
@@ -307,14 +312,13 @@ class FormDataParser
         $html = '<ul style="white-space: normal;">';
         foreach ($values as $value) {
             $item = $value;
-            if ($itemLabel = ArrayHelper::get($field, 'options.'.$item)) {
+            if ($itemLabel = ArrayHelper::get($field, 'options.' . $item)) {
                 $item = $itemLabel;
             }
-            $html .= '<li>'.$item.'</li>';
+            $html .= '<li>' . $item . '</li>';
         }
 
-        return $html.'</ul>';
-
+        return $html . '</ul>';
     }
 
     public static function resetData()

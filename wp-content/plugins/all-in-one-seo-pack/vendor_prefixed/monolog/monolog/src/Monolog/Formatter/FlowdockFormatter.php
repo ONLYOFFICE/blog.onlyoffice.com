@@ -15,7 +15,7 @@ namespace AIOSEO\Vendor\Monolog\Formatter;
  *
  * @author Dominik Liebler <liebler.dominik@gmail.com>
  */
-class FlowdockFormatter implements \AIOSEO\Vendor\Monolog\Formatter\FormatterInterface
+class FlowdockFormatter implements FormatterInterface
 {
     /**
      * @var string

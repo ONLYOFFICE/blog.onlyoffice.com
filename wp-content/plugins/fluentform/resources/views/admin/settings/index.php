@@ -15,36 +15,36 @@ use FluentForm\Framework\Helpers\ArrayHelper;
                 <ul class="ff_settings_list">
                     <li>
                         <a data-hash="settings"
-                           href="<?php echo Helper::makeMenuUrl('fluent_forms_settings', [
+                           href="<?php echo esc_url(Helper::makeMenuUrl('fluent_forms_settings', [
                                'hash' => 'settings'
-                           ]); ?>">
+                           ])); ?>">
                             <?php echo __('Settings'); ?>
                         </a>
                     </li>
-                    <li class="<?php echo Helper::getHtmlElementClass('managers', $currentComponent); ?> ff_menu_item_managers">
+                    <li class="<?php echo esc_attr(Helper::getHtmlElementClass('managers', $currentComponent)); ?> ff_menu_item_managers">
                         <a data-hash="managers"
-                           href="<?php echo Helper::makeMenuUrl('fluent_forms_settings', [
+                           href="<?php echo esc_url(Helper::makeMenuUrl('fluent_forms_settings', [
                                'hash' => 'managers'
-                           ]); ?>">
+                           ])); ?>">
                             <?php echo __('Managers'); ?>
                         </a>
                     </li>
-                    <li class="<?php echo Helper::getHtmlElementClass('double_optin_settings', $currentComponent); ?> ff_menu_item_double_optin">
+                    <li class="<?php echo esc_attr(Helper::getHtmlElementClass('double_optin_settings', $currentComponent)); ?> ff_menu_item_double_optin">
                         <a data-hash="double_optin_settings"
-                           href="<?php echo Helper::makeMenuUrl('fluent_forms_settings', [
+                           href="<?php echo esc_url(Helper::makeMenuUrl('fluent_forms_settings', [
                                'hash' => 'double_optin_settings'
-                           ]); ?>">
+                           ])); ?>">
                             <?php echo __('Double Optin Settings', 'fluentform'); ?>
                         </a>
                     </li>
                     <?php foreach ($components as $componentName => $component): ?>
-                        <li class="<?php echo Helper::getHtmlElementClass($component['hash'], $currentComponent); ?> ff_item_<?php echo  $componentName; ?>">
-                            <a data-settings_key="<?php echo ArrayHelper::get($component, 'settings_key'); ?>"
-                               data-component="<?php echo ArrayHelper::get($component, 'component', ''); ?>"
-                               data-hash="<?php echo ArrayHelper::get($component, 'hash', ''); ?>"
-                               href="<?php echo Helper::makeMenuUrl('fluent_forms_settings', $component); ?>"
+                        <li class="<?php echo esc_attr(Helper::getHtmlElementClass($component['hash'], $currentComponent)); ?> ff_item_<?php echo esc_attr($componentName); ?>">
+                            <a data-settings_key="<?php echo esc_attr(ArrayHelper::get($component, 'settings_key')); ?>"
+                               data-component="<?php echo esc_attr(ArrayHelper::get($component, 'component', '')); ?>"
+                               data-hash="<?php echo esc_attr(ArrayHelper::get($component, 'hash', '')); ?>"
+                               href="<?php echo esc_url(Helper::makeMenuUrl('fluent_forms_settings', $component)); ?>"
                             >
-                                <?php echo $component['title']; ?>
+                                <?php echo esc_attr($component['title']); ?>
                             </a>
                         </li>
                     <?php endforeach; ?>

@@ -34,13 +34,26 @@
 
             <div class="section-form-group">
               <div class="section-form-title">
-                Install Key:
+                Recovery Token:
               </div>
-              <?php trinity_info_show_install_key(); ?>
+
+              <div>
+                <?php trinity_show_recovery_token(); ?>
+              </div>
+
+              <div class="section-form-title trinity-hide">
+                Account key:
+              </div>
+
+              <div class="trinity-hide">
+                <?php echo $package_data->package->account_key; ?>
+              </div>
+
+              <p class='description'>Your unique token bound to your domain. Keep it in secret. Using that token allows restoring your installation in a new environment. </p>
             </div>
 
             <div class="section-form-group">
-              <?php show_articles_usage($package_data); ?>
+              <?php trinity_show_articles_usage($package_data); ?>
             </div>
 
           </div>
@@ -51,10 +64,7 @@
         <section>
           <div class="section-title">Subscription</div>
           <div class="trinity-section-body plan-section">
-            <div class="curr-plan">Current plan:</div>
-
             <?php trinity_current_package_info_template($package_data); ?>
-
           </div>
         </section>
       </div>
@@ -128,7 +138,7 @@
                         Speed and ability to connect to <strong>endpoint #2</strong> using wp_remote_get
                       </td>
                       <td colspan="2">
-                        <?php echo trinity_init_checks_speed_wp(TRINITY_AUDIO_LANGUAGES_URL); ?> ms
+                        <?php echo trinity_init_checks_speed_wp(TRINITY_AUDIO_STANDARD_VOICES_URL); ?> ms
                       </td>
                     </tr>
                     <tr>
@@ -136,7 +146,7 @@
                         Speed and ability to connect to <strong>endpoint #2</strong> using curl
                       </td>
                       <td colspan="2">
-                        <?php echo trinity_init_checks_speed_curl(TRINITY_AUDIO_LANGUAGES_URL); ?> ms
+                        <?php echo trinity_init_checks_speed_curl(TRINITY_AUDIO_STANDARD_VOICES_URL); ?> ms
                       </td>
                     </tr>
                     </tbody>

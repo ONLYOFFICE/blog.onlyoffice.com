@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 trait Shortcodes {
 	/**
 	 * Shortcodes known to conflict with AIOSEO.
+	 * NOTE: This is deprecated and only there for users who already were using the aioseo_conflicting_shortcodes_hook before 4.2.0.
 	 *
 	 * @since 4.1.2
 	 *
@@ -45,25 +46,72 @@ trait Shortcodes {
 	 *
 	 * @since 4.0.5
 	 *
-	 * @param  string $content      The post content.
-	 * @param  array  $tagsToRemove Shortcode tags that should be removed before parsing the content.
-	 * @param  bool   $override     Whether shortcodes should be parsed regardless of the context. Needed for ActionScheduler actions.
-	 * @return string $content      The post content with shortcodes replaced.
+	 * @param  string $content  The post content.
+	 * @param  bool   $override Whether shortcodes should be parsed regardless of the context. Needed for ActionScheduler actions.
+	 * @param  int    $postId   The post ID (optional).
+	 * @return string $content  The post content with shortcodes replaced.
 	 */
-	public function doShortcodes( $content, $tagsToRemove = [], $override = false ) {
-		if (
-			! $override &&
-			(
-				( is_admin() && ! wp_doing_ajax() && ! wp_doing_cron() ) ||
-				apply_filters( 'aioseo_disable_shortcode_parsing', false )
-			)
-		) {
+	public function doShortcodes( $content, $override = false, $postId = 0 ) {
+		// NOTE: This is_admin() check can never be removed because themes like Avada will otherwise load the wrong post.
+		if ( ! $override && is_admin() ) {
 			return $content;
 		}
 
-		global $shortcode_tags;
-		$conflictingShortcodes = apply_filters( 'aioseo_conflicting_shortcodes', $this->conflictingShortcodes );
+		if ( ! wp_doing_cron() && ! wp_doing_ajax() ) {
+			if ( ! $override && apply_filters( 'aioseo_disable_shortcode_parsing', false ) ) {
+				return $content;
+			}
 
+			if ( ! $override && ! aioseo()->options->searchAppearance->advanced->runShortcodes ) {
+				return $this->doAllowedShortcodes( $content, $postId );
+			}
+		}
+
+		$content = $this->doShortcodesHelper( $content, [], $postId );
+
+		return $content;
+	}
+
+	/**
+	 * Returns the content with only the allowed shortcodes and wildcards replaced.
+	 *
+	 * @since 4.1.2
+	 *
+	 * @param  string $content The content.
+	 * @param  int    $postId  The post ID (optional).
+	 * @return string          The content with shortcodes replaced.
+	 */
+	public function doAllowedShortcodes( $content, $postId = null ) {
+		// Extract list of shortcodes from the post content.
+		$tags = $this->getShortcodeTags( $content );
+		if ( ! count( $tags ) ) {
+			return $content;
+		}
+
+		$allowedTags  = apply_filters( 'aioseo_allowed_shortcode_tags', [] );
+		$tagsToRemove = array_diff( $tags, $allowedTags );
+
+		$content = $this->doShortcodesHelper( $content, $tagsToRemove, $postId );
+
+		return $content;
+	}
+
+	/**
+	 * Returns the content with only the allowed shortcodes and wildcards replaced.
+	 *
+	 * @since 4.1.2
+	 *
+	 * @param  string $content      The content.
+	 * @param  array  $tagsToRemove The shortcode tags to remove (optional).
+	 * @param  int    $postId       The post ID (optional).
+	 * @return string               The content with shortcodes replaced.
+	 */
+	private function doShortcodesHelper( $content, $tagsToRemove = [], $postId = 0 ) {
+		global $shortcode_tags;
+		$conflictingShortcodes = array_merge( $tagsToRemove, $this->conflictingShortcodes );
+		$conflictingShortcodes = apply_filters( 'aioseo_conflicting_shortcodes', $conflictingShortcodes );
+
+		$tagsToRemove = [];
 		foreach ( $conflictingShortcodes as $shortcode ) {
 			$shortcodeTag = str_replace( [ '[', ']' ], '', $shortcode );
 			if ( array_key_exists( $shortcodeTag, $shortcode_tags ) ) {
@@ -76,7 +124,20 @@ trait Shortcodes {
 			remove_shortcode( $shortcodeTag );
 		}
 
+		if ( $postId ) {
+			global $post;
+			$post = get_post( $postId );
+			if ( is_a( $post, 'WP_Post' ) ) {
+				// Add the current post to the loop so that shortcodes can use it if needed.
+				setup_postdata( $post );
+			}
+		}
+
 		$content = do_shortcode( $content );
+
+		if ( $postId ) {
+			wp_reset_postdata();
+		}
 
 		// Add back shortcodes as remove_shortcode() disables them site-wide.
 		foreach ( $tagsToRemove as $shortcodeTag => $shortcodeCallback ) {
@@ -84,37 +145,6 @@ trait Shortcodes {
 		}
 
 		return $content;
-	}
-
-	/**
-	 * Returns the content with only the allowed shortcodes and wildcards replaced.
-	 * This function should be used in Action Scheduler action callbacks only as it runs shortcodes everywhere, regardless of the context.
-	 *
-	 * @since 4.1.2
-	 *
-	 * @param  string $content     The content.
-	 * @param  array  $allowedTags The allowed shortcode tags.
-	 * @param  array  $wildcards   The wildcards.
-	 * @return string              The content with shortcodes replaced.
-	 */
-	public function doAllowedShortcodes( $content, $allowedTags = [], $wildcards = [] ) {
-		// Extract list of shortcodes from the post content.
-		$tags = $this->getShortcodeTags( $content );
-		if ( ! count( $tags ) ) {
-			return $content;
-		}
-
-		// Include shortcodes that match wildcards with allowed shortcodes.
-		foreach ( $tags as $tag ) {
-			foreach ( $wildcards as $wildcard ) {
-				if ( preg_match( "/$wildcard/", $tag ) ) {
-					$allowedTags[] = $tag;
-				}
-			}
-		}
-
-		$tagsToRemove = array_diff( $tags, $allowedTags );
-		return $this->doShortcodes( $content, $tagsToRemove, true );
 	}
 
 	/**

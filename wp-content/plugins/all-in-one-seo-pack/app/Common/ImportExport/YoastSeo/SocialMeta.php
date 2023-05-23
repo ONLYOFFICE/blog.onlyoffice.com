@@ -17,6 +17,15 @@ use AIOSEO\Plugin\Common\Models;
  */
 class SocialMeta {
 	/**
+	 * List of options.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var array
+	 */
+	private $options = [];
+
+	/**
 	 * Class constructor.
 	 *
 	 * @since 4.0.0
@@ -87,11 +96,18 @@ class SocialMeta {
 		}
 
 		$settings = [
-			'opengraph'          => [ 'type' => 'boolean', 'newOption' => [ 'social', 'facebook', 'general', 'enable' ] ],
-			'og_frontpage_title' => [ 'type' => 'string', 'newOption' => [ 'social', 'facebook', 'homePage', 'title' ] ],
-			'og_frontpage_desc'  => [ 'type' => 'string', 'newOption' => [ 'social', 'facebook', 'homePage', 'description' ] ],
-			'og_frontpage_image' => [ 'type' => 'string', 'newOption' => [ 'social', 'facebook', 'homePage', 'image' ] ],
+			'opengraph' => [ 'type' => 'boolean', 'newOption' => [ 'social', 'facebook', 'general', 'enable' ] ],
 		];
+
+		if ( ! aioseo()->importExport->yoastSeo->searchAppearance->hasImportedHomepageSocialSettings ) {
+			// These settings were moved to the Search Appearance tab of Yoast, but we'll leave this here to support older versions.
+			// However, we want to make sure we import them only if the other ones aren't set.
+			$settings = array_merge( $settings, [
+				'og_frontpage_title' => [ 'type' => 'string', 'newOption' => [ 'social', 'facebook', 'homePage', 'title' ] ],
+				'og_frontpage_desc'  => [ 'type' => 'string', 'newOption' => [ 'social', 'facebook', 'homePage', 'description' ] ],
+				'og_frontpage_image' => [ 'type' => 'string', 'newOption' => [ 'social', 'facebook', 'homePage', 'image' ] ]
+			] );
+		}
 
 		aioseo()->importExport->yoastSeo->helpers->mapOldToNew( $settings, $this->options, true );
 
@@ -99,6 +115,11 @@ class SocialMeta {
 		aioseo()->options->social->facebook->homePage->objectType = 'website';
 		if ( 'page' === get_option( 'show_on_front' ) ) {
 			$staticHomePageId = get_option( 'page_on_front' );
+
+			// We must check if the ID exists because one might select the static homepage option but not actually set one.
+			if ( ! $staticHomePageId ) {
+				return;
+			}
 
 			$aioseoPost = Models\Post::getPost( (int) $staticHomePageId );
 			$aioseoPost->set( [

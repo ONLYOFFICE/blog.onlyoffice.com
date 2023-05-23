@@ -15,7 +15,7 @@ use AIOSEO\Vendor\Monolog\Formatter\JsonFormatter;
 use AIOSEO\Vendor\PhpAmqpLib\Message\AMQPMessage;
 use AIOSEO\Vendor\PhpAmqpLib\Channel\AMQPChannel;
 use AMQPExchange;
-class AmqpHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandler
+class AmqpHandler extends AbstractProcessingHandler
 {
     /**
      * @var AMQPExchange|AMQPChannel $exchange
@@ -31,11 +31,11 @@ class AmqpHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandl
      * @param int                      $level
      * @param bool                     $bubble       Whether the messages that are handled can bubble up the stack or not
      */
-    public function __construct($exchange, $exchangeName = 'log', $level = \AIOSEO\Vendor\Monolog\Logger::DEBUG, $bubble = \true)
+    public function __construct($exchange, $exchangeName = 'log', $level = Logger::DEBUG, $bubble = \true)
     {
-        if ($exchange instanceof \AMQPExchange) {
+        if ($exchange instanceof AMQPExchange) {
             $exchange->setName($exchangeName);
-        } elseif ($exchange instanceof \AIOSEO\Vendor\PhpAmqpLib\Channel\AMQPChannel) {
+        } elseif ($exchange instanceof AMQPChannel) {
             $this->exchangeName = $exchangeName;
         } else {
             throw new \InvalidArgumentException('PhpAmqpLib\\Channel\\AMQPChannel or AMQPExchange instance required');
@@ -50,7 +50,7 @@ class AmqpHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandl
     {
         $data = $record["formatted"];
         $routingKey = $this->getRoutingKey($record);
-        if ($this->exchange instanceof \AMQPExchange) {
+        if ($this->exchange instanceof AMQPExchange) {
             $this->exchange->publish($data, $routingKey, 0, array('delivery_mode' => 2, 'content_type' => 'application/json'));
         } else {
             $this->exchange->basic_publish($this->createAmqpMessage($data), $this->exchangeName, $routingKey);
@@ -61,7 +61,7 @@ class AmqpHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandl
      */
     public function handleBatch(array $records)
     {
-        if ($this->exchange instanceof \AMQPExchange) {
+        if ($this->exchange instanceof AMQPExchange) {
             parent::handleBatch($records);
             return;
         }
@@ -97,13 +97,13 @@ class AmqpHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandl
      */
     private function createAmqpMessage($data)
     {
-        return new \AIOSEO\Vendor\PhpAmqpLib\Message\AMQPMessage((string) $data, array('delivery_mode' => 2, 'content_type' => 'application/json'));
+        return new AMQPMessage((string) $data, array('delivery_mode' => 2, 'content_type' => 'application/json'));
     }
     /**
      * {@inheritDoc}
      */
     protected function getDefaultFormatter()
     {
-        return new \AIOSEO\Vendor\Monolog\Formatter\JsonFormatter(\AIOSEO\Vendor\Monolog\Formatter\JsonFormatter::BATCH_MODE_JSON, \false);
+        return new JsonFormatter(JsonFormatter::BATCH_MODE_JSON, \false);
     }
 }

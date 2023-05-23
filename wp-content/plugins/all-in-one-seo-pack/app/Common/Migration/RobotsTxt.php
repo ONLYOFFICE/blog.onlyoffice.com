@@ -52,6 +52,7 @@ class RobotsTxt {
 
 			array_push( $newRules, wp_json_encode( $newRule ) );
 		}
+
 		return $newRules;
 	}
 }

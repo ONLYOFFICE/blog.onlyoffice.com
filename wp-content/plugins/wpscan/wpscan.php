@@ -1,42 +1,38 @@
 <?php
-
 /**
  * Plugin Name:   WPScan
  * Plugin URI:    http://wordpress.org/plugins/wpscan/
  * Description:   WPScan WordPress Security Scanner. Scans your system for security vulnerabilities listed in the WPScan Vulnerability Database.
- * Version:       1.8
+ * Version:       1.15.6
  * Author:        WPScan Team
- * Author URI:    https://wpscan.org/
+ * Author URI:    https://wpscan.com/
  * License:       GPLv3
  * License URI:   https://www.gnu.org/licenses/gpl.html
  * Text Domain:   wpscan
  */
 
-// File Security Check
-defined( 'ABSPATH' ) or die( "No script kiddies please!" );
+// Prevent direct access.
+defined( 'ABSPATH' ) || exit;
 
-// Config
-define( 'WPSCAN_API_URL', 'https://wpvulndb.com/api/v3' );
-define( 'WPSCAN_SIGN_UP_URL', 'https://wpvulndb.com/users/sign_up' );
-define( 'WPSCAN_PROFILE_URL', 'https://wpvulndb.com/users/edit' );
+// Config.
+define( 'WPSCAN_API_URL', 'https://wpscan.com/api/v3' );
+define( 'WPSCAN_SIGN_UP_URL', 'https://wpscan.com/register' );
+define( 'WPSCAN_STATUS_URL', 'https://status.wpscan.com/' );
+define( 'WPSCAN_PROFILE_URL', 'https://wpscan.com/profile' );
 define( 'WPSCAN_PLUGIN_FILE', __FILE__ );
 
-//Includes
-require_once 'includes/class-wpscan.php';
-require_once 'includes/class-settings.php';
-require_once 'includes/class-account.php';
-require_once 'includes/class-summary.php';
-require_once 'includes/class-notification.php';
-require_once 'includes/class-admin-bar.php';
-require_once 'includes/class-dashboard.php';
-require_once 'includes/class-report.php';
-require_once 'includes/class-site-health-integration.php';
+// Action Scheduler library load.
+require_once( plugin_dir_path( WPSCAN_PLUGIN_FILE ) . '/libraries/action-scheduler/action-scheduler.php' );
 
-// Activating
-register_activation_hook( __FILE__, array( 'WPScan', 'activate' ) );
+// Composer autoload.
+require plugin_dir_path( WPSCAN_PLUGIN_FILE ) . 'vendor/autoload.php';
 
-// Deactivating
-register_deactivation_hook( __FILE__, array( 'WPScan', 'deactivate' ) );
+// Start the plugin.
+$wpscan = new WPScan\Plugin();
 
-// Initialize
-add_action( 'init', array( 'WPScan', 'init' ) );
+// Activating.
+register_activation_hook( WPSCAN_PLUGIN_FILE, array( $wpscan, 'activate' ) );
+
+// Deactivating.
+register_deactivation_hook( WPSCAN_PLUGIN_FILE, array( $wpscan, 'deactivate' ) );
+

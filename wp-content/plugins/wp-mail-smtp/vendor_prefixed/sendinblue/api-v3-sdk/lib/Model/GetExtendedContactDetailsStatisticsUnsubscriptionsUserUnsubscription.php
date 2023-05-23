@@ -51,13 +51,13 @@ class GetExtendedContactDetailsStatisticsUnsubscriptionsUserUnsubscription imple
      *
      * @var string[]
      */
-    protected static $swaggerTypes = ['campaignId' => 'int', 'eventTime' => '\\DateTime', 'ip' => 'string'];
+    protected static $swaggerTypes = ['campaignId' => 'int', 'eventTime' => 'string', 'ip' => 'string'];
     /**
      * Array of property to format mappings. Used for (de)serialization
      *
      * @var string[]
      */
-    protected static $swaggerFormats = ['campaignId' => 'int64', 'eventTime' => 'date-time', 'ip' => null];
+    protected static $swaggerFormats = ['campaignId' => 'int64', 'eventTime' => null, 'ip' => null];
     /**
      * Array of property to type mappings. Used for (de)serialization
      *
@@ -164,9 +164,6 @@ class GetExtendedContactDetailsStatisticsUnsubscriptionsUserUnsubscription imple
         if ($this->container['eventTime'] === null) {
             $invalidProperties[] = "'eventTime' can't be null";
         }
-        if ($this->container['ip'] === null) {
-            $invalidProperties[] = "'ip' can't be null";
-        }
         return $invalidProperties;
     }
     /**
@@ -203,7 +200,7 @@ class GetExtendedContactDetailsStatisticsUnsubscriptionsUserUnsubscription imple
     /**
      * Gets eventTime
      *
-     * @return \DateTime
+     * @return string
      */
     public function getEventTime()
     {
@@ -212,7 +209,7 @@ class GetExtendedContactDetailsStatisticsUnsubscriptionsUserUnsubscription imple
     /**
      * Sets eventTime
      *
-     * @param \DateTime $eventTime UTC date-time of the event
+     * @param string $eventTime UTC date-time of the event
      *
      * @return $this
      */

@@ -13,12 +13,37 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Context {
 	/**
+	 * Breadcrumb class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Breadcrumb
+	 */
+	private $breadcrumb = null;
+
+	/**
 	 * Class constructor.
 	 *
 	 * @since 4.0.0
 	 */
 	public function __construct() {
 		$this->breadcrumb = new Breadcrumb();
+	}
+
+	/**
+	 * Returns the default context data.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @return array The context data.
+	 */
+	public function defaults() {
+		return [
+			'name'        => aioseo()->meta->title->getTitle(),
+			'description' => aioseo()->meta->description->getDescription(),
+			'url'         => aioseo()->helpers->getUrl(),
+			'breadcrumb'  => []
+		];
 	}
 
 	/**
@@ -44,10 +69,16 @@ class Context {
 		// Homepage set to static page.
 		$post = aioseo()->helpers->getPost();
 		if ( ! $post ) {
-			return [];
+			return [
+				'name'        => '',
+				'description' => '',
+				'url'         => aioseo()->helpers->getUrl(),
+				'breadcrumb'  => [],
+			];
 		}
 
 		$context['object'] = $post;
+
 		return $context;
 	}
 
@@ -61,7 +92,12 @@ class Context {
 	public function post() {
 		$post = aioseo()->helpers->getPost();
 		if ( ! $post ) {
-			return [];
+			return [
+				'name'        => '',
+				'description' => '',
+				'url'         => aioseo()->helpers->getUrl(),
+				'breadcrumb'  => [],
+			];
 		}
 
 		return [
@@ -83,7 +119,12 @@ class Context {
 	public function term() {
 		$term = get_queried_object();
 		if ( ! $term ) {
-			return [];
+			return [
+				'name'        => '',
+				'description' => '',
+				'url'         => aioseo()->helpers->getUrl(),
+				'breadcrumb'  => [],
+			];
 		}
 
 		return [
@@ -104,7 +145,12 @@ class Context {
 	public function author() {
 		$author = get_queried_object();
 		if ( ! $author ) {
-			return [];
+			return [
+				'name'        => '',
+				'description' => '',
+				'url'         => aioseo()->helpers->getUrl(),
+				'breadcrumb'  => [],
+			];
 		}
 
 		$title       = aioseo()->meta->title->getTitle();
@@ -138,12 +184,18 @@ class Context {
 	public function postArchive() {
 		$postType = get_queried_object();
 		if ( ! $postType ) {
-			return [];
+			return [
+				'name'        => '',
+				'description' => '',
+				'url'         => aioseo()->helpers->getUrl(),
+				'breadcrumb'  => [],
+			];
 		}
 
 		$title       = aioseo()->meta->title->getTitle();
 		$description = aioseo()->meta->description->getDescription();
 		$url         = aioseo()->helpers->getUrl();
+
 		return [
 			'name'        => $title,
 			'description' => $description,
@@ -172,6 +224,7 @@ class Context {
 		];
 
 		$context['breadcrumb'] = $this->breadcrumb->date( $context );
+
 		return $context;
 	}
 
@@ -187,12 +240,13 @@ class Context {
 		$title       = aioseo()->meta->title->getTitle();
 		$description = aioseo()->meta->description->getDescription();
 		$url         = aioseo()->helpers->getUrl();
+
 		return [
 			'name'        => $title,
 			'description' => $description,
 			'url'         => $url,
 			'breadcrumb'  => $this->breadcrumb->setPositions( [
-				'name'        => $s,
+				'name'        => $s ? $s : $title,
 				'description' => $description,
 				'url'         => $url,
 				'type'        => 'SearchResultsPage'

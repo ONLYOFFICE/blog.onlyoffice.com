@@ -42,19 +42,19 @@ class Notifications
     {
         return [
             [
-                'sendTo.type'  => 'required',
-                'sendTo.email' => 'required_if:sendTo.type,email',
-                'sendTo.field' => 'required_if:sendTo.type,field',
+                'sendTo.type'    => 'required',
+                'sendTo.email'   => 'required_if:sendTo.type,email',
+                'sendTo.field'   => 'required_if:sendTo.type,field',
                 'sendTo.routing' => 'required_if:sendTo.type,routing',
-                'subject'      => 'required',
-                'message'      => 'required',
+                'subject'        => 'required',
+                'message'        => 'required',
             ],
             [
-                'sendTo.type.required'            => 'The Send To field is required.',
-                'sendTo.email.required_if'        => 'The Send to Email field is required.',
-                'sendTo.field.required_if'        => 'The Send to Field field is required.',
-                'sendTo.routing' => 'Please fill all the routing rules above.',
-            ]
+                'sendTo.type.required'     => 'The Send To field is required.',
+                'sendTo.email.required_if' => 'The Send to Email field is required.',
+                'sendTo.field.required_if' => 'The Send to Field field is required.',
+                'sendTo.routing'           => 'Please fill all the routing rules above.',
+            ],
         ];
     }
 
@@ -68,7 +68,7 @@ class Notifications
     public static function conditionalValidations(FluentValidator $validator)
     {
         $validator->sometimes('sendTo.routing', 'required', function ($input) {
-            if (ArrayHelper::get($input, 'sendTo.type') !== 'routing') {
+            if ('routing' !== ArrayHelper::get($input, 'sendTo.type')) {
                 return false;
             }
 

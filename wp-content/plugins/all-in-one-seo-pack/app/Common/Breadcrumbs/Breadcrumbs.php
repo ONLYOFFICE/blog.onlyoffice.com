@@ -163,6 +163,8 @@ namespace AIOSEO\Plugin\Common\Breadcrumbs {
 				case 'notFound':
 					$this->addCrumbs( $this->getNotFoundCrumb() );
 					break;
+				case 'preview':
+					$this->addCrumbs( $this->getPreviewCrumb( $reference ) );
 			}
 
 			// Paged crumb.
@@ -214,6 +216,18 @@ namespace AIOSEO\Plugin\Common\Breadcrumbs {
 		 */
 		public function getSearchCrumb( $searchQuery ) {
 			return $this->makeCrumb( aioseo()->options->breadcrumbs->searchResultFormat, get_search_link( $searchQuery ), 'search', $searchQuery );
+		}
+
+		/**
+		 * Gets the preview crumb.
+		 *
+		 * @since 4.1.5
+		 *
+		 * @param  string $label The preview label.
+		 * @return array         A crumb.
+		 */
+		public function getPreviewCrumb( $label ) {
+			return $this->makeCrumb( $label, '', 'preview' );
 		}
 
 		/**
@@ -548,6 +562,8 @@ namespace AIOSEO\Plugin\Common\Breadcrumbs {
 					'terms'    => $termHierarchy
 				];
 			}
+
+			return [];
 		}
 
 		/**

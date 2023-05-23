@@ -20,8 +20,8 @@ class Migration {
 	 * @return void
 	 */
 	public function maybeShowNotice() {
-		$transientPosts = aioseo()->transients->get( 'v3_migration_in_progress_posts' );
-		$transientTerms = aioseo()->transients->get( 'v3_migration_in_progress_terms' );
+		$transientPosts = aioseo()->core->cache->get( 'v3_migration_in_progress_posts' );
+		$transientTerms = aioseo()->core->cache->get( 'v3_migration_in_progress_terms' );
 		if ( ! $transientPosts && ! $transientTerms ) {
 			return;
 		}
