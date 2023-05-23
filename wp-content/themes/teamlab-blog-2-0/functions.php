@@ -604,7 +604,7 @@ if ( ! function_exists( 'get_language_key' ) ) :
     preg_match_all($regex, $query, $matches);
 
     $lang = $matches[1][0];
-    $regextest = "/\/\/([a-z]{2})/";
+    $regextest = "/\/([a-z]{2})/";
     $text = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
     preg_match($regextest, $text, $match);
     $lang = $match[1];
@@ -658,7 +658,7 @@ function language_selector($available_langs_keys) {
 
     $langGB = $matches[1][0];
 
-    $regextest = "/\/\/([a-z]{2})/";
+    $regextest = "/\/([a-z]{2})/";
     $text = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 
     preg_match($regextest, $text, $match);
