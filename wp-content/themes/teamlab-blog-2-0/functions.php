@@ -664,10 +664,6 @@ function language_selector($available_langs_keys) {
     preg_match($regextest, $text, $match);
     $langGB = $match[1];
 
-    if (!$available_langs[$lang]){
-        $lang = $default_lang;
-    }
-
     $output = "<div class=\"selector " . $lang . "\" onclick=\"LanguageSelectorManager.openLngSelector();\"></div>"
                 . "<div class=\"title "
                 .  ($langGB == 'uk' ? $available_langs['engb'][1] : $available_langs[$lang][1])
@@ -679,6 +675,7 @@ function language_selector($available_langs_keys) {
         $output .= "<li class=\"option "
                     . $lng[1]
                     . "\"><a href=\" "
+                    . WEB_ROOT_URL
                     . (($lng[0] != $default_lang || $lng[1] == "en-GB")? "/".$lng[0] : "")
                     . "\">"
                     . "</a></li>";
