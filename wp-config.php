@@ -85,6 +85,8 @@ $table_prefix = 'tm_';
 define( 'WP_DEBUG', false );
 define('WP_TEMP_DIR', dirname(__FILE__) . '/wp-content/temp/');
 define ('WPLANG', '');
+define( 'GRAPHQL_SMART_CACHE', true );
+
 
 /* That's it, no further editing. Good luck! */
 
