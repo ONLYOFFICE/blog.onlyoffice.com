@@ -1055,3 +1055,13 @@ add_action( 'graphql_register_types', function() {
       }
     ]);
 });
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'Post', 'outdated', [ 
+      'type' => 'Boolean',
+      'resolve' => function( $post ) {
+        $outdated = get_post_meta( $post->ID, 'outdated', true );
+        return ! empty( $outdated ) ? $outdated : '';
+      }
+    ]);
+});
