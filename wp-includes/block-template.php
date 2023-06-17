@@ -27,12 +27,12 @@ function _add_template_loader_filters() {
 
 	// Request to resolve a template.
 	if ( isset( $_GET['_wp-find-template'] ) ) {
-		add_filter( 'pre_get_posts', '_resolve_template_for_new_post' );
+		add_action( 'pre_get_posts', '_resolve_template_for_new_post' );
 	}
 }
 
 /**
- * Find a block template with equal or higher specificity than a given PHP template file.
+ * Finds a block template with equal or higher specificity than a given PHP template file.
  *
  * Internally, this communicates the block content that needs to be used by the template canvas through a global variable.
  *
@@ -43,7 +43,7 @@ function _add_template_loader_filters() {
  * @param string   $template  Path to the template. See locate_template().
  * @param string   $type      Sanitized filename without extension.
  * @param string[] $templates A list of template candidates, in descending order of priority.
- * @return string The path to the Full Site Editing template canvas file, or the fallback PHP template.
+ * @return string The path to the Site Editor template canvas file, or the fallback PHP template.
  */
 function locate_block_template( $template, $type, array $templates ) {
 	global $_wp_current_template_content;
@@ -70,7 +70,7 @@ function locate_block_template( $template, $type, array $templates ) {
 		);
 		$index                  = array_search( $relative_template_path, $templates, true );
 
-		// If the template hiearchy algorithm has successfully located a PHP template file,
+		// If the template hierarchy algorithm has successfully located a PHP template file,
 		// we will only consider block templates with higher or equal specificity.
 		$templates = array_slice( $templates, 0, $index + 1 );
 	}
@@ -118,7 +118,7 @@ function locate_block_template( $template, $type, array $templates ) {
 }
 
 /**
- * Return the correct 'wp_template' to render for the request template type.
+ * Returns the correct 'wp_template' to render for the request template type.
  *
  * @access private
  * @since 5.8.0
@@ -145,7 +145,7 @@ function resolve_block_template( $template_type, $template_hierarchy, $fallback_
 
 	// Find all potential templates 'wp_template' post matching the hierarchy.
 	$query     = array(
-		'theme'    => wp_get_theme()->get_stylesheet(),
+		'theme'    => get_stylesheet(),
 		'slug__in' => $slugs,
 	);
 	$templates = get_block_templates( $query );
@@ -164,7 +164,7 @@ function resolve_block_template( $template_type, $template_hierarchy, $fallback_
 	$theme_base_path        = get_stylesheet_directory() . DIRECTORY_SEPARATOR;
 	$parent_theme_base_path = get_template_directory() . DIRECTORY_SEPARATOR;
 
-	// Is the current theme a child theme, and is the PHP fallback template part of it?
+	// Is the active theme a child theme, and is the PHP fallback template part of it?
 	if (
 		strpos( $fallback_template, $theme_base_path ) === 0 &&
 		strpos( $fallback_template, $parent_theme_base_path ) === false
@@ -184,9 +184,9 @@ function resolve_block_template( $template_type, $template_hierarchy, $fallback_
 			'theme' === $templates[0]->source
 		) {
 			// Unfortunately, we cannot trust $templates[0]->theme, since it will always
-			// be set to the current theme's slug by _build_block_template_result_from_file(),
-			// even if the block template is really coming from the current theme's parent.
-			// (The reason for this is that we want it to be associated with the current theme
+			// be set to the active theme's slug by _build_block_template_result_from_file(),
+			// even if the block template is really coming from the active theme's parent.
+			// (The reason for this is that we want it to be associated with the active theme
 			// -- not its parent -- once we edit it and store it to the DB as a wp_template CPT.)
 			// Instead, we use _get_block_template_file() to locate the block template file.
 			$template_file = _get_block_template_file( 'wp_template', $fallback_template_slug );
@@ -241,7 +241,7 @@ function get_the_block_template_html() {
 	$content = wptexturize( $content );
 	$content = convert_smilies( $content );
 	$content = shortcode_unautop( $content );
-	$content = wp_filter_content_tags( $content );
+	$content = wp_filter_content_tags( $content, 'template' );
 	$content = do_shortcode( $content );
 	$content = str_replace( ']]>', ']]&gt;', $content );
 
@@ -312,6 +312,10 @@ function _block_template_render_without_post_block_context( $context ) {
  * @param WP_Query $wp_query Current WP_Query instance, passed by reference.
  */
 function _resolve_template_for_new_post( $wp_query ) {
+	if ( ! $wp_query->is_main_query() ) {
+		return;
+	}
+
 	remove_filter( 'pre_get_posts', '_resolve_template_for_new_post' );
 
 	// Pages.

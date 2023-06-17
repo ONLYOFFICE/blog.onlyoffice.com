@@ -8,61 +8,61 @@
             <div class="ff_doc_top_blocks">
                 <div class="ff_block block_1_3">
                     <div class="ff_block_box text-center">
-                        <img src="<?php echo $icon_path_url; ?>img/support.png"/>
-                        <h3>Need Expert Support?</h3>
-                        <p>Our EXPERTS would like to assist you for your query and any customization.</p>
+                        <img src="<?php echo esc_url($icon_path_url); ?>img/support.png"/>
+                        <h3><?php _e('Need Expert Support?', 'fluentform') ?></h3>
+                        <p><?php _e('Our EXPERTS would like to assist you for your query and any customization.', 'fluentform') ?></p>
                         <p><a target="_blank" class="button button-primary"
-                              href="https://wpmanageninja.com/support-tickets/">Contact
-                                Support</a></p>
+                              href="https://wpmanageninja.com/support-tickets/"><?php _e('Contact
+                                Support', 'fluentform') ?></a></p>
                     </div>
                 </div>
                 <div class="ff_block block_1_3">
                     <div class="ff_block_box text-center">
-                        <img src="<?php echo $icon_path_url; ?>img/fb_group.png"/>
-                        <h3>Join our facebook community</h3>
-                        <p>We have a strong community where we discuss ideas and help each other.</p>
-                        <p><a target="_blank" class="button button-primary"
-                              href="https://www.facebook.com/groups/fluentforms/">
-                                Join Facebook Group</a></p>
+                        <img src="<?php echo esc_url($icon_path_url); ?>img/fb_group.png"/>
+                        <h3><?php _e('Join our facebook community', 'fluentform') ?></h3>
+                        <p><?php _e('We have a strong community where we discuss ideas and help each other.', 'fluentform') ?></p>
+                        <p><a target="_blank" class="button button-primary" href="https://www.facebook.com/groups/fluentforms/">
+                            <?php _e('Join Facebook Group', 'fluentform') ?>
+                        </a></p>
                     </div>
                 </div>
                 <div class="ff_block block_1_3">
                     <div class="ff_block_box text-center">
-                        <img src="<?php echo $icon_path_url; ?>img/bug.png"/>
-                        <h3>Found a Bug?</h3>
-                        <p>Please report us and we promise we will fix that as soon as humanly possible</p>
-                        <p><a target="_blank" class="button button-primary"
-                              href="https://github.com/fluentform/fluentform/issues">Report Bug on Github</a></p>
+                        <img src="<?php echo esc_url($icon_path_url); ?>img/bug.png"/>
+                        <h3><?php _e('Found a Bug?', 'fluentform') ?></h3>
+                        <p><?php _e('Please report us and we promise we will fix that as soon as humanly possible', 'fluentform') ?></p>
+                        <p><a target="_blank" class="button button-primary" href="https://github.com/fluentform/fluentform/issues">
+                            <?php _e('Report Bug on Github', 'fluentform') ?>
+                        </a></p>
                     </div>
                 </div>
             </div>
             <div class="ff_doc_top_blocks">
                 <div class="ff_block block_2_3">
                     <div class="ff_block_box text-center">
-                        <h2>Fluent Forms Video Tutorials</h2>
+                        <h2><?php _e('Fluent Forms Video Tutorials', 'fluentform') ?></h2>
                         <div class="videoWrapper">
-                            <iframe width="1280" height="720" src="https://www.youtube.com/embed/M_r-4Ernjj0?list=PLXpD0vT4thWG7KlcCpGWDSs0t6Wvs7xIJ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="1280" height="720" src="https://www.youtube.com/embed/M_r-4Ernjj0?list=PLXpD0vT4thWEpMEGqaEQaxTQ34ac2xzfb" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
                 </div>
 
                 <div class="ff_block block_1_3">
                     <div class="ff_block_box text-center">
-                        <img src="<?php echo $icon_path_url; ?>img/love.png"/>
-                        <h3>Love this Plugin?</h3>
-                        <p>Please write a review in wp.org plugin repository. We appreciate it!</p>
-                        <p><a target="_blank" class="button button-primary"
-                              href="https://wordpress.org/support/plugin/fluentform/reviews/#new-post">Write Review</a>
-                        </p>
+                        <img src="<?php echo esc_url($icon_path_url); ?>img/love.png"/>
+                        <h3><?php _e('Love this Plugin?', 'fluentform') ?></h3>
+                        <p><?php _e('Please write a review in wp.org plugin repository. We appreciate it!', 'fluentform') ?></p>
+                        <p><a target="_blank" class="button button-primary" href="https://wordpress.org/support/plugin/fluentform/reviews/#new-post">
+                            <?php _e('Write Review', 'fluentform') ?>
+                        </a></p>
                     </div>
                     <div style="margin-top: 20px;" class="ff_block_box">
-                        <h3>User Guides</h3>
-                        <p>Please check the following <b>Tutorials and Documentations</b> for getting started with
-                            Fluent Forms</p>
+                        <h3><?php _e('User Guides', 'fluentform') ?></h3>
+                        <p><?php _e('Please check the following', 'fluentform') ?><b<?php _e(' Tutorials and Documentations ', 'fluentform') ?></b> <?php _e('for getting started with Fluent Forms', 'fluentform') ?> </p>
                         <ul>
                             <?php foreach ($user_guides as $user_guide): ?>
                                 <li><a target="_blank"
-                                       href="<?php echo $user_guide['link']; ?>"><?php echo $user_guide['title']; ?></a>
+                                       href="<?php echo esc_url($user_guide['link']); ?>"><?php echo esc_html($user_guide['title']); ?></a>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
@@ -75,4 +75,3 @@
         </div>
     </div>
 </div>
-		

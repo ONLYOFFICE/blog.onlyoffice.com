@@ -18,8 +18,8 @@ class SiteHealth {
 	 * @since 4.0.0
 	 */
 	public function __construct() {
-		add_filter( 'site_status_tests', [ $this, 'registerTests' ], 0, 1 );
-		add_filter( 'debug_information', [ $this, 'addDebugInfo' ], 0, 1 );
+		add_filter( 'site_status_tests', [ $this, 'registerTests' ], 0 );
+		add_filter( 'debug_information', [ $this, 'addDebugInfo' ], 0 );
 	}
 
 	/**
@@ -98,6 +98,7 @@ class SiteHealth {
 			'show_count'  => true,
 			'fields'      => $fields,
 		];
+
 		return $debugInfo;
 	}
 
@@ -120,6 +121,7 @@ class SiteHealth {
 				$this->actionLink( admin_url( 'options-reading.php' ), __( 'Go to Settings > Reading', 'all-in-one-seo-pack' ) )
 			);
 		}
+
 		return $this->result(
 			$test,
 			'good',
@@ -155,6 +157,7 @@ class SiteHealth {
 				$this->actionLink( admin_url( 'options-general.php' ), __( 'Go to Settings > General', 'all-in-one-seo-pack' ) )
 			);
 		}
+
 		return $this->result(
 			'aioseo_site_info',
 			'good',
@@ -197,6 +200,7 @@ class SiteHealth {
 					$this->actionLink( $menuPath, __( 'Go to Schema Settings', 'all-in-one-seo-pack' ) )
 				);
 			}
+
 			return $this->result(
 				'aioseo_schema_markup',
 				'good',
@@ -231,6 +235,7 @@ class SiteHealth {
 				$this->actionLink( $menuPath, __( 'Go to Schema Settings', 'all-in-one-seo-pack' ) )
 			);
 		}
+
 		return $this->result(
 			'aioseo_schema_markup',
 			'good',
@@ -278,6 +283,7 @@ class SiteHealth {
 				$this->actionLink( admin_url( 'plugins.php' ), __( 'Go to Plugins', 'all-in-one-seo-pack' ) )
 			);
 		}
+
 		return $this->result(
 			'aioseo_plugin_update',
 			'good',

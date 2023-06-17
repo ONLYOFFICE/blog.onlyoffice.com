@@ -16,12 +16,12 @@ use AIOSEO\Vendor\Monolog\Logger;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ErrorLevelActivationStrategy implements \AIOSEO\Vendor\Monolog\Handler\FingersCrossed\ActivationStrategyInterface
+class ErrorLevelActivationStrategy implements ActivationStrategyInterface
 {
     private $actionLevel;
     public function __construct($actionLevel)
     {
-        $this->actionLevel = \AIOSEO\Vendor\Monolog\Logger::toMonologLevel($actionLevel);
+        $this->actionLevel = Logger::toMonologLevel($actionLevel);
     }
     public function isHandlerActivated(array $record)
     {

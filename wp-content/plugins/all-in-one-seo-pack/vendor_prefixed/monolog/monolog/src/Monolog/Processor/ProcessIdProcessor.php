@@ -15,7 +15,7 @@ namespace AIOSEO\Vendor\Monolog\Processor;
  *
  * @author Andreas Hörnicke
  */
-class ProcessIdProcessor implements \AIOSEO\Vendor\Monolog\Processor\ProcessorInterface
+class ProcessIdProcessor implements ProcessorInterface
 {
     /**
      * @param  array $record

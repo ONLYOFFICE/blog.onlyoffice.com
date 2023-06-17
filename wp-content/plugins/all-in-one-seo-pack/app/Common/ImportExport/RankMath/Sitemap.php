@@ -15,6 +15,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Sitemap {
 	/**
+	 * List of options.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var array
+	 */
+	private $options = [];
+
+	/**
 	 * Class constructor.
 	 *
 	 * @since 4.0.0

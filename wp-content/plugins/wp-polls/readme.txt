@@ -3,16 +3,13 @@ Contributors: GamerZ
 Donate link: https://lesterchan.net/site/donation/  
 Tags: poll, polls, polling, vote, booth, democracy, ajax, survey, post, widget  
 Requires at least: 4.9.6  
-Tested up to: 5.3  
-Stable tag: 2.75.4  
+Tested up to: 6.2  
+Stable tag: 2.77.1  
 
 Adds an AJAX poll system to your WordPress blog. You can also easily add a poll into your WordPress's blog post/page.
 
 ## Description
 WP-Polls is extremely customizable via templates and css styles and there are tons of options for you to choose to ensure that WP-Polls runs the way you wanted. It now supports multiple selection of answers.
-
-### Build Status
-[![Build Status](https://travis-ci.org/lesterchan/wp-polls.svg?branch=master)](https://travis-ci.org/lesterchan/wp-polls)
 
 ### Development
 [https://github.com/lesterchan/wp-polls](https://github.com/lesterchan/wp-polls "https://github.com/lesterchan/wp-polls")
@@ -24,6 +21,24 @@ WP-Polls is extremely customizable via templates and css styles and there are to
 I spent most of my free time creating, updating, maintaining and supporting these plugins, if you really love my plugins and could spare me a couple of bucks, I will really appreciate it. If not feel free to use it without any obligations.
 
 ## Changelog
+
+### Version 2.77.1
+* FIXED: Support mutex lock for multi-site. Props @yrkmann.
+
+### Version 2.77.0
+* NEW: Use mutex lock to prevent race condition.
+
+### Version 2.76.0
+* NEW: Supports specifying which header to read the user's IP from. Props Marc Montpas.
+
+### Version 2.75.6
+* NEW: New filter for template variables: wp_polls_template_votebody_variables, wp_polls_template_votefooter, wp_polls_template_resultheader_variables, wp_polls_template_resultbody_variables, wp_polls_template_resultfooter_variables. Props @Liblastic.
+* NEW: composer.json
+* FIXED: Missing space for check_voted_username MySQL query
+
+### Version 2.75.5
+* NEW: New filter for templates: wp_polls_template_resultheader_markup, wp_polls_template_resultbody_markup, wp_polls_template_resultbody2_markup, wp_polls_template_resultfooter_markup, wp_polls_template_resultfooter2_markup. Props @Jaska.
+
 ### Version 2.75.4
 * FIXED: Unable to edit poll because of class-wp-block-parser.php.
 
@@ -237,3 +252,38 @@ I spent most of my free time creating, updating, maintaining and supporting thes
 	<?php get_polltime( $poll_id, $date_format ); ?>
 <?php endif; ?>
 ~~~
+
+### Translating the template
+
+The plugin templates can be translated via template variables.
+There are these filters for the custom template variables
+~~~
+wp_polls_template_votebody_variables
+wp_polls_template_votefooter
+wp_polls_template_resultheader_variables
+wp_polls_template_resultbody_variables
+wp_polls_template_resultfooter_variables
+~~~
+
+Add filter to your theme and register custom variable where you will add your translation.
+Good practice is to name them for example with prefix `STR_` in the example `STR_TOTAL_VOTERS`.
+~~~
+    /**
+     * Localize wp_polls_template_resultfooter_variables.
+     *
+     * @param array $variables An array of template variables.
+     * @return array $variables Modified template variables.
+     */
+    function wp_polls_template_resultfooter_variables( $variables ) {
+
+        // Add strings.
+        $variables['%STR_TOTAL_VOTERS%'] = __( 'Total voters', 'theme-textdomain' );
+
+        return $variables;
+    }
+
+// Trigger the filter
+add_filter( 'wp_polls_template_resultfooter_variables', 'wp_polls_template_resultfooter_variables' , 10, 1 );
+~~~
+In the admin side just call the custom variable like so and the variable has been translated in the front-end.
+`%STR_TOTAL_VOTERS%'`

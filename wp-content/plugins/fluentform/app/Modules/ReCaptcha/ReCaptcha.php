@@ -33,7 +33,7 @@ class ReCaptcha
 
         if (! is_wp_error($response)) {
             $result = json_decode(wp_remote_retrieve_body($response));
-            if($version == 'v3_invisible') {
+            if($version == 'v3_invisible' && $result->success) {
                 $score = $result->score;
                 $checkScore = apply_filters('fluentforms_recaptcha_v3_ref_score', 0.5);
                 $isValid = $score >= $checkScore;

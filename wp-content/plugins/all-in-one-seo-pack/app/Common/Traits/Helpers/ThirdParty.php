@@ -24,17 +24,19 @@ trait ThirdParty {
 	}
 
 	/**
-	 * Returns if the page is a WooCommerce page (Cart, Checkout, ...).
+	 * Checks if the current page is a special WooCommerce page (Cart, Checkout, ...).
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  int     $postId The post ID.
-	 * @return boolean         Whether the page is a WooCommerce page or not.
+	 * @param  int         $postId The post ID.
+	 * @return string|bool         The type of page or false if it isn't a WooCommerce page.
 	 */
-	public function isWooCommercePage( $postId = false ) {
+	public function isWooCommercePage( $postId = 0 ) {
 		if ( ! $this->isWooCommerceActive() ) {
 			return false;
 		}
+
+		$postId = $postId ? $postId : get_the_ID();
 
 		static $cartPageId;
 		if ( ! $cartPageId ) {
@@ -56,16 +58,37 @@ trait ThirdParty {
 			$termsPageId = (int) get_option( 'woocommerce_terms_page_id' );
 		}
 
-		if (
-			$cartPageId === (int) $postId ||
-			$checkoutPageId === (int) $postId ||
-			$myAccountPageId === (int) $postId ||
-			$termsPageId === (int) $postId
-		) {
-			return true;
+		switch ( $postId ) {
+			case $cartPageId:
+				return 'cart';
+			case $checkoutPageId:
+				return 'checkout';
+			case $myAccountPageId:
+				return 'myAccount';
+			case $termsPageId:
+				return 'terms';
+			default:
+				return false;
+		}
+	}
+
+	/**
+	 * Checks whether the current page is a special WooCommerce page we shouldn't show our schema settings for.
+	 *
+	 * @since 4.1.6
+	 *
+	 * @param  int  $postId The post ID.
+	 * @return bool         Whether the current page is a disallowed WooCommerce page.
+	 */
+	public function isWooCommercePageWithoutSchema( $postId = 0 ) {
+		$page = $this->isWooCommercePage( $postId );
+		if ( ! $page ) {
+			return false;
 		}
 
-		return false;
+		$disallowedPages = [ 'cart', 'checkout', 'myAccount' ];
+
+		return in_array( $page, $disallowedPages, true );
 	}
 
 	/**
@@ -81,11 +104,12 @@ trait ThirdParty {
 			return false;
 		}
 
-		if ( ! is_admin() && ! aioseo()->helpers->isAjaxCronRest() && function_exists( 'is_shop' ) ) {
+		if ( ! is_admin() && ! aioseo()->helpers->isAjaxCronRestRequest() && function_exists( 'is_shop' ) ) {
 			return is_shop();
 		}
 
 		$id = ! $id && ! empty( $_GET['post'] ) ? (int) wp_unslash( $_GET['post'] ) : (int) $id; // phpcs:ignore HM.Security.ValidatedSanitizedInput
+
 		return $id && wc_get_page_id( 'shop' ) === $id;
 	}
 
@@ -102,11 +126,12 @@ trait ThirdParty {
 			return false;
 		}
 
-		if ( ! is_admin() && ! aioseo()->helpers->isAjaxCronRest() && function_exists( 'is_cart' ) ) {
+		if ( ! is_admin() && ! aioseo()->helpers->isAjaxCronRestRequest() && function_exists( 'is_cart' ) ) {
 			return is_cart();
 		}
 
 		$id = ! $id && ! empty( $_GET['post'] ) ? (int) wp_unslash( $_GET['post'] ) : (int) $id; // phpcs:ignore HM.Security.ValidatedSanitizedInput
+
 		return $id && wc_get_page_id( 'cart' ) === $id;
 	}
 
@@ -123,11 +148,12 @@ trait ThirdParty {
 			return false;
 		}
 
-		if ( ! is_admin() && ! aioseo()->helpers->isAjaxCronRest() && function_exists( 'is_checkout' ) ) {
+		if ( ! is_admin() && ! aioseo()->helpers->isAjaxCronRestRequest() && function_exists( 'is_checkout' ) ) {
 			return is_checkout();
 		}
 
 		$id = ! $id && ! empty( $_GET['post'] ) ? (int) wp_unslash( $_GET['post'] ) : (int) $id; // phpcs:ignore HM.Security.ValidatedSanitizedInput
+
 		return $id && wc_get_page_id( 'checkout' ) === $id;
 	}
 
@@ -144,11 +170,12 @@ trait ThirdParty {
 			return false;
 		}
 
-		if ( ! is_admin() && ! aioseo()->helpers->isAjaxCronRest() && function_exists( 'is_account_page' ) ) {
+		if ( ! is_admin() && ! aioseo()->helpers->isAjaxCronRestRequest() && function_exists( 'is_account_page' ) ) {
 			return is_account_page();
 		}
 
 		$id = ! $id && ! empty( $_GET['post'] ) ? (int) wp_unslash( $_GET['post'] ) : (int) $id; // phpcs:ignore HM.Security.ValidatedSanitizedInput
+
 		return $id && wc_get_page_id( 'myaccount' ) === $id;
 	}
 
@@ -267,6 +294,24 @@ trait ThirdParty {
 	}
 
 	/**
+	 * Check if is a BBpress post type.
+	 *
+	 * @since 4.2.8
+	 *
+	 * @param  string $postType The post type to check.
+	 * @return bool             Whether this is a bbPress post type.
+	 */
+	public function isBBPressPostType( $postType ) {
+		if ( ! class_exists( 'bbPress' ) ) {
+			return false;
+		}
+
+		$bbPressPostTypes = [ 'forum', 'topic', 'reply' ];
+
+		return in_array( $postType, $bbPressPostTypes, true );
+	}
+
+	/**
 	 * Returns ACF fields as an array of meta keys and values.
 	 *
 	 * @since 4.0.6
@@ -299,40 +344,273 @@ trait ThirdParty {
 			// 'taxonomy',
 		];
 
-		$types     = wp_parse_args( $types, $allowedTypes );
-		$acfFields = [];
-
+		$types        = wp_parse_args( $types, $allowedTypes );
 		$fieldObjects = get_field_objects( $post->ID );
-		if ( ! empty( $fieldObjects ) ) {
-			foreach ( $fieldObjects as $field ) {
-				if ( empty( $field['value'] ) ) {
-					continue;
-				}
 
-				if ( ! in_array( $field['type'], $types, true ) ) {
-					continue;
-				}
+		if ( empty( $fieldObjects ) ) {
+			return [];
+		}
 
-				if ( 'url' === $field['type'] ) {
-					// Url field
-					$value = "<a href='{$field['value']}'>{$field['value']}</a>";
-				} elseif ( 'image' === $field['type'] ) {
-					// Image field
-					$value = "<img src='{$field['value']['url']}'>";
-				} elseif ( 'gallery' === $field['type'] ) {
-					// Image field
-					$value = "<img src='{$field['value'][0]['url']}'>";
-				} else {
-					// Other fields
-					$value = $field['value'];
-				}
+		// Filter out any fields that are not in our allowed types.
+		$fields = array_filter( $fieldObjects, function( $object ) use ( $types ) {
+			return ! empty( $object['value'] ) && in_array( $object['type'], $types, true );
+		});
 
-				if ( $value ) {
-					$acfFields[ $field['name'] ] = $value;
-				}
+		// Create an array with the field names and values with added HTML markup.
+		$acfFields = [];
+		foreach ( $fields as $field ) {
+			if ( 'url' === $field['type'] ) {
+
+				// Url field
+				$value = "<a href='{$field['value']}'>{$field['value']}</a>";
+			} elseif ( 'image' === $field['type'] ) {
+
+				// Image format options are array, URL (string), id (int).
+				$imageUrl = is_array( $field['value'] ) ? $field['value']['url'] : $field['value'];
+				$imageUrl = is_numeric( $imageUrl ) ? wp_get_attachment_image_url( $imageUrl ) : $imageUrl;
+
+				$value = "<img src='{$imageUrl}'>";
+			} elseif ( 'gallery' === $field['type'] ) {
+
+				// Image field
+				$value = "<img src='{$field['value'][0]['url']}'>";
+			} else {
+
+				// Other fields
+				$value = $field['value'];
+			}
+
+			if ( $value ) {
+				$acfFields[ $field['name'] ] = $value;
 			}
 		}
 
 		return $acfFields;
+	}
+
+	/**
+	 * Checks whether the Smash Balloon Custom Facebook Feed plugin is active.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @return bool Whether the SB CFF plugin is active.
+	 */
+	public function isSbCustomFacebookFeedActive() {
+		static $isActive = null;
+		if ( null !== $isActive ) {
+			return $isActive;
+		}
+
+		$isActive = defined( 'CFFVER' ) || is_plugin_active( 'custom-facebook-feed/custom-facebook-feed.php' );
+
+		return $isActive;
+	}
+
+	/**
+	 * Returns the access token for Facebook from Smash Balloon if there is one.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @return string|false The access token or false if there is none.
+	 */
+	public function getSbAccessToken() {
+		static $accessToken = null;
+		if ( null !== $accessToken ) {
+			return $accessToken;
+		}
+
+		if ( ! $this->isSbCustomFacebookFeedActive() ) {
+			$accessToken = false;
+
+			return $accessToken;
+		}
+
+		$oembedTokenData = get_option( 'cff_oembed_token', [] );
+		if ( ! $oembedTokenData || empty( $oembedTokenData['access_token'] ) ) {
+			$accessToken = false;
+
+			return $accessToken;
+		}
+
+		$sbFacebookDataEncryptionInstance = new \CustomFacebookFeed\SB_Facebook_Data_Encryption();
+		$accessToken                      = $sbFacebookDataEncryptionInstance->maybe_decrypt( $oembedTokenData['access_token'] );
+
+		return $accessToken;
+	}
+
+	/**
+	* Returns the homepage URL for a language code.
+	*
+	* @since 4.2.1
+	*
+	* @param  string|int $identifier The language code or the post id to return the url.
+	* @return string                 The home URL.
+	*/
+	public function wpmlHomeUrl( $identifier ) {
+		foreach ( $this->wpmlHomePages() as $langCode => $wpmlHomePage ) {
+			if (
+				( is_string( $identifier ) && $langCode === $identifier ) ||
+				( is_numeric( $identifier ) && $wpmlHomePage['id'] === $identifier )
+			) {
+				return $wpmlHomePage['url'];
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * Returns the homepage IDs.
+	 *
+	 * @since 4.2.1
+	 *
+	 * @return array An array of home page ids.
+	 */
+	public function wpmlHomePages() {
+		global $sitepress;
+		static $homePages = [];
+
+		if ( ! $this->isWpmlActive() || empty( $sitepress ) || ! method_exists( $sitepress, 'language_url' ) ) {
+			return $homePages;
+		}
+
+		if ( empty( $homePages ) ) {
+			$languages  = apply_filters( 'wpml_active_languages', [] );
+			$homePageId = (int) get_option( 'page_on_front' );
+			foreach ( $languages as $language ) {
+				$homePages[ $language['code'] ] = [
+					'id'  => apply_filters( 'wpml_object_id', $homePageId, 'page', false, $language['code'] ),
+					'url' => $sitepress->language_url( $language['code'] )
+				];
+			}
+		}
+
+		return $homePages;
+	}
+
+	/**
+	 * Returns if the post id os a WPML home page.
+	 *
+	 * @since 4.2.1
+	 *
+	 * @param  int  $postId The post ID.
+	 * @return bool         Is the post id a home page.
+	 */
+	public function wpmlIsHomePage( $postId ) {
+		foreach ( $this->wpmlHomePages() as $wpmlHomePage ) {
+			if ( $wpmlHomePage['id'] === $postId ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns the WPML url format.
+	 *
+	 * @since 4.2.8
+	 *
+	 * @return string The format.
+	 */
+	public function getWpmlUrlFormat() {
+		global $sitepress;
+
+		if (
+			! $this->isWpmlActive() ||
+			empty( $sitepress ) ||
+			! method_exists( $sitepress, 'get_setting' )
+		) {
+			return '';
+		}
+
+		switch ( $sitepress->get_setting( 'language_negotiation_type' ) ) {
+			case WPML_LANGUAGE_NEGOTIATION_TYPE_DIRECTORY:
+			case 1:
+				return 'directory';
+			case WPML_LANGUAGE_NEGOTIATION_TYPE_DOMAIN:
+			case 2:
+				return 'domain';
+			case WPML_LANGUAGE_NEGOTIATION_TYPE_PARAMETER:
+			case 3:
+				return 'parameter';
+			default:
+				return '';
+		}
+	}
+
+	/**
+	 * Checks whether the WooCommerce Follow Up Emails plugin is active.
+	 *
+	 * @since 4.2.2
+	 *
+	 * @return bool Whether the plugin is active.
+	 */
+	public function isWooCommerceFollowupEmailsActive() {
+		$isActive = defined( 'FUE_VERSION' ) || is_plugin_active( 'woocommerce-follow-up-emails/woocommerce-follow-up-emails.php' );
+
+		return $isActive;
+	}
+
+	/**
+	 * Checks if the current page is an AMP page.
+	 *
+	 * @since 4.2.3
+	 *
+	 * @param  string $pluginName The name of the AMP plugin to check for (optional).
+	 * @return bool               Whether the current page is an AMP page.
+	 */
+	public function isAmpPage( $pluginName = '' ) {
+		// Official AMP plugin.
+		if ( 'amp' === $pluginName ) {
+			// If we're checking for the AMP page plugin specifically, return early if it's not active.
+			// Otherwise, we'll return true if AMP for WP is enabled because the helper method doesn't distinguish between the two.
+			if ( ! defined( 'AMP__VERSION' ) ) {
+				return false;
+			}
+
+			$options = get_option( 'amp-options' );
+			if ( ! empty( $options['theme_support'] ) && 'standard' === strtolower( $options['theme_support'] ) ) {
+				return true;
+			}
+		}
+
+		return $this->isAmpPageHelper();
+	}
+
+	/**
+	 * Checks if the current page is an AMP page.
+	 * Helper function for isAmpPage(). Contains common logic that applies to both AMP and AMP for WP.
+	 *
+	 * @since 4.2.4
+	 *
+	 * @return bool Whether the current page is an AMP page.
+	 */
+	private function isAmpPageHelper() {
+		// Check if the AMP or AMP for WP plugin is active.
+		if ( ! function_exists( 'is_amp_endpoint' ) ) {
+			return false;
+		}
+
+		global $wp;
+
+		// This URL param is set when using plain permalinks.
+		return isset( $_GET['amp'] ) || preg_match( '/amp$/', untrailingslashit( $wp->request ) );
+	}
+
+	/**
+	 * If we're in a LearnPress lesson page, return the lesson ID.
+	 *
+	 * @since 4.3.1
+	 *
+	 * @return int|false
+	 */
+	public function getLearnPressLesson() {
+		global $lp_course_item;
+		if ( $lp_course_item && method_exists( $lp_course_item, 'get_id' ) ) {
+			return $lp_course_item->get_id();
+		}
+
+		return false;
 	}
 }

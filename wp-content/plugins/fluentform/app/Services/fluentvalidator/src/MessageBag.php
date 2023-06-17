@@ -10,16 +10,16 @@ trait MessageBag
      * @var array
      */
     protected $bag = [
-        'email'       => 'The :attribute must be a valid email address.',
-        'max'         => [
+        'email' => 'The :attribute must be a valid email address.',
+        'max'   => [
             'numeric' => 'The :attribute may not be greater than :max.',
             'file'    => 'The :attribute may not be greater than :max kilobytes.',
             'string'  => 'The :attribute may not be greater than :max characters.',
             'array'   => 'The :attribute may not have more than :max items.',
         ],
-        'mimes'       => 'The :attribute must be a file of type: :values.',
-        'mimetypes'   => 'The :attribute must be a file of type: :values.',
-        'min'         => [
+        'mimes'     => 'The :attribute must be a file of type: :values.',
+        'mimetypes' => 'The :attribute must be a file of type: :values.',
+        'min'       => [
             'numeric' => 'The :attribute must be at least :min.',
             'file'    => 'The :attribute must be at least :min kilobytes.',
             'string'  => 'The :attribute must be at least :min characters.',
@@ -35,7 +35,8 @@ trait MessageBag
             'string'  => 'The :attribute must be :size characters.',
             'array'   => 'The :attribute must contain :size items.',
         ],
-        'url'         => 'The :attribute format is invalid.',
+        'url'    => 'The :attribute format is invalid.',
+        'digits' => 'The :attribute must be :digits characters.',
     ];
 
     /**
@@ -49,7 +50,7 @@ trait MessageBag
      */
     protected function generate($attribute, $rule, $parameters)
     {
-        $method = 'replace'.str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $rule)));
+        $method = 'replace' . str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $rule)));
 
         if ($this->hasMethod($method)) {
             return $this->$method($attribute, $parameters);
@@ -57,7 +58,6 @@ trait MessageBag
 
         return '';
     }
-
 
     /**
      * Get the replacement text of the error message.
@@ -86,7 +86,7 @@ trait MessageBag
     {
         $type = $this->deduceType($this->getValue($attribute));
 
-        return $rule.'.'.$type;
+        return $rule . '.' . $type;
     }
 
     /**
@@ -99,7 +99,7 @@ trait MessageBag
      */
     protected function replaceRequired($attribute, $parameters)
     {
-        $text = $this->getReplacementText($attribute.'.required', 'required');
+        $text = $this->getReplacementText($attribute . '.required', 'required');
 
         return str_replace(':attribute', $attribute, $text);
     }
@@ -114,7 +114,7 @@ trait MessageBag
      */
     protected function replaceRequiredIf($attribute, $parameters)
     {
-        $text = $this->getReplacementText($attribute.'.required_if', 'required_if');
+        $text = $this->getReplacementText($attribute . '.required_if', 'required_if');
 
         return str_replace([':attribute', ':other', ':value'], [$attribute, $parameters[0], $parameters[1]], $text);
     }
@@ -129,7 +129,7 @@ trait MessageBag
      */
     protected function replaceEmail($attribute, $parameters)
     {
-        $text = $this->getReplacementText($attribute.'.email', 'email');
+        $text = $this->getReplacementText($attribute . '.email', 'email');
 
         return str_replace(':attribute', $attribute, $text);
     }
@@ -144,7 +144,7 @@ trait MessageBag
      */
     protected function replaceSize($attribute, $parameters)
     {
-        $text = $this->getReplacementText($attribute.'.size', $this->makeBagKey($attribute, 'size'));
+        $text = $this->getReplacementText($attribute . '.size', $this->makeBagKey($attribute, 'size'));
 
         return str_replace([':attribute', ':size'], [$attribute, $parameters[0]], $text);
     }
@@ -159,7 +159,7 @@ trait MessageBag
      */
     protected function replaceMin($attribute, $parameters)
     {
-        $text = $this->getReplacementText($attribute.'.min', $this->makeBagKey($attribute, 'min'));
+        $text = $this->getReplacementText($attribute . '.min', $this->makeBagKey($attribute, 'min'));
 
         return str_replace([':attribute', ':min'], [$attribute, $parameters[0]], $text);
     }
@@ -174,7 +174,7 @@ trait MessageBag
      */
     protected function replaceMax($attribute, $parameters)
     {
-        $text = $this->getReplacementText($attribute.'.max', $this->makeBagKey($attribute, 'max'));
+        $text = $this->getReplacementText($attribute . '.max', $this->makeBagKey($attribute, 'max'));
 
         return str_replace([':attribute', ':max'], [$attribute, $parameters[0]], $text);
     }
@@ -189,7 +189,7 @@ trait MessageBag
      */
     protected function replaceSame($attribute, $parameters)
     {
-        $text = $this->getReplacementText($attribute.'.same', 'same');
+        $text = $this->getReplacementText($attribute . '.same', 'same');
 
         return str_replace([':attribute', ':other'], [$attribute, $parameters[0]], $text);
     }
@@ -204,7 +204,7 @@ trait MessageBag
      */
     protected function replaceUrl($attribute, $parameters)
     {
-        $text = $this->getReplacementText($attribute.'.url', 'url');
+        $text = $this->getReplacementText($attribute . '.url', 'url');
 
         return str_replace(':attribute', $attribute, $text);
     }
@@ -219,7 +219,7 @@ trait MessageBag
      */
     protected function replaceNumeric($attribute, $parameters)
     {
-        $text = $this->getReplacementText($attribute.'.numeric', 'numeric');
+        $text = $this->getReplacementText($attribute . '.numeric', 'numeric');
 
         return str_replace(':attribute', $attribute, $text);
     }
@@ -234,8 +234,23 @@ trait MessageBag
      */
     protected function replaceMimes($attribute, $parameters)
     {
-        $text = $this->getReplacementText($attribute.'.mimes', 'mimes');
+        $text = $this->getReplacementText($attribute . '.mimes', 'mimes');
 
         return str_replace([':attribute', ':values'], [$attribute, implode(', ', $parameters)], $text);
+    }
+
+    /**
+     * Replace all place-holders for the digits rule.
+     *
+     * @param $attribute
+     * @param $parameters
+     *
+     * @return string
+     */
+    protected function replaceDigits($attribute, $parameters)
+    {
+        $text = $this->getReplacementText($attribute . '.digits', 'digits');
+
+        return str_replace([':attribute', ':digits'], [$attribute, $parameters[0]], $text);
     }
 }

@@ -1,0 +1,3 @@
+.as3cf-licence-notice a + .as3cf-dbrains-check-my-licence-again:before {
+	content: " | ";
+}

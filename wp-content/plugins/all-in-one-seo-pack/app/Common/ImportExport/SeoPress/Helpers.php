@@ -111,6 +111,7 @@ class Helpers extends ImportExport\Helpers {
 
 		// Strip all other tags.
 		$macros['%%[^%]*%%'] = '';
+
 		return $macros;
 	}
 }

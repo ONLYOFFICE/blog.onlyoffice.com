@@ -4,12 +4,12 @@ namespace FluentForm\App\Modules\Widgets;
 
 class SidebarWidgets extends \WP_Widget
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct(
             'fluentform_widget',
             esc_html__('Fluent Forms Widget', 'fluentform'),
-            array('description' => esc_html__('Add your form by Fluent Forms', 'fluentform'),)
+            ['description' => esc_html__('Add your form by Fluent Forms', 'fluentform'), ]
         );
     }
 
@@ -17,29 +17,28 @@ class SidebarWidgets extends \WP_Widget
     {
         $selectedForm = empty($instance['allforms']) ? '' : intval($instance['allforms']);
 
-        if(!$selectedForm) {
+        if (!$selectedForm) {
             return;
         }
 
-        echo $args['before_widget'];
+        echo $args['before_widget']; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
 
-        if ( ! empty( $instance['title'] ) ) {
-            echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
+        if (!empty($instance['title'])) {
+            echo $args['before_title'] . apply_filters('widget_title', $instance['title']) . $args['after_title']; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
         }
 
-        if ($selectedForm != '') {
+        if ('' != $selectedForm) {
             $shortcode = "[fluentform id='$selectedForm']";
-            echo do_shortcode($shortcode);
+            echo do_shortcode($shortcode); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
         }
 
-        echo $args['after_widget'];
-
+        echo $args['after_widget']; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
     }
 
     public function form($instance)
     {
         $selectedForm = empty($instance['allforms']) ? '' : $instance['allforms'];
-       
+
         if (isset($instance['title'])) {
             $title = $instance['title'];
         } else {
@@ -48,41 +47,46 @@ class SidebarWidgets extends \WP_Widget
         // Widget admin form
         ?>
         <p>
-            <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title (optional):'); ?></label>
-            <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
-                   name="<?php echo $this->get_field_name('title'); ?>" type="text"
-                   value="<?php echo esc_attr($title); ?>"/>
+            <label
+                for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php _e('Title (optional):', 'fluentform'); ?></label>
+            <input class="widefat"
+                id="<?php echo esc_attr($this->get_field_id('title')); ?>"
+                name="<?php echo esc_attr($this->get_field_name('title')); ?>"
+                type="text" value="<?php echo esc_attr($title); ?>" />
         </p>
         <?php
         $forms = wpFluent()->table('fluentform_forms')
-            ->select(array('id', 'title'))
+            ->select(['id', 'title'])
             ->orderBy('id', 'DESC')
             ->get();
         ?>
-        
-        <label for="<?php echo $this->get_field_id('allforms'); ?>">Select a form:
-            <select style="margin-bottom: 12px;" class='widefat' id="<?php echo $this->get_field_id('allforms'); ?>"
-                    name="<?php echo $this->get_field_name('allforms'); ?>" type="text"
-            >
+
+        <label
+            for="<?php echo esc_attr($this->get_field_id('allforms')); ?>">Select
+            a form:
+            <select style="margin-bottom: 12px;" class='widefat'
+                id="<?php echo esc_attr($this->get_field_id('allforms')); ?>"
+                name="<?php echo esc_attr($this->get_field_name('allforms')); ?>"
+                type="text">
                 <?php
-                foreach ($forms as $item) {
-                    ?>
-                    <option <?php if ($item->id == $selectedForm) {
-                        echo 'selected';
-                    } ?> value='<?php echo $item->id; ?>'>
-                        <?php echo $item->title; ?> (<?php echo $item->id; ?>)
-                    </option>
-                    <?php
-                }
+                        foreach ($forms as $item) {
+                            ?>
+                <option <?php if ($item->id == $selectedForm) {
+                    echo 'selected';
+                } ?> value='<?php echo esc_attr($item->id); ?>'>
+                    <?php echo esc_html($item->title); ?> (<?php echo esc_attr($item->id); ?>)
+                </option>
+                <?php
+                        }
                 ?>
             </select>
         </label>
-            <?php
+        <?php
     }
 
     public function update($new_instance, $old_instance)
     {
-        $instance = array();
+        $instance = [];
         $instance['title'] = (!empty($new_instance['title'])) ? strip_tags($new_instance['title']) : '';
         $instance['allforms'] = intval($new_instance['allforms']);
         return $instance;

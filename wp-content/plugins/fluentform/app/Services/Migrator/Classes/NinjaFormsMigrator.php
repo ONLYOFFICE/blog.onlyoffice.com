@@ -553,6 +553,15 @@ class NinjaFormsMigrator extends BaseMigrator
         }
 
         $submissions = \Ninja_Forms()->form($formId)->get_subs();
+        if (!$submissions || !is_array($submissions)) {
+            return [];
+        }
+
+        $totalEntries = count($submissions);
+        $max_limit = apply_filters('fluentform/entry_migration_max_limit', static::DEFAULT_ENTRY_MIGRATION_MAX_LIMIT, $this->key, $totalEntries, $formId);
+        if ($totalEntries && $max_limit && $totalEntries > $max_limit) {
+            $submissions = array_slice($submissions, 0 , $max_limit);
+        }
         $entries = [];
         $fieldsMap = $this->getFieldKeyMaps($form);
 
@@ -560,6 +569,12 @@ class NinjaFormsMigrator extends BaseMigrator
             $values = $submission->get_field_values();
             $values = ArrayHelper::only($values, $fieldsMap);
             $values = $this->formatEntries($values);
+            if ($created_at = $submission->get_sub_date('Y-m-d H:i:s')) {
+                $values['created_at'] = $created_at;
+            }
+            if ($updated_at = $submission->get_mod_date('Y-m-d H:i:s')) {
+                $values['updated_at'] = $updated_at;
+            }
             $entries[] = $values;
         }
         return $entries;

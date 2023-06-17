@@ -1,5 +1,6 @@
 <?php
   require_once __DIR__ . '/utils.php';
+  require_once __DIR__ . '/inc/common.php';
 
   add_action('admin_enqueue_scripts', 'trinity_metabox_scripts');
 
@@ -8,28 +9,32 @@
     wp_enqueue_style('trinity_audio_styles', plugin_dir_url(__FILE__) . 'dist/styles.css', [], wp_rand());
   }
 
-  add_action('add_meta_boxes', 'trinity_add_meta_boxes');
+  if (!empty(trinity_get_install_key())) add_action('add_meta_boxes', 'trinity_add_meta_boxes');
 
   function trinity_add_meta_boxes() {
     add_meta_box('trinity_audio_box_id', 'Trinity Audio', 'trinity_audio_box_content', ['post'], 'normal', 'high');
   }
 
   function trinity_meta_tts_enabled($post_id) {
+    global $pagenow;
+
     $is_trinity_enabled_for_post = trinity_is_enabled_for_post($post_id);
 
-    if ('1' === $is_trinity_enabled_for_post) {
-      $checked = 'checked';
-    } elseif ('0' === $is_trinity_enabled_for_post) {
-      $checked = '';
-    } else {
+    $checked = '';
+
+    if ($pagenow === 'post-new.php') {
       $checked = trinity_get_new_posts_default() ? 'checked' : '';
     }
 
-    echo "<input type='checkbox' name='" . esc_attr(TRINITY_AUDIO_ENABLED) . "' id='" . esc_attr(TRINITY_AUDIO_ENABLED) . "'" . esc_html($checked) . '/>';
+    if ($is_trinity_enabled_for_post === '1') {
+      $checked = 'checked';
+    }
+
+    echo "<input type='checkbox' name='" . esc_attr(TRINITY_AUDIO_ENABLED) . "' id='" . esc_attr(TRINITY_AUDIO_ENABLED) . "'" . checked( $checked, 'checked', false ) . '/>';
   }
 
   function trinity_meta_source_gender($post_id) {
-    echo "<select name='" . esc_attr(TRINITY_AUDIO_GENDER_ID) . "' id='" . esc_attr(TRINITY_AUDIO_GENDER_ID) . "'>";
+    echo "<select onchange='updateVoiceValue()' name='" . esc_attr(TRINITY_AUDIO_GENDER_ID) . "' id='" . esc_attr(TRINITY_AUDIO_GENDER_ID) . "'>";
 
     $post_gender = get_post_meta($post_id, TRINITY_AUDIO_GENDER_ID, true);
     $genders     = array_merge(['' => TRINITY_AUDIO_LABEL_DEFAULT], TRINITY_AUDIO_GENDER_ARRAY);
@@ -44,8 +49,10 @@
   }
 
   function trinity_meta_source_language($post_id) {
-    $languages = trinity_get_languages(); // keep here, is error is occur, it will display error via die()
-    echo "<select name='" . esc_attr(TRINITY_AUDIO_SOURCE_LANGUAGE) . "' id='" . esc_attr(TRINITY_AUDIO_SOURCE_LANGUAGE) . "'>";
+    $languages = trinity_get_languages();
+
+    echo "<input type='hidden' name='" . esc_attr(TRINITY_AUDIO_VOICE_ID) . "' id='" . esc_attr(TRINITY_AUDIO_VOICE_ID) . "' class='trinity-audio-metaboxes-element'/>";
+    echo "<select onchange='updateVoiceValue()' name='" . esc_attr(TRINITY_AUDIO_SOURCE_LANGUAGE) . "' id='" . esc_attr(TRINITY_AUDIO_SOURCE_LANGUAGE) . "'>";
 
     $post_language    = get_post_meta($post_id, TRINITY_AUDIO_SOURCE_LANGUAGE, true);
     $result_languages = array_merge(
@@ -62,9 +69,13 @@
       $language_code = $lang->code;
       $language_name = $lang->name;
 
+      if (isset($lang->voices)) $voicesEncoded = json_encode($lang->voices);
+      else $voicesEncoded = '';
+
+
       $selected = $post_language === $language_code ? 'selected' : '';
 
-      echo "<option value='" . esc_attr($language_code) . "' " . esc_attr($selected) . '>' . esc_html($language_name) . '</option>';
+      echo "<option data-voices='$voicesEncoded' value='" . esc_attr($language_code) . "' " . esc_attr($selected) . '>' . esc_html($language_name) . '</option>';
     }
 
     echo '</select>';
@@ -100,6 +111,11 @@
               </th>
               <td>
                 <?php trinity_meta_tts_enabled($post->ID); ?>
+              </td>
+              <td rowspan="3" class="trinity-meta-upgrade-banner">
+                <?php
+                  trinity_post_management_banner();
+                ?>
               </td>
             </tr>
             <tr>

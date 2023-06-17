@@ -1,7 +1,6 @@
 <?php
 
 spl_autoload_register(function ($class) {
-
     $namespace = 'FluentValidator';
 
     if (substr($class, 0, strlen($namespace)) !== $namespace) {
@@ -9,14 +8,14 @@ spl_autoload_register(function ($class) {
     }
 
     $className = str_replace(
-        array('\\', $namespace, strtolower($namespace)),
-        array('/', 'src', ''),
+        ['\\', $namespace, strtolower($namespace)],
+        ['/', 'src', ''],
         $class
     );
 
     $basePath = plugin_dir_path(__FILE__);
 
-    $file = $basePath.trim($className, '/').'.php';
+    $file = $basePath . trim($className, '/') . '.php';
 
     if (is_readable($file)) {
         include $file;
