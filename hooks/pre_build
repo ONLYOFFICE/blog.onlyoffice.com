@@ -1,4 +1,4 @@
 #!/bin/bash
 
 chmod -R g+rwX wp-content
-chmod a+x /opt/bitnami/scripts/custom-run.sh
+chmod a+x scripts/custom-run.sh
