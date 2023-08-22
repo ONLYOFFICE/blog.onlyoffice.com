@@ -1047,11 +1047,37 @@ add_action( 'graphql_register_types', function() {
 });
 
 add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'Post', 'aioseoTitle', [ 
+      'type' => 'String',
+      'resolve' => function( $post ) {
+        $aioseoTitle = get_post_meta( $post->ID, '_aioseo_title', true );
+        return ! empty( $aioseoTitle ) ? $aioseoTitle : '';
+      }
+    ]);
+});
+
+add_action( 'graphql_register_types', function() {
     register_graphql_field( 'Post', 'aioseoDescription', [ 
       'type' => 'String',
       'resolve' => function( $post ) {
         $aioseoDescription = get_post_meta( $post->ID, '_aioseo_description', true );
         return ! empty( $aioseoDescription ) ? $aioseoDescription : '';
+      }
+    ]);
+});
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'Post', 'moreTextExcerpt', [ 
+      'type' => 'String',
+      'resolve' => function( $post ) {
+        function disable_more_link( $link ) {
+            $link = preg_replace('|#more-[0-9]+|', '', '');
+            return $link;
+        }
+        add_filter( 'the_content_more_link', 'disable_more_link', 10, 2 );
+
+        $moreTextExcerpt = !empty( $attributes['moreText'] ) ? get_the_excerpt() : wp_trim_words(get_the_content($post->ID), '35', '...');
+        return ! empty( $moreTextExcerpt ) ? $moreTextExcerpt : '';
       }
     ]);
 });
