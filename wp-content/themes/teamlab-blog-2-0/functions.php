@@ -1091,3 +1091,18 @@ add_action( 'graphql_register_types', function() {
       }
     ]);
 });
+
+function custom_discourse_permalink( $args, $post ) {
+    $permalink = get_permalink( $post->ID );
+    $permalink = str_replace( array(
+        'https://wpblog.teamlab.info',
+        'https://wpblogpost.teamlab.info'
+    ), array(
+        'https://teamlab.info/blog',
+        'https://www.onlyoffice/blog'
+    ), $permalink );
+    $args['url'] = $permalink;
+
+    return $args;
+}
+add_filter( 'discourse_publish_post_args', 'custom_discourse_permalink', 10, 2 );
