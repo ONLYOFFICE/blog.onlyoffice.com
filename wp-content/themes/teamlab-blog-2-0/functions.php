@@ -1107,4 +1107,5 @@ function discourse_publish_format_html( $output, $post_id ) {
 	$output = ob_get_clean();
 	return $output;
 }
+
 add_filter( 'discourse_publish_format_html', 'discourse_publish_format_html', 10, 2 );
