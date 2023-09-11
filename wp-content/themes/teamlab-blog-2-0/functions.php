@@ -1092,17 +1092,19 @@ add_action( 'graphql_register_types', function() {
     ]);
 });
 
-function custom_discourse_permalink( $args, $post ) {
-    $permalink = get_permalink( $post->ID );
-    $permalink = str_replace( array(
-        'https://wpblog.teamlab.info',
-        'https://wpblogpost.teamlab.info'
-    ), array(
-        'https://teamlab.info/blog',
-        'https://www.onlyoffice/blog'
-    ), $permalink );
-    $args['url'] = $permalink;
+function discourse_publish_format_html( $output, $post_id ) {
+	$post = get_post( $post_id );
+    $permalink = str_replace('https://wpblog.onlyoffice.com/', 'https://www.onlyoffice.com/blog/', get_permalink($post_id));
+    $post_title = get_the_title( $post );
+	ob_start();
+	?>
 
-    return $args;
+    <small>Originally published at: <a href="<?php echo  $permalink ?>" target="_blank" rel="noreferrer noopener"><?php echo $post_title ?> | ONLYOFFICE Blog</a></small>
+    <br>
+    {excerpt}
+
+	<?php
+	$output = ob_get_clean();
+	return $output;
 }
-add_filter( 'discourse_publish_post_args', 'custom_discourse_permalink', 10, 2 );
+add_filter( 'discourse_publish_format_html', 'discourse_publish_format_html', 10, 2 );
