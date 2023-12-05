@@ -177,6 +177,10 @@ div.custom-select ul.options li.option.ja-JP a {
   background-image: url("../images/flags/japan.png");
   background-position-y: 50%;
 }
+div.custom-select div.title.el-GR,
+div.custom-select ul.options li.option.el-GR a {
+  background-image: url("../images/flags/greece.png");
+}
 div.custom-select ul.options li.option.uk-UA {
   display: none;
 }

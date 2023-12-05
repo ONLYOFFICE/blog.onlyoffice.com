@@ -639,7 +639,8 @@ function language_selector($available_langs_keys) {
         'it' =>  array('it', 'it-IT', 'Italian'),
         'cs' =>  array('cs', 'cs-CZ', 'Česky'),
         'ja' =>  array('ja', 'ja-JP', '中文'),
-        'zh' =>  array('zh-hans', 'zh-CN', '中文')
+        'zh' =>  array('zh-hans', 'zh-CN', '中文'),
+        'el' =>  array('el', 'el-GR', 'Greek')
     );
 
     $available_langs  = array();
