@@ -317,7 +317,7 @@ $lang = $sitepress->get_current_language();
                     <?php  } ?>
                     <div class="langselector push">
                         <div id="LanguageSelector" class="custom-select">
-                            <?php language_selector(array("en","fr", "de", "es", "pt", "it", "cs", "ja", "zh")); ?>
+                            <?php language_selector(array("en","fr", "de", "es", "pt", "it", "cs", "ja", "zh", "el")); ?>
                         </div>
                     </div>
                 </div>
