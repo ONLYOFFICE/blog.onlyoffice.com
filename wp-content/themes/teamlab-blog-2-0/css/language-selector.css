@@ -181,6 +181,18 @@ div.custom-select div.title.el-GR,
 div.custom-select ul.options li.option.el-GR a {
   background-image: url("../images/flags/greece.png");
 }
+div.custom-select div.title.hi-IN,
+div.custom-select ul.options li.option.hi-IN a {
+  background-image: url("../images/flags/india.png");
+}
+div.custom-select div.title.ar,
+div.custom-select ul.options li.option.ar-AR a {
+  background-image: url("../images/flags/saudi-arabia.png");
+}
+div.custom-select div.title.sr-RS,
+div.custom-select ul.options li.option.sr-RS a {
+  background-image: url("../images/flags/serbia.png");
+}
 div.custom-select ul.options li.option.uk-UA {
   display: none;
 }
