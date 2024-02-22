@@ -640,7 +640,10 @@ function language_selector($available_langs_keys) {
         'cs' =>  array('cs', 'cs-CZ', 'Česky'),
         'ja' =>  array('ja', 'ja-JP', '中文'),
         'zh' =>  array('zh-hans', 'zh-CN', '中文'),
-        'el' =>  array('el', 'el-GR', 'Greek')
+        'el' =>  array('el', 'el-GR', 'Greek'),
+        'hi' =>  array('hi', 'hi-IN', 'Hindi'),
+        'ar' =>  array('ar', 'ar-AR', 'Arabic'),
+        'sr' =>  array('sr', 'sr-RS', 'Serbian'),
     );
 
     $available_langs  = array();
