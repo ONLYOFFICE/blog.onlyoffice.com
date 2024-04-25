@@ -193,6 +193,10 @@ div.custom-select div.title.sr-RS,
 div.custom-select ul.options li.option.sr-RS a {
   background-image: url("../images/flags/serbia.png");
 }
+div.custom-select div.title.hy-AM,
+div.custom-select ul.options li.option.hy-AM a {
+  background-image: url("../images/flags/armenia.png");
+}
 div.custom-select ul.options li.option.uk-UA {
   display: none;
 }
