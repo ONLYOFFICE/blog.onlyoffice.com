@@ -1113,3 +1113,120 @@ function discourse_publish_format_html( $output, $post_id ) {
 }
 
 add_filter( 'discourse_publish_format_html', 'discourse_publish_format_html', 10, 2 );
+
+function hide_biography_info() {
+    echo '<style>
+    .user-description-wrap {
+        display: none !important;
+    }
+    </style>';
+}
+add_action('admin_head', 'hide_biography_info');
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'Post', 'userSocialProfiles', [ 
+        'type' => 'userSocialProfiles',
+        'resolve' => function( $post ) {
+            $user_info = get_userdata( $post->post_author );
+            return (object) [
+                'facebookUrl' => ! empty( $user_info->aioseo_facebook_page_url ) ? $user_info->aioseo_facebook_page_url : "",
+                'twitterUrl' => ! empty( $user_info->aioseo_twitter_url ) ? $user_info->aioseo_twitter_url : "",
+            ];
+        }
+    ]);
+
+    register_graphql_object_type( 'userSocialProfiles', [
+        'fields' => [
+            'facebookUrl' => [ 'type' => 'String' ],
+            'twitterUrl' => [ 'type' => 'String' ],
+        ],
+    ]);
+});
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'Post', 'userBiographicalInfo', [ 
+        'type' => 'userBiographicalInfo',
+        'resolve' => function( $post ) {
+            $user_info = get_userdata( $post->post_author );
+            return (object) [
+                'en' => ! empty( $user_info->biographical_info_en ) ? $user_info->biographical_info_en : "",
+                'fr' => ! empty( $user_info->biographical_info_fr ) ? $user_info->biographical_info_fr : "",
+                'de' => ! empty( $user_info->biographical_info_de ) ? $user_info->biographical_info_de : "",
+                'es' => ! empty( $user_info->biographical_info_es ) ? $user_info->biographical_info_es : "",
+                'pt' => ! empty( $user_info->biographical_info_pt ) ? $user_info->biographical_info_pt : "",
+                'it' => ! empty( $user_info->biographical_info_it ) ? $user_info->biographical_info_it : "",
+                'cs' => ! empty( $user_info->biographical_info_cs ) ? $user_info->biographical_info_cs : "",
+                'ja' => ! empty( $user_info->biographical_info_ja ) ? $user_info->biographical_info_ja : "",
+                'zh' => ! empty( $user_info->biographical_info_zh ) ? $user_info->biographical_info_zh : "",
+                'el' => ! empty( $user_info->biographical_info_el ) ? $user_info->biographical_info_el : "",
+                'hi' => ! empty( $user_info->biographical_info_hi ) ? $user_info->biographical_info_hi : "",
+                'ar' => ! empty( $user_info->biographical_info_ar ) ? $user_info->biographical_info_ar : "",
+                'sr' => ! empty( $user_info->biographical_info_sr ) ? $user_info->biographical_info_sr : "",
+                'hy' => ! empty( $user_info->biographical_info_hy ) ? $user_info->biographical_info_hy : "",
+            ];
+        }
+    ]);
+
+    register_graphql_object_type( 'userBiographicalInfo', [
+        'fields' => [
+            'en' => [ 'type' => 'String' ],
+            'fr' => [ 'type' => 'String' ],
+            'de' => [ 'type' => 'String' ],
+            'es' => [ 'type' => 'String' ],
+            'pt' => [ 'type' => 'String' ],
+            'it' => [ 'type' => 'String' ],
+            'cs' => [ 'type' => 'String' ],
+            'ja' => [ 'type' => 'String' ],
+            'zh' => [ 'type' => 'String' ],
+            'el' => [ 'type' => 'String' ],
+            'hi' => [ 'type' => 'String' ],
+            'ar' => [ 'type' => 'String' ],
+            'sr' => [ 'type' => 'String' ],
+            'hy' => [ 'type' => 'String' ],
+        ],
+    ]);
+});
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'Post', 'userBiographicalInfoSmall', [ 
+        'type' => 'userBiographicalInfoSmall',
+        'resolve' => function( $post ) {
+            $user_info = get_userdata( $post->post_author );
+            return (object) [
+                'en' => ! empty( $user_info->biographical_info_en_small ) ? $user_info->biographical_info_en_small : "",
+                'fr' => ! empty( $user_info->biographical_info_fr_small ) ? $user_info->biographical_info_fr_small : "",
+                'de' => ! empty( $user_info->biographical_info_de_small ) ? $user_info->biographical_info_de_small : "",
+                'es' => ! empty( $user_info->biographical_info_es_small ) ? $user_info->biographical_info_es_small : "",
+                'pt' => ! empty( $user_info->biographical_info_pt_small ) ? $user_info->biographical_info_pt_small : "",
+                'it' => ! empty( $user_info->biographical_info_it_small ) ? $user_info->biographical_info_it_small : "",
+                'cs' => ! empty( $user_info->biographical_info_cs_small ) ? $user_info->biographical_info_cs_small : "",
+                'ja' => ! empty( $user_info->biographical_info_ja_small ) ? $user_info->biographical_info_ja_small : "",
+                'zh' => ! empty( $user_info->biographical_info_zh_small ) ? $user_info->biographical_info_zh_small : "",
+                'el' => ! empty( $user_info->biographical_info_el_small ) ? $user_info->biographical_info_el_small : "",
+                'hi' => ! empty( $user_info->biographical_info_hi_small ) ? $user_info->biographical_info_hi_small : "",
+                'ar' => ! empty( $user_info->biographical_info_ar_small ) ? $user_info->biographical_info_ar_small : "",
+                'sr' => ! empty( $user_info->biographical_info_sr_small ) ? $user_info->biographical_info_sr_small : "",
+                'hy' => ! empty( $user_info->biographical_info_hy_small ) ? $user_info->biographical_info_hy_small : "",
+            ];
+        }
+    ]);
+
+    register_graphql_object_type( 'userBiographicalInfoSmall', [
+        'fields' => [
+            'en' => [ 'type' => 'String' ],
+            'fr' => [ 'type' => 'String' ],
+            'de' => [ 'type' => 'String' ],
+            'es' => [ 'type' => 'String' ],
+            'pt' => [ 'type' => 'String' ],
+            'it' => [ 'type' => 'String' ],
+            'cs' => [ 'type' => 'String' ],
+            'ja' => [ 'type' => 'String' ],
+            'zh' => [ 'type' => 'String' ],
+            'el' => [ 'type' => 'String' ],
+            'hi' => [ 'type' => 'String' ],
+            'ar' => [ 'type' => 'String' ],
+            'sr' => [ 'type' => 'String' ],
+            'hy' => [ 'type' => 'String' ],
+        ],
+    ]);
+});
