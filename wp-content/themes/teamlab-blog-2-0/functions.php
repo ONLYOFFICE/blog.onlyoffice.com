@@ -1051,22 +1051,28 @@ add_action( 'graphql_register_types', function() {
 });
 
 add_action( 'graphql_register_types', function() {
-    register_graphql_field( 'Post', 'aioseoTitle', [ 
-      'type' => 'String',
-      'resolve' => function( $post ) {
-        $aioseoTitle = get_post_meta( $post->ID, '_aioseo_title', true );
-        return ! empty( $aioseoTitle ) ? $aioseoTitle : '';
-      }
+    register_graphql_field('Post', 'aioseoTitle', [
+        'type' => 'String',
+        'resolve' => function($post) {
+            if (function_exists('aioseo')) {
+                $aioseoData = aioseo()->meta->title->getTitle($post->ID);
+                return $aioseoData ?: '';
+            }
+            return '';
+        }
     ]);
 });
 
 add_action( 'graphql_register_types', function() {
     register_graphql_field( 'Post', 'aioseoDescription', [ 
-      'type' => 'String',
-      'resolve' => function( $post ) {
-        $aioseoDescription = get_post_meta( $post->ID, '_aioseo_description', true );
-        return ! empty( $aioseoDescription ) ? $aioseoDescription : '';
-      }
+        'type' => 'String',
+        'resolve' => function($post) {
+            if (function_exists('aioseo')) {
+                $aioseoData = aioseo()->meta->description->getDescription($post->ID);
+                return $aioseoData ?: '';
+            }
+            return '';
+        }
     ]);
 });
 
