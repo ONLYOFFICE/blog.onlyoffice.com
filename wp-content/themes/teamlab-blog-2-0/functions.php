@@ -645,7 +645,7 @@ function language_selector($available_langs_keys) {
         'ar' =>  array('ar', 'ar-AR', 'Arabic'),
         'sr' =>  array('sr', 'sr-RS', 'Serbian'),
         'hy' =>  array('hy', 'hy-AM', 'Armenia'),
-        'hy' =>  array('ru', 'ru-RU', 'Russia')
+        'ru' =>  array('ru', 'ru-RU', 'Russia')
     );
 
     $available_langs  = array();
