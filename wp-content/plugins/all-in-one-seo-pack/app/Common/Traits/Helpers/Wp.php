@@ -24,102 +24,6 @@ trait Wp {
 	private static $connection = false;
 
 	/**
-	 * Helper method to enqueue scripts.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @param  string $script The script to enqueue.
-	 * @param  string $url    The URL of the script.
-	 * @param  bool   $vue    Whether or not this is a vue script.
-	 * @return void
-	 */
-	public function enqueueScript( $script, $url, $vue = true ) {
-		if ( ! wp_script_is( $script, 'enqueued' ) ) {
-			wp_enqueue_script(
-				$script,
-				$this->getScriptUrl( $url, $vue ),
-				[],
-				aioseo()->version,
-				true
-			);
-		}
-	}
-
-	/**
-	 * Helper method to enqueue stylesheets.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @param  string $style The stylesheet to enqueue.
-	 * @param  string $url   The URL of the stylesheet.
-	 * @param  bool   $vue    Whether or not this is a vue stylesheet.
-	 * @return void
-	 */
-	public function enqueueStyle( $style, $url, $vue = true ) {
-		if ( ! wp_style_is( $style, 'enqueued' ) && $this->shouldEnqueue( $url ) ) {
-			wp_enqueue_style(
-				$style,
-				$this->getScriptUrl( $url, $vue ),
-				[],
-				aioseo()->version
-			);
-		}
-	}
-
-	/** Whether or not we should enqueue a file.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @param  string $url The url to check against.
-	 * @return bool        Whether or not we should enqueue.
-	 */
-	private function shouldEnqueue( $url ) {
-		$version  = strtoupper( aioseo()->versionPath );
-		$host     = defined( 'AIOSEO_DEV_' . $version ) ? constant( 'AIOSEO_DEV_' . $version ) : false;
-
-		if ( ! $host ) {
-			return true;
-		}
-
-		if ( false !== strpos( $url, 'chunk-common.css' ) ) {
-			// return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Retrieve the proper URL for this script or style.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @param  string $url The url.
-	 * @param  bool   $vue Whether or not this is a vue script.
-	 * @return string      The modified url.
-	 */
-	public function getScriptUrl( $url, $vue = true ) {
-		$version  = strtoupper( aioseo()->versionPath );
-		$host     = $vue && defined( 'AIOSEO_DEV_' . $version ) ? constant( 'AIOSEO_DEV_' . $version ) : false;
-		$localUrl = $url;
-		$url      = plugins_url( 'dist/' . aioseo()->versionPath . '/assets/' . $url, AIOSEO_FILE );
-
-		if ( ! $host ) {
-			return $url;
-		}
-
-		if ( $host && ! self::$connection ) {
-			$splitHost        = explode( ':', str_replace( '/', '', str_replace( 'http://', '', str_replace( 'https://', '', $host ) ) ) );
-			self::$connection = @fsockopen( $splitHost[0], $splitHost[1] ); // phpcs:ignore WordPress
-		}
-
-		if ( ! self::$connection ) {
-			return $url;
-		}
-
-		return $host . $localUrl;
-	}
-
-	/**
 	 * Returns user roles in the current WP install.
 	 *
 	 * @since 4.0.0
@@ -128,10 +32,14 @@ trait Wp {
 	 */
 	public function getUserRoles() {
 		global $wp_roles;
-		if ( ! isset( $wp_roles ) ) {
-			$wp_roles = new \WP_Roles();
+
+		$wpRoles = $wp_roles;
+		if ( ! is_object( $wpRoles ) ) {
+			// Don't assign this to the global because otherwise WordPress won't override it.
+			$wpRoles = new \WP_Roles();
 		}
-		$roleNames = $wp_roles->get_names();
+
+		$roleNames = $wpRoles->get_names();
 		asort( $roleNames );
 
 		return $roleNames;
@@ -187,14 +95,29 @@ trait Wp {
 
 		$plugins = [];
 		foreach ( $pluginUpgrader->pluginSlugs as $key => $slug ) {
+			$adminUrl        = admin_url( $pluginUpgrader->pluginAdminUrls[ $key ] );
+			$networkAdminUrl = null;
+			if (
+				is_multisite() &&
+				is_network_admin() &&
+				! empty( $pluginUpgrader->hasNetworkAdmin[ $key ] )
+			) {
+				$networkAdminUrl = network_admin_url( $pluginUpgrader->hasNetworkAdmin[ $key ] );
+				if ( aioseo()->helpers->isPluginNetworkActivated( $pluginUpgrader->pluginSlugs[ $key ] ) ) {
+					$adminUrl = $networkAdminUrl;
+				}
+			}
+
 			$plugins[ $key ] = [
-				'basename'    => $slug,
-				'installed'   => in_array( $slug, $installedPlugins, true ),
-				'activated'   => is_plugin_active( $slug ),
-				'adminUrl'    => admin_url( $pluginUpgrader->pluginAdminUrls[ $key ] ),
-				'canInstall'  => aioseo()->addons->canInstall(),
-				'canActivate' => aioseo()->addons->canActivate(),
-				'wpLink'      => ! empty( $pluginUpgrader->wpPluginLinks[ $key ] ) ? $pluginUpgrader->wpPluginLinks[ $key ] : null
+				'basename'        => $slug,
+				'installed'       => in_array( $slug, $installedPlugins, true ),
+				'activated'       => is_plugin_active( $slug ),
+				'adminUrl'        => $adminUrl,
+				'networkAdminUrl' => $networkAdminUrl,
+				'canInstall'      => aioseo()->addons->canInstall(),
+				'canActivate'     => aioseo()->addons->canActivate(),
+				'canUpdate'       => aioseo()->addons->canUpdate(),
+				'wpLink'          => ! empty( $pluginUpgrader->wpPluginLinks[ $key ] ) ? $pluginUpgrader->wpPluginLinks[ $key ] : null
 			];
 		}
 
@@ -202,77 +125,132 @@ trait Wp {
 	}
 
 	/**
-	 * Retrieve a list of public post types with slugs/icons.
+	 * Returns all registered Post Statuses.
 	 *
-	 * @since 4.0.0
+	 * @since 4.1.6
 	 *
-	 * @param  boolean $namesOnly       Whether only the names should be returned.
-	 * @param  boolean $hasArchivesOnly Whether or not to only include post types which have archives.
-	 * @param  boolean $rewriteType     Whether or not to rewrite the type slugs.
-	 * @return array                    An array of public post types.
+	 * @param  boolean $statusesOnly Whether or not to only return statuses.
+	 * @return array              An array of post statuses.
 	 */
-	public function getPublicPostTypes( $namesOnly = false, $hasArchivesOnly = false, $rewriteType = false ) {
-		$postTypes   = [];
-		$postObjects = get_post_types( [ 'public' => true ], 'objects' );
-		$woocommerce = class_exists( 'woocommerce' );
-		foreach ( $postObjects as $postObject ) {
-			if ( empty( $postObject->label ) ) {
-				continue;
-			}
+	public function getPublicPostStatuses( $statusesOnly = false ) {
+		$allStatuses = get_post_stati( [ 'show_in_admin_all_list' => true ], 'objects' );
 
-			// We don't want to include archives for the WooCommerce shop page.
+		$postStatuses = [];
+		foreach ( $allStatuses as $status => $data ) {
 			if (
-				$hasArchivesOnly &&
-				(
-					! $postObject->has_archive ||
-					( 'product' === $postObject->name && $woocommerce )
-				)
+				! $data->public &&
+				! $data->protected &&
+				! $data->private
 			) {
 				continue;
 			}
 
-			if ( $namesOnly ) {
-				$postTypes[] = $postObject->name;
+			if ( $statusesOnly ) {
+				$postStatuses[] = $status;
 				continue;
 			}
 
-			if ( 'attachment' === $postObject->name ) {
-				$postObject->label = __( 'Attachments', 'all-in-one-seo-pack' );
-			}
-
-			if ( 'product' === $postObject->name && $woocommerce ) {
-				$postObject->menu_icon = 'dashicons-products';
-			}
-
-			$name = $postObject->name;
-			if ( 'type' === $postObject->name && $rewriteType ) {
-				$name = '_aioseo_type';
-			}
-
-			$postTypes[] = [
-				'name'         => $name,
-				'label'        => ucwords( $postObject->label ),
-				'singular'     => ucwords( $postObject->labels->singular_name ),
-				'icon'         => $postObject->menu_icon,
-				'hasExcerpt'   => post_type_supports( $postObject->name, 'excerpt' ),
-				'hasArchive'   => $postObject->has_archive,
-				'hierarchical' => $postObject->hierarchical,
-				'taxonomies'   => get_object_taxonomies( $name ),
-				'slug'         => isset( $postObject->rewrite['slug'] ) ? $postObject->rewrite['slug'] : $name
+			$postStatuses[] = [
+				'label'  => $data->label,
+				'status' => $status
 			];
 		}
 
-		return $postTypes;
+		return $postStatuses;
 	}
 
 	/**
-	 * Retrieve a list of public taxonomies with slugs/icons.
+	 * Returns a list of public post types objects or names.
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  boolean $namesOnly   Whether only the names should be returned.
-	 * @param  boolean $rewriteType Whether or not to rewrite the type slugs.
-	 * @return array                An array of public taxonomies.
+	 * @param  bool  $namesOnly       Whether only the names should be returned.
+	 * @param  bool  $hasArchivesOnly Whether to only include post types which have archives.
+	 * @param  bool  $rewriteType     Whether to rewrite the type slugs.
+	 * @return array                  List of public post types.
+	 */
+	public function getPublicPostTypes( $namesOnly = false, $hasArchivesOnly = false, $rewriteType = false ) {
+		$postTypes   = [];
+		$postTypeObjects = get_post_types( [], 'objects' );
+		foreach ( $postTypeObjects as $postTypeObject ) {
+			if ( ! is_post_type_viewable( $postTypeObject ) ) {
+				continue;
+			}
+
+			$postTypeArray = $this->getPostType( $postTypeObject, $namesOnly, $hasArchivesOnly, $rewriteType );
+			if ( ! empty( $postTypeArray ) ) {
+				$postTypes[] = $postTypeArray;
+			}
+		}
+
+		return apply_filters( 'aioseo_public_post_types', $postTypes, $namesOnly, $hasArchivesOnly );
+	}
+
+	/**
+	 * Returns the data for the given post type.
+	 *
+	 * @since 4.2.2
+	 *
+	 * @param  \WP_Post_Type $postTypeObject  The post type object.
+	 * @param  bool          $namesOnly       Whether only the names should be returned.
+	 * @param  bool          $hasArchivesOnly Whether to only include post types which have archives.
+	 * @param  bool          $rewriteType     Whether to rewrite the type slugs.
+	 * @return mixed                          Data for the post type.
+	 */
+	public function getPostType( $postTypeObject, $namesOnly = false, $hasArchivesOnly = false, $rewriteType = false ) {
+		if ( empty( $postTypeObject->label ) ) {
+			return $namesOnly ? null : [];
+		}
+
+		// We don't want to include archives for the WooCommerce shop page.
+		if (
+			$hasArchivesOnly &&
+			(
+				! $postTypeObject->has_archive ||
+				( 'product' === $postTypeObject->name && $this->isWooCommerceActive() )
+			)
+		) {
+			return $namesOnly ? null : [];
+		}
+
+		if ( $namesOnly ) {
+			return $postTypeObject->name;
+		}
+
+		if ( 'attachment' === $postTypeObject->name ) {
+			$postTypeObject->label = __( 'Attachments', 'all-in-one-seo-pack' );
+		}
+
+		if ( 'product' === $postTypeObject->name && $this->isWooCommerceActive() ) {
+			$postTypeObject->menu_icon = 'dashicons-products';
+		}
+
+		$name = $postTypeObject->name;
+		if ( 'type' === $postTypeObject->name && $rewriteType ) {
+			$name = '_aioseo_type';
+		}
+
+		return [
+			'name'         => $name,
+			'label'        => ucwords( $postTypeObject->label ),
+			'singular'     => ucwords( $postTypeObject->labels->singular_name ),
+			'icon'         => $postTypeObject->menu_icon,
+			'hasExcerpt'   => post_type_supports( $postTypeObject->name, 'excerpt' ),
+			'hasArchive'   => $postTypeObject->has_archive,
+			'hierarchical' => $postTypeObject->hierarchical,
+			'taxonomies'   => get_object_taxonomies( $name ),
+			'slug'         => isset( $postTypeObject->rewrite['slug'] ) ? $postTypeObject->rewrite['slug'] : $name
+		];
+	}
+
+	/**
+	 * Returns a list of public taxonomies objects or names.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @param  bool  $namesOnly   Whether only the names should be returned.
+	 * @param  bool  $rewriteType Whether to rewrite the type slugs.
+	 * @return array              List of public taxonomies.
 	 */
 	public function getPublicTaxonomies( $namesOnly = false, $rewriteType = false ) {
 		$taxonomies = [];
@@ -280,9 +258,9 @@ trait Wp {
 			return $taxonomies;
 		}
 
-		$taxObjects = get_taxonomies( [ 'public' => true ], 'objects' );
+		$taxObjects = get_taxonomies( [], 'objects' );
 		foreach ( $taxObjects as $taxObject ) {
-			if ( empty( $taxObject->label ) ) {
+			if ( empty( $taxObject->label ) || ! $this->isTaxonomyViewable( $taxObject ) ) {
 				continue;
 			}
 
@@ -312,17 +290,25 @@ trait Wp {
 				$name = '_aioseo_type';
 			}
 
+			global $wp_taxonomies;
+			$taxonomyPostTypes = ! empty( $wp_taxonomies[ $name ] )
+				? $wp_taxonomies[ $name ]->object_type
+				: [];
+
 			$taxonomies[] = [
-				'name'         => $name,
-				'label'        => ucwords( $taxObject->label ),
-				'singular'     => ucwords( $taxObject->labels->singular_name ),
-				'icon'         => strpos( $taxObject->label, 'categor' ) !== false ? 'dashicons-category' : 'dashicons-tag',
-				'hierarchical' => $taxObject->hierarchical,
-				'slug'         => isset( $taxObject->rewrite['slug'] ) ? $taxObject->rewrite['slug'] : ''
+				'name'               => $name,
+				'label'              => ucwords( $taxObject->label ),
+				'singular'           => ucwords( $taxObject->labels->singular_name ),
+				'icon'               => strpos( $taxObject->label, 'categor' ) !== false ? 'dashicons-category' : 'dashicons-tag',
+				'hierarchical'       => $taxObject->hierarchical,
+				'slug'               => isset( $taxObject->rewrite['slug'] ) ? $taxObject->rewrite['slug'] : '',
+				'primaryTermSupport' => (bool) $taxObject->hierarchical,
+				'restBase'           => ( $taxObject->rest_base ) ? $taxObject->rest_base : $taxObject->name,
+				'postTypes'          => $taxonomyPostTypes
 			];
 		}
 
-		return $taxonomies;
+		return apply_filters( 'aioseo_public_taxonomies', $taxonomies, $namesOnly );
 	}
 
 	/**
@@ -341,9 +327,9 @@ trait Wp {
 
 		$rolesWhere = [];
 		foreach ( $roles as $role ) {
-			$rolesWhere[] = '(um.meta_key = \'' . aioseo()->db->db->prefix . 'capabilities\' AND um.meta_value LIKE \'%\"' . $role . '\"%\')';
+			$rolesWhere[] = '(um.meta_key = \'' . aioseo()->core->db->db->prefix . 'capabilities\' AND um.meta_value LIKE \'%\"' . $role . '\"%\')';
 		}
-		$dbUsers = aioseo()->db->start( 'users as u' )
+		$dbUsers = aioseo()->core->db->start( 'users as u' )
 			->select( 'u.ID, u.display_name, u.user_nicename, u.user_email' )
 			->join( 'usermeta as um', 'u.ID = um.user_id' )
 			->whereRaw( '(' . implode( ' OR ', $rolesWhere ) . ')' )
@@ -353,7 +339,7 @@ trait Wp {
 
 		foreach ( $dbUsers as $dbUser ) {
 			$users[] = [
-				'id'          => intval( $dbUser->ID ),
+				'id'          => (int) $dbUser->ID,
 				'displayName' => $dbUser->display_name,
 				'niceName'    => $dbUser->user_nicename,
 				'email'       => $dbUser->user_email,
@@ -375,6 +361,7 @@ trait Wp {
 		if ( ! get_theme_support( 'custom-logo' ) ) {
 			return false;
 		}
+
 		return get_theme_mod( 'custom_logo' );
 	}
 
@@ -395,26 +382,8 @@ trait Wp {
 		if ( empty( $image ) ) {
 			return false;
 		}
+
 		return $image[0];
-	}
-
-	/**
-	 * Returns the filesystem object if we have access to it.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @param  array         $args The connection args.
-	 * @return WP_Filesystem       The filesystem object.
-	 */
-	public function wpfs( $args = [] ) {
-		require_once( ABSPATH . 'wp-admin/includes/file.php' );
-		WP_Filesystem( $args );
-
-		global $wp_filesystem;
-		if ( is_object( $wp_filesystem ) ) {
-			return $wp_filesystem;
-		}
-		return false;
 	}
 
 	/**
@@ -438,7 +407,22 @@ trait Wp {
 	 */
 	public function isPostTypeNoindexed( $postType ) {
 		$noindexedPostTypes = $this->getNoindexedPostTypes();
+
 		return in_array( $postType, $noindexedPostTypes, true );
+	}
+
+	/**
+	 * Checks whether a given post type is public.
+	 *
+	 * @since 4.2.2
+	 *
+	 * @param  string  $postType The post type.
+	 * @return bool              Whether the post type is public.
+	 */
+	public function isPostTypePublic( $postType ) {
+		$publicPostTypes = $this->getPublicPostTypes( true );
+
+		return in_array( $postType, $publicPostTypes, true );
 	}
 
 	/**
@@ -462,7 +446,22 @@ trait Wp {
 	 */
 	public function isTaxonomyNoindexed( $taxonomy ) {
 		$noindexedTaxonomies = $this->getNoindexedTaxonomies();
+
 		return in_array( $taxonomy, $noindexedTaxonomies, true );
+	}
+
+	/**
+	 * Checks whether a given taxonomy is public.
+	 *
+	 * @since 4.2.2
+	 *
+	 * @param  string  $taxonomy The taxonomy.
+	 * @return bool              Whether the taxonomy is public.
+	 */
+	public function isTaxonomyPublic( $taxonomy ) {
+		$publicTaxonomies = $this->getPublicTaxonomies( true );
+
+		return in_array( $taxonomy, $publicTaxonomies, true );
 	}
 
 	/**
@@ -483,6 +482,7 @@ trait Wp {
 				$noindexed[] = $name;
 			}
 		}
+
 		return $noindexed;
 	}
 
@@ -502,6 +502,7 @@ trait Wp {
 				$names[] = aioseo()->helpers->internationalize( $category->cat_name );
 			}
 		}
+
 		return $names;
 	}
 
@@ -524,6 +525,7 @@ trait Wp {
 				}
 			}
 		}
+
 		return $names;
 	}
 
@@ -545,5 +547,239 @@ trait Wp {
 
 		$mofile = $domain . '-' . get_user_locale() . '.mo';
 		load_textdomain( $domain, WP_LANG_DIR . '/plugins/' . $mofile );
+	}
+
+	/**
+	 * Get the page builder the given Post ID was built with.
+	 *
+	 * @since 4.1.7
+	 *
+	 * @param  int         $postId The Post ID.
+	 * @return bool|string         The page builder or false if not built with page builders.
+	 */
+	public function getPostPageBuilderName( $postId ) {
+		foreach ( aioseo()->standalone->pageBuilderIntegrations as $integration => $pageBuilder ) {
+			if ( $pageBuilder->isBuiltWith( $postId ) ) {
+				return $integration;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get the edit link for the given Post ID.
+	 *
+	 * @since 4.3.1
+	 *
+	 * @param  int         $postId The Post ID.
+	 * @return bool|string         The edit link or false if not built with page builders.
+	 */
+	public function getPostEditLink( $postId ) {
+		$pageBuilder = $this->getPostPageBuilderName( $postId );
+		if ( ! empty( $pageBuilder ) ) {
+			return aioseo()->standalone->pageBuilderIntegrations[ $pageBuilder ]->getEditUrl( $postId );
+		}
+
+		return get_edit_post_link( $postId );
+	}
+
+	/**
+	 * Checks if the current user can edit posts of the given post type.
+	 *
+	 * @since 4.1.9
+	 *
+	 * @param  string $postType The name of the post type.
+	 * @return bool             Whether the user can edit posts of the given post type.
+	 */
+	public function canEditPostType( $postType ) {
+		$capabilities = $this->getPostTypeCapabilities( $postType );
+
+		return current_user_can( $capabilities['edit_posts'] );
+	}
+
+	/**
+	 * Returns a list of capabilities for the given post type.
+	 *
+	 * @since 4.1.9
+	 *
+	 * @param  string $postType The name of the post type.
+	 * @return array            The capabilities.
+	 */
+	public function getPostTypeCapabilities( $postType ) {
+		static $capabilities = [];
+		if ( isset( $capabilities[ $postType ] ) ) {
+			return $capabilities[ $postType ];
+		}
+
+		$postTypeObject = get_post_type_object( $postType );
+		if ( ! is_a( $postTypeObject, 'WP_Post_Type' ) ) {
+			$capabilities[ $postType ] = [];
+
+			return $capabilities[ $postType ];
+		}
+
+		$capabilityType = $postTypeObject->capability_type;
+		if ( ! is_array( $capabilityType ) ) {
+			$capabilityType = [
+				$capabilityType,
+				$capabilityType . 's'
+			];
+		}
+
+		// Singular base for meta capabilities, plural base for primitive capabilities.
+		list( $singularBase, $pluralBase ) = $capabilityType;
+
+		$capabilities[ $postType ] = [
+			'edit_post'          => 'edit_' . $singularBase,
+			'read_post'          => 'read_' . $singularBase,
+			'delete_post'        => 'delete_' . $singularBase,
+			'edit_posts'         => 'edit_' . $pluralBase,
+			'edit_others_posts'  => 'edit_others_' . $pluralBase,
+			'delete_posts'       => 'delete_' . $pluralBase,
+			'publish_posts'      => 'publish_' . $pluralBase,
+			'read_private_posts' => 'read_private_' . $pluralBase,
+		];
+
+		return $capabilities[ $postType ];
+	}
+
+	/**
+	 * Checks if the current user can edit terms of the given taxonomy.
+	 *
+	 * @since 4.1.9
+	 *
+	 * @param  string $taxonomy The name of the taxonomy.
+	 * @return bool             Whether the user can edit posts of the given taxonomy.
+	 */
+	public function canEditTaxonomy( $taxonomy ) {
+		$capabilities = $this->getTaxonomyCapabilities( $taxonomy );
+
+		return current_user_can( $capabilities['edit_terms'] );
+	}
+
+	/**
+	 * Returns a list of capabilities for the given taxonomy.
+	 *
+	 * @since 4.1.9
+	 *
+	 * @param  string $postType The name of the taxonomy.
+	 * @return array            The capabilities.
+	 */
+	public function getTaxonomyCapabilities( $taxonomy ) {
+		static $capabilities = [];
+		if ( isset( $capabilities[ $taxonomy ] ) ) {
+			return $capabilities[ $taxonomy ];
+		}
+
+		$taxonomyObject = get_taxonomy( $taxonomy );
+		if ( ! is_a( $taxonomyObject, 'WP_Taxonomy' ) ) {
+			$capabilities[ $taxonomy ] = [];
+
+			return $capabilities[ $taxonomy ];
+		}
+
+		$capabilities[ $taxonomy ] = (array) $taxonomyObject->cap;
+
+		return $capabilities[ $taxonomy ];
+	}
+
+	/**
+	 * Returns the charset for the site.
+	 *
+	 * @since 4.2.3
+	 *
+	 * @return string The name of the charset.
+	 */
+	public function getCharset() {
+		static $charset = null;
+		if ( null !== $charset ) {
+			return $charset;
+		}
+
+		$charset = get_option( 'blog_charset' );
+		$charset = $charset ? $charset : 'UTF-8';
+
+		return $charset;
+	}
+
+	/**
+	 * Returns the given data as JSON.
+	 * We temporarily change the floating point precision in order to prevent rounding errors.
+	 * Otherwise e.g. 4.9 could be output as 4.90000004.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @param  mixed  $data  The data.
+	 * @param  int    $flags The flags.
+	 * @return string        The JSON output.
+	 */
+	public function wpJsonEncode( $data, $flags = 0 ) {
+		$originalPrecision          = false;
+		$originalSerializePrecision = false;
+		if ( version_compare( PHP_VERSION, '7.1', '>=' ) ) {
+			$originalPrecision          = ini_get( 'precision' );
+			$originalSerializePrecision = ini_get( 'serialize_precision' );
+			ini_set( 'precision', 17 );
+			ini_set( 'serialize_precision', -1 );
+		}
+
+		$json = wp_json_encode( $data, $flags );
+
+		if ( version_compare( PHP_VERSION, '7.1', '>=' ) ) {
+			ini_set( 'precision', $originalPrecision );
+			ini_set( 'serialize_precision', $originalSerializePrecision );
+		}
+
+		return $json;
+	}
+
+	/**
+	 * Returns the post title or a placeholder if there isn't one.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param  int    $postId The post ID.
+	 * @return string         The post title.
+	 */
+	public function getPostTitle( $postId ) {
+		static $titles = [];
+		if ( isset( $titles[ $postId ] ) ) {
+			return $titles[ $postId ];
+		}
+
+		$post = aioseo()->helpers->getPost( $postId );
+		if ( ! is_a( $post, 'WP_Post' ) ) {
+			$titles[ $postId ] = __( '(no title)' ); // phpcs:ignore AIOSEO.Wp.I18n.MissingArgDomain
+
+			return $titles[ $postId ];
+		}
+
+		$title = $post->post_title;
+		$title = $title ? $title : __( '(no title)' ); // phpcs:ignore AIOSEO.Wp.I18n.MissingArgDomain
+
+		$titles[ $postId ] = aioseo()->helpers->decodeHtmlEntities( $title );
+
+		return $titles[ $postId ];
+	}
+
+	/**
+	 * Checks whether the taxonomy should be considered viewable.
+	 * This function is a copy of the WordPress core function is_taxonomy_viewable() which was introduced in WP 5.1.
+	 *
+	 * @since 4.3.5.1
+	 *
+	 * @param  string|WP_Taxonomy $taxonomy The taxonomy name or object.
+	 * @return bool                         Whether the taxonomy is viewable.
+	 */
+	public function isTaxonomyViewable( $taxonomy ) {
+		if ( is_scalar( $taxonomy ) ) {
+			$taxonomy = get_taxonomy( $taxonomy );
+			if ( ! is_a( $taxonomy, 'WP_Taxonomy' ) ) {
+				return false;
+			}
+		}
+
+		return $taxonomy->publicly_queryable;
 	}
 }

@@ -24,6 +24,51 @@ class Head {
 	private static $pageTitle = null;
 
 	/**
+	 * GoogleAnalytics class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var GoogleAnalytics
+	 */
+	protected $analytics = null;
+
+	/**
+	 * Links class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Meta\Links
+	 */
+	protected $links = null;
+
+	/**
+	 * Keywords class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Meta\Keywords
+	 */
+	protected $keywords = null;
+
+	/**
+	 * Verification class instance.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var Meta\Verification
+	 */
+	protected $verification = null;
+
+	/**
+	 * The views to output.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var array
+	 */
+	protected $views = [];
+
+	/**
 	 * Class constructor.
 	 *
 	 * @since 4.0.0
@@ -35,13 +80,13 @@ class Head {
 
 		$this->analytics    = new GoogleAnalytics();
 		$this->links        = new Meta\Links();
-		$this->robots       = new Meta\Robots();
 		$this->keywords     = new Meta\Keywords();
 		$this->verification = new Meta\SiteVerification();
 		$this->views        = [
-			'meta'   => AIOSEO_DIR . '/app/Common/Views/main/meta.php',
-			'social' => AIOSEO_DIR . '/app/Common/Views/main/social.php',
-			'schema' => AIOSEO_DIR . '/app/Common/Views/main/schema.php'
+			'meta'    => AIOSEO_DIR . '/app/Common/Views/main/meta.php',
+			'social'  => AIOSEO_DIR . '/app/Common/Views/main/social.php',
+			'schema'  => AIOSEO_DIR . '/app/Common/Views/main/schema.php',
+			'clarity' => AIOSEO_DIR . '/app/Common/Views/main/clarity.php'
 		];
 	}
 
@@ -74,7 +119,7 @@ class Head {
 		add_filter( 'wp_title', [ $this, 'getTitle' ], 99999 );
 		if ( ! current_theme_supports( 'title-tag' ) ) {
 			add_action( 'template_redirect', [ $this, 'startOutputBuffering' ] );
-			add_action( 'wp_footer', [ $this, 'rewriteTitle' ], -2 );
+			add_action( 'wp_footer', [ $this, 'endOutputBuffering' ], -2 );
 		}
 	}
 
@@ -107,6 +152,7 @@ class Head {
 			return self::$pageTitle;
 		}
 		self::$pageTitle = aioseo()->meta->title->filterPageTitle( $wpTitle );
+
 		return self::$pageTitle;
 	}
 
@@ -118,20 +164,38 @@ class Head {
 	 * @return void
 	 */
 	public function startOutputBuffering() {
-		ob_start();
+		ob_start( [ $this, 'rewriteTitle' ] );
 	}
 
 	/**
-	 * Rewrites the page title using output buffering.
+	 * Flush and send the output buffer.
 	 *
-	 * @since 4.0.5
+	 * @since 4.3.2
 	 *
 	 * @return void
 	 */
-	public function rewriteTitle() {
-		$content   = apply_filters( 'aioseo_flush_output_buffer', true ) ? ob_get_clean() : ob_get_contents();
-		$split     = explode( '</head>', $content );
-		$head      = $split[0] . '</head>';
+	public function endOutputBuffering() {
+		ob_flush();
+	}
+
+	/**
+	 * Callback to fire when ob_flush() is called.
+	 * Rewrites the page title using output buffering.
+	 *
+	 * @since   4.0.5
+	 * @version 4.3.2
+	 *
+	 * @param  string $content The buffer content.
+	 * @return string
+	 */
+	public function rewriteTitle( $content ) {
+		$split = explode( '</head>', $content );
+
+		if ( empty( $split[1] ) ) {
+			return $content;
+		}
+
+		$head = $split[0] . '</head>';
 
 		unset( $split[0] );
 		$body = implode( '</head>', $split );
@@ -141,10 +205,9 @@ class Head {
 
 		// Add the new title tag to our own comment block.
 		$pageTitle = aioseo()->helpers->escapeRegexReplacement( $this->getTitle() );
-		$head      = preg_replace( '#(<!--\sAll\sin\sOne\sSEO[a-zA-Z\s0-9.]+\s-->)#', "$1\r\n\t\t<title>$pageTitle</title>", $head, 1 );
+		$head      = preg_replace( '/(<!--\sAll\sin\sOne\sSEO[a-z0-9\s.]+\s-\saioseo\.com\s-->)/i', "$1\r\n\t\t<title>$pageTitle</title>", $head, 1 );
 
-		$content = $head . $body;
-		echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		return $head . $body;
 	}
 
 	/**
@@ -165,11 +228,11 @@ class Head {
 		echo "\n\t\t<!-- " . sprintf(
 			'%1$s %2$s',
 			esc_html( AIOSEO_PLUGIN_NAME ),
-			aioseo()->version // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		) . " -->\n";
+			aioseo()->helpers->getAioseoVersion() // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		) . " - aioseo.com -->\n";
 
 		foreach ( $views as $view ) {
-			require( $view );
+			require $view;
 		}
 
 		echo "\t\t<!-- " . esc_html( AIOSEO_PLUGIN_NAME ) . " -->\n\n";

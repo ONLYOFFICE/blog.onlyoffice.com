@@ -15,13 +15,13 @@ use AIOSEO\Vendor\Monolog\Formatter\LineFormatter;
 /**
  * Common syslog functionality
  */
-abstract class AbstractSyslogHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandler
+abstract class AbstractSyslogHandler extends AbstractProcessingHandler
 {
     protected $facility;
     /**
      * Translates Monolog log levels to syslog log priorities.
      */
-    protected $logLevels = array(\AIOSEO\Vendor\Monolog\Logger::DEBUG => \LOG_DEBUG, \AIOSEO\Vendor\Monolog\Logger::INFO => \LOG_INFO, \AIOSEO\Vendor\Monolog\Logger::NOTICE => \LOG_NOTICE, \AIOSEO\Vendor\Monolog\Logger::WARNING => \LOG_WARNING, \AIOSEO\Vendor\Monolog\Logger::ERROR => \LOG_ERR, \AIOSEO\Vendor\Monolog\Logger::CRITICAL => \LOG_CRIT, \AIOSEO\Vendor\Monolog\Logger::ALERT => \LOG_ALERT, \AIOSEO\Vendor\Monolog\Logger::EMERGENCY => \LOG_EMERG);
+    protected $logLevels = array(Logger::DEBUG => \LOG_DEBUG, Logger::INFO => \LOG_INFO, Logger::NOTICE => \LOG_NOTICE, Logger::WARNING => \LOG_WARNING, Logger::ERROR => \LOG_ERR, Logger::CRITICAL => \LOG_CRIT, Logger::ALERT => \LOG_ALERT, Logger::EMERGENCY => \LOG_EMERG);
     /**
      * List of valid log facility names.
      */
@@ -31,7 +31,7 @@ abstract class AbstractSyslogHandler extends \AIOSEO\Vendor\Monolog\Handler\Abst
      * @param int   $level The minimum logging level at which this handler will be triggered
      * @param bool  $bubble Whether the messages that are handled can bubble up the stack or not
      */
-    public function __construct($facility = \LOG_USER, $level = \AIOSEO\Vendor\Monolog\Logger::DEBUG, $bubble = \true)
+    public function __construct($facility = \LOG_USER, $level = Logger::DEBUG, $bubble = \true)
     {
         parent::__construct($level, $bubble);
         if (!\defined('PHP_WINDOWS_VERSION_BUILD')) {
@@ -74,6 +74,6 @@ abstract class AbstractSyslogHandler extends \AIOSEO\Vendor\Monolog\Handler\Abst
      */
     protected function getDefaultFormatter()
     {
-        return new \AIOSEO\Vendor\Monolog\Formatter\LineFormatter('%channel%.%level_name%: %message% %context% %extra%');
+        return new LineFormatter('%channel%.%level_name%: %message% %context% %extra%');
     }
 }

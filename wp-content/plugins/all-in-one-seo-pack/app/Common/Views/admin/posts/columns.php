@@ -14,5 +14,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <div id="<?php echo esc_attr( $columnName ); ?>-<?php echo esc_attr( $postId ); ?>">
-	<?php require( AIOSEO_DIR . '/app/Common/Views/parts/loader.php' ); ?>
+	<?php require AIOSEO_DIR . '/app/Common/Views/parts/loader.php'; ?>
 </div>

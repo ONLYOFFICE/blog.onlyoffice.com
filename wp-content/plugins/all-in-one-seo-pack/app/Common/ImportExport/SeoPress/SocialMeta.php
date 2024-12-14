@@ -15,6 +15,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class SocialMeta {
 	/**
+	 * List of options.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var array
+	 */
+	private $options = [];
+
+	/**
 	 * Class constructor.
 	 *
 	 * @since 4.1.4

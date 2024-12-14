@@ -38,20 +38,22 @@ class DashboardWidgetModule
         ?>
         <ul class="ff_dashboard_stats">
             <?php foreach ($stats as $stat): ?>
-                <li>
-                    <a href="<?php echo admin_url('admin.php?page=fluent_forms&route=entries&form_id=' . $stat->form_id); ?>">
-                        <?php echo $stat->title; ?>
-                        <span class="ff_total"><?php echo $stat->unreadCount; ?>/<?php echo $stat->total; ?></span>
-                    </a>
-                </li>
+            <li>
+                <a
+                    href="<?php echo esc_url(admin_url('admin.php?page=fluent_forms&route=entries&form_id=' . $stat->form_id)); ?>">
+                    <?php echo esc_html($stat->title); ?>
+                    <span class="ff_total"><?php echo esc_attr($stat->unreadCount); ?>/<?php echo esc_attr($stat->total); ?></span>
+                </a>
+            </li>
             <?php endforeach; ?>
         </ul>
-        <?php if ( !defined('ENHANCED_BLOCKS_VERSION') && !defined('FLUENTFORMPRO') ) : ?>
-            <div class="ff_recommended_plugin">
-                Recommended Plugin: <b>Enhanced Blocks – Page Builder Blocks for Gutenberg</b> <br />
-                <a href="<?php echo $this->getInstallUrl('enhanced-blocks'); ?>">Install</a>
-                | <a target="_blank" rel="noopener" href="https://wordpress.org/plugins/enhanced-blocks/">Learn More</a>
-            </div>
+        <?php if (!defined('FLUENTCRM') && !defined('FLUENTFORMPRO')) : ?>
+        <div class="ff_recommended_plugin">
+            Recommended Plugin: <b>FluentCRM - Email Marketing Automation For WordPress</b> <br />
+            <a
+                href="<?php echo esc_url($this->getInstallUrl('fluent-crm')); ?>">Install</a>
+            | <a target="_blank" rel="noopener" href="https://wordpress.org/plugins/fluent-crm/">Learn More</a>
+        </div>
         <?php endif; ?>
         <style>
             ul.ff_dashboard_stats {
@@ -94,6 +96,7 @@ class DashboardWidgetModule
             .ff_recommended_plugin {
                 padding: 15px 0px 0px;
             }
+            
             .ff_recommended_plugin a {
                 font-weight: bold;
                 font-size: 110%;

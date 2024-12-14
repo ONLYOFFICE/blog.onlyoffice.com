@@ -10,6 +10,8 @@ use FluentForm\Framework\Request\File;
 class Transfer
 {
     /**
+     * Request object
+     *
      * @var \FluentForm\Framework\Request\Request $request
      */
     protected $request;
@@ -47,13 +49,13 @@ class Transfer
             $forms[] = $form;
         }
 
-        $fileName = 'fluentform-export-forms-'. count($forms) .'-'. date('d-m-Y') . '.json';
+        $fileName = 'fluentform-export-forms-' . count($forms) . '-' . date('d-m-Y') . '.json';
 
         header('Content-disposition: attachment; filename=' . $fileName);
 
         header('Content-type: application/json');
 
-        echo json_encode(array_values($forms));
+        echo json_encode(array_values($forms)); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $forms is escaped before being passed in.
 
         die();
     }
@@ -72,30 +74,30 @@ class Transfer
                 foreach ($forms as $formItem) {
                     // First of all make the form object.
                     $formFields = json_encode([]);
-                    if($fields = ArrayHelper::get($formItem, 'form', '')) {
+                    if ($fields = ArrayHelper::get($formItem, 'form', '')) {
                         $formFields = json_encode($fields);
-                    } else if($fields = ArrayHelper::get($formItem, 'form_fields', '')) {
+                    } elseif ($fields = ArrayHelper::get($formItem, 'form_fields', '')) {
                         $formFields = json_encode($fields);
                     } else {
                         wp_send_json([
-                            'message' => __('You have a faulty JSON file, please export the Fluent Forms again.', 'fluentform')
+                            'message' => __('You have a faulty JSON file, please export the Fluent Forms again.', 'fluentform'),
                         ], 422);
                     }
 
                     $form = [
                         'title'       => ArrayHelper::get($formItem, 'title'),
                         'form_fields' => $formFields,
-                        'status' => ArrayHelper::get($formItem, 'status', 'published'),
+                        'status'      => ArrayHelper::get($formItem, 'status', 'published'),
                         'has_payment' => ArrayHelper::get($formItem, 'has_payment', 0),
-                        'type' => ArrayHelper::get($formItem, 'type', 'form'),
-                        'created_by'  => get_current_user_id()
+                        'type'        => ArrayHelper::get($formItem, 'type', 'form'),
+                        'created_by'  => get_current_user_id(),
                     ];
 
-                    if( ArrayHelper::get($formItem, 'conditions')) {
+                    if (ArrayHelper::get($formItem, 'conditions')) {
                         $form['conditions'] = ArrayHelper::get($formItem, 'conditions');
                     }
 
-                    if(isset($formItem['appearance_settings'])) {
+                    if (isset($formItem['appearance_settings'])) {
                         $form['appearance_settings'] = $formItem['appearance_settings'];
                     }
 
@@ -103,34 +105,32 @@ class Transfer
                     $formId = wpFluent()->table('fluentform_forms')->insert($form);
 
                     $insertedForms[$formId] = [
-                        'title' => $form['title'],
-                        'edit_url' => admin_url('admin.php?page=fluent_forms&route=editor&form_id='.$formId)
+                        'title'    => $form['title'],
+                        'edit_url' => admin_url('admin.php?page=fluent_forms&route=editor&form_id=' . $formId),
                     ];
 
-                    if(isset($formItem['metas'])) {
-
+                    if (isset($formItem['metas'])) {
                         foreach ($formItem['metas'] as $metaData) {
                             $settings = [
                                 'form_id'  => $formId,
                                 'meta_key' => $metaData['meta_key'],
-                                'value'    => $metaData['value']
+                                'value'    => $metaData['value'],
                             ];
                             wpFluent()->table('fluentform_form_meta')->insert($settings);
                         }
-
                     } else {
                         $oldKeys = [
                             'formSettings',
                             'notifications',
                             'mailchimp_feeds',
-                            'slack'
+                            'slack',
                         ];
                         foreach ($oldKeys as $key) {
-                            if(isset($formItem[$key])) {
+                            if (isset($formItem[$key])) {
                                 $settings = [
                                     'form_id'  => $formId,
                                     'meta_key' => $key,
-                                    'value'    => json_encode($formItem[$key])
+                                    'value'    => json_encode($formItem[$key]),
                                 ];
                                 wpFluent()->table('fluentform_form_meta')->insert($settings);
                             }
@@ -138,18 +138,17 @@ class Transfer
                     }
 
                     do_action('fluentform_form_imported', $formId);
-
                 }
 
                 wp_send_json([
-                    'message' => __('You form has been successfully imported.', 'fluentform'),
-                    'inserted_forms' => $insertedForms
+                    'message'        => __('You form has been successfully imported.', 'fluentform'),
+                    'inserted_forms' => $insertedForms,
                 ], 200);
             }
         }
 
         wp_send_json([
-            'message' => __('You have a faulty JSON file, please export the Fluent Forms again.', 'fluentform')
+            'message' => __('You have a faulty JSON file, please export the Fluent Forms again.', 'fluentform'),
         ], 422);
     }
 
@@ -161,6 +160,5 @@ class Transfer
             ->where('form_id', $formId)
             ->whereNotIn('meta_key', ['_total_views', '_ff_form_styler_css'])
             ->get();
-
     }
 }

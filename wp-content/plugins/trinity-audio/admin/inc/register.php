@@ -21,31 +21,29 @@
                 <p class="description">Please complete your registration to Trinity audio services.</p>
 
                 <div>
-                  <label  class='custom-checkbox'>
+                  <label class='custom-checkbox'>
                     <input type='checkbox' name="<?php echo TRINITY_AUDIO_TERMS_OF_SERVICE; ?>"  />
                     <div class='custom-hitbox'></div>
                     <div class='text-label'>
-                      I accept the <a href="https://trinityaudio.ai/wp-plugin-terms/?utm_medium=wp_admin">Terms of Service</a>
+                      I accept the <a href="<?= trinity_add_utm_to_url('https://trinityaudio.ai/wp-plugin-terms') ?>">Terms of Service</a>
+                    </div>
+                  </label>
+                </div>
+
+                <div>
+                  <label class='custom-checkbox'>
+                    <input type='checkbox' id="<?php echo TRINITY_AUDIO_EMAIL_SUBSCRIPTION; ?>" name="<?php echo TRINITY_AUDIO_EMAIL_SUBSCRIPTION; ?>"  />
+                    <div class='custom-hitbox'></div>
+                    <div class='text-label'>
+                      I approve receiving occasional emails from Trinity Audio
+                      <br>(we promise not to spam, and keep it professional)
                     </div>
                   </label>
                 </div>
 
                 <p class="description">
-                  By clicking REGISTER, you agree that you have read our <a href="https://trinityaudio.ai/privacy-policy/?utm_medium=wp_admin">Privacy Policy</a>
+                  By clicking REGISTER, you agree that you have read our <a href="<?= trinity_add_utm_to_url('https://trinityaudio.ai/privacy-policy/') ?>">Privacy Policy</a>
                 </p>
-
-                <div style="display: none">
-                  <p style="margin-top: 10px" class="description">
-                    If you've registered on <a href="<?php echo TRINITY_AUDIO_DASHBOARD_URL; ?>" target="_blank">Trinity Dashboard</a> and bought a plan in order to connect your Wordpress installation please provide an Account Key.
-                  </p>
-                  <label for="<?php echo TRINITY_AUDIO_PUBLISHER_TOKEN; ?>">
-                    <span>Account Key (optional):</span>
-                  </label>
-                  <input type="text" class="custom-input"
-                    name="<?php echo TRINITY_AUDIO_PUBLISHER_TOKEN; ?>"
-                    id="<?php echo TRINITY_AUDIO_PUBLISHER_TOKEN; ?>"
-                    spellcheck="false" style="width: 100%"/>
-                </div>
 
                 <div class="recover-install-key" style="display: none">
                     <h4 class="site-migration">
@@ -80,3 +78,9 @@
     </div>
   </form>
 </div>
+
+<script>
+  jQuery(document).ready(() => {
+    trinitySendMetric('wordpress.signup.opened');
+  })
+</script>

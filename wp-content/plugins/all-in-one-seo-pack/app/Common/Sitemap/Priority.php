@@ -120,6 +120,7 @@ class Priority {
 					: self::$globalPriority[ $pageType . $objectType ];
 			$priority     = 'default' === $defaultValue->value ? $priority : $defaultValue->value;
 		}
+
 		return $priority;
 	}
 
@@ -175,6 +176,7 @@ class Priority {
 					: self::$globalFrequency[ $pageType . $objectType ];
 			$frequency    = 'default' === $defaultValue->value ? $frequency : $defaultValue->value;
 		}
+
 		return $frequency;
 	}
 
@@ -201,6 +203,7 @@ class Priority {
 		if ( array_key_exists( $pageType, $defaults ) ) {
 			return $defaults[ $pageType ];
 		}
+
 		return $defaults['other'];
 	}
 
@@ -227,6 +230,7 @@ class Priority {
 		if ( array_key_exists( $pageType, $defaults ) ) {
 			return $defaults[ $pageType ];
 		}
+
 		return $defaults['other'];
 	}
 }

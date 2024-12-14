@@ -13,7 +13,7 @@ if ( ! function_exists( 'aioseo_lite_just_activated' ) ) {
 	 * @since 4.0.0
 	 */
 	function aioseo_lite_just_activated() {
-		aioseo()->transients->update( 'lite_just_activated', true );
+		aioseo()->core->cache->update( 'lite_just_activated', true );
 	}
 }
 
@@ -28,10 +28,10 @@ if ( ! function_exists( 'aioseo_lite_just_deactivated' ) ) {
 	function aioseo_lite_just_deactivated() {
 		global $aioseoLiteJustActivated, $aioseoLiteJustDeactivated;
 
-		$aioseoLiteJustActivated   = (bool) aioseo()->transients->get( 'lite_just_activated' );
+		$aioseoLiteJustActivated   = (bool) aioseo()->core->cache->get( 'lite_just_activated' );
 		$aioseoLiteJustDeactivated = true;
 
-		aioseo()->transients->delete( 'lite_just_activated' );
+		aioseo()->core->cache->delete( 'lite_just_activated' );
 	}
 }
 
@@ -46,12 +46,16 @@ if ( ! function_exists( 'aioseo_pro_just_activated' ) ) {
 	function aioseo_pro_just_activated() {
 		$liteActivated = is_plugin_active( 'all-in-one-seo-pack/all_in_one_seo_pack.php' );
 		if ( $liteActivated ) {
-			aioseo()->transients->update( 'pro_just_deactivated_lite', true );
+			// Add capabilities for the current user on upgrade so that the menu is visible on the first request.
+			aioseo()->activate->addCapabilitiesOnUpgrade();
+
+			aioseo()->core->cache->update( 'pro_just_deactivated_lite', true );
 		}
 	}
 }
 
 // If we detect that V3 is active, let's deactivate it now.
 if ( defined( 'AIOSEOP_VERSION' ) && defined( 'AIOSEO_PLUGIN_FILE' ) ) {
+	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	deactivate_plugins( plugin_basename( AIOSEO_PLUGIN_FILE ) );
 }

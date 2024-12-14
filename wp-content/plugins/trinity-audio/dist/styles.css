@@ -61,6 +61,7 @@
 }
 .trinity-page .custom-checkbox div.custom-hitbox {
   width: 20px;
+  min-width: 20px;
   height: 20px;
   border: 2px solid #000033;
   box-sizing: border-box;
@@ -260,20 +261,29 @@
   font-weight: normal;
   color: #B7B6B6 !important;
   cursor: default;
+  padding: 3px 24px 3px 3px;
 }
 .trinity-page .custom-input-disabled .edit-icon {
   position: absolute;
-  top: 0;
-  right: 10px;
+  top: 6px;
+  right: 3px;
   font-size: 18px;
   line-height: 40px;
   display: inline-block;
   color: #B7B6B6;
   transform: rotate(90deg);
-  z-index: 1;
+  width: 24px;
+  height: 24px;
+  z-index: 10;
 }
 .trinity-page .custom-input-disabled .edit-icon span {
   cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: block;
+  line-height: 24px;
+  vertical-align: middle;
+  text-align: center;
 }
 .trinity-page .custom-input-disabled .edit-icon span:hover {
   color: black;
@@ -353,6 +363,7 @@
   line-height: 36px !important;
   border-color: rgba(216, 216, 216, 0.8470588235) !important;
   border-width: 0.5px !important;
+  cursor: text;
 }
 
 .trinity-custom-contact-textarea {
@@ -397,6 +408,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
 }
 
 .trinity-feedback-button {
@@ -468,13 +480,22 @@
   background-repeat: no-repeat;
 }
 
+.wrap.trinity-page {
+  margin: 0;
+}
+
 .trinity-page {
-  max-width: 1500px;
+  max-width: 1270px;
   clear: none;
+  width: 100%;
+}
+.trinity-page-wrapper {
+  display: flex;
+  justify-content: center;
 }
 .trinity-page .flex-grid {
   display: flex;
-  flex-flow: column wrap;
+  flex-flow: row wrap;
 }
 .trinity-page .flex-grid .row {
   display: flex;
@@ -485,21 +506,60 @@
 }
 .trinity-page .flex-grid .column {
   display: flex;
-  flex: 1 500px;
   flex-flow: column wrap;
   margin-bottom: 30px;
+}
+.trinity-page .flex-grid .column-left {
+  flex: 4;
+}
+.trinity-page .flex-grid .column-left section {
+  max-width: 870px;
+}
+.trinity-page .flex-grid .column-right {
+  flex: 2;
+  max-width: 400px;
+}
+.trinity-page .flex-grid .column-right section.trinity-guide {
+  padding-bottom: 10px;
+  margin-top: 30px;
+}
+.trinity-page .flex-grid .column-right section.trinity-guide .trinity-section-body {
+  padding: 10px 15px;
+}
+.trinity-page .flex-grid .column-right section.trinity-guide .trinity-section-body > div:first-child {
+  padding-bottom: 10px;
+}
+.trinity-page .flex-grid .column-right section.trinity-guide a:hover > svg path {
+  fill: #135e96;
+}
+.trinity-page .flex-grid .column-right section.trinity-guide * {
+  font-size: 14px;
 }
 .trinity-page .flex-grid .column section {
   display: flex;
   flex-flow: column;
   padding: 25px;
-  flex-grow: inherit;
 }
 .trinity-page .flex-grid .column .section-title {
   margin-bottom: 10px;
   font-size: 18px;
   font-weight: 700;
   color: #000033;
+}
+.trinity-page .flex-grid .lock-description {
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.trinity-page .flex-grid .lock-description .upgrade-description {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.trinity-page .flex-grid .lock-description .upgrade-description * {
+  font-size: 14px;
+  margin-left: 4px;
+  text-decoration: none;
+  font-weight: 400;
 }
 .trinity-page .inline-block {
   display: inline-block !important;
@@ -570,6 +630,88 @@
   transition: all 200ms ease-out;
 }
 
+#trinity-metabox .trinity-meta-upgrade-banner {
+  position: relative;
+  width: 380px;
+  padding: 10px 10px 0 10px;
+}
+@media screen and (max-width: 1085px) {
+  #trinity-metabox .trinity-meta-upgrade-banner {
+    display: none;
+  }
+}
+#trinity-metabox .trinity-meta-upgrade-banner .container {
+  padding: 10px 20px 18px 20px;
+  border-radius: 8px;
+  box-shadow: -1px 0px 5px 2px #e1e1e1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px;
+}
+#trinity-metabox .trinity-meta-upgrade-banner .container .message {
+  margin: 0;
+  font-family: "Montserrat";
+  font-weight: 500;
+}
+#trinity-metabox .trinity-meta-upgrade-banner .container .header {
+  text-transform: uppercase;
+}
+#trinity-metabox .trinity-meta-upgrade-banner .container .header .icon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  vertical-align: middle;
+}
+#trinity-metabox .trinity-meta-upgrade-banner .container .header .header-text {
+  display: inline-block;
+  vertical-align: middle;
+  font-family: Montserrat;
+  font-weight: 800;
+}
+#trinity-metabox .trinity-meta-upgrade-banner .container .header .close-icon {
+  width: 20px;
+  height: 20px;
+  right: 15px;
+  position: absolute;
+  cursor: pointer;
+}
+#trinity-metabox .trinity-meta-upgrade-banner .container .upgrade-button {
+  line-height: 40px;
+  font-weight: 300;
+  font-size: 14px;
+  color: #fff !important;
+  background: #FF0066;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  border: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0 20px;
+  font-weight: 500;
+  max-width: 100%;
+  border-radius: 4px;
+  transition: all 200ms ease-out;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  background: #010031;
+  text-decoration: none;
+  bottom: 10px;
+  left: 10px;
+  width: 200px;
+}
+#trinity-metabox .trinity-meta-upgrade-banner .container .upgrade-button:hover {
+  background: #951d51;
+  transition: all 200ms ease-out;
+}
+#trinity-metabox .trinity-meta-upgrade-banner .container .footnote {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
 .trinity-page {
   font-family: Montserrat;
 }
@@ -586,8 +728,8 @@
   flex: 1;
 }
 .trinity-page .premium-banner {
-  padding: 32px;
-  margin-top: 20px;
+  padding: 16px;
+  margin-bottom: 20px;
   text-decoration: none;
   background: #FFFFFF;
   display: flex;
@@ -618,6 +760,7 @@
   box-sizing: border-box;
   text-transform: uppercase;
   background: #010031;
+  width: 100%;
   text-decoration: none;
 }
 .trinity-page .premium-banner .upgrade-button:hover {
@@ -632,7 +775,6 @@
   color: #000033;
 }
 .trinity-page .premium-banner .upgrade-odds ul {
-  width: 50%;
   list-style: disc inside;
 }
 .trinity-page .premium-banner .upgrade-odds ul li {
@@ -641,6 +783,7 @@
   padding-left: 13px;
   position: relative;
   list-style: none;
+  font-size: 13px;
 }
 .trinity-page .premium-banner .upgrade-odds ul li::before {
   content: "";
@@ -656,9 +799,14 @@
 .trinity-page .premium-banner .upgrade-plan {
   color: #000033;
   width: 100%;
-  font-size: 20px;
-  line-height: 22px;
+  font-size: 14px;
+  line-height: 16px;
+  margin-bottom: 10px;
   font-weight: 700;
+}
+.trinity-page .save-and-odds {
+  position: sticky;
+  top: 25px;
 }
 .trinity-page .save-and-odds .save-and-odds-positioning {
   height: 100%;
@@ -695,7 +843,7 @@
   color: #000033;
   display: flex;
   text-transform: uppercase;
-  font-weight: 900 !important;
+  font-weight: 800 !important;
   font-size: 30px;
 }
 .trinity-page .existing-account {
@@ -728,40 +876,7 @@
   user-select: none;
   font-size: 16px;
   height: auto;
-}
-.trinity-page .trinity-section-body.plan-section .premium-banner {
-  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.1490196078);
-  padding: 20px;
-  width: 50%;
-  margin: 0 0 20px 20px;
-  box-sizing: border-box;
-  max-width: 350px;
-}
-.trinity-page .trinity-section-body.plan-section .premium-banner .upgrade-plan {
-  font-size: 16px;
-}
-.trinity-page .trinity-section-body.plan-section .premium-banner .upgrade-odds {
-  font-size: 14px;
-}
-.trinity-page .trinity-section-body.plan-section .premium-banner .upgrade-odds ul {
-  width: 100%;
-}
-.trinity-page .trinity-section-body.plan-section .premium-banner .upgrade-odds ul li {
-  margin-bottom: 10px;
-}
-.trinity-page .trinity-section-body.plan-section .premium-banner .upgrade-button {
-  margin: 0 auto;
-}
-@media (max-width: 600px) {
-  .trinity-page .trinity-section-body.plan-section .premium-banner {
-    margin: 16px auto;
-    padding: 22px;
-    width: 100%;
-  }
-  .trinity-page .trinity-section-body.plan-section .premium-banner .upgrade-odds,
-.trinity-page .trinity-section-body.plan-section .premium-banner .upgrade-button {
-    font-size: 14px;
-  }
+  min-height: 160px;
 }
 .trinity-page .trinity-section-body.plan-section .plan-description {
   width: 50%;
@@ -879,7 +994,7 @@
   transition: all 200ms ease-out;
   box-sizing: border-box;
   text-transform: uppercase;
-  width: 266px;
+  width: 100%;
 }
 .trinity-page .save-button:hover {
   background: #951d51;
@@ -903,6 +1018,7 @@
 .trinity-page .trinity-save-account {
   display: flex;
   align-items: flex-start;
+  flex-direction: column;
 }
 .trinity-page .trinity-save-account .use-account-key-button {
   line-height: 40px;
@@ -1075,6 +1191,7 @@
   font-weight: 300;
   display: flex;
   align-items: center;
+  max-width: 500px;
 }
 
 .trinity-status-wrapper .status {
@@ -1153,4 +1270,39 @@
 
 .bold-text {
   font-weight: 700;
+}
+
+.loader-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.loader {
+  width: 36px;
+  height: 36px;
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #FF0066;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

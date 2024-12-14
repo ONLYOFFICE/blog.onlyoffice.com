@@ -18,7 +18,7 @@ use AIOSEO\Vendor\Monolog\Utils;
  * @link http://square.github.com/cube/
  * @author Wan Chen <kami@kamisama.me>
  */
-class CubeHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandler
+class CubeHandler extends AbstractProcessingHandler
 {
     private $udpConnection;
     private $httpConnection;
@@ -33,7 +33,7 @@ class CubeHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandl
      *                                   A valid url must consist of three parts : protocol://host:port
      *                                   Only valid protocols used by Cube are http and udp
      */
-    public function __construct($url, $level = \AIOSEO\Vendor\Monolog\Logger::DEBUG, $bubble = \true)
+    public function __construct($url, $level = Logger::DEBUG, $bubble = \true)
     {
         $urlInfo = \parse_url($url);
         if (!isset($urlInfo['scheme'], $urlInfo['host'], $urlInfo['port'])) {
@@ -56,7 +56,7 @@ class CubeHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandl
     protected function connectUdp()
     {
         if (!\extension_loaded('sockets')) {
-            throw new \AIOSEO\Vendor\Monolog\Handler\MissingExtensionException('The sockets extension is required to use udp URLs with the CubeHandler');
+            throw new MissingExtensionException('The sockets extension is required to use udp URLs with the CubeHandler');
         }
         $this->udpConnection = \socket_create(\AF_INET, \SOCK_DGRAM, 0);
         if (!$this->udpConnection) {
@@ -99,9 +99,9 @@ class CubeHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandl
         $data['data'] = $record['context'];
         $data['data']['level'] = $record['level'];
         if ($this->scheme === 'http') {
-            $this->writeHttp(\AIOSEO\Vendor\Monolog\Utils::jsonEncode($data));
+            $this->writeHttp(Utils::jsonEncode($data));
         } else {
-            $this->writeUdp(\AIOSEO\Vendor\Monolog\Utils::jsonEncode($data));
+            $this->writeUdp(Utils::jsonEncode($data));
         }
     }
     private function writeUdp($data)
@@ -118,6 +118,6 @@ class CubeHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandl
         }
         \curl_setopt($this->httpConnection, \CURLOPT_POSTFIELDS, '[' . $data . ']');
         \curl_setopt($this->httpConnection, \CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Content-Length: ' . \strlen('[' . $data . ']')));
-        \AIOSEO\Vendor\Monolog\Handler\Curl\Util::execute($this->httpConnection, 5, \false);
+        Curl\Util::execute($this->httpConnection, 5, \false);
     }
 }

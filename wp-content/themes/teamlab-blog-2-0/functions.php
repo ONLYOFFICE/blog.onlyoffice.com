@@ -181,7 +181,7 @@ function teamlab_blog_2_0_content_width() {
 }
 add_action( 'after_setup_theme', 'teamlab_blog_2_0_content_width', 0 );
 
-// Вывод первой картинки с поста
+// The output of the first image from the post
 function bloggood_ru_image() {
   global $post, $posts;
   $first_img = '';
@@ -190,7 +190,7 @@ function bloggood_ru_image() {
   $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches); // выдираем первый имагес
   $first_img = $matches [1] [0];
  
-// Если картинка в посте отсутствует, тогда выводим изображение по умолчанию (указать путь и имя к картинке)
+// If there is no image in the post, then display the default image (specify the path and name for the image)
   if(empty($first_img)){
     $template_uri = get_template_directory_uri();
    $first_img = $template_uri . "/images/blog_online_editors.jpg";
@@ -294,7 +294,7 @@ function search_tags_query($query) {
             $query->set('tax_query', [
                 'relation' => 'OR',
                 [
-                    'term_taxonomy' => 'post_tag', // или custom taxonomy какой-то, если нужно
+                    'term_taxonomy' => 'post_tag', // or some custom taxonomy if needed
                     'field' => 'name',
                     'terms' => $terms
                 ]
@@ -498,7 +498,7 @@ function add_image_class($class){
 add_filter('get_image_tag_class','add_image_class');
 
 
-/************ Recaptcha 
+/************ Recaptcha ************* */
 
             
 function verify_recaptcha($recaptchaResp){
@@ -516,7 +516,7 @@ function verify_recaptcha($recaptchaResp){
         'https://www.google.com/recaptcha/api/siteverify',
         array(
             'body' => array(
-                'secret' => '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe', // test private key
+                'secret' => "recaptcha_private_key",
                 'response' => $captcha_response,
                 'remoteip' => $_SERVER['REMOTE_ADDR']
             )
@@ -532,7 +532,6 @@ function verify_recaptcha($recaptchaResp){
 
     return $success;
 }
-*************Recaptcha */
 
 /* Get comments
  */
@@ -605,7 +604,7 @@ if ( ! function_exists( 'get_language_key' ) ) :
     preg_match_all($regex, $query, $matches);
 
     $lang = $matches[1][0];
-    $regextest = "/\/blog\/([a-z]{2})/";
+    $regextest = "/\/([a-z]{2})/";
     $text = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
     preg_match($regextest, $text, $match);
     $lang = $match[1];
@@ -640,7 +639,13 @@ function language_selector($available_langs_keys) {
         'it' =>  array('it', 'it-IT', 'Italian'),
         'cs' =>  array('cs', 'cs-CZ', 'Česky'),
         'ja' =>  array('ja', 'ja-JP', '中文'),
-        'zh' =>  array('zh-hans', 'zh-CN', '中文')
+        'zh' =>  array('zh-hans', 'zh-CN', '中文'),
+        'el' =>  array('el', 'el-GR', 'Greek'),
+        'hi' =>  array('hi', 'hi-IN', 'Hindi'),
+        'ar' =>  array('ar', 'ar-AR', 'Arabic'),
+        'sr' =>  array('sr', 'sr-RS', 'Serbian'),
+        'hy' =>  array('hy', 'hy-AM', 'Armenia'),
+        'ru' =>  array('ru', 'ru-RU', 'Russia')
     );
 
     $available_langs  = array();
@@ -659,7 +664,7 @@ function language_selector($available_langs_keys) {
 
     $langGB = $matches[1][0];
 
-    $regextest = "/\/blog\/([a-z]{2})/";
+    $regextest = "/\/([a-z]{2})/";
     $text = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 
     preg_match($regextest, $text, $match);
@@ -681,7 +686,6 @@ function language_selector($available_langs_keys) {
                     . $lng[1]
                     . "\"><a href=\" "
                     . WEB_ROOT_URL
-                    . "/blog"
                     . (($lng[0] != $default_lang || $lng[1] == "en-GB")? "/".$lng[0] : "")
                     . "\">"
                     . "</a></li>";
@@ -881,3 +885,239 @@ function ampforwp_add_custom_css_example() { ?>
     }
     <?php 
 }
+
+/**
+ * Redirect pages
+ */
+function redirect_page() {
+    if (isset($_SERVER['HTTPS']) &&
+        ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+            isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+        $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+            $protocol = 'https://';
+        }
+        else {
+            $protocol = 'http://';
+        }
+
+    $currenturl = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    $currenturl_relative = wp_make_link_relative($currenturl);
+
+    switch ($currenturl_relative) {
+        case '/blog/2021/09/7-best-sharepoint-alternatives-to-consider-in-2021/':
+            $urlto = home_url('/2021/09/best-sharepoint-alternatives/');
+            break;
+        case '/blog/2021/11/top-10-basecamp-alternatives-2021/':
+            $urlto = home_url('/2021/11/basecamp-alternatives/' );
+            break;
+        case '/blog/fr/2021/09/7-meilleures-alternatives-a-sharepoint-a-envisager-en-2021/':
+            $urlto = home_url('/fr/2021/09/meilleures-alternatives-a-sharepoint-a-envisager/' );
+            break;
+        case '/blog/es/2021/09/7-mejores-alternativas-a-sharepoint-para-tener-en-cuenta-en-2021/':
+            $urlto = home_url('/es/2021/09/mejores-alternativas-a-sharepoint/' );
+            break;
+        case '/blog/it/2021/09/7-migliori-alternative-a-sharepoint-nel-2021/':
+            $urlto = home_url('/it/2021/09/migliori-alternative-a-sharepoint/' );
+            break;
+        case '/blog/de/2022/12/beste-software-zur-automatisierung-von-dokumenten-2022/':
+            $urlto = home_url('/de/2022/12/beste-software-zur-automatisierung-von-dokumenten/' );
+            break;
+        case '/blog/de/2021/09/7-beste-alternativen-zu-sharepoint-2021/':
+            $urlto = home_url('/de/2021/09/beste-alternativen-zu-sharepoint/' );
+            break;
+        case '/blog/de/2021/11/die-10-besten-basecamp-alternativen-2021/':
+            $urlto = home_url('/de/2021/11/die-besten-basecamp-alternativen/' );
+            break;
+        case '/blog/2023/02/chatgpt-plugin-in-onlyoffice-docs/':
+            $urlto = home_url('/2023/02/what-is-chatgpt/' );
+            break;
+        case '/blog/de/2023/02/chatgpt-plugin-in-onlyoffice-docs/':
+            $urlto = home_url('/de/2023/02/was-ist-chatgpt/' );
+            break;
+        case '/blog/fr/2023/02/plugin-chatgpt-dans-onlyoffice-docs/':
+            $urlto = home_url('/fr/2023/02/c-est-quoi-chatgpt/' );
+            break;
+        case '/blog/es/2023/02/plugin-de-chatgpt-para-onlyoffice-docs/':
+            $urlto = home_url('/es/2023/02/que-es-chatgpt/' );
+            break;
+        case '/blog/pt-br/2023/02/plugin-chatgpt-no-onlyoffice-docs/':
+            $urlto = home_url('/pt-br/2023/02/o-que-e-chatgpt/' );
+            break;
+        case '/blog/it/2023/02/plugin-chatgpt-in-onlyoffice-docs/':
+            $urlto = home_url('/it/2023/02/cos-e-chatgpt/' );
+            break;
+        case '/blog/zh-hans/2023/02/chatgpt-plugin-in-onlyoffice-docs/':
+            $urlto = home_url('/zh-hans/2023/02/chatgpt/' );
+            break;
+        case '/blog/ja/2023/02/onlyoffice-docs-chatgpt/':
+            $urlto = home_url('/ja/2023/02/chatgpt/' );
+            break;
+
+        default:
+        return;
+    }
+
+    if ($currenturl != $urlto)
+    exit( wp_redirect( $urlto ) );
+}
+
+add_action( 'template_redirect', 'redirect_page' );
+
+/**
+ * WPGraphQL Custom Post Types
+*/
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'Post', 'discoursePermalink', [
+        'type' => 'String',
+        'resolve' => function( $post ) {
+            $discoursePermalink = get_post_meta( $post->ID, 'discourse_permalink', true );
+            return ! empty( $discoursePermalink ) ? $discoursePermalink : '';
+        }
+    ]);
+});
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'Post', 'viewCount', [ 
+      'type' => 'Int',
+      'resolve' => function( $post ) {
+        $view_count = get_post_meta( $post->ID, 'views', true );
+        return ! empty( $view_count ) ? $view_count : 0;
+      }
+    ]);
+});
+
+add_filter( 'register_post_type_args', function( $args, $post_type ) {
+    if ( 'news' === $post_type ) {
+      $args['show_in_graphql'] = true;
+      $args['graphql_single_name'] = 'newsItem';
+      $args['graphql_plural_name'] = 'news';
+    }
+    return $args;
+}, 10, 2 );
+
+add_filter( 'graphql_connection_max_query_amount', function ( int $max_amount, $source, array $args, $context, $info ) {
+	if ( empty( $info->fieldName ) ) {
+		return $max_amount;
+	}
+	return 10000;
+}, 10, 5 );
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'NewsItem', 'url', [ 
+      'type' => 'String',
+      'resolve' => function( $post ) {
+        $url = get_post_meta( $post->ID, 'URL', true );
+        return ! empty( $url ) ? $url : '';
+      }
+    ]);
+});
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'NewsItem', 'shortUrl', [ 
+      'type' => 'String',
+      'resolve' => function( $post ) {
+        $shortUrl = get_post_meta( $post->ID, 'ShortURL', true );
+        return ! empty( $shortUrl ) ? $shortUrl : '';
+      }
+    ]);
+});
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'NewsItem', 'excerpt', [ 
+      'type' => 'String',
+      'resolve' => function( $post ) {
+        $excerpt = wp_trim_words( get_the_content( $post->ID ), '35', '...' );
+        return ! empty( $excerpt ) ? $excerpt : '';
+      }
+    ]);
+});
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'NewsItem', 'dateNews', [ 
+      'type' => 'String',
+      'resolve' => function( $post ) {
+        $dateNews = get_post_meta( $post->ID, 'dateNews', true );
+        return ! empty( $dateNews ) ? $dateNews : '';
+      }
+    ]);
+});
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'Post', 'firstImgPost', [ 
+      'type' => 'String',
+      'resolve' => function( $post ) {
+        $firstImgPost = bloggood_ru_image();
+        return ! empty( $firstImgPost ) ? $firstImgPost : '';
+      }
+    ]);
+});
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field('Post', 'aioseoTitle', [
+        'type' => 'String',
+        'resolve' => function($post) {
+            if (function_exists('aioseo')) {
+                $aioseoData = aioseo()->meta->title->getTitle($post->ID);
+                return $aioseoData ?: '';
+            }
+            return '';
+        }
+    ]);
+});
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'Post', 'aioseoDescription', [ 
+        'type' => 'String',
+        'resolve' => function($post) {
+            if (function_exists('aioseo')) {
+                $aioseoData = aioseo()->meta->description->getDescription($post->ID);
+                return $aioseoData ?: '';
+            }
+            return '';
+        }
+    ]);
+});
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'Post', 'moreTextExcerpt', [ 
+      'type' => 'String',
+      'resolve' => function( $post ) {
+        function disable_more_link( $link ) {
+            $link = preg_replace('|#more-[0-9]+|', '', '');
+            return $link;
+        }
+        add_filter( 'the_content_more_link', 'disable_more_link', 10, 2 );
+
+        $moreTextExcerpt = !empty( $attributes['moreText'] ) ? get_the_excerpt() : wp_trim_words(get_the_content($post->ID), '35', '...');
+        return ! empty( $moreTextExcerpt ) ? $moreTextExcerpt : '';
+      }
+    ]);
+});
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'Post', 'outdated', [ 
+      'type' => 'Boolean',
+      'resolve' => function( $post ) {
+        $outdated = get_post_meta( $post->ID, 'outdated', true );
+        return ! empty( $outdated ) ? $outdated : '';
+      }
+    ]);
+});
+
+function discourse_publish_format_html( $output, $post_id ) {
+	$post = get_post( $post_id );
+    $permalink = str_replace('https://wpblog.onlyoffice.com/', 'https://www.onlyoffice.com/blog/', get_permalink($post_id));
+    $post_title = get_the_title( $post );
+	ob_start();
+	?>
+
+    <small>Originally published at: <a href="<?php echo  $permalink ?>" target="_blank" rel="noreferrer noopener"><?php echo $post_title ?> | ONLYOFFICE Blog</a></small>
+    <br>
+    {excerpt}
+
+	<?php
+	$output = ob_get_clean();
+	return $output;
+}
+
+add_filter( 'discourse_publish_format_html', 'discourse_publish_format_html', 10, 2 );

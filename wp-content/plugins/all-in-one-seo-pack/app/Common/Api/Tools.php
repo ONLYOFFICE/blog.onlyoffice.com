@@ -30,7 +30,7 @@ class Tools {
 		if ( ! aioseo()->robotsTxt->importPhysicalRobotsTxt( $network ) ) {
 			return new \WP_REST_Response( [
 				'success' => false,
-				'message' => __( 'There was an error importing the physical robots.txt file.', 'all-in-one-seo-pack' )
+				'message' => 'There was an error importing the physical robots.txt file.'
 			], 400 );
 		}
 
@@ -99,7 +99,7 @@ class Tools {
 		// Translators: 1 - The plugin name ("All in One SEO"), 2 - The Site URL.
 		$html = sprintf( __( '%1$s Debug Info from %2$s', 'all-in-one-seo-pack' ), AIOSEO_PLUGIN_NAME, aioseo()->helpers->getSiteDomain() ) . "\r\n------------------\r\n\r\n";
 		$info = CommonTools\SystemStatus::getSystemStatusInfo();
-		foreach ( $info as $key => $group ) {
+		foreach ( $info as $group ) {
 			if ( empty( $group['results'] ) ) {
 				continue;
 			}
@@ -118,7 +118,7 @@ class Tools {
 		) ) {
 			return new \WP_REST_Response( [
 				'success' => false,
-				'message' => __( 'Unable to send debug email, please check your email send settings and try again.', 'all-in-one-seo-pack' )
+				'message' => 'Unable to send debug email, please check your email send settings and try again.'
 			], 400 );
 		}
 
@@ -135,7 +135,7 @@ class Tools {
 	 * @param  \WP_REST_Request  $request The REST Request
 	 * @return \WP_REST_Response          The response.
 	 */
-	public static function createBackup() {
+	public static function createBackup( $request ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		aioseo()->backup->create();
 
 		return new \WP_REST_Response( [
@@ -217,11 +217,13 @@ class Tools {
 			], 400 );
 		}
 
-		$htaccess = aioseo()->helpers->decodeHtmlEntities( $htaccess );
-		if ( ! aioseo()->htaccess->saveContents( $htaccess ) ) {
+		$htaccess     = aioseo()->helpers->decodeHtmlEntities( $htaccess );
+		$saveHtaccess = (object) aioseo()->htaccess->saveContents( $htaccess );
+		if ( ! $saveHtaccess->success ) {
 			return new \WP_REST_Response( [
 				'success' => false,
-				'message' => __( 'An error occurred while trying to write to the .htaccess file. Please try again later.', 'all-in-one-seo-pack' )
+				'message' => $saveHtaccess->message ? $saveHtaccess->message : __( 'An error occurred while trying to write to the .htaccess file. Please try again later.', 'all-in-one-seo-pack' ),
+				'reason'  => $saveHtaccess->reason
 			], 400 );
 		}
 

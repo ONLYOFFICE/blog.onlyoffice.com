@@ -16,7 +16,7 @@ use AIOSEO\Vendor\Elastica\Document;
  *
  * @author Jelle Vink <jelle.vink@gmail.com>
  */
-class ElasticaFormatter extends \AIOSEO\Vendor\Monolog\Formatter\NormalizerFormatter
+class ElasticaFormatter extends NormalizerFormatter
 {
     /**
      * @var string Elastic search index name
@@ -69,7 +69,7 @@ class ElasticaFormatter extends \AIOSEO\Vendor\Monolog\Formatter\NormalizerForma
      */
     protected function getDocument($record)
     {
-        $document = new \AIOSEO\Vendor\Elastica\Document();
+        $document = new Document();
         $document->setData($record);
         $document->setType($this->type);
         $document->setIndex($this->index);

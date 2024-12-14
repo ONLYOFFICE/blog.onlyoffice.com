@@ -2,6 +2,7 @@
   require_once ABSPATH . 'wp-admin/includes/plugin.php';
   require_once __DIR__ . '/../inc/constants.php';
   require_once __DIR__ . '/../inc/common.php';
+  require_once __DIR__ . '/../inc/templates.php';
   require_once __DIR__ . '/../metaboxes.php';
 
   add_action('admin_enqueue_scripts', 'trinity_admin_scripts');
@@ -35,10 +36,15 @@
         'TRINITY_AUDIO_REGISTER'                    => TRINITY_AUDIO_REGISTER,
         'TRINITY_AUDIO_RECOVER_INSTALLKEY'          => TRINITY_AUDIO_RECOVER_INSTALLKEY,
         'TRINITY_AUDIO_FIRST_CHANGES_SAVE'          => TRINITY_AUDIO_FIRST_CHANGES_SAVE,
-        'LANGUAGES'                                 => trinity_get_languages(),
+        'LANGUAGES'                                 => trinity_get_voices(),
         'TRINITY_AUDIO_BULK_UPDATE_PROGRESS'        => $bulk_progress,
         TRINITY_AUDIO_SKIP_TAGS                     => implode(',', trinity_get_skip_tags()),
-        TRINITY_AUDIO_ALLOW_SHORTCODES              => implode(',', trinity_get_allowed_shortcodes())
+        TRINITY_AUDIO_ALLOW_SHORTCODES              => implode(',', trinity_get_allowed_shortcodes()),
+        'TRINITY_AUDIO_EMAIL_SUBSCRIPTION'          => TRINITY_AUDIO_EMAIL_SUBSCRIPTION,
+        'TRINITY_AUDIO_UPDATE_UNIT_CONFIG'          => TRINITY_AUDIO_UPDATE_UNIT_CONFIG,
+        'TRINITY_AUDIO_SEND_METRIC'                 => TRINITY_AUDIO_SEND_METRIC,
+        'TRINITY_AUDIO_REMOVE_POST_BANNER'          => TRINITY_AUDIO_REMOVE_POST_BANNER,
+        'TRINITY_AUDIO_PACKAGE_INFO'                => TRINITY_AUDIO_PACKAGE_INFO
       ]
     );
   }
@@ -51,19 +57,22 @@
   add_action('save_post', 'trinity_save_post_callback', 2147483647, 3);
   add_action('wp_ajax_' . TRINITY_AUDIO_REGISTER, 'trinity_audio_ajax_register');
   add_action('wp_ajax_' . TRINITY_AUDIO_PUBLISHER_TOKEN_URL, 'trinity_save_publisher_token');
+  add_action('wp_ajax_' . TRINITY_AUDIO_UPDATE_UNIT_CONFIG, 'trinity_audio_ajax_update_unit_config');
+  add_action('wp_ajax_' . TRINITY_AUDIO_SEND_METRIC, 'trinity_send_stat_metrics');
+  add_action('wp_ajax_' . TRINITY_AUDIO_REMOVE_POST_BANNER, 'trinity_audio_ajax_remove_post_banner');
+  add_action('wp_ajax_' . TRINITY_AUDIO_PACKAGE_INFO, 'trinity_get_and_render_package');
 
   function trinity_admin_create_page() {
-    if (isset($_GET['settings-updated'])) {
-      trinity_send_stat_update_settings();
-    }
-
     // add our page to whitelist, so we can POST to options.php.
     register_setting(TRINITY_AUDIO, TRINITY_AUDIO);
+    register_setting(TRINITY_AUDIO, TRINITY_AUDIO_SOURCE_LANGUAGE);
+
+    // TODO: remove this setting after drop $_GET[postConfig]
+    register_setting(TRINITY_AUDIO, TRINITY_AUDIO_GENDER_ID);
 
     // allow to save to DB.
-    register_setting(TRINITY_AUDIO, TRINITY_AUDIO_SOURCE_LANGUAGE);
-    register_setting(TRINITY_AUDIO, TRINITY_AUDIO_GENDER_ID);
     register_setting(TRINITY_AUDIO, TRINITY_AUDIO_SOURCE_NEW_POSTS_DEFAULT);
+    register_setting(TRINITY_AUDIO, TRINITY_AUDIO_VOICE_ID);
 
     register_setting(TRINITY_AUDIO, TRINITY_AUDIO_PLAYER_POSITION);
     register_setting(TRINITY_AUDIO, TRINITY_AUDIO_PLAYER_LABEL);

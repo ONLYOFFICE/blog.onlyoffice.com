@@ -11,12 +11,12 @@
                         <?php
                             $route = $settings_menu['route'];
                         ?>
-                        <a data-route_key="<?php echo sanitize_key($route); ?>" href="<?php echo $settings_base_url; ?>#<?php echo $route; ?>">
-                            <?php echo $settings_menu['title']; ?>
+                        <a data-route_key="<?php echo esc_attr($route); ?>" href="<?php echo esc_url($settings_base_url); ?>#<?php echo esc_attr($route); ?>">
+                            <?php echo esc_html($settings_menu['title']); ?>
                         </a>
                     <?php else: ?>
-                    <a <?php if(isset($settings_menu['class'])) { echo 'class="'.$settings_menu['class'].'"'; } ?> data-settings_key="<?php echo (isset($settings_menu['settings_key'])) ? $settings_menu['settings_key'] : '';?>" data-component="<?php echo (isset($settings_menu['component'])) ? $settings_menu['component'] : '';?>" data-hash="<?php echo (isset($settings_menu['hash'])) ? $settings_menu['hash'] : '';?>" href="<?php echo $settings_base_url.'&sub_route='.$settings_menu['slug']; ?><?php if(isset($settings_menu['hash'])) { echo '#'.$settings_menu['hash']; } ?>">
-						<?php echo $settings_menu['title']; ?>
+                    <a <?php if(isset($settings_menu['class'])) { echo 'class="'. esc_attr($settings_menu['class']).'"'; } ?> data-settings_key="<?php echo (isset($settings_menu['settings_key'])) ? esc_attr($settings_menu['settings_key']) : '';?>" data-component="<?php echo (isset($settings_menu['component'])) ? esc_attr($settings_menu['component']) : '';?>" data-hash="<?php echo (isset($settings_menu['hash'])) ? esc_attr($settings_menu['hash']) : '';?>" href="<?php echo esc_url($settings_base_url).'&sub_route='. esc_attr($settings_menu['slug']); ?><?php if(isset($settings_menu['hash'])) { echo '#'. esc_attr($settings_menu['hash']); } ?>">
+						<?php echo esc_html($settings_menu['title']); ?>
 					</a>
                     <?php endif; ?>
 				</li>

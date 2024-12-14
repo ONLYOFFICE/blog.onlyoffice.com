@@ -1,0 +1,60 @@
+name: "Test deploy"
+
+on:
+  #workflow_dispatch:
+  push:
+    branches:
+      - deploy_test_blog
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Prepare
+        id: prepare
+        run: |
+          rm -rf .git .github .jenkins .gitignore .htaccess .prettierignore Changelog.md README.md web.config
+          sed -i 's^name-database^${{ secrets.DB_NAME }}^' wp-config.php
+          sed -i 's^user-database^${{ secrets.DB_USER }}^' wp-config.php
+          sed -i 's^password-database^${{ secrets.DB_PASS }}^' wp-config.php
+          sed -i 's^host1^${{ secrets.DB_HOST }}^' wp-config.php
+          sed -i 's^root1^${{ secrets.DOMAIN_NAME }}^' wp-config.php
+          
+          sed -i 's^some_key1^${{ secrets.SOMEKEY1 }}^' wp-config.php
+          sed -i 's^some_key2^${{ secrets.SOMEKEY2 }}^' wp-config.php
+          sed -i 's^some_key3^${{ secrets.SOMEKEY3 }}^' wp-config.php
+          sed -i 's^some_key4^${{ secrets.SOMEKEY4 }}^' wp-config.php
+          sed -i 's^some_key5^${{ secrets.SOMEKEY5 }}^' wp-config.php
+          sed -i 's^some_key6^${{ secrets.SOMEKEY6 }}^' wp-config.php
+          sed -i 's^some_key7^${{ secrets.SOMEKEY7 }}^' wp-config.php
+          sed -i 's^some_key8^${{ secrets.SOMEKEY8 }}^' wp-config.php
+        shell: bash
+
+      - name: Copy files to host
+        id: copy
+        uses: appleboy/scp-action@v0.1.4
+        with: 
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "*"
+          target: "/tmp/deploy/wp"
+          overwrite: true
+      
+      - name: Deploy
+        id: deploy
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            datestamp=$(date +"%Y%m%d_%H%M%S")
+            sudo find /tmp/deploy/wp/ -type d -exec chmod 755 {} \;
+            sudo find /tmp/deploy/wp/ -type f -exec chmod 644 {} \;
+            sudo rm -rf /var/www/wp_backup*
+            sudo mv /var/www/wp /var/www/wp_backup_$datestamp
+            sudo mv /tmp/deploy/wp /var/www/wp
+            sudo chown -R www-data:www-data /var/www/wp/

@@ -1,4 +1,7 @@
 <?php
+  if (!class_exists( 'simple_html_dom')) {
+    require_once __DIR__ . '/lib/simple_html_dom.php';
+  }
   require_once __DIR__ . '/constants.php';
 
   function trinity_curl_get($url, $error_message = '', $die = true, $async = false, $http_args = []) {
@@ -138,6 +141,10 @@
     return get_option(TRINITY_AUDIO_ALLOW_SHORTCODES, []);
   }
 
+  function trinity_get_voice_id() {
+    return get_option(TRINITY_AUDIO_VOICE_ID);
+  }
+
   function trinity_get_is_bulk_updated() {
     return get_option(TRINITY_AUDIO_BULK_UPDATE_HEARTBEAT);
   }
@@ -158,6 +165,10 @@
     return get_option(TRINITY_AUDIO_IS_ACCOUNT_KEY_LINKED);
   }
 
+  function trinity_is_migration_v5_failed() {
+    return get_option(TRINITY_AUDIO_CONFIGURATION_V5_FAILED);
+  }
+
   function trinity_get_first_time_install() {
     return get_transient(TRINITY_AUDIO_FIRST_TIME_INSTALL);
   }
@@ -171,19 +182,24 @@
     return $plugin_data['Version'];
   }
 
-  function trinity_get_languages() {
-    $result = trinity_curl_get(TRINITY_AUDIO_LANGUAGES_URL, trinity_can_not_connect_error_message('Can\'t get list of supported languages.'), false);
-    if (!$result) {
-      return false;
-    }
+  function trinity_get_voices($languages_url = TRINITY_AUDIO_STANDARD_VOICES_URL) {
+    $result = trinity_curl_get($languages_url, trinity_can_not_connect_error_message('Can\'t get list of supported languages.'), false);
+
+    if (!$result) return false;
 
     $languages = [];
 
     foreach (json_decode($result) as $lang) {
+      $voiceIds = [];
+      foreach ($lang->voices as $gender => $voice) {
+        if (isset($voice->voiceId)) $voiceIds[$gender] = $voice->voiceId;
+      }
+
       $languageObj = (object)[
         'name' => $lang->languageName,
         'code' => $lang->code,
-        'genders' => array_keys((array)$lang->voices)
+        'genders' => array_keys((array)$lang->voices),
+        'voices' => $voiceIds
       ];
 
       if ($lang->country) $languageObj->name .= " ($lang->country)";
@@ -218,7 +234,12 @@
 
     $post_hash = trinity_get_audio_posthash($post_id);
 
+    // TODO: remove after ensure that settings migration works properly. (add version instead or check version by installkey)
+    $post_config = [];
     $gender = get_post_meta($post_id, TRINITY_AUDIO_GENDER_ID, true);
+    if ($gender) array_push($post_config, 'gender');
+
+    // TODO: remove after ensure that settings migration works properly. (add version instead or check version by installkey)
     $gender = $gender ? $gender : trinity_get_gender();
 
     $clean_text = trinity_get_clean_text($post_id, trinity_get_add_post_title(), trinity_get_add_post_excerpt());
@@ -231,6 +252,12 @@
     $viewkey = trinity_get_view_key();
 
     $source_language = get_post_meta($post_id, TRINITY_AUDIO_SOURCE_LANGUAGE, true);
+
+    if ($source_language) array_push($post_config, 'language');
+
+    $post_config = implode(',', $post_config);
+
+    // TODO: remove after ensure that settings migration works properly. (add version instead or check version by installkey)
     $source_language = $source_language ? $source_language : trinity_get_source_language();
 
     /*
@@ -253,17 +280,27 @@
       'pluginVersion' => trinity_get_plugin_version(),
     ];
 
-    $poweredby = trinity_get_powered_by();
-    $poweredby = $poweredby ? $poweredby : 0;
-
     $response = "<script nitro-exclude data-trinity-mount-date='$date'>var TRINITY_TTS_WP_CONFIG = " . json_encode($trinity_tts_wp_config) . ';</script>';
-    // voiceGender support in new sergio API
+
     $playerArgs = ['postHash'    => $post_hash,
-                   'poweredby'   => $poweredby,
                    'language'    => $source_language,
                    'voiceGender' => $gender,
-                   'pageURL'     => get_permalink()
+                   'pageURL'     => get_permalink(),
+                   'postConfig'  => $post_config
     ];
+
+    $post_voice_id = get_post_meta($post_id, TRINITY_AUDIO_VOICE_ID, true);
+    if ($post_voice_id) $playerArgs['voiceId'] = $post_voice_id;
+
+    if (trinity_is_migration_v5_failed()) {
+      unset($playerArgs['postConfig']);
+
+      $poweredby = trinity_get_powered_by();
+      $poweredby = $poweredby ? $poweredby : 0;
+
+      $playerArgs['poweredby'] = $poweredby;
+    }
+
     $response   .= "<div class='trinityAudioPlaceholder' data-trinity-mount-date='$date'></div>";
 
     $trinity_url = TRINITY_AUDIO_STARTUP . $viewkey . '/';
@@ -297,6 +334,8 @@
     }
 
     $article_text = $article_text . get_post_field('post_content', $post_id);
+    // ability to override/extend text for third-party plugins
+    $article_text = apply_filters('trinity_audio_clean_text_raw', $article_text);
 
     $whitelist_shortcodes = trinity_get_allowed_shortcodes();
 
@@ -315,24 +354,46 @@
 
     $content = html_entity_decode($content);
 
+    // remove tags that was specified by user
     $content = trinity_remove_tags($content);
-    $content = strip_tags($content, '<br>');  // strip all except <br>
 
-    // in order to not read a dot in cases like "sample.text"
-    $content = preg_replace('/\.[\n|\s\|\r]*<br>/', '. ', $content);
-    // in order to not read a comma in cases like "sample,text"
-    $content = preg_replace('/\,[\n|\s\|\r]*<br>/', ', ', $content);
-    $content = str_replace('<br>', BREAK_MACRO, $content);
+    // replace all new lines with pause
+    $content = preg_replace('/[\n|\r]+/', BREAK_MACRO, $content);
+
+    // get text from HTML
+    $content = trinity_get_text_from_html($content);
+
+    // replace all new lines with pause, after we have output from HTML as text
+    $content = preg_replace('/[\n|\r]+/', BREAK_MACRO, $content);
+
+    // remove all pause symbols that are in the beginning of the text
+    $content = preg_replace('/^\x{23F8}+/u', '', $content);
 
     return $content;
   }
 
   function trinity_remove_tags($text) {
-    foreach (trinity_get_skip_tags() as $value) {
-      $text = preg_replace('/<' . $value . '>(\s*?)(.*?)(\s*?)<\/' . $value . '>/', '', $text);
+    $trinity_tags_to_skip_from_reading = trinity_get_skip_tags();
+    if (empty($trinity_tags_to_skip_from_reading)) return $text;
+
+    $html = str_get_html($text);
+    if (!$html) return $text; // returns false in case no content was found
+
+    $instances = $html->find(implode(',', $trinity_tags_to_skip_from_reading));
+
+    foreach ($instances as $element) {
+      $element->remove();
     }
 
-    return $text;
+    return $html->save(); // return HTML as a string
+  }
+
+  function trinity_get_text_from_html($text) {
+    if (!$text) return $text;
+
+    $html = str_get_html('<html>' . $text . '</html>'); // wrap to have a root element
+
+    return strip_tags($html->firstChild()->plaintext); // make additional strip, in case publisher use wrong tags, e.g. l1 instead of li, just to be sure
   }
 
   function trinity_audio_ajax_regenerate_tokens() {
@@ -344,7 +405,7 @@
     die(json_encode(trinity_get_posthashes_for_post_id($post_id)));
   }
 
-  function trinity_save_post($post_id, $die = false, $throw_exception = false) {
+  function trinity_save_post($post_id, $die = false, $throw_exception = false, $num_of_posts = 1, $post_id_index = 1) {
     $installkey = trinity_get_install_key();
 
     if (empty($installkey)) return;
@@ -354,10 +415,10 @@
     $clean_text_excerpt       = trinity_get_clean_text($post_id, false, true);
     $clean_text_excerpt_title = trinity_get_clean_text($post_id, true, true);
 
-    trinity_update_audio_post_hash_with_content($clean_text_with_title, TRINITY_AUDIO_POST_HASH_CONTENT_TITLE, $installkey, $post_id, $die, $throw_exception);
-    trinity_update_audio_post_hash_with_content($clean_text_without_title, TRINITY_AUDIO_POST_HASH_CONTENT, $installkey, $post_id, $die, $throw_exception);
-    trinity_update_audio_post_hash_with_content($clean_text_excerpt, TRINITY_AUDIO_POST_HASH_CONTENT_EXCERPT, $installkey, $post_id, $die, $throw_exception);
-    trinity_update_audio_post_hash_with_content($clean_text_excerpt_title, TRINITY_AUDIO_POST_HASH_CONTENT_EXCERPT_TITLE, $installkey, $post_id, $die, $throw_exception);
+    trinity_update_audio_post_hash_with_content($clean_text_with_title, TRINITY_AUDIO_POST_HASH_CONTENT_TITLE, $installkey, $post_id, $die, $throw_exception, $num_of_posts, $post_id_index);
+    trinity_update_audio_post_hash_with_content($clean_text_without_title, TRINITY_AUDIO_POST_HASH_CONTENT, $installkey, $post_id, $die, $throw_exception, $num_of_posts, $post_id_index);
+    trinity_update_audio_post_hash_with_content($clean_text_excerpt, TRINITY_AUDIO_POST_HASH_CONTENT_EXCERPT, $installkey, $post_id, $die, $throw_exception, $num_of_posts, $post_id_index);
+    trinity_update_audio_post_hash_with_content($clean_text_excerpt_title, TRINITY_AUDIO_POST_HASH_CONTENT_EXCERPT_TITLE, $installkey, $post_id, $die, $throw_exception, $num_of_posts, $post_id_index);
 
     return [
       TRINITY_AUDIO_CONTENT_TITLE         => $clean_text_with_title,
@@ -376,14 +437,19 @@
     ];
   }
 
-  function trinity_update_audio_post_hash_with_content($text, $post_meta_field, $installkey, $post_id, $die, $throw_exception) {
+  function trinity_update_audio_post_hash_with_content($text, $post_meta_field, $installkey, $post_id, $die, $throw_exception, $num_of_posts = 1, $post_id_index = 1) {
+    $env_details = trinity_get_env_details();
+
     $postData      = [
       'text'       => $text,
       'installkey' => $installkey,
+      'postsAmount' => $num_of_posts,
+      'postIndex' => $post_id_index,
+      'pluginVersion' => $env_details['plugin_version']
     ];
     $error_message = $die ? trinity_can_not_connect_error_message('Can\'t get hashes.') : 'Can\'t get hashes';
 
-    $responseData = trinity_curl_post(
+    $response = trinity_curl_post(
       [
         'postData'        => $postData,
         'url'             => TRINITY_AUDIO_POST_HASH_URL,
@@ -392,7 +458,17 @@
         'throw_exception' => $throw_exception,
       ]
     );
-    update_post_meta($post_id, $post_meta_field, $responseData->postHash);
+
+    if (!$response) return trinity_log('Can\'t POST to ' . TRINITY_AUDIO_POST_HASH_URL, '', trinity_dump_object($postData), TRINITY_AUDIO_ERROR_TYPES::error);
+    if (!isset($response->postHash)) return trinity_log("Did not get postHash for post ID: $post_id. Please check if it has content", '', trinity_dump_object($postData), TRINITY_AUDIO_ERROR_TYPES::error);
+
+    // ability to force stop
+    if (isset($response->isStop) && $response->isStop === true) {
+      trinity_log('Stopped by server', '', trinity_dump_object($postData), TRINITY_AUDIO_ERROR_TYPES::warn);
+      die();
+    }
+
+    update_post_meta($post_id, $post_meta_field, $response->postHash);
   }
 
   /**
@@ -416,9 +492,12 @@
       try {
         update_option(TRINITY_AUDIO_BULK_UPDATE_HEARTBEAT, trinity_get_date());
 
+        // Solution for migration that use bulk update, to keep migration in progress while we still doing updating
+        if (get_transient(TRINITY_AUDIO_MIGRATION_PROGRESS)) set_transient(TRINITY_AUDIO_MIGRATION_PROGRESS, true, 300); // 5 min
+
         $post_id = $post_ids[$post_id_index];
 
-        trinity_save_post($post_id, false, true);
+        trinity_save_post($post_id, false, true, $num_of_posts, $post_id_index);
 
         update_option(TRINITY_AUDIO_BULK_UPDATE_NUM_POSTS_UPDATED, ++$num_of_success_posts);
         update_option(TRINITY_AUDIO_BULK_UPDATE_HEARTBEAT, trinity_get_date());
@@ -522,15 +601,21 @@
 
       // Update post source language
       update_post_meta($post_id, TRINITY_AUDIO_SOURCE_LANGUAGE, sanitize_text_field($_POST[TRINITY_AUDIO_SOURCE_LANGUAGE]));
+
+      // Update post voice id
+      update_post_meta($post_id, TRINITY_AUDIO_VOICE_ID, sanitize_text_field($_POST[TRINITY_AUDIO_VOICE_ID]));
     }
 
     trinity_save_post($post_id);
   }
 
   function trinity_save_publisher_token() {
+    $data = trinity_get_env_details();
+
     $postData = [
       'installkey'      => trinity_get_install_key(),
-      'publisher_token' => $_POST['publisher_token']
+      'publisher_token' => $_POST['publisher_token'],
+      'top_domain'      => $data['site_domain']
     ];
 
     $response = trinity_curl_post(
@@ -706,6 +791,7 @@
     }
 
     if (!empty($_POST['publisher_token'])) $data['publisher_token'] = $_POST['publisher_token'];
+    if (!empty($_POST['email_subscription'])) $data['email_subscription'] = $_POST['email_subscription'];
 
     return trinity_curl_post(
       [
@@ -719,27 +805,80 @@
 
   function trinity_send_stat_update_settings() {
     $data = [
-      'installkey'                => trinity_get_install_key(), // need for auth
-      'source_language'           => trinity_get_source_language(),
-      'powered_by'                => trinity_get_powered_by(),
-      'gender'                    => trinity_get_gender(),
-      'player_position'           => trinity_get_player_position(),
-      'player_label'              => trinity_get_player_label(),
-      'new_post_default'          => trinity_get_new_posts_default(),
-      'add_post_title_to_audio'   => trinity_get_add_post_title(),
-      'add_post_excerpt_to_audio' => trinity_get_add_post_excerpt(),
-      'skip_tags'                 => trinity_get_skip_tags(),
-      'allowed_shortcodes'        => trinity_get_allowed_shortcodes(),
+            'installkey'                => trinity_get_install_key(), // need for auth
+            'powered_by'                => trinity_get_powered_by(),
+            'voice_id'                  => trinity_get_voice_id(),
     ];
 
     return trinity_curl_post(
       [
         'postData'      => $data,
-        'url'           => TRINITY_AUDIO_UPDATE_PLUGIN_SETTINGS_URL,
+        'url'           => TRINITY_AUDIO_UPDATE_PLUGIN_CONFIG_URL,
         'error_message' => trinity_can_not_connect_error_message('Can\'t update plugin details.'),
         'die'           => false,
       ]
     );
+  }
+
+  function trinity_audio_ajax_update_unit_config() {
+    $data = [
+      'installkey' => trinity_get_install_key(),
+      'speed' => $_GET['speed'],
+      'language' => $_GET['language'],
+      'voiceStyle' => $_GET['voiceStyle'],
+      'engine' => $_GET['engine'],
+      'themeId' => $_GET['themeId'],
+      'voice' => $_GET['voice'],
+      'fab' => $_GET['fab'],
+      'powered_by' => $_GET['poweredBy'],
+      'gender' => $_GET['gender']
+    ];
+
+    return trinity_curl_post(
+      [
+        'postData'      => $data,
+        'url'           => TRINITY_AUDIO_UPDATE_FULL_UNIT_CONFIG_URL,
+        'error_message' => trinity_can_not_connect_error_message('Can\'t update plugin details.'),
+        'die'           => false,
+      ]
+    );
+  }
+
+  function trinity_send_stat_migrate_v5_settings() {
+    $data = [
+            'installkey'                => trinity_get_install_key(), // need for auth
+            'source_language'           => trinity_get_source_language(),
+            'powered_by'                => trinity_get_powered_by(),
+            'gender'                    => trinity_get_gender(),
+    ];
+
+    return trinity_curl_post(
+      [
+        'postData'      => $data,
+        'url'           => TRINITY_AUDIO_UPDATE_PLUGIN_MIGRATION_URL,
+        'error_message' => trinity_can_not_connect_error_message('Can\'t migrate plugin details.'),
+        'die'           => false,
+      ]
+    );
+  }
+
+  function trinity_send_stat_metrics() {
+    $data = [
+      'metric'  => $_POST['metric'],
+      'additionalData' => $_POST['additionalData'] ?? null
+    ];
+
+    return trinity_curl_post(
+      [
+        'postData'      => $data,
+        'url'           => TRINITY_AUDIO_METRICS_URL,
+        'die'           => false,
+      ]
+    );
+  }
+
+  function trinity_audio_ajax_remove_post_banner() {
+    update_option(TRINITY_AUDIO_REMOVE_POST_BANNER, '0');
   }
 
   function send_response($code) {
@@ -757,7 +896,7 @@
 
       'WRONG_PUBLISHER_TOKEN' => '<span class="bold-text">Account Key</span> is not found - please verify you have the correct one. If the problem persists, please write to us at ' . TRINITY_AUDIO_SUPPORT_EMAIL_LINK . ' and we will respond as fast as we can.',
 
-      'ALREADY_ASSIGNED_PUBLISHER_TOKEN' => "It seems like your installation is already assigned to your Trinity Account. If it's not reflected on the <a href='" . TRINITY_AUDIO_DASHBOARD_URL. "' target='_blank'>Trinity Dashboard</a> please contact us at " . TRINITY_AUDIO_SUPPORT_EMAIL_LINK . ' to help resolve this issue.',
+      'ALREADY_ASSIGNED_PUBLISHER_TOKEN' => "It seems like your installation is already assigned to your Trinity Account. If it's not reflected on the <a href='" . trinity_add_utm_to_url(TRINITY_AUDIO_DASHBOARD_URL) . "' target='_blank'>Trinity Dashboard</a> please contact us at " . TRINITY_AUDIO_SUPPORT_EMAIL_LINK . ' to help resolve this issue.',
 
       'SUCCESS'               => NULL
     ];
@@ -793,7 +932,9 @@
         update_option(TRINITY_AUDIO_VIEWKEY, $response_view_key);
       }
 
-      set_transient(TRINITY_AUDIO_FIRST_TIME_INSTALL, true, 300);
+      set_transient(TRINITY_AUDIO_FIRST_TIME_INSTALL, true, 60);
+
+      trinity_send_stat_update_settings();
 
       send_response($response_code);
     }
@@ -831,6 +972,10 @@
     return $error . ' Can\'t connect to Trinity Audio! Please check <a href="/wp-admin/admin.php?page=trinity_audio_logs">logs</a> or contact ' . TRINITY_AUDIO_SUPPORT_MESSAGE;
   }
 
+  function trinity_get_notice_error_message($error = '') {
+    return trinity_can_not_connect_error_message("<div class='notice notice-error'><p>" . $error . "<br>") . "</p><p></p></div>";
+  }
+
   function trinity_registered() {
     $install_key = trinity_get_install_key();
     $view_key    = trinity_get_view_key();
@@ -841,17 +986,21 @@
   }
 
   function trinity_get_package_data() {
-    $error_msg = trinity_can_not_connect_error_message("<div class='notice notice-error'><p>Can't get plan data.</p><p>");
+    $error_msg = trinity_get_notice_error_message("Can't get plan data.");
     $result    = trinity_curl_get(TRINITY_AUDIO_CREDITS_URL . '?installkey=' . trinity_get_install_key(), $error_msg, false);
-    $error_msg .= "</p></div>";
 
-    if (!$result) {
-      echo $error_msg;
-      return;
-    }
+    if (!$result) die($error_msg);
 
-    $articles_limit_data = json_decode($result);
-    return $articles_limit_data;
+    return json_decode($result);
+  }
+
+  function trinity_get_unit_config_from_trinity() {
+    $error_msg = trinity_get_notice_error_message("Can't get plugin configuration.");
+    $result    = trinity_curl_get(TRINITY_AUDIO_UPDATE_PLUGIN_CONFIG_URL . '?installkey=' . trinity_get_install_key(), $error_msg, false);
+
+    if (!$result) die($error_msg);
+
+    return json_decode($result);
   }
 
   function notifications($package_data) {
@@ -860,29 +1009,27 @@
     if ($response) {
         $notification = json_decode($response);
         if (property_exists($notification, 'message')) {
-  	      $notification = json_decode($notification->message);
+          $notification = json_decode($notification->message);
         }
 
-  	    if ($notification && property_exists($notification, 'message_html')) {
-  	      echo htmlspecialchars_decode($notification->message_html);
+        if ($notification && property_exists($notification, 'message_html')) {
+          echo htmlspecialchars_decode($notification->message_html);
         }
     }
 
     if (!$package_data) return;
-
-    $linkUrl = TRINITY_AUDIO_PRICING_URL . '&installkey=' . trinity_get_install_key();
 
     if ($package_data->capType === 'articles'
         && is_numeric($package_data->used)
         && is_numeric($package_data->packageLimit)
         && $package_data->used >= $package_data->packageLimit)
       echo "<div class='trinity-notification'>
-							<span>
-								You have a maxed out your plan usage!
-								<a class='bold-text' target='_blank' href='$linkUrl'>Upgrade your plan</a>		
-							</span>
-							<span class='trinity-notification-close'></span>
-						</div>";
+              <span>
+                You have a maxed out your plan usage!
+                <a class='bold-text' target='_blank' href='" . trinity_add_utm_to_url(TRINITY_AUDIO_PRICING_URL) . "'>Upgrade your plan</a>        
+              </span>
+              <span class='trinity-notification-close'></span>
+            </div>";
   }
 
   function trinity_show_bulk_progress() {
@@ -891,7 +1038,7 @@
   
             <span class='trinity-bulk-update status progress'>
               <span class='trinity-bulk-message'>We're updating your content settings. The plugin may experience issue while this is ongoing. You may navigate away from this page.</span>
-  
+
               <div class='trinity-bulk-count-wrapper'>
                 <span class='trinity-bulk-posts'></span>
                 <span class='trinity-bulk-bar'>
@@ -902,7 +1049,20 @@
           </div>";
   }
 
-  function show_articles_usage($package_data) {
+  function trinity_add_utm_to_url($url, $utm_medium = 'wp_admin', $utm_campaign = '') {
+    return add_query_arg(array(
+      'utm_medium' => urlencode($utm_medium),
+      'utm_source' => urlencode(get_site_url()),
+      'utm_campaign' => urlencode($utm_campaign)
+    ), $url);
+  }
+
+  function trinity_get_upgrade_url() {
+    if (trinity_get_is_account_key_linked()) return TRINITY_AUDIO_UPGRADE_URL;
+    return TRINITY_AUDIO_PRICING_URL;
+  }
+
+  function trinity_show_articles_usage($package_data) {
     $cap_type = $package_data->capType;
 
     if ($cap_type === 'chars') {
@@ -928,4 +1088,78 @@
       echo '<p>N/A</p>';
       echo '<p class="description"></p>';
     }
+  }
+
+  function trinity_get_languages($is_premium = false, $is_package_known = false) {
+    $cached_languages = get_transient(TRINITY_AUDIO_LANGUAGES_CACHE);
+    $languages = json_decode($cached_languages);
+
+    if ($languages) return $languages;
+
+    if ($is_package_known === false) {
+      $package_data = trinity_get_package_data();
+      $is_premium = $package_data->package->isPremium;
+    }
+
+    $languages_url = $is_premium ? TRINITY_AUDIO_EXTENDED_VOICES_URL : TRINITY_AUDIO_STANDARD_VOICES_URL;
+
+    $languages = trinity_get_voices($languages_url);
+
+    set_transient(TRINITY_AUDIO_LANGUAGES_CACHE, json_encode($languages), 10800); // 3h
+
+    return $languages;
+  }
+
+  function trinity_post_management_banner() {
+    $messages = [
+      "Get additional credits to convert more content into audio each month.",
+      "Create and edit pronunciation rules for accuracy and the highest level of audio experience.",
+      "Get access to premium and natural-sounding AI voices.",
+      "Get access to your personal dashboard with usability analytics.",
+      "Select the player’s theme that best suits your website’s branding elements."
+    ];
+    $message = array_rand($messages);
+    $show_banner = get_option(TRINITY_AUDIO_REMOVE_POST_BANNER);
+
+    if ($show_banner !== '0'): ?>
+      <div class="container">
+        <div class="header">
+          <div class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                 viewBox="0 0 44 44" style="enable-background:new 0 0 44 44;" xml:space="preserve"><g>
+                <g>
+                  <path d="M6,22c0-8.8,7.2-16,16-16s16,7.2,16,16s-7.2,16-16,16S6,30.8,6,22 M4,22c0,9.9,8.1,18,18,18s18-8.1,18-18S31.9,4,22,4S4,12.1,4,22L4,22z"/>
+                </g>
+                <g>
+                  <path id="trinity-outer-triangle"
+                        d="M13.3,35.9V8.1L38.2,22L13.3,35.9z M15.3,11.5v20.9L34.1,22L15.3,11.5z"/>
+                  <path id="trinity-inner-triangle"
+                        d="M17.6,28.6V15.4L29.5,22L17.6,28.6z M19.6,18.8v6.4l5.8-3.2L19.6,18.8z"/>
+                </g>
+              </g></svg>
+          </div>
+          <span class="header-text">
+            <div>TRINITY</div>
+            <div>AUDIO</div>
+          </span>
+          <span class="close-icon" onclick="trinityRemovePostBanner();trinitySendMetric('wordpress.post.banner.close');">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14.252" height="14.252" viewBox="0 0 14.252 14.252">
+                <rect width="17.995" height="2.159" transform="translate(1.527) rotate(45)" fill="#c8c8c8"/>
+                <rect width="17.995" height="2.159" transform="translate(14.252 1.527) rotate(135)" fill="#c8c8c8"/>
+              </svg>
+            </span>
+        </div>
+
+        <p class="message"><?= $messages[$message] ?></p>
+
+        <div>
+          <a onclick="trinitySendMetricMeta('wordpress.post.banner.visit', '<?= trinity_get_plugin_version() ?>');"
+                href="<?= trinity_add_utm_to_url(trinity_get_upgrade_url(), 'wp_post', 'upgrade_banner') ?>"
+                class="upgrade-button" target="_blank">
+            Upgrade to premium
+          </a>
+          <div class="footnote">30-days money back guarantee.</div>
+        </div>
+      </div>
+  <?php endif;
   }

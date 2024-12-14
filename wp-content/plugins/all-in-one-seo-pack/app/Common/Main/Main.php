@@ -20,76 +20,25 @@ class Main {
 	 * @since 4.0.0
 	 */
 	public function __construct() {
-		$this->media = new Media();
+		new Media();
+		new QueryArgs();
 
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueueAssets' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueueTranslations' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueueFrontEndAssets' ] );
 		add_action( 'admin_footer', [ $this, 'adminFooter' ] );
 	}
 
 	/**
-	 * Enqueue styles.
+	 * Enqueues the translations seperately so it can be called from anywhere.
 	 *
-	 * @since 4.0.0
+	 * @since 4.1.9
 	 *
 	 * @return void
 	 */
-	public function enqueueAssets() {
-		// Scripts.
-		$standalone = [
-			'app',
-			'notifications'
-		];
-
-		foreach ( $standalone as $key ) {
-			aioseo()->helpers->enqueueScript(
-				'aioseo-' . $key,
-				'js/' . $key . '.js'
-			);
-		}
-
-		aioseo()->helpers->enqueueScript(
-			'aioseo-vendors',
-			'js/chunk-vendors.js'
-		);
-		aioseo()->helpers->enqueueScript(
-			'aioseo-common',
-			'js/chunk-common.js'
-		);
-
-		wp_localize_script(
-			'aioseo-app',
-			'aioseoTranslations',
-			[
-				'translations' => aioseo()->helpers->getJedLocaleData( 'all-in-one-seo-pack' )
-			]
-		);
-
-		wp_localize_script(
-			'aioseo-notifications',
-			'aioseoNotifications',
-			[
-				'newNotifications' => count( Models\Notification::getNewNotifications() )
-			]
-		);
-
-		// Styles.
-		$rtl = is_rtl() ? '.rtl' : '';
-		aioseo()->helpers->enqueueStyle(
-			'aioseo-common',
-			"css/chunk-common$rtl.css"
-		);
-		aioseo()->helpers->enqueueStyle(
-			'aioseo-vendors',
-			"css/chunk-vendors$rtl.css"
-		);
-
-		foreach ( $standalone as $key ) {
-			aioseo()->helpers->enqueueStyle(
-				"aioseo-$key-style",
-				"css/$key$rtl.css"
-			);
-		}
+	public function enqueueTranslations() {
+		aioseo()->core->assets->load( 'src/vue/standalone/app/main.js', [], [
+			'translations' => aioseo()->helpers->getJedLocaleData( 'all-in-one-seo-pack' )
+		], 'aioseoTranslations' );
 	}
 
 	/**
@@ -102,18 +51,13 @@ class Main {
 	public function enqueueFrontEndAssets() {
 		$canManageSeo = apply_filters( 'aioseo_manage_seo', 'aioseo_manage_seo' );
 		if (
-			! is_user_logged_in() ||
+			! is_admin_bar_showing() ||
 			! ( current_user_can( $canManageSeo ) || aioseo()->access->canManage() )
 		) {
 			return;
 		}
 
-		// Styles.
-		aioseo()->helpers->enqueueStyle(
-			'aioseo-admin-bar',
-			'css/aioseo-admin-bar.css',
-			false
-		);
+		aioseo()->core->assets->enqueueCss( 'src/vue/assets/scss/app/admin-bar.scss', [], 'src/vue/assets/scss/app/admin-bar.scss' );
 	}
 
 	/**

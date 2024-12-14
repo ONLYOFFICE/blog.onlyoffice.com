@@ -15,6 +15,22 @@ const REGISTRATION_RESPONSE_CODE = {
 const $ = jQuery;
 const trinityPageIds = '#trinity-admin, #trinity-admin-info, #trinity-admin-logs, #trinity-admin-contact-us';
 
+function dashboardComponentLoaded() {
+  trinitySendMetric('wordpress.component.load.success');
+
+  // TODO: check if TRINITY_UNIT_CONFIGURATION.getFormData() return all fields
+}
+function dashboardComponentFailed() {
+  trinitySendMetric('wordpress.component.load.failed');
+}
+
+function isAllowedForPageName(name) {
+  const searchParams = new URLSearchParams(location.search);
+  const pageName = searchParams.get('page');
+
+  return pageName === name;
+}
+
 (function ($) {
     const id = '#trinity-admin';
     let isBulkTriggered = false;
@@ -49,7 +65,10 @@ const trinityPageIds = '#trinity-admin, #trinity-admin-info, #trinity-admin-logs
         localStorage.removeItem(TRINITY_LOCAL_STORAGE_POSTS_BULK_UPDATE_KEY);
     }
 
-    function checkProgress(allowRerunCheckProgrees) {
+    function checkProgress(allowRerunCheckProgress) {
+        // reduce unneeded polling
+        if (!isAllowedForPageName('trinity_audio')) return;
+
         $.ajax({
             type: 'GET',
             url: ajaxurl,
@@ -73,7 +92,7 @@ const trinityPageIds = '#trinity-admin, #trinity-admin-info, #trinity-admin-logs
                     });
                     trinityDisableFieldsWhichProduceBulkUpdate();
 
-                    if (allowRerunCheckProgrees) setTimeout(checkProgress, 1000, allowRerunCheckProgrees);
+                    if (allowRerunCheckProgress) setTimeout(checkProgress, 1000, allowRerunCheckProgress);
                 }
                 // Hide progress bar only after inProgress was true
                 else if (bulkUpdateResponse.inProgress === false && isBulkTriggered) {
@@ -199,7 +218,7 @@ const trinityPageIds = '#trinity-admin, #trinity-admin-info, #trinity-admin-logs
         if (event.target.matches('.trinity-notification .trinity-notification-close')) {
             event.target.parentElement.remove();
         }
-    })
+    });
 
 })(jQuery);
 
@@ -222,7 +241,85 @@ function updateCustomSelectValue(name, value, code) {
     else document.forms.settings.elements[name].value = value;
 }
 
-function trinityAudioOnSettingsFormSubmit(form, isInitialSave) {
+// update value for hidden input for voiceId
+// to be called when language changes
+function updateVoiceId(voices) {
+  const GENDERS = {
+    'm': 'Male',
+    'f': 'Female'
+  };
+  const gender = document.forms.settings.elements['trinity_audio_gender_id'].value;
+
+  if (voices[gender]) {
+    document.forms.settings.elements['trinity_audio_voice_id'].value = voices[gender];
+  } else {
+    const availableGender = Object.keys(voices)[0];
+
+    updateCustomSelectValue('trinity_audio_gender_id', GENDERS[availableGender], availableGender);
+
+    document.forms.settings.elements['trinity_audio_voice_id'].value = voices[availableGender];
+  }
+}
+
+async function isFormValid() {
+  return (await TRINITY_UNIT_CONFIGURATION.validate()).isValid;
+}
+
+// check if we need to disable/enable save button
+setInterval(async () => {
+  if (!window.TRINITY_UNIT_CONFIGURATION) return;
+
+  const isValid = await isFormValid();
+  $('.trinity-page .save-button').toggleClass('disabled', !isValid);
+}, 1000);
+
+async function trinityAudioOnSettingsFormSubmit(form, isInitialSave) {
+    const isValid = await isFormValid();
+    if (!isValid) { // should not go here, since button should be disabled when a form is not valid...
+      console.error('Can not submit a form, since it is not valid');
+      return;
+    }
+
+    trinitySendMetric('wordpress.settings.submit');
+
+    try {
+      const {
+        voice,
+        voiceStyle,
+        engine,
+        theme,
+        language,
+        speed,
+        fab,
+        gender
+      } = TRINITY_UNIT_CONFIGURATION.getFormData();
+      const saveButton = $('.trinity-page .save-button');
+
+      saveButton.addClass('disabled');
+
+      $.ajax({
+        type: 'GET',
+        url: ajaxurl,
+        data: {
+          action: window.TRINITY_WP_ADMIN.TRINITY_AUDIO_UPDATE_UNIT_CONFIG,
+          speed,
+          gender,
+          language,
+          voiceStyle,
+          engine,
+          themeId: theme,
+          voice,
+          poweredBy: Number(form.elements.trinity_audio_poweredby.checked),
+          fab: Number(fab)
+        },
+        complete() {
+          form.submit();
+        }
+      });
+    } catch(e) {
+      trinitySendMetric('wordpress.settings.error');
+    }
+
     if (!trinityAudioCheckIfLocalStorageAvailable()) return;
 
     const shouldBulkUpdate = isInitialSave
@@ -244,9 +341,9 @@ function trinityAudioOnRegisterFormSubmit(e) {
     e.preventDefault();
     const terms = document.forms['register-site'].trinity_audio_terms_of_service;
 
-    if (!terms.checked) $(terms).addClass('trinity-custom-required');
+    if (!terms.checked) return $(terms).addClass('trinity-custom-required');
 
-    if (!terms.checked) return;
+    trinitySendMetric('wordpress.signup.clicked');
 
     jQuery.ajax({
         type: 'POST',
@@ -255,7 +352,8 @@ function trinityAudioOnRegisterFormSubmit(e) {
         data: {
             action: window.TRINITY_WP_ADMIN.TRINITY_AUDIO_REGISTER,
             recover_installkey: jQuery('#' + window.TRINITY_WP_ADMIN.TRINITY_AUDIO_RECOVER_INSTALLKEY).val(),
-            publisher_token: jQuery('#' + window.TRINITY_WP_ADMIN.TRINITY_AUDIO_PUBLISHER_TOKEN).val()
+            publisher_token: jQuery('#' + window.TRINITY_WP_ADMIN.TRINITY_AUDIO_PUBLISHER_TOKEN).val(),
+            email_subscription: Number(jQuery('#' + window.TRINITY_WP_ADMIN.TRINITY_AUDIO_EMAIL_SUBSCRIPTION)[0].checked)
         },
         success: function (response) {
             if (response.code !== REGISTRATION_RESPONSE_CODE.SUCCESS) {
@@ -301,7 +399,7 @@ function trinityAudioOnPublisherTokenSubmit(e) {
 
 function showPublisherTokenMessage(message, isError = false) {
     $cssClassSuffix = isError ? 'error' : 'success';
-    jQuery('.publisher-token-notification').append(`<div class="notice notice-${$cssClassSuffix}"><p>${message}</p></div>`);
+    jQuery('.publisher-token-notification').html(`<div class="notice notice-${$cssClassSuffix}"><p>${message}</p></div>`);
 }
 
 function showRecoveryToken(e) {
@@ -323,8 +421,55 @@ function enableInput(e) {
     verifiedMessage.remove();
 }
 
+function trinitySendMetric(metric, additionalData) {
+  $.ajax({
+    type: 'POST',
+    url: ajaxurl,
+    data: {
+      metric,
+      additionalData,
+      action: window.TRINITY_WP_ADMIN.TRINITY_AUDIO_SEND_METRIC
+    }
+  });
+}
+
+function trinityRemovePostBanner() {
+  $('.trinity-meta-upgrade-banner').remove();
+
+  $.ajax({
+    type: 'POST',
+    url: ajaxurl,
+    data: {
+      action: window.TRINITY_WP_ADMIN.TRINITY_AUDIO_REMOVE_POST_BANNER
+    }
+  });
+}
+
+function grabPackageInfo(retryNumber) {
+  $.ajax({
+    type: 'GET',
+    url: ajaxurl,
+    data: {
+      retryNumber,
+      action: window.TRINITY_WP_ADMIN.TRINITY_AUDIO_PACKAGE_INFO
+    }
+  }).then((result) => {
+    const el = document.querySelector('.trinity-section-body.plan-section');
+
+    if (el && result) {
+      try {
+        result = JSON.parse(result);
+
+        if (['success', 'fail'].includes(result.status)) el.innerHTML = result.html;
+      } catch (error) {
+        console.error('TRINITY_WP', error);
+      }
+    }
+  });
+}
+
 function checkFieldDirty(input) {
   if (isFormValueChanged(input.name, input.value)) return input.classList.add('dirty');
 
-  input.classList.remove('dirty')
+  input.classList.remove('dirty');
 }

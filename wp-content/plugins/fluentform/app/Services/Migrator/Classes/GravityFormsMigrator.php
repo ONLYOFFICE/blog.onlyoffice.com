@@ -239,36 +239,43 @@ class GravityFormsMigrator extends BaseMigrator
      */
     private function getAddressArgs(array $field)
     {
+        $required = ArrayHelper::isTrue($field, 'isRequired');
         return [
             'address_line_1' => [
                 'name'    => $this->getInputName($field['inputs'][0]),
                 'label'   => $field['inputs'][0]['label'],
                 'visible' => ArrayHelper::get($field, 'inputs.0.isHidden', true),
+                'required' => $required,
             ],
             'address_line_2' => [
                 'name'    => $this->getInputName($field['inputs'][1]),
                 'label'   => $field['inputs'][1]['label'],
                 'visible' => ArrayHelper::get($field, 'inputs.1.isHidden', true),
+                'required' => $required,
             ],
             'city'           => [
                 'name'    => $this->getInputName($field['inputs'][2]),
                 'label'   => $field['inputs'][2]['label'],
                 'visible' => ArrayHelper::get($field, 'inputs.2.isHidden', true),
+                'required' => $required,
             ],
             'state'          => [
                 'name'    => $this->getInputName($field['inputs'][3]),
                 'label'   => $field['inputs'][3]['label'],
                 'visible' => ArrayHelper::get($field, 'inputs.3.isHidden', true),
+                'required' => $required,
             ],
             'zip'            => [
                 'name'    => $this->getInputName($field['inputs'][4]),
                 'label'   => $field['inputs'][4]['label'],
                 'visible' => ArrayHelper::get($field, 'inputs.4.isHidden', true),
+                'required' => $required,
             ],
             'country'        => [
                 'name'    => $this->getInputName($field['inputs'][5]),
                 'label'   => $field['inputs'][5]['label'],
                 'visible' => ArrayHelper::get($field, 'inputs.5.isHidden', true),
+                'required' => $required,
             ],
         ];
     }
@@ -333,7 +340,7 @@ class GravityFormsMigrator extends BaseMigrator
                         'placeholder' => '',
                     ),
                     'settings'   => array(
-                        'label'            => $repeaterField['label'],
+                        'label'            => ArrayHelper::get($repeaterField, 'label', ''),
                         'help_message'     => '',
                         'validation_rules' => array(
                             'required' => array(
@@ -354,7 +361,7 @@ class GravityFormsMigrator extends BaseMigrator
 
         $layoutGroupIds = array_column($fields, 'layoutGroupId');
         $cols = array_count_values($layoutGroupIds); // if inputs has more then one duplicate layoutGroupIds then it has container
-        if (max($cols) < 2) {
+        if (intval($cols) < 2) {
             return $fluentFields;
         }
 
@@ -609,6 +616,87 @@ class GravityFormsMigrator extends BaseMigrator
         return $form['title'];
     }
 
+    public function getEntries($formId)
+    {
+        $form = $this->getForm($formId);
+        if (empty($form)) {
+            return false;
+        }
+
+        /**
+         * Note - more-then 5000/6000 (based on sever) entries process make timout response / set default limit 1000
+         * @todo need silently async processing for support all entries migrate at a time, and improve frontend entry-migrate with more settings options
+         */
+        $totalEntries = \GFAPI::count_entries($formId);
+        $perPage = apply_filters('fluentform/entry_migration_max_limit', static::DEFAULT_ENTRY_MIGRATION_MAX_LIMIT, $this->key , $totalEntries, $formId);
+        $offset = 0;
+        $paging = [
+            'offset'    => $offset,
+            'page_size' => $perPage
+        ];
+        $submissions = \GFAPI::get_entries($formId, [], [], $paging);
+        $entries = [];
+        if (!is_array($submissions)) {
+            return $entries;
+        }
+
+        $fieldsMap = $this->getFields($form);
+        foreach ($submissions as $submission) {
+            $entry = [];
+            foreach ($fieldsMap['fields'] as $id => $field) {
+                $name = ArrayHelper::get($field, 'attributes.name');
+                if (!$name) {
+                    continue;
+                }
+
+                $type = ArrayHelper::get($field, 'element');
+                $fieldModel = \GFFormsModel::get_field($form, $id);
+
+                // format entry value by field name
+                $finalValue = null;
+                if ("input_file" == $type && $value = $this->getSubmissionValue($id, $submission)) {
+                    $finalValue = $this->migrateFilesAndGetUrls($value);
+                } elseif ("repeater_field" == $type && $value = $this->getSubmissionValue($id, $submission)) {
+                    if ($repeatData = (array)maybe_unserialize($value)) {
+                        $finalValue = [];
+                        foreach ($repeatData as $data) {
+                            $finalValue[] = array_values($data);
+                        }
+                    }
+                } elseif (
+                    "select" == $type &&
+                    ArrayHelper::isTrue($field, 'attributes.multiple') &&
+                    $value = $this->getSubmissionValue($id, $submission)
+                ) {
+                    $finalValue = \json_decode($value);
+                } elseif (
+                    in_array($type, ["input_checkbox", "address", "input_name", "terms_and_condition"]) &&
+                    isset($fieldModel['inputs'])
+                ) {
+                    $finalValue = $this->getSubmissionArrayValue($type, $field, $fieldModel['inputs'], $submission);
+                    if ("input_checkbox" == $type) {
+                        $finalValue = array_values($finalValue);
+                    } elseif ("terms_and_condition" == $type) {
+                        $finalValue = $finalValue ? 'on' : 'off';
+                    }
+                }
+
+                if (!$finalValue) {
+                    $finalValue = is_object($fieldModel) ? $fieldModel->get_value_export($submission, $id) : '';
+                }
+                $entry[$name] = $finalValue;
+            }
+            if ($created_at = ArrayHelper::get($submission, 'date_created')) {
+                $entry['created_at'] = $created_at;
+            }
+            if ($updated_at = ArrayHelper::get($submission, 'date_updated')) {
+                $entry['updated_at'] = $updated_at;
+            }
+            $entries[] = $entry;
+        }
+        return $entries;
+    }
+
     /**
      * @param $form
      * @return mixed
@@ -621,4 +709,41 @@ class GravityFormsMigrator extends BaseMigrator
         return false;
     }
 
+    protected function getSubmissionArrayValue($type, $field, $inputs, $submission)
+    {
+        $arrayValue = [];
+        foreach ($inputs as $input) {
+            if (!isset($submission[$input['id']])) {
+                continue;
+            }
+            if ("input_name" == $type && $subFields = ArrayHelper::get($field, 'fields')) {
+                foreach ($subFields as $subField) {
+                    if (
+                        $input['label'] == ArrayHelper::get($subField, 'settings.label') &&
+                        $subName = ArrayHelper::get($subField, 'attributes.name', '')
+                    ) {
+                        $arrayValue[$subName] = $submission[$input['id']];
+                    }
+                }
+            } else {
+                $arrayValue[] = $submission[$input['id']];
+            }
+        }
+        if ('address' == $type) {
+            $arrayValue = array_combine([
+                "address_line_1",
+                "address_line_2",
+                "city",
+                "state",
+                "zip",
+                "country"
+            ], $arrayValue);
+        }
+        return array_filter($arrayValue);
+    }
+
+    protected function getSubmissionValue($id, $submission)
+    {
+        return  isset($submission[$id]) ? $submission[$id] : "";
+    }
 }

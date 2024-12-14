@@ -33,48 +33,45 @@ class Frontend {
 			return apply_filters( 'aioseo_breadcrumbs_trail', $this->breadcrumbs );
 		}
 
-		$queriedObject = get_queried_object();
-		if ( ! is_object( $queriedObject ) ) {
-			return;
-		}
-
 		$type      = '';
-		$reference = $queriedObject;
+		$reference = get_queried_object();
+		// These types need the queried object for reference.
+		if ( is_object( $reference ) ) {
+			if ( is_single() ) {
+				$type = 'single';
+			}
 
-		if ( is_single() ) {
-			$type = 'single';
-		}
+			if ( is_singular( 'post' ) ) {
+				$type = 'post';
+			}
 
-		if ( is_singular( 'post' ) ) {
-			$type = 'post';
-		}
+			if ( is_page() && ! is_front_page() ) {
+				$type = 'page';
+			}
 
-		if ( is_page() && ! is_front_page() ) {
-			$type = 'page';
-		}
+			if ( is_category() || is_tag() ) {
+				$type = 'category';
+			}
 
-		if ( is_category() || is_tag() ) {
-			$type = 'category';
-		}
+			if ( is_tax() ) {
+				$type = 'taxonomy';
+			}
 
-		if ( is_tax() ) {
-			$type = 'taxonomy';
-		}
+			if ( is_post_type_archive() ) {
+				$type = 'postTypeArchive';
+			}
 
-		if ( is_post_type_archive() ) {
-			$type = 'postTypeArchive';
-		}
+			if ( is_author() ) {
+				$type = 'author';
+			}
 
-		if ( is_author() ) {
-			$type = 'author';
-		}
-
-		if ( is_home() ) {
-			$type = 'blog';
+			if ( is_home() ) {
+				$type = 'blog';
+			}
 		}
 
 		if ( is_date() ) {
-			$type = 'date';
+			$type      = 'date';
 			$reference = [
 				'year'  => get_query_var( 'year' ),
 				'month' => get_query_var( 'monthnum' ),
@@ -84,7 +81,7 @@ class Frontend {
 
 		if ( is_search() ) {
 			$type      = 'search';
-			$reference = get_search_query();
+			$reference = htmlspecialchars( sanitize_text_field( get_search_query() ) );
 		}
 
 		if ( is_404() ) {
@@ -114,9 +111,33 @@ class Frontend {
 	 * @return string|void            A html breadcrumb.
 	 */
 	public function sideDisplay( $echo = true, $type = '', $reference = '' ) {
-		$this->breadcrumbs = aioseo()->breadcrumbs->buildBreadcrumbs( $type, $reference );
+		// Save previously built breadcrumbs.
+		$previousCrumbs = $this->breadcrumbs;
 
-		return $this->display( $echo );
+		// Build and run the sideDisplay.
+		$this->breadcrumbs = aioseo()->breadcrumbs->buildBreadcrumbs( $type, $reference );
+		$sideDisplay       = $this->display( $echo );
+
+		// Restore previously built breadcrumbs.
+		$this->breadcrumbs = $previousCrumbs;
+
+		return $sideDisplay;
+	}
+
+	/**
+	 * Display a generic breadcrumb preview.
+	 *
+	 * @since 4.1.5
+	 *
+	 * @param  bool        $echo  Print out the breadcrumb.
+	 * @param  string      $label The preview crumb label.
+	 * @return string|void        A html breadcrumb.
+	 */
+	public function preview( $echo = true, $label = '' ) {
+		// Translators: "Crumb" refers to a part of the breadcrumb trail.
+		$label = empty( $label ) ? __( 'Sample Crumb', 'all-in-one-seo-pack' ) : $label;
+
+		return $this->sideDisplay( $echo, 'preview', $label );
 	}
 
 	/**
@@ -132,6 +153,11 @@ class Frontend {
 			return;
 		}
 
+		// We can only run after this action because we need all post types loaded.
+		if ( ! did_action( 'init' ) ) {
+			return;
+		}
+
 		$breadcrumbs = $this->getBreadcrumbs();
 		if ( empty( $breadcrumbs ) ) {
 			return;
@@ -141,7 +167,7 @@ class Frontend {
 
 		$display = '<div class="aioseo-breadcrumbs">';
 		foreach ( $breadcrumbs as $breadcrumb ) {
-			-- $breadcrumbsCount;
+			--$breadcrumbsCount;
 
 			$breadcrumbDisplay = $this->breadcrumbToDisplay( $breadcrumb );
 
@@ -182,7 +208,6 @@ class Frontend {
 	 */
 	protected function breadcrumbToDisplay( $item ) {
 		$templateItem = $this->getCrumbTemplate( $item );
-
 		if ( empty( $templateItem['template'] ) ) {
 			return;
 		}

@@ -1,7 +1,8 @@
 <?php
+
 namespace FluentForm\App\Services\FormBuilder\Components;
 
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
@@ -26,48 +27,48 @@ class CustomSubmitButton extends BaseFieldManager
         return $types;
     }
 
-    function getComponent()
+    public function getComponent()
     {
         return [
-            'index'          => 15,
-            'element'        => $this->key,
-            'attributes'     => [
+            'index'      => 12,
+            'element'    => $this->key,
+            'attributes' => [
                 'class' => '',
-                'type'  => 'submit'
+                'type'  => 'submit',
             ],
-            'settings'       => [
-                'button_style'       => '',
-                'button_size'        => 'md',
-                'align'              => 'left',
-                'container_class'    => '',
-                'current_state'      => 'normal_styles',
-                'background_color'   => 'rgb(64, 158, 255)',
-                'color'              => 'rgb(255, 255, 255)',
-                'hover_styles'       => (object)[
+            'settings' => [
+                'button_style'     => '',
+                'button_size'      => 'md',
+                'align'            => 'left',
+                'container_class'  => '',
+                'current_state'    => 'normal_styles',
+                'background_color' => 'rgb(64, 158, 255)',
+                'color'            => 'rgb(255, 255, 255)',
+                'hover_styles'     => (object) [
                     'backgroundColor' => '#ffffff',
                     'borderColor'     => '#409EFF',
                     'color'           => '#409EFF',
                     'borderRadius'    => '',
-                    'minWidth'        => '100%'
+                    'minWidth'        => '100%',
                 ],
-                'normal_styles'      => (object)[
+                'normal_styles' => (object) [
                     'backgroundColor' => '#409EFF',
                     'borderColor'     => '#409EFF',
                     'color'           => '#ffffff',
                     'borderRadius'    => '',
-                    'minWidth'        => '100%'
+                    'minWidth'        => '100%',
                 ],
-                'button_ui'          => (object)[
+                'button_ui' => (object) [
                     'text'    => 'Submit',
                     'type'    => 'default',
-                    'img_url' => ''
+                    'img_url' => '',
                 ],
-                'conditional_logics' => []
+                'conditional_logics' => [],
             ],
             'editor_options' => [
                 'title'      => $this->title,
                 'icon_class' => 'dashicons dashicons-arrow-right-alt',
-                'template'   => 'customButton'
+                'template'   => 'customButton',
             ],
         ];
     }
@@ -76,7 +77,6 @@ class CustomSubmitButton extends BaseFieldManager
     {
         return $conditonalItems;
     }
-
 
     public function getGeneralEditorElements()
     {
@@ -101,7 +101,7 @@ class CustomSubmitButton extends BaseFieldManager
     public function render($data, $form)
     {
         // @todo: We will remove this in our next version [added: 4.0.0]
-        if( class_exists('\FluentFormPro\Components\CustomSubmitField') ) {
+        if (class_exists('\FluentFormPro\Components\CustomSubmitField')) {
             return '';
         }
 
@@ -122,10 +122,10 @@ class CustomSubmitButton extends BaseFieldManager
             'ff-btn ff-btn-submit',
             $oldBtnType,
             $btnSize,
-            $data['attributes']['class']
+            $data['attributes']['class'],
         ];
 
-        if($btnStyle == 'no_style') {
+        if ('no_style' == $btnStyle) {
             $btnClasses[] = 'ff_btn_no_style';
         } else {
             $btnClasses[] = 'ff_btn_style';
@@ -133,12 +133,12 @@ class CustomSubmitButton extends BaseFieldManager
 
         $data['attributes']['class'] = trim(implode(' ', array_filter($btnClasses)));
 
-        if($tabIndex = \FluentForm\App\Helpers\Helper::getNextTabIndex()) {
+        if ($tabIndex = Helper::getNextTabIndex()) {
             $data['attributes']['tabindex'] = $tabIndex;
         }
 
         $styles = '';
-        if (ArrayHelper::get($data, 'settings.button_style') == '') {
+        if ('' == ArrayHelper::get($data, 'settings.button_style')) {
             $data['attributes']['class'] .= ' wpf_has_custom_css';
             // it's a custom button
             $buttonActiveStyles = ArrayHelper::get($data, 'settings.normal_styles', []);
@@ -146,10 +146,10 @@ class CustomSubmitButton extends BaseFieldManager
 
             $activeStates = '';
             foreach ($buttonActiveStyles as $styleAtr => $styleValue) {
-                if (!$styleValue) {
+                if (! $styleValue) {
                     continue;
                 }
-                if ($styleAtr == 'borderRadius') {
+                if ('borderRadius' == $styleAtr) {
                     $styleValue .= 'px';
                 }
                 $activeStates .= ltrim(strtolower(preg_replace('/[A-Z]([A-Z](?![a-z]))*/', '-$0', $styleAtr)), '_') . ':' . $styleValue . ';';
@@ -159,10 +159,10 @@ class CustomSubmitButton extends BaseFieldManager
             }
             $hoverStates = '';
             foreach ($buttonHoverStyles as $styleAtr => $styleValue) {
-                if (!$styleValue) {
+                if (! $styleValue) {
                     continue;
                 }
-                if ($styleAtr == 'borderRadius') {
+                if ('borderRadius' == $styleAtr) {
                     $styleValue .= 'px';
                 }
                 $hoverStates .= ltrim(strtolower(preg_replace('/[A-Z]([A-Z](?![a-z]))*/', '-$0', $styleAtr)), '-') . ':' . $styleValue . ';';
@@ -170,25 +170,25 @@ class CustomSubmitButton extends BaseFieldManager
             if ($hoverStates) {
                 $styles .= 'form.fluent_form_' . $form->id . ' .wpf_has_custom_css.ff-btn-submit:hover { ' . $hoverStates . ' } ';
             }
-        } else if($btnStyle != 'no_style') {
-            $styles .= 'form.fluent_form_' . $form->id . ' .ff-btn-submit { background-color: ' . ArrayHelper::get($data, 'settings.background_color') . '; color: ' . ArrayHelper::get($data, 'settings.color') . '; }';
+        } elseif ('no_style' != $btnStyle) {
+            $styles .= 'form.fluent_form_' . $form->id . ' .ff-btn-submit { background-color: ' . esc_attr(ArrayHelper::get($data, 'settings.background_color')) . '; color: ' . esc_attr(ArrayHelper::get($data, 'settings.color')) . '; }';
         }
 
         $atts = $this->buildAttributes($data['attributes']);
         $hasConditions = $this->hasConditions($data) ? 'has-conditions ' : '';
         $cls = trim($align . ' ' . $data['settings']['container_class'] . ' ' . $hasConditions);
 
-        $html = "<div class='{$cls} ff_submit_btn_wrapper ff_submit_btn_wrapper_custom'>";
+        $html = "<div class='" . esc_attr($cls) . " ff_submit_btn_wrapper ff_submit_btn_wrapper_custom'>";
 
         // ADDED IN v1.2.6 - updated in 1.4.4
         if (isset($data['settings']['button_ui'])) {
-            if ($data['settings']['button_ui']['type'] == 'default') {
-                $html .= '<button ' . $atts . '>' . $data['settings']['button_ui']['text'] . '</button>';
+            if ('default' == $data['settings']['button_ui']['type']) {
+                $html .= '<button ' . $atts . '>' . fluentform_sanitize_html($data['settings']['button_ui']['text']) . '</button>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
             } else {
-                $html .= "<button class='ff-btn-submit' type='submit'><img style='max-width: 200px;' src='{$data['settings']['button_ui']['img_url']}' alt='Submit Form'></button>";
+                $html .= "<button class='ff-btn-submit' type='submit'><img style='max-width: 200px;' src='" . esc_url($data['settings']['button_ui']['img_url']) . "' alt='Submit Form'></button>";
             }
         } else {
-            $html .= '<button ' . $atts . '>' . $data['settings']['btn_text'] . '</button>';
+            $html .= '<button ' . $atts . '>' . fluentform_sanitize_html($data['settings']['btn_text']) . '</button>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
         }
 
         if ($styles) {
@@ -197,6 +197,6 @@ class CustomSubmitButton extends BaseFieldManager
 
         $html .= '</div>';
 
-        echo apply_filters('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
+        $this->printContent('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
     }
 }

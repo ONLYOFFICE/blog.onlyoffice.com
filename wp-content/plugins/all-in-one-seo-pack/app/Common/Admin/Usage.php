@@ -59,9 +59,8 @@ abstract class Usage {
 		try {
 			$action = 'aioseo_send_usage_data';
 			if ( ! $this->enabled ) {
-				if ( as_next_scheduled_action( $action ) ) {
-					as_unschedule_action( $action, [], 'aioseo' );
-				}
+				aioseo()->actionScheduler->unschedule( $action );
+
 				return;
 			}
 
@@ -94,13 +93,12 @@ abstract class Usage {
 		wp_remote_post(
 			$this->getUrl(),
 			[
-				'timeout'     => 5,
-				'redirection' => 5,
-				'httpversion' => '1.1',
-				'blocking'    => true,
-				'headers'     => [ 'Content-Type' => 'application/json; charset=utf-8' ],
-				'body'        => wp_json_encode( $this->getData() ),
-				'user-agent'  => 'AIOSEO/' . AIOSEO_VERSION . '; ' . get_bloginfo( 'url' ),
+				'timeout'    => 10,
+				'headers'    => array_merge( [
+					'Content-Type' => 'application/json; charset=utf-8'
+				], aioseo()->helpers->getApiHeaders() ),
+				'user-agent' => aioseo()->helpers->getApiUserAgent(),
+				'body'       => wp_json_encode( $this->getData() )
 			]
 		);
 	}
@@ -136,7 +134,7 @@ abstract class Usage {
 			'url'                           => home_url(),
 			'php_version'                   => PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION,
 			'wp_version'                    => get_bloginfo( 'version' ),
-			'mysql_version'                 => aioseo()->db->db->db_version(),
+			'mysql_version'                 => aioseo()->core->db->db->db_version(),
 			'server_version'                => isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '',
 			'is_ssl'                        => is_ssl(),
 			'is_multisite'                  => is_multisite(),
@@ -173,6 +171,8 @@ abstract class Usage {
 			}
 		});
 
+		$settings = $this->filterPrivateSettings( $settings );
+
 		$internal = aioseo()->internalOptions->all();
 		array_walk_recursive( $internal, function( &$v ) {
 			if ( is_string( $v ) && strpos( $v, '&quot' ) !== false ) {
@@ -205,6 +205,7 @@ abstract class Usage {
 				if ( isset( $plugin['Version'] ) ) {
 					return $plugin['Version'];
 				}
+
 				return 'Not Set';
 			},
 			$plugins
@@ -227,5 +228,25 @@ abstract class Usage {
 		];
 
 		return strtotime( 'next sunday' ) + array_sum( $tracking );
+	}
+
+	/**
+	 * Anonimizes or obfuscates the value of certain settings.
+	 *
+	 * @since 4.3.2
+	 *
+	 * @param  array $settings The settings.
+	 * @return array           The altered settings.
+	 */
+	private function filterPrivateSettings( $settings ) {
+		if ( ! empty( $settings['advanced']['openAiKey'] ) ) {
+			$settings['advanced']['openAiKey'] = true;
+		}
+
+		if ( ! empty( $settings['localBusiness']['maps']['apiKey'] ) ) {
+			$settings['localBusiness']['maps']['apiKey'] = true;
+		}
+
+		return $settings;
 	}
 }

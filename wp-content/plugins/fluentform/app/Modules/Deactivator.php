@@ -4,14 +4,15 @@ namespace FluentForm\App\Modules;
 
 class Deactivator
 {
-	/**
-	 * This method will be called on plugin deactivation
-	 * @return void
-	 */
-	public function handleDeactivation()
-	{
-	    self::disableCronSchedule();
-	}
+    /**
+     * This method will be called on plugin deactivation
+     *
+     * @return void
+     */
+    public function handleDeactivation()
+    {
+        self::disableCronSchedule();
+    }
 
     public static function disableCronSchedule()
     {

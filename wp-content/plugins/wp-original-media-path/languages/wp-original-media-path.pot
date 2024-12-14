@@ -1,0 +1,80 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Original Media Path 2.2.X\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-original-media-"
+"path\n"
+"POT-Creation-Date: 2017-10-31 11:04+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.0.3\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ..\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: pages/options.php:10 wp_original_media_path.php:180
+msgid "FAQ"
+msgstr ""
+
+#: pages/options.php:15 wp_original_media_path.php:185
+msgid "How to Configure"
+msgstr ""
+
+#: pages/options.php:24 wp_original_media_path.php:190
+msgid "Donate"
+msgstr ""
+
+#: wp_original_media_path.php:64
+msgid ""
+"This plugin is not compatible with WordPress multisite. Sorry for the "
+"inconvenience."
+msgstr ""
+
+#: wp_original_media_path.php:66
+#, php-format
+msgid "Error : %s"
+msgstr ""
+
+#: wp_original_media_path.php:164
+msgid "Settings"
+msgstr ""
+
+#: wp_original_media_path.php:237
+msgid "Uploading Files"
+msgstr ""
+
+#: wp_original_media_path.php:266
+msgid "Expert mode"
+msgstr ""
+
+#: wp_original_media_path.php:269
+msgid "Activate that if you are aware of what you are doing."
+msgstr ""
+
+#: wp_original_media_path.php:275
+msgid "Store uploads in this folder"
+msgstr ""
+
+#: wp_original_media_path.php:276
+#, php-format
+msgid "Default is %s"
+msgstr ""
+
+#: wp_original_media_path.php:281
+msgid "Full URL path to files"
+msgstr ""
+
+#: wp_original_media_path.php:284
+#, php-format
+msgid ""
+"Simply specify the url for your upload folder. Be careful, if you want a "
+"domain other than %s, make sure to point the domain (DNS) to the desired "
+"folder on your current server. The plugin can not upload to any other server "
+"than this one."
+msgstr ""

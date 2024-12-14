@@ -16,7 +16,7 @@ namespace AIOSEO\Vendor\Monolog\Processor;
  * @see Monolog\Processor\MemoryProcessor::__construct() for options
  * @author Rob Jensen
  */
-class MemoryUsageProcessor extends \AIOSEO\Vendor\Monolog\Processor\MemoryProcessor
+class MemoryUsageProcessor extends MemoryProcessor
 {
     /**
      * @param  array $record

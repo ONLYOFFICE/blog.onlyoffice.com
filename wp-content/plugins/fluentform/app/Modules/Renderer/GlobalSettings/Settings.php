@@ -3,11 +3,14 @@
 namespace FluentForm\App\Modules\Renderer\GlobalSettings;
 
 use FluentForm\App\Modules\Form\AkismetHandler;
+use FluentForm\App\Modules\Registerer\TranslationString;
 use FluentForm\Framework\Foundation\Application;
 
 class Settings
 {
     /**
+     * App instance
+     *
      * @var \FluentForm\Framework\Foundation\Application
      */
     protected $app;
@@ -46,7 +49,8 @@ class Settings
         wp_localize_script('fluentform-global-settings-js', 'FluentFormApp', [
             'plugin' => $this->app->getSlug(),
             'akismet_activated' => AkismetHandler::isPluginEnabled(),
-            'has_pro' =>  defined('FLUENTFORMPRO')
+            'has_pro' =>  defined('FLUENTFORMPRO'),
+            'form_settings_str' => TranslationString::getGlobalSettingsI18n()
         ]);
     }
 }
