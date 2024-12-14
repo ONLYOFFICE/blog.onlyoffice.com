@@ -9,192 +9,192 @@ class Request
      */
     use FileHandler;
 
-	protected $app = null;
-	protected $headers = array();
-	protected $server = array();
-	protected $cookie = array();
-	protected $json = array();
-	protected $get = array();
-	protected $post = array();
-	protected $files = array();
-	protected $request = array();
-	
-	public function __construct($app, $get, $post, $files)
-	{
-		$this->app = $app;
-		$this->server = $_SERVER;
-		$this->cookie = $_COOKIE;
-		$this->request = array_merge(
-			$this->get = $this->clean($get),
-			$this->post = $this->clean($post),
+    protected $app = null;
+    protected $headers = [];
+    protected $server = [];
+    protected $cookie = [];
+    protected $json = [];
+    protected $get = [];
+    protected $post = [];
+    protected $files = [];
+    protected $request = [];
+
+    public function __construct($app, $get, $post, $files)
+    {
+        $this->app = $app;
+        $this->server = $_SERVER;
+        $this->cookie = $_COOKIE;
+        $this->request = array_merge(
+            $this->get = $this->clean($get),
+            $this->post = $this->clean($post),
             $this->files = $this->prepareFiles($files)
-		);
-	}
+        );
+    }
 
-	/**
-	 * Clean up the slashes from GET/POST added by WP
-	 * using "wp_magic_quotes" function in load.php.
-	 * 
-	 * @param  array $data
-	 * @return array
-	 */
-	public function clean($data)
-	{
-		return $data;
-		// return stripslashes_deep($data);
-	}
+    /**
+     * Clean up the slashes from GET/POST added by WP
+     * using "wp_magic_quotes" function in load.php.
+     *
+     * @param  array $data
+     * @return array
+     */
+    public function clean($data)
+    {
+        return $data;
+        // return stripslashes_deep($data);
+    }
 
-	/**
-	 * Variable exists
-	 * @param  string $key
-	 * @return bool
-	 */
-	public function exists($key)
-	{
-	    if(!$this->request) {
-	        return false;
+    /**
+     * Variable exists
+     * @param  string $key
+     * @return bool
+     */
+    public function exists($key)
+    {
+        if (!$this->request) {
+            return false;
         }
-		return array_key_exists($key, $this->request);
-	}
+        return array_key_exists($key, $this->request);
+    }
 
-	/**
-	 * Variable exists and has truthy value
-	 * @param  string $key
-	 * @return bool
-	 */
-	public function has($key)
-	{
-		return $this->exists($key) && !empty($this->request[$key]);
-	}
+    /**
+     * Variable exists and has truthy value
+     * @param  string $key
+     * @return bool
+     */
+    public function has($key)
+    {
+        return $this->exists($key) && !empty($this->request[$key]);
+    }
 
-	public function set($key, $value)
-	{
-		$this->request[$key] = $value;
-		return $this;
-	}
+    public function set($key, $value)
+    {
+        $this->request[$key] = $value;
+        return $this;
+    }
 
-	public function all()
-	{
-		return $this->get();
-	}
+    public function all()
+    {
+        return $this->get();
+    }
 
-	public function get($key = null, $default = null)
-	{
-		if (!$key) {
-			return $this->request;
-		} else {
-			return $this->exists($key) ? $this->request[$key] : $default;
-		}
-	}
+    public function get($key = null, $default = null)
+    {
+        if (!$key) {
+            return $this->request;
+        } else {
+            return $this->exists($key) ? $this->request[$key] : $default;
+        }
+    }
 
     /**
      * Get the files from the request.
      *
      * @return array
      */
-	public function files()
+    public function files()
     {
         return $this->files;
     }
 
-	public function query($key = null, $default = null)
-	{
-		return $key ? (isset($this->get[$key]) ? $this->get[$key] : $default) : $this->get;
-	}
-
-	public function post($key = null, $default = null)
-	{
-		return $key ? (isset($this->post[$key]) ? $this->post[$key] : $default) : $this->post;
-	}
-
-	public function only($args)
-	{
-		$values = [];
-		$keys = is_array($args) ? $args : func_get_args();
-		foreach ($keys as $key) {
-			$values[$key] = $this->get($key);
-		}
-		return $values;
-	}
-
-	public function except($args)
-	{
-		$values = [];
-		$keys = is_array($args) ? $args : func_get_args();
-		foreach ($this->request as $key => $value) {
-			if (!in_array($key, $keys)) {
-				$values[$key] = $this->get($key);
-			}
-		}
-		return $values;
-	}
-
-	public function merge(array $data = [])
-	{
-		$this->request = array_merge($this->request, $data);
-		return $this;
-	}
-
-	/**
-	 * Get user ip address
-	 * @return string
-	 */
-	public function getIp()
-   {
-       // Get real visitor IP behind CloudFlare network
-       if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
-           $_SERVER['REMOTE_ADDR'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
-           $_SERVER['HTTP_CLIENT_IP'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
-       }
-
-       if(isset($_SERVER['HTTP_CLIENT_IP'])) {
-           $ip = @$_SERVER['HTTP_CLIENT_IP'];
-           if (filter_var($ip, FILTER_VALIDATE_IP)) {
-               return $ip;
-           }
-       }
-
-       // Sometimes the `HTTP_X_FORWARDED_FOR` can contain more than IPs
-       $forward_ips = $this->server('HTTP_X_FORWARDED_FOR');
-       if ($forward_ips) {
-           $all_ips = explode(',', $forward_ips);
-           foreach ($all_ips as $ip) {
-               if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)){
-                   return $ip;
-               }
-           }
-       }
-
-       return $_SERVER['REMOTE_ADDR'];
-   }
-
-	public function server($key = null, $default = null)
-	{
-		return $key ? (isset($this->server[$key]) ? $this->server[$key] : $default) : $this->server;
-	}
-
-	public function header($key = null, $default = null)
-	{
-		if (!$this->headers) {
-			$this->headers = $this->setHeaders();
-		}
-
-		return $key ? (isset($this->headers[$key]) ? $this->headers[$key] : $default) : $this->headers;
-	}
-
-	public function cookie($key = null, $default = null)
-	{
-		return $key ? (isset($this->cookie[$key]) ? $this->cookie[$key] : $default) : $this->cookie;
-	}
-
-	/**
-	 * Taken and modified from Symfony
-	 */
-	public function setHeaders()
+    public function query($key = null, $default = null)
     {
-        $headers = array();
+        return $key ? (isset($this->get[$key]) ? $this->get[$key] : $default) : $this->get;
+    }
+
+    public function post($key = null, $default = null)
+    {
+        return $key ? (isset($this->post[$key]) ? $this->post[$key] : $default) : $this->post;
+    }
+
+    public function only($args)
+    {
+        $values = [];
+        $keys = is_array($args) ? $args : func_get_args();
+        foreach ($keys as $key) {
+            $values[$key] = $this->get($key);
+        }
+        return $values;
+    }
+
+    public function except($args)
+    {
+        $values = [];
+        $keys = is_array($args) ? $args : func_get_args();
+        foreach ($this->request as $key => $value) {
+            if (!in_array($key, $keys)) {
+                $values[$key] = $this->get($key);
+            }
+        }
+        return $values;
+    }
+
+    public function merge(array $data = [])
+    {
+        $this->request = array_merge($this->request, $data);
+        return $this;
+    }
+
+    /**
+     * Get user ip address
+     * @return string
+     */
+    public function getIp()
+    {
+        // Get real visitor IP behind CloudFlare network
+        if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+            $_SERVER['REMOTE_ADDR'] = sanitize_text_field($_SERVER['HTTP_CF_CONNECTING_IP']);
+            $_SERVER['HTTP_CLIENT_IP'] = sanitize_text_field($_SERVER['HTTP_CF_CONNECTING_IP']);
+        }
+
+        if (isset($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = sanitize_text_field($_SERVER['HTTP_CLIENT_IP']);
+            if (filter_var($ip, FILTER_VALIDATE_IP)) {
+                return $ip;
+            }
+        }
+
+        // Sometimes the `HTTP_X_FORWARDED_FOR` can contain more than IPs
+        $forward_ips = $this->server('HTTP_X_FORWARDED_FOR');
+        if ($forward_ips) {
+            $all_ips = explode(',', $forward_ips);
+            foreach ($all_ips as $ip) {
+                if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                    return $ip;
+                }
+            }
+        }
+
+        return sanitize_text_field($_SERVER['REMOTE_ADDR']);
+    }
+
+    public function server($key = null, $default = null)
+    {
+        return $key ? (isset($this->server[$key]) ? $this->server[$key] : $default) : $this->server;
+    }
+
+    public function header($key = null, $default = null)
+    {
+        if (!$this->headers) {
+            $this->headers = $this->setHeaders();
+        }
+
+        return $key ? (isset($this->headers[$key]) ? $this->headers[$key] : $default) : $this->headers;
+    }
+
+    public function cookie($key = null, $default = null)
+    {
+        return $key ? (isset($this->cookie[$key]) ? $this->cookie[$key] : $default) : $this->cookie;
+    }
+
+    /**
+     * Taken and modified from Symfony
+     */
+    public function setHeaders()
+    {
+        $headers = [];
         $parameters = $this->server;
-        $contentHeaders = array('CONTENT_LENGTH' => true, 'CONTENT_MD5' => true, 'CONTENT_TYPE' => true);
+        $contentHeaders = ['CONTENT_LENGTH' => true, 'CONTENT_MD5' => true, 'CONTENT_TYPE' => true];
         foreach ($parameters as $key => $value) {
             if (0 === strpos($key, 'HTTP_')) {
                 $headers[substr($key, 5)] = $value;
@@ -258,7 +258,7 @@ class Request
 
         // PHP_AUTH_USER/PHP_AUTH_PW
         if (isset($headers['PHP_AUTH_USER'])) {
-            $headers['AUTHORIZATION'] = 'Basic '.base64_encode($headers['PHP_AUTH_USER'].':'.$headers['PHP_AUTH_PW']);
+            $headers['AUTHORIZATION'] = 'Basic ' . base64_encode($headers['PHP_AUTH_USER'] . ':' . $headers['PHP_AUTH_PW']);
         } elseif (isset($headers['PHP_AUTH_DIGEST'])) {
             $headers['AUTHORIZATION'] = $headers['PHP_AUTH_DIGEST'];
         }

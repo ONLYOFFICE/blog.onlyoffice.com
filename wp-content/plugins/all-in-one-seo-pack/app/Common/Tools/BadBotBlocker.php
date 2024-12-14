@@ -205,13 +205,13 @@ class BadBotBlocker {
 			$uploadDirectory = wp_upload_dir();
 			$logDirectory    = $uploadDirectory['basedir'] . '/aioseo/logs/';
 			if ( wp_mkdir_p( $logDirectory ) ) {
-				$wpfs     = aioseo()->helpers->wpfs();
+				$fs       = aioseo()->core->fs;
 				$filePath = $logDirectory . 'aioseo-bad-bot-blocker.log';
-				if ( ! @$wpfs->exists( $filePath ) ) {
-					@$wpfs->touch( $filePath );
+				if ( ! $fs->exists( $filePath ) ) {
+					$fs->touch( $filePath );
 				}
 
-				if ( @$wpfs->exists( $filePath ) ) {
+				if ( $fs->exists( $filePath ) ) {
 					$this->log = new \AIOSEO\Vendor\Monolog\Logger( 'aioseo-bad-bot-blocker' );
 					$this->log->pushHandler( new \AIOSEO\Vendor\Monolog\Handler\StreamHandler( $filePath ) );
 				}
@@ -253,9 +253,9 @@ class BadBotBlocker {
 		$uploadDirectory = wp_upload_dir();
 		$logDirectory    = $uploadDirectory['basedir'] . '/aioseo/logs/';
 		$filePath        = $logDirectory . 'aioseo-bad-bot-blocker.log';
-		$wpfs            = aioseo()->helpers->wpfs();
-		if ( @$wpfs->exists( $filePath ) ) {
-			return @$wpfs->size( $filePath );
+		$fs              = aioseo()->core->fs;
+		if ( $fs->exists( $filePath ) ) {
+			return $fs->size( $filePath );
 		}
 
 		return 0;
@@ -272,12 +272,12 @@ class BadBotBlocker {
 		$uploadDirectory = wp_upload_dir();
 		$logDirectory    = $uploadDirectory['basedir'] . '/aioseo/logs/';
 		$filePath        = $logDirectory . 'aioseo-bad-bot-blocker.log';
-		$wpfs            = aioseo()->helpers->wpfs();
-		if ( @$wpfs->exists( $filePath ) ) {
-			@$wpfs->put_contents( $filePath, '' );
+		$fs              = aioseo()->core->fs;
+		if ( $fs->exists( $filePath ) ) {
+			$fs->putContents( $filePath, '' );
 		}
 
-		return $this->getLogSize( $filePath );
+		return $this->getLogSize();
 	}
 
 	/**
@@ -356,9 +356,9 @@ class BadBotBlocker {
 					}
 				}
 			}
-
-			return false;
 		}
+
+		return false;
 	}
 
 	/**
@@ -414,7 +414,7 @@ class BadBotBlocker {
 	/**
 	 * Quote List for Regex
 	 *
-	 * @since ?
+	 * @since 4.0.0
 	 *
 	 * @param        $list
 	 * @param string $quote

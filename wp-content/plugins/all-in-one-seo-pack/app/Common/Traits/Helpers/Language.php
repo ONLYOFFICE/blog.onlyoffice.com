@@ -24,7 +24,8 @@ trait Language {
 		if ( version_compare( $wp_version, '5.0', '<' ) ) {
 			return get_locale();
 		}
-		return determine_locale();
+
+		return determine_locale(); // phpcs:ignore AIOSEO.WpFunctionUse.NewFunctions.determine_localeFound
 	}
 
 	/**

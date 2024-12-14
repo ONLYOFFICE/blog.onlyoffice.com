@@ -135,12 +135,14 @@ class SocialMeta {
 				}
 				aioseo()->options->social->facebook->homePage->title = aioseo()->helpers->sanitizeOption( aioseo()->migration->helpers->macrosToSmartTags( $ogTitle ) );
 				aioseo()->options->social->twitter->homePage->title  = aioseo()->helpers->sanitizeOption( aioseo()->migration->helpers->macrosToSmartTags( $ogTitle ) );
+
 				return;
 			}
 			$title   = aioseo()->options->searchAppearance->global->siteTitle;
 			$ogTitle = $title ? $title : $ogTitle;
 			aioseo()->options->social->facebook->homePage->title = aioseo()->helpers->sanitizeOption( $ogTitle );
 			aioseo()->options->social->twitter->homePage->title  = aioseo()->helpers->sanitizeOption( $ogTitle );
+
 			return;
 		}
 
@@ -218,12 +220,14 @@ class SocialMeta {
 				}
 				aioseo()->options->social->facebook->homePage->description = aioseo()->helpers->sanitizeOption( aioseo()->migration->helpers->macrosToSmartTags( $ogDescription ) );
 				aioseo()->options->social->twitter->homePage->description = aioseo()->helpers->sanitizeOption( aioseo()->migration->helpers->macrosToSmartTags( $ogDescription ) );
+
 				return;
 			}
 			$description   = aioseo()->options->searchAppearance->global->metaDescription;
 			$ogDescription = $description ? $description : $ogDescription;
 			aioseo()->options->social->facebook->homePage->description = aioseo()->helpers->sanitizeOption( $ogDescription );
 			aioseo()->options->social->twitter->homePage->description  = aioseo()->helpers->sanitizeOption( $ogDescription );
+
 			return;
 		}
 
@@ -448,7 +452,7 @@ class SocialMeta {
 	 * @return void
 	 */
 	private function migrateProfileSocialUrls() {
-		$records = aioseo()->db
+		$records = aioseo()->core->db
 			->start( 'usermeta' )
 			->select( '*' )
 			->where( 'meta_key', 'facebook' )
@@ -467,7 +471,7 @@ class SocialMeta {
 			}
 		}
 
-		$records = aioseo()->db
+		$records = aioseo()->core->db
 			->start( 'usermeta' )
 			->select( '*' )
 			->where( 'meta_key', 'twitter' )

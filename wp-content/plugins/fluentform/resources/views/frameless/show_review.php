@@ -22,21 +22,21 @@
         <div class="ff_preview_title">
             <ul>
                 <li class="ff_form_name">
-                    <?php echo $form->id .' - '. $form->title;  ?>
+                    <?php echo intval($form->id) .' - '. esc_attr($form->title);  ?>
                 </li>
                 <li>
-                    <a href="<?php echo admin_url('admin.php?page=fluent_forms&form_id=' . $form_id . '&route=editor') ?>">Edit Fields</a>
+                    <a href="<?php echo esc_url(admin_url('admin.php?page=fluent_forms&form_id=' . intval($form_id) . '&route=editor')) ?>">Edit Fields</a>
                 </li>
             </ul>
         </div>
         <label for="ff_preview_only"><input id="ff_preview_only" type="checkbox" /> Preview Only</label>
         <div class="ff_preview_action">
-           [fluentform id="<?php echo $form_id; ?>"]
+           [fluentform id="<?php echo intval($form_id); ?>"]
         </div>
     </div>
     <div class="ff_preview_body">
         <div class="ff_form_preview_wrapper">
-            <?php echo do_shortcode('[fluentform id="' . $form_id . '"]'); ?>
+            <?php echo do_shortcode('[fluentform id="' . intval($form_id) . '"]'); ?>
         </div>
         <div class="ff_form_styler_wrapper">
             <?php if(defined('FLUENTFORMPRO')): ?>
@@ -48,7 +48,7 @@
                     </div>
                     <div class="ff_promo_body">
                         <p><a target="_blank" href="https://wpmanageninja.com/docs/fluent-form/fluent-forms-styles/">Advanced Form styler</a> is available in Pro version of Fluent Forms.
-                            You can style every element of the forms including input fields, form container, succes / error messages and many more.</p>
+                            You can style every element of the forms including input fields, form container, success / error messages and many more.</p>
                         <h4>Other Features</h4>
                         <ul>
                             <li>Stripe & PayPal Integration</li>
@@ -64,7 +64,7 @@
                             <li>Visual Data Reporting</li>
                         </ul>
                         <p style="text-align: center">
-                            <a target="_blank" rel="nofollow" class="ff_upgrade_btn" href="<?php echo fluentform_upgrade_url(); ?>">Upgrade to Pro</a>
+                            <a target="_blank" rel="nofollow" class="ff_upgrade_btn" href="<?php echo esc_url(fluentform_upgrade_url()); ?>">Upgrade to Pro</a>
                         </p>
 
 
@@ -75,12 +75,12 @@
                         <h4>Integrations available in Fluent Forms Pro</h4>
                         <ul class="ff_addons">
                             <?php foreach ($addOns as $addOn): ?>
-                                <li><img title="<?php echo $addOn['title']; ?>" src="<?php echo $addOn['logo']; ?>" /></li>
+                                <li><img title="<?php echo esc_attr($addOn['title']); ?>" src="<?php echo esc_attr($addOn['logo']); ?>" /></li>
                             <?php endforeach; ?>
                         </ul>
 
                         <p style="text-align: center">
-                            <a target="_blank" rel="nofollow" class="ff_upgrade_btn" href="<?php echo fluentform_upgrade_url(); ?>">Upgrade to Pro</a>
+                            <a target="_blank" rel="nofollow" class="ff_upgrade_btn" href="<?php echo esc_url(fluentform_upgrade_url()); ?>">Upgrade to Pro</a>
                         </p>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
     <div class="ff_preview_footer">
         <p>You are seeing preview version of Fluent Forms. This form is only accessible for Admin users. Other users
             may not access this page. To use this for in a page please use the following shortcode: [fluentform
-            id='<?php echo $form_id ?>']</p>
+            id='<?php echo intval($form_id) ?>']</p>
     </div>
 </div>
 <?php

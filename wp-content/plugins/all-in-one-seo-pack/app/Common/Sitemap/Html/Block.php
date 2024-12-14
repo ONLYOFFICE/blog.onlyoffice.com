@@ -11,7 +11,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 4.1.3
  */
-class Block extends \AIOSEO\Plugin\Common\Utils\Blocks {
+class Block {
+	/**
+	 * Class constructor.
+	 *
+	 * @since 4.1.1
+	 */
+	public function __construct() {
+		$this->register();
+	}
+
 	/**
 	 * Registers the block.
 	 *
@@ -20,7 +29,7 @@ class Block extends \AIOSEO\Plugin\Common\Utils\Blocks {
 	 * @return void
 	 */
 	public function register() {
-		register_block_type(
+		aioseo()->blocks->registerBlock(
 			'aioseo/html-sitemap', [
 				'attributes'      => [
 					'default'          => [
@@ -117,6 +126,7 @@ class Block extends \AIOSEO\Plugin\Common\Utils\Blocks {
 		}
 
 		$attributes = aioseo()->htmlSitemap->frontend->getAttributes( $attributes );
+
 		return aioseo()->htmlSitemap->frontend->output( false, $attributes );
 	}
 
@@ -131,6 +141,7 @@ class Block extends \AIOSEO\Plugin\Common\Utils\Blocks {
 	private function extractIds( $objects ) {
 		return array_map( function ( $object ) {
 			$object = json_decode( $object );
+
 			return (int) $object->value;
 		}, $objects );
 	}

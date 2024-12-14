@@ -2,17 +2,17 @@
 
 namespace FluentForm\Framework\Foundation;
 
-Abstract class AppFacade
+abstract class AppFacade
 {
 	/**
 	 * $instance Application
-	 * @var FluentForm\Framework\Foundation\Application
+	 * @var \FluentForm\Framework\Foundation\Application
 	 */
 	static $instance = null;
 
 	/**
 	 * Sets the app instance from Application
-	 * @param FluentForm\Framework\Foundation\Application $instance
+	 * @param \FluentForm\Framework\Foundation\Application $instance
 	 */
 	public static function setApplication($instance)
 	{
@@ -21,7 +21,7 @@ Abstract class AppFacade
 
 	/**
 	 * Get the app instance stored earlier during the bootstrap
-	 * @param FluentForm\Framework\Foundation\Application $instance
+	 * @param \FluentForm\Framework\Foundation\Application $instance
 	 */
 	public static function getApplication()
 	{

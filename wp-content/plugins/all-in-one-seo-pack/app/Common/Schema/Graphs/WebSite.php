@@ -22,13 +22,16 @@ class WebSite extends Graph {
 	public function get() {
 		$homeUrl = trailingslashit( home_url() );
 		$data    = [
-			'@type'       => 'WebSite',
-			'@id'         => $homeUrl . '#website',
-			'url'         => $homeUrl,
-			'name'        => aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'name' ) ),
-			'description' => aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'description' ) ),
-			'inLanguage'  => aioseo()->helpers->currentLanguageCodeBCP47(),
-			'publisher'   => [ '@id' => $homeUrl . '#' . aioseo()->options->searchAppearance->global->schema->siteRepresents ]
+			'@type'         => 'WebSite',
+			'@id'           => $homeUrl . '#website',
+			'url'           => $homeUrl,
+			'name'          => aioseo()->options->searchAppearance->global->schema->websiteName
+				? aioseo()->options->searchAppearance->global->schema->websiteName
+				: aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'name' ) ),
+			'alternateName' => aioseo()->options->searchAppearance->global->schema->websiteAlternateName,
+			'description'   => aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'description' ) ),
+			'inLanguage'    => aioseo()->helpers->currentLanguageCodeBCP47(),
+			'publisher'     => [ '@id' => $homeUrl . '#' . aioseo()->options->searchAppearance->global->schema->siteRepresents ]
 		];
 
 		if ( is_front_page() && aioseo()->options->searchAppearance->advanced->sitelinks ) {
@@ -41,6 +44,7 @@ class WebSite extends Graph {
 				'query-input' => 'required name=search_term_string',
 			];
 		}
+
 		return $data;
 	}
 }

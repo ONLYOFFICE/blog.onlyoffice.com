@@ -76,13 +76,23 @@ class Model implements \JsonSerializable {
 	protected $pk = 'id';
 
 	/**
+	 * The ID of the model.
+	 * This needs to be null in order for MySQL to auto-increment correctly if the NO_AUTO_VALUE_ON_ZERO SQL mode is enabled.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var int|null
+	 */
+	public $id = null;
+
+	/**
 	 * An array of columns from the DB that we can use.
 	 *
 	 * @since 4.0.0
 	 *
 	 * @var array
 	 */
-	private static $columns;
+	private static $columns = [];
 
 	/**
 	 * Class constructor.
@@ -132,7 +142,7 @@ class Model implements \JsonSerializable {
 			return false;
 		}
 
-		$query = aioseo()->db
+		$query = aioseo()->core->db
 			->start( $this->table )
 			->where( $this->pk, $var )
 			->limit( 1 )
@@ -163,15 +173,28 @@ class Model implements \JsonSerializable {
 		}
 
 		foreach ( (array) $array as $key => $value ) {
-			trim( $key );
+			$key = trim( $key );
 			$this->$key = $value;
 
+			if ( null === $value && in_array( $key, $this->nullFields, true ) ) {
+				continue;
+			}
+
 			if ( in_array( $key, $this->jsonFields, true ) ) {
-				$this->$key = json_decode( $value );
-			} elseif ( in_array( $key, $this->booleanFields, true ) ) {
+				if ( $value ) {
+					$this->$key = is_string( $value ) ? json_decode( $value ) : $value;
+				}
+				continue;
+			}
+
+			if ( in_array( $key, $this->booleanFields, true ) ) {
 				$this->$key = (bool) $value;
-			} elseif ( in_array( $key, $this->numericFields, true ) ) {
+				continue;
+			}
+
+			if ( in_array( $key, $this->numericFields, true ) ) {
 				$this->$key = (int) $value;
+				continue;
 			}
 		}
 	}
@@ -186,8 +209,8 @@ class Model implements \JsonSerializable {
 	 * @return array         The array of valid columns for the database query.
 	 */
 	protected function filter( $key ) {
-		$table   = aioseo()->db->prefix . $this->table;
-		$results = aioseo()->db->execute( 'SHOW COLUMNS FROM `' . $table . '`', true );
+		$table   = aioseo()->core->db->prefix . $this->table;
+		$results = aioseo()->core->db->execute( 'SHOW COLUMNS FROM `' . $table . '`', true );
 		$fields  = [];
 		$skip    = [ 'created', 'updated' ];
 		$columns = $results->result();
@@ -291,7 +314,11 @@ class Model implements \JsonSerializable {
 	 * @return null
 	 */
 	public function delete() {
-		aioseo()->db
+		if ( ! $this->exists() ) {
+			return;
+		}
+
+		aioseo()->core->db
 			->delete( $this->table )
 			->where( $this->pk, $this->id )
 			->run();
@@ -314,7 +341,7 @@ class Model implements \JsonSerializable {
 			if ( isset( $this->$pk ) && '' !== $this->$pk ) {
 				// PK specified.
 				$pkv   = $this->$pk;
-				$query = aioseo()->db
+				$query = aioseo()->core->db
 					->start( $this->table )
 					->where( [ $pk => $pkv ] )
 					->run();
@@ -322,7 +349,7 @@ class Model implements \JsonSerializable {
 				if ( ! $query->nullSet() ) {
 					// Row exists in database.
 					$fields['updated'] = gmdate( 'Y-m-d H:i:s' );
-					aioseo()->db
+					aioseo()->core->db
 						->update( $this->table )
 						->set( $fields )
 						->where( [ $pk => $pkv ] )
@@ -334,7 +361,7 @@ class Model implements \JsonSerializable {
 					$fields['created'] = gmdate( 'Y-m-d H:i:s' );
 					$fields['updated'] = gmdate( 'Y-m-d H:i:s' );
 
-					$id = aioseo()->db
+					$id = aioseo()->core->db
 						->insert( $this->table )
 						->set( $fields )
 						->run()
@@ -348,7 +375,7 @@ class Model implements \JsonSerializable {
 				$fields['created'] = gmdate( 'Y-m-d H:i:s' );
 				$fields['updated'] = gmdate( 'Y-m-d H:i:s' );
 
-				$id = aioseo()->db
+				$id = aioseo()->core->db
 					->insert( $this->table )
 					->set( $fields )
 					->run()
@@ -395,6 +422,10 @@ class Model implements \JsonSerializable {
 	 *
 	 * @return array An array of data that we are okay with serializing.
 	 */
+	#[\ReturnTypeWillChange]
+	// The attribute above omits a deprecation notice from PHP 8.1 that is thrown because the return type of jsonSerialize() isn't "mixed".
+	// Once PHP 7.x is our minimum supported version, this can be removed in favour of overriding the return type in the method signature like this -
+	// public function jsonSerialize() : array
 	public function jsonSerialize() {
 		$array = [];
 
@@ -421,10 +452,13 @@ class Model implements \JsonSerializable {
 			self::$columns[ get_called_class() ] = [];
 
 			// Let's set the columns that are available by default.
-			$table   = aioseo()->db->prefix . $this->table;
-			$results = aioseo()->db->execute( 'SHOW COLUMNS FROM `' . $table . '`', true );
+			$table   = aioseo()->core->db->prefix . $this->table;
+			$results = aioseo()->core->db->start( $table )
+				->output( 'OBJECT' )
+				->execute( 'SHOW COLUMNS FROM `' . $table . '`', true )
+				->result();
 
-			foreach ( $results->result() as $col ) {
+			foreach ( $results as $col ) {
 				self::$columns[ get_called_class() ][ $col->Field ] = $col->Default;
 			}
 
@@ -436,66 +470,5 @@ class Model implements \JsonSerializable {
 		}
 
 		return self::$columns[ get_called_class() ];
-	}
-
-	/**
-	 * Returns a JSON object with default tabs options.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @return string JSON object.
-	 */
-	public static function getDefaultTabsOptions() {
-		return '{"tab":"general","tab_social":"facebook","tab_sidebar":"general","tab_modal":"general","tab_modal_social":"facebook"}';
-	}
-
-	/**
-	 * Returns a JSON object with default schema options.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @param  string $existingOptions The existing options in JSON.
-	 * @return string                  The existing options with defaults added in JSON.
-	 */
-	public static function getDefaultSchemaOptions( $existingOptions = '' ) {
-		// If the root level value for a graph needs to be an object, we need to set at least one property inside of it so that PHP doesn't convert it to an empty array.
-
-		$defaults = [
-			'article'  => [
-				'articleType' => 'BlogPosting'
-			],
-			'course'   => [
-				'name'        => '',
-				'description' => '',
-				'provider'    => ''
-			],
-			'faq'      => [
-				'pages' => []
-			],
-			'product'  => [
-				'reviews' => []
-			],
-			'recipe'   => [
-				'ingredients'  => [],
-				'instructions' => [],
-				'keywords'     => []
-			],
-			'software' => [
-				'reviews'          => [],
-				'operatingSystems' => []
-			],
-			'webPage'  => [
-				'webPageType' => 'WebPage'
-			]
-		];
-
-		if ( empty( $existingOptions ) ) {
-			return wp_json_encode( $defaults );
-		}
-
-		$existingOptions = json_decode( $existingOptions, true );
-		$existingOptions = array_replace_recursive( $defaults, $existingOptions );
-
-		return wp_json_encode( $existingOptions );
 	}
 }

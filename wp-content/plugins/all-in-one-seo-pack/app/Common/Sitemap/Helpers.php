@@ -35,6 +35,7 @@ class Helpers {
 		if ( ! $type ) {
 			$type = isset( aioseo()->sitemap->type ) ? aioseo()->sitemap->type : 'general';
 		}
+
 		return apply_filters( 'aioseo_sitemap_filename', aioseo()->options->sitemap->$type->filename );
 	}
 
@@ -64,6 +65,7 @@ class Helpers {
 		if ( ! $query->post_count ) {
 			return false;
 		}
+
 		return $query->posts[0];
 	}
 
@@ -81,8 +83,8 @@ class Helpers {
 			$postTypes = implode( "', '", $postTypes );
 		}
 
-		$query = aioseo()->db
-			->start( aioseo()->db->db->posts . ' as p', true )
+		$query = aioseo()->core->db
+			->start( aioseo()->core->db->db->posts . ' as p', true )
 			->select( 'MAX(`p`.`post_modified_gmt`) as last_modified' )
 			->where( 'p.post_status', 'publish' )
 			->whereRaw( "( `p`.`post_type` IN ( '$postTypes' ) )" );
@@ -95,7 +97,7 @@ class Helpers {
 			->result();
 
 		return ! empty( $lastModified[0]->last_modified )
-			? aioseo()->helpers->formatDateTime( $lastModified[0]->last_modified )
+			? aioseo()->helpers->dateTimeToIso8601( $lastModified[0]->last_modified )
 			: '';
 	}
 
@@ -130,6 +132,7 @@ class Helpers {
 			}
 
 			$lastModified = 0;
+			$timestamp    = time();
 			foreach ( $additionalPages as $page ) {
 				if ( empty( $page['lastmod'] ) ) {
 					continue;
@@ -142,10 +145,11 @@ class Helpers {
 					$lastModified = $timestamp;
 				}
 			}
-			return 0 !== $lastModified ? aioseo()->helpers->formatDateTime( gmdate( 'Y-m-d H:i:s', $timestamp ) ) : false;
+
+			return 0 !== $lastModified ? aioseo()->helpers->dateTimeToIso8601( gmdate( 'Y-m-d H:i:s', $timestamp ) ) : false;
 		}
 
-		return aioseo()->helpers->formatDateTime( gmdate( 'Y-m-d H:i:s', max( $pages ) ) );
+		return aioseo()->helpers->dateTimeToIso8601( gmdate( 'Y-m-d H:i:s', max( $pages ) ) );
 	}
 
 	/**
@@ -160,6 +164,7 @@ class Helpers {
 		// Remove URL parameters.
 		$url = strtok( $url, '?' );
 		$url = htmlspecialchars( $url, ENT_COMPAT, 'UTF-8', false );
+
 		return aioseo()->helpers->makeUrlAbsolute( $url );
 	}
 
@@ -175,6 +180,7 @@ class Helpers {
 		if ( ! $this->performance ) {
 			$this->performance['time']   = microtime( true );
 			$this->performance['memory'] = ( memory_get_peak_usage( true ) / 1024 ) / 1024;
+
 			return;
 		}
 
@@ -183,7 +189,6 @@ class Helpers {
 		$memory    = $this->performance['memory'];
 		$type      = aioseo()->sitemap->type;
 		$indexName = aioseo()->sitemap->indexName;
-		// @TODO: [V4+] Use dedicated logger class once available.
 		error_log( wp_json_encode( "$indexName index of $type sitemap generated in $time seconds using a maximum of $memory mb of memory." ) );
 	}
 
@@ -236,6 +241,7 @@ class Helpers {
 				}
 			}
 		}
+
 		return $postTypes;
 	}
 
@@ -248,8 +254,8 @@ class Helpers {
 	 * @return bool             Whether or not there is an indexed post.
 	 */
 	private function checkForIndexedPost( $postType ) {
-		$posts = aioseo()->db
-			->start( aioseo()->db->db->posts . ' as p', true )
+		$posts = aioseo()->core->db
+			->start( aioseo()->core->db->db->posts . ' as p', true )
 			->select( 'p.ID' )
 			->join( 'aioseo_posts as ap', '`ap`.`post_id` = `p`.`ID`' )
 			->where( 'p.post_status', 'attachment' === $postType ? 'inherit' : 'publish' )
@@ -262,6 +268,7 @@ class Helpers {
 		if ( $posts && count( $posts ) ) {
 			return true;
 		}
+
 		return false;
 	}
 
@@ -309,6 +316,7 @@ class Helpers {
 				continue;
 			}
 		}
+
 		return $taxonomies;
 	}
 
@@ -329,7 +337,7 @@ class Helpers {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string $page The additional page object.
+	 * @param  object $page The additional page object.
 	 * @return string       The formatted datetime.
 	 */
 	public function lastModifiedAdditionalPage( $page ) {
@@ -370,7 +378,7 @@ class Helpers {
 	 */
 	private function excludedObjects( $option ) {
 		$type = aioseo()->sitemap->type;
-		// The RSS Sitemap needs to exclude whatever's excluded in the general sitemap.
+		// The RSS Sitemap needs to exclude whatever is excluded in the general sitemap.
 		if ( 'rss' === $type ) {
 			$type = 'general';
 		}
@@ -417,23 +425,65 @@ class Helpers {
 			return $urls;
 		}
 
-		foreach ( aioseo()->sitemap->addons as $addon => $classes ) {
-			if ( ! empty( $classes['helpers'] ) ) {
-				$urls = $urls + $classes['helpers']->getSitemapUrls();
+		foreach ( aioseo()->addons->getLoadedAddons() as $loadedAddon ) {
+			if ( ! empty( $loadedAddon->helpers ) && method_exists( $loadedAddon->helpers, 'getSitemapUrls' ) ) {
+				$urls = array_merge( $urls, $loadedAddon->helpers->getSitemapUrls() );
 			}
 		}
 
-		// Check if user has a custom filename from the V3 migration.
-		$filename = aioseo()->options->sitemap->general->advancedSettings->enable &&
-			! aioseo()->options->sitemap->general->advancedSettings->dynamic && aioseo()->sitemap->helpers->filename( 'general' )
-			? aioseo()->sitemap->helpers->filename( 'general' ) :
-			'sitemap';
 		if ( aioseo()->options->sitemap->general->enable ) {
-			$urls[] = 'Sitemap: ' . trailingslashit( home_url() ) . $filename . '.xml';
+			$urls[] = $this->getUrl( 'general' );
 		}
 		if ( aioseo()->options->sitemap->rss->enable ) {
-			$urls[] = 'Sitemap: ' . trailingslashit( home_url() ) . 'sitemap.rss';
+			$urls[] = $this->getUrl( 'rss' );
 		}
+
+		foreach ( $urls as &$url ) {
+			$url = 'Sitemap: ' . $url;
+		}
+
 		return $urls;
+	}
+
+	/**
+	 * Returns the URL of the given sitemap type.
+	 *
+	 * @since 4.1.5
+	 *
+	 * @param  string $type The sitemap type.
+	 * @return string       The sitemap URL.
+	 */
+	public function getUrl( $type ) {
+		$url = home_url( 'sitemap.xml' );
+
+		if ( 'rss' === $type ) {
+			$url = home_url( 'sitemap.rss' );
+		}
+
+		if ( 'general' === $type ) {
+			// Check if user has a custom filename from the V3 migration.
+			$filename = $this->filename( 'general' ) ?: 'sitemap';
+			$url      = home_url( $filename . '.xml' );
+		}
+
+		$addon = aioseo()->addons->getLoadedAddon( $type );
+		if ( ! empty( $addon->helpers ) && method_exists( $addon->helpers, 'getUrl' ) ) {
+			$url = $addon->helpers->getUrl();
+		}
+
+		return $url;
+	}
+
+	/**
+	 * Returns if images should be excluded from the sitemap.
+	 *
+	 * @since 4.2.2
+	 *
+	 * @return bool
+	 */
+	public function excludeImages() {
+		$shouldExclude = aioseo()->options->sitemap->general->advancedSettings->enable && aioseo()->options->sitemap->general->advancedSettings->excludeImages;
+
+		return apply_filters( 'aioseo_sitemap_exclude_images', $shouldExclude );
 	}
 }

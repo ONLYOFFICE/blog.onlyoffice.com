@@ -29,7 +29,7 @@ use AIOSEO\Vendor\Monolog\Formatter\FormatterInterface;
  *
  * @author Alexey Karapetov <alexey@karapetov.com>
  */
-class HandlerWrapper implements \AIOSEO\Vendor\Monolog\Handler\HandlerInterface, \AIOSEO\Vendor\Monolog\ResettableInterface
+class HandlerWrapper implements HandlerInterface, ResettableInterface
 {
     /**
      * @var HandlerInterface
@@ -39,7 +39,7 @@ class HandlerWrapper implements \AIOSEO\Vendor\Monolog\Handler\HandlerInterface,
      * HandlerWrapper constructor.
      * @param HandlerInterface $handler
      */
-    public function __construct(\AIOSEO\Vendor\Monolog\Handler\HandlerInterface $handler)
+    public function __construct(HandlerInterface $handler)
     {
         $this->handler = $handler;
     }
@@ -82,7 +82,7 @@ class HandlerWrapper implements \AIOSEO\Vendor\Monolog\Handler\HandlerInterface,
     /**
      * {@inheritdoc}
      */
-    public function setFormatter(\AIOSEO\Vendor\Monolog\Formatter\FormatterInterface $formatter)
+    public function setFormatter(FormatterInterface $formatter)
     {
         $this->handler->setFormatter($formatter);
         return $this;
@@ -96,7 +96,7 @@ class HandlerWrapper implements \AIOSEO\Vendor\Monolog\Handler\HandlerInterface,
     }
     public function reset()
     {
-        if ($this->handler instanceof \AIOSEO\Vendor\Monolog\ResettableInterface) {
+        if ($this->handler instanceof ResettableInterface) {
             return $this->handler->reset();
         }
     }

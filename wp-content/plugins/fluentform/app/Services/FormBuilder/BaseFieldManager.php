@@ -22,15 +22,15 @@ abstract class BaseFieldManager extends BaseComponent
 
     public function register()
     {
-        add_filter('fluent_editor_components', array($this, 'pushComponent'));
-        add_filter('fluent_editor_element_settings_placement', array($this, 'pushEditorElementPositions'));
-        add_filter('fluent_editor_element_search_tags', array($this, 'pushTags'), 10, 2);
-        add_action('fluentform_render_item_' . $this->key, array($this, 'render'), 10, 2);
+        add_filter('fluent_editor_components', [$this, 'pushComponent']);
+        add_filter('fluent_editor_element_settings_placement', [$this, 'pushEditorElementPositions']);
+        add_filter('fluent_editor_element_search_tags', [$this, 'pushTags'], 10, 2);
+        add_action('fluentform_render_item_' . $this->key, [$this, 'render'], 10, 2);
         /*
          * This is internal use.
          * Push field type to the fluentform field types to be available in FormFieldParser.
          */
-        add_filter('fluentform_form_input_types', array($this, 'pushFormInputType'));
+        add_filter('fluentform_form_input_types', [$this, 'pushFormInputType']);
 
         add_filter('fluent_editor_element_customization_settings', function ($settings) {
             if ($customSettings = $this->getEditorCustomizationSettings()) {
@@ -40,9 +40,7 @@ abstract class BaseFieldManager extends BaseComponent
             return $settings;
         });
 
-
-        add_filter('fluentform_supported_conditional_fields', array($this, 'pushConditionalSupport'));
-
+        add_filter('fluentform_supported_conditional_fields', [$this, 'pushConditionalSupport']);
     }
 
     public function pushConditionalSupport($conditonalItems)
@@ -70,12 +68,12 @@ abstract class BaseFieldManager extends BaseComponent
 
     public function pushEditorElementPositions($placement_settings)
     {
-        $placement_settings[$this->key] = array(
-            'general' => $this->getGeneralEditorElements(),
-            'advanced' => $this->getAdvancedEditorElements(),
-            'generalExtras' => $this->generalEditorElement(),
-            'advancedExtras' => $this->advancedEditorElement()
-        );
+        $placement_settings[$this->key] = [
+            'general'        => $this->getGeneralEditorElements(),
+            'advanced'       => $this->getAdvancedEditorElements(),
+            'generalExtras'  => $this->generalEditorElement(),
+            'advancedExtras' => $this->advancedEditorElement(),
+        ];
 
         return $placement_settings;
     }
@@ -125,7 +123,7 @@ abstract class BaseFieldManager extends BaseComponent
         return $tags;
     }
 
-    abstract function getComponent();
+    abstract public function getComponent();
 
-    abstract function render($element, $form);
+    abstract public function render($element, $form);
 }

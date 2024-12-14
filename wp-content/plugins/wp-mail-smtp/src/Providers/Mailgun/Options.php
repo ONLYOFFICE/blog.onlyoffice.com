@@ -2,6 +2,7 @@
 
 namespace WPMailSMTP\Providers\Mailgun;
 
+use WPMailSMTP\ConnectionInterface;
 use WPMailSMTP\Providers\OptionsAbstract;
 
 /**
@@ -15,8 +16,10 @@ class Options extends OptionsAbstract {
 	 * Mailgun constructor.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param ConnectionInterface $connection The Connection object.
 	 */
-	public function __construct() {
+	public function __construct( $connection = null ) {
 
 		parent::__construct(
 			array(
@@ -25,8 +28,8 @@ class Options extends OptionsAbstract {
 				'title'       => esc_html__( 'Mailgun', 'wp-mail-smtp' ),
 				'description' => sprintf(
 					wp_kses(
-						/* translators: %1$s - opening link tag; %2$s - closing link tag; %3$s - opening link tag; %4$s - closing link tag. */
-						__( '%1$sMailgun%2$s is one of the leading transactional email services trusted by over 150,000+ businesses. They provide 5,000 free emails per month for 3 months.<br><br>Read our %3$sMailgun documentation%4$s to learn how to configure Mailgun and improve your email deliverability.', 'wp-mail-smtp' ),
+						/* translators: %1$s - URL to mailgun.com; %2$s - URL to Mailgun documentation on wpmailsmtp.com */
+						__( '<a href="%1$s" target="_blank" rel="noopener noreferrer">Mailgun</a> is a transactional email provider that offers a generous 3-month free trial. After that, it offers a \'Pay As You Grow\' plan that allows you to pay for what you use without committing to a fixed monthly rate.<br><br>To get started, read our <a href="%2$s" target="_blank" rel="noopener noreferrer">Mailgun documentation</a>.', 'wp-mail-smtp' ),
 						array(
 							'br' => array(),
 							'a'  => array(
@@ -36,12 +39,11 @@ class Options extends OptionsAbstract {
 							),
 						)
 					),
-					'<a href="https://www.mailgun.com" target="_blank" rel="noopener noreferrer">',
-					'</a>',
-					'<a href="https://wpmailsmtp.com/docs/how-to-set-up-the-mailgun-mailer-in-wp-mail-smtp/" target="_blank" rel="noopener noreferrer">',
-					'</a>'
+					'https://www.mailgun.com',
+					esc_url( wp_mail_smtp()->get_utm_url( 'https://wpmailsmtp.com/docs/how-to-set-up-the-mailgun-mailer-in-wp-mail-smtp/', 'Mailgun documentation' ) )
 				),
-			)
+			),
+			$connection
 		);
 	}
 
@@ -57,7 +59,7 @@ class Options extends OptionsAbstract {
 				<label for="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-api_key"><?php esc_html_e( 'Private API Key', 'wp-mail-smtp' ); ?></label>
 			</div>
 			<div class="wp-mail-smtp-setting-field">
-				<?php if ( $this->options->is_const_defined( $this->get_slug(), 'api_key' ) ) : ?>
+				<?php if ( $this->connection_options->is_const_defined( $this->get_slug(), 'api_key' ) ) : ?>
 					<input type="text" disabled value="****************************************"
 						id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-api_key"
 					/>
@@ -65,7 +67,7 @@ class Options extends OptionsAbstract {
 				<?php else : ?>
 					<input type="password" spellcheck="false"
 						name="wp-mail-smtp[<?php echo esc_attr( $this->get_slug() ); ?>][api_key]"
-						value="<?php echo esc_attr( $this->options->get( $this->get_slug(), 'api_key' ) ); ?>"
+						value="<?php echo esc_attr( $this->connection_options->get( $this->get_slug(), 'api_key' ) ); ?>"
 						id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-api_key"
 					/>
 				<?php endif; ?>
@@ -73,7 +75,7 @@ class Options extends OptionsAbstract {
 					<?php
 					printf(
 						/* translators: %s - API key link. */
-						esc_html__( 'Follow this link to get an API Key from Mailgun: %s.', 'wp-mail-smtp' ),
+						esc_html__( 'Follow this link to get a Private API Key from Mailgun: %s.', 'wp-mail-smtp' ),
 						'<a href="https://app.mailgun.com/app/account/security/api_keys" target="_blank" rel="noopener noreferrer">' .
 						esc_html__( 'Get a Private API Key', 'wp-mail-smtp' ) .
 						'</a>'
@@ -90,8 +92,8 @@ class Options extends OptionsAbstract {
 			</div>
 			<div class="wp-mail-smtp-setting-field">
 				<input name="wp-mail-smtp[<?php echo esc_attr( $this->get_slug() ); ?>][domain]" type="text"
-					value="<?php echo esc_attr( $this->options->get( $this->get_slug(), 'domain' ) ); ?>"
-					<?php echo $this->options->is_const_defined( $this->get_slug(), 'domain' ) ? 'disabled' : ''; ?>
+					value="<?php echo esc_attr( $this->connection_options->get( $this->get_slug(), 'domain' ) ); ?>"
+					<?php echo $this->connection_options->is_const_defined( $this->get_slug(), 'domain' ) ? 'disabled' : ''; ?>
 					id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-domain" spellcheck="false"
 				/>
 				<p class="desc">
@@ -118,8 +120,8 @@ class Options extends OptionsAbstract {
 				<label for="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-region-us">
 					<input type="radio" id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-region-us"
 						name="wp-mail-smtp[<?php echo esc_attr( $this->get_slug() ); ?>][region]" value="US"
-						<?php echo $this->options->is_const_defined( $this->get_slug(), 'region' ) ? 'disabled' : ''; ?>
-						<?php checked( 'US', $this->options->get( $this->get_slug(), 'region' ) ); ?>
+						<?php echo $this->connection_options->is_const_defined( $this->get_slug(), 'region' ) ? 'disabled' : ''; ?>
+						<?php checked( 'US', $this->connection_options->get( $this->get_slug(), 'region' ) ); ?>
 					/>
 					<?php esc_html_e( 'US', 'wp-mail-smtp' ); ?>
 				</label>
@@ -127,8 +129,8 @@ class Options extends OptionsAbstract {
 				<label for="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-region-eu">
 					<input type="radio" id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-region-eu"
 						name="wp-mail-smtp[<?php echo esc_attr( $this->get_slug() ); ?>][region]" value="EU"
-						<?php echo $this->options->is_const_defined( $this->get_slug(), 'region' ) ? 'disabled' : ''; ?>
-						<?php checked( 'EU', $this->options->get( $this->get_slug(), 'region' ) ); ?>
+						<?php echo $this->connection_options->is_const_defined( $this->get_slug(), 'region' ) ? 'disabled' : ''; ?>
+						<?php checked( 'EU', $this->connection_options->get( $this->get_slug(), 'region' ) ); ?>
 					/>
 					<?php esc_html_e( 'EU', 'wp-mail-smtp' ); ?>
 				</label>

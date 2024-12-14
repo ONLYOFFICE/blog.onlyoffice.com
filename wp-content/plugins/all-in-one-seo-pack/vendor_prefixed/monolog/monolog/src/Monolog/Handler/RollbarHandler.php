@@ -29,7 +29,7 @@ use AIOSEO\Vendor\Monolog\Logger;
  *
  * @author Paul Statezny <paulstatezny@gmail.com>
  */
-class RollbarHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandler
+class RollbarHandler extends AbstractProcessingHandler
 {
     /**
      * Rollbar notifier
@@ -37,7 +37,7 @@ class RollbarHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHa
      * @var RollbarNotifier
      */
     protected $rollbarNotifier;
-    protected $levelMap = array(\AIOSEO\Vendor\Monolog\Logger::DEBUG => 'debug', \AIOSEO\Vendor\Monolog\Logger::INFO => 'info', \AIOSEO\Vendor\Monolog\Logger::NOTICE => 'info', \AIOSEO\Vendor\Monolog\Logger::WARNING => 'warning', \AIOSEO\Vendor\Monolog\Logger::ERROR => 'error', \AIOSEO\Vendor\Monolog\Logger::CRITICAL => 'critical', \AIOSEO\Vendor\Monolog\Logger::ALERT => 'critical', \AIOSEO\Vendor\Monolog\Logger::EMERGENCY => 'critical');
+    protected $levelMap = array(Logger::DEBUG => 'debug', Logger::INFO => 'info', Logger::NOTICE => 'info', Logger::WARNING => 'warning', Logger::ERROR => 'error', Logger::CRITICAL => 'critical', Logger::ALERT => 'critical', Logger::EMERGENCY => 'critical');
     /**
      * Records whether any log records have been added since the last flush of the rollbar notifier
      *
@@ -50,7 +50,7 @@ class RollbarHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHa
      * @param int             $level           The minimum logging level at which this handler will be triggered
      * @param bool            $bubble          Whether the messages that are handled can bubble up the stack or not
      */
-    public function __construct(\AIOSEO\Vendor\RollbarNotifier $rollbarNotifier, $level = \AIOSEO\Vendor\Monolog\Logger::ERROR, $bubble = \true)
+    public function __construct(RollbarNotifier $rollbarNotifier, $level = Logger::ERROR, $bubble = \true)
     {
         $this->rollbarNotifier = $rollbarNotifier;
         parent::__construct($level, $bubble);
@@ -72,7 +72,7 @@ class RollbarHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHa
             unset($context['payload']);
         }
         $context = \array_merge($context, $record['extra'], array('level' => $this->levelMap[$record['level']], 'monolog_level' => $record['level_name'], 'channel' => $record['channel'], 'datetime' => $record['datetime']->format('U')));
-        if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
+        if (isset($context['exception']) && $context['exception'] instanceof Exception) {
             $payload['level'] = $context['level'];
             $exception = $context['exception'];
             unset($context['exception']);

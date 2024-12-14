@@ -19,7 +19,7 @@ use AIOSEO\Vendor\Monolog\Utils;
  * @author Jordi Boggiano <j.boggiano@seld.be>
  * @author Christophe Coevoet <stof@notk.org>
  */
-class LineFormatter extends \AIOSEO\Vendor\Monolog\Formatter\NormalizerFormatter
+class LineFormatter extends NormalizerFormatter
 {
     const SIMPLE_FORMAT = "[%datetime%] %channel%.%level_name%: %message% %context% %extra%\n";
     protected $format;
@@ -110,15 +110,15 @@ class LineFormatter extends \AIOSEO\Vendor\Monolog\Formatter\NormalizerFormatter
     {
         // TODO 2.0 only check for Throwable
         if (!$e instanceof \Exception && !$e instanceof \Throwable) {
-            throw new \InvalidArgumentException('Exception/Throwable expected, got ' . \gettype($e) . ' / ' . \AIOSEO\Vendor\Monolog\Utils::getClass($e));
+            throw new \InvalidArgumentException('Exception/Throwable expected, got ' . \gettype($e) . ' / ' . Utils::getClass($e));
         }
         $previousText = '';
         if ($previous = $e->getPrevious()) {
             do {
-                $previousText .= ', ' . \AIOSEO\Vendor\Monolog\Utils::getClass($previous) . '(code: ' . $previous->getCode() . '): ' . $previous->getMessage() . ' at ' . $previous->getFile() . ':' . $previous->getLine();
+                $previousText .= ', ' . Utils::getClass($previous) . '(code: ' . $previous->getCode() . '): ' . $previous->getMessage() . ' at ' . $previous->getFile() . ':' . $previous->getLine();
             } while ($previous = $previous->getPrevious());
         }
-        $str = '[object] (' . \AIOSEO\Vendor\Monolog\Utils::getClass($e) . '(code: ' . $e->getCode() . '): ' . $e->getMessage() . ' at ' . $e->getFile() . ':' . $e->getLine() . $previousText . ')';
+        $str = '[object] (' . Utils::getClass($e) . '(code: ' . $e->getCode() . '): ' . $e->getMessage() . ' at ' . $e->getFile() . ':' . $e->getLine() . $previousText . ')';
         if ($this->includeStacktraces) {
             $str .= "\n[stacktrace]\n" . $e->getTraceAsString() . "\n";
         }

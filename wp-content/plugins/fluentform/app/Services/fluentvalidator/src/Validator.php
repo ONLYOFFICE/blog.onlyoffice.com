@@ -4,7 +4,8 @@ namespace FluentValidator;
 
 class Validator
 {
-    use ValidatesAttributes, MessageBag;
+    use ValidatesAttributes;
+    use MessageBag;
 
     /**
      * The data under validation.
@@ -83,10 +84,10 @@ class Validator
      */
     public static function make(array $data = [], array $rules = [], array $messages = [])
     {
-        if(!$rules) {
+        if (!$rules) {
             $rules = [];
         }
-        if(!$messages) {
+        if (!$messages) {
             $messages = [];
         }
 
@@ -103,7 +104,8 @@ class Validator
     protected function setRules(array $rules = [])
     {
         $this->rules = array_merge_recursive(
-            $this->rules, (new ValidationRuleParser($this->data))->explode($rules)
+            $this->rules,
+            (new ValidationRuleParser($this->data))->explode($rules)
         );
 
         return $this;
@@ -141,11 +143,10 @@ class Validator
 
         $ruleCamelCase = str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $rule)));
 
-
-        $method = 'validate'.$ruleCamelCase;
+        $method = 'validate' . $ruleCamelCase;
 
         if ($this->shouldValidate($method, $ruleCamelCase, $attribute, $value) &&
-            ! $this->$method($attribute, $value, $parameters)
+            !$this->$method($attribute, $value, $parameters)
         ) {
             $this->addFailure($attribute, $rule, $parameters);
         }
@@ -196,7 +197,7 @@ class Validator
      */
     public function passes()
     {
-        return ! $this->fails();
+        return !$this->fails();
     }
 
     /**
@@ -214,7 +215,7 @@ class Validator
      *
      * @param string|array $attribute
      * @param string|array $rules
-     * @param callable $callback
+     * @param callable     $callback
      *
      * @return $this
      */
@@ -241,7 +242,7 @@ class Validator
     public function hasRequired($attribute)
     {
         foreach ($this->rules[$attribute] as $rule) {
-            if (strpos($rule, 'required') !== false) {
+            if (false !== strpos($rule, 'required')) {
                 return true;
                 break;
             }
@@ -293,7 +294,7 @@ class Validator
      *
      * @param string $rule
      * @param string $attribute
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return bool
      */

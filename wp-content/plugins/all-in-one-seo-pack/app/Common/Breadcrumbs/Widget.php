@@ -13,6 +13,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Widget extends \WP_Widget {
 	/**
+	 * The default attributes.
+	 *
+	 * @since 4.2.7
+	 *
+	 * @var array
+	 */
+	private $defaults = [];
+
+	/**
 	 * Class constructor.
 	 *
 	 * @since 4.1.1
@@ -64,7 +73,10 @@ class Widget extends \WP_Widget {
 		}
 
 		// Breadcrumb.
-		aioseo()->breadcrumbs->frontend->display();
+		! empty( $_GET['legacy-widget-preview'] ) ? aioseo()->breadcrumbs->frontend->preview() : aioseo()->breadcrumbs->frontend->display();
+
+		// Workaround for a bug in the Gutenberg widget preview.
+		echo '<span style="display: none">a</span>';  // TODO: remove this when the preview bug is fixed.
 
 		echo $args['after_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}

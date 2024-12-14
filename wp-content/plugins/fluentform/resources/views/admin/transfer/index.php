@@ -13,14 +13,14 @@ use FluentForm\App\Helpers\Helper;
             <ul class="ff_admin_menu_list">
                 <li class="active">
                     <a data-hash="exportforms"
-                       href="<?php echo Helper::makeMenuUrl('fluent_forms_transfer', ['hash' => 'exportforms']); ?>"
+                       href="<?php echo esc_url(Helper::makeMenuUrl('fluent_forms_transfer', ['hash' => 'exportforms'])); ?>"
                     >
                         <?php echo __('Export Forms', 'fluentform'); ?>
                     </a>
                 </li>
                 <li>
                     <a data-hash="importforms"
-                       href="<?php echo Helper::makeMenuUrl('fluent_forms_transfer', ['hash' => 'importforms']); ?>"
+                       href="<?php echo esc_url(Helper::makeMenuUrl('fluent_forms_transfer', ['hash' => 'importforms'])); ?>"
                     >
                         <?php echo __('Import Forms', 'fluentform'); ?>
                     </a>
@@ -28,7 +28,7 @@ use FluentForm\App\Helpers\Helper;
                 <?php if ( ( new FluentForm\App\Services\Migrator\Bootstrap())->hasOtherForms()): ?>
                 <li>
                     <a data-hash="migrator"
-                       href="<?php echo Helper::makeMenuUrl('fluent_forms_transfer', ['hash' => 'migrator']); ?>"
+                       href="<?php echo esc_url(Helper::makeMenuUrl('fluent_forms_transfer', ['hash' => 'migrator'])); ?>"
                     >
                         <?php echo __('Migrator', 'fluentform'); ?>
                     </a>
@@ -37,14 +37,14 @@ use FluentForm\App\Helpers\Helper;
 
                 <li>
                     <a data-hash="activitylogs"
-                       href="<?php echo Helper::makeMenuUrl('fluent_forms_transfer', ['hash' => 'activitylogs']); ?>"
+                       href="<?php echo esc_url(Helper::makeMenuUrl('fluent_forms_transfer', ['hash' => 'activitylogs'])); ?>"
                     >
                         <?php echo __('Activity Logs', 'fluentform'); ?>
                     </a>
                 </li>
                 <li>
                     <a data-hash="apilogs"
-                       href="<?php echo Helper::makeMenuUrl('fluent_forms_transfer', ['hash' => 'apilogs']); ?>"
+                       href="<?php echo esc_url(Helper::makeMenuUrl('fluent_forms_transfer', ['hash' => 'apilogs'])); ?>"
                     >
                         <?php echo __('API Logs', 'fluentform'); ?>
                     </a>

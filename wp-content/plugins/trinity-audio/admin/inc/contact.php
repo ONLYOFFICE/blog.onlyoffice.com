@@ -112,7 +112,6 @@
                   Feedback
                 </label>
                 <?php  trinity_feedback_message(); ?>
-                <br />
                 <div style="width: 66%">
                   <button class="trinity-feedback-button">Send</button>
                 </div>
@@ -143,7 +142,7 @@
   }
 
   function trinity_sender_website() {
-    echo "<input placeholder='Please enter a valid URL address' class='trinity-custom-contact-input' type='text' value='' name='name' id='" . TRINITY_AUDIO_SENDER_WEBSITE . "' />";
+    echo "<input placeholder='Please enter a valid URL address' class='trinity-custom-contact-input' type='text' value='' name='website' id='" . TRINITY_AUDIO_SENDER_WEBSITE . "' />";
   }
 
   function trinity_sender_message() {
@@ -156,7 +155,7 @@
   }
 
   function trinity_feedback_title() {
-    echo "<input placeholder='Recommended: Best product ever!!!' class='custom-input' type='text' value='' name='name' id='" . TRINITY_AUDIO_FEEDBACK_TITLE . "' />";
+    echo "<input placeholder='Recommended: Best product ever!!!' class='custom-input' type='text' value='' name='name' />";
   }
 
   function trinity_feedback_message() {

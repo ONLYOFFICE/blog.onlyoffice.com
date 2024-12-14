@@ -20,6 +20,11 @@ class ConflictingPlugins {
 	 * @since 4.0.0
 	 */
 	public function __construct() {
+		// We don't want to trigger our notices when not in the admin.
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		add_action( 'init', [ $this, 'init' ] );
 	}
 
@@ -45,6 +50,7 @@ class ConflictingPlugins {
 			}
 
 			Models\Notification::deleteNotificationByName( 'conflicting-plugins' );
+
 			return;
 		}
 
@@ -90,6 +96,7 @@ class ConflictingPlugins {
 					'Yoast SEO'         => 'wordpress-seo/wp-seo.php',
 					'Yoast SEO Premium' => 'wordpress-seo-premium/wp-seo-premium.php',
 					'Rank Math SEO'     => 'seo-by-rank-math/rank-math.php',
+					'Rank Math SEO Pro' => 'seo-by-rank-math-pro/rank-math-pro.php',
 					'SEOPress'          => 'wp-seopress/seopress.php',
 					'The SEO Framework' => 'autodescription/autodescription.php',
 				];

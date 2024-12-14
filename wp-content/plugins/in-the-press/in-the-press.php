@@ -94,7 +94,6 @@ class in_the_press extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		?>
-		<div class="view-all"><a href="<?php echo icl_get_home_url() ?>onlyoffice-in-the-press"><?php _e( 'View all <div class="no-wrap">news&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
 		</div>
 		<ul>
 			<?php foreach ( $r->posts as $recent_post ) : ?>
@@ -132,6 +131,7 @@ class in_the_press extends WP_Widget {
 					<?php endif; ?>
 			<?php endforeach; ?>
 		</ul>
+		<div class="view-all"><a href="<?php echo icl_get_home_url() ?>onlyoffice-in-the-press"><?php _e( 'View all <div class="no-wrap">posts&nbsp;<div class="grey-arrow"></div></div>', 'teamlab-blog-2-0'); ?></a></div>
 		<?php
 		echo $args['after_widget'];
 	}

@@ -1,0 +1,1 @@
+import{_ as e,o,c as t,x as r,e as s}from"./_plugin-vue_export-helper.2d9794a3.js";const a={},c={class:"aioseo-pro-badge"};function u(n,_){return o(),t("div",c,[r(n.$slots,"default",{},()=>[s(" PRO ")])])}const i=e(a,[["render",u]]);export{i as C};

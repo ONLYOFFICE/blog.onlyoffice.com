@@ -2,23 +2,26 @@
 
 namespace FluentForm\App\Services\FormBuilder\Notifications;
 
+use FluentForm\View;
+use FluentForm\Framework\Helpers\ArrayHelper;
+use FluentForm\Framework\Foundation\Application;
 use FluentForm\App\Modules\Form\FormFieldsParser;
 use FluentForm\App\Services\Emogrifier\Emogrifier;
-use FluentForm\Framework\Foundation\Application;
-use FluentForm\Framework\Helpers\ArrayHelper;
-use FluentForm\View;
 
 class EmailNotification
 {
     /**
      * FluentForm\Framework\Foundation\Application
+     *
      * @var $app
      */
     protected $app = null;
 
     /**
      * Biuld the instance of this class
-     * @param FluentForm\Framework\Foundation\Application $app
+     *
+     * @param \FluentForm\Framework\Foundation\Application $app
+     *
      * @return $this
      */
     public function __construct(Application $app)
@@ -28,14 +31,16 @@ class EmailNotification
 
     /**
      * Send the email notification
-     * @param array $notification [Notification settings from form meta]
-     * @param array $submittedData [User submitted form data]
-     * @param \StdClass $form [The form object from database]
+     *
+     * @param array     $notification  [Notification settings from form meta]
+     * @param array     $submittedData [User submitted form data]
+     * @param \StdClass $form          [The form object from database]
+     *
      * @return bool
      */
     public function notify($notification, $submittedData, $form, $entryId = false)
     {
-        $isSendAsPlain = ArrayHelper::get($notification, 'asPlainText') == 'yes';
+        $isSendAsPlain = 'yes' == ArrayHelper::get($notification, 'asPlainText');
 
         $isSendAsPlain = apply_filters('fluentform_send_plain_html_email', $isSendAsPlain, $form, $notification);
 
@@ -45,7 +50,7 @@ class EmailNotification
 
         $notification['parsed_message'] = $emailBody;
 
-        if (!$isSendAsPlain) {
+        if (! $isSendAsPlain) {
             $emailBody = $this->getEmailWithTemplate($emailBody, $form, $notification);
         }
 
@@ -53,8 +58,8 @@ class EmailNotification
 
         $subject = apply_filters('fluentform_email_subject', $notification['subject'], $notification, $submittedData, $form);
 
-        if (!$sendAddresses || !$subject) {
-            if($entryId) {
+        if (! $sendAddresses || ! $subject) {
+            if ($entryId) {
                 do_action('ff_log_data', [
                     'parent_source_id' => $form->id,
                     'source_type'      => 'submission_item',
@@ -84,7 +89,6 @@ class EmailNotification
             * Inline email logger. It will work fine hopefully
             */
             add_action('wp_mail_failed', function ($error) use ($notification, $form, $entryId) {
-
                 $failedMailSubject = ArrayHelper::get($error->error_data, 'wp_mail_failed.subject');
                 if ($failedMailSubject == $notification['subject']) {
                     $reason = $error->get_error_message();
@@ -109,20 +113,19 @@ class EmailNotification
                 'component'        => 'EmailNotification',
                 'status'           => 'info',
                 'title'            => 'Email sending initiated',
-                'description'      => "Email Notification broadcasted to " . $address . ".<br />Subject: {$subject}",
+                'description'      => 'Email Notification broadcasted to ' . $address . ".<br />Subject: {$subject}",
             ]);
             $emailTo = apply_filters('fluentform_email_to', $address, $notification, $submittedData, $form);
             $result = $this->broadCast([
-                'email' => $emailTo,
-                'subject' => $subject,
-                'body' => $emailBody,
-                'headers' => $headers,
-                'attachments' => $attachments
+                'email'       => $emailTo,
+                'subject'     => $subject,
+                'body'        => $emailBody,
+                'headers'     => $headers,
+                'attachments' => $attachments,
             ]);
         }
         return $result;
     }
-
 
     private function broadCast($data)
     {
@@ -143,17 +146,17 @@ class EmailNotification
     private function getSendAddresses($notification, $submittedData)
     {
         $sendAddresses = [
-            ArrayHelper::get($notification, 'sendTo.email')
+            ArrayHelper::get($notification, 'sendTo.email'),
         ];
 
-        if (ArrayHelper::get($notification, 'sendTo.type') == 'field' && !empty($notification['sendTo']['field'])) {
+        if ('field' == ArrayHelper::get($notification, 'sendTo.type') && ! empty($notification['sendTo']['field'])) {
             $sendAddresses = [
-                ArrayHelper::get($submittedData, $notification['sendTo']['field'])
+                ArrayHelper::get($submittedData, $notification['sendTo']['field']),
             ];
             $sendAddresses = array_filter($sendAddresses, 'is_email');
         }
 
-        if (ArrayHelper::get($notification, 'sendTo.type') != 'routing') {
+        if ('routing' != ArrayHelper::get($notification, 'sendTo.type')) {
             return $sendAddresses;
         }
 
@@ -161,7 +164,7 @@ class EmailNotification
         $validAddresses = [];
         foreach ($routings as $routing) {
             $inputValue = ArrayHelper::get($routing, 'input_value');
-            if(!$inputValue || !is_email($inputValue)) {
+            if (! $inputValue || ! is_email($inputValue)) {
                 continue;
             }
             $condition = [
@@ -169,9 +172,9 @@ class EmailNotification
                     'status'     => true,
                     'type'       => 'any',
                     'conditions' => [
-                        $routing
-                    ]
-                ]
+                        $routing,
+                    ],
+                ],
             ];
             if (\FluentForm\App\Services\ConditionAssesor::evaluate($condition, $submittedData)) {
                 $validAddresses[] = $inputValue;
@@ -183,7 +186,9 @@ class EmailNotification
 
     /**
      * @param $formId
+     *
      * @return array
+     *
      * @todo: Implement Caching mechanism so we don't have to parse these things for every request
      */
     private function getFormInputsAndLabels($form)
@@ -194,7 +199,7 @@ class EmailNotification
 
         return [
             'inputs' => $formInputs,
-            'labels' => $inputLabels
+            'labels' => $inputLabels,
         ];
     }
 
@@ -205,18 +210,18 @@ class EmailNotification
         $emailFooter = apply_filters('fluentform_email_footer', '', $form, $notification);
 
         if (empty($emailHeader)) {
-            $emailHeader = View::make('email.template.header', array(
+            $emailHeader = View::make('email.template.header', [
                 'form'         => $form,
-                'notification' => $notification
-            ));
+                'notification' => $notification,
+            ]);
         }
 
         if (empty($emailFooter)) {
-            $emailFooter = View::make('email.template.footer', array(
+            $emailFooter = View::make('email.template.footer', [
                 'form'         => $form,
                 'notification' => $notification,
-                'footerText'   => $this->getFooterText($form, $notification)
-            ));
+                'footerText'   => $this->getFooterText($form, $notification),
+            ]);
         }
 
         $css = View::make('email.template.styles');
@@ -229,7 +234,6 @@ class EmailNotification
             $emogrifier = new Emogrifier($emailBody, $css);
             $emailBody = $emogrifier->emogrify();
         } catch (\Exception $e) {
-
         }
         $maybeError = ob_get_clean();
 
@@ -243,7 +247,7 @@ class EmailNotification
     private function getFooterText($form, $notification)
     {
         $option = get_option('_fluentform_global_form_settings');
-        if ($option && !empty($option['misc']['email_footer_text'])) {
+        if ($option && ! empty($option['misc']['email_footer_text'])) {
             $footerText = $option['misc']['email_footer_text'];
         } else {
             $footerText = '&copy; ' . get_bloginfo('name', 'display') . '.';
@@ -255,12 +259,12 @@ class EmailNotification
     public function getHeaders($notification, $isSendAsPlain = false)
     {
         $headers = [
-            'Content-Type: text/html; charset=utf-8'
+            'Content-Type: text/html; charset=utf-8',
         ];
 
         $fromEmail = $notification['fromEmail'];
 
-        if (!is_email($fromEmail)) {
+        if (! is_email($fromEmail)) {
             $fromEmail = false;
         }
 
@@ -270,25 +274,26 @@ class EmailNotification
             $headers[] = "From: <{$fromEmail}>";
         }
 
-        if (!empty($notification['bcc'])) {
+        if (! empty($notification['bcc'])) {
             $bccEmail = $notification['bcc'];
             $headers[] = 'bcc: ' . $bccEmail;
         }
 
-        if (!empty($notification['cc'])) {
+        if (! empty($notification['cc'])) {
             $ccEmail = $notification['cc'];
             $headers[] = 'cc: ' . $ccEmail;
         }
 
         if ($notification['replyTo'] && is_email($notification['replyTo'])) {
-            $headers[] = "Reply-To: <" . $notification['replyTo'] . ">";
+            $headers[] = 'Reply-To: <' . $notification['replyTo'] . '>';
         }
 
         $headers = $this->app->applyFilters(
-            'fluenttform_email_header', $headers, $notification
+            'fluenttform_email_header',
+            $headers,
+            $notification
         );
 
         return $headers;
     }
-
 }

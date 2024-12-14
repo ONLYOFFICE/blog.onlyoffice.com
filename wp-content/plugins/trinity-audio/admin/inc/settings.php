@@ -4,16 +4,29 @@
   require_once __DIR__ . '/../../inc/constants.php';
   require_once __DIR__ . '/../../inc/templates.php';
 
+  $unit_config = trinity_get_unit_config_from_trinity();
+
+  $initial_save = !trinity_get_is_first_changes_saved();
+
   trinity_audio_first_time_install_notice();
-  if (!trinity_get_is_first_changes_saved()) {
+
+  if ($initial_save) {
     trinity_show_warning_need_to_activate();
   }
+
   $package_data = trinity_get_package_data();
+
+  $languages = trinity_get_languages($package_data->package->isPremium);
+
+  if (!$languages) {
+    die(trinity_can_not_connect_error_message("<div class='notice notice-error'><p>Can't get list of supported languages.</p><p>") . '</p></div>');
+  }
+
   notifications($package_data);
+  trinity_show_bulk_progress();
 ?>
 
-<form action="options.php" name="settings" method="post"
-  onsubmit="trinityAudioOnSettingsFormSubmit(this, <?php echo trinity_get_is_first_changes_saved() ?>)">
+<form class="trinity-page-wrapper" action="options.php" name="settings" method="post" onsubmit="trinityAudioOnSettingsFormSubmit(this, <?=(int)$initial_save?>);return false;">
   <?php
     settings_errors();
     settings_fields('trinity_audio');
@@ -21,242 +34,169 @@
   <div class="wrap trinity-page" id="trinity-admin">
     <h1 class="trinity-head">Trinity Audio</h1>
     <div class="flex-grid">
-      <div class="row">
-        <div class="column">
-          <section>
-            <div class="section-title">General Configuration</div>
-            <div class="trinity-section-body">
-              <div class="section-form-group">
+      <div class="column column-left">
+        <section>
+          <?php if ($package_data->package->package_name !== 'Premium') { ?>
+          <div class="section-title row lock-description">
+            <span>General Configuration</span>
+            <span class="upgrade-description">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" data-v-f5d98984=""><g data-name="Ellipse 31" fill="#333" stroke="#f9f9f9" stroke-width="2"><circle cx="11" cy="11" r="11" stroke="none"></circle><circle cx="11" cy="11" r="10" fill="none"></circle></g><path data-name="Icon ionic-ios-lock" d="M14.034 9.382h-.607V8.201a2.427 2.427 0 10-4.853-.034v1.215h-.607a1.014 1.014 0 00-1.011 1.011v4.854a1.014 1.014 0 001.011 1.011h6.067a1.014 1.014 0 001.012-1.011v-4.854a1.014 1.014 0 00-1.012-1.011zm-2.68 3.155v1.739a.362.362 0 01-.336.364.354.354 0 01-.372-.354v-1.749a.809.809 0 11.708 0zm1.365-3.155H9.282V8.167a1.719 1.719 0 013.438 0z" fill="#fff"></path></svg>
+              <a target="_blank" href="<?= trinity_add_utm_to_url(trinity_get_upgrade_url(), 'wp_admin', 'top_configuration') ?>">Upgrade</a>
+              <span>to Activate Locked Features</span>
+            </span>
+          </div>
+          <?php } ?>
+          <div class="trinity-section-body">
+            <script defer src="<?=TRINITY_DASHBOARD_SERVICE?>backend/v1/apps/unit-configuration/wp/<?=trinity_get_install_key()?>" onload="dashboardComponentLoaded()" onerror="dashboardComponentFailed()"></script>
+          </div>
+        </section>
+        <section>
+          <div class="section-title">Textual Configuration</div>
+          <div class="trinity-section-body">
+            <div class="section-form-group">
+              <label class="section-form-title" for="<?php echo TRINITY_AUDIO_ADD_POST_TITLE; ?>">
+                Add post title to audio:
+              </label>
 
-                <div class="section-form-title">
-                  Default language:
-                </div>
-
-                <?php  trinity_source_language(); ?>
-              </div>
-
-              <div class="section-form-group">
-
-                <div class="section-form-title">
-                  Default gender:
-                </div>
-
-                <?php trinity_source_gender(); ?>
-              </div>
-
-              <div class="section-form-group">
-
-                <label class="section-form-title" for="<?php echo TRINITY_AUDIO_SOURCE_NEW_POSTS_DEFAULT; ?>">
-                  New post default:
-                </label>
-
-                <?php trinity_new_post_default(); ?>
-              </div>
-
+              <?php trinity_add_post_title(); ?>
             </div>
-          </section>
-        </div>
 
-        <div class="column">
-          <section>
-            <div class="section-title">Subscription</div>
-            <div class="trinity-section-body plan-section">
-              <div class="curr-plan">Current plan:</div>
+            <div class="section-form-group">
+              <label class="section-form-title" for="<?php echo TRINITY_AUDIO_ADD_POST_EXCERPT; ?>">
+                Add post excerpt to audio:
+              </label>
 
-              <?php trinity_current_package_info_template($package_data); ?>
+              <?php trinity_add_post_excerpt(); ?>
             </div>
-          </section>
-        </div>
 
+            <div class="section-form-group">
+              <label class="section-form-title" for="<?php echo TRINITY_AUDIO_SKIP_TAGS; ?>">
+                Skip HTML tags:
+              </label>
+
+              <?php trinity_skip_tags(); ?>
+            </div>
+
+            <div class="section-form-group">
+              <label class="section-form-title" for="<?php echo TRINITY_AUDIO_ALLOW_SHORTCODES; ?>">
+                Allow shortcodes:
+              </label>
+
+              <?php trinity_allow_shortcodes(); ?>
+            </div>
+
+          </div>
+        </section>
+        <section>
+          <div class="section-title">Player Settings</div>
+          <div class="trinity-section-body">
+            <div class="section-form-group">
+              <div class="section-form-title">
+                Player position:
+              </div>
+
+              <?php trinity_player_position(); ?>
+            </div>
+
+            <div class="section-form-group">
+              <label class="section-form-title" for="<?php echo TRINITY_AUDIO_PLAYER_LABEL; ?>">
+                Player label:
+              </label>
+
+              <?php trinity_player_label(); ?>
+            </div>
+
+            <div class="section-form-group">
+              <label class="section-form-title" for="<?php echo TRINITY_AUDIO_POWERED_BY; ?>">
+                Help us reach new users:
+              </label>
+
+              <div></div>
+
+              <?php trinity_display_powered_by($unit_config); ?>
+            </div>
+
+            <div class="section-form-group">
+              <label class="section-form-title" for="<?php echo TRINITY_AUDIO_PRECONNECT; ?>">
+                Resource Preconnect:
+              </label>
+
+              <?php trinity_preconnect(); ?>
+            </div>
+
+            <div class="section-form-group" style="display: none">
+              <label class="section-form-title" for="<?php echo TRINITY_AUDIO_PRECONNECT; ?>">
+                Translate:
+              </label>
+
+              <?php trinity_translate(); ?>
+            </div>
+
+            <div class="section-form-group">
+
+              <label class="section-form-title" for="<?php echo TRINITY_AUDIO_SOURCE_NEW_POSTS_DEFAULT; ?>">
+                New post default:
+              </label>
+
+              <?php trinity_new_post_default(); ?>
+            </div>
+
+          </div>
+        </section>
+        <section>
+          <div class="section-title">Advanced Settings</div>
+          <div class="trinity-section-body">
+            <div class="section-form-group">
+              <label class="section-form-title" for="<?php echo TRINITY_AUDIO_CHECK_FOR_LOOP; ?>">
+                Render player with 3rd party theme posts, e.g. Divi, Bespoke, etc.
+              </label>
+
+              <?php trinity_check_for_loop(); ?>
+            </div>
+          </div>
+        </section>
       </div>
 
-      <div class="row">
-        <div class="column">
-          <section>
-            <div class="section-title">Textual Configuration</div>
-            <div class="trinity-section-body">
-
-              <div class="section-form-group">
-                <label class="section-form-title" for="<?php echo TRINITY_AUDIO_ADD_POST_TITLE; ?>">
-                  Add post title to audio:
-                </label>
-
-                <?php trinity_add_post_title(); ?>
-              </div>
-
-              <div class="section-form-group">
-                <label class="section-form-title" for="<?php echo TRINITY_AUDIO_ADD_POST_EXCERPT; ?>">
-                  Add post excerpt to audio:
-                </label>
-
-                <?php trinity_add_post_excerpt(); ?>
-              </div>
-
-
-              <div class="section-form-group">
-                <label class="section-form-title" for="<?php echo TRINITY_AUDIO_SKIP_TAGS; ?>">
-                  Skip HTML tags:
-                </label>
-
-                <?php trinity_skip_tags(); ?>
-              </div>
-
-              <div class="section-form-group">
-                <label class="section-form-title" for="<?php echo TRINITY_AUDIO_ALLOW_SHORTCODES; ?>">
-                  Allow shortcodes:
-                </label>
-
-                <?php trinity_allow_shortcodes(); ?>
-              </div>
-
+      <div class="column column-right">
+        <section class="trinity-guide">
+          <div class="trinity-section-body">
+            <div>
+              Get started with your TrinityAudio Player on WordPress
             </div>
-          </section>
-        </div>
-
-        <div class="column">
-          <section>
-            <div class="section-title">Player Settings</div>
-            <div class="trinity-section-body">
-
-              <div class="section-form-group">
-                <div class="section-form-title">
-                  Player position:
-                </div>
-
-                <?php trinity_player_position(); ?>
-              </div>
-
-              <div class="section-form-group">
-                <label class="section-form-title" for="<?php echo TRINITY_AUDIO_PLAYER_LABEL; ?>">
-                  Player label:
-                </label>
-
-                <?php trinity_player_label(); ?>
-              </div>
-
-              <div class="section-form-group">
-                <label class="section-form-title" for="<?php echo TRINITY_AUDIO_POWERED_BY; ?>">
-                  Help us reach new users:
-                </label> <br />
-
-                <?php trinity_display_powered_by(); ?>
-              </div>
-
-              <div class="section-form-group">
-                <label class="section-form-title" for="<?php echo TRINITY_AUDIO_PRECONNECT; ?>">
-                  Resource Preconnect:
-                </label>
-
-                <?php trinity_preconnect(); ?>
-              </div>
-
-              <div class="section-form-group" style="display: none">
-                <label class="section-form-title" for="<?php echo TRINITY_AUDIO_PRECONNECT; ?>">
-                  Translate:
-                </label>
-
-                <?php trinity_translate(); ?>
-              </div>
-
+            <div>
+              <a target="_blank" href="<?= trinity_add_utm_to_url('https://www.trinityaudio.ai/the-trinity-audio-wordpress-plugin-implementation-guide') ?>">WordPress Installation Guide <svg xmlns="http://www.w3.org/2000/svg" width="14.002" height="14.002" viewBox="0 0 14.002 14.002">
+                  <path d="M16.946,16.946H6.056V6.056H11.5V4.5H6.056A1.555,1.555,0,0,0,4.5,6.056v10.89A1.555,1.555,0,0,0,6.056,18.5h10.89A1.56,1.56,0,0,0,18.5,16.946V11.5H16.946ZM13.057,4.5V6.056h2.793L8.2,13.7l1.1,1.1,7.647-7.647V9.945H18.5V4.5Z" transform="translate(-4.5 -4.5)" fill="#07f"/>
+                </svg></a>
             </div>
-          </section>
-        </div>
-      </div>
+          </div>
+        </section>
 
-      <div class="row">
-	      <div class="column"></div>
-        <div class="column">
-          <section class="save-and-odds">
-            <div class="section-title">SAVE & ACTIVATE</div>
+        <section>
+          <div class="section-title">Subscription</div>
+          <div class="trinity-section-body plan-section">
+            <?php trinity_current_package_info_template($package_data); ?>
+          </div>
+        </section>
 
-            <div class="save-and-odds-positioning">
-              <button class="save-button">Save Changes
-              </button>
-              <?php trinity_premium_banner(); ?>
-            </div>
-          </section>
-        </div>
+        <section class="save-and-odds">
+          <div class="save-and-odds-positioning">
+            <?php trinity_premium_banner(); ?>
+            <button class="save-button">Save Changes
+            </button>
+          </div>
+        </section>
       </div>
     </div>
   </div>
+  <input type="hidden" name="<?php echo TRINITY_AUDIO_FIRST_CHANGES_SAVE; ?>" value="1">
+  <script>
+    jQuery(document).ready(() => {
+      trinitySendMetric('wordpress.settings.opened');
+    })
+  </script>
 </form>
 
 <?php
-
-  function trinity_source_language() {
-    $languages = trinity_get_languages(); // keep here, is error is occur, it will display error via die().
-    if (!$languages) {
-      die(trinity_can_not_connect_error_message('Can\'t get list of supported languages.'));
-    }
-    $current_language = trinity_get_source_language();
-
-    echo "<input value='$current_language' class='hidden' name='" . TRINITY_AUDIO_SOURCE_LANGUAGE . "' id='" . TRINITY_AUDIO_SOURCE_LANGUAGE . "' />
-          <div class='trinity-custom-select'>
-          <div class='value-text'>";
-
-    foreach ($languages as $lang) {
-      if ($current_language === $lang->code) echo esc_html($lang->name);
-    }
-
-    echo "</div><div class='options'>";
-
-    foreach ($languages as $lang) {
-      $language_code = $lang->code;
-      $language_name = $lang->name;
-
-      $hidden = $current_language === $language_code ? "hidden" : "";
-
-      echo "<div value='$language_code' onclick='updateCustomSelectValue(\"" . TRINITY_AUDIO_SOURCE_LANGUAGE . "\", \"$language_name\", \"$language_code\")' class='line $hidden' value='$language_code'>$language_name</div>";
-    }
-    echo "</div>
-          <div class='custom-select-arrow'></div></div>
-          <p class='description'>Use this to configure the default language that is used for your textual content in your site. In case you have more than one, please declare the main language used and use the individual post menu to define the language for it</p>";
-  }
-
-  function trinity_player_themes() {
-    // Mock for a while
-//    $themes = [['id' => 1, "name" => "White"], ['id' => 2, "name" => "Black"]];
-//
-//    echo "<input value='1' class='hidden' name='" . TRINITY_AUDIO_THEME_ID . "' id='" . TRINITY_AUDIO_THEME_ID . "' />
-//          <div class='trinity-custom-select'>
-//          <div class='value-text'>";
-//
-//    foreach ($themes as $theme) {
-//      if ($current_theme_id === $theme->id) echo esc_html($theme->name);
-//    }
-//    echo "</div><div class='options'>";
-//
-//    foreach ($themes as $theme) {
-//      $theme_id = $theme->id;
-//      $theme_name = $theme->name;
-//
-//      echo "<div value='$theme_id' onclick='updateCustomSelectValue(\"" . TRINITY_AUDIO_THEME_ID . "\", \"$theme_name\", \"$theme_id\")' class='line' value='$theme_id'>$theme_name</div>";
-//    }
-//    echo "</div>
-//          <div class='custom-select-arrow'></div></div>";
-//
-//    echo "<p class='description'>Use this to configure the default language that is used for your textual content in your site. In case you have more than one, please declare the main language used and use the individual post menu to define the language for it</p>";
-  }
-
-  function trinity_source_gender() {
-    $current_gender = trinity_get_gender();
-
-    echo "<input value='$current_gender' class='hidden' name='" . TRINITY_AUDIO_GENDER_ID . "' id='" . TRINITY_AUDIO_GENDER_ID . "'>";
-    echo "<div class='trinity-custom-select'>
-          <div class='value-text'>";
-    foreach (TRINITY_AUDIO_GENDER_ARRAY as $key => $value) {
-      if ($current_gender === $key) echo esc_html($value);
-    }
-    echo "</div><div class='options'>";
-
-    foreach (TRINITY_AUDIO_GENDER_ARRAY as $key => $value) {
-      $hidden = $key === $current_gender ? "hidden" : "";
-      echo "<div value='$key' class='line $hidden' onclick='updateCustomSelectValue(\"" . TRINITY_AUDIO_GENDER_ID . "\", \"$value\", \"$key\")'>$value</div>";
-    }
-
-    echo "</div><div class='custom-select-arrow'></div></div>
-          <p class='description'>Use this to choose the voice gender you prefer. You could also choose different gender per post in the post menu</p>";
-  }
 
   function trinity_new_post_default() {
     $checked = trinity_get_new_posts_default() ? 'checked' : '';
@@ -268,7 +208,7 @@
             <div class='custom-hitbox'></div>
           </label>";
 
-    echo '<p class="description">Check this inbox to make sure that each new post will have the Trinity Audio player enabled by default</p>';
+    echo '<p class="description">Enable this to make sure that the Trinity Audio player will be added to each new post you publish.</p>';
   }
 
   function trinity_player_position() {
@@ -290,16 +230,17 @@
     echo "</div>";
     echo "<div class='custom-select-arrow'></div></div>";
 
-    echo '<p class="description">Choose the position on the page you would like the player to appear on. We recommend placing it above the fold for best user experience</p>';
+    echo '<p class="description">Choose the location of the player on the web page. We recommend placing it above the fold for the best user experience.</p>';
   }
 
   function trinity_player_label() {
     $value = trinity_get_player_label();
     echo "<input placeholder='Enter label' type='text' value='$value' name='" . TRINITY_AUDIO_PLAYER_LABEL . "' id='" . TRINITY_AUDIO_PLAYER_LABEL . "' class='custom-input' />";
+    echo "<p class='description'>Set optional text to be visible within the player, above the audio progress bar (HTML tags are supported with this label)</p>";
   }
 
-  function trinity_display_powered_by() {
-    $checked = trinity_get_powered_by() ? 'checked' : '';
+  function trinity_display_powered_by($unit_config) {
+    $checked = $unit_config->powered_by ? 'checked' : '';
 
     echo "<label  for='" . TRINITY_AUDIO_POWERED_BY . "' class='custom-checkbox powered-by-inline-flex'>
             <div class='text-label'>
@@ -308,7 +249,7 @@
             <input type='checkbox' name='" . TRINITY_AUDIO_POWERED_BY . "' id='" . TRINITY_AUDIO_POWERED_BY . "' $checked>
             <div class='custom-hitbox'></div>
           </label>";
-    echo '<p class="description">Select this option if you would like to give us credit and help other content creators reach out to us easily once they see the player on your site</p>';
+    echo '<p class="description">76% of our users decided to show their support by enabling the (very small) "Powered by Trinity Audio" credit text to appear on the player</p>';
   }
 
   function trinity_preconnect() {
@@ -344,7 +285,7 @@
         <div class='custom-hitbox'></div>
       </label>";
 
-    echo '<p class="description">If enabled, each audio file will start by reading the post title. If not, the player will start reading from the main text</p>';
+    echo '<p class="description">Enable to include reading the header of the post in the audio. If not disabled, the player will start reading from the main text.</p>';
   }
 
   function trinity_add_post_excerpt() {
@@ -360,45 +301,47 @@
   function trinity_skip_tags() {
     $value = implode(',', trinity_get_skip_tags());
 
-    echo "<input type='text' class='custom-input' value='$value' name='" . TRINITY_AUDIO_SKIP_TAGS . "' id='" . TRINITY_AUDIO_SKIP_TAGS . "' />";
+    echo "<input type='text' placeholder='Example: htmltag1, htmltag2' class='custom-input' oninput='checkFieldDirty(this)' value='$value' name='" . TRINITY_AUDIO_SKIP_TAGS . "' id='" . TRINITY_AUDIO_SKIP_TAGS . "' />";
 
-    echo '<p class="description">Enter HTML tags that should be ignored while reading a text, using comma delimiter, e.g. img, i, footer. <br /></p>';
+    trinity_bulk_update_dirty_warning();
+    trinity_bulk_update_field_notify();
+    echo '<p class="description">
+            Enter HTML tags that should be ignored while reading the text using comma delimiter, e.g. img, i, footer.
+          </p>
+          <p class="description">
+            Please note - changing the value of this setting affects the text being read by the player. This requires re-processing the current articles, and might take some time.
+         </p>';
   }
 
   function trinity_allow_shortcodes() {
     $value = implode(',', trinity_get_allowed_shortcodes());
 
-    echo "<input type='text' class='custom-input' value='$value' name='" . TRINITY_AUDIO_ALLOW_SHORTCODES . "' id='" . TRINITY_AUDIO_ALLOW_SHORTCODES . "' />";
-    echo '<p class="description">Enter shortcodes that should not be filtered out, using comma delimiter, e.g. gallery, myshortcode. By default all shortcodes are filtered out while reading text. <br /></p>';
+    echo "<input type='text' placeholder='Example: htmltag1, htmltag2' class='custom-input' oninput='checkFieldDirty(this)' value='$value' name='" . TRINITY_AUDIO_ALLOW_SHORTCODES . "' id='" . TRINITY_AUDIO_ALLOW_SHORTCODES . "' />";
+
+    trinity_bulk_update_dirty_warning();
+    trinity_bulk_update_field_notify();
+    echo '<p class="description">
+            Enter shortcodes that should not be filtered out using comma delimiter, e.g. gallery, myshortcode. By default all shortcodes are filtered out while reading text.
+          </p>
+          <p class="description">
+            Please note - changing the value of this setting effects the text being read by the player. This requires re-processing the current articles, and might take some time.
+         </p>';
   }
 
   function trinity_check_for_loop() {
     $checked = trinity_get_check_for_loop() ? 'checked' : '';
-    echo "<input type='checkbox' name='" . TRINITY_AUDIO_CHECK_FOR_LOOP . "' id='" . TRINITY_AUDIO_CHECK_FOR_LOOP . "' $checked value='1'>";
 
-    echo '<p class="description">Render player if <strong>in_the_loop()</strong> is true. Can help publishers, using posts injected by other services in not standard WordPress way</p>';
-  }
+    echo "<label for='" . TRINITY_AUDIO_CHECK_FOR_LOOP . "' class='custom-checkbox'>
+        <div class='text-label'>Enable</div>
+        <input type='checkbox' name='" . TRINITY_AUDIO_CHECK_FOR_LOOP . "' id='" . TRINITY_AUDIO_CHECK_FOR_LOOP . "' $checked>
+        <div class='custom-hitbox'></div>
+      </label>";
 
-  function trinity_activate_for_all_posts() {
-    $is_checked = !!trinity_get_is_bulk_updated();
-    $checked    = $is_checked ? '' : 'checked';
-    $disabled   = $checked ? 'disabled=disabled' : '';
-
-    echo "<div>
-            <input type='checkbox' name='trinity_audio_activate_for_all_posts' id='trinity_audio_activate_for_all_posts' " . $checked . ' ' . $disabled . " value='1'>
-            <span class='trinity-status-wrapper'>
-              <span class='status error'>
-                  <span class='dashicons dashicons-dismiss'
-                        style='color: red'></span>
-                  <span>A problem occurred while activating. Please try again later</span>
-              </span>
-              <span class='status progress'>
-                  <span class='dashicons dashicons-update'></span>
-                  <span class='description'></span>
-              </span>
-            </span>
-          </div>
-         ";
+    $email = TRINITY_AUDIO_SUPPORT_EMAIL;
+    echo "<p class='description' style='color: red'>
+Enable this checkbox when using 3rd party themes such as Divi.
+Note! - Please verify that the player appears as you expect it. In case you are not sure, reach out to our <a href='mailto:$email'>support</a>
+        </p>";
   }
 
   function trinity_show_warning_need_to_activate() {
@@ -414,15 +357,24 @@
     if (trinity_get_first_time_install()) {
       ?>
       <div class="notice notice-info">
-        <p>We're excited that you've decided to join the audio future! Please note that our servers might take up to 5
-          minutes to update before you can start using the plugin. Almost there!</p>
         <p>
-          Please save your secret recovery key <span class="bold-text"> (Install Key): <?php echo trinity_get_install_key(); ?> </span> in a safe
-          place.
-          This key is unique and bound to your domain. It is required for restoring your installation (a new environment of
-          any sort).
+          <?php trinity_show_recovery_token_inline(); ?> Please save your secret recovery token in a safe place. This token is unique and bound to your domain. It is required for restoring your installation (a new environment of any sort).
         </p>
       </div>
       <?php
     }
+  }
+
+  function trinity_bulk_update_dirty_warning() {
+    echo '<p class="trinity-warning trinity-warning-dirty description">
+            <span class="icon warning-icon"></span>
+            <span>During re-processing time audio player might experience errors. You can track the progress of the update at the top of the screen</span>
+          </p>';
+  }
+
+  function trinity_bulk_update_field_notify() {
+    echo '<p class="trinity-warning trinity-warning-bulk-notify description">
+            <span class="icon warning-icon"></span>
+            <span>This values can not be changed while re-processing is under going</span>
+          </p>';
   }

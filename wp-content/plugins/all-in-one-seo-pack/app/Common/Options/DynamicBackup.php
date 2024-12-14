@@ -49,6 +49,33 @@ class DynamicBackup {
 	protected $options = [];
 
 	/**
+	 * The public post types.
+	 *
+	 * @since 4.1.5
+	 *
+	 * @var array
+	 */
+	protected $postTypes = [];
+
+	/**
+	 * The public taxonomies.
+	 *
+	 * @since 4.1.5
+	 *
+	 * @var array
+	 */
+	protected $taxonomies = [];
+
+	/**
+	 * The public archives.
+	 *
+	 * @since 4.1.5
+	 *
+	 * @var array
+	 */
+	protected $archives = [];
+
+	/**
 	 * Class constructor.
 	 *
 	 * @since 4.1.3
@@ -81,9 +108,14 @@ class DynamicBackup {
 	 * @return void
 	 */
 	public function init() {
+		$this->postTypes  = wp_list_pluck( aioseo()->helpers->getPublicPostTypes( false, false, true ), 'name' );
+		$this->taxonomies = wp_list_pluck( aioseo()->helpers->getPublicTaxonomies( false, true ), 'name' );
+		$this->archives   = wp_list_pluck( aioseo()->helpers->getPublicPostTypes( false, true, true ), 'name' );
+
 		$backup = json_decode( get_option( $this->optionsName ), true );
 		if ( empty( $backup ) ) {
 			update_option( $this->optionsName, '{}' );
+
 			return;
 		}
 
@@ -102,23 +134,19 @@ class DynamicBackup {
 	 *
 	 * @return void
 	 */
-	private function restorePostTypes() {
-		$postTypes = aioseo()->helpers->getPublicPostTypes();
-		foreach ( $postTypes as $postType ) {
-			$name = $postType['name'];
-			if ( 'type' === $name ) {
-				$name = '_aioseo_type';
-			}
-
-			if ( ! empty( $this->backup['postTypes'][ $name ]['searchAppearance'] ) ) {
-				$this->restoreOptions( $this->backup['postTypes'][ $name ]['searchAppearance'], [ 'searchAppearance', 'postTypes', $name ] );
-				unset( $this->backup['postTypes'][ $name ]['searchAppearance'] );
+	protected function restorePostTypes() {
+		foreach ( $this->postTypes as $postType ) {
+			// Restore the post types for Search Appearance.
+			if ( ! empty( $this->backup['postTypes'][ $postType ]['searchAppearance'] ) ) {
+				$this->restoreOptions( $this->backup['postTypes'][ $postType ]['searchAppearance'], [ 'searchAppearance', 'postTypes', $postType ] );
+				unset( $this->backup['postTypes'][ $postType ]['searchAppearance'] );
 				$this->shouldBackup = true;
 			}
 
-			if ( ! empty( $this->backup['postTypes'][ $name ]['social']['facebook'] ) ) {
-				$this->restoreOptions( $this->backup['postTypes'][ $name ]['social']['facebook'], [ 'social', 'facebook', 'general', 'postTypes', $name ] );
-				unset( $this->backup['postTypes'][ $name ]['social']['facebook'] );
+			// Restore the post types for Social Networks.
+			if ( ! empty( $this->backup['postTypes'][ $postType ]['social']['facebook'] ) ) {
+				$this->restoreOptions( $this->backup['postTypes'][ $postType ]['social']['facebook'], [ 'social', 'facebook', 'general', 'postTypes', $postType ] );
+				unset( $this->backup['postTypes'][ $postType ]['social']['facebook'] );
 				$this->shouldBackup = true;
 			}
 		}
@@ -131,23 +159,19 @@ class DynamicBackup {
 	 *
 	 * @return void
 	 */
-	private function restoreTaxonomies() {
-		$taxonomies = aioseo()->helpers->getPublicTaxonomies();
-		foreach ( $taxonomies as $taxonomy ) {
-			$name = $taxonomy['name'];
-			if ( 'type' === $name ) {
-				$name = '_aioseo_type';
-			}
-
-			if ( ! empty( $this->backup['taxonomies'][ $name ]['searchAppearance'] ) ) {
-				$this->restoreOptions( $this->backup['taxonomies'][ $name ]['searchAppearance'], [ 'searchAppearance', 'taxonomies', $name ] );
-				unset( $this->backup['taxonomies'][ $name ]['searchAppearance'] );
+	protected function restoreTaxonomies() {
+		foreach ( $this->taxonomies as $taxonomy ) {
+			// Restore the taxonomies for Search Appearance.
+			if ( ! empty( $this->backup['taxonomies'][ $taxonomy ]['searchAppearance'] ) ) {
+				$this->restoreOptions( $this->backup['taxonomies'][ $taxonomy ]['searchAppearance'], [ 'searchAppearance', 'taxonomies', $taxonomy ] );
+				unset( $this->backup['taxonomies'][ $taxonomy ]['searchAppearance'] );
 				$this->shouldBackup = true;
 			}
 
-			if ( ! empty( $this->backup['taxonomies'][ $name ]['social']['facebook'] ) ) {
-				$this->restoreOptions( $this->backup['taxonomies'][ $name ]['social']['facebook'], [ 'social', 'facebook', 'general', 'taxonomies', $name ] );
-				unset( $this->backup['taxonomies'][ $name ]['social']['facebook'] );
+			// Restore the taxonomies for Social Networks.
+			if ( ! empty( $this->backup['taxonomies'][ $taxonomy ]['social']['facebook'] ) ) {
+				$this->restoreOptions( $this->backup['taxonomies'][ $taxonomy ]['social']['facebook'], [ 'social', 'facebook', 'general', 'taxonomies', $taxonomy ] );
+				unset( $this->backup['taxonomies'][ $taxonomy ]['social']['facebook'] );
 				$this->shouldBackup = true;
 			}
 		}
@@ -160,17 +184,12 @@ class DynamicBackup {
 	 *
 	 * @return void
 	 */
-	private function restoreArchives() {
-		$postTypes = aioseo()->helpers->getPublicPostTypes();
-		foreach ( $postTypes as $postType ) {
-			$name = $postType['name'];
-			if ( 'type' === $name ) {
-				$name = '_aioseo_type';
-			}
-
-			if ( ! empty( $this->backup['archives'][ $name ]['searchAppearance'] ) ) {
-				$this->restoreOptions( $this->backup['archives'][ $name ]['searchAppearance'], [ 'searchAppearance', 'archives', $name ] );
-				unset( $this->backup['archives'][ $name ]['searchAppearance'] );
+	protected function restoreArchives() {
+		foreach ( $this->archives as $postType ) {
+			// Restore the archives for Search Appearance.
+			if ( ! empty( $this->backup['archives'][ $postType ]['searchAppearance'] ) ) {
+				$this->restoreOptions( $this->backup['archives'][ $postType ]['searchAppearance'], [ 'searchAppearance', 'archives', $postType ] );
+				unset( $this->backup['archives'][ $postType ]['searchAppearance'] );
 				$this->shouldBackup = true;
 			}
 		}
@@ -219,9 +238,9 @@ class DynamicBackup {
 	 * @return void
 	 */
 	public function maybeBackup( $newOptions ) {
-		$this->maybeBackupPostType( $newOptions['searchAppearance']['postTypes'], $newOptions['social']['facebook']['general']['postTypes'] );
-		$this->maybeBackupTaxonomy( $newOptions['searchAppearance']['taxonomies'] );
-		$this->maybeBackupArchives( $newOptions['searchAppearance']['archives'] );
+		$this->maybeBackupPostType( $newOptions );
+		$this->maybeBackupTaxonomy( $newOptions );
+		$this->maybeBackupArchives( $newOptions );
 	}
 
 	/**
@@ -229,26 +248,24 @@ class DynamicBackup {
 	 *
 	 * @since 4.1.3
 	 *
-	 * @param  array $dynamicPostTypes  An array of dynamic post types from Search Appearance to check.
-	 * @param  array $dynamicPostTypeOG An array of dynamic post types from Social Facebook to check.
+	 * @param  array $newOptions An array of options to check.
 	 * @return void
 	 */
-	private function maybeBackupPostType( $dynamicPostTypes, $dynamicPostTypesOG ) {
-		$postTypes = aioseo()->helpers->getPublicPostTypes();
-		$postTypes = $this->normalizeObjectName( $postTypes );
-
-		foreach ( $dynamicPostTypes as $dynamicPostTypeName => $dynamicPostTypeSettings ) {
-			$found = wp_list_filter( $postTypes, [ 'name' => $dynamicPostTypeName ] );
-			if ( count( $found ) === 0 ) {
+	protected function maybeBackupPostType( $newOptions ) {
+		// Maybe backup the post types for Search Appearance.
+		foreach ( $newOptions['searchAppearance']['postTypes'] as $dynamicPostTypeName => $dynamicPostTypeSettings ) {
+			$found = in_array( $dynamicPostTypeName, $this->postTypes, true );
+			if ( ! $found ) {
 				$this->backup['postTypes'][ $dynamicPostTypeName ]['searchAppearance'] = $dynamicPostTypeSettings;
 				$this->shouldBackup = true;
 			}
 		}
 
-		foreach ( $dynamicPostTypesOG as $dynamicPostTypeNameOG => $dynamicPostTypeSettingsOG ) {
-			$found = wp_list_filter( $postTypes, [ 'name' => $dynamicPostTypeNameOG ] );
-			if ( count( $found ) === 0 ) {
-				$this->backup['postTypes'][ $dynamicPostTypeNameOG ]['social']['facebook'] = $dynamicPostTypeSettingsOG;
+		// Maybe backup the post types for Social Networks.
+		foreach ( $newOptions['social']['facebook']['general']['postTypes'] as $dynamicPostTypeName => $dynamicPostTypeSettings ) {
+			$found = in_array( $dynamicPostTypeName, $this->postTypes, true );
+			if ( ! $found ) {
+				$this->backup['postTypes'][ $dynamicPostTypeName ]['social']['facebook'] = $dynamicPostTypeSettings;
 				$this->shouldBackup = true;
 			}
 		}
@@ -259,17 +276,14 @@ class DynamicBackup {
 	 *
 	 * @since 4.1.3
 	 *
-	 * @param  array $dynamicTaxonomies   An array of dynamic taxonomy from Search Appearance to check.
-	 * @param  array $dynamicTaxonomiesOG An array of dynamic taxonomy from Social Facebook to check.
+	 * @param  array $newOptions An array of options to check.
 	 * @return void
 	 */
-	protected function maybeBackupTaxonomy( $dynamicTaxonomies, $dynamicTaxonomiesOG = [] ) {
-		$taxonomies = aioseo()->helpers->getPublicTaxonomies();
-		$taxonomies = $this->normalizeObjectName( $taxonomies );
-
-		foreach ( $dynamicTaxonomies as $dynamicTaxonomyName => $dynamicTaxonomySettings ) {
-			$found = wp_list_filter( $taxonomies, [ 'name' => $dynamicTaxonomyName ] );
-			if ( count( $found ) === 0 ) {
+	protected function maybeBackupTaxonomy( $newOptions ) {
+		// Maybe backup the taxonomies for Search Appearance.
+		foreach ( $newOptions['searchAppearance']['taxonomies'] as $dynamicTaxonomyName => $dynamicTaxonomySettings ) {
+			$found = in_array( $dynamicTaxonomyName, $this->taxonomies, true );
+			if ( ! $found ) {
 				$this->backup['taxonomies'][ $dynamicTaxonomyName ]['searchAppearance'] = $dynamicTaxonomySettings;
 				$this->shouldBackup = true;
 			}
@@ -281,37 +295,17 @@ class DynamicBackup {
 	 *
 	 * @since 4.1.3
 	 *
-	 * @param  array $dynamicArchives An array of dynamic archives to check.
+	 * @param  array $newOptions An array of options to check.
 	 * @return void
 	 */
-	private function maybeBackupArchives( $dynamicArchives ) {
-		$postTypes = aioseo()->helpers->getPublicPostTypes( false, true );
-		$postTypes = $this->normalizeObjectName( $postTypes );
-
-		foreach ( $dynamicArchives as $archiveName => $archiveSettings ) {
-			$found = wp_list_filter( $postTypes, [ 'name' => $archiveName ] );
-			if ( count( $found ) === 0 ) {
+	protected function maybeBackupArchives( $newOptions ) {
+		// Maybe backup the archives for Search Appearance.
+		foreach ( $newOptions['searchAppearance']['archives'] as $archiveName => $archiveSettings ) {
+			$found = in_array( $archiveName, $this->archives, true );
+			if ( ! $found ) {
 				$this->backup['archives'][ $archiveName ]['searchAppearance'] = $archiveSettings;
 				$this->shouldBackup = true;
 			}
 		}
-	}
-
-	/**
-	 * Normalize object name to work properly with AIOSEO.
-	 *
-	 * @since 4.1.3
-	 *
-	 * @param  array $items The items.
-	 * @return array        The normalized items.
-	 */
-	public function normalizeObjectName( $items ) {
-		foreach ( $items as &$item ) {
-			if ( 'type' === $item['name'] ) {
-				$item['name'] = '_aioseo_type';
-			}
-		}
-
-		return $items;
 	}
 }

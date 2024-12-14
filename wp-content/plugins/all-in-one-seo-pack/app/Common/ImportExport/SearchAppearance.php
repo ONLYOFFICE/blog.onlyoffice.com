@@ -39,7 +39,6 @@ abstract class SearchAppearance {
 		'FAQPage',
 		'ItemPage',
 		'ProfilePage',
-		'QAPage',
 		'RealEstateListing',
 		'SearchResultsPage',
 		'WebPage'

@@ -3,7 +3,7 @@
 Plugin Name: Urvanov Syntax Highlighter
 Plugin URI: https://github.com/urvanov-ru/crayon-syntax-highlighter
 Description: Supports multiple languages, themes, highlighting from a URL, local file or post text.
-Version: 2.8.10
+Version: 2.8.33
 Author: Fedor Urvanov, Aram Kocharyan
 Author URI: https://urvanov.ru
 Text Domain: urvanov-syntax-highlighter
@@ -34,8 +34,8 @@ if (URVANOV_SYNTAX_HIGHLIGHTER_THEME_EDITOR) {
 require_once('class-urvanov-syntax-highlighter-wp.php');
 
 Urvanov_Syntax_Highlighter_Global::set_info(array(
-	'Version' => '2.8.10',
-	'Date' => '06th April, 2019',
+	'Version' => '2.8.33',
+	'Date' => '9th May 2023',
 	'AuthorName' => 'Fedor Urvanov & Aram Kocharyan',
 	'PluginURI' => 'https://github.com/urvanov-ru/crayon-syntax-highlighter',
 ));
@@ -265,6 +265,31 @@ class Urvanov_Syntax_Highlighter_Plugin {
 
         UrvanovSyntaxHighlighterLog::debug('capture for id ' . $wp_id . ' len ' . strlen($wp_content));
 
+//         $blocks = parse_blocks($wp_content);
+        
+        //UrvanovSyntaxHighlighterLog::debug($blocks, 'Gutenberg blocks');
+        
+//         foreach ( $blocks as $block ) {
+            // Urvanov Syntax Highlighter block
+            // UrvanovSyntaxHighlighterLog::debug($block, 'Parsed post block');
+//             $capture_pre = false;
+//             if ( 'urvanov-syntax-highlighter/code-block' === $block['blockName'] ) {
+//             	$capture_pre = true;
+//             } else if (('paragraph' === $block['blockName'])
+//                     && ((Urvanov_Syntax_Highlighter_Global_Settings::val(Urvanov_Syntax_Highlighter_Settings::CAPTURE_PRE)
+//                             || $skip_setting_check) && $in_flag[Urvanov_Syntax_Highlighter_Settings::CAPTURE_PRE])) {
+//                 $capture_pre = true;
+//             }
+//             UrvanovSyntaxHighlighterLog::debug($capture_pre, 'capture_pre');
+//             UrvanovSyntaxHighlighterLog::debug($block['blockName'], 'Block name');
+//             UrvanovSyntaxHighlighterLog::debug($block['innerHTML'], 'Inner HTML');
+//             if ($capture_pre) {
+//             	$block['innerHTML'] = 'TEST REPLACE';
+//             	$block['innerContent'] = 'TEST REPLACE';
+//                 //$block['innerHTML'] = preg_replace_callback('#(?<!\$)<\s*pre(?=(?:([^>]*)\bclass\s*=\s*(["\'])(.*?)\2([^>]*))?)([^>]*)>(.*?)<\s*/\s*pre\s*>#msi', 'Urvanov_Syntax_Highlighter_Plugin::pre_tag', $block['innerHTML']);
+//             }
+//         }
+//         $wp_content = serialize_blocks($blocks);
         // Convert <pre> tags to crayon tags, if needed
         if ((Urvanov_Syntax_Highlighter_Global_Settings::val(Urvanov_Syntax_Highlighter_Settings::CAPTURE_PRE) || $skip_setting_check) && $in_flag[Urvanov_Syntax_Highlighter_Settings::CAPTURE_PRE]) {
             // XXX This will fail if <pre></pre> is used inside another <pre></pre>
@@ -436,6 +461,9 @@ class Urvanov_Syntax_Highlighter_Plugin {
         $capture['content'] = $wp_content;
         return $capture;
     }
+    
+    
+    // *****************************************************************************
 
     public static function replace_backquotes($wp_content) {
         // Convert `` backquote tags into <code></code>, if needed
@@ -780,7 +808,13 @@ class Urvanov_Syntax_Highlighter_Plugin {
         $post_class = $matches[4];
         $atts = $matches[5];
         $content = $matches[6];
-
+        UrvanovSyntaxHighlighterLog::debug($pre_class, 'class_tag_pre_class');
+        UrvanovSyntaxHighlighterLog::debug($quotes, 'class_tag_quotes');
+        UrvanovSyntaxHighlighterLog::debug($class, 'class_tag_class');
+        UrvanovSyntaxHighlighterLog::debug($post_class, 'class_tag_post_class');
+        UrvanovSyntaxHighlighterLog::debug($atts, 'class_tag_atts');
+        UrvanovSyntaxHighlighterLog::debug($content, 'class_tag_content=');
+        
         // If we find a crayon=false in the attributes, or a crayon[:_]false in the class, then we should not capture
         $ignore_regex_atts = '#crayon\s*=\s*(["\'])\s*(false|no|0)\s*\1#msi';
         $ignore_regex_class = '#crayon\s*[:_]\s*(false|no|0)#msi';
@@ -900,6 +934,10 @@ class Urvanov_Syntax_Highlighter_Plugin {
 
     public static function save_post($update_id, $post) {
         self::refresh_post($post);
+    }
+
+    public static function rest_after_insert( $post, $request, $creating ){
+    	Urvanov_Syntax_Highlighter_Plugin::save_post(null, $post);
     }
 
     public static function filter_post_data($data, $postarr) {
@@ -1126,23 +1164,24 @@ class Urvanov_Syntax_Highlighter_Plugin {
             $touched = FALSE;
 
             // Upgrade database and settings
-
-            if (UrvanovSyntaxHighlighterUtil::version_compare($version, '1.7.21') < 0) {
+            
+            UrvanovSyntaxHighlighterLog::log($version, 'Upgrading database and settings');
+            if (version_compare($version, '1.7.21') < 0) {
                 $settings[Urvanov_Syntax_Highlighter_Settings::SCROLL] = $defaults[Urvanov_Syntax_Highlighter_Settings::SCROLL];
                 $touched = TRUE;
             }
 
-            if (UrvanovSyntaxHighlighterUtil::version_compare($version, '1.7.23') < 0 && $settings[Urvanov_Syntax_Highlighter_Settings::FONT] == 'theme-font') {
+            if (version_compare($version, '1.7.23') < 0 && $settings[Urvanov_Syntax_Highlighter_Settings::FONT] == 'theme-font') {
                 $settings[Urvanov_Syntax_Highlighter_Settings::FONT] = $defaults[Urvanov_Syntax_Highlighter_Settings::FONT];
                 $touched = TRUE;
             }
 
-            if (UrvanovSyntaxHighlighterUtil::version_compare($version, '1.14') < 0) {
+            if (version_compare($version, '1.14') < 0) {
                 UrvanovSyntaxHighlighterLog::syslog("Updated to v1.14: Font size enabled");
                 $settings[Urvanov_Syntax_Highlighter_Settings::FONT_SIZE_ENABLE] = TRUE;
             }
 
-            if (UrvanovSyntaxHighlighterUtil::version_compare($version, '1.17') < 0) {
+            if (version_compare($version, '1.17') < 0) {
                 $settings[Urvanov_Syntax_Highlighter_Settings::HIDE_HELP] = FALSE;
             }
 
@@ -1319,6 +1358,7 @@ if (defined('ABSPATH')) {
         }
     } else {
         // Update between versions
+        UrvanovSyntaxHighlighterLog::log("Calling update plugin...");
         Urvanov_Syntax_Highlighter_Plugin::update();
         // For marking a post as containing a Crayon
         add_action('update_post', 'Urvanov_Syntax_Highlighter_Plugin::save_post', 10, 2);
@@ -1332,8 +1372,7 @@ if (defined('ABSPATH')) {
         add_action('edit_comment', 'Urvanov_Syntax_Highlighter_Plugin::save_comment', 10, 2);
     }
     add_filter('init', 'Urvanov_Syntax_Highlighter_Plugin::init_ajax');
-
-    
+    add_action( 'rest_after_insert_post', 'Urvanov_Syntax_Highlighter_Plugin::rest_after_insert', 10, 3 );
 }
 
 function register_urvanov_syntax_highlighter_gutenberg_block() {

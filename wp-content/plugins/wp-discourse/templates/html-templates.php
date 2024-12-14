@@ -11,25 +11,13 @@
 
 namespace WPDiscourse\Templates;
 
+use WPDiscourse\Shared\PluginUtilities;
+
 /**
  * Class HTMLTemplates
  */
 class HTMLTemplates {
-
-	/**
-	 * Gets the 'discourse_configurable_text' options.
-	 *
-	 * @param string $option The option key.
-	 *
-	 * @return string
-	 */
-	protected static function get_text_options( $option ) {
-		$text_options = get_option( 'discourse_configurable_text' );
-
-		$text = ! empty( $text_options[ $option ] ) ? $text_options[ $option ] : '';
-
-		return $text;
-	}
+	use PluginUtilities;
 
 	/**
 	 * Sets the value of the target attribute.
@@ -193,8 +181,7 @@ class HTMLTemplates {
 	public static function participant_html() {
 		ob_start();
 		?>
-		<img alt="" src="{avatar_url}" class="avatar avatar-25 photo avatar-default" height="25"
-			 width="25">
+		<img alt="Avatar for {username}" src="{avatar_url}" class="avatar avatar-25 photo avatar-default" height="25" width="25">
 		<?php
 		$output = ob_get_clean();
 

@@ -19,6 +19,7 @@ trait MailChimpSubscriber
 
     /**
      * Required for api response logging
+     *
      * @var string
      */
     protected $metaKey = 'fluentform_mailchimp_feed';
@@ -35,7 +36,8 @@ trait MailChimpSubscriber
         foreach ($feeds as $feed) {
             if ($this->isApplicable($feed, $formData)) {
                 $email = ArrayHelper::get(
-                    $formData, ArrayHelper::get($feed->formattedValue, 'fieldEmailAddress')
+                    $formData,
+                    ArrayHelper::get($feed->formattedValue, 'fieldEmailAddress')
                 );
 
                 if (is_string($email) && is_email($email)) {
@@ -69,19 +71,20 @@ trait MailChimpSubscriber
      * @param $formData
      * @param $entry
      * @param $form
+     *
      * @return array|bool|false
+     *
      * @throws \Exception
      */
     public function subscribe($feed, $formData, $entry, $form)
     {
-
         $feedData = $feed['processedValues'];
 
-        if (!is_email($feedData['fieldEmailAddress'])) {
+        if (! is_email($feedData['fieldEmailAddress'])) {
             $feedData['fieldEmailAddress'] = ArrayHelper::get($formData, $feedData['fieldEmailAddress']);
         }
 
-        if (!is_email($feedData['fieldEmailAddress'])) {
+        if (! is_email($feedData['fieldEmailAddress'])) {
             return false;
         }
 
@@ -93,8 +96,8 @@ trait MailChimpSubscriber
         $arguments = [
             'email_address' => $feedData['fieldEmailAddress'],
             'status_if_new' => $status,
-            'double_optin' => ArrayHelper::isTrue($feedData, 'doubleOptIn'),
-            'vip' => ArrayHelper::isTrue($feedData, 'markAsVIP'),
+            'double_optin'  => ArrayHelper::isTrue($feedData, 'doubleOptIn'),
+            'vip'           => ArrayHelper::isTrue($feedData, 'markAsVIP'),
         ];
 
         if ($mergeFields) {
@@ -104,7 +107,7 @@ trait MailChimpSubscriber
             );
 
             foreach ($mergeFieldsSettings as $fieldSettings) {
-                if ($fieldSettings['type'] == 'address') {
+                if ('address' == $fieldSettings['type'] || 'birthday' == $fieldSettings['type']) {
                     $fieldName = $fieldSettings['tag'];
 
                     $formFieldName = ArrayHelper::get($feed, 'settings.merge_fields.' . $fieldName);
@@ -117,20 +120,25 @@ trait MailChimpSubscriber
                         $formFieldValue = ArrayHelper::get($formData, $formFieldName);
 
                         if ($formFieldValue) {
-                            $mergeFields[$fieldName] = [
-                                'addr1'   => ArrayHelper::get($formFieldValue, 'address_line_1'),
-                                'addr2'   => ArrayHelper::get($formFieldValue, 'address_line_2'),
-                                'city'    => ArrayHelper::get($formFieldValue, 'city'),
-                                'state'   => ArrayHelper::get($formFieldValue, 'state'),
-                                'zip'     => ArrayHelper::get($formFieldValue, 'zip'),
-                                'country' => ArrayHelper::get($formFieldValue, 'country'),
-                            ];
+                            if('address' == $fieldSettings['type']) {
+                                $mergeFields[$fieldName] = [
+                                    'addr1'   => ArrayHelper::get($formFieldValue, 'address_line_1'),
+                                    'addr2'   => ArrayHelper::get($formFieldValue, 'address_line_2'),
+                                    'city'    => ArrayHelper::get($formFieldValue, 'city'),
+                                    'state'   => ArrayHelper::get($formFieldValue, 'state'),
+                                    'zip'     => ArrayHelper::get($formFieldValue, 'zip'),
+                                    'country' => ArrayHelper::get($formFieldValue, 'country'),
+                                ];
+                            }
+                            else {
+                                $mergeFields[$fieldName] = date('d/m', strtotime($formFieldValue));
+                            }
                         }
                     }
                 }
             }
-            
-            $arguments['merge_fields'] = (object)$mergeFields;
+
+            $arguments['merge_fields'] = (object) $mergeFields;
         }
 
         if ($entry->ip) {
@@ -138,7 +146,7 @@ trait MailChimpSubscriber
         }
 
         $tags = $this->getSelectedTagIds($feedData, $formData, 'tags');
-        if(!is_array($tags)) {
+        if (! is_array($tags)) {
             $tags = explode(',', $tags);
         }
 
@@ -148,7 +156,7 @@ trait MailChimpSubscriber
         //explode dynamic commas values to array
         $tagsFormatted = [];
         foreach ($tags as $tag) {
-            if (strpos($tag, ',') !== false) {
+            if (false !== strpos($tag, ',')) {
                 $innerTags = explode(',', $tag);
                 foreach ($innerTags as $t) {
                     $tagsFormatted[] = $t;
@@ -173,9 +181,9 @@ trait MailChimpSubscriber
         $existingMember = $this->getMemberByEmail($listId, $arguments['email_address']);
 
         $isNew = true;
-        if (!empty($existingMember['id'])) {
+        if (! empty($existingMember['id'])) {
             $isNew = false;
-            if(ArrayHelper::isTrue($feedData, 'resubscribe')){
+            if (ArrayHelper::isTrue($feedData, 'resubscribe')) {
                 //for resubscribing unsubscribed contact ; status = subscribed || pending
                 $arguments['status'] = $status;
             }
@@ -210,19 +218,22 @@ trait MailChimpSubscriber
         $MailChimp = new MailChimp($settings['apiKey']);
         $endPoint = 'lists/' . $listId . '/members/' . $contactHash;
 
-
         $result = $MailChimp->put($endPoint, $arguments);
 
-        if ($result && !is_wp_error($result) && isset($result['id'])) {
+        if (400 == $result['status']) {
+            return new \WP_Error(423, $result['detail']);
+        }
+
+        if ($result && ! is_wp_error($result) && isset($result['id'])) {
             $noteEnpoint = 'lists/' . $listId . '/members/' . $contactHash . '/notes';
             if ($note) {
                 $MailChimp->post($noteEnpoint, [
-                    'note' => $note
+                    'note' => $note,
                 ]);
             }
 
             // Let's sync the tags
-            if (!$isNew && $arguments['tags']) {
+            if (! $isNew && $arguments['tags']) {
                 $currentTags = [];
                 foreach ($result['tags'] as $tag) {
                     $currentTags[] = $tag['name'];
@@ -237,12 +248,12 @@ trait MailChimpSubscriber
                         $formattedtags = [];
                         foreach ($newTags as $tag) {
                             $formattedtags[] = [
-                                'name' => $tag,
-                                'status' => 'active'
+                                'name'   => $tag,
+                                'status' => 'active',
                             ];
                         }
                         $MailChimp->post($tagEnpoint, [
-                            'tags' => $formattedtags
+                            'tags' => $formattedtags,
                         ]);
                     }
                 }

@@ -22,7 +22,7 @@ use AIOSEO\Vendor\Monolog\Formatter\NormalizerFormatter;
  * @see https://docs.newrelic.com/docs/agents/php-agent
  * @see https://docs.newrelic.com/docs/accounts-partnerships/accounts/security/high-security
  */
-class NewRelicHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingHandler
+class NewRelicHandler extends AbstractProcessingHandler
 {
     /**
      * Name of the New Relic application that will receive logs from this handler.
@@ -50,7 +50,7 @@ class NewRelicHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingH
      * @param bool   $explodeArrays
      * @param string $transactionName
      */
-    public function __construct($level = \AIOSEO\Vendor\Monolog\Logger::ERROR, $bubble = \true, $appName = null, $explodeArrays = \false, $transactionName = null)
+    public function __construct($level = Logger::ERROR, $bubble = \true, $appName = null, $explodeArrays = \false, $transactionName = null)
     {
         parent::__construct($level, $bubble);
         $this->appName = $appName;
@@ -63,7 +63,7 @@ class NewRelicHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingH
     protected function write(array $record)
     {
         if (!$this->isNewRelicEnabled()) {
-            throw new \AIOSEO\Vendor\Monolog\Handler\MissingExtensionException('The newrelic PHP extension is required to use the NewRelicHandler');
+            throw new MissingExtensionException('The newrelic PHP extension is required to use the NewRelicHandler');
         }
         if ($appName = $this->getAppName($record['context'])) {
             $this->setNewRelicAppName($appName);
@@ -166,7 +166,7 @@ class NewRelicHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingH
         if (null === $value || \is_scalar($value)) {
             \newrelic_add_custom_parameter($key, $value);
         } else {
-            \newrelic_add_custom_parameter($key, \AIOSEO\Vendor\Monolog\Utils::jsonEncode($value, null, \true));
+            \newrelic_add_custom_parameter($key, Utils::jsonEncode($value, null, \true));
         }
     }
     /**
@@ -174,6 +174,6 @@ class NewRelicHandler extends \AIOSEO\Vendor\Monolog\Handler\AbstractProcessingH
      */
     protected function getDefaultFormatter()
     {
-        return new \AIOSEO\Vendor\Monolog\Formatter\NormalizerFormatter();
+        return new NormalizerFormatter();
     }
 }

@@ -2,8 +2,8 @@
 Contributors: Atrax, SergeyBiryukov, karevn, webvitaly
 Tags: cyrillic, latin, l10n, russian, rustolat, slugs, translations, transliteration, media, georgian, european, diacritics, ukrainian
 Requires at least: 2.3
-Tested up to: 3.8.1
-Stable tag: 3.5
+Tested up to: 6.1
+Stable tag: 3.7
 
 Converts Cyrillic, European and Georgian characters in post, page and term slugs to Latin characters.
 
@@ -43,6 +43,12 @@ add_filter('ctl_table', 'my_cyr_to_lat_table');
 `
 
 == Changelog ==
+
+= 3.7 =
+* added prepare() for every SQL query
+
+= 3.6 =
+* added esc_sql for SQL query
 
 = 3.5 =
 * Removed quotes from table which added extra dashes

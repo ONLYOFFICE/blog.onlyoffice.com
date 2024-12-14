@@ -27,7 +27,7 @@ interface ProcessableHandlerInterface
      * @param  ProcessorInterface|callable $callback
      * @return HandlerInterface            self
      */
-    public function pushProcessor($callback) : \AIOSEO\Vendor\Monolog\Handler\HandlerInterface;
+    public function pushProcessor($callback) : HandlerInterface;
     /**
      * Removes the processor on top of the stack and returns it.
      *

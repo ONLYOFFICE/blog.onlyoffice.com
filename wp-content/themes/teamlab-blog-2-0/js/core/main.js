@@ -341,7 +341,7 @@ $("#email-sub-button2").on("click", function () {
 });
 
 /***** Popup for subcribe *****/
-$("#subscribelink").click(function () {
+$("#subscribelink, #subscribelink2").click(function () {
   var html = document.documentElement;
   var body = document.body;
 
@@ -356,7 +356,7 @@ $(".close-popup").click(function () {
   $(".hidden").hide();
 });
 
-$("a[href=''], a:not([href])").css("cursor", "default");
+// $("a[href=''], a:not([href])").css("cursor", "default");
 
 /***** Click for header *****/
 $("#customer_stories_div").on("click", function () {
@@ -375,10 +375,13 @@ $("#oforms_div").on("click", function () {
   location.href = $("#navitem_features_oforms").attr("href");
 });
 $("#for_developers_div").on("click", function () {
-  location.href = $("#navitem_integration_for_developers").attr("href");
+  location.href = $("#navitem_developers_for_developers").attr("href");
 });
-$("#latest_events_div").on("click", function () {
-  location.href = $("#navitem_latest_events").attr("href");
+$("#for_business_div").on("click", function () {
+  location.href = $("#navitem_education_for_business").attr("href");
+});
+$("#education_eve_div").on("click", function () {
+  location.href = $("#navitem_education_eve_events").attr("href");
 });
 
 $(".overlay-trigger").click(function (event) {
@@ -439,3 +442,120 @@ window.onload = function () {
     }
   });
 };
+
+let nameCommentInput = $("#comments #author"),
+    emailCommentInput = $("#comments #email"),
+    messageCommentInput = $("#comments #comment"),
+    dataItemInput = $("#comments .data-input"),
+    commentSubmitButton = $("#comments #commentformsubmit"),
+    gRecaptcha = $("#comments .g-recaptcha"),
+    gRecaptchaError = $("#comments .g-recaptcha-error");
+
+function inputsCommentValidate() {
+  if (nameCommentInput.val().length > 0 && isValidEmail(emailCommentInput.val()) && messageCommentInput.val().length > 0 && gRecaptcha.hasClass("active")) {
+    commentSubmitButton.removeAttr("disabled");
+  } else{
+    commentSubmitButton.attr("disabled", true);
+  }
+};
+
+function recaptchaCallback() {
+  gRecaptcha.addClass("active");
+  gRecaptchaError.removeClass("error");
+  inputsCommentValidate();
+};
+
+dataItemInput.on("focus", function() {
+  $(this).parent().removeClass("error");
+});
+
+dataItemInput.on("blur", function() {
+  const thisParent = $(this).parent();
+
+  if (!this.value) {
+    thisParent.addClass("error");
+  }
+
+  if ($(this).is("#email")) {
+    if (!this.value) {
+      thisParent.addClass("error");
+      thisParent.removeClass("incorrect");
+      isValid = false;
+    } else if (!isValidEmail($.trim($(this)[0].value))) {
+      thisParent.removeClass("error");
+      thisParent.addClass("incorrect");
+      isValid = false;
+    } else {
+      thisParent.removeClass("error");
+      thisParent.removeClass("incorrect");
+    }
+  }
+
+  inputsCommentValidate();
+});
+
+dataItemInput.on("keyup", function() {
+  const thisParent = $(this).parent();
+
+  if (!this.value) {
+    thisParent.addClass("error");
+  }
+
+  if ($(this).is("#email")) {
+    if (!this.value) {
+      thisParent.addClass("error");
+      thisParent.removeClass("incorrect");
+      isValid = false;
+    } else if (!isValidEmail($.trim($(this)[0].value))) {
+      thisParent.removeClass("error");
+      thisParent.addClass("incorrect");
+      isValid = false;
+    } else {
+      thisParent.removeClass("error");
+      thisParent.removeClass("incorrect");
+    }
+  }
+
+  inputsCommentValidate();
+});
+
+commentSubmitButton.on("click", function (e) {
+  let isValid = true, data = {
+    name: $.trim(nameCommentInput.val()),
+    email: $.trim(emailCommentInput.val()),
+    message: $.trim(messageCommentInput.val()),
+  };
+  
+  if (data.name == "") {
+    nameCommentInput.parent().addClass("error");
+    isValid = false;
+  }
+  
+  if (data.email == "") {
+    emailCommentInput.parent().addClass("error");
+    emailCommentInput.parent().removeClass("incorrect");
+    isValid = false;
+  } else if (!isValidEmail(data.email)) {
+    emailCommentInput.parent().removeClass("error");
+    emailCommentInput.parent().addClass("incorrect");
+    isValid = false;
+  } else {
+    emailCommentInput.parent().removeClass("error");
+    emailCommentInput.parent().removeClass("incorrect");
+  }
+  
+  if (data.message == "") {
+    messageCommentInput.parent().addClass("error");
+    isValid = false;
+  }
+
+  if (!gRecaptcha.hasClass("active")) {
+    gRecaptchaError.addClass("error");
+    isValid = false;
+  }
+
+  if (!isValid) {
+    e.preventDefault();
+    return;
+  }
+});

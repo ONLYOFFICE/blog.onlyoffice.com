@@ -21,7 +21,7 @@ use AIOSEO\Vendor\Monolog\Utils;
  * @author Christophe Coevoet <stof@notk.org>
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-class RotatingFileHandler extends \AIOSEO\Vendor\Monolog\Handler\StreamHandler
+class RotatingFileHandler extends StreamHandler
 {
     const FILE_PER_DAY = 'Y-m-d';
     const FILE_PER_MONTH = 'Y-m';
@@ -40,9 +40,9 @@ class RotatingFileHandler extends \AIOSEO\Vendor\Monolog\Handler\StreamHandler
      * @param int|null $filePermission Optional file permissions (default (0644) are only for owner read/write)
      * @param bool     $useLocking     Try to lock log file before doing any writes
      */
-    public function __construct($filename, $maxFiles = 0, $level = \AIOSEO\Vendor\Monolog\Logger::DEBUG, $bubble = \true, $filePermission = null, $useLocking = \false)
+    public function __construct($filename, $maxFiles = 0, $level = Logger::DEBUG, $bubble = \true, $filePermission = null, $useLocking = \false)
     {
-        $this->filename = \AIOSEO\Vendor\Monolog\Utils::canonicalizePath($filename);
+        $this->filename = Utils::canonicalizePath($filename);
         $this->maxFiles = (int) $maxFiles;
         $this->nextRotation = new \DateTime('tomorrow');
         $this->filenameFormat = '{filename}-{date}';
