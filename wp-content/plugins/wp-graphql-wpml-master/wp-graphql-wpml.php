@@ -41,9 +41,9 @@ add_filter('graphql_post_object_connection_query_args', 'wpgraphqlwpml_disable_w
 
 function wpgraphqlwpml_handle_language_filter_request($query_args, $source, $args, $context, $info)
 {
-    $lang = $args['where']['wpmlLanguage'];
+    $lang = $args['where']['wpmlLanguage'] ?? null;
     //If the wpmlLanguage argument exists in the WHERE parameters
-    if(isset($lang)){
+    if($lang){
         global $sitepress;
         //If WPML is installed
         if($sitepress){
