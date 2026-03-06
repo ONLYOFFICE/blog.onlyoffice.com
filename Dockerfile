@@ -14,3 +14,9 @@ USER 1001
 
 RUN rm -rf /opt/bitnami/wordpress/wp-content/*
 COPY wp-content/ /opt/bitnami/wordpress/wp-content/
+
+# Move object-cache.php drop-in aside during build.
+# It will be activated by post-init script after wp-config.php is ready.
+# This prevents RedisException during entrypoint wp-cli calls.
+RUN mv /opt/bitnami/wordpress/wp-content/object-cache.php \
+       /opt/bitnami/wordpress/wp-content/object-cache.php.disabled
