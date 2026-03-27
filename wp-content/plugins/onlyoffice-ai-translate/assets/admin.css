@@ -1,0 +1,23 @@
+.oait-translate-section {
+    padding: 6px 10px;
+    border-top: 1px solid #f0f0f1;
+}
+
+.oait-translate-section .dashicons {
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+.oait-translate-status {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+}
+
+.oait-spinner.is-active {
+    visibility: visible;
+}
+
+#oait_translation_status ul li {
+    font-size: 12px;
+}
