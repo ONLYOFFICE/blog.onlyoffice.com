@@ -54,6 +54,14 @@ class OAIT_WPML_Integration {
         update_post_meta( $new_post_id, '_ai_translated_date', current_time( 'mysql' ) );
         update_post_meta( $new_post_id, '_ai_source_post_id', $original_post_id );
 
+        // Step 6: Copy featured image
+        $thumbnail_id = get_post_meta( $original_post_id, '_thumbnail_id', true );
+        if ( $thumbnail_id ) {
+            update_post_meta( $new_post_id, '_thumbnail_id', $thumbnail_id );
+            update_post_meta( $new_post_id, '_wpml_media_featured', 1 );
+            update_post_meta( $new_post_id, '_wpml_media_duplicate', 1 );
+        }
+
         return $new_post_id;
     }
 
