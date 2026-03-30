@@ -79,7 +79,7 @@ class OAIT_Bulk_Actions {
      * Render "Translate with AI" button in the Classic Editor publish box.
      */
     public function render_editor_button( $post ) {
-        if ( $post->post_type !== 'post' || $post->post_status !== 'publish' ) {
+        if ( $post->post_type !== 'post' || ! in_array( $post->post_status, array( 'publish', 'draft' ), true ) ) {
             return;
         }
 

@@ -111,11 +111,18 @@ class OAIT_Admin_Settings {
             $enabled = array();
         }
 
+        $all_checked = count( $enabled ) === count( OAIT_Translator::LANGUAGES );
+        ?>
+        <label style="display:inline-block;min-width:180px;margin-bottom:10px;font-weight:600;">
+            <input type="checkbox" id="oait_select_all" <?php echo $all_checked ? 'checked' : ''; ?> />
+            Select all
+        </label><br/>
+        <?php
         foreach ( OAIT_Translator::LANGUAGES as $code => $name ) {
             $checked = in_array( $code, $enabled, true ) ? 'checked' : '';
             printf(
                 '<label style="display:inline-block;min-width:180px;margin-bottom:6px;">' .
-                '<input type="checkbox" name="oait_enabled_languages[]" value="%s" %s /> %s (%s)' .
+                '<input type="checkbox" class="oait-lang-checkbox" name="oait_enabled_languages[]" value="%s" %s /> %s (%s)' .
                 '</label><br/>',
                 esc_attr( $code ),
                 $checked,
@@ -123,6 +130,22 @@ class OAIT_Admin_Settings {
                 esc_html( $code )
             );
         }
+        ?>
+        <script>
+        document.getElementById('oait_select_all').addEventListener('change', function() {
+            document.querySelectorAll('.oait-lang-checkbox').forEach(function(cb) {
+                cb.checked = this.checked;
+            }, this);
+        });
+        document.querySelectorAll('.oait-lang-checkbox').forEach(function(cb) {
+            cb.addEventListener('change', function() {
+                var all = document.querySelectorAll('.oait-lang-checkbox');
+                var checked = document.querySelectorAll('.oait-lang-checkbox:checked');
+                document.getElementById('oait_select_all').checked = all.length === checked.length;
+            });
+        });
+        </script>
+        <?php
     }
 
     public function render_auto_translate_field() {

@@ -15,8 +15,8 @@ class OAIT_WPML_Integration {
      * @return int|WP_Error The new post ID or error.
      */
     public function create_translation( $original_post_id, $translated_data, $target_lang ) {
-        // Step 1: Duplicate the post to the target language via WPML
-        $new_post_id = apply_filters( 'wpml_copy_post_to_language', $original_post_id, $target_lang, true );
+        // Step 1: Create an independent translation via WPML (not a synchronized duplicate)
+        $new_post_id = apply_filters( 'wpml_copy_post_to_language', $original_post_id, $target_lang, false );
 
         if ( ! $new_post_id || is_wp_error( $new_post_id ) ) {
             return new WP_Error(
@@ -31,7 +31,7 @@ class OAIT_WPML_Integration {
             'post_title'   => $translated_data['title'],
             'post_content' => $translated_data['content'],
             'post_excerpt' => $translated_data['excerpt'],
-            'post_status'  => 'publish',
+            'post_status'  => 'draft',
         ), true );
 
         if ( is_wp_error( $update_result ) ) {
