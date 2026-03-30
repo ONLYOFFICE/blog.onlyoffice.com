@@ -60,6 +60,9 @@ function oait_init() {
     // AJAX handler for manual translation
     add_action( 'wp_ajax_oait_translate_post', 'oait_ajax_translate_post' );
 
+    // AJAX handler for translation status check
+    add_action( 'wp_ajax_oait_translation_status', 'oait_ajax_translation_status' );
+
     // Enqueue admin assets
     add_action( 'admin_enqueue_scripts', 'oait_enqueue_admin_assets' );
 }
@@ -112,10 +115,7 @@ function oait_handle_async_translation( $post_id ) {
     $results = array();
 
     foreach ( $languages as $lang_code ) {
-        if ( $wpml->translation_exists( $post_id, $lang_code ) ) {
-            $results[ $lang_code ] = 'skipped';
-            continue;
-        }
+        $existing_post_id = $wpml->get_existing_translation_id( $post_id, $lang_code );
 
         $translated = $translator->translate( $post_id, $lang_code );
 
@@ -130,20 +130,25 @@ function oait_handle_async_translation( $post_id ) {
             continue;
         }
 
-        $new_post_id = $wpml->create_translation( $post_id, $translated, $lang_code );
+        if ( $existing_post_id ) {
+            $result_id = $wpml->update_translation( $existing_post_id, $translated );
+        } else {
+            $result_id = $wpml->create_translation( $post_id, $translated, $lang_code );
+        }
 
-        if ( is_wp_error( $new_post_id ) ) {
+        if ( is_wp_error( $result_id ) ) {
             error_log( sprintf(
-                'OAIT: Failed to create WPML translation for post %d to %s: %s',
+                'OAIT: Failed to %s WPML translation for post %d to %s: %s',
+                $existing_post_id ? 'update' : 'create',
                 $post_id,
                 $lang_code,
-                $new_post_id->get_error_message()
+                $result_id->get_error_message()
             ) );
-            $results[ $lang_code ] = 'error: ' . $new_post_id->get_error_message();
+            $results[ $lang_code ] = 'error: ' . $result_id->get_error_message();
             continue;
         }
 
-        $results[ $lang_code ] = 'success (post ID: ' . $new_post_id . ')';
+        $results[ $lang_code ] = 'success (post ID: ' . $result_id . ')';
     }
 
     update_post_meta( $post_id, '_ai_translation_results', $results );
@@ -174,8 +179,55 @@ function oait_ajax_translate_post() {
 
     delete_post_meta( $post_id, '_ai_translations_queued' );
     update_post_meta( $post_id, '_ai_translations_queued', true );
+    delete_post_meta( $post_id, '_ai_translation_results' );
 
     wp_send_json_success( 'Translation queued successfully.' );
+}
+
+/**
+ * AJAX handler to check translation status.
+ */
+function oait_ajax_translation_status() {
+    check_ajax_referer( 'oait_translate_nonce', 'nonce' );
+
+    if ( ! current_user_can( 'edit_posts' ) ) {
+        wp_send_json_error( 'Insufficient permissions.' );
+    }
+
+    $post_id = isset( $_GET['post_id'] ) ? absint( $_GET['post_id'] ) : 0;
+    if ( ! $post_id ) {
+        wp_send_json_error( 'Invalid post ID.' );
+    }
+
+    $wpml    = new OAIT_WPML_Integration();
+    $status  = $wpml->get_translation_status( $post_id );
+    $enabled = get_option( 'oait_enabled_languages', array() );
+    $results = get_post_meta( $post_id, '_ai_translation_results', true );
+
+    $languages = array();
+    foreach ( OAIT_Translator::LANGUAGES as $code => $name ) {
+        $is_enabled    = empty( $enabled ) || in_array( $code, $enabled, true );
+        $translated_id = isset( $status[ $code ] ) ? $status[ $code ] : null;
+        $edit_link     = $translated_id ? get_edit_post_link( $translated_id, 'raw' ) : null;
+
+        $languages[ $code ] = array(
+            'name'       => $name,
+            'enabled'    => $is_enabled,
+            'postId'     => $translated_id,
+            'editLink'   => $edit_link,
+        );
+    }
+
+    $complete = false;
+    if ( $results && is_array( $results ) ) {
+        $complete = true;
+    }
+
+    wp_send_json_success( array(
+        'languages' => $languages,
+        'complete'  => $complete,
+        'results'   => $results ? $results : null,
+    ) );
 }
 
 /**
@@ -201,8 +253,17 @@ function oait_enqueue_admin_assets( $hook ) {
         true
     );
 
+    $post_id = 0;
+    if ( in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
+        global $post;
+        if ( $post ) {
+            $post_id = $post->ID;
+        }
+    }
+
     wp_localize_script( 'oait-admin', 'oaitData', array(
         'ajaxUrl' => admin_url( 'admin-ajax.php' ),
         'nonce'   => wp_create_nonce( 'oait_translate_nonce' ),
+        'postId'  => $post_id,
     ) );
 }

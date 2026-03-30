@@ -58,6 +58,68 @@ class OAIT_WPML_Integration {
     }
 
     /**
+     * Get the existing translation post ID for a given post and language.
+     *
+     * @param int    $post_id   The source post ID.
+     * @param string $lang_code WPML language code.
+     * @return int|null The translated post ID or null.
+     */
+    public function get_existing_translation_id( $post_id, $lang_code ) {
+        $trid = apply_filters( 'wpml_element_trid', null, $post_id, 'post_post' );
+        if ( ! $trid ) {
+            return null;
+        }
+
+        $translations = apply_filters( 'wpml_get_element_translations', null, $trid, 'post_post' );
+        if ( ! is_array( $translations ) ) {
+            return null;
+        }
+
+        if ( isset( $translations[ $lang_code ] ) && ! empty( $translations[ $lang_code ]->element_id ) ) {
+            return (int) $translations[ $lang_code ]->element_id;
+        }
+
+        return null;
+    }
+
+    /**
+     * Update an existing translated post with new translated content.
+     *
+     * @param int   $translated_post_id The existing translated post ID.
+     * @param array $translated_data    Translated fields array.
+     * @return int|WP_Error The post ID or error.
+     */
+    public function update_translation( $translated_post_id, $translated_data ) {
+        $update_result = wp_update_post( array(
+            'ID'           => $translated_post_id,
+            'post_title'   => $translated_data['title'],
+            'post_content' => $translated_data['content'],
+            'post_excerpt' => $translated_data['excerpt'],
+        ), true );
+
+        if ( is_wp_error( $update_result ) ) {
+            return $update_result;
+        }
+
+        // Update AIOSEO meta fields
+        if ( ! empty( $translated_data['aioseoTitle'] ) ) {
+            update_post_meta( $translated_post_id, '_aioseo_title', $translated_data['aioseoTitle'] );
+        }
+        if ( ! empty( $translated_data['aioseoDescription'] ) ) {
+            update_post_meta( $translated_post_id, '_aioseo_description', $translated_data['aioseoDescription'] );
+        }
+
+        // Update AIOSEO custom table if it exists
+        $this->update_aioseo_table( $translated_post_id, $translated_data );
+
+        // Update AI metadata
+        update_post_meta( $translated_post_id, '_ai_translated', true );
+        update_post_meta( $translated_post_id, '_ai_translated_date', current_time( 'mysql' ) );
+
+        return $translated_post_id;
+    }
+
+    /**
      * Check if a translation already exists for a given post and language.
      *
      * @param int    $post_id   The source post ID.
