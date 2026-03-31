@@ -56,7 +56,7 @@ class OAIT_Admin_Settings {
 
         add_settings_field(
             'oait_model',
-            'Claude Model',
+            'AI Model',
             array( $this, 'render_model_field' ),
             'oait-settings',
             'oait_api_section'
@@ -111,7 +111,15 @@ class OAIT_Admin_Settings {
             $enabled = array();
         }
 
-        $all_checked = count( $enabled ) === count( OAIT_Translator::LANGUAGES );
+        // Get WPML active languages
+        $wpml_languages = apply_filters( 'wpml_active_languages', null, array( 'skip_missing' => 0 ) );
+        $wpml_codes = is_array( $wpml_languages ) ? array_keys( $wpml_languages ) : array();
+
+        // Count selectable languages (in WPML)
+        $selectable = array_filter( array_keys( OAIT_Translator::LANGUAGES ), function( $code ) use ( $wpml_codes ) {
+            return empty( $wpml_codes ) || in_array( $code, $wpml_codes, true );
+        } );
+        $all_checked = ! empty( $selectable ) && count( array_intersect( $selectable, $enabled ) ) === count( $selectable );
         ?>
         <label style="display:inline-block;min-width:180px;margin-bottom:10px;font-weight:600;">
             <input type="checkbox" id="oait_select_all" <?php echo $all_checked ? 'checked' : ''; ?> />
@@ -119,16 +127,28 @@ class OAIT_Admin_Settings {
         </label><br/>
         <?php
         foreach ( OAIT_Translator::LANGUAGES as $code => $name ) {
+            $in_wpml = empty( $wpml_codes ) || in_array( $code, $wpml_codes, true );
             $checked = in_array( $code, $enabled, true ) ? 'checked' : '';
-            printf(
-                '<label style="display:inline-block;min-width:180px;margin-bottom:6px;">' .
-                '<input type="checkbox" class="oait-lang-checkbox" name="oait_enabled_languages[]" value="%s" %s /> %s (%s)' .
-                '</label><br/>',
-                esc_attr( $code ),
-                $checked,
-                esc_html( $name ),
-                esc_html( $code )
-            );
+
+            if ( $in_wpml ) {
+                printf(
+                    '<label style="display:inline-block;min-width:180px;margin-bottom:6px;">' .
+                    '<input type="checkbox" class="oait-lang-checkbox" name="oait_enabled_languages[]" value="%s" %s /> %s (%s)' .
+                    '</label><br/>',
+                    esc_attr( $code ),
+                    $checked,
+                    esc_html( $name ),
+                    esc_html( $code )
+                );
+            } else {
+                printf(
+                    '<label style="display:inline-block;min-width:180px;margin-bottom:6px;opacity:0.5;">' .
+                    '<input type="checkbox" disabled /> %s (%s) <em style="font-size:11px;">(not configured in WPML)</em>' .
+                    '</label><br/>',
+                    esc_html( $name ),
+                    esc_html( $code )
+                );
+            }
         }
         ?>
         <script>

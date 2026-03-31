@@ -55,7 +55,7 @@ function oait_init() {
     add_action( 'transition_post_status', 'oait_on_post_publish', 10, 3 );
 
     // Action Scheduler handler
-    add_action( 'oait_translate_post_async', 'oait_handle_async_translation', 10, 1 );
+    add_action( 'oait_translate_post_async', 'oait_handle_async_translation', 10, 2 );
 
     // AJAX handler for manual translation
     add_action( 'wp_ajax_oait_translate_post', 'oait_ajax_translate_post' );
@@ -103,13 +103,16 @@ function oait_on_post_publish( $new_status, $old_status, $post ) {
 /**
  * Handle async translation via Action Scheduler.
  */
-function oait_handle_async_translation( $post_id ) {
+function oait_handle_async_translation( $post_id, $languages = null ) {
     $translator = new OAIT_Translator();
     $wpml       = new OAIT_WPML_Integration();
-    $languages  = get_option( 'oait_enabled_languages', array() );
 
+    // If no languages specified (bulk action / auto-translate), use all enabled
     if ( empty( $languages ) ) {
-        $languages = array_keys( OAIT_Translator::LANGUAGES );
+        $languages = get_option( 'oait_enabled_languages', array() );
+        if ( empty( $languages ) ) {
+            $languages = array_keys( OAIT_Translator::LANGUAGES );
+        }
     }
 
     $results = array();
@@ -151,7 +154,20 @@ function oait_handle_async_translation( $post_id ) {
         $results[ $lang_code ] = 'success (post ID: ' . $result_id . ')';
     }
 
+    // Merge results with existing (other translators may have added their results)
+    $existing_results = get_post_meta( $post_id, '_ai_translation_results', true );
+    if ( is_array( $existing_results ) ) {
+        $results = array_merge( $existing_results, $results );
+    }
     update_post_meta( $post_id, '_ai_translation_results', $results );
+
+    // Remove completed languages from in-progress tracker
+    $in_progress = get_post_meta( $post_id, '_ai_translation_in_progress', true );
+    if ( is_array( $in_progress ) ) {
+        $in_progress = array_values( array_diff( $in_progress, array_keys( $results ) ) );
+        update_post_meta( $post_id, '_ai_translation_in_progress', $in_progress );
+    }
+
     error_log( sprintf( 'OAIT: Translation complete for post %d: %s', $post_id, wp_json_encode( $results ) ) );
 }
 
@@ -170,16 +186,39 @@ function oait_ajax_translate_post() {
         wp_send_json_error( 'Invalid post ID.' );
     }
 
-    // Queue async translation
-    if ( function_exists( 'as_enqueue_async_action' ) ) {
-        as_enqueue_async_action( 'oait_translate_post_async', array( 'post_id' => $post_id ), 'oait' );
-    } else {
-        wp_schedule_single_event( time(), 'oait_translate_post_async', array( $post_id ) );
+    // Get selected languages
+    $languages = array();
+    if ( isset( $_POST['languages'] ) && is_array( $_POST['languages'] ) ) {
+        $languages = array_map( 'sanitize_text_field', $_POST['languages'] );
+        $languages = array_intersect( $languages, array_keys( OAIT_Translator::LANGUAGES ) );
+        $enabled   = get_option( 'oait_enabled_languages', array() );
+        if ( ! empty( $enabled ) ) {
+            $languages = array_values( array_intersect( $languages, $enabled ) );
+        }
     }
 
-    delete_post_meta( $post_id, '_ai_translations_queued' );
+    if ( empty( $languages ) ) {
+        wp_send_json_error( 'No valid languages selected.' );
+    }
+
+    // Queue one async task per language for parallel execution
+    foreach ( $languages as $lang_code ) {
+        if ( function_exists( 'as_enqueue_async_action' ) ) {
+            as_enqueue_async_action( 'oait_translate_post_async', array( 'post_id' => $post_id, 'languages' => array( $lang_code ) ), 'oait' );
+        } else {
+            wp_schedule_single_event( time(), 'oait_translate_post_async', array( $post_id, array( $lang_code ) ) );
+        }
+    }
+
+    // Track in-progress languages (merge with existing)
+    $in_progress = get_post_meta( $post_id, '_ai_translation_in_progress', true );
+    if ( ! is_array( $in_progress ) ) {
+        $in_progress = array();
+    }
+    $in_progress = array_values( array_unique( array_merge( $in_progress, $languages ) ) );
+    update_post_meta( $post_id, '_ai_translation_in_progress', $in_progress );
+
     update_post_meta( $post_id, '_ai_translations_queued', true );
-    delete_post_meta( $post_id, '_ai_translation_results' );
 
     wp_send_json_success( 'Translation queued successfully.' );
 }
@@ -204,24 +243,34 @@ function oait_ajax_translation_status() {
     $enabled = get_option( 'oait_enabled_languages', array() );
     $results = get_post_meta( $post_id, '_ai_translation_results', true );
 
+    $in_progress = get_post_meta( $post_id, '_ai_translation_in_progress', true );
+    if ( ! is_array( $in_progress ) ) {
+        $in_progress = array();
+    }
+
     $languages = array();
     foreach ( OAIT_Translator::LANGUAGES as $code => $name ) {
         $is_enabled    = empty( $enabled ) || in_array( $code, $enabled, true );
         $translated_id = isset( $status[ $code ] ) ? $status[ $code ] : null;
         $edit_link     = $translated_id ? get_edit_post_link( $translated_id, 'raw' ) : null;
 
+        // Check if there's an error for this language in results
+        $error_msg = null;
+        if ( $results && is_array( $results ) && isset( $results[ $code ] ) && strpos( $results[ $code ], 'error' ) === 0 ) {
+            $error_msg = $results[ $code ];
+        }
+
         $languages[ $code ] = array(
             'name'       => $name,
             'enabled'    => $is_enabled,
             'postId'     => $translated_id,
             'editLink'   => $edit_link,
+            'inProgress' => in_array( $code, $in_progress, true ),
+            'error'      => $error_msg,
         );
     }
 
-    $complete = false;
-    if ( $results && is_array( $results ) ) {
-        $complete = true;
-    }
+    $complete = empty( $in_progress );
 
     wp_send_json_success( array(
         'languages' => $languages,

@@ -15,6 +15,15 @@ class OAIT_WPML_Integration {
      * @return int|WP_Error The new post ID or error.
      */
     public function create_translation( $original_post_id, $translated_data, $target_lang ) {
+        // Validate that the target language is active in WPML
+        $active_languages = apply_filters( 'wpml_active_languages', null, array( 'skip_missing' => 0 ) );
+        if ( is_array( $active_languages ) && ! isset( $active_languages[ $target_lang ] ) ) {
+            return new WP_Error(
+                'invalid_language',
+                sprintf( 'Language "%s" is not configured in WPML.', $target_lang )
+            );
+        }
+
         // Step 1: Create an independent translation via WPML (not a synchronized duplicate)
         $new_post_id = apply_filters( 'wpml_copy_post_to_language', $original_post_id, $target_lang, false );
 

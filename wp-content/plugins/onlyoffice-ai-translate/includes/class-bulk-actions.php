@@ -7,103 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 class OAIT_Bulk_Actions {
 
     public function __construct() {
-        // Bulk action on posts list
-        add_filter( 'bulk_actions-edit-post', array( $this, 'register_bulk_action' ) );
-        add_filter( 'handle_bulk_actions-edit-post', array( $this, 'handle_bulk_action' ), 10, 3 );
-        add_action( 'admin_notices', array( $this, 'bulk_action_notice' ) );
-
-        // Button in Classic Editor publish box
-        add_action( 'post_submitbox_misc_actions', array( $this, 'render_editor_button' ) );
-
         // Meta box with translation status
         add_action( 'add_meta_boxes', array( $this, 'add_translation_meta_box' ) );
-    }
-
-    /**
-     * Add "Translate with AI" to bulk actions dropdown.
-     */
-    public function register_bulk_action( $actions ) {
-        $actions['oait_translate'] = 'Translate with AI';
-        return $actions;
-    }
-
-    /**
-     * Handle the bulk action.
-     */
-    public function handle_bulk_action( $redirect_to, $action, $post_ids ) {
-        if ( $action !== 'oait_translate' ) {
-            return $redirect_to;
-        }
-
-        $queued = 0;
-
-        foreach ( $post_ids as $post_id ) {
-            // Only translate English posts
-            $lang_details = apply_filters( 'wpml_post_language_details', null, $post_id );
-            if ( ! $lang_details || $lang_details['language_code'] !== 'en' ) {
-                continue;
-            }
-
-            if ( function_exists( 'as_enqueue_async_action' ) ) {
-                as_enqueue_async_action( 'oait_translate_post_async', array( 'post_id' => $post_id ), 'oait' );
-            } else {
-                wp_schedule_single_event( time() + $queued, 'oait_translate_post_async', array( $post_id ) );
-            }
-
-            update_post_meta( $post_id, '_ai_translations_queued', true );
-            $queued++;
-        }
-
-        return add_query_arg( 'oait_translated', $queued, $redirect_to );
-    }
-
-    /**
-     * Show admin notice after bulk action.
-     */
-    public function bulk_action_notice() {
-        if ( empty( $_REQUEST['oait_translated'] ) ) {
-            return;
-        }
-
-        $count = absint( $_REQUEST['oait_translated'] );
-        printf(
-            '<div class="notice notice-success is-dismissible"><p>%s</p></div>',
-            esc_html( sprintf(
-                '%d post(s) queued for AI translation.',
-                $count
-            ) )
-        );
-    }
-
-    /**
-     * Render "Translate with AI" button in the Classic Editor publish box.
-     */
-    public function render_editor_button( $post ) {
-        if ( $post->post_type !== 'post' || ! in_array( $post->post_status, array( 'publish', 'draft' ), true ) ) {
-            return;
-        }
-
-        // Only show for English posts
-        $lang_details = apply_filters( 'wpml_post_language_details', null, $post->ID );
-        if ( ! $lang_details || $lang_details['language_code'] !== 'en' ) {
-            return;
-        }
-
-        $is_queued = get_post_meta( $post->ID, '_ai_translations_queued', true );
-        ?>
-        <div class="misc-pub-section oait-translate-section">
-            <span class="dashicons dashicons-translation" style="color:#2271b1;"></span>
-            <strong>AI Translation</strong>
-            <button type="button" class="button button-small oait-translate-btn"
-                    data-post-id="<?php echo esc_attr( $post->ID ); ?>"
-                    style="float:right;">
-                <?php echo $is_queued ? 'Re-translate' : 'Translate with AI'; ?>
-            </button>
-            <span class="oait-translate-status" style="display:none;"></span>
-            <span class="spinner oait-spinner" style="float:none;margin:0 4px;"></span>
-            <div class="clear"></div>
-        </div>
-        <?php
     }
 
     /**
@@ -121,7 +26,7 @@ class OAIT_Bulk_Actions {
     }
 
     /**
-     * Render translation status meta box.
+     * Render translation status meta box with language checkboxes.
      */
     public function render_translation_meta_box( $post ) {
         if ( $post->post_type !== 'post' ) {
@@ -129,46 +34,87 @@ class OAIT_Bulk_Actions {
             return;
         }
 
-        // Only show for English posts
+        // Determine the post language
         $lang_details = apply_filters( 'wpml_post_language_details', null, $post->ID );
-        if ( ! $lang_details || $lang_details['language_code'] !== 'en' ) {
+        if ( $lang_details && ! empty( $lang_details['language_code'] ) ) {
+            $post_lang = $lang_details['language_code'];
+        } else {
+            // For new/auto-draft posts, use the current admin language
+            $post_lang = apply_filters( 'wpml_current_language', 'en' );
+        }
+
+        // Only show for English posts
+        if ( $post_lang !== 'en' ) {
             echo '<p>Only English source posts can be translated.</p>';
             return;
         }
 
-        $wpml   = new OAIT_WPML_Integration();
-        $status = $wpml->get_translation_status( $post->ID );
-        $enabled = get_option( 'oait_enabled_languages', array() );
-
-        if ( empty( $status ) ) {
-            echo '<p>No translation data available.</p>';
+        // Check if post is saved as draft/published first
+        if ( ! in_array( $post->post_status, array( 'publish', 'draft' ), true ) ) {
+            echo '<p>Save the post as a draft first to enable AI translation.</p>';
             return;
         }
 
-        echo '<ul style="margin:0;">';
+        $wpml        = new OAIT_WPML_Integration();
+        $status      = $wpml->get_translation_status( $post->ID );
+        $enabled     = get_option( 'oait_enabled_languages', array() );
+        $in_progress = get_post_meta( $post->ID, '_ai_translation_in_progress', true );
+        if ( ! is_array( $in_progress ) ) {
+            $in_progress = array();
+        }
+
+        // Select all checkbox
+        echo '<label style="display:block;margin:4px 0 8px;font-weight:600;"><input type="checkbox" id="oait_metabox_select_all" /> Select all</label>';
+
+        echo '<ul style="margin:0;" class="oait-language-list">';
         foreach ( OAIT_Translator::LANGUAGES as $code => $name ) {
             $is_enabled    = empty( $enabled ) || in_array( $code, $enabled, true );
-            $translated_id = isset( $status[ $code ] ) ? $status[ $code ] : null;
-            $icon          = $translated_id ? '&#10004;' : '&#10060;';
-            $color         = $translated_id ? '#00a32a' : '#999';
-            $style         = $is_enabled ? '' : 'opacity:0.5;';
-
-            $label = esc_html( $name ) . ' (' . esc_html( $code ) . ')';
-            if ( $translated_id ) {
-                $edit_link = get_edit_post_link( $translated_id );
-                $label = '<a href="' . esc_url( $edit_link ) . '">' . $label . '</a>';
+            if ( ! $is_enabled ) {
+                continue; // Skip disabled languages
             }
 
-            printf(
-                '<li style="padding:2px 0;%s"><span style="color:%s;">%s</span> %s</li>',
-                $style,
-                $color,
-                $icon,
-                $label
-            );
+            $translated_id = isset( $status[ $code ] ) ? $status[ $code ] : null;
+            $is_in_progress = in_array( $code, $in_progress, true );
+            $label = esc_html( $name ) . ' (' . esc_html( $code ) . ')';
+
+            if ( $translated_id ) {
+                // Already translated: checkmark + edit link
+                $edit_link = get_edit_post_link( $translated_id );
+                $link_label = '<a href="' . esc_url( $edit_link ) . '">' . $label . '</a>';
+                printf(
+                    '<li style="padding:2px 0;"><span style="color:#00a32a;">&#10004;</span> %s</li>',
+                    $link_label
+                );
+            } elseif ( $is_in_progress ) {
+                // In progress: spinner
+                printf(
+                    '<li style="padding:2px 0;"><span class="spinner is-active" style="float:none;margin:0 4px 0 0;"></span> %s <em style="color:#999;">translating...</em></li>',
+                    $label
+                );
+            } else {
+                // Not translated: checkbox
+                printf(
+                    '<li style="padding:2px 0;"><label><input type="checkbox" class="oait-lang-checkbox" value="%s"> %s</label></li>',
+                    esc_attr( $code ),
+                    $label
+                );
+            }
         }
         echo '</ul>';
 
+        // Translate button
+        ?>
+        <div style="margin-top:10px;">
+            <button type="button" class="button button-primary oait-translate-btn"
+                    data-post-id="<?php echo esc_attr( $post->ID ); ?>">
+                Translate Selected
+            </button>
+            <span class="spinner oait-spinner" style="float:none;margin:0 4px;"></span>
+        </div>
+        <span class="oait-translate-status" style="display:none;margin-top:6px;"></span>
+        <?php
+
+        // Show errors from results
         $results = get_post_meta( $post->ID, '_ai_translation_results', true );
         if ( $results && is_array( $results ) ) {
             $errors = array_filter( $results, function ( $r ) {

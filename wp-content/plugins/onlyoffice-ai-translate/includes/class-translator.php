@@ -254,7 +254,7 @@ Translate blog post content from English to {$language_name}.
         ) );
 
         $response = wp_remote_post( self::API_ENDPOINT, array(
-            'timeout' => 120,
+            'timeout' => 300,
             'headers' => array(
                 'Authorization' => 'Bearer ' . $api_key,
                 'Content-Type'  => 'application/json',
@@ -263,7 +263,11 @@ Translate blog post content from English to {$language_name}.
         ) );
 
         if ( is_wp_error( $response ) ) {
-            return new WP_Error( 'api_request_failed', $response->get_error_message() );
+            $msg = $response->get_error_message();
+            if ( strpos( $msg, 'timed out' ) !== false || strpos( $msg, 'cURL error 28' ) !== false ) {
+                return new WP_Error( 'api_timeout', 'Translation request timed out. The post may be too long for this language.' );
+            }
+            return new WP_Error( 'api_request_failed', $msg );
         }
 
         $code = wp_remote_retrieve_response_code( $response );
