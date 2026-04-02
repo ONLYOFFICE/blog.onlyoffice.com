@@ -1,0 +1,18 @@
+.oetl-status-msg {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+}
+
+.oetl-spinner.is-active {
+    visibility: visible;
+}
+
+#oetl_audio_status .oetl-preview audio {
+    max-width: 100%;
+}
+
+#oetl_audio_status .description {
+    font-size: 11px;
+    color: #666;
+}
