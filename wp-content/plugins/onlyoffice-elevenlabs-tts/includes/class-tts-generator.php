@@ -262,6 +262,24 @@ class OETL_TTS_Generator {
      * Get the voice ID for a post, considering WPML language.
      */
     private function get_voice_id( $post_id ) {
-        return get_option( 'oetl_voice_id', '' );
+        // 1. Per-post override
+        $override = get_post_meta( $post_id, '_oetl_voice_id', true );
+        if ( ! empty( $override ) ) {
+            return $override;
+        }
+
+        // 2. Language-specific voice via WPML
+        if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
+            $lang_details = apply_filters( 'wpml_post_language_details', null, $post_id );
+            if ( is_array( $lang_details ) && ! empty( $lang_details['language_code'] ) ) {
+                $voice = OETL_Admin_Settings::get_voice_id_for_language( $lang_details['language_code'] );
+                if ( ! empty( $voice ) ) {
+                    return $voice;
+                }
+            }
+        }
+
+        // 3. Fallback to English (default)
+        return OETL_Admin_Settings::get_voice_id_for_language( 'en' );
     }
 }

@@ -8,7 +8,7 @@
         e.preventDefault();
 
         var $btn = $(this);
-        var $metabox = $('#oetl_audio_status .inside');
+        var $metabox = $('#oetl_audio_status .oetl-dynamic-content');
         var $status = $metabox.find('.oetl-status-msg');
         var $spinner = $metabox.find('.oetl-spinner');
         var postId = $btn.data('post-id');
@@ -90,7 +90,7 @@
     }
 
     function updateMetaBoxWithAudio(data) {
-        var $box = $('#oetl_audio_status .inside');
+        var $box = $('#oetl_audio_status .oetl-dynamic-content');
         if (!$box.length) {
             return;
         }
@@ -116,7 +116,7 @@
     }
 
     function updateMetaBoxWithError(errorMsg, postId) {
-        var $box = $('#oetl_audio_status .inside');
+        var $box = $('#oetl_audio_status .oetl-dynamic-content');
         if (!$box.length) {
             return;
         }
@@ -136,7 +136,7 @@
 
     // Auto-start polling if generation is in progress on page load
     $(document).ready(function () {
-        var $metabox = $('#oetl_audio_status .inside');
+        var $metabox = $('#oetl_audio_status .oetl-dynamic-content');
         if ($metabox.find('.oetl-status .spinner.is-active').length) {
             startPolling(oetlData.postId);
         }

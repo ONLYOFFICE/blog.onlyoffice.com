@@ -8,6 +8,7 @@ class OETL_Meta_Box {
 
     public function __construct() {
         add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
+        add_action( 'save_post', array( $this, 'save_voice_override' ), 10, 2 );
     }
 
     public function add_meta_box() {
@@ -32,13 +33,54 @@ class OETL_Meta_Box {
             return;
         }
 
+        // Voice override dropdown
+        wp_nonce_field( 'oetl_voice_meta', 'oetl_voice_meta_nonce' );
+        $current_override = get_post_meta( $post->ID, '_oetl_voice_id', true );
+        $configured_voices = OETL_Admin_Settings::get_all_configured_voices();
+
+        // Get WPML language names for labels
+        $language_names = array();
+        if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
+            $languages = apply_filters( 'wpml_active_languages', null, array( 'skip_missing' => 0 ) );
+            if ( is_array( $languages ) ) {
+                foreach ( $languages as $code => $lang ) {
+                    $language_names[ $code ] = ! empty( $lang['native_name'] ) ? $lang['native_name'] : $code;
+                }
+            }
+        }
+
+        ?>
+        <div class="oetl-voice-override">
+            <label for="oetl_voice_id_override"><strong>Voice</strong></label>
+            <select name="oetl_voice_id_override" id="oetl_voice_id_override" style="width:100%;margin-top:4px;">
+                <option value="" <?php selected( $current_override, '' ); ?>>English (Default)</option>
+                <?php foreach ( $configured_voices as $lang_code => $voice_id ) :
+                    if ( $lang_code === 'en' ) {
+                        continue; // Already shown as the default option above
+                    }
+                    if ( isset( $language_names[ $lang_code ] ) ) {
+                        $label = $language_names[ $lang_code ];
+                    } else {
+                        $label = strtoupper( $lang_code );
+                    }
+                ?>
+                    <option value="<?php echo esc_attr( $voice_id ); ?>" <?php selected( $current_override, $voice_id ); ?>>
+                        <?php echo esc_html( $label ); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <?php
+
+        // Dynamic content area (rebuilt by JS after generation)
+        echo '<div class="oetl-dynamic-content">';
+
         $attachment_id = get_post_meta( $post->ID, '_oetl_audio_attachment_id', true );
         $in_progress   = get_post_meta( $post->ID, '_oetl_audio_in_progress', true );
         $error         = get_post_meta( $post->ID, '_oetl_audio_error', true );
         $generated_at  = get_post_meta( $post->ID, '_oetl_audio_generated_at', true );
 
         if ( $in_progress ) {
-            // In progress
             ?>
             <div class="oetl-status">
                 <span class="spinner is-active" style="float:none;margin:0 4px 0 0;"></span>
@@ -46,7 +88,6 @@ class OETL_Meta_Box {
             </div>
             <?php
         } elseif ( $attachment_id ) {
-            // Audio exists
             $audio_url = wp_get_attachment_url( $attachment_id );
             if ( $audio_url ) {
                 ?>
@@ -68,7 +109,6 @@ class OETL_Meta_Box {
                 <?php
             }
         } else {
-            // No audio
             if ( $error ) {
                 ?>
                 <p style="color:#d63638;font-size:12px;margin:4px 0;">
@@ -88,5 +128,29 @@ class OETL_Meta_Box {
         }
 
         echo '<span class="oetl-status-msg" style="display:none;margin-top:6px;font-size:12px;"></span>';
+        echo '</div>'; // .oetl-dynamic-content
+    }
+
+    public function save_voice_override( $post_id, $post ) {
+        if ( ! isset( $_POST['oetl_voice_meta_nonce'] ) ) {
+            return;
+        }
+        if ( ! wp_verify_nonce( $_POST['oetl_voice_meta_nonce'], 'oetl_voice_meta' ) ) {
+            return;
+        }
+        if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+            return;
+        }
+        if ( ! current_user_can( 'edit_post', $post_id ) ) {
+            return;
+        }
+
+        $voice_id = isset( $_POST['oetl_voice_id_override'] ) ? sanitize_text_field( $_POST['oetl_voice_id_override'] ) : '';
+
+        if ( empty( $voice_id ) ) {
+            delete_post_meta( $post_id, '_oetl_voice_id' );
+        } else {
+            update_post_meta( $post_id, '_oetl_voice_id', $voice_id );
+        }
     }
 }
