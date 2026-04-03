@@ -188,7 +188,7 @@ function bloggood_ru_image() {
   ob_start();
   ob_end_clean();
   $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches); // выдираем первый имагес
-  $first_img = $matches [1] [0];
+  $first_img = $matches[1][0] ?? '';
  
 // If there is no image in the post, then display the default image (specify the path and name for the image)
   if(empty($first_img)){
@@ -603,11 +603,11 @@ if ( ! function_exists( 'get_language_key' ) ) :
     $regex = "/(?:lang=([a-z]{2}))?$/";
     preg_match_all($regex, $query, $matches);
 
-    $lang = $matches[1][0];
+    $lang = $matches[1][0] ?? '';
     $regextest = "/\/([a-z]{2})/";
     $text = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
     preg_match($regextest, $text, $match);
-    $lang = $match[1];
+    $lang = $match[1] ?? '';
 
     if (!$lang) {
         $lang = $default_lang;
@@ -662,13 +662,13 @@ function language_selector($available_langs_keys) {
     $regexGB = "/(?:lang=([a-z]{2}))?$/";
     preg_match_all($regexGB, $queryGB, $matches);
 
-    $langGB = $matches[1][0];
+    $langGB = $matches[1][0] ?? '';
 
     $regextest = "/\/([a-z]{2})/";
     $text = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 
     preg_match($regextest, $text, $match);
-    $langGB = $match[1];
+    $langGB = $match[1] ?? '';
 
     if (!$available_langs[$lang]){
         $lang = $default_lang;
