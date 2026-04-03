@@ -188,7 +188,7 @@ function bloggood_ru_image() {
   ob_start();
   ob_end_clean();
   $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches); // выдираем первый имагес
-  $first_img = $matches [1] [0];
+  $first_img = $matches[1][0] ?? '';
  
 // If there is no image in the post, then display the default image (specify the path and name for the image)
   if(empty($first_img)){
@@ -603,11 +603,11 @@ if ( ! function_exists( 'get_language_key' ) ) :
     $regex = "/(?:lang=([a-z]{2}))?$/";
     preg_match_all($regex, $query, $matches);
 
-    $lang = $matches[1][0];
+    $lang = $matches[1][0] ?? '';
     $regextest = "/\/([a-z]{2})/";
     $text = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
     preg_match($regextest, $text, $match);
-    $lang = $match[1];
+    $lang = $match[1] ?? '';
 
     if (!$lang) {
         $lang = $default_lang;
@@ -639,7 +639,13 @@ function language_selector($available_langs_keys) {
         'it' =>  array('it', 'it-IT', 'Italian'),
         'cs' =>  array('cs', 'cs-CZ', 'Česky'),
         'ja' =>  array('ja', 'ja-JP', '中文'),
-        'zh' =>  array('zh-hans', 'zh-CN', '中文')
+        'zh' =>  array('zh-hans', 'zh-CN', '中文'),
+        'el' =>  array('el', 'el-GR', 'Greek'),
+        'hi' =>  array('hi', 'hi-IN', 'Hindi'),
+        'ar' =>  array('ar', 'ar-AR', 'Arabic'),
+        'sr' =>  array('sr', 'sr-RS', 'Serbian'),
+        'hy' =>  array('hy', 'hy-AM', 'Armenia'),
+        'ru' =>  array('ru', 'ru-RU', 'Russia')
     );
 
     $available_langs  = array();
@@ -656,13 +662,13 @@ function language_selector($available_langs_keys) {
     $regexGB = "/(?:lang=([a-z]{2}))?$/";
     preg_match_all($regexGB, $queryGB, $matches);
 
-    $langGB = $matches[1][0];
+    $langGB = $matches[1][0] ?? '';
 
     $regextest = "/\/([a-z]{2})/";
     $text = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
 
     preg_match($regextest, $text, $match);
-    $langGB = $match[1];
+    $langGB = $match[1] ?? '';
 
     if (!$available_langs[$lang]){
         $lang = $default_lang;
@@ -1047,11 +1053,43 @@ add_action( 'graphql_register_types', function() {
 });
 
 add_action( 'graphql_register_types', function() {
+    register_graphql_field('Post', 'aioseoTitle', [
+        'type' => 'String',
+        'resolve' => function($post) {
+            if (function_exists('aioseo')) {
+                $aioseoData = aioseo()->meta->title->getTitle($post->ID);
+                return $aioseoData ?: '';
+            }
+            return '';
+        }
+    ]);
+});
+
+add_action( 'graphql_register_types', function() {
     register_graphql_field( 'Post', 'aioseoDescription', [ 
+        'type' => 'String',
+        'resolve' => function($post) {
+            if (function_exists('aioseo')) {
+                $aioseoData = aioseo()->meta->description->getDescription($post->ID);
+                return $aioseoData ?: '';
+            }
+            return '';
+        }
+    ]);
+});
+
+add_action( 'graphql_register_types', function() {
+    register_graphql_field( 'Post', 'moreTextExcerpt', [ 
       'type' => 'String',
       'resolve' => function( $post ) {
-        $aioseoDescription = get_post_meta( $post->ID, '_aioseo_description', true );
-        return ! empty( $aioseoDescription ) ? $aioseoDescription : '';
+        function disable_more_link( $link ) {
+            $link = preg_replace('|#more-[0-9]+|', '', '');
+            return $link;
+        }
+        add_filter( 'the_content_more_link', 'disable_more_link', 10, 2 );
+
+        $moreTextExcerpt = !empty( $attributes['moreText'] ) ? get_the_excerpt() : wp_trim_words(get_the_content($post->ID), '35', '...');
+        return ! empty( $moreTextExcerpt ) ? $moreTextExcerpt : '';
       }
     ]);
 });
@@ -1065,3 +1103,21 @@ add_action( 'graphql_register_types', function() {
       }
     ]);
 });
+
+function discourse_publish_format_html( $output, $post_id ) {
+	$post = get_post( $post_id );
+    $permalink = str_replace('https://wpblog.onlyoffice.com/', 'https://www.onlyoffice.com/blog/', get_permalink($post_id));
+    $post_title = get_the_title( $post );
+	ob_start();
+	?>
+
+    <small>Originally published at: <a href="<?php echo  $permalink ?>" target="_blank" rel="noreferrer noopener"><?php echo $post_title ?> | ONLYOFFICE Blog</a></small>
+    <br>
+    {excerpt}
+
+	<?php
+	$output = ob_get_clean();
+	return $output;
+}
+
+add_filter( 'discourse_publish_format_html', 'discourse_publish_format_html', 10, 2 );
