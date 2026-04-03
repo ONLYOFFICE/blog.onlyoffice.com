@@ -14,11 +14,12 @@
  * Retrieves the author of the current post.
  *
  * @since 1.5.0
+ * @since 6.3.0 Returns an empty string if the author's display name is unknown.
  *
  * @global WP_User $authordata The current author's data.
  *
  * @param string $deprecated Deprecated.
- * @return string|null The author's display name.
+ * @return string The author's display name, empty string if unknown.
  */
 function get_the_author( $deprecated = '' ) {
 	global $authordata;
@@ -32,9 +33,9 @@ function get_the_author( $deprecated = '' ) {
 	 *
 	 * @since 2.9.0
 	 *
-	 * @param string|null $display_name The author's display name.
+	 * @param string $display_name The author's display name.
 	 */
-	return apply_filters( 'the_author', is_object( $authordata ) ? $authordata->display_name : null );
+	return apply_filters( 'the_author', is_object( $authordata ) ? $authordata->display_name : '' );
 }
 
 /**
@@ -55,7 +56,7 @@ function get_the_author( $deprecated = '' ) {
  *
  * @param string $deprecated      Deprecated.
  * @param bool   $deprecated_echo Deprecated. Use get_the_author(). Echo the string or return it.
- * @return string|null The author's display name, from get_the_author().
+ * @return string The author's display name, from get_the_author().
  */
 function the_author( $deprecated = '', $deprecated_echo = true ) {
 	if ( ! empty( $deprecated ) ) {
@@ -85,24 +86,31 @@ function the_author( $deprecated = '', $deprecated_echo = true ) {
  * Retrieves the author who last edited the current post.
  *
  * @since 2.8.0
+ * @since 6.9.0 Added the `$post` parameter. Unknown return value is now explicitly null instead of void.
  *
- * @return string|void The author's display name, empty string if unknown.
+ * @param int|WP_Post|null $post Optional. Post ID or post object. Default is global `$post` object.
+ * @return string|null The author's display name. Empty string if user is unavailable. Null if there was no last editor or the post is invalid.
  */
-function get_the_modified_author() {
-	$last_id = get_post_meta( get_post()->ID, '_edit_last', true );
-
-	if ( $last_id ) {
-		$last_user = get_userdata( $last_id );
-
-		/**
-		 * Filters the display name of the author who last edited the current post.
-		 *
-		 * @since 2.8.0
-		 *
-		 * @param string $display_name The author's display name, empty string if unknown.
-		 */
-		return apply_filters( 'the_modified_author', $last_user ? $last_user->display_name : '' );
+function get_the_modified_author( $post = null ) {
+	$post = get_post( $post );
+	if ( ! $post ) {
+		return null;
 	}
+
+	$last_id = get_post_meta( $post->ID, '_edit_last', true );
+	if ( ! $last_id ) {
+		return null;
+	}
+	$last_user = get_userdata( $last_id );
+
+	/**
+	 * Filters the display name of the author who last edited the current post.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $display_name The author's display name, empty string if user is unavailable.
+	 */
+	return apply_filters( 'the_modified_author', $last_user ? $last_user->display_name : '' );
 }
 
 /**
@@ -123,13 +131,11 @@ function the_modified_author() {
  * Valid values for the `$field` parameter include:
  *
  * - admin_color
- * - aim
  * - comment_shortcuts
  * - description
  * - display_name
  * - first_name
  * - ID
- * - jabber
  * - last_name
  * - nickname
  * - plugins_last_view
@@ -148,9 +154,9 @@ function the_modified_author() {
  * - user_registered
  * - user_status
  * - user_url
- * - yim
  *
  * @since 2.8.0
+ * @since 6.9.0 Removed `aim`, `jabber`, and `yim` as valid values for the `$field` parameter.
  *
  * @global WP_User $authordata The current author's data.
  *
@@ -219,15 +225,15 @@ function the_author_meta( $field = '', $user_id = false ) {
 /**
  * Retrieves either author's link or author's name.
  *
- * If the author has a home page set, return an HTML link, otherwise just return the
- * author's name.
+ * If the author has a home page set, return an HTML link, otherwise just return
+ * the author's name.
  *
  * @since 3.0.0
  *
  * @global WP_User $authordata The current author's data.
  *
- * @return string|null An HTML link if the author's url exist in user meta,
- *                     else the result of get_the_author().
+ * @return string An HTML link if the author's URL exists in user meta,
+ *                otherwise the result of get_the_author().
  */
 function get_the_author_link() {
 	if ( get_the_author_meta( 'url' ) ) {
@@ -285,7 +291,7 @@ function get_the_author_posts() {
 	if ( ! $post ) {
 		return 0;
 	}
-	return count_user_posts( $post->post_author, $post->post_type );
+	return (int) count_user_posts( $post->post_author, $post->post_type );
 }
 
 /**
@@ -307,10 +313,11 @@ function the_author_posts() {
  *
  * @global WP_User $authordata The current author's data.
  *
- * @return string An HTML link to the author page, or an empty string if $authordata isn't defined.
+ * @return string An HTML link to the author page, or an empty string if $authordata is not set.
  */
 function get_the_author_posts_link() {
 	global $authordata;
+
 	if ( ! is_object( $authordata ) ) {
 		return '';
 	}
