@@ -1,563 +1,593 @@
-=== Plugin Name ===
+=== Democracy Poll ===
 Stable tag: trunk
-Tested up to: 5.6.1
-Requires at least: 3.6
-Requires PHP: 5.6
+Tested up to: 6.8.2
+Contributors: Tkama
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Contributors: Tkama
-Tags: democracy, poll, polls, create poll, do a poll, awesome poll, easy polls, user polls, online poll, opinion stage, opinionstage, poll plugin, poll widget, polling, polling System, post poll, opinion, questionnaire, vote, voting, voting polls, survey, research, usability, cache, wp poll, yop poll, quiz, rating, review
+Tags: democracy, polls, vote, survey, review
 
 
-WordPress Polls plugin. Visitors can choose multiple and adds their own answers. Works with cache plugins like WP Super Cache. Has widget and shortcodes for posts.
-
-
-== TODO ==
-* ADD: Возомжность добавлять свои темы (ссылку на css файл с темой)?
-* ADD: Сделать опрос активным в указанную дату?
-* ADD: возможность показывать пользователю текст после того, как он проголосует (типа "ваш голос очено важен для нас" и т.п.)
-* ADD: лимит голосования, чтобы участники обязательно должны были выбрать, например, 3 пункта, чтобы проголосовать.
-* ADD: возможность подключать стили как файл!
-* https://wordpress.org/support/topic/log-data-ip-restriction/#post-9083794
-* ADD: Для каждого опроса своя высота разворачивания. Хотел сегодня прикрутить голосование помимо сайдбара ещё и в саму статью (там высота нужна была больше), не получилось. Она к сожалению фиксирована для всех опросов.
-* ADD: option to set sort order for answers on results screen
-* ADD: The ability to have a list of all active polls on one front end page would be nice.
-* ADD: quick edit - https://wordpress.org/support/topic/suggestion-quick-edit/
-* ADD: paging on archive page
-* ADD: sorting on archive page
-* ADD: cron: shadule polls opening & activation
-* ADD: show link to post at the bottom of poll, if it attached to one post (has one in_posts ID)
-* ADD: Collect cookies demPoll_N in one option array
-* ADD: administrator can modify votes... put an option on poll creation to allow/disallow admin control over votes?
-* ADD: Group polls
-* ADD: Речь идёт о премодерации, чтобы пользователь предложил свой вариант, а публичным данный вариант станет после одобрения администратором.
-* ADD: Фичареквест: добавить возможность "прикреплять" опрос к конкретному посту/странице вставкой шорткода не в тексте, а сделать метабокс (причем с нормальным выбором опроса из списка). Это позволит добавлять опрос в любое место на странице (согласно дизайну) и только для тех постов/страниц, где подключен опрос.
-
+WordPress polls plugin with multiple-choice, custom answers, cache compatibility, widgets, and shortcodes.
 
 
 == Description ==
 
-The plugin adds a clever and convenient system to create various Polls with different features, such as:
+This plugin provides an intuitive and powerful system to create polls with features like:
 
-* Single and Multiple voting. Сustomizable.
-* Visitors can add new answers. Сustomizable.
-* Ability to set poll's end date.
-* Unregistered users can't vote. Сustomizable.
-* Different design of a poll.
-* And so on. See changelog.
+* Single and multiple voting options (customizable)
+* Allowing visitors to add custom answers (optional)
+* Setting an end date for polls
+* Restricting voting to registered users (optional)
+* Multiple poll designs
+* And more — see the changelog for details
 
-Democracy Poll works with all cache plugins like: WP Total Cache, WP Super Cache, WordFence, Quick Cache etc.
+**Democracy Poll** is compatible with major cache plugins, including WP Total Cache, WP Super Cache, Wordfence, Quick Cache, and others.
 
-I focus on easy-admin features and fast performance. So we have:
+Designed for ease of use and performance, it offers:
 
-* Quick Edit button for Admin, right above a poll
-* Plugin menu in toolbar
-* Inline css & js incuding
-* Css & js connection only where it's needed
-* and so on. See changelog
-
-
+* A "Quick Edit" button for admins, shown directly above a poll
+* A plugin menu in the admin toolbar
+* Inline inclusion of CSS & JS
+* Conditional loading of CSS & JS (only when needed)
+* And more — check the changelog for details
 
 ### More Info ###
 
-Democracy Poll is a reborn of once-has-been-famous plugin with the same name. Even if it hasn't been updated since far-far away 2006, it still has the great idea of adding users' own answers. So here's a completely new code. I have left only the idea and great name of the original DP by Andrew Sutherland.
+Democracy Poll is a modern version of the original, well-regarded plugin by the same name. Although Andrew Sutherland’s version hadn't been updated since 2006, it introduced the innovative idea of allowing users to add their own answers. This version retains the core idea and name, but features fully rewritten code.
 
-What can it perform?
+**Key features:**
 
-* adding new polls;
-* works with cache plugins: wp total cache, wp super cache, etc...
-* users may add their own answers (Democracy), the option may be disabled if necessary;
-* multi-voting: users may multiple answers instead of a single one (may be disabled on demand);
-* closing the poll after the date specified beforehand;
-* showing a random poll when some are available;
-* closing polls for still unregistered users;
-* a comfortable editing of a selected poll: 'Edit' key for administrators;
-* votes amount editing;
-* a user can change his opinion when re-vote option is enabled;
-* remember users by their IP, cookies, WP profiles (for authorized users). The vote history may be cleaned up;
-* inserting new polls to any posts: the [demоcracy] (shortcode). A key in visual editor is available for this function;
-* a widget (may be disabled);
-* convenient polls editing: the plugin's Panel is carried out to the WordPress toolbar; (may be disabled);
-* .css or .js files may be disabled or embedded to HTML code;
-* showing a note under the poll: a short text with any notes to the poll or anything around it;
-* changing the poll design (css themes);
+* Create new polls
+* Cache plugin compatibility (e.g. WP Total Cache, WP Super Cache)
+* Option to allow users to add their own answers
+* Multi-voting support
+* Poll auto-closing after a specified end date
+* Display random polls
+* Restrict voting to registered users (optional)
+* "Edit" button for admins for quick poll management
+* Edit vote counts
+* Option to let users change their votes
+* Voter tracking via IP, cookies, or WP user ID (optional vote clearing)
+* Embed polls in posts via `[democracy]` shortcode (visual editor button available)
+* Widget support (optional)
+* Admin bar menu for easy access (optional)
+* Option to disable or inline CSS/JS
+* Add custom notes under polls
+* Customize designs via CSS themes
 
-
-Multisite: support from version 5.2.4
-
-
-Requires PHP 5.3 or later.
-
+Multisite support is available from version 5.2.4.
 
 
 
 == Usage ==
 
-### Usage (Widget) ###
-1. Go to `WP-Admin -> Appearance -> Widgets` and find `Democracy Poll` Widget.
-2. Add this widget to one of existing sidebar.
-3. Set Up added widget and press Save.
-4. Done!
+### Widget ###
 
+1. Go to `WP Admin → Appearance → Widgets` and add the `Democracy Poll` widget
+2. Place it in a sidebar
+3. Configure settings
+4. Done
 
-### Usage (Without Widget) ###
-1. Open sidebar.php file of your theme: `wp-content/themes/<YOUR THEME NAME>/sidebar.php`
-2. Add such code in the place you want Poll is appeared:
+### Template Code ###
+
+In your theme file (e.g. `sidebar.php`), add:
 
 `
-<?php if( function_exists('democracy_poll') ){ ?>
-	<li>
+<?php if ( function_exists( 'democracy_poll' ) ) { ?>
+	<div class="sidebar-section">
 		<h2>Polls</h2>
-		<ul>
-			<li><?php democracy_poll();?></li>
-		</ul>
-	</li>
+		<div class="my-poll">
+			<?php democracy_poll(); ?>
+		</div>
+	</div>
 <?php } ?>
 `
 
-* To show specific poll, use `<?php democracy_poll( 3 ); ?>` where 3 is your poll id.
-* To embed a specific poll in your post, use `[democracy id="2"]` where 2 is your poll id.
-* To embed a random poll in your post, use `[democracy]`
+* To show a specific poll: `<?php democracy_poll( 3 ); ?>` (replace `3` with your poll ID)
+* To embed a specific poll in a post, use `[democracy id="2"]` shortcode.
+* To embed a random poll in a post, use `[democracy]` shortcode.
 
 
-#### Display Archive ####
-For display polls archive, use the function:
+#### Poll Archive ####
 
-`<?php democracy_archives( $hide_active, $before_title, $after_title ); ?>`
+To show the poll archive:
 
-
-
-
+`
+<?php democracy_archives( $hide_active, $before_title, $after_title ); ?>
+`
 
 
 == Frequently Asked Questions ==
 
-### Does this plugin clear yourself after uninstall?
+### Does this plugin clean itself up after uninstalling? ###
 
-Yes it is! To completely uninstall the plugin, deactivate it and then press "delete" link in admin plugins page and ther plugin delete all it's options and so on...
-
-
+Yes. When you deactivate and delete the plugin, it removes all its options and data.
 
 
 == Screenshots ==
 
-1. Single vote view.
-2. Single result view.
-3. Multiple vote view.
-4. Admin polls list page.
-5. Admin edit poll page.
-6. Add poll admin page.
-7. General settings.
-8. Polls theme settings.
-9. Poll's texts changes.
+1. Single vote view
+2. Single result view
+3. Multiple vote view
+4. Admin polls list
+5. Admin edit poll
+6. Add poll admin page
+7. General settings
+8. Theme settings
+9. Text customization
 
 
+
+== Upgrade Notice ==
+
+= 6.1.1 =
+- FIX: esc_attr() added for inline js to fix possible bugs on some servers.
+
+= 6.1.0 =
+- CHG: DEM_VER constant removed use `DemocracyPoll\plugin()->ver` instead.
+- CHG: DEMOC_URL constant removed use `DemocracyPoll\plugin()->url` instead. NOTE: Trailing slash removed.
+- CHG: DEMOC_PATH constant removed use `DemocracyPoll\plugin()->dir` instead. NOTE: Trailing slash removed.
+- CHG: DEMOC_MAIN_FILE constant removed.
+- CHG: `DemPoll` class refactored significantly. Some of the proprerties moved to `Poll_Renderer` and `Poll_Service` classes.
+
+= 6.0.4 =
+* Requires PHP 7.4+
+
+= 6.0.0 =
+* Requires PHP 7.0+
+* If you used plugin classes directly in your code, you may need to update them to match the new class names
 
 
 
 == Changelog ==
 
+= 6.1.0 =
+- CHG: DEM_VER constant removed use `DemocracyPoll\plugin()->ver` instead.
+- CHG: DEMOC_URL constant removed use `DemocracyPoll\plugin()->url` instead. NOTE: Trailing slash removed.
+- CHG: DEMOC_PATH constant removed use `DemocracyPoll\plugin()->dir` instead. NOTE: Trailing slash removed.
+- CHG: DEMOC_MAIN_FILE constant removed.
+- IMP: DemPoll class refactored significantly. IT was decomposed into smaller classes - two new clasees added Poll_Renderer and Poll_Service.
+- FIX: PHPStan fixes and improvements.
+- IMP: Translation POT file updated. PO files updated. `.l10n.php` files added for better performance.
+
+= 6.0.5 =
+- IMP: Unit tests infrastructure added. Some Helpers methods are now tested.
+- IMP: PHP Typehint added for some palces of the code.
+- NEW: Poll_Answer class added to encapsulate poll answer data and improve code readability.
+- DOC: All filters and actions documented.
+- IMP: Other minor improvements.
+
+= 6.0.4 =
+- FIX: Init moved to `after_setup_theme` hook.
+- NEW: Alphabet answers order added.
+- IMP: democracy.js minor improvements (part refactored to vanilla js).
+- IMP: CSS minor refactor.
+- IMP: Minor improvements.
+- UPD: Tested up to: WP 6.8.0
+- UPD: js-cookie 2.2.0 >> 3.0.5.
+
+= 6.0.3 =
+* FIX: Poll widget did not work correctly if "select random poll" option was set.
+
+= 6.0.2 =
+* FIX: Fatal error with "WordFence" plugin: "Failed opening .../Helpers/wfConfig.php".
+
+= 6.0.1 =
+* FIX: Short-circuit recursion on plugin object construct for not logged-in users (v6.0.0 bug).
+* IMP: Minor improvements.
+
+= 6.0.0 =
+* FIX: Unable to delete all answers or create a democracy poll without a starting answer.
+* CHG: Minimal PHP version requirement set to 7.0.
+* CHG: Class `Democracy_Poll` renamed to `Plugin` and moved under namespace.
+* CHG: Functions `democr()` and `demopt()` renamed to `\DemocracyPoll\plugin()` and `\DemocracyPoll\options()`.
+* CHG: Most classes moved under `DemocracyPoll` namespace.
+* CHG: DemPoll object improvements: magic properties replaced with real ones.
+* FIX: `democracy_shortcode` bug.
+* FIX: Not logged-in user logs now get saved with user_id=0 and IP (not just IP).
+* FIX: `Regenerate_democracy_css` fixes. Empty answer PHP notice fix.
+* IMP: "Admin" classes refactored.
+* IMP: Admin Pages code refactored.
+* IMP: Classes autoloader implemented.
+* IMP: Huge refactoring, minor code improvements, and decomposition.
+* UPD: Updated `democracy-poll.pot`.
+
 = 5.6.0 =
-* BUG: Pagination links on archive page.
+* FIX: Pagination links on archive page.
 
 = 5.5.10 =
-* FIX: CSS radio,checkbox styles from px to em.
+* FIX: CSS radio/checkbox styles changed from px to em.
 
 = 5.5.9 =
-* FIX: JS code fixes for jQuery 3.5.
+* FIX: JS code fixes for jQuery 3.5 compatibility.
 
 = 5.5.8 =
-* NEW: `orderby` аргумент для функции `get_dem_polls()`.
+* ADD: `orderby` argument for `get_dem_polls()` function.
 
 = 5.5.7 =
-* NEW: hook `get_dem_polls_sql_clauses`.
+* ADD: Hook `get_dem_polls_sql_clauses`.
 
 = 5.5.6.3 =
-* FIX: `disabled` property for checkbox input sometimes not removed on uncheck for multianswers questions.
+* FIX: `disabled` property not removed correctly on uncheck for multi-answer questions.
 
 = 5.5.6.2 =
-* NEW: Scroll to poll top when click on Resulsts, Vote etc.
+* ADD: Scroll to poll top when clicking Results, Vote, etc.
 
 = 5.5.6.1 =
-* NEW: `target="_blank"` attribute for copyright link.
+* ADD: `target="_blank"` attribute for copyright link.
 
 = 5.5.6 =
-* NEW: pagination links at the bottom of the archive page.
-* NEW: `[democracy_archives]` now can accept parameters: 'before_title', 'after_title', 'active', 'open', 'screen', 'per_page', 'add_from_posts'. `[democracy_archives screen="vote" active="1"]` will show only active poll with default vote screen.
-* NEW: function `get_dem_polls( $args )`
+* ADD: Pagination links at the bottom of the archive page.
+* ADD: `[democracy_archives]` shortcode now accepts parameters like 'before_title', 'after_title', 'active', 'open', 'screen', 'per_page', 'add_from_posts'.
+* ADD: `get_dem_polls( $args )` function.
 
 = 5.5.5 =
-* CHANGE: ACE code editor to native WordPress CodeMirror.
+* CHG: Replaced ACE code editor with native WordPress CodeMirror.
 
 = 5.5.4 =
-* ADD: 'dem_get_ip' filter and cloudflare IP support.
-* NEW: use float number in 'cookie_days' option.
-* FIX: expire time now sets in UTC time zone.
+* ADD: `dem_get_ip` filter and Cloudflare IP support.
+* ADD: Support for float numbers in the 'cookie_days' option.
+* FIX: Expire time now set in UTC timezone.
 
 = 5.5.3 =
-* FIX: compatability with W3TC.
-* FIX: multiple voting limit check on back-end (AJAX request) - no more answers than allowed...
-* IMP: return WP_Error object on vote error and display it...
+* FIX: Compatibility with W3TC.
+* FIX: Multiple voting limit check on backend (AJAX) — no more answers than allowed.
+* IMP: Return WP_Error object on vote error and display it.
 
 = 5.5.2 =
-* ADD: wrapper function for use in themes 'get_democracy_poll_results( $poll_id )' - Gets poll results screen.
-* ADD: allowed &lt;img&gt; tag in question and answers.
+* ADD: `get_democracy_poll_results( $poll_id )` wrapper function to get poll results.
+* ADD: Allow `<img>` tag in questions and answers.
 
 = 5.5.1 =
-* IMP: now design setting admin page is more clear and beautiful :)
+* IMP: Admin design settings page improved.
 
 = 5.5.0 =
-* ADD: post metabox to attach poll to a post. To show attached poll in theme use `get_post_poll_id()` on is_singular() page. Thanks to heggi@fhead.org for idea.
-* ADD: voted screen progress line animation effect and option to set animation speed or disable animation...
-* IMP: now "height collapsing" not work if it intend to hide less then 100px...
-* FIX: now JS includes in_footer not right after poll. In some cases there was a bug - when poll added in content through shortcode.
-* IMP: buttons and other design on 'design settings' admin screen.
+* ADD: Post metabox to attach poll to post; use `get_post_poll_id()` on `is_singular()` pages.
+* ADD: Progress line animation effect for vote results with adjustable speed.
+* IMP: "Height collapsing" now doesn't work if intended to hide less than 100px.
+* FIX: JS now included in footer properly when poll added via shortcode.
+* IMP: Improved buttons and design on admin design settings page.
 
 = 5.4.9 =
-* ADD: 'demadmin_sanitize_poll_data' filter second '$original_data' parameter
-* ADD: posts where a poll is ebedded block at the bottom of each poll on polls archive page.
+* ADD: 'demadmin_sanitize_poll_data' filter with second `$original_data` parameter.
+* ADD: Block showing posts where poll is embedded at bottom of polls archive page.
 
-= 5.4.7 - 5.4.8 =
-* FIX: 'expire' parameter works incorrectly with logs written to DB.
-* FIX: 'wp_remote_get()' changed to 'file_get_contents()' bacause it works not correctly with geoplugin.net API.
-* FIX: 'jquery-ui.css' fix and needed images added.
+= 5.4.8 =
+* FIX: 'expire' parameter issue when logs written to DB.
+* FIX: Replaced `wp_remote_get()` with `file_get_contents()` for geoplugin.net API.
+* FIX: `jquery-ui.css` and images fix.
 
 = 5.4.6 =
-* FIX: Error with "load_textdomain" because of which it was impossible to activate the plugin
+* FIX: "load_textdomain" error that blocked plugin activation.
 
 = 5.4.5 =
-* FIX: "Edit poll" link from front-end for users with access to edit single poll.
-* FIX: not correct use of $this for PHP 5.3 in class.Democracy_Poll_Admin.php
+* FIX: "Edit poll" link from frontend for users with poll edit rights.
+* FIX: Incorrect use of `$this` for PHP 5.3 in `Democracy_Poll_Admin` class.
 
 = 5.4.4 =
-* CHG: prepare to move all localisation to translate.wordpress.org in next release...
-* FIX: notice on MU activation - change `wp_get_sites()` to new from WP 4.6 `get_sites()`. Same fix on plugin Uninstall...
-* ADD: Hungarian translation (hu_HU). Thanks to Lesbat.
+* CHG: Preparing to move all localization to translate.wordpress.org.
+* FIX: MU activation notice: replaced `wp_get_sites()` with `get_sites()` (WP 4.6+).
+* ADD: Hungarian translation (hu_HU) by Lesbat.
 
 = 5.4.3 =
-* ADD: disable user capability to edit poll of another user, when there is democracy admin access to other roles...
-* ADD: spain (es_ES) localisation file added.
-* IMP: improve accessibility protection in different parts of admin area for additional roles (edit,delete poll)...
-* IMP: hide & block any global plugin options updates for roles with not 'super_access' access level...
+* ADD: Disable editing another user's poll if restricted by admin settings.
+* ADD: Spanish (es_ES) localization.
+* IMP: Improved accessibility protection in admin for additional roles.
+* IMP: Block global plugin options updates for non-super_access roles.
 
 = 5.4.2 =
-* FIX: Some minor changes that do not change the plugin logic at all: change function names; block direct access to files with "active" PHP code.
-* CHG: Add `jquery-ui.css` to plugin files and now it loaded from inside it.
-* FIX: "wp total cache" support
-* ADD: second parametr to 'dem_sanitize_answer_data' filter - $filter_type
-* ADD: second parametr to 'dem_set_answers' filter - $poll
-* FIX: tinymce translation fix
-* CHG: rename main class `Dem` to `Democracy_Poll` for future no conflict. And rename some other internal functions/method names
+* FIX: Minor fixes: function renaming and blocking direct file access.
+* CHG: Added `jquery-ui.css` to plugin files.
+* FIX: W3TC support fixes.
+* ADD: Second parameter to 'dem_sanitize_answer_data' and 'dem_set_answers' filters.
+* FIX: TinyMCE translation fix.
+* CHG: Renamed main class `Dem` to `Democracy_Poll`.
 
 = 5.4.1 =
-* CHG: improve logic to work correctly with activate_plugin() function outside of wp-admin area (in front end). Thanks to J.D.Grimes
+* CHG: Improve activation logic with `activate_plugin()` outside wp-admin. Thanks to J.D. Grimes.
 
 = 5.4 =
-* FIX: XSS Vulnerability. In some extraordinary case it could be possible to hack your site. Read here: http://pluginvulnerabilities.com/?p=2967
-* ADD: For additional protect I add nonce check for all requests in admin area.
-* CHG: move back Democracy_Poll_Admin::update_options() to its place - it's not good decision - I'm looking for a better one
+* FIX: XSS vulnerability fix (security issue).
+* ADD: Nonce checks for all admin requests.
+* CHG: Moved back `Democracy_Poll_Admin::update_options()` method.
 
 = 5.3.6 =
-* FIX: delete `esc_sql()` from code, for protection. Thanks to J.D. Grimes
-* FIX: multi run of Democracy_Poll_Admin trigger error... (J.D. Grimes)
-* CHG: move Democracy_Poll_Admin::update_options() method to Democracy_Poll::update_options(), for possibility to activate plugin not only from admin area.
+* FIX: Removed unsafe `esc_sql()` usage. Thanks to J.D. Grimes.
+* FIX: Multiple runs of `Democracy_Poll_Admin` trigger error fix.
+* CHG: Moved `update_options()` to `Democracy_Poll`.
 
 = 5.3.5 =
-* FIX: now user IP detects only with REMOTE_ADDR server variable to don't give possibility to cheat voice. You can change behavior in settings.
+* FIX: User IP now detected only with `REMOTE_ADDR` (to avoid cheating).
 
 = 5.3.4.6 =
-* FIX: add 'dem_add_user_answer' query var param to set noindex for no duplicate content
-* ADD: actions `dem_voted` and `dem_vote_deleted`
+* FIX: Added 'dem_add_user_answer' query var param to set `noindex`.
+* ADD: Actions `dem_voted` and `dem_vote_deleted`.
 
 = 5.3.4.5 =
-* ADD: filters `dem_vote_screen` and `dem_result_screen`
+* ADD: Filters `dem_vote_screen` and `dem_result_screen`.
 
 = 5.3.4 =
-* ADD: poll creation date change capability on edit poll page.
-* ADD: animation speed option on design settings.
-* ADD: "dont show results link" global option.
-* ADD: 'show last poll' option in widget
-* FIX: bug user cant add onw answer when vote button is hidden for not multiple poll
-* CHG: move the "dem__collapser" styles to all styles. Change the styles: now arrow has 150% font-size. Now you can set your own arrow simbols by changing it's style. EX:
-	```
-	.dem__collapser.collapsed .arr:before{ content:"down"; }
-	.dem__collapser.expanded  .arr:before{ content:"up"; }
-	```
+* ADD: Poll creation date editing on poll edit page.
+* ADD: Animation speed setting in design settings.
+* ADD: "Don't show results link" global option.
+* ADD: Show last poll option in widget.
+* FIX: Bug where user couldn't add own answer if vote button hidden.
+* CHG: Moved "dem__collapser" styles globally; customizable arrows via CSS.
 
 = 5.3.3.2 =
-* FIX: stability for adding "dem__collapser" style into document.
+* FIX: Stability for injecting "dem__collapser" style.
 
 = 5.3.3.1 =
-* ADD: answers sort in admin by two fields - votes and then by ID - it's for no suffle new answers...
+* ADD: Answer sorting in admin by votes and ID.
 
 = 5.3.3 =
-* FIX: minor: when work with cache plugin: now vote & revote buttons completely removes from DOM
+* FIX: Vote and revote buttons now fully removed from DOM with caching plugins.
 
 = 5.3.2 =
-* FIX: minor: cookie stability fix when plugin works with page caching plugin
+* FIX: Cookie stability fix with page caching plugins.
 
 = 5.3.1 =
-* ADD: filter: 'dem_poll_screen_choose'
-* FIX: now before do anything, js checks - is there any democracy element on page. It needs to prevent js errors.
-* CHG: now main js init action run on document.ready, but not on load. So democracy action begin to work earlier...
+* ADD: Filter `dem_poll_screen_choose`.
+* FIX: Prevent JS errors by checking democracy element presence before init.
+* CHG: JS init moved to `document.ready` instead of `load`.
 
 = 5.3.0 =
-* CHG: All plugin code translated to english! Now there is NO russian text for unknown localisation strings.
+* CHG: All plugin code translated to English (no hardcoded Russian text).
 
 = 5.2.9 =
-* FIX: add poll PHP syntax bug...
+* FIX: PHP syntax bug in poll addition.
 
 = 5.2.8 =
-* ADD: new red button - pinterest style. default button styles changed. Some ugly buttons (3d, glass) was deleted.
-* ADD: filters: 'dem_vote_screen_answer', 'dem_result_screen_answer', 'demadmin_after_question', 'demadmin_after_answer', 'dem_sanitize_answer_data', 'demadmin_sanitize_poll_data'
+* ADD: New red Pinterest-style button. Some old 3D/glass buttons removed.
+* ADD: Filters: `dem_vote_screen_answer`, `dem_result_screen_answer`, `demadmin_after_question`, `demadmin_after_answer`, `dem_sanitize_answer_data`, `demadmin_sanitize_poll_data`.
 
 = 5.2.7 =
-* FIX: global option 'dont show results' not work properly
-* FIX: some little fix in code
+* FIX: "Don't show results" global option fix.
+* FIX: Minor code fixes.
 
 = 5.2.6 =
-* FIX: bug when new answer added: now "NEW" mark adds correctly
+* FIX: "NEW" mark correctly added after adding a new answer.
 
 = 5.2.5 =
-* FIX: wp_json_encode() function was replaced, in order to support WP lower then 4.1
-* CHG: usability improvements
-* CHG: set 'max+1' order num for users added answers, if answers has order
+* FIX: Replaced `wp_json_encode()` for WP < 4.1 support.
+* CHG: Usability improvements.
+* CHG: Set max+1 order number for user-added answers if answers have order.
 
 = 5.2.4 =
-* ADD: multisite support
-* ADD: migration from 'WP Polls' plugin mechanism
-* FIX: bug - was allowed set 1 answer for multiple answers
-* CHG: IP save to DB: now it saves as it is without ip2long()
-* CHG: EN translation is updated.
+* ADD: Multisite support.
+* ADD: Migration mechanism from "WP Polls" plugin.
+* FIX: Bug where one answer allowed for multiple-answer polls.
+* CHG: Save IP to DB as-is (no ip2long()).
+* CHG: Updated English translation.
 
 = 5.2.3 =
-* ADD: on admin edit poll screen, posts list where poll shortcode uses
-* ADD: ability to set poll buttons css class on design settings page
-* ADD: filters: 'dem_super_access' (removed filter 'dem_admin_access'), 'dem_get_poll', 'dem_set_answers'
-* FIX: 'reset order' bug fix - button not work, when answers are ordered in edit poll screen and you wanted to reset the order - I missed one letter in the code during refactoring :)
-* FIX: 'additional css' update bug fix: you can't empty it...
-* FIX: some other minor fixes...
-* CHG: EN translation is updated.
+* ADD: Show posts list using poll shortcode on poll edit page.
+* ADD: Allow setting custom CSS class for poll buttons.
+* ADD: Filters: `dem_super_access`, `dem_get_poll`, `dem_set_answers`.
+* FIX: "Reset order" button bug fix on poll edit screen.
+* FIX: "Additional CSS" emptying bug fix.
+* FIX: Other minor fixes.
+* CHG: Updated English translation.
 
 = 5.2.2 =
-* FIX: when click on 'close', 'open', 'activate', 'deactivate' buttons at polls list table, the action was applied not immediately
-* FIX: radio, checkbox styles fix
+* FIX: Actions (close, open, activate, deactivate) in polls list table were not applied immediately.
+* FIX: Radio and checkbox styles.
 
 = 5.2.1 =
-* ADD: 'in posts' column in admin polls list. In which posts the poll shortcode used.
+* ADD: 'In posts' column in admin polls list to show where the poll shortcode is used.
 
 = 5.2.0 =
-* ADD: hooks: 'dem_poll_inserted', 'dem_before_insert_quest_data'
-* ADD: two variants to delete logs: only logs and logs with votes.
-* ADD: possibiliti to delete single answer log.
-* ADD: "all voters" at the bottom of a poll if the poll is multiple.
-* ADD: delete answer logs on answer deleting.
-* ADD: button to delete all logs of closed polls.
-* ADD: not show logs link in polls list table, when the poll don't have any log records.
-* ADD: collapse extremely height polls under 'max height' option. All answers expands when user click on answers area.
-* ADD: css themes for 'radio' and 'checkboks' inputs. Added special css classes and span after input element into the poll HTML code.
-* ADD: now you can set access to add, edit polls and logs to other wordpress roles (editor, author etc.).
-* ADD: mark 'NEW' for newely added answers by any user, except poll creator.
-* ADD: 'NEW' mark filter and 'NEW' mark clear button in plugin logs table.
-* ADD: country name and flag in logs table, parsed from voter IP.
-* ADD: ability to sort answers (set order) in edit/add poll admin page. In this case answers will showen by the order.
-* ADD: one more option to sort answers by random on display its in poll.
-* ADD: sort option for single poll. It will overtake global sort option.
-* FIX: fix admin css bug in firefox on design screen...
-* CHG: EN translation is updated.
+* ADD: Hooks: `dem_poll_inserted`, `dem_before_insert_quest_data`.
+* ADD: Two options to delete logs: only logs or logs with votes.
+* ADD: Ability to delete a single answer log.
+* ADD: "All voters" section at bottom of multiple polls.
+* ADD: Delete answer logs when deleting an answer.
+* ADD: Button to delete logs of closed polls.
+* ADD: Hide "logs" link in polls list table if no log records exist.
+* ADD: Collapse extremely tall polls with "max height" option; expand on answer click.
+* ADD: CSS themes for radio and checkbox inputs; special classes and spans added.
+* ADD: Ability to assign poll and log access to other WordPress roles.
+* ADD: "NEW" mark for newly added answers (except by poll creator).
+* ADD: "NEW" mark filter and clear button on logs table.
+* ADD: Display country name and flag in logs table based on voter IP.
+* ADD: Ability to sort answers manually in edit/add poll page.
+* ADD: Option to randomize answer order.
+* ADD: Single poll sort option to override global setting.
+* FIX: Admin CSS bug on design screen in Firefox.
+* CHG: Updated English translation.
 
 = 5.1.1 =
-* SEO Fix: Now sets 404 response and "noindex" head tag for duplicate pages with: $_GET['dem_act'] or $_GET['dem_pid'] or $_GET['show_addanswerfield']
+* FIX: SEO - 404 response and "noindex" head tag for duplicate pages (`dem_act`, `dem_pid`, `show_addanswerfield` GET parameters).
 
 = 5.1.0 =
-* Fix: Change DB ip field from int(11) to bigint(20). Because of this some IP was writen wrong. Also, change some other DB fields types, but it's no so important.
+* FIX: Changed DB IP field from `int(11)` to `bigint(20)` to fix wrong IP storage. Adjusted some other DB fields.
 
 = 5.0.3 =
-* Fix: Some bugs with variables and antivirus check.
+* FIX: Bugs with variables and antivirus checks.
 
 = 5.0.2 =
-* FIX: not correctly set answers on cache mode, because couldn't detect current screen correctly.
+* FIX: Incorrect answer setting in cache mode due to wrong screen detection.
 
 = 5.0.1 =
-* ADD: expand answers list on Polls list page by click on the block.
+* ADD: Expand answers list by clicking on the block in Polls list page.
 
 = 5.0 =
-* FIX: replace VOTE button with REVOTE. On cache mode, after user voting he see backVOTE button (on result screen), but not "revote" or "nothing" (depence on poll options).
-* HUGE ADD: Don't show results until vote is closed. You can choose this option for single poll or for all polls (on settings page).
-* ADD: edit & view links on admin logs page.
-* ADD: Search poll field on admin polls list page.
-* ADD: All answers (not just win) in "Winner" column on polls list page. For usability answers are folds.
-* ADD: Poll shordcode on edit poll page. Auto select on its click.
-* CHG: sort answers by votes on edit poll page.
+* FIX: Replaced VOTE button with REVOTE button in cache mode after voting.
+* ADD: Option to hide results until poll is closed (global and per poll).
+* ADD: Edit & view links on admin logs page.
+* ADD: Search field on admin polls list page.
+* ADD: Show all answers (not only winners) in "Winner" column.
+* ADD: Poll shortcode shown on edit poll page (auto-select on click).
+* CHG: Sort answers by votes on edit poll page.
 
 = 4.9.4 =
-* FIX: change default DB tables charset from utf8mb4 to utf8. Thanks to Nanotraktor
+* FIX: Changed default DB charset from `utf8mb4` to `utf8`. Thanks to Nanotraktor.
 
 = 4.9.3 =
-* ADD: single poll option that allow set limit for max answers if there is multiple answers option.
-* ADD: global option that allow hide vote button on polls with no multiple answers and revote possibility. Users will vote by clicking on answer itself.
-* fix: disable cache on archive page.
+* ADD: Single poll option to limit max answers in multiple-answer polls.
+* ADD: Global option to hide vote button on non-multiple polls (click-to-vote).
+* FIX: Disabled cache on archive page.
 
 = 4.9.2 =
-* FIX: bootstrap .label class conflict. Rename .label to .dem-label. If you discribe .label class in 'additional css' rename it to .dem-label please.
-* ADD: Now on new version css regenerated automaticaly when you enter any democracy admin page.
+* FIX: Bootstrap `.label` class conflict; renamed to `.dem-label`.
+* ADD: Auto-regenerate CSS on plugin admin page load.
 
 = 4.9.1 =
-* FIX: Polls admin table column order
+* FIX: Polls admin table column order.
 
 = 4.9.0 =
-* ADD: Logs table in admin and capability to remove only logs of specific poll.
-* ADD: 'date' field to the democracy_log table.
+* ADD: Logs table in admin with ability to remove logs of a specific poll.
+* ADD: 'date' field to `democracy_log` table.
 
 = 4.8 =
-* Complatelly change polls list table output. Now it work under WP_List_Table and have sortable colums, pagination, search (in future) etc.
+* CHG: Completely revamped polls list table using WP_List_Table: sortable columns, pagination, and search ready.
 
 = 4.7.8 =
-* ADD: en_US l10n if no l10n file.
+* ADD: Default en_US localization if none available.
 
 = 4.7.7 =
-* ADD: de_DE localisation. Thanks to Matthias Siebler
+* ADD: de_DE localization. Thanks to Matthias Siebler.
 
 = 4.7.6 =
-* DELETED: possibility to work without javascript. Now poll works only with enabled javascript in your browser. It's better because you don't have any additional URL with GET parametrs. It's no-need-URL in 99% cases..
+* DEL: Removed no-JS support. Now poll requires JavaScript for better usability.
 
 = 4.7.5 =
-* CHG: Convert tables from utf8 to utf8mb4 charset. For emoji uses in polls
+* CHG: Changed DB charset to `utf8mb4` to support emojis.
 
 = 4.7.4 =
-* CHG: Some css styles in admin
+* CHG: Updated admin CSS styles.
 
 = 4.7.3 =
-* ADD: Custom front-end localisation - as single settings page. Now you can translate all phrases of Poll theme as you like.
+* ADD: Custom frontend localization settings page to translate all poll phrases.
 
 = 4.7.2 =
-* CHG: in main js cache result/vote view was setted with animation. Now it sets without animation & so the view change invisible for users. Also, fix with democracy wrap block height set, now it's sets on "load" action, but not "document.ready".
-* CHG: "block.css" theme improvements for better design.
+* CHG: JS result/vote view cache updated without animation for smoother UX.
+* CHG: Democracy block height set on "load" instead of "document.ready".
+* CHG: Minor improvements in `block.css` theme.
 
 = 4.7.1 =
-* ADD: "on general options page": global "revote" and "democratic" functionality disabling ability
-* ADD: localisation POT file & english transtation
+* ADD: Global options to disable "revote" and "democratic" features.
+* ADD: Localization POT file and English translation.
 
 = 4.7.0 =
-* CHG: "progress fill type" & "answers order" options now on "Design option page"
-* FIX: english localisation
+* CHG: Moved "progress fill type" and "answers order" settings to Design options page.
+* FIX: English localization fixes.
 
 = 4.6.9 =
-* CHG: delete "add new answer" button on Add new poll and now field for new answerr adds when you focus on last field.
+* CHG: Reworked answer field adding on new poll creation (add on focus).
 
 = 4.6.8 =
-* FIX: options bug appers in 4.6.7
+* FIX: Bug introduced in 4.6.7 affecting options.
 
 = 4.6.7 =
-* ADD: check for current user has an capability to edit polls. Now toolbar doesn't shown if user logged in but not have capability
+* ADD: Capability check for editing polls. Toolbar hidden for unauthorized users.
 
 = 4.6.6 =
-* FIX: Huge bug about checking is user already vote or not. This is must have release!
-* CHG: a little changes in js code
-* 'notVote' cookie check set to 1 hour
+* FIX: Major voting status check bug fixed (critical release).
+* CHG: Minor JS code changes.
+* CHG: `notVote` cookie lifespan set to 1 hour.
 
 = 4.6.5 =
-* ADD: New theme "block.css"
-* ADD: Preset theme (_preset.css) now visible and you can set it and wtite additional css styles to customize theme
+* ADD: New theme `block.css`.
+* ADD: Preset theme visibility and customization support.
 
 = 4.6.4 =
-* FIX: when user send democratic answer, new answer couldn't have comma
+* FIX: New democratic answers couldn't contain commas.
 
 = 4.6.3 =
-* FIX: Widget showed screens uncorrectly because of some previous changes in code.
-* Improve: English localisation
+* FIX: Widget display issues due to code changes.
+* IMP: Improved English localization.
 
 = 4.6.2 =
-* FIX: great changes about polls themes and css structure.
-* ADD: "Ace" css editor. Now you can easely write your own themes by editing css in admin.
+* FIX: Major updates to poll themes and CSS structure.
+* ADD: "Ace" CSS editor for easier theme customization.
 
 = 4.6.1 =
-* FIX: some little changes about themes settings, translate, css.
-* ADD: screenshots to WP directory.
+* FIX: Minor changes to themes, translations, and CSS.
+* ADD: Added screenshots to WP directory.
 
 = 4.6.0 =
-* ADD: Poll themes management
-* FIX: some JS and CSS bugs
-* FIX: Unactivate pool when closing poll
+* ADD: Poll themes management.
+* FIX: JS and CSS bug fixes.
+* FIX: Auto-deactivate polls when closed.
 
 = 4.5.9 =
-* FIX: CSS fixes, prepare to 4.6.0 version update
-* ADD: Cache working. Wright/check cookie "notVote" for cache gear optimisation
+* FIX: CSS fixes; prep for 4.6.0 update.
+* ADD: Cache handling and "notVote" cookie optimization.
 
 = 4.5.8 =
-* ADD: AJAX loader images SVG & css3 collection
-* ADD: Sets close date when closing poll
+* ADD: AJAX loader images (SVG & CSS3 collection).
+* ADD: Automatically set close date when poll closes.
 
 = 4.5.7 =
-* FIX: revote button didn't minus votes if "keep-logs" option was disabled
+* FIX: Revote button did not deduct votes if "keep-logs" option was disabled.
 
 = 4.5.6 =
-* ADD: right working with cache plugins. Auto unable/dasable with wp total cache, wp super cache, WordFence, WP Rocket, Quick Cache. If you use the other plugin you can foorce enable this option.
-* ADD: add link to selected css file in settings page, to conviniently copy or view the css code
-* ADD: php 5.3+ needed check & notice if php unsuitable
-* Changed: archive page ID in option, but not link to the archive page
-* FIX: in_archive check... to not show archive link on archive page
-* FIX: many code improvements & some bug fix (hide archive page link if 0 set as ID, errors on activation, etc.)
+* ADD: Cache plugin compatibility (W3TC, WP Super Cache, WordFence, WP Rocket, Quick Cache).
+* ADD: Settings page link to selected CSS file for easier customization.
+* ADD: PHP 5.3+ requirement notice.
+* CHG: Archive page ID stored instead of link.
+* FIX: Multiple small bugs and optimizations.
 
 = 4.5.5 =
-* CHG: Archive link detection by ID not by url
+* CHG: Archive link detection now based on ID, not URL.
 
 = 4.5.4 =
-* FIX: js code. Now All with jQuery
-* FIX: Separate js and css connections: css connect on all pages into the head, but js connected into the bottom just for page where it need
+* FIX: JS refactored: all scripts run via jQuery.
+* FIX: Separated JS and CSS loading: CSS globally in head; JS only where needed.
 
 = 4.5.3 =
-* FIX: code fix, about $_POST[*] vars
+* FIX: Code fixes for handling `$_POST` variables.
 
 = 4.5.2 =
-* FIX: Remove colling wp-load.php files directly on AJAX request. Now it works with wordpress environment - it's much more stable.
-* FIX: fixes about safe SQL calls. Correct escaping of passing variables. Now work with $wpdb->* functions where it posible
-* FIX: admin messages
+* FIX: Removed direct `wp-load.php` calls on AJAX requests; now uses WordPress environment.
+* FIX: Safe SQL call improvements using `$wpdb` functions.
+* FIX: Admin message fixes.
 
 = 4.5.1 =
-* FIX: Localisation bug on activation.
+* FIX: Localization bug on activation.
 
 = 4.5 =
-* ADD: css style themes support.
-* ADD: new flat (flat.css) theme.
-* FIX: Some bugs in code.
+* ADD: CSS style themes support.
+* ADD: New "flat.css" theme.
+* FIX: Multiple bug fixes.
 
 = 4.4 =
-* ADD: All plugin functionality when javascript is disabled in browser.
-* FIX: Some bug.
+* ADD: Full plugin functionality even with JavaScript disabled.
+* FIX: Minor bug fixes.
 
 = 4.3.1 =
-* ADD: "add user answer text" field close button when on multiple vote. Now it's much more convenient.
-* FIX: Some bug.
+* ADD: "Close" button for "add user answer text" field on multiple vote polls.
+* FIX: Minor bug fix.
 
 = 4.3 =
-* ADD: TinyMCE button.
-* FIX: Some bug.
+* ADD: TinyMCE button integration.
+* FIX: Minor bug fix.
 
 = 4.2 =
 * ADD: Revote functionality.
 
 = 4.1 =
-* ADD: "only registered users can vote" functionality.
-* ADD: Minified versions of CSS (*.min.css) and .js (*.min.js) is loaded if they exists.
-* ADD: js/css inline including: Adding code of .css and .js files right into HTML. This must improve performance a little.
-* ADD: .js and .css files (or theirs code) loads only on the pages where polls is shown.
-* ADD: Toolbar menu for fast access. It help easily manage polls. The menu can be disabled.
+* ADD: Restriction for "only registered users can vote".
+* ADD: Minified versions of CSS and JS loaded automatically if available.
+* ADD: Inline JS/CSS inclusion option for performance.
+* ADD: Load scripts/styles only on pages with polls.
+* ADD: Admin toolbar menu for faster poll management.
 
 = 4.0 =
-* ADD: Multiple voting functionality.
-* ADD: Opportunity to change answers votes in DataBase.
-* ADD: "Random show one of many active polls" functionality.
-* ADD: Poll expiration date functionality.
-* ADD: Poll expiration datepicker on jQuery.
+* ADD: Multiple voting option.
+* ADD: Ability to change vote counts manually.
+* ADD: Random poll selection from active polls.
+* ADD: Poll expiration date feature.
+* ADD: jQuery datepicker for poll expiration.
 * ADD: Open/close polls functionality.
-* ADD: Localisation functionality. Translation to English.
-* ADD: Change {democracy}/{democracy:*} shortcode to standart WP [democracy]/[democracy id=*].
-* ADD: jQuery support and many features because of this.
-* ADD: Edit button for each poll (look at right top corner) to convenient edit poll when logged in.
+* ADD: Localization functionality (English translation).
+* ADD: Switched to standard WP shortcodes `[democracy]`.
+* ADD: Full jQuery support.
+* ADD: Edit button for each poll (visible when logged in).
 * ADD: Clear logs button.
-* ADD: Smart "create archive page" button on plugin's settings page.
-* FIX: Improve about 80% of plugin code and logic in order to easily expand the plugin functionality in the future.
-* FIX: Improve css output. Now it's more adaptive for different designs.
+* ADD: Smart "create archive page" button.
+* FIX: Major code refactoring for future expansions.
+* FIX: Improved CSS output for adaptive design.
 
 

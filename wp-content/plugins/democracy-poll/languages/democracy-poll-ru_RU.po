@@ -1,0 +1,733 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Plugins - Democracy Poll - Stable (latest release)\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-07-20T18:39:28+05:00\n"
+"PO-Revision-Date: 2024-03-21 21:46:18+0000\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2);\n"
+"X-Generator: GlotPress/4.0.1\n"
+
+msgid "ERROR: You select more number of answers than it is allowed..."
+msgstr "ОШИБКА: вы выбрали большее количество ответов, чем допускается..."
+
+msgid "Or if IP detection is wrong. (for cloudflare)"
+msgstr "Или если определение IP работает неправильно. (для cloudflare)"
+
+msgid "To set hours use float number - 0.04 = 1 hour."
+msgstr "Для установки часов используйте дробное значение - 0.04 = 1 час."
+
+msgid "Poll results hidden for now..."
+msgstr "Результаты опроса пока скрыты..."
+
+msgid "If you like this plugin, please <a>leave your review</a>"
+msgstr "Если плагин понравился, пожалуйста, <a>оставьте отзыв</a>"
+
+msgid "are you sure?"
+msgstr "Уверены?"
+
+msgid "This field cleaned manually, if you reset options of this page or change/set another theme, the field will not be touched."
+msgstr "Это полу очищается вручную, если сбросить опции на этой странице или изменить тему оформления, это поле останется нетронутым."
+
+msgid "In this field you can add some additional css properties or completely replace current css theme. Write here css and it will be added at the bottom of current Democracy css. To complete replace styles, check \"No theme\" and describe all styles."
+msgstr "В этом поле вы можете добавить дополнительные css стили или можете полностью переписать стили. Добавьте сюда css код и он будет добавлен в конце базовых стилей опросов. Чтобы полностью переписать стили, отключите тему оформления и опишите стили здесь..."
+
+msgid "No (dots...)"
+msgstr "Нет (точки...)"
+
+msgid "No (default)"
+msgstr "Нет (по умолчанию)"
+
+msgid "No theme"
+msgstr "Без темы"
+
+msgctxt "front"
+msgid "Only registered users can vote. <a>Login</a> to vote."
+msgstr "Голосовать могут только зарегистрированные пользователи. <a>Войдите</a>."
+
+#, php-format
+msgid "%s - shortcode"
+msgstr "%s - шорткод"
+
+msgid "random active poll"
+msgstr "случайный активный опрос"
+
+msgid "Attach a poll to the post"
+msgstr "Прикрепить опрос к записи"
+
+msgid "Hover button colors"
+msgstr "Цвета при наведении на кнопку"
+
+msgid "Button colors"
+msgstr "Цвета кнопки"
+
+msgid "Progress line animation effect speed (default 1500). Set 0 to disable animation."
+msgstr "Скорость анимации линии прогресса (по умолчанию 1500). Укажите 0, чтобы отключить анимацию."
+
+msgid "From posts:"
+msgstr "Из записей:"
+
+msgid "Expire"
+msgstr "Истекает"
+
+msgid "Which poll to show?"
+msgstr "Какой опрос показывать?"
+
+msgid "- Last open poll"
+msgstr "- Последний открытый опрос"
+
+msgid "- Active (random all active)"
+msgstr "- Активный (рандомно все активные)"
+
+msgid "Poll title:"
+msgstr "Заголовок опроса:"
+
+msgid "Poll question = widget title?"
+msgstr "Вопрос опроса = заголовок виджета?"
+
+msgid "Democracy Poll Widget"
+msgstr "Виджет опроса Democracy"
+
+msgctxt "front"
+msgid "You or your IP had already vote."
+msgstr "Вы или с вашего IP уже голосовали."
+
+msgctxt "front"
+msgid "Are you sure you want cancel the votes?"
+msgstr "Точно отменить голоса?"
+
+msgctxt "front"
+msgid "Revote"
+msgstr "Переголосовать"
+
+msgctxt "front"
+msgid "Polls Archive"
+msgstr "Архив опросов"
+
+msgctxt "front"
+msgid "Voting is closed"
+msgstr "Опрос закрыт"
+
+msgctxt "front"
+msgid " - added by visitor"
+msgstr " - добавлен посетителем"
+
+msgctxt "front"
+msgid "End"
+msgstr "Конец"
+
+msgctxt "front"
+msgid "Begin"
+msgstr "Начало"
+
+#, php-format
+msgctxt "front"
+msgid "Voters: %s"
+msgstr "Голосовало: %s"
+
+#, php-format
+msgctxt "front"
+msgid "Total Votes: %s"
+msgstr "Всего голосов: %s"
+
+msgctxt "front"
+msgid "vote,votes,votes"
+msgstr "голос,голоса,голосов"
+
+#, php-format
+msgctxt "front"
+msgid "%s - %s%% of all votes"
+msgstr "%s - %s%% из всех голосов"
+
+msgctxt "front"
+msgid "The answer was added by a visitor"
+msgstr "Ответ добавлен посетителем"
+
+msgctxt "front"
+msgid "This is Your vote."
+msgstr "Это Ваш голос."
+
+msgctxt "front"
+msgid "Results"
+msgstr "Результаты"
+
+msgctxt "front"
+msgid "Vote"
+msgstr "Голосовать"
+
+msgctxt "front"
+msgid "Already voted..."
+msgstr "Уже голосовали..."
+
+msgctxt "front"
+msgid "Add your answer"
+msgstr "Добавить свой ответ"
+
+msgid "Download the Democracy Poll"
+msgstr "Скачать Democracy Poll"
+
+msgid "Failed to delete"
+msgstr "Не удалось удалить"
+
+msgid "Polls Archive"
+msgstr "Архив опросов"
+
+msgid "Poll Updated"
+msgstr "Опрос обновлён"
+
+msgid "Poll Deactivated"
+msgstr "Опрос деактивирован"
+
+msgid "Poll Activated"
+msgstr "Опрос активирован"
+
+msgid "You can not activate closed poll..."
+msgstr "Нельзя активировать закрытый опрос..."
+
+msgid "Poll Deleted"
+msgstr "Опрос удален"
+
+msgid "Nothing was updated"
+msgstr "Ничего не обновлено"
+
+msgid "Updated"
+msgstr "Обновленно"
+
+msgid "New Poll Added"
+msgstr "Новый опрос создан"
+
+msgid "Democracy Poll"
+msgstr "Democracy Poll"
+
+msgid "Save All Changes"
+msgstr "Сохранить все изменения"
+
+msgid "AJAX loader view:"
+msgstr "Вид AJAX загрузчика:"
+
+msgid "Vote view:"
+msgstr "Вид голосования:"
+
+msgid "Results view:"
+msgstr "Вид результатов:"
+
+msgid "Open voting"
+msgstr "Открыть голосование"
+
+msgid "Close voting"
+msgstr "Закрыть голосование"
+
+msgid "Activate"
+msgstr "Активировать"
+
+msgid "Deactivate"
+msgstr "Деактивировать"
+
+msgid "Texts changes"
+msgstr "Изменение текстов"
+
+msgid "Theme Settings"
+msgstr "Настройки Дизайна"
+
+msgid "Settings"
+msgstr "Настройки"
+
+msgid "Add new poll"
+msgstr "Добавить новый опрос"
+
+msgid "Polls List"
+msgstr "Список опросов"
+
+msgid "Back"
+msgstr "Назад"
+
+msgid "Delete all data about WP Polls migration"
+msgstr "Удалить все данные о миграции WP Polls"
+
+msgid "Cancel the shortcode replace and reset changes"
+msgstr "Отменить замену шорткодов и вернуть все обратно"
+
+msgid "Replace WP Polls shortcodes in posts"
+msgstr "Заменить шорткоды WP Polls в записях"
+
+#, php-format
+msgid "Polls copied: %d. Answers copied: %d. Logs copied: %d"
+msgstr "Перенесено опросов: %d. Перенесено вопросов: %d. Создано логов: %d"
+
+msgid "Migration from WP Polls done"
+msgstr "Миграция с WP Polls произведена"
+
+msgid "Data of migration deleted"
+msgstr "Данные о миграции удалены"
+
+#, php-format
+msgid "Shortcodes replaced: %s"
+msgstr "Обработано шорткодов: %s"
+
+msgid "Save Text"
+msgstr "Сохранить тексты"
+
+msgid "Your variant"
+msgstr "Ваш вариант"
+
+msgid "Original"
+msgstr "Оригинал"
+
+msgid "Minified version (uses to include it in HTML)"
+msgstr "Сжатая версия (используется при подключении в HTML)"
+
+msgid "It's all collected css styles: theme, button, options. You can copy this styles to the \"Custom/Additional CSS styles:\" field, disable theme and change copied styles by itself."
+msgstr "Здесь все собранные css стили: тема, кнопка и настройки. Вы можете скопировать эти стили в поле \"Произвольные/Дополнительные CSS стили:\", отключить шаблон (тему) и изменить стили как вам нужно."
+
+msgid "All CSS styles that uses now"
+msgstr "Все CSS стили, которые используются сейчас"
+
+msgid "Custom/Additional CSS styles"
+msgstr "Произвольные/Дополнительные CSS стили"
+
+msgid "AJAX Loader. If choose \"NO\", loader replaces by dots \"...\" which appends to a link/button text. SVG images animation don't work in IE 11 or lower, other browsers are supported at  90% (according to caniuse.com statistics)."
+msgstr "Картинка при AJAX загрузке. Если выбрать \"Нет\", то вместо картинки к ссылке будет добавлятся \"...\". SVG картинки не анимируются в IE 11 и ниже, остальные браузеры поддерживаются примерно на 90% (по статистике caniuse.com)."
+
+msgid "AJAX loader"
+msgstr "AJAX загрузчик"
+
+msgid "An additional css class for all buttons in the poll. When the template has a special class for buttons, for example <code>btn btn-info</code>"
+msgstr "Дополнительный css класс для всех кнопок опроса. Когда в шаблоне есть специальный класс для кнопок например <code>btn btn-info</code>"
+
+msgid "The colors correctly affects NOT for all buttons. You can change styles completely in \"additional styles\" field bellow."
+msgstr "Цвета корректно влияют не на все кнопки. Можете попробовать изменить стили кнопки ниже в поле дополнительных стилей."
+
+msgid "Border Color"
+msgstr "Цвет границы"
+
+msgid "Text Color"
+msgstr "Цвет текста"
+
+msgid "Bg color"
+msgstr "Цвет Фона"
+
+msgid "Button"
+msgstr "Кнопка"
+
+msgid "Line height"
+msgstr "Высота линии"
+
+msgid "Background color"
+msgstr "Цвет фона"
+
+msgid "Line color (for voted user)"
+msgstr "Цвет линии (для голосовавшего)"
+
+msgid "Line Color"
+msgstr "Цвет линии"
+
+msgid "How to fill (paint) the progress of each answer?"
+msgstr "Как закрашивать прогресс каждого ответа?"
+
+msgid "as percent of all votes"
+msgstr "как процент от всех голосов"
+
+msgid "winner - 100%, others as % of the winner"
+msgstr "победитель - 100%, остальные в % от него"
+
+msgid "Progress line"
+msgstr "Линия прогресса"
+
+msgid "Animation speed in milliseconds."
+msgstr "Скорость анимации в миллисекундах."
+
+msgid "Max height of the poll in px. When poll has very many answers, it's better to collapse it. Set '-1', in order to disable this option. Default 500."
+msgstr "Максимальная высота опроса в пикселях. Нужно, когда в опросе много вариантов ответа и его лучше сворачивать. Укажите -1, чтобы отключить эту опцию. По умолчанию 500."
+
+msgid "Other settings"
+msgstr "Другие настроки"
+
+msgid "Choose Theme"
+msgstr "Выберете тему"
+
+msgid "Force plugin versions update (debug)"
+msgstr "Принудительное обновление версий плагина. (Дебаг)"
+
+msgid "Check to activate the widget."
+msgstr "Поставьте галочку, чтобы активировать виджет."
+
+msgid "Widget"
+msgstr "Виджет"
+
+msgid "Link to plugin page is shown on front page only as a &copy; icon. It helps visitors to learn about the plugin and install it for themselves. Please don't disable this option without urgent needs. Thanks!"
+msgstr "Ссылка на страницу плагина выводиться только на главной в виде значка &copy;. И помогает другим людям узнать что это за плагин и установить его себе. Прошу не убирать эту галку без острой необходимости. Спасибо!"
+
+msgid "Show copyright"
+msgstr "Показывать ссылку на страницу плагина"
+
+msgid "If checked, the plugin's .js file will NOT be connected to front end. Enable this option to test the plugin's work without JavaScript."
+msgstr "Если включить, то .js файлы плагина НЕ будут подключены. Опция нужнда для Дебага работы плагина без JavaScript."
+
+msgid "Don't connect JS files. (Debug)"
+msgstr "НЕ подключать JS файлы. (Дебаг)"
+
+msgid "Reset Options"
+msgstr "Сбросить настройки на начальные"
+
+msgid "Save Options"
+msgstr "Сохранить настройки"
+
+msgid "All polls, answers and logs of WP Polls will be added to Democracy Poll"
+msgstr "В Democracy poll будут добавлены все опросы и логи WP Polls."
+
+msgid "Migrate from WP Polls plugin"
+msgstr "Мигрировать с плагина WP Polls"
+
+msgid "Migration"
+msgstr "Миграция"
+
+msgid "Role names, except 'administrator' which will have access to manage plugin."
+msgstr "Название ролей, кроме администратора, которым доступно упраление плагином."
+
+msgid "Useful when your server does not work correctly with server variable REMOTE_ADDR. NOTE: this option give possibility to cheat voice."
+msgstr "Полезно, когда ваш сервер не умеет работать с переменной REMOTE_ADDR. Заметка: включение даст возможность накручивать голоса."
+
+msgid "Check if you see something like \"no_IP__123\" in IP column on logs page. (not recommended)"
+msgstr "Выберите, если увидите что-то подобное \"no_IP__123\" в колонке IP в логах. (не рекомендуется)"
+
+msgid "Uncheck to disable button in visual editor."
+msgstr "Уберите галочку, чтобы убрать кнопку из визуального редактора."
+
+msgid "Add fast Poll insert button to WordPress visual editor (TinyMCE)?"
+msgstr "Добавить кнопку быстрой вставки опросов в редактор WordPress (TinyMCE)?"
+
+msgid "Uncheck to remove the plugin menu from the toolbar."
+msgstr "Уберите галочку, чтобы убрать меню плагина из панели инструментов."
+
+msgid "Add plugin menu on the toolbar?"
+msgstr "Пункт меню в панели инструментов?"
+
+msgid "Democracy has smart mechanism for working with page cache plugins like \"WP Total Cache\". It is ON automatically if such plugin is enabled on your site. But if you use unusual page caching plugin you can force enable this option."
+msgstr "Democracy умеет работать с плагинами страничного кэширования и автоматически включается, если такой плагин установлен и активен на вашем сайте. Активируйте эту опцию, чтобы насильно включить механизм работы со страничным кэшем."
+
+#, php-format
+msgid "Force enable gear to working with cache plugins. The condition: %s"
+msgstr "Включить механихм работы с плагинами кэширования? Текущее состояние: %s"
+
+msgid "OFF"
+msgstr "Выключен"
+
+msgid "ON"
+msgstr "Включён"
+
+msgid "Others"
+msgstr "Остальное"
+
+msgid "Hide vote button if it is NOT multiple poll with revote option. User will vote by clicking on answer itself."
+msgstr "Для НЕ мульти опросов с возможностью переголосовать можно спрятать кнопку голосовать. А голосование будет происходить при клике на ответ."
+
+msgid "Hide vote button."
+msgstr "Прятать кнопку голосования."
+
+msgid "Users can see results after vote."
+msgstr "Результаты можно увидеть после голосования."
+
+msgid "Don't show poll results link (global option)."
+msgstr "Не показывать ссылку результатов голосования (глобальная опция)"
+
+msgid "If checked, user can't see poll results if voting is open."
+msgstr "Если поставить галку, то посмотреть результаты до закрытия опроса будет невозможно."
+
+msgid "Don't show poll results (global option)."
+msgstr "Не показывать результаты опросов (глобальная опция)."
+
+msgid "Remove the Revote possibility (global option)."
+msgstr "Удалить возможность переголосовать (глобальная опция)."
+
+msgid "This option  is available for each poll separately, but if you heed you can turn OFF the option for all polls at once, just tick."
+msgstr "Эта опция доступна для каждого опроса отдельно, но если вы хотите отключить эту опцию для всех опросов сразу, поставьте галочку."
+
+msgid "Prohibit users to add new answers (global Democracy option)."
+msgstr "Запретить пользователям добавлять свои ответы (глобальная опция Democracy)."
+
+msgid "This option  is available for each poll separately, but if you heed you can turn ON the option for all polls at once, just tick."
+msgstr "Эта опция доступна для каждого опроса отдельно, но если вы хотите включить эту опцию для всех опросов сразу, поставьте галочку."
+
+msgid "Only registered users allowed to vote (global option)"
+msgstr "Голосовать могут только зарегистрированные пользователи (глобальная опция)."
+
+msgid "This is the default value. Option can be changed for each poll separately."
+msgstr "Это значение по умолчанию. Опцию можно изменить для каждого опроса отдельно."
+
+msgid "How to sort the answers during voting, if they don't have order? (default option)"
+msgstr "Как сортировать ответы при голосовании, если для них не установлен порядок? (опция по умолчанию)"
+
+msgid "Global Polls options"
+msgstr "Общие настройки опросов"
+
+msgid "Specify the poll archive link to be in the poll legend. Example: <code>25</code>"
+msgstr "Укажите, чтобы в подписи опроса была ссылка на страницу с архивом опросов. Пр. <code>25</code>"
+
+msgid "Create/find archive page"
+msgstr "Создать/найти страницу архива"
+
+msgid "Go to archive page"
+msgstr "Перейти на страницу архива"
+
+msgid "Polls archive page ID."
+msgstr "ID архива опросов."
+
+msgid "Example: <code>&lt;h2&gt;</code> и <code>&lt;/h2&gt;</code>. Default: <code>&lt;strong class=&quot;dem-poll-title&quot;&gt;</code> & <code>&lt;/strong&gt;</code>."
+msgstr "Например: <code>&lt;h2&gt;</code> и <code>&lt;/h2&gt;</code>. По умолчанию: <code>&lt;strong class=&quot;dem-poll-title&quot;&gt;</code> и <code>&lt;/strong&gt;</code>."
+
+msgid "poll's question"
+msgstr "вопрос опроса"
+
+msgid "HTML tags to wrap the poll title."
+msgstr "Обёртка заголовка опроса HTML тегами."
+
+msgid "How many days to keep Cookies alive?"
+msgstr "Сколько дней сохранять Сookies?"
+
+msgid "Saves data into Data Base. Forbids to vote several times from a single IP or to same WordPress user. If a user is logged in, then his voting is checked by WP account. If a user is not logged in, then checks the IP address. The negative side of IP checks is that a site may be visited from an enterprise network (with a common IP), so all users from this network are allowed to vote only once. If this option is disabled the voting is checked by Cookies only. Default enabled."
+msgstr "Сохраняет данные в Базу Данных. Запрещает голосовать несколько раз с одного IP или одному пользователю WordPress. Если пользователь авторизован, то голосование проверяется по его аккаунту в WordPress. Если не авторизован, то проверяется IP голосующего. Минус лога по IP — если сайт посещается с корпоративных сетей (с единым IP), то голосовать можно будет всего 1 раз для всей сети. Если не включить эту опцию, то голосование будет учитываться только по кукам. По умолчанию: включена."
+
+msgid "Log data & take visitor IP into consideration? (recommended)"
+msgstr "Вести лог и учитывать IP? (рекомендуется)"
+
+msgid "Delete all logs"
+msgstr "Удалить все логи"
+
+#, php-format
+msgid "Delete logs of closed pols - %d"
+msgstr "Удалить логи закрытых опросов - %d"
+
+msgid "Delete all NEW marks"
+msgstr "Удалить все метки NEW"
+
+msgid "Logs records turned off in the settings - logs are not recorded."
+msgstr "Запись логов выключена в настройках - логи не записываются."
+
+msgid "Mix"
+msgstr "Перемешать"
+
+msgid "Winners at the top"
+msgstr "Выигрывающие вверху"
+
+msgid "As it was added (by ID)"
+msgstr "В порядке добавления (по ID)"
+
+msgid "Posts where the poll shortcode used:"
+msgstr "Записи, где используется шорткод опроса:"
+
+msgid "Add Poll"
+msgstr "Добавить опрос"
+
+msgid "Save Changes"
+msgstr "Внести изменения"
+
+msgid "Create date."
+msgstr "Дата создания."
+
+msgid "Note: This text will be added under poll."
+msgstr "Заметка: текст будет добавлен под опросом."
+
+msgid "How to sort the answers during the vote?"
+msgstr "Как сортировать ответы при голосовании?"
+
+msgid "as in settings"
+msgstr "как в настройках"
+
+msgid "Only registered users allowed to vote."
+msgstr "Голосовать могут только зарегистрированные пользователи."
+
+msgid "Allow to change mind (revote)."
+msgstr "Разрешить изменять мнение (переголосование)."
+
+msgid "Date, when poll was/will be closed. Format: dd-mm-yyyy."
+msgstr "Дата, когда опрос был/будет закрыт. Формат: dd-mm-yyyy."
+
+msgid "Allow to choose multiple answers."
+msgstr "Разрешить выбирать несколько ответов (множественный)."
+
+msgid "Activate this poll."
+msgstr "Сделать этот опрос активным."
+
+msgid "Allow users to add answers (democracy)."
+msgstr "Разрешить пользователям добавлять свои ответы (democracy)."
+
+msgid "Voices"
+msgstr "Сумма всех голосов"
+
+msgid "leave blank to update from logs"
+msgstr "оставьте пустым, чтобы обновить из логов"
+
+msgid "Users vote:"
+msgstr "Пользователей голосовало:"
+
+msgid "Sum of votes:"
+msgstr "Сумма голосов:"
+
+msgid "reset order"
+msgstr "cбросить порядок"
+
+msgid "Answers:"
+msgstr "Варианты ответов:"
+
+msgid "Question:"
+msgstr "Вопрос:"
+
+msgid "shortcode for use in post content"
+msgstr "шоткод для использования в записи"
+
+msgid "Search"
+msgstr "Найти"
+
+msgid "Insert Poll ID"
+msgstr "Введите ID опроса"
+
+msgid "Insert Poll of Democracy"
+msgstr "Вставка Опроса Democracy"
+
+msgid "voters / votes"
+msgstr "пользователи / голоса"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "Are you sure?"
+msgstr "Точно удалить?"
+
+msgid "Logs"
+msgstr "Логи"
+
+msgid "Edit"
+msgstr "Редактировать"
+
+msgid "Allow to watch the results of the poll."
+msgstr "Разрешить смотреть результаты опроса."
+
+msgid "Users can choose many answers (multiple)."
+msgstr "Можно выбирать несколько ответов (множественный)."
+
+msgid "Only for registered user."
+msgstr "Только для зарегистрированных."
+
+msgid "Users can revote"
+msgstr "Можно переголосовать"
+
+msgid "Users can add answers (democracy)."
+msgstr "Можно добавить свои ответы (democracy)."
+
+msgid "Added"
+msgstr "Добавлен"
+
+msgid "In posts"
+msgstr "Из записей"
+
+msgid "Answers"
+msgstr "Ответы"
+
+msgid "Users vote"
+msgstr "Пользователей проголосовало"
+
+msgid "Active polls"
+msgstr "Опрос активен"
+
+msgid "Poll Opened"
+msgstr "Опрос открыт"
+
+msgid "Question"
+msgstr "Вопрос"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Poll logs"
+msgstr "Логи опроса"
+
+msgid "Search by IP"
+msgstr "Поиск по IP"
+
+msgid "NEW answers logs"
+msgstr "Логи \"NEW\" ответов"
+
+msgid "Edit poll"
+msgstr "Редак. опрос"
+
+msgid "Poll's logs: "
+msgstr "Логи опроса: "
+
+msgid "Delete logs and votes"
+msgstr "Удалить логи и голоса"
+
+msgid "Delete logs only"
+msgstr "Удалить только логи"
+
+msgid "Date"
+msgstr "Дата"
+
+msgid "User"
+msgstr "Юзер"
+
+msgid "Answer"
+msgstr "Ответ"
+
+msgid "Poll"
+msgstr "Опрос"
+
+msgid "IP info"
+msgstr "IP инфо"
+
+msgid "What is the capital city of France?"
+msgstr "Какова столица Франции?"
+
+msgid "Paris"
+msgstr "Париж"
+
+msgid "Rome"
+msgstr "Рим"
+
+msgid "Madrid"
+msgstr "Мадрид"
+
+msgid "Berlin"
+msgstr "Берлин"
+
+msgid "London"
+msgstr "Лондон"
+
+msgid "Poll Closed"
+msgstr "Опрос закрыт"
+
+#, php-format
+msgid "Lines deleted: %s"
+msgstr "Удалено строк: %s"
+
+#, php-format
+msgid "Removed logs: %d. Removed answers:%d. Removed users %d."
+msgstr "Удалено логов: %d. Удалено ответов: %d. Удалено пользователей: %d."
+
+msgid "Show on page"
+msgstr "Показать на странице"
+
+msgid "How many days the user's browser remembers the votes. Default: 365. Note: works together with IP log."
+msgstr "Сколько дней браузер пользователя запоминает голоса. По умолчанию: 365. Примечание: работает вместе с логом по IP."
+
+msgid "Disable post metabox."
+msgstr "Отключить метабокс записи."
+
+msgid "Check this to disable polls metabox functionality for posts where you can attached poll to a post..."
+msgstr "Отметьте, чтобы отключить функциональность метабокса опросов для записей, к которым можно прикрепить опрос..."
+
+msgid "Inline script code directly in the HTML"
+msgstr "Встраивать код скрипта прямо в HTML"
+
+msgid "Enable to add plugin scripts directly into HTML instead of loading separate .js files. This reduces server requests and speeds up page loading."
+msgstr "Включите, чтобы добавлять скрипты плагина прямо в HTML вместо загрузки отдельных .js файлов. Это уменьшает количество запросов к серверу и ускоряет загрузку страницы."
+
+msgid "Alphabetically"
+msgstr "В алфавитном порядке"
+
+msgid "Nothing was selected."
+msgstr "Ничего не выбрано."

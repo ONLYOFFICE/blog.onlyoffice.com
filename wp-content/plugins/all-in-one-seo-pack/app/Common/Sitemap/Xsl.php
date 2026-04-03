@@ -25,17 +25,42 @@ class Xsl {
 		$charset     = aioseo()->helpers->getCharset();
 		$sitemapUrl  = wp_get_referer();
 		$sitemapPath = aioseo()->helpers->getPermalinkPath( $sitemapUrl );
-		$sitemapName = strtoupper( pathinfo( $sitemapPath, PATHINFO_EXTENSION ) );
 
-		// Get Sitemap info by URL.
-		preg_match( '/\/(.*?)-?sitemap([0-9]*)\.xml/', $sitemapPath, $sitemapInfo );
+		// Figure out which sitemap we're serving.
+		preg_match( '/\/(.*?)-?sitemap([0-9]*)\.xml/', (string) $sitemapPath, $sitemapInfo );
+		$sitemapName = ! empty( $sitemapInfo[1] ) ? strtoupper( $sitemapInfo[1] ) : '';
+
+		// Remove everything after ? from sitemapPath to avoid caching issues.
+		$sitemapPath = wp_parse_url( $sitemapPath, PHP_URL_PATH ) ?: '';
+
+		// These variables are used in the XSL file.
+		// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		$linksPerIndex = aioseo()->options->sitemap->general->linksPerIndex;
+		$advanced      = aioseo()->options->sitemap->general->advancedSettings->enable;
+		$excludeImages = aioseo()->sitemap->helpers->excludeImages();
+		$sitemapParams = aioseo()->helpers->getParametersFromUrl( $sitemapUrl );
+		$xslParams     = aioseo()->core->cache->get( 'aioseo_sitemap_' . aioseo()->helpers->cleanSlug( $sitemapPath ) );
+		// phpcs:enable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+
 		if ( ! empty( $sitemapInfo[1] ) ) {
 			switch ( $sitemapInfo[1] ) {
 				case 'addl':
 					$sitemapName = __( 'Additional Pages', 'all-in-one-seo-pack' );
+					// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+					$excludeImages = true;
 					break;
 				case 'post-archive':
 					$sitemapName = __( 'Post Archive', 'all-in-one-seo-pack' );
+					break;
+				case 'bp-activity':
+				case 'bp-group':
+				case 'bp-member':
+					$bpFakePostTypes = aioseo()->standalone->buddyPress->getFakePostTypes();
+					$labels          = array_column( wp_list_filter( $bpFakePostTypes, [ 'name' => $sitemapInfo[1] ] ), 'label' );
+					$sitemapName     = ! empty( $labels[0] ) ? $labels[0] : $sitemapName;
+					break;
+				case 'product_attributes':
+					$sitemapName = __( 'Product Attributes', 'all-in-one-seo-pack' );
 					break;
 				default:
 					if ( post_type_exists( $sitemapInfo[1] ) ) {
@@ -51,14 +76,6 @@ class Xsl {
 		}
 
 		$currentPage = ! empty( $sitemapInfo[2] ) ? (int) $sitemapInfo[2] : 1;
-
-		// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		$linksPerIndex = aioseo()->options->sitemap->general->linksPerIndex;
-		$advanced      = aioseo()->options->sitemap->general->advancedSettings->enable;
-		$excludeImages = aioseo()->options->sitemap->general->advancedSettings->excludeImages;
-		$sitemapParams = aioseo()->helpers->getParametersFromUrl( $sitemapUrl );
-		$xslParams     = aioseo()->core->cache->get( 'aioseo_sitemap_' . aioseo()->sitemap->requestParser->cleanSlug( $sitemapPath ) );
-		// phpcs:enable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 
 		// Translators: 1 - The sitemap name, 2 - The current page.
 		$title = sprintf( __( '%1$s Sitemap %2$s', 'all-in-one-seo-pack' ), $sitemapName, $currentPage > 1 ? $currentPage : '' );
@@ -84,6 +101,8 @@ class Xsl {
 		$datetime   = [];
 		$dateFormat = get_option( 'date_format' );
 		$timeFormat = get_option( 'time_format' );
+
+		$entries = aioseo()->sitemap->helpers->decodeSitemapEntries( $entries );
 
 		foreach ( $entries as $index ) {
 			$url = ! empty( $index['guid'] ) ? $index['guid'] : $index['loc'];

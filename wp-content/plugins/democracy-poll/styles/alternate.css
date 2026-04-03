@@ -1,4 +1,5 @@
-@import '_preset.css';
+@import '_reset.css';
+@import '_presets.css';
 
 /* default theme ------------------------------------------------------------- */
 .dem-link{ font-style:italic; font-size:90%; }
@@ -13,9 +14,11 @@
 .dem-results-link{ float:right; }
 
 /* results screen */
-.dem-graph{ font-family:Arial, sans-serif; background: #F7F7F7; background:linear-gradient( to bottom, rgba(0,0,0,.05) 50%, rgba(0, 0, 0, 0.1) 50% ); background:-webkit-linear-gradient( top, rgba(0,0,0,.05) 50%, rgba(0, 0, 0, 0.1) 50% ); }
+.dem-graph{ background: #F7F7F7;
+	background:linear-gradient( to bottom, rgba(0,0,0,.05) 50%, rgba(0, 0, 0, 0.1) 50% );
+}
 
-.dem-fill{ background-image:linear-gradient( to right, rgba(255,255,255,.3), transparent ); background-image:-webkit-linear-gradient( left, rgba(255,255,255,.3), transparent ); }
+.dem-fill{ background-image:linear-gradient( to right, rgba(255,255,255,.3), transparent ); }
 
 .dem-answers .dem-label{ margin-bottom:.1em; }
 

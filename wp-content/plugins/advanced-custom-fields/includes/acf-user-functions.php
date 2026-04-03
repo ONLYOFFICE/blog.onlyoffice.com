@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 /**
  * acf_get_users
@@ -100,7 +109,7 @@ function acf_get_user_role_labels( $roles = array() ) {
  * @since   5.7.10
  *
  * @param   void
- * @return  bool
+ * @return  boolean
  */
 function acf_allow_unfiltered_html() {
 

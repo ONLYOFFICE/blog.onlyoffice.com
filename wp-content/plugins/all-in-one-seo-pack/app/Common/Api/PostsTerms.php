@@ -122,31 +122,39 @@ class PostsTerms {
 	/**
 	 * Get post data for fetch requests
 	 *
-	 * @since 4.0.0
+	 * @since   4.0.0
+	 * @version 4.8.3 Changes the return value to include only the Vue data.
 	 *
 	 * @param  \WP_REST_Request  $request The REST Request
 	 * @return \WP_REST_Response          The response.
 	 */
 	public static function getPostData( $request ) {
-		$args = $request->get_query_params();
+		$args   = $request->get_query_params();
+		$postId = $args['postId'] ?? null;
 
-		if ( empty( $args['postId'] ) ) {
+		if ( empty( $postId ) ) {
 			return new \WP_REST_Response( [
 				'success' => false,
 				'message' => 'No post ID was provided.'
 			], 400 );
 		}
 
-		$thePost = Models\Post::getPost( $args['postId'] );
+		if ( ! current_user_can( 'edit_post', $postId ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'You are not allowed to access the data for this post.'
+			], 403 );
+		}
+
+		$data = aioseo()->helpers->getVueData( 'post', $postId, $args['integrationSlug'] ?? null );
 
 		return new \WP_REST_Response( [
-			'success'  => true,
-			'post'     => $thePost,
-			'postData' => [
-				'parsedTitle'       => aioseo()->tags->replaceTags( $thePost->title, $args['postId'] ),
-				'parsedDescription' => aioseo()->tags->replaceTags( $thePost->description, $args['postId'] ),
-				'content'           => aioseo()->helpers->theContent( self::getAnalysisContent( $args['postId'] ) ),
-				'slug'              => get_post_field( 'post_name', $args['postId'] )
+			'success' => true,
+			'data'    => [
+				// We just send the minimum data that is needed for the post settings. See #7461
+				'currentPost'  => $data['currentPost'],
+				'redirects'    => ! empty( $data['redirects'] ) ? $data['redirects'] : null,
+				'seoRevisions' => ! empty( $data['seoRevisions'] ) ? $data['seoRevisions'] : null
 			]
 		], 200 );
 	}
@@ -169,6 +177,13 @@ class PostsTerms {
 			], 400 );
 		}
 
+		if ( ! current_user_can( 'read_post', $args['postId'] ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'Unauthorized.'
+			], 401 );
+		}
+
 		// Disable the cache.
 		aioseo()->social->image->useCache = false;
 
@@ -189,8 +204,8 @@ class PostsTerms {
 	 *
 	 * @since 4.0.6
 	 *
-	 * @param  WP_Post|int $post The post.
-	 * @return string            The custom field content.
+	 * @param  \WP_Post|int $post The post.
+	 * @return string             The custom field content.
 	 */
 	private static function getAnalysisContent( $post = null ) {
 		$analysisContent = apply_filters( 'aioseo_analysis_content', aioseo()->helpers->getPostContent( $post ) );
@@ -217,14 +232,21 @@ class PostsTerms {
 			], 400 );
 		}
 
+		if ( ! aioseo()->access->hasCapability( 'aioseo_page_general_settings' ) || ! current_user_can( 'edit_post', $postId ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'You are not allowed to update the post settings.'
+			], 403 );
+		}
+
 		$body['id']                  = $postId;
 		$body['title']               = ! empty( $body['title'] ) ? sanitize_text_field( $body['title'] ) : null;
 		$body['description']         = ! empty( $body['description'] ) ? sanitize_text_field( $body['description'] ) : null;
-		$body['keywords']            = ! empty( $body['keywords'] ) ? sanitize_text_field( $body['keywords'] ) : null;
+		$body['keywords']            = ! empty( $body['keywords'] ) ? aioseo()->helpers->sanitize( $body['keywords'] ) : null;
 		$body['og_title']            = ! empty( $body['og_title'] ) ? sanitize_text_field( $body['og_title'] ) : null;
 		$body['og_description']      = ! empty( $body['og_description'] ) ? sanitize_text_field( $body['og_description'] ) : null;
 		$body['og_article_section']  = ! empty( $body['og_article_section'] ) ? sanitize_text_field( $body['og_article_section'] ) : null;
-		$body['og_article_tags']     = ! empty( $body['og_article_tags'] ) ? sanitize_text_field( $body['og_article_tags'] ) : null;
+		$body['og_article_tags']     = ! empty( $body['og_article_tags'] ) ? aioseo()->helpers->sanitize( $body['og_article_tags'] ) : null;
 		$body['twitter_title']       = ! empty( $body['twitter_title'] ) ? sanitize_text_field( $body['twitter_title'] ) : null;
 		$body['twitter_description'] = ! empty( $body['twitter_description'] ) ? sanitize_text_field( $body['twitter_description'] ) : null;
 
@@ -244,6 +266,56 @@ class PostsTerms {
 	}
 
 	/**
+	 * Load post settings from Post screen.
+	 *
+	 * @since 4.5.5
+	 *
+	 * @param  \WP_REST_Request  $request The REST Request
+	 * @return \WP_REST_Response          The response.
+	 */
+	public static function loadPostDetailsColumn( $request ) {
+		$body = $request->get_json_params();
+		$ids  = ! empty( $body['ids'] ) ? (array) $body['ids'] : [];
+
+		if ( ! $ids ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'Post IDs are missing.'
+			], 400 );
+		}
+
+		$posts = [];
+		foreach ( $ids as $postId ) {
+			if ( ! current_user_can( 'read_post', $postId ) || post_password_required( $postId ) ) {
+				$posts[] = [
+					'id'                => $postId,
+					'titleParsed'       => '',
+					'descriptionParsed' => '',
+					'headlineScore'     => null
+				];
+
+				continue;
+			}
+
+			$postTitle      = get_the_title( $postId );
+			$headline       = ! empty( $postTitle ) ? sanitize_text_field( $postTitle ) : ''; // We need this to achieve consistency for the score when using special characters in titles
+			$headlineResult = aioseo()->standalone->headlineAnalyzer->getResult( $headline );
+
+			$posts[] = [
+				'id'                => $postId,
+				'titleParsed'       => aioseo()->meta->title->getPostTitle( $postId ),
+				'descriptionParsed' => aioseo()->meta->description->getPostDescription( $postId ),
+				'headlineScore'     => ! empty( $headlineResult['score'] ) ? (int) $headlineResult['score'] : 0,
+			];
+		}
+
+		return new \WP_REST_Response( [
+			'success' => true,
+			'posts'   => $posts
+		], 200 );
+	}
+
+	/**
 	 * Update post settings from Post screen.
 	 *
 	 * @since 4.0.0
@@ -251,11 +323,10 @@ class PostsTerms {
 	 * @param  \WP_REST_Request  $request The REST Request
 	 * @return \WP_REST_Response          The response.
 	 */
-	public static function updatePostFromScreen( $request ) {
+	public static function updatePostDetailsColumn( $request ) {
 		$body    = $request->get_json_params();
 		$postId  = ! empty( $body['postId'] ) ? intval( $body['postId'] ) : null;
 		$isMedia = isset( $body['isMedia'] ) ? true : false;
-		$post    = aioseo()->helpers->getPost( $postId );
 
 		if ( ! $postId ) {
 			return new \WP_REST_Response( [
@@ -264,47 +335,32 @@ class PostsTerms {
 			], 400 );
 		}
 
-		$thePost = Models\Post::getPost( $postId );
-
-		if ( $thePost->exists() ) {
-			$metaTitle = aioseo()->meta->title->getPostTypeTitle( $post->post_type );
-			if ( empty( $thePost->title ) && ! empty( $body['title'] ) && trim( $body['title'] ) === trim( $metaTitle ) ) {
-				$body['title'] = null;
-			}
-			$thePost->title = ! empty( $body['title'] ) ? sanitize_text_field( $body['title'] ) : null;
-
-			$metaDescription = aioseo()->meta->description->getPostTypeDescription( $post->post_type );
-			if ( empty( $thePost->description ) && ! empty( $body['description'] ) && trim( $body['description'] ) === trim( $metaDescription ) ) {
-				$body['description'] = null;
-			}
-			$thePost->description = ! empty( $body['description'] ) ? sanitize_text_field( $body['description'] ) : '';
-			$thePost->updated     = gmdate( 'Y-m-d H:i:s' );
-			if ( $isMedia ) {
-				wp_update_post(
-					[
-						'ID'         => $postId,
-						'post_title' => sanitize_text_field( $body['imageTitle'] ),
-					]
-				);
-				update_post_meta( $postId, '_wp_attachment_image_alt', sanitize_text_field( $body['imageAltTag'] ) );
-			}
-		} else {
-			$thePost->post_id     = $postId;
-			$thePost->title       = ! empty( $body['title'] ) ? sanitize_text_field( $body['title'] ) : '';
-			$thePost->description = ! empty( $body['description'] ) ? sanitize_text_field( $body['description'] ) : null;
-			$thePost->created     = gmdate( 'Y-m-d H:i:s' );
-			$thePost->updated     = gmdate( 'Y-m-d H:i:s' );
-			if ( $isMedia ) {
-				wp_update_post(
-					[
-						'ID'         => $postId,
-						'post_title' => sanitize_text_field( $body['imageTitle'] ),
-					]
-				);
-				update_post_meta( $postId, '_wp_attachment_image_alt', sanitize_text_field( $body['imageAltTag'] ) );
-			}
+		if ( ! aioseo()->access->hasCapability( 'aioseo_page_general_settings' ) || ! current_user_can( 'edit_post', $postId ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'You are not allowed to update the post settings.'
+			], 403 );
 		}
-		$thePost->save();
+
+		$aioseoPost = Models\Post::getPost( $postId );
+
+		if ( $isMedia ) {
+			wp_update_post(
+				[
+					'ID'         => $postId,
+					'post_title' => sanitize_text_field( $body['imageTitle'] ),
+				]
+			);
+			update_post_meta( $postId, '_wp_attachment_image_alt', sanitize_text_field( $body['imageAltTag'] ) );
+		}
+
+		$aioseoPost->title       = ! empty( $body['title'] ) ? sanitize_text_field( $body['title'] ) : null;
+		$aioseoPost->description = ! empty( $body['description'] ) ? sanitize_textarea_field( $body['description'] ) : null;
+		$aioseoPost->updated     = gmdate( 'Y-m-d H:i:s' );
+		$aioseoPost->save();
+
+		// Trigger the action hook so we can create a revision.
+		do_action( 'aioseo_insert_post', $postId );
 
 		$lastError = aioseo()->core->db->lastError();
 		if ( ! empty( $lastError ) ) {
@@ -339,6 +395,13 @@ class PostsTerms {
 				'success' => false,
 				'message' => 'Post ID is missing.'
 			], 400 );
+		}
+
+		if ( ! aioseo()->access->hasCapability( 'aioseo_page_general_settings' ) || ! current_user_can( 'edit_post', $postId ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'You are not allowed to update the post settings.'
+			], 403 );
 		}
 
 		$thePost = Models\Post::getPost( $postId );
@@ -388,6 +451,13 @@ class PostsTerms {
 			], 400 );
 		}
 
+		if ( ! current_user_can( 'edit_post', $args['postId'] ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'Unauthorized.'
+			], 401 );
+		}
+
 		$thePost = Models\Post::getPost( $args['postId'] );
 		$thePost->options->primaryTerm->productEducationDismissed = true;
 		$thePost->save();
@@ -413,6 +483,13 @@ class PostsTerms {
 				'success' => false,
 				'message' => 'No post ID was provided.'
 			], 400 );
+		}
+
+		if ( ! current_user_can( 'edit_post', $args['postId'] ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'Unauthorized.'
+			], 401 );
 		}
 
 		$thePost = Models\Post::getPost( $args['postId'] );
@@ -444,12 +521,63 @@ class PostsTerms {
 			], 400 );
 		}
 
+		if ( ! current_user_can( 'edit_post', $args['postId'] ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'Unauthorized.'
+			], 401 );
+		}
+
 		$thePost = Models\Post::getPost( $args['postId'] );
 		$thePost->options->linkFormat->internalLinkCount = $count;
 		$thePost->save();
 
 		return new \WP_REST_Response( [
 			'success' => true
+		], 200 );
+	}
+
+	/**
+	 * Get the processed content by the given raw content.
+	 *
+	 * @since 4.5.2
+	 *
+	 * @param  \WP_REST_Request  $request The REST Request.
+	 * @return \WP_REST_Response          The response.
+	 */
+	public static function processContent( $request ) {
+		$args = $request->get_params();
+		$body = $request->get_json_params();
+
+		if ( empty( $args['postId'] ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'No post ID was provided.'
+			], 400 );
+		}
+
+		if ( ! current_user_can( 'read_post', $args['postId'] ) || post_password_required( $args['postId'] ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'Unauthorized.'
+			], 401 );
+		}
+
+		// Check if we can process it using a page builder integration.
+		$pageBuilder = $body['integration'] ?? aioseo()->helpers->getPostPageBuilderName( $args['postId'] );
+		if ( ! empty( $pageBuilder ) ) {
+			return new \WP_REST_Response( [
+				'success' => true,
+				'content' => aioseo()->standalone->pageBuilderIntegrations[ $pageBuilder ]->processContent( $args['postId'], $body['content'] ),
+			], 200 );
+		}
+
+		// Check if the content was passed, otherwise get it from the post.
+		$content = $body['content'] ?? aioseo()->helpers->getPostContent( $args['postId'] );
+
+		return new \WP_REST_Response( [
+			'success' => true,
+			'content' => apply_filters( 'the_content', $content ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		], 200 );
 	}
 }

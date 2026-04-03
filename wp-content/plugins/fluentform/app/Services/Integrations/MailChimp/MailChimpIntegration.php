@@ -2,12 +2,14 @@
 
 namespace FluentForm\App\Services\Integrations\MailChimp;
 
-use FluentForm\App\Services\Integrations\IntegrationManager;
+defined('ABSPATH') or die;
+
+use FluentForm\App\Http\Controllers\IntegrationManagerController;
 use FluentForm\App\Services\Integrations\MailChimp\MailChimpSubscriber as Subscriber;
 use FluentForm\Framework\Foundation\Application;
 use FluentForm\Framework\Helpers\ArrayHelper;
 
-class MailChimpIntegration extends IntegrationManager
+class MailChimpIntegration extends IntegrationManagerController
 {
     /**
      * MailChimp Subscriber that handles & process all the subscribing logics.
@@ -27,14 +29,14 @@ class MailChimpIntegration extends IntegrationManager
 
         $this->description = __('Fluent Forms Mailchimp module allows you to create Mailchimp newsletter signup forms in WordPress', 'fluentform');
 
-        $this->logo = $this->app->url('public/img/integrations/mailchimp.png');
+        $this->logo = fluentFormMix('img/integrations/mailchimp.png');
         $this->registerAdminHooks();
 
         add_action('wp_ajax_fluentform_mailchimp_interest_groups', [$this, 'fetchInterestGroups']);
 
-        add_filter('fluentform_save_integration_value_mailchimp', [$this, 'sanitizeSettings'], 10, 3);
+        add_filter('fluentform/save_integration_value_mailchimp', [$this, 'sanitizeSettings'], 10, 3);
 
-//        add_filter('fluentform_notifying_async_mailchimp', '__return_false');
+//        add_filter('fluentform/notifying_async_mailchimp', '__return_false');
     }
 
     public function getGlobalFields($fields)
@@ -118,7 +120,7 @@ class MailChimpIntegration extends IntegrationManager
         update_option($this->optionKey, $mailChimpSettings, 'no`');
 
         wp_send_json_success([
-            'message' => __('Your mailchimp api key has been verfied and successfully set', 'fluentform'),
+            'message' => __('Your mailchimp api key has been verified and successfully set', 'fluentform'),
             'status'  => true,
         ], 200);
     }
@@ -130,7 +132,7 @@ class MailChimpIntegration extends IntegrationManager
             'logo'                  => $this->logo,
             'is_active'             => $this->isConfigured(),
             'configure_title'       => __('Configuration required!', 'fluentform'),
-            'global_configure_url'  => admin_url('admin.php?page=fluent_forms_settings#mailchimp'),
+            'global_configure_url'  => admin_url('admin.php?page=fluent_forms_settings#general-mailchimp-settings'),
             'configure_message'     => __('Mailchimp is not configured yet! Please configure your mailchimp api first', 'fluentform'),
             'configure_button_text' => __('Set Mailchimp API', 'fluentform'),
         ];
@@ -187,7 +189,7 @@ class MailChimpIntegration extends IntegrationManager
                     'key'                => 'merge_fields',
                     'require_list'       => true,
                     'label'              => __('Map Fields', 'fluentform'),
-                    'tips'               => __('Associate your Mailchimp merge tags to the appropriate Fluent Forms fields by selecting the appropriate form field from the list.', 'fluentform'),
+                    'tips'               => __('Associate your Mailchimp merge tags to the appropriate Fluent Forms fields by selecting the appropriate form field from the list. Also, Mailchimp Date fields supports only MM/DD/YYYY and DD/MM/YYYY format.', 'fluentform'),
                     'component'          => 'map_fields',
                     'field_label_remote' => __('Mailchimp Field', 'fluentform'),
                     'field_label_local'  => __('Form Field', 'fluentform'),
@@ -240,7 +242,7 @@ class MailChimpIntegration extends IntegrationManager
                     'key'            => 'doubleOptIn',
                     'require_list'   => true,
                     'label'          => __('Double Opt-in', 'fluentform'),
-                    'tips'           => __('When the double opt-in option is enabled,<br />Mailchimp will send a confirmation email<br />to the user and will only add them to your <br /Mailchimp list upon confirmation.', 'fluentform'),
+                    'tips'           => __('When the double opt-in option is enabled, Mailchimp will send a confirmation email to the user and will only add them to your <br /Mailchimp list upon confirmation.', 'fluentform'),
                     'component'      => 'checkbox-single',
                     'checkbox_label' => __('Enable Double Opt-in', 'fluentform'),
                 ],
@@ -248,7 +250,7 @@ class MailChimpIntegration extends IntegrationManager
                     'key'            => 'resubscribe',
                     'require_list'   => true,
                     'label'          => __('ReSubscribe', 'fluentform'),
-                    'tips'           => __('When this option is enabled, if the subscriber is in an inactive state or<br />has previously been unsubscribed, they will be re-added to the active list.<br />Therefore, this option should be used with caution and only when appropriate.', 'fluentform'),
+                    'tips'           => __('When this option is enabled, if the subscriber is in an inactive state or has previously been unsubscribed, they will be re-added to the active list. Therefore, this option should be used with caution and only when appropriate.', 'fluentform'),
                     'component'      => 'checkbox-single',
                     'checkbox_label' => __('Enable ReSubscription', 'fluentform'),
                 ],
@@ -256,7 +258,7 @@ class MailChimpIntegration extends IntegrationManager
                     'key'            => 'markAsVIP',
                     'require_list'   => true,
                     'label'          => __('VIP', 'fluentform'),
-                    'tips'           => __('When enabled,<br /> This contact will be marked as VIP.', 'fluentform'),
+                    'tips'           => __('When enabled, This contact will be marked as VIP.', 'fluentform'),
                     'component'      => 'checkbox-single',
                     'checkbox_label' => __('Mark as VIP Contact', 'fluentform'),
                 ],
@@ -278,13 +280,6 @@ class MailChimpIntegration extends IntegrationManager
             'button_require_list' => true,
             'integration_title'   => __('Mailchimp', 'fluentform'),
         ];
-    }
-
-    public function setFeedAtributes($feed, $formId)
-    {
-        $feed['provider'] = 'mailchimp';
-        $feed['provider_logo'] = $this->logo;
-        return $feed;
     }
 
     public function prepareIntegrationFeed($setting, $feed, $formId)
@@ -330,8 +325,10 @@ class MailChimpIntegration extends IntegrationManager
         }
 
         $formattedLists = [];
-        foreach ($lists['lists'] as $list) {
-            $formattedLists[$list['id']] = $list['name'];
+        if (is_array($lists) && isset($lists['lists'])) {
+            foreach ($lists['lists'] as $list) {
+                $formattedLists[$list['id']] = $list['name'];
+            }
         }
 
         return $formattedLists;
@@ -468,8 +465,8 @@ class MailChimpIntegration extends IntegrationManager
             'tags'                   => 'sanitize_text_field',
             'tag_ids_selection_type' => 'sanitize_text_field',
             'fieldEmailAddress'      => 'sanitize_text_field',
-            'doubleOptIn'            => 'rest_sanitize_bolean',
-            'resubscribe'            => 'rest_sanitize_bolean',
+            'doubleOptIn'            => 'rest_sanitize_boolean',
+            'resubscribe'            => 'rest_sanitize_boolean',
             'note'                   => 'sanitize_text_field',
         ];
         return fluentform_backend_sanitizer($integration, $sanitizeMap);
@@ -483,13 +480,21 @@ class MailChimpIntegration extends IntegrationManager
         $response = $this->subscribe($feed, $formData, $entry, $form);
 
         if (true == $response && !is_wp_error($response)) {
-            do_action('ff_integration_action_result', $feed, 'success', __('Mailchimp feed has been successfully initialed and pushed data', 'fluentform'));
+            $message = __('Mailchimp feed has been successfully initialed and pushed data', 'fluentform');
+            do_action('fluentform/integration_action_result', $feed, 'success', $message);
         } else {
             $message = __('Mailchimp feed has been failed to deliver feed', 'fluentform');
             if (is_wp_error($response)) {
                 $message = $response->get_error_message();
+                if (is_array($message)) {
+                    $messageArray = $message;
+                    $message = '';
+                    foreach ($messageArray as $error) {
+                        $message .= ArrayHelper::get($error, 'message');
+                    }
+                }
             }
-            do_action('ff_integration_action_result', $feed, 'failed', $message);
+            do_action('fluentform/integration_action_result', $feed, 'failed', $message);
         }
     }
 }

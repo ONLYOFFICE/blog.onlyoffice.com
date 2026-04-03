@@ -118,8 +118,8 @@ trait Assets {
 		$tag = str_replace( $src, $this->normalizeAssetsHost( $src ), $tag );
 
 		// Remove the type and re-add it as module.
-		$tag = preg_replace( '/type=[\'"].*?[\'"]/', '', $tag );
-		$tag = preg_replace( '/<script/', '<script type="module"', $tag );
+		$tag = preg_replace( '/type=[\'"].*?[\'"]/', '', (string) $tag );
+		$tag = preg_replace( '/<script/', '<script type="module"', (string) $tag );
 
 		return $tag;
 	}
@@ -133,18 +133,39 @@ trait Assets {
 	 * @return void
 	 */
 	private function jsPreloadImports( $asset ) {
+		static $urls = []; // Prevent script from being loaded multiple times.
+
 		$res = '';
 		foreach ( $this->importsUrls( $asset ) as $url ) {
-			$res .= '<link rel="modulepreload" href="' . $url . "\">\n";
+			if ( isset( $urls[ $url ] ) ) {
+				continue;
+			}
+
+			$urls[ $url ] = true;
+
+			$res .= '<link rel="modulepreload" href="' . esc_attr( $url ) . "\">\n";
 		}
 
+		$allowedHtml = [
+			'link' => [
+				'rel'  => [],
+				'href' => []
+			]
+		];
+
 		if ( ! empty( $res ) ) {
-			add_action( 'admin_head', function () use ( &$res ) {
-				echo $res; // phpcs:ignore
-			} );
-			add_action( 'wp_head', function () use ( &$res ) {
-				echo $res; // phpcs:ignore
-			} );
+			if ( ! function_exists( 'wp_enqueue_script_module' ) ) {
+				add_action( 'admin_head', function () use ( &$res, $allowedHtml ) {
+					echo wp_kses( $res, $allowedHtml );
+				} );
+				add_action( 'wp_head', function () use ( &$res, $allowedHtml ) {
+					echo wp_kses( $res, $allowedHtml );
+				} );
+			} else {
+				add_action( 'admin_print_footer_scripts', function () use ( &$res, $allowedHtml ) {
+					echo wp_kses( $res, $allowedHtml );
+				}, 1000 );
+			}
 		}
 	}
 
@@ -226,6 +247,15 @@ trait Assets {
 	public function registerJs( $asset, $dependencies = [], $data = null, $objectName = 'aioseo' ) {
 		$handle = $this->jsHandle( $asset );
 		if ( wp_script_is( $handle, 'registered' ) ) {
+			// If it's already registered let's add the data.
+			if ( ! empty( $data ) ) {
+				wp_localize_script(
+					$handle,
+					$objectName,
+					$data
+				);
+			}
+
 			return;
 		}
 
@@ -371,7 +401,10 @@ trait Assets {
 		}
 
 		$manifestJson = ''; // This is set in the view.
-		require $this->manifestFile;
+
+		if ( file_exists( $this->manifestFile ) ) {
+			require_once $this->manifestFile;
+		}
 
 		$file = json_decode( $manifestJson, true );
 
@@ -386,7 +419,7 @@ trait Assets {
 	 * @param  string      $item An item to retrieve.
 	 * @return string|null       The asset item.
 	 */
-	private function getAssetManifestItem( $item ) {
+	public function getAssetManifestItem( $item ) {
 		$assetManifest = $this->getManifest();
 
 		return ! empty( $assetManifest[ $item ] ) ? $assetManifest[ $item ] : null;
@@ -469,7 +502,7 @@ trait Assets {
 			return $this->shouldLoadDevScripts;
 		}
 
-		set_error_handler( function() {} );
+		set_error_handler( function() {} ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
 		$connection = fsockopen( $this->domain, $this->port ); // phpcs:ignore WordPress.WP.AlternativeFunctions
 		restore_error_handler();
 
@@ -527,7 +560,7 @@ trait Assets {
 	 * sub-domains that don't have the proper CORS headers. Those sites will need
 	 * manual fixes.
 	 *
-	 * 4.1.10
+	 * @since 4.1.10
 	 *
 	 * @param  string $path The path to normalize.
 	 * @return string       The normalized path.
@@ -542,7 +575,7 @@ trait Assets {
 		// what's in site_url() for our assets or they won't load.
 		$siteUrl        = site_url();
 		$siteUrlEscaped = aioseo()->helpers->escapeRegex( $siteUrl );
-		if ( preg_match( "/^$siteUrlEscaped/i", $path ) ) {
+		if ( preg_match( "/^$siteUrlEscaped/i", (string) $path ) ) {
 			$paths[ $path ] = $path;
 
 			return apply_filters( 'aioseo_normalize_assets_host', $paths[ $path ] );
@@ -554,19 +587,19 @@ trait Assets {
 		$host           = aioseo()->helpers->escapeRegex( str_replace( 'www.', '', $siteUrlParsed['host'] ) );
 		$scheme         = aioseo()->helpers->escapeRegex( $siteUrlParsed['scheme'] );
 
-		$siteUrlHasWww = preg_match( "/^{$scheme}:\/\/www\.$host/", $siteUrl );
-		$pathHasWww    = preg_match( "/^{$scheme}:\/\/www\.$host/", $path );
+		$siteUrlHasWww = preg_match( "/^{$scheme}:\/\/www\.$host/", (string) $siteUrl );
+		$pathHasWww    = preg_match( "/^{$scheme}:\/\/www\.$host/", (string) $path );
 
 		// Check if the path contains www.
 		if ( $pathHasWww && ! $siteUrlHasWww ) {
 			// If the path contains www., we want to strip it out.
-			$newPath = preg_replace( "/^({$scheme}:\/\/)(www\.)($host)/", '$1$3', $path );
+			$newPath = preg_replace( "/^({$scheme}:\/\/)(www\.)($host)/", '$1$3', (string) $path );
 		}
 
 		// Check if the site_url contains www.
 		if ( $siteUrlHasWww && ! $pathHasWww ) {
 			// If the site_url contains www., we want to add it in to the path.
-			$newPath = preg_replace( "/^({$scheme}:\/\/)($host)/", '$1www.$2', $path );
+			$newPath = preg_replace( "/^({$scheme}:\/\/)($host)/", '$1www.$2', (string) $path );
 		}
 
 		$paths[ $path ] = $newPath;
@@ -606,5 +639,25 @@ trait Assets {
 		}
 
 		return $queue;
+	}
+
+	/**
+	 * Check if an asset exists (works in both dev and production mode).
+	 *
+	 * @since 4.9.0
+	 *
+	 * @param  string $asset The asset path to check.
+	 * @return bool          Whether the asset exists.
+	 */
+	public function assetExists( $asset ) {
+		// In dev mode, check if the source file exists instead of checking the manifest.
+		if ( $this->shouldLoadDev() ) {
+			$sourcePath = AIOSEO_DIR . '/' . ltrim( $asset, '/' );
+
+			return file_exists( $sourcePath );
+		}
+
+		// In production mode, check the manifest.
+		return ! empty( aioseo()->core->assets->getAssetManifestItem( $asset ) );
 	}
 }

@@ -32,16 +32,17 @@ class Helpers {
 	 * @since   4.0.13
 	 * @version 4.2.5
 	 *
-	 * @param  array  $data      The graph data.
-	 * @param  string $parentKey The key of the group parent (optional).
-	 * @return array             The cleaned graph data.
+	 * @param  array  $data        The graph data.
+	 * @param  string $parentKey   The key of the group parent (optional).
+	 * @param  bool   $replaceTags Whether the smart tags should be replaced.
+	 * @return array               The cleaned graph data.
 	 */
-	public function cleanAndParseData( $data, $parentKey = '' ) {
+	public function cleanAndParseData( $data, $parentKey = '', $replaceTags = true ) {
 		foreach ( $data as $k => &$v ) {
 			if ( is_numeric( $v ) || is_bool( $v ) || is_null( $v ) ) {
 				// Do nothing.
 			} elseif ( is_array( $v ) ) {
-				$v = $this->cleanAndParseData( $v, $k );
+				$v = $this->cleanAndParseData( $v, $k, $replaceTags );
 			} else {
 				// Check if the prop can contain some HTML tags.
 				if (
@@ -53,7 +54,7 @@ class Helpers {
 					$v = trim( wp_strip_all_tags( $v ) );
 				}
 
-				$v = aioseo()->tags->replaceTags( $v, get_the_ID() );
+				$v = $replaceTags ? aioseo()->tags->replaceTags( $v, get_the_ID() ) : $v;
 			}
 
 			if ( empty( $v ) && ! in_array( $k, aioseo()->schema->nullableFields, true ) ) {
@@ -74,23 +75,34 @@ class Helpers {
 	 * @since 4.2.7
 	 *
 	 * @param  array  $schema      The schema data.
-	 * @param  bool   $isValidator Whether we're grabbing the output for the validator.
+	 * @param  bool   $replaceTags Whether the smart tags should be replaced.
 	 * @return string              The schema as JSON.
 	 */
-	public function getOutput( $schema, $isValidator = false ) {
+	public function getOutput( $schema, $replaceTags = true ) {
 		$schema['@graph'] = apply_filters( 'aioseo_schema_output', $schema['@graph'] );
-		$schema['@graph'] = $this->cleanAndParseData( $schema['@graph'] );
+		$schema['@graph'] = $this->cleanAndParseData( $schema['@graph'], '', $replaceTags );
 
 		// Sort the graphs alphabetically.
 		usort( $schema['@graph'], function ( $a, $b ) {
-			return strcmp( $a['@type'], $b['@type'] );
+			$typeA = $a['@type'] ?? null;
+			$typeB = $b['@type'] ?? null;
+
+			if ( is_null( $typeA ) || is_array( $typeA ) ) {
+				return 1;
+			}
+
+			if ( is_null( $typeB ) || is_array( $typeB ) ) {
+				return -1;
+			}
+
+			return strcmp( $typeA, $typeB );
 		} );
 
 		// Allow users to control the default json_encode flags.
 		// Some users report better SEO performance when non-Latin unicode characters are not escaped.
 		$jsonFlags = apply_filters( 'aioseo_schema_json_flags', 0 );
 
-		$json = isset( $_GET['aioseo-dev'] ) || $isValidator
+		$json = isset( $_GET['aioseo-dev'] ) || aioseo()->schema->generatingValidatorOutput // phpcs:ignore HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
 			? aioseo()->helpers->wpJsonEncode( $schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
 			: aioseo()->helpers->wpJsonEncode( $schema, $jsonFlags );
 

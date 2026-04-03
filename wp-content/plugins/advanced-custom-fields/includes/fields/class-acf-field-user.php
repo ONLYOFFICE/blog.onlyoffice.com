@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! class_exists( 'ACF_Field_User' ) ) :
 
@@ -9,13 +18,8 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 		 *
 		 * @date    5/03/2014
 		 * @since   5.0.0
-		 *
-		 * @param   void
-		 * @return  void
 		 */
 		function initialize() {
-
-			// Props.
 			$this->name          = 'user';
 			$this->label         = __( 'User', 'acf' );
 			$this->category      = 'relational';
@@ -23,20 +27,50 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 			$this->preview_image = acf_get_url() . '/assets/images/field-type-previews/field-preview-user.png';
 			$this->doc_url       = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/resources/user/', 'docs', 'field-type-selection' );
 			$this->defaults      = array(
-				'role'          => '',
-				'multiple'      => 0,
-				'allow_null'    => 0,
-				'return_format' => 'array',
+				'role'                 => '',
+				'multiple'             => 0,
+				'allow_null'           => 0,
+				'return_format'        => 'array',
+				'bidirectional_target' => array(),
 			);
 
 			// Register filter variations.
 			acf_add_filter_variations( 'acf/fields/user/query', array( 'name', 'key' ), 1 );
 			acf_add_filter_variations( 'acf/fields/user/result', array( 'name', 'key' ), 2 );
 			acf_add_filter_variations( 'acf/fields/user/search_columns', array( 'name', 'key' ), 3 );
+			add_filter( 'acf/conditional_logic/choices', array( $this, 'render_field_user_conditional_choices' ), 10, 3 );
 
 			// Add AJAX query.
 			add_action( 'wp_ajax_acf/fields/user/query', array( $this, 'ajax_query' ) );
 			add_action( 'wp_ajax_nopriv_acf/fields/user/query', array( $this, 'ajax_query' ) );
+		}
+
+		/**
+		 * Filters choices in user conditions.
+		 *
+		 * @since 6.3
+		 *
+		 * @param array  $choices           The selected choice.
+		 * @param array  $conditional_field The conditional field settings object.
+		 * @param string $rule_value        The rule value.
+		 * @return array
+		 */
+		public function render_field_user_conditional_choices( $choices, $conditional_field, $rule_value ) {
+			if ( ! is_array( $conditional_field ) || $conditional_field['type'] !== 'user' ) {
+				return $choices;
+			}
+			if ( ! empty( $rule_value ) ) {
+				$user = acf_get_users(
+					array(
+						'include' => array( $rule_value ),
+					)
+				);
+
+				$user_result = acf_get_user_result( $user[0] );
+				$choices     = array( $user_result['id'] => $user_result['text'] );
+			}
+
+			return $choices;
 		}
 
 		/**
@@ -52,7 +86,7 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Filter by role', 'acf' ),
+					'label'        => __( 'Filter by Role', 'acf' ),
 					'instructions' => '',
 					'type'         => 'select',
 					'name'         => 'role',
@@ -83,8 +117,8 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Select multiple values?', 'acf' ),
-					'instructions' => '',
+					'label'        => __( 'Select Multiple', 'acf' ),
+					'instructions' => 'Allow content editors to select multiple values',
 					'name'         => 'multiple',
 					'type'         => 'true_false',
 					'ui'           => 1,
@@ -104,7 +138,7 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Allow Null?', 'acf' ),
+					'label'        => __( 'Allow Null', 'acf' ),
 					'instructions' => '',
 					'name'         => 'allow_null',
 					'type'         => 'true_false',
@@ -114,22 +148,32 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 		}
 
 		/**
+		 * Renders the field settings used in the "Advanced" tab.
+		 *
+		 * @since 6.2
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		public function render_field_advanced_settings( $field ) {
+			acf_render_bidirectional_field_settings( $field );
+		}
+
+		/**
 		 * Renders the field input HTML.
 		 *
-		 * @date    23/01/13
 		 * @since   3.6.0
 		 *
 		 * @param   array $field The ACF field.
 		 * @return  void
 		 */
-		function render_field( $field ) {
-
+		public function render_field( $field ) {
 			// Change Field into a select.
-			$field['type']        = 'select';
-			$field['ui']          = 1;
-			$field['ajax']        = 1;
-			$field['choices']     = array();
-			$field['query_nonce'] = wp_create_nonce( 'acf/fields/user/query' . $field['key'] );
+			$field['type']    = 'select';
+			$field['ui']      = 1;
+			$field['ajax']    = 1;
+			$field['choices'] = array();
+			$field['nonce']   = wp_create_nonce( 'acf_field_' . $this->name . '_' . $field['key'] );
 
 			// Populate choices.
 			if ( $field['value'] ) {
@@ -157,13 +201,13 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 		}
 
 		/**
-		 * Returns the result text for a fiven WP_User object.
+		 * Returns the result text for a given WP_User object.
 		 *
 		 * @date    1/11/2013
 		 * @since   5.0.0
 		 *
-		 * @param   WP_User      $user The WP_User object.
-		 * @param   array        $field The ACF field related to this query.
+		 * @param   WP_User      $user    The WP_User object.
+		 * @param   array        $field   The ACF field related to this query.
 		 * @param   (int|string) $post_id The post_id being edited.
 		 * @return  string
 		 */
@@ -194,9 +238,9 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 		 * @date    23/01/13
 		 * @since   3.6.0
 		 *
-		 * @param   mixed $value The field value.
+		 * @param   mixed $value   The field value.
 		 * @param   mixed $post_id The post ID where the value is saved.
-		 * @param   array $field The field array containing all settings.
+		 * @param   array $field   The field array containing all settings.
 		 * @return  mixed
 		 */
 		function load_value( $value, $post_id, $field ) {
@@ -214,9 +258,9 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 		 * @date    23/01/13
 		 * @since   3.6.0
 		 *
-		 * @param   mixed $value The field value.
+		 * @param   mixed $value   The field value.
 		 * @param   mixed $post_id The post ID where the value is saved.
-		 * @param   array $field The field array containing all settings.
+		 * @param   array $field   The field array containing all settings.
 		 * @return  mixed
 		 */
 		function format_value( $value, $post_id, $field ) {
@@ -286,18 +330,18 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 		/**
 		 * Filters the field value before it is saved into the database.
 		 *
-		 * @date    23/01/13
 		 * @since   3.6.0
 		 *
-		 * @param   mixed $value The field value.
-		 * @param   mixed $post_id The post ID where the value is saved.
-		 * @param   array $field The field array containing all settings.
-		 * @return  mixed
+		 * @param  mixed $value   The field value.
+		 * @param  mixed $post_id The post ID where the value is saved.
+		 * @param  array $field   The field array containing all settings.
+		 * @return mixed $value   The modified value.
 		 */
-		function update_value( $value, $post_id, $field ) {
+		public function update_value( $value, $post_id, $field ) {
 
 			// Bail early if no value.
 			if ( empty( $value ) ) {
+				acf_update_bidirectional_values( array(), $post_id, $field, 'user' );
 				return $value;
 			}
 
@@ -312,6 +356,8 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 			} else {
 				$value = acf_idval( $value );
 			}
+
+			acf_update_bidirectional_values( acf_get_array( $value ), $post_id, $field, 'user' );
 
 			// Return value.
 			return $value;
@@ -343,7 +389,6 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 			add_filter( 'acf/ajax/query_users/args', array( $this, 'ajax_query_args' ), 10, 3 );
 			add_filter( 'acf/ajax/query_users/result', array( $this, 'ajax_query_result' ), 10, 3 );
 			add_filter( 'acf/ajax/query_users/search_columns', array( $this, 'ajax_query_search_columns' ), 10, 4 );
-
 			// Simulate AJAX request.
 			acf_get_instance( 'ACF_Ajax_Query_Users' )->request();
 		}
@@ -355,7 +400,7 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 		 * @since   5.8.8
 		 *
 		 * @param   array          $request The query request.
-		 * @param   ACF_Ajax_Query $query The query object.
+		 * @param   ACF_Ajax_Query $query   The query object.
 		 * @return  void
 		 */
 		function ajax_query_init( $request, $query ) {
@@ -365,7 +410,10 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 			}
 
 			// Verify that this is a legitimate request using a separate nonce from the main AJAX nonce.
-			if ( ! isset( $_REQUEST['user_query_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( $_REQUEST['user_query_nonce'] ), 'acf/fields/user/query' . $query->field['key'] ) ) {
+			$nonce = acf_request_arg( 'nonce', '' );
+			$key   = acf_request_arg( 'field_key', '' );
+
+			if ( ! acf_verify_ajax( $nonce, $key, true ) ) {
 				$query->send( new WP_Error( 'acf_invalid_request', __( 'Invalid request.', 'acf' ), array( 'status' => 404 ) ) );
 			}
 		}
@@ -376,9 +424,9 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 		 * @date    9/3/20
 		 * @since   5.8.8
 		 *
-		 * @param   array          $args The query args.
+		 * @param   array          $args    The query args.
 		 * @param   array          $request The query request.
-		 * @param   ACF_Ajax_Query $query The query object.
+		 * @param   ACF_Ajax_Query $query   The query object.
 		 * @return  array
 		 */
 		function ajax_query_args( $args, $request, $query ) {
@@ -407,8 +455,8 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 		 * @date    9/3/20
 		 * @since   5.8.8
 		 *
-		 * @param   array         $columns An array of column names to be searched.
-		 * @param   string        $search The search term.
+		 * @param   array         $columns       An array of column names to be searched.
+		 * @param   string        $search        The search term.
 		 * @param   WP_User_Query $WP_User_Query The WP_User_Query instance.
 		 * @return  array
 		 */
@@ -434,8 +482,8 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 		 * @date    9/3/20
 		 * @since   5.8.8
 		 *
-		 * @param   array          $item The choice id and text.
-		 * @param   WP_User        $user The user object.
+		 * @param   array          $item  The choice id and text.
+		 * @param   WP_User        $user  The user object.
 		 * @param   ACF_Ajax_Query $query The query object.
 		 * @return  array
 		 */
@@ -478,8 +526,8 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 		 * @since   5.0.9
 		 * @deprecated 5.8.9
 		 *
-		 * @param   array         $columns An array of column names to be searched.
-		 * @param   string        $search The search term.
+		 * @param   array         $columns       An array of column names to be searched.
+		 * @param   string        $search        The search term.
 		 * @param   WP_User_Query $WP_User_Query The WP_User_Query instance.
 		 * @return  array
 		 */
@@ -491,11 +539,10 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 		/**
 		 * Validates user fields updated via the REST API.
 		 *
-		 * @param bool  $valid
-		 * @param int   $value
-		 * @param array $field
-		 *
-		 * @return bool|WP_Error
+		 * @param  boolean $valid The current validity booleean
+		 * @param  integer $value The value of the field
+		 * @param  array   $field The field array
+		 * @return boolean|WP_Error
 		 */
 		public function validate_rest_value( $valid, $value, $field ) {
 			if ( is_null( $value ) ) {
@@ -581,9 +628,9 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 
 		/**
 		 * @see \acf_field::get_rest_links()
-		 * @param mixed      $value The raw (unformatted) field value.
-		 * @param int|string $post_id
-		 * @param array      $field
+		 * @param mixed          $value   The raw (unformatted) field value.
+		 * @param integer|string $post_id
+		 * @param array          $field
 		 * @return array
 		 */
 		public function get_rest_links( $value, $post_id, array $field ) {
@@ -607,19 +654,104 @@ if ( ! class_exists( 'ACF_Field_User' ) ) :
 		/**
 		 * Apply basic formatting to prepare the value for default REST output.
 		 *
-		 * @param mixed      $value
-		 * @param string|int $post_id
-		 * @param array      $field
+		 * @param mixed          $value
+		 * @param string|integer $post_id
+		 * @param array          $field
 		 * @return mixed
 		 */
 		public function format_value_for_rest( $value, $post_id, array $field ) {
 			return acf_format_numerics( $value );
 		}
 
+		/**
+		 * Formats the field value for JSON-LD output.
+		 *
+		 * @since 6.8.0
+		 *
+		 * @param mixed          $value   The value of the field.
+		 * @param integer|string $post_id The ID of the post.
+		 * @param array          $field   The field array.
+		 * @return mixed
+		 */
+		public function format_value_for_jsonld( $value, $post_id, $field ) {
+			if ( empty( $value ) ) {
+				return null;
+			}
+
+			// Get output format with fallback.
+			$output_format = $field['schema_output_format'] ?? '';
+			if ( empty( $output_format ) ) {
+				$property      = $field['schema_property'] ?? '';
+				$output_format = \ACF\AI\GEO\Schema::get_default_output_format( $this->name, $property );
+			}
+
+			// Default to Person if still empty.
+			if ( empty( $output_format ) ) {
+				$output_format = 'Person';
+			}
+
+			$field['return_format'] = 'object';
+			$users                  = $this->format_value( $value, $post_id, $field );
+
+			if ( ! $users ) {
+				return null;
+			}
+
+			// Handle single user.
+			if ( $users instanceof \WP_User ) {
+				return $this->format_user_for_jsonld( $users, $output_format );
+			}
+
+			// Handle multiple users.
+			$formatted = array();
+			if ( is_array( $users ) ) {
+				foreach ( $users as $user ) {
+					if ( $user instanceof \WP_User ) {
+						$formatted[] = $this->format_user_for_jsonld( $user, $output_format );
+					}
+				}
+			}
+
+			return $formatted;
+		}
+
+		/**
+		 * Format a single user for JSON-LD output.
+		 *
+		 * @since 6.8.0
+		 *
+		 * @param \WP_User $user          The user object.
+		 * @param string   $output_format The output format (Person or Organization).
+		 * @return array The formatted user data.
+		 */
+		private function format_user_for_jsonld( $user, $output_format ) {
+			$data = array(
+				'@type' => $output_format,
+				'name'  => $user->get( 'display_name' ),
+			);
+
+			// Add URL if available.
+			$url = $user->get( 'user_url' );
+			if ( $url ) {
+				$data['url'] = $url;
+			}
+
+			return $data;
+		}
+
+		/**
+		 * Returns an array of JSON-LD Property output types that are supported by this field type.
+		 *
+		 * @since 6.8
+		 *
+		 * @return string[]
+		 */
+		public function get_jsonld_output_types(): array {
+			return array( 'Person', 'Organization' );
+		}
 	}
 
 
 	// initialize
 	acf_register_field_type( 'ACF_Field_User' );
-
 endif; // class_exists check

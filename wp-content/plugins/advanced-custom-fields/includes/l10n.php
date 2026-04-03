@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 /**
  * Determine the current locale desired for the request.
@@ -52,9 +61,7 @@ if ( ! function_exists( 'determine_locale' ) ) :
 	}
 endif;
 
-/*
- * acf_get_locale
- *
+/**
  * Returns the current locale.
  *
  * @date    16/12/16
@@ -122,17 +129,17 @@ function acf_load_textdomain( $domain = 'acf' ) {
 	return load_textdomain( $domain, acf_get_path( 'lang/' . $mofile ) );
 }
 
- /**
-  * _acf_apply_language_cache_key
-  *
-  * Applies the current language to the cache key.
-  *
-  * @date    23/1/19
-  * @since   5.7.11
-  *
-  * @param   string $key The cache key.
-  * @return  string
-  */
+/**
+ * _acf_apply_language_cache_key
+ *
+ * Applies the current language to the cache key.
+ *
+ * @date    23/1/19
+ * @since   5.7.11
+ *
+ * @param   string $key The cache key.
+ * @return  string
+ */
 function _acf_apply_language_cache_key( $key ) {
 
 	// Get current language.

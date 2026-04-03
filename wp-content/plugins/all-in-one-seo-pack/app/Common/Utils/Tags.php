@@ -38,83 +38,16 @@ class Tags {
 	 * @var array
 	 */
 	private $context = [
-		'rss'                 => [
-			'author_link',
-			'author_link_alt',
-			'author_name',
-			'taxonomy_title',
-			'post_date',
-			'post_link',
-			'post_link_alt',
-			'post_title',
-			'site_link',
-			'site_link_alt',
-			'site_title'
-		],
-		'homePage'            => [
+		'authorDescription'   => [
+			'author_bio',
 			'author_first_name',
 			'author_last_name',
 			'author_name',
-			'current_date',
-			'current_day',
-			'current_month',
-			'current_year',
-			'post_date',
-			'post_day',
-			'post_excerpt',
-			'post_excerpt_only',
-			'post_month',
-			'post_title',
-			'post_year',
-			'separator_sa',
-			'site_title',
-			'tagline'
-		],
-		'postTitle'           => [
-			'author_first_name',
-			'author_last_name',
-			'author_name',
-			'taxonomy_title',
-			'categories',
 			'current_date',
 			'current_day',
 			'current_month',
 			'current_year',
 			'custom_field',
-			'tax_name',
-			'permalink',
-			'post_content',
-			'post_date',
-			'post_day',
-			'post_excerpt',
-			'post_excerpt_only',
-			'post_month',
-			'post_title',
-			'post_year',
-			'separator_sa',
-			'site_title',
-			'tagline'
-		],
-		'postDescription'     => [
-			'author_first_name',
-			'author_last_name',
-			'author_name',
-			'taxonomy_title',
-			'current_date',
-			'current_day',
-			'current_month',
-			'current_year',
-			'custom_field',
-			'tax_name',
-			'permalink',
-			'post_content',
-			'post_date',
-			'post_day',
-			'post_excerpt',
-			'post_excerpt_only',
-			'post_month',
-			'post_title',
-			'post_year',
 			'separator_sa',
 			'site_title',
 			'tagline'
@@ -130,10 +63,82 @@ class Tags {
 			'custom_field',
 			'separator_sa',
 			'site_title',
-			'tagline',
+			'tagline'
 		],
-		'authorDescription'   => [
-			'author_bio',
+		'descriptionFormat'   => [
+			'current_date',
+			'current_day',
+			'current_month',
+			'current_year',
+			'custom_field',
+			'description',
+			'post_date',
+			'post_month',
+			'post_title',
+			'post_year',
+			'separator_sa',
+			'site_title',
+			'tagline'
+		],
+		'dateDescription'     => [
+			'archive_date',
+			'archive_title',
+			'current_date',
+			'current_day',
+			'current_month',
+			'current_year',
+			'custom_field',
+			'post_day',
+			'post_month',
+			'post_year',
+			'separator_sa',
+			'site_title',
+			'tagline'
+		],
+		'dateTitle'           => [
+			'archive_date',
+			'archive_title',
+			'current_date',
+			'current_day',
+			'current_month',
+			'current_year',
+			'custom_field',
+			'post_day',
+			'post_month',
+			'post_year',
+			'separator_sa',
+			'site_title',
+			'tagline'
+		],
+		'homePage'            => [
+			'author_first_name',
+			'author_last_name',
+			'author_name',
+			'current_date',
+			'current_day',
+			'current_month',
+			'current_year',
+			'post_date',
+			'post_day',
+			'post_excerpt_only',
+			'post_excerpt',
+			'post_month',
+			'post_title',
+			'post_year',
+			'separator_sa',
+			'site_title',
+			'tagline'
+		],
+		'knowledgeGraph'      => [
+			'separator_sa',
+			'site_title',
+			'tagline'
+		],
+		'pagedFormat'         => [
+			'page_number',
+			'separator_sa'
+		],
+		'postDescription'     => [
 			'author_first_name',
 			'author_last_name',
 			'author_name',
@@ -142,50 +147,143 @@ class Tags {
 			'current_month',
 			'current_year',
 			'custom_field',
-			'separator_sa',
-			'site_title',
-			'tagline',
-		],
-		'dateTitle'           => [
-			'archive_title',
-			'current_date',
-			'current_day',
-			'current_month',
-			'current_year',
-			'custom_field',
-			'archive_date',
+			'permalink',
+			'post_content',
+			'post_date',
 			'post_day',
+			'post_excerpt_only',
+			'post_excerpt',
 			'post_month',
+			'post_title',
 			'post_year',
 			'separator_sa',
 			'site_title',
 			'tagline',
+			'tax_name',
+			'taxonomy_title'
 		],
-		'dateDescription'     => [
-			'archive_title',
+		'postTitle'           => [
+			'author_first_name',
+			'author_last_name',
+			'author_name',
+			'categories',
 			'current_date',
 			'current_day',
 			'current_month',
 			'current_year',
-			'archive_date',
+			'custom_field',
+			'permalink',
+			'post_content',
+			'post_date',
 			'post_day',
+			'post_excerpt_only',
+			'post_excerpt',
 			'post_month',
+			'post_title',
 			'post_year',
-			'custom_field',
 			'separator_sa',
 			'site_title',
 			'tagline',
+			'tax_name',
+			'taxonomy_title'
 		],
-		'searchTitle'         => [
+		'pageDescription'     => [
+			'author_first_name',
+			'author_last_name',
+			'author_name',
 			'current_date',
 			'current_day',
 			'current_month',
 			'current_year',
 			'custom_field',
-			'search_term',
+			'permalink',
+			'post_content',
+			'post_date',
+			'post_day',
+			'post_excerpt_only',
+			'post_excerpt',
+			'post_month',
+			'post_title',
+			'post_year',
 			'separator_sa',
 			'site_title',
 			'tagline',
+			'tax_name',
+			'taxonomy_title'
+		],
+		'pageTitle'           => [
+			'author_first_name',
+			'author_last_name',
+			'author_name',
+			'categories',
+			'current_date',
+			'current_day',
+			'current_month',
+			'current_year',
+			'custom_field',
+			'permalink',
+			'post_content',
+			'post_date',
+			'post_day',
+			'post_excerpt_only',
+			'post_excerpt',
+			'post_month',
+			'post_title',
+			'post_year',
+			'separator_sa',
+			'site_title',
+			'tagline',
+			'tax_name',
+			'taxonomy_title'
+		],
+		'rss'                 => [
+			'author_link',
+			'author_link_alt',
+			'author_name',
+			'featured_image',
+			'post_date',
+			'post_link',
+			'post_link_alt',
+			'post_title',
+			'site_link',
+			'site_link_alt',
+			'site_title',
+			'taxonomy_title'
+		],
+		'schema'              => [
+			'author_first_name',
+			'author_last_name',
+			'author_name',
+			'author_url',
+			'categories',
+			'current_date',
+			'current_day',
+			'current_month',
+			'current_year',
+			'custom_field',
+			'permalink',
+			'post_content',
+			'post_date',
+			'post_day',
+			'post_excerpt_only',
+			'post_excerpt',
+			'post_month',
+			'post_title',
+			'post_year',
+			'separator_sa',
+			'site_title',
+			'tagline',
+			'tax_name',
+			'taxonomy_title'
+		],
+		'schemaReviewAuthor'  => [
+			'author_first_name',
+			'author_last_name',
+			'author_name',
+			'author_url',
+			'custom_field',
+			'separator_sa',
+			'site_title'
 		],
 		'searchDescription'   => [
 			'current_date',
@@ -196,20 +294,17 @@ class Tags {
 			'search_term',
 			'separator_sa',
 			'site_title',
-			'tagline',
+			'tagline'
 		],
-		'siteTitle'           => [
+		'searchTitle'         => [
 			'current_date',
 			'current_day',
 			'current_month',
 			'current_year',
-			'permalink',
-			'post_date',
-			'post_day',
-			'post_month',
-			'post_year',
+			'custom_field',
 			'search_term',
 			'separator_sa',
+			'site_title',
 			'tagline'
 		],
 		'siteDescription'     => [
@@ -226,86 +321,88 @@ class Tags {
 			'separator_sa',
 			'tagline'
 		],
-		'taxonomyTitle'       => [
-			'taxonomy_description',
-			'taxonomy_title',
+		'siteTitle'           => [
 			'current_date',
 			'current_day',
 			'current_month',
 			'current_year',
-			'custom_field',
 			'permalink',
-			'separator_sa',
-			'site_title',
-			'tagline',
-			'tax_parent_name'
-		],
-		'taxonomyDescription' => [
-			'taxonomy_description',
-			'taxonomy_title',
-			'current_date',
-			'current_day',
-			'current_month',
-			'current_year',
-			'custom_field',
-			'permalink',
-			'separator_sa',
-			'site_title',
-			'tagline'
-		],
-		'descriptionFormat'   => [
-			'description',
-			'current_date',
-			'current_day',
-			'current_month',
-			'current_year',
-			'custom_field',
-			'post_title',
 			'post_date',
+			'post_day',
 			'post_month',
 			'post_year',
+			'search_term',
+			'separator_sa',
+			'tagline'
+		],
+		'taxonomyDescription' => [
+			'current_date',
+			'current_day',
+			'current_month',
+			'current_year',
+			'custom_field',
+			'permalink',
 			'separator_sa',
 			'site_title',
 			'tagline',
+			'taxonomy_description',
+			'taxonomy_title'
 		],
-		'pagedFormat'         => [
-			'page_number'
+		'taxonomyTitle'       => [
+			'current_date',
+			'current_day',
+			'current_month',
+			'current_year',
+			'custom_field',
+			'permalink',
+			'separator_sa',
+			'site_title',
+			'tagline',
+			'tax_parent_name',
+			'taxonomy_description',
+			'taxonomy_title'
 		],
-		'schema'              => [
+		'blocksContent'       => [
 			'author_first_name',
 			'author_last_name',
 			'author_name',
 			'author_url',
-			'taxonomy_title',
-			'categories',
 			'current_date',
 			'current_day',
 			'current_month',
 			'current_year',
 			'custom_field',
-			'tax_name',
 			'permalink',
-			'post_content',
 			'post_date',
 			'post_day',
-			'post_excerpt',
-			'post_excerpt_only',
 			'post_month',
 			'post_title',
 			'post_year',
 			'separator_sa',
 			'site_title',
-			'tagline'
-		]
+			'taxonomy_title'
+		],
 	];
 
 	/**
-	 * Class Contructor.
+	 * Class constructor.
 	 *
 	 * @since 4.0.0
 	 */
 	public function __construct() {
-		$this->tags = [
+		// Tags need to be registered on wp_loaded instead of init to ensure these are available during block rendering.
+		add_action( 'wp_loaded', [ $this, 'registerTags' ] );
+	}
+
+	/**
+	 * Register the tags.
+	 *
+	 * @since 4.7.6
+	 *
+	 * @return void
+	 */
+	public function registerTags() {
+		$this->tags = array_merge( $this->tags, [
 			[
 				'id'          => 'alt_tag',
 				'name'        => __( 'Image Alt Tag', 'all-in-one-seo-pack' ),
@@ -320,6 +417,11 @@ class Tags {
 				'id'          => 'attachment_description',
 				'name'        => __( 'Media Description', 'all-in-one-seo-pack' ),
 				'description' => __( 'Description for the current media file.', 'all-in-one-seo-pack' )
+			],
+			[
+				'id'          => 'archive_date',
+				'name'        => __( 'Archive Date', 'all-in-one-seo-pack' ),
+				'description' => __( 'The date of the current archive, localized.', 'all-in-one-seo-pack' )
 			],
 			[
 				'id'          => 'author_link',
@@ -362,22 +464,27 @@ class Tags {
 				'description' => __( 'The title of the current archive.', 'all-in-one-seo-pack' )
 			],
 			[
+				'id'          => 'blog_link',
+				'name'        => __( 'Site Link', 'all-in-one-seo-pack' ),
+				'description' => __( 'Site link (link as text).', 'all-in-one-seo-pack' ),
+				'html'        => true
+			],
+			[
+				'id'          => 'blog_title',
+				'name'        => __( 'Site Title', 'all-in-one-seo-pack' ),
+				'description' => __( 'Your site title.', 'all-in-one-seo-pack' ),
+				'deprecated'  => true
+			],
+			[
 				'id'          => 'category',
 				'name'        => __( 'Category', 'all-in-one-seo-pack' ),
 				'description' => __( 'Current or first category title.', 'all-in-one-seo-pack' ),
 				'deprecated'  => true
 			],
 			[
-				'id'          => 'taxonomy_title',
-				// Translators: 1 - The type of page (Post, Page, Category, Tag, etc.).
-				'name'        => sprintf( __( '%1$s Title', 'all-in-one-seo-pack' ), 'Category' ),
-				'description' => __( 'The title of the primary term, first assigned term or the current term.', 'all-in-one-seo-pack' )
-			],
-			[
-				'id'          => 'taxonomy_description',
-				// Translators: 1 - The singular name of the current taxonomy.
-				'name'        => sprintf( __( '%1$s Description', 'all-in-one-seo-pack' ), 'Category' ),
-				'description' => __( 'The description of the primary term, first assigned term or the current term.', 'all-in-one-seo-pack' )
+				'id'          => 'categories',
+				'name'        => __( 'Categories', 'all-in-one-seo-pack' ),
+				'description' => __( 'All categories that are assigned to the current post, comma-separated.', 'all-in-one-seo-pack' )
 			],
 			[
 				'id'          => 'category_link',
@@ -392,16 +499,6 @@ class Tags {
 				'name'        => sprintf( __( '%1$s Link (Alt)', 'all-in-one-seo-pack' ), 'Category' ),
 				'description' => __( 'Current or first term link (link as text).', 'all-in-one-seo-pack' ),
 				'html'        => true
-			],
-			[
-				'id'          => 'permalink',
-				'name'        => __( 'Permalink', 'all-in-one-seo-pack' ),
-				'description' => __( 'The permalink for the current page/post.', 'all-in-one-seo-pack' )
-			],
-			[
-				'id'          => 'page_number',
-				'name'        => __( 'Page Number', 'all-in-one-seo-pack' ),
-				'description' => __( 'The page number for the current paginated page.', 'all-in-one-seo-pack' )
 			],
 			[
 				'id'          => 'current_date',
@@ -424,27 +521,41 @@ class Tags {
 				'description' => __( 'The current year, localized.', 'all-in-one-seo-pack' )
 			],
 			[
-				'id'          => 'post_excerpt',
-				// Translators: 1 - The singular name of the post type.
-				'name'        => sprintf( __( '%1$s Excerpt', 'all-in-one-seo-pack' ), 'Post' ),
-				'description' => __( 'The excerpt defined on your page/post.', 'all-in-one-seo-pack' )
+				'id'          => 'custom_field',
+				'name'        => __( 'Custom Field', 'all-in-one-seo-pack' ),
+				'description' => __( 'A custom field from the current page/post.', 'all-in-one-seo-pack' ),
+				'custom'      => true
 			],
 			[
-				'id'          => 'post_excerpt_only',
-				// Translators: 1 - The singular name of the post type.
-				'name'        => sprintf( __( '%1$s Excerpt Only', 'all-in-one-seo-pack' ), 'Post' ),
-				'description' => __( 'The excerpt defined on your page/post. Will not fall back to the post content.', 'all-in-one-seo-pack' )
+				'id'          => 'description',
+				'name'        => __( 'Description', 'all-in-one-seo-pack' ),
+				'description' => __( 'The meta description for the current page/post.', 'all-in-one-seo-pack' )
+			],
+			[
+				'id'          => 'featured_image',
+				'name'        => __( 'Featured Image', 'all-in-one-seo-pack' ),
+				'description' => __( 'The featured image of the current page/post.', 'all-in-one-seo-pack' )
+			],
+			[
+				'id'          => 'page_number',
+				'name'        => __( 'Page Number', 'all-in-one-seo-pack' ),
+				'description' => __( 'The page number for the current paginated page.', 'all-in-one-seo-pack' )
+			],
+			[
+				'id'          => 'parent_title',
+				'name'        => __( 'Parent Title', 'all-in-one-seo-pack' ),
+				'description' => __( 'The title of the parent post of the current page/post.', 'all-in-one-seo-pack' )
+			],
+			[
+				'id'          => 'permalink',
+				'name'        => __( 'Permalink', 'all-in-one-seo-pack' ),
+				'description' => __( 'The permalink for the current page/post.', 'all-in-one-seo-pack' )
 			],
 			[
 				'id'          => 'post_content',
 				// Translators: 1 - The singular name of the post type.
 				'name'        => sprintf( __( '%1$s Content', 'all-in-one-seo-pack' ), 'Post' ),
 				'description' => __( 'The content of your page/post.', 'all-in-one-seo-pack' )
-			],
-			[
-				'id'          => 'archive_date',
-				'name'        => __( 'Archive Date', 'all-in-one-seo-pack' ),
-				'description' => __( 'The date of the current archive, localized.', 'all-in-one-seo-pack' )
 			],
 			[
 				'id'          => 'post_date',
@@ -457,6 +568,18 @@ class Tags {
 				// Translators: 1 - The singular name of the post type.
 				'name'        => sprintf( __( '%1$s Day', 'all-in-one-seo-pack' ), 'Post' ),
 				'description' => __( 'The day of the month when the page/post was published, localized.', 'all-in-one-seo-pack' )
+			],
+			[
+				'id'          => 'post_excerpt',
+				// Translators: 1 - The singular name of the post type.
+				'name'        => sprintf( __( '%1$s Excerpt', 'all-in-one-seo-pack' ), 'Post' ),
+				'description' => __( 'The excerpt defined on your page/post.', 'all-in-one-seo-pack' )
+			],
+			[
+				'id'          => 'post_excerpt_only',
+				// Translators: 1 - The singular name of the post type.
+				'name'        => sprintf( __( '%1$s Excerpt Only', 'all-in-one-seo-pack' ), 'Post' ),
+				'description' => __( 'The excerpt defined on your page/post. Will not fall back to the post content.', 'all-in-one-seo-pack' )
 			],
 			[
 				'id'          => 'post_month',
@@ -474,14 +597,14 @@ class Tags {
 				'id'          => 'post_link',
 				// Translators: 1 - The type of page (Post, Page, Category, Tag, etc.).
 				'name'        => sprintf( __( '%1$s Link', 'all-in-one-seo-pack' ), 'Post' ),
-				'description' => __( 'Post link (name as text).', 'all-in-one-seo-pack' ),
+				'description' => __( 'Post link (name as anchor text).', 'all-in-one-seo-pack' ),
 				'html'        => true
 			],
 			[
 				'id'          => 'post_link_alt',
 				// Translators: 1 - The type of page (Post, Page, Category, Tag, etc.).
 				'name'        => sprintf( __( '%1$s Link (Alt)', 'all-in-one-seo-pack' ), 'Post' ),
-				'description' => __( 'Post link (link as text).', 'all-in-one-seo-pack' ),
+				'description' => __( 'Post link (link as anchor text).', 'all-in-one-seo-pack' ),
 				'html'        => true
 			],
 			[
@@ -491,9 +614,20 @@ class Tags {
 				'description' => __( 'The original title of the current post.', 'all-in-one-seo-pack' )
 			],
 			[
+				'id'          => 'search_term',
+				'name'        => __( 'Search Term', 'all-in-one-seo-pack' ),
+				'description' => __( 'The term the user is searching for.', 'all-in-one-seo-pack' )
+			],
+			[
 				'id'          => 'separator_sa',
 				'name'        => __( 'Separator', 'all-in-one-seo-pack' ),
 				'description' => __( 'The separator defined in the search appearance settings.', 'all-in-one-seo-pack' )
+			],
+			[
+				'id'          => 'site_description',
+				'name'        => __( 'Site Description', 'all-in-one-seo-pack' ),
+				'description' => __( 'The description for your site.', 'all-in-one-seo-pack' ),
+				'deprecated'  => true
 			],
 			[
 				'id'          => 'site_link',
@@ -514,38 +648,9 @@ class Tags {
 				'html'        => true
 			],
 			[
-				'id'          => 'blog_link',
-				'name'        => __( 'Site Link', 'all-in-one-seo-pack' ),
-				'description' => __( 'Site link (link as text).', 'all-in-one-seo-pack' ),
-				'html'        => true
-			],
-			[
-				'id'          => 'blog_title',
-				'name'        => __( 'Site Title', 'all-in-one-seo-pack' ),
-				'description' => __( 'Your site title.', 'all-in-one-seo-pack' ),
-				'deprecated'  => true
-			],
-			[
-				'id'          => 'site_description',
-				'name'        => __( 'Site Description', 'all-in-one-seo-pack' ),
-				'description' => __( 'The description for your site.', 'all-in-one-seo-pack' ),
-				'deprecated'  => true
-			],
-			[
 				'id'          => 'tagline',
 				'name'        => __( 'Tagline', 'all-in-one-seo-pack' ),
 				'description' => __( 'The tagline for your site, set in the general settings.', 'all-in-one-seo-pack' )
-			],
-			[
-				'id'          => 'custom_field',
-				'name'        => __( 'Custom Field', 'all-in-one-seo-pack' ),
-				'description' => __( 'A custom field from the current page/post.', 'all-in-one-seo-pack' ),
-				'custom'      => true
-			],
-			[
-				'id'          => 'search_term',
-				'name'        => __( 'Search Term', 'all-in-one-seo-pack' ),
-				'description' => __( 'The term the user is searching for.', 'all-in-one-seo-pack' )
 			],
 			[
 				'id'          => 'tax_name',
@@ -559,21 +664,18 @@ class Tags {
 				'description' => __( 'The name of the parent term of the current term.', 'all-in-one-seo-pack' ),
 			],
 			[
-				'id'          => 'description',
-				'name'        => __( 'Description', 'all-in-one-seo-pack' ),
-				'description' => __( 'The meta description for the current page/post.', 'all-in-one-seo-pack' )
+				'id'          => 'taxonomy_description',
+				// Translators: 1 - The singular name of the current taxonomy.
+				'name'        => sprintf( __( '%1$s Description', 'all-in-one-seo-pack' ), 'Category' ),
+				'description' => __( 'The description of the primary term, first assigned term or the current term.', 'all-in-one-seo-pack' )
 			],
 			[
-				'id'          => 'parent_title',
-				'name'        => __( 'Parent Title', 'all-in-one-seo-pack' ),
-				'description' => __( 'The title of the parent post of the current page/post.', 'all-in-one-seo-pack' )
-			],
-			[
-				'id'          => 'categories',
-				'name'        => __( 'Categories', 'all-in-one-seo-pack' ),
-				'description' => __( 'All categories that are assigned to the current post, comma-separated.', 'all-in-one-seo-pack' )
+				'id'          => 'taxonomy_title',
+				// Translators: 1 - The type of page (Post, Page, Category, Tag, etc.).
+				'name'        => sprintf( __( '%1$s Title', 'all-in-one-seo-pack' ), 'Category' ),
+				'description' => __( 'The title of the primary term, first assigned term or the current term.', 'all-in-one-seo-pack' )
 			]
-		];
+		] );
 	}
 
 	/**
@@ -587,7 +689,9 @@ class Tags {
 	public function all( $sampleData = false ) {
 		$tags = $this->tags;
 		foreach ( $tags as $key => $tag ) {
-			$tags[ $key ]['value'] = $this->getTagValue( $tag, null, $sampleData );
+			$tags[ $key ]['value'] = ( $tag['instance'] ?? null )
+				? $tag['instance']->getTagValue( $tag, null, $sampleData )
+				: $this->getTagValue( $tag, null, $sampleData );
 		}
 
 		usort( $tags, function ( $a, $b ) {
@@ -614,7 +718,10 @@ class Tags {
 
 		// Post types including CPT's.
 		foreach ( aioseo()->helpers->getPublicPostTypes() as $postType ) {
-			if ( 'post' === $postType['name'] ) {
+			if (
+				'post' === $postType['name'] ||
+				! empty( $postType['buddyPress'] )
+			) {
 				continue;
 			}
 
@@ -627,7 +734,7 @@ class Tags {
 			$context[ $postType['name'] . 'Description' ] = $context['postDescription'];
 
 			// Check if the post type has an excerpt.
-			if ( empty( $postType['hasExcerpt'] ) ) {
+			if ( empty( $postType['supports']['excerpt'] ) ) {
 				$phpTitleKey = array_search( 'post_excerpt', $context[ $postType['name'] . 'Title' ], true );
 				if ( false !== $phpTitleKey ) {
 					unset( $context[ $postType['name'] . 'Title' ][ $phpTitleKey ] );
@@ -781,8 +888,8 @@ class Tags {
 	 * @param  int    $id     The page or post ID.
 	 * @return string         The string with tags replaced.
 	 */
-	public function replaceTags( $string, $id ) {
-		if ( ! $string || ! preg_match( '/#/', $string ) ) {
+	public function replaceTags( $string, $id = 0 ) {
+		if ( ! $string || ! preg_match( '/' . $this->denotationChar . '/', (string) $string ) ) {
 			return $string;
 		}
 
@@ -796,18 +903,18 @@ class Tags {
 			// This allows us to have tags like: #post_link and #post_link_alt
 			// and it will always replace the correct one.
 			$pattern = "/$tagId(?![a-zA-Z0-9_])/im";
-			if ( preg_match( $pattern, $string ) ) {
+			if ( preg_match( $pattern, (string) $string ) ) {
 				$tagValue = $this->getTagValue( $tag, $id );
-				$string   = preg_replace( $pattern, '%|%' . aioseo()->helpers->escapeRegexReplacement( $tagValue ), $string );
+				$string   = preg_replace( $pattern, '%|%' . aioseo()->helpers->escapeRegexReplacement( $tagValue ), (string) $string );
 			}
 		}
 
 		$string = $this->parseTaxonomyNames( $string, $id );
 
 		// Custom fields are parsed separately.
-		$string = $this->parseCustomFields( $string );
+		$string = $this->parseCustomFields( $string, $id );
 
-		return preg_replace( '/%\|%/im', '', $string );
+		return preg_replace( '/%\|%/im', '', (string) $string );
 	}
 
 	/**
@@ -815,10 +922,10 @@ class Tags {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string $tag        The tag to look for.
-	 * @param  int    $id         The post ID.
-	 * @param  bool   $sampleData Whether or not to fill empty values with sample data.
-	 * @return string             The value of the tag.
+	 * @param  array    $tag        The tag to look for.
+	 * @param  int|null $id         The post ID.
+	 * @param  bool     $sampleData Whether or not to fill empty values with sample data.
+	 * @return mixed                The value of the tag.
 	 */
 	public function getTagValue( $tag, $id, $sampleData = false ) {
 		$author   = new \WP_User();
@@ -834,50 +941,10 @@ class Tags {
 		}
 
 		switch ( $tag['id'] ) {
-			case 'page_number':
-				return aioseo()->helpers->getPageNumber();
 			case 'alt_tag':
 				return empty( $id )
 					? ( $sampleData ? __( 'A sample alt tag for your image', 'all-in-one-seo-pack' ) : '' )
 					: get_post_meta( $id, '_wp_attachment_image_alt', true );
-			case 'attachment_caption':
-				$caption = wp_get_attachment_caption( $postId );
-
-				return empty( $caption ) && $sampleData ? __( 'Sample caption for media.', 'all-in-one-seo-pack' ) : $caption;
-			case 'attachment_description':
-				$description = ! empty( $post->post_content ) ? $post->post_content : '';
-
-				return empty( $description ) && $sampleData ? __( 'Sample description for media.', 'all-in-one-seo-pack' ) : $description;
-			case 'site_link_alt':
-				return '<a href="' . esc_url( get_bloginfo( 'url' ) ) . '">' . esc_url( get_bloginfo( 'url' ) ) . '</a>';
-			case 'site_link':
-			case 'blog_link':
-				return '<a href="' . esc_url( get_bloginfo( 'url' ) ) . '">' . esc_html( get_bloginfo( 'name' ) ) . '</a>';
-			case 'permalink':
-				return aioseo()->helpers->getUrl();
-			case 'post_link':
-				return '<a href="' . esc_url( get_permalink( $post ) ) . '">' . esc_html( get_the_title( $post ) ) . '</a>';
-			case 'post_link_alt':
-				return '<a href="' . esc_url( get_permalink( $post ) ) . '">' . esc_url( get_permalink( $post ) ) . '</a>';
-			case 'post_title':
-				$title = esc_html( get_the_title( $post ) );
-
-				return empty( $title ) && $sampleData ? __( 'Sample Post', 'all-in-one-seo-pack' ) : $title;
-			case 'parent_title':
-				if ( ! is_object( $post ) || ! $post->post_parent ) {
-					return ! is_object( $post ) && $sampleData ? __( 'Sample Parent', 'all-in-one-seo-pack' ) : '';
-				}
-				$parent = get_post( $post->post_parent );
-
-				return $parent ? $parent->post_title : '';
-			case 'current_date':
-				return $this->formatDateAsI18n( date_i18n( 'U' ) );
-			case 'current_day':
-				return date_i18n( 'd' );
-			case 'current_year':
-				return date_i18n( 'Y' );
-			case 'current_month':
-				return date_i18n( 'F' );
 			case 'archive_date':
 				$date = null;
 				if ( is_year() ) {
@@ -895,47 +962,44 @@ class Tags {
 				if ( ! empty( $date ) ) {
 					return $date;
 				}
-			case 'post_date':
-				$date = $this->formatDateAsI18n( get_the_date( 'U' ) );
 
-				return empty( $date ) && $sampleData ? $this->formatDateAsI18n( date_i18n( 'U' ) ) : $date;
-			case 'post_day':
-				$day = get_the_date( 'd', $post );
+				break;
+			case 'archive_title':
+				$title = is_post_type_archive() ? post_type_archive_title( '', false ) : get_the_archive_title();
 
-				return empty( $day ) && $sampleData ? date_i18n( 'd' ) : $day;
-			case 'post_year':
-				$year = get_the_date( 'Y', $post );
+				return $sampleData ? __( 'Sample Archive Title', 'all-in-one-seo-pack' ) : wp_strip_all_tags( $title );
+			case 'author_bio':
+				$bio = get_the_author_meta( 'description', $author->ID );
 
-				return empty( $year ) && $sampleData ? date_i18n( 'Y' ) : $year;
-			case 'post_month':
-				$month = get_the_date( 'F', $post );
+				return empty( $bio ) && $sampleData ? __( 'Sample author biography', 'all-in-one-seo-pack' ) : $bio;
+			case 'author_first_name':
+				$name = $author->first_name;
 
-				return empty( $month ) && $sampleData ? date_i18n( 'F' ) : $month;
-			case 'post_excerpt_only':
-				return empty( $postId ) ? ( $sampleData ? __( 'Sample excerpt from a page/post.', 'all-in-one-seo-pack' ) : '' ) : $post->post_excerpt;
-			case 'post_excerpt':
-				if ( empty( $postId ) ) {
-					return $sampleData ? __( 'Sample excerpt from a page/post.', 'all-in-one-seo-pack' ) : '';
-				}
+				return empty( $name ) && $sampleData ? wp_get_current_user()->first_name : $author->first_name;
+			case 'author_last_name':
+				$name = $author->last_name;
 
-				if ( $post->post_excerpt ) {
-					return $post->post_excerpt;
-				}
+				return empty( $name ) && $sampleData ? wp_get_current_user()->last_name : $author->last_name;
+			case 'author_link':
+				return '<a href="' . esc_url( get_author_posts_url( $author->ID ) ) . '">' . esc_html( $author->display_name ) . '</a>';
+			case 'author_link_alt':
+				return '<a href="' . esc_url( get_author_posts_url( $author->ID ) ) . '">' . esc_url( get_author_posts_url( $author->ID ) ) . '</a>';
+			case 'author_name':
+				$name = $author->display_name;
 
-				// Fall through if the post doesn't have an excerpt set. In that case getDescriptionFromContent() will generate it for us.
-			case 'post_content':
-				return empty( $postId ) ? ( $sampleData ? __( 'An example of content from your page/post.', 'all-in-one-seo-pack' ) : '' ) : aioseo()->helpers->getDescriptionFromContent( $post );
-			case 'category':
-			case 'taxonomy_title':
-				$title = $this->getTaxonomyTitle( $postId );
+				return empty( $name ) && $sampleData ? wp_get_current_user()->display_name : $author->display_name;
+			case 'author_url':
+				$authorUrl = get_author_posts_url( $author->ID );
 
-				return $sampleData ? __( 'Sample Taxonomy Title', 'all-in-one-seo-pack' ) : $title;
-			case 'tax_parent_name':
-				$termObject       = get_term( $id );
-				$parentTermObject = ! empty( $termObject->parent ) ? get_term( $termObject->parent ) : '';
-				$name             = is_a( $parentTermObject, 'WP_Term' ) && ! empty( $parentTermObject->name ) ? $parentTermObject->name : '';
+				return ! empty( $authorUrl ) ? $authorUrl : '';
+			case 'attachment_caption':
+				$caption = wp_get_attachment_caption( $postId );
 
-				return $sampleData ? __( 'Sample Parent Term Name', 'all-in-one-seo-pack' ) : $name;
+				return empty( $caption ) && $sampleData ? __( 'Sample caption for media.', 'all-in-one-seo-pack' ) : $caption;
+			case 'attachment_description':
+				$description = ! empty( $post->post_content ) ? $post->post_content : '';
+
+				return empty( $description ) && $sampleData ? __( 'Sample description for media.', 'all-in-one-seo-pack' ) : $description;
 			case 'categories':
 				if ( ! is_object( $post ) || 'post' !== $post->post_type ) {
 					return ! is_object( $post ) && $sampleData ? __( 'Sample Category 1, Sample Category 2', 'all-in-one-seo-pack' ) : '';
@@ -952,61 +1016,134 @@ class Tags {
 				}
 
 				return implode( ', ', $names );
-			case 'taxonomy_description':
-				$description = term_description();
-
-				return empty( $description ) && $sampleData ? __( 'Sample taxonomy description', 'all-in-one-seo-pack' ) : $description;
 			case 'category_link':
 				return '<a href="' . esc_url( get_category_link( $category ) ) . '">' . ( $category ? $category[0]->name : '' ) . '</a>';
 			case 'category_link_alt':
 				return '<a href="' . esc_url( get_category_link( $category ) ) . '">' . esc_url( get_category_link( $category ) ) . '</a>';
-			case 'tag':
-				return single_term_title( '', false );
-			case 'site_title':
-			case 'blog_title':
-				return aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'name' ) );
-			case 'site_description':
-			case 'blog_description':
-			case 'tagline':
-				return aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'description' ) );
-			case 'archive_title':
-				$title = is_post_type_archive() ? post_type_archive_title( '', false ) : get_the_archive_title();
+			case 'current_date':
+				return $this->formatDateAsI18n( date_i18n( 'U' ) );
+			case 'current_day':
+				return date_i18n( 'd' );
+			case 'current_month':
+				return date_i18n( 'F' );
+			case 'current_year':
+				return date_i18n( 'Y' );
+			case 'custom_field':
+				return $sampleData ? __( 'Sample Custom Field Value', 'all-in-one-seo-pack' ) : '';
+			case 'featured_image':
+				if ( ! has_post_thumbnail( $postId ) ) {
+					return $sampleData ? __( 'Sample featured image', 'all-in-one-seo-pack' ) : '';
+				}
 
-				return $sampleData ? __( 'Sample Archive Title', 'all-in-one-seo-pack' ) : wp_strip_all_tags( $title );
-			case 'author_link':
-				return '<a href="' . esc_url( get_author_posts_url( $author->ID ) ) . '">' . esc_html( $author->display_name ) . '</a>';
-			case 'author_link_alt':
-				return '<a href="' . esc_url( get_author_posts_url( $author->ID ) ) . '">' . esc_url( get_author_posts_url( $author->ID ) ) . '</a>';
-			case 'author_bio':
-				$bio = get_the_author_meta( 'description', $author->ID );
+				$imageId = get_post_thumbnail_id( $postId );
+				$image   = (array) wp_get_attachment_image_src( $imageId, 'full' );
+				$image   = isset( $image[0] ) ? '<img src="' . $image[0] . '" style="display: block; margin: 1em auto">' : ''; // phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
 
-				return empty( $bio ) && $sampleData ? __( 'Sample author biography', 'all-in-one-seo-pack' ) : $bio;
-			case 'author_name':
-				$name = $author->display_name;
+				return $sampleData ? __( 'Sample featured image', 'all-in-one-seo-pack' ) : $image;
+			case 'page_number':
+				return aioseo()->helpers->getPageNumber();
+			case 'parent_title':
+				if ( ! is_object( $post ) || ! $post->post_parent ) {
+					return ! is_object( $post ) && $sampleData ? __( 'Sample Parent', 'all-in-one-seo-pack' ) : '';
+				}
+				$parent = get_post( $post->post_parent );
 
-				return empty( $name ) && $sampleData ? wp_get_current_user()->display_name : $author->display_name;
-			case 'author_first_name':
-				$name = $author->first_name;
+				return $parent ? $parent->post_title : '';
+			case 'permalink':
+				return aioseo()->helpers->getUrl();
+			case 'post_date':
+				$date = $this->formatDateAsI18n( get_the_date( 'U' ) );
 
-				return empty( $name ) && $sampleData ? wp_get_current_user()->first_name : $author->first_name;
-			case 'author_last_name':
-				$name = $author->last_name;
+				return empty( $date ) && $sampleData ? $this->formatDateAsI18n( date_i18n( 'U' ) ) : $date;
+			case 'post_day':
+				$day = get_the_date( 'd', $post );
 
-				return empty( $name ) && $sampleData ? wp_get_current_user()->last_name : $author->last_name;
-			case 'author_url':
-				$authorUrl = get_author_posts_url( $author->ID );
+				return empty( $day ) && $sampleData ? date_i18n( 'd' ) : $day;
+			case 'post_excerpt_only':
+				return empty( $postId ) ? ( $sampleData ? __( 'Sample excerpt from a page/post.', 'all-in-one-seo-pack' ) : '' ) : $post->post_excerpt;
+			case 'post_excerpt':
+				if ( empty( $postId ) ) {
+					return $sampleData ? __( 'Sample excerpt from a page/post.', 'all-in-one-seo-pack' ) : '';
+				}
 
-				return ! empty( $authorUrl ) ? $authorUrl : '';
-			case 'separator_sa':
-				return aioseo()->helpers->decodeHtmlEntities( aioseo()->options->searchAppearance->global->separator );
+				if ( $post->post_excerpt ) {
+					return $post->post_excerpt;
+				}
+
+				// Fall through if the post doesn't have an excerpt set. In that case getDescriptionFromContent() will generate it for us.
+			case 'post_content':
+				return empty( $postId ) ? ( $sampleData ? __( 'An example of content from your page/post.', 'all-in-one-seo-pack' ) : '' ) : aioseo()->helpers->getDescriptionFromContent( $post );
+			case 'post_link':
+				return '<a href="' . esc_url( get_permalink( $post ) ) . '">' . esc_html( get_the_title( $post ) ) . '</a>';
+			case 'post_link_alt':
+				return '<a href="' . esc_url( get_permalink( $post ) ) . '">' . esc_url( get_permalink( $post ) ) . '</a>';
+			case 'post_month':
+				$month = get_the_date( 'F', $post );
+
+				return empty( $month ) && $sampleData ? date_i18n( 'F' ) : $month;
+			case 'post_title':
+				$title = esc_html( get_the_title( $post ) );
+
+				return empty( $title ) && $sampleData ? __( 'Sample Post', 'all-in-one-seo-pack' ) : $title;
+			case 'post_year':
+				$year = get_the_date( 'Y', $post );
+
+				return empty( $year ) && $sampleData ? date_i18n( 'Y' ) : $year;
 			case 'search_term':
 				$search = get_search_query();
 
 				return empty( $search ) && $sampleData ? __( 'Example search string', 'all-in-one-seo-pack' ) : esc_attr( stripslashes( $search ) );
-			case 'custom_field':
-				return $sampleData ? __( 'Sample Custom Field Value', 'all-in-one-seo-pack' ) : '';
+			case 'separator_sa':
+				return aioseo()->helpers->decodeHtmlEntities( aioseo()->options->searchAppearance->global->separator );
+			case 'site_link':
+			case 'blog_link':
+				return '<a href="' . esc_url( get_bloginfo( 'url' ) ) . '">' . esc_html( get_bloginfo( 'name' ) ) . '</a>';
+			case 'site_link_alt':
+				return '<a href="' . esc_url( get_bloginfo( 'url' ) ) . '">' . esc_url( get_bloginfo( 'url' ) ) . '</a>';
+			case 'tag':
+				return single_term_title( '', false );
 			case 'tax_name':
 				return $sampleData ? __( 'Sample Taxonomy Name Value', 'all-in-one-seo-pack' ) : '';
+			case 'tax_parent_name':
+				$termObject       = get_term( $id ); // Don't use the getTerm() helper here. We need the actual Product Attribute tax.
+				$parentTermObject = ! empty( $termObject->parent ) ? aioseo()->helpers->getTerm( $termObject->parent ) : '';
+				$name             = $parentTermObject->name ?? '';
+
+				if (
+					is_a( $termObject, 'WP_Term' ) &&
+					empty( $parentTermObject ) &&
+					aioseo()->helpers->isWooCommerceProductAttribute( $termObject->taxonomy )
+				) {
+					$wcAttributeTaxonomiesTable = aioseo()->core->db->prefix . 'woocommerce_attribute_taxonomies';
+					$attributeName              = str_replace( 'pa_', '', $termObject->taxonomy );
+
+					$result = aioseo()->core->db->db->get_row(
+						aioseo()->core->db->db->prepare(
+							"SELECT attribute_label FROM $wcAttributeTaxonomiesTable WHERE attribute_name = %s",
+							$attributeName
+						)
+					);
+
+					return $result->attribute_label ?? '';
+				}
+
+				return $sampleData ? __( 'Sample Parent Term Name', 'all-in-one-seo-pack' ) : $name;
+			case 'taxonomy_description':
+				$description = term_description();
+
+				return empty( $description ) && $sampleData ? __( 'Sample taxonomy description', 'all-in-one-seo-pack' ) : $description;
+			case 'taxonomy_title':
+			case 'category':
+				$title = $this->getTaxonomyTitle( $postId );
+
+				return ! $title && $sampleData ? __( 'Sample Taxonomy Title', 'all-in-one-seo-pack' ) : $title;
+			case 'site_description':
+			case 'blog_description':
+			case 'tagline':
+				return aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'description' ) );
+			case 'site_title':
+			case 'blog_title':
+				return aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'name' ) );
 			default:
 				return '';
 		}
@@ -1021,8 +1158,12 @@ class Tags {
 	 * @return string          The category title.
 	 */
 	private function getTaxonomyTitle( $postId = null ) {
-		$title = '';
-		if ( aioseo()->helpers->isWooCommerceActive() && is_product_category() ) {
+		$isWcActive = aioseo()->helpers->isWooCommerceActive();
+		$title      = '';
+
+		// First try to get the title from various WordPress archive/taxonomy pages
+		// This handles cases where we're not on a singular post/page
+		if ( $isWcActive && is_product_category() ) {
 			$title = single_cat_title( '', false );
 		} elseif ( is_category() ) {
 			$title = single_cat_title( '', false );
@@ -1038,33 +1179,37 @@ class Tags {
 			$title = get_the_archive_title();
 		}
 
-		if ( $postId ) {
-			$post           = aioseo()->helpers->getPost( $postId );
+		// If we still don't have a title and we have a post ID,
+		// try to get the title from the post's primary term or first hierarchical taxonomy term
+		if ( ! $title && $postId ) {
+			$currentScreen = aioseo()->helpers->getCurrentScreen();
+			$isProduct     = $isWcActive && ( is_product() || 'product' === ( $currentScreen->post_type ?? '' ) );
+			$post          = aioseo()->helpers->getPost( $postId );
+
+			// Get all taxonomies for this post type
 			$postTaxonomies = get_object_taxonomies( $post, 'objects' );
 			$postTerms      = [];
+
 			foreach ( $postTaxonomies as $taxonomySlug => $taxonomy ) {
 				if ( ! $taxonomy->hierarchical ) {
 					continue;
 				}
 
-				$primaryTerm = aioseo()->standalone->primaryTerm->getPrimaryTerm( $postId, $taxonomySlug );
+				$taxonomySlug = $isProduct ? 'product_cat' : $taxonomySlug;
+				$primaryTerm  = aioseo()->standalone->primaryTerm->getPrimaryTerm( $postId, $taxonomySlug );
 				if ( $primaryTerm ) {
-					$postTerms[] = get_term( $primaryTerm, $taxonomySlug );
-					continue;
+					$postTerms[] = aioseo()->helpers->getTerm( $primaryTerm, $taxonomySlug );
+					break;
 				}
 
 				$postTaxonomyTerms = get_the_terms( $postId, $taxonomySlug );
 				if ( is_array( $postTaxonomyTerms ) ) {
 					$postTerms = array_merge( $postTerms, $postTaxonomyTerms );
+					break;
 				}
 			}
 
 			$title = $postTerms ? $postTerms[0]->name : '';
-
-			if ( aioseo()->helpers->isWooCommerceActive() && is_product() ) {
-				$terms = get_the_terms( $postId, 'product_cat' );
-				$title = $terms ? $terms[0]->name : '';
-			}
 		}
 
 		return wp_strip_all_tags( (string) $title );
@@ -1111,7 +1256,7 @@ class Tags {
 		$string  = preg_replace_callback( $pattern, [ $this, 'replaceTaxonomyName' ], $string );
 		$pattern = '/' . $this->denotationChar . 'tax_name(?![a-zA-Z0-9_-])/im';
 
-		return preg_replace( $pattern, '', $string );
+		return preg_replace( $pattern, '', (string) $string );
 	}
 
 	/**
@@ -1121,14 +1266,18 @@ class Tags {
 	 * @since 4.0.0
 	 *
 	 * @param  string $string The string to parse customs fields out of.
-	 * @return mixed          The new title.
+	 * @param  int    $postId The page or post ID.
+	 * @return string         The new title.
 	 */
-	public function parseCustomFields( $string ) {
+	public function parseCustomFields( $string, $postId = 0 ) {
 		$pattern = '/' . $this->denotationChar . 'custom_field-([a-zA-Z0-9_-]+)/im';
-		$string  = preg_replace_callback( $pattern, [ $this, 'replaceCustomField' ], $string );
+		$matches = [];
+		preg_match_all( $pattern, (string) $string, $matches, PREG_SET_ORDER );
+
+		$string  = $this->replaceCustomField( $string, $matches, $postId );
 		$pattern = '/' . $this->denotationChar . 'custom_field(?![a-zA-Z0-9_-])/im';
 
-		return preg_replace( $pattern, '', $string );
+		return preg_replace( $pattern, '', (string) $string );
 	}
 
 	/**
@@ -1193,29 +1342,44 @@ class Tags {
 	 *
 	 * @since 4.0.0
 	 *
+	 * @param  string      $string  The string to parse customs fields out of.
 	 * @param  array       $matches Array of matched values.
+	 * @param  int         $postId  The page or post ID.
 	 * @return bool|string          New title/text.
 	 */
-	private function replaceCustomField( $matches ) {
-		$result = '';
-		if ( ! empty( $matches ) ) {
-			if ( ! empty( $matches[1] ) ) {
+	private function replaceCustomField( $string, $matches, $postId ) {
+		if ( empty( $matches ) ) {
+			return $string;
+		}
+
+		$postId = get_queried_object() ?? $postId;
+
+		foreach ( $matches as $match ) {
+			$value = '';
+			if ( ! empty( $match[1] ) ) {
 				if ( function_exists( 'get_field' ) ) {
-					$result = get_field( $matches[1], get_queried_object() );
-				}
-				if ( empty( $result ) ) {
-					global $post;
-					if ( ! empty( $post ) ) {
-						$result = get_post_meta( $post->ID, $matches[1], true );
+					$value = get_field( $match[1], $postId );
+					if ( ! empty( $value['url'] ) && ! empty( $value['title'] ) ) {
+						$value = "<a href='{$value['url']}'>{$value['title']}</a>";
+					}
+					if ( empty( $value ) ) {
+						$value = aioseo()->helpers->getAcfFlexibleContentField( $match[1], $postId );
 					}
 				}
-			} else {
-				$result = $matches[0];
-			}
-		}
-		$result = wp_strip_all_tags( $result );
 
-		return '%|%' . $result;
+				if ( empty( $value ) ) {
+					global $post;
+					if ( ! empty( $post ) ) {
+						$value = get_post_meta( $post->ID, $match[1], true );
+					}
+				}
+			}
+
+			$value  = is_scalar( $value ) ? wp_strip_all_tags( $value ) : '';
+			$string = str_replace( $match[0], '%|%' . $value, $string );
+		}
+
+		return $string;
 	}
 
 	/**

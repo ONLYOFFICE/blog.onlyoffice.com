@@ -40,10 +40,8 @@ class HeadlineAnalyzer {
 	 * @return void
 	 */
 	public function enqueue() {
-		global $wp_version;
 		if (
 			! aioseo()->helpers->isScreenBase( 'post' ) ||
-			version_compare( $wp_version, '5.2', '<' ) ||
 			! aioseo()->access->hasCapability( 'aioseo_page_analysis' )
 		) {
 			return;
@@ -57,9 +55,9 @@ class HeadlineAnalyzer {
 		if ( ! aioseo()->core->fs->exists( AIOSEO_DIR . $path ) ) {
 			return;
 		}
-		require AIOSEO_DIR . $path;
+		require_once AIOSEO_DIR . $path;
 
-		aioseo()->core->assets->load( 'src/react/headline-analyzer/main.js' );
+		aioseo()->core->assets->load( 'src/vue/standalone/headline-analyzer/main.js' );
 	}
 
 	/**
@@ -71,11 +69,7 @@ class HeadlineAnalyzer {
 	 * @return array         The result.
 	 */
 	public function getResult( $title ) {
-		$result = $this->getHeadlineScore( $title );
-
-		if ( ! empty( $result->err ) ) {
-			return false;
-		}
+		$result = $this->getHeadlineScore( aioseo()->helpers->decodeHtmlEntities( $title ) );
 
 		return [
 			'result'   => $result,
@@ -98,8 +92,8 @@ class HeadlineAnalyzer {
 		$result->originalExplodedHeadline = explode( ' ', wp_unslash( $title ) );
 
 		// Strip useless characters and whitespace.
-		$title = preg_replace( '/[^A-Za-z0-9 ]/', '', $title );
-		$title = preg_replace( '!\s+!', ' ', $title );
+		$title = preg_replace( '/[^A-Za-z0-9 ]/', '', (string) $title );
+		$title = preg_replace( '!\s+!', ' ', (string) $title );
 		$title = strtolower( $title );
 
 		$result->input = $title;
@@ -195,13 +189,13 @@ class HeadlineAnalyzer {
 		}
 
 		$listWords = array_intersect( $explodedHeadline, $this->numericalIndicators() );
-		if ( preg_match( '~[0-9]+~', $title ) || ! empty( $listWords ) ) {
+		if ( preg_match( '~[0-9]+~', (string) $title ) || ! empty( $listWords ) ) {
 			$headlineTypes[] = __( 'List', 'all-in-one-seo-pack' );
 			$totalScore      = $totalScore + 7;
 		}
 
 		if ( in_array( $explodedHeadline[0], $this->primaryQuestionIndicators(), true ) ) {
-			if ( in_array( $explodedHeadline[1], $this->secondaryQuestionIndicators(), true ) ) {
+			if ( isset( $explodedHeadline[1] ) && in_array( $explodedHeadline[1], $this->secondaryQuestionIndicators(), true ) ) {
 				$headlineTypes[] = __( 'Question', 'all-in-one-seo-pack' );
 				$totalScore      = $totalScore + 7;
 			}
@@ -223,14 +217,15 @@ class HeadlineAnalyzer {
 	*
 	* @since 4.1.2
 	*
-	* @param  string $sentence         The headline.
+	* @param  string $headline         The headline.
 	* @param  array  $explodedHeadline The exploded headline.
+	* @param  array  $words            The words to match.
 	* @return array                    The matches that were found.
 	*/
 	public function matchWords( $headline, $explodedHeadline, $words ) {
 		$foundMatches = [];
 		foreach ( $words as $word ) {
-			$strippedWord = preg_replace( '/[^A-Za-z0-9 ]/', '', $word );
+			$strippedWord = preg_replace( '/[^A-Za-z0-9 ]/', '', (string) $word );
 
 			// Check if word is a phrase.
 			if ( strpos( $word, ' ' ) !== false ) {

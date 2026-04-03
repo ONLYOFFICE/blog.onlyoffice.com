@@ -18,7 +18,17 @@ class Select extends BaseComponent
     public function compile($data, $form)
     {
         $elementName = $data['element'];
-        $data = apply_filters('fluentform_rendering_field_data_' . $elementName, $data, $form);
+        $data = apply_filters_deprecated(
+            'fluentform_rendering_field_data_' . $elementName,
+            [
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_data_' . $elementName,
+            'Use fluentform/rendering_field_data_' . $elementName . ' instead of fluentform_rendering_field_data_' . $elementName
+        );
+        $data = apply_filters('fluentform/rendering_field_data_' . $elementName, $data, $form);
 
         $data['attributes']['id'] = $this->makeElementId($data, $form);
 
@@ -65,11 +75,25 @@ class Select extends BaseComponent
             $ariaRequired = 'true';
         }
 
-        $elMarkup = '<select ' . $atts . ' aria-invalid="false" aria-required=' . $ariaRequired . '>' . $options . '</select>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts, $options are escaped before being passed in.
+        $ariaLabelledBy = 'label_' . ArrayHelper::get($data, 'attributes.id');
+
+        $elMarkup = '<select ' . $atts . ' aria-invalid="false" aria-required="' . $ariaRequired . '" aria-labelledby="' . $ariaLabelledBy .'"'.'>' . $options . '</select>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts, $options are escaped before being passed in.
 
         $html = $this->buildElementMarkup($elMarkup, $data, $form);
 
-        $this->printContent('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
+        $html = apply_filters_deprecated(
+            'fluentform_rendering_field_html_' . $elementName,
+            [
+                $html,
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_html_' . $elementName,
+            'Use fluentform/rendering_field_html_' . $elementName . ' instead of fluentform_rendering_field_html_' . $elementName
+        );
+
+        $this->printContent('fluentform/rendering_field_html_' . $elementName, $html, $data, $form);
     }
 
     /**
@@ -103,21 +127,21 @@ class Select extends BaseComponent
         } elseif (! empty($data['attributes']['placeholder'])) {
             $opts .= '<option value="">' . wp_strip_all_tags($data['attributes']['placeholder']) . '</option>';
         }
-
         foreach ($formattedOptions as $option) {
             if (in_array($option['value'], $defaultValues)) {
                 $selected = 'selected';
             } else {
                 $selected = '';
             }
-
+    
             $atts = [
                 'data-calc_value'        => ArrayHelper::get($option, 'calc_value'),
                 'data-custom-properties' => ArrayHelper::get($option, 'calc_value'),
                 'value'                  => ArrayHelper::get($option, 'value'),
+                'disabled'               => ArrayHelper::get($option, 'disabled') ? 'disabled' : ''
             ];
-
-            $opts .= '<option ' . $this->buildAttributes($atts) . " {$selected}>" . wp_strip_all_tags($option['label']) . '</option>';
+            
+            $opts .= '<option '. $this->buildAttributes($atts) . " {$selected}>" . wp_strip_all_tags($option['label']) . '</option>';
         }
 
         return $opts;

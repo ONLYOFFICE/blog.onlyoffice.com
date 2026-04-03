@@ -1,5 +1,5 @@
 /*
- * (c) Copyright Ascensio System SIA 2022
+ * (c) Copyright Ascensio System SIA 2024
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,11 +16,47 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+import { RawHTML } from '@wordpress/element';
+
 const Save = ( { attributes } ) => {
-    return (
-        <div style={{height: '650px', maxWidth: 'inherit', padding: '20px'}}>
-            { attributes.url && <iframe width="100%" height="100%" src={ attributes.url }/>}
-         </div>
-    );
+    if ( !attributes.id ) {
+        return '';
+    }
+
+    let parameters = '';
+
+    if ( attributes.hasOwnProperty('id')) {
+        parameters += 'id=' + attributes.id + ' ';
+    }
+
+    if ( attributes.hasOwnProperty('documentView') && attributes.documentView.length > 0 ) {
+        parameters += 'documentView=' + attributes.documentView + ' ';
+    }
+
+    if ( attributes.hasOwnProperty('inNewTab')) {
+        parameters += 'inNewTab=' + attributes.inNewTab + ' ';
+    }
+
+    if ( attributes.hasOwnProperty('align') && attributes.align.length > 0 ) {
+        parameters += 'align=' + attributes.align + ' ';
+    }
+
+    if ( attributes.hasOwnProperty('width') && attributes.width.length > 0 ) {
+        parameters += 'width=' + attributes.width + ' ';
+    }
+
+    if ( attributes.hasOwnProperty('height') && attributes.height.length > 0 ) {
+        parameters += 'height=' + attributes.height + ' ';
+    }
+
+    if ( attributes.hasOwnProperty('showOpenButton') ) {
+        parameters += 'showOpenButton=' + attributes.showOpenButton + ' ';
+    }
+
+    if ( attributes.hasOwnProperty('openButtonText') && attributes.openButtonText.length > 0 ) {
+        parameters += 'openButtonText=' + attributes.openButtonText + ' ';
+    }
+
+    return <RawHTML>{ `[onlyoffice ${ parameters } /]` }</RawHTML>;
 };
 export default Save;

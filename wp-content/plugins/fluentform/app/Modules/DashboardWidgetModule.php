@@ -2,36 +2,64 @@
 
 namespace FluentForm\App\Modules;
 
+defined('ABSPATH') or die;
+
+use FluentForm\App\Helpers\Helper;
+use FluentForm\App\Models\Submission;
+
 class DashboardWidgetModule
 {
+    /**
+     * Constructor - automatically registers cache invalidation hooks
+     */
+    public function __construct()
+    {
+        $app = \FluentForm\Framework\Foundation\App::getInstance();
+
+        // Clear dashboard widget cache when a new submission is created or status changes
+        $app->addAction('fluentform/submission_inserted', function () {
+            delete_transient('fluentform_dashboard_stats_v1');
+        });
+
+        $app->addAction('fluentform/before_submission_status_change', function () {
+            delete_transient('fluentform_dashboard_stats_v1');
+        });
+    }
+
     public function showStat()
     {
-        global $wpdb;
-        $stats = wpFluent()->table('fluentform_submissions')
-            ->select([
+        // Check cache first to avoid expensive query on every dashboard load
+        $cacheKey = 'fluentform_dashboard_stats_v1';
+        $stats = get_transient($cacheKey);
+
+        if (false === $stats) {
+            global $wpdb;
+
+            $stats = Submission::select([
                 'fluentform_forms.title',
                 'fluentform_submissions.form_id',
-                wpFluent()->raw('count(' . $wpdb->prefix . 'fluentform_submissions.id) as total'),
-                wpFluent()->raw('max(' . $wpdb->prefix . 'fluentform_submissions.id) as max_id'),
+                wpFluent()->raw('COUNT(' . $wpdb->prefix . 'fluentform_submissions.id) as total'),
+                wpFluent()->raw('MAX(' . $wpdb->prefix . 'fluentform_submissions.id) as max_id'),
+                wpFluent()->raw("SUM(CASE WHEN {$wpdb->prefix}fluentform_submissions.status = 'unread' THEN 1 ELSE 0 END) as unread_count"),
             ])
-            ->orderBy('max_id', 'DESC')
-            ->groupBy('fluentform_submissions.form_id')
-            ->join('fluentform_forms', 'fluentform_forms.id', '=', 'fluentform_submissions.form_id')
-            ->limit(10)
-            ->get();
+                   ->join('fluentform_forms', 'fluentform_forms.id', '=', 'fluentform_submissions.form_id')
+                   ->groupBy('fluentform_submissions.form_id')
+                   ->orderBy('max_id', 'DESC')
+                   ->limit(10)
+                   ->get();
 
-        if (!$stats) {
+            // Cache for 5 minutes to reduce database load
+            set_transient($cacheKey, $stats, 10 * MINUTE_IN_SECONDS);
+        }
+
+        if (!$stats || count($stats) === 0) {
             echo 'You can see your submission stats here';
             return;
         }
 
-        foreach ($stats as $stat) {
-            $stat->unreadCount = $this->getUnreadCount($stat->form_id);
-        }
-
         $this->printStats($stats);
-        return;
     }
+
 
     private function printStats($stats)
     {
@@ -42,7 +70,7 @@ class DashboardWidgetModule
                 <a
                     href="<?php echo esc_url(admin_url('admin.php?page=fluent_forms&route=entries&form_id=' . $stat->form_id)); ?>">
                     <?php echo esc_html($stat->title); ?>
-                    <span class="ff_total"><?php echo esc_attr($stat->unreadCount); ?>/<?php echo esc_attr($stat->total); ?></span>
+                    <span class="ff_total"><?php echo esc_attr($stat->unread_count); ?>/<?php echo esc_attr($stat->total); ?></span>
                 </a>
             </li>
             <?php endforeach; ?>
@@ -111,13 +139,5 @@ class DashboardWidgetModule
             self_admin_url('update.php?action=install-plugin&plugin=' . $plugin),
             'install-plugin_' . $plugin
         );
-    }
-
-    private function getUnreadCount($formId)
-    {
-        return wpFluent()->table('fluentform_submissions')
-            ->where('status', 'unread')
-            ->where('form_id', $formId)
-            ->count();
     }
 }

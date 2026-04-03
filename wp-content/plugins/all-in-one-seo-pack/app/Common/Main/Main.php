@@ -51,13 +51,13 @@ class Main {
 	public function enqueueFrontEndAssets() {
 		$canManageSeo = apply_filters( 'aioseo_manage_seo', 'aioseo_manage_seo' );
 		if (
-			! is_admin_bar_showing() ||
+			! aioseo()->helpers->isAdminBarEnabled() ||
 			! ( current_user_can( $canManageSeo ) || aioseo()->access->canManage() )
 		) {
 			return;
 		}
 
-		aioseo()->core->assets->enqueueCss( 'src/vue/assets/scss/app/admin-bar.scss', [], 'src/vue/assets/scss/app/admin-bar.scss' );
+		aioseo()->core->assets->enqueueCss( 'src/vue/assets/scss/app/admin-bar.scss' );
 	}
 
 	/**

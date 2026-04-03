@@ -195,10 +195,10 @@ trait Options {
 			if ( $preserveHtml ) {
 				if ( is_array( $defaults[ $name ]['value'] ) ) {
 					foreach ( $defaults[ $name ]['value'] as $k => $v ) {
-						$defaults[ $name ]['value'][ $k ] = html_entity_decode( $v, ENT_NOQUOTES );
+						$defaults[ $name ]['value'][ $k ] = aioseo()->helpers->decodeHtmlEntities( $v );
 					}
 				} else {
-					$defaults[ $name ]['value'] = html_entity_decode( $defaults[ $name ]['value'], ENT_NOQUOTES );
+					$defaults[ $name ]['value'] = aioseo()->helpers->decodeHtmlEntities( $defaults[ $name ]['value'] );
 				}
 			}
 			$value = $defaults[ $name ]['value'];
@@ -516,6 +516,10 @@ trait Options {
 	 * @return array           The modified values.
 	 */
 	protected function resetValues( $values, $defaults, $keys = [], $include = [], $exclude = [] ) {
+		if ( ! is_array( $values ) ) {
+			return $values;
+		}
+
 		$values = $this->allFiltered( $values, $include, $exclude );
 		foreach ( $values as $key => $value ) {
 			$option = $this->isAnOption( $key, $defaults, $keys );
@@ -526,10 +530,31 @@ trait Options {
 
 			$keys[]         = $key;
 			$values[ $key ] = $this->resetValues( $value, $defaults, $keys );
+
+			if ( 'llms' === $key ) {
+				$this->handleLlmsReset();
+			}
+
 			array_pop( $keys );
 		}
 
 		return $values;
+	}
+
+	/**
+	 * Handles LLMS reset operations.
+	 *
+	 * @since 4.8.8
+	 *
+	 * @return void
+	 */
+	protected function handleLlmsReset() {
+		// Add LLMS cleanup when doing a full reset
+		aioseo()->actionScheduler->unschedule( aioseo()->llms->llmsTxtSingleAction );
+		aioseo()->actionScheduler->unschedule( aioseo()->llms->llmsTxtRecurrentAction );
+
+		// Regenerate the LLMS files after reset
+		aioseo()->llms->generateLlmsTxt();
 	}
 
 	/**
@@ -787,6 +812,11 @@ trait Options {
 			case 'array':
 				$array = [];
 				foreach ( (array) $value as $k => $v ) {
+					if ( is_array( $v ) ) {
+						$array[ $k ] = $this->sanitizeField( $v, 'array' );
+						continue;
+					}
+
 					$array[ $k ] = sanitize_text_field( $preserveHtml ? htmlspecialchars( $v, ENT_NOQUOTES, 'UTF-8' ) : $v );
 				}
 
@@ -832,7 +862,7 @@ trait Options {
 	 * @param  string  $name      The name of the option to set.
 	 * @param  array   $arguments Any arguments needed if this was a method called.
 	 * @param  mixed   $value     The value if we are setting an option.
-	 * @return Options            The options object.
+	 * @return object             The options object.
 	 */
 	private function setSubGroup( $name, $arguments = null, $value = null ) {
 		if ( ! is_null( $arguments ) ) {
@@ -1038,8 +1068,8 @@ trait Options {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  bool    $reInitialize Whether or not to reinitialize on the clone.
-	 * @return Options               The cloned Options object.
+	 * @param  bool   $reInitialize Whether to reinitialize on the clone.
+	 * @return object               The cloned Options object.
 	 */
 	public function noConflict( $reInitialize = false ) {
 		$class          = clone $this;

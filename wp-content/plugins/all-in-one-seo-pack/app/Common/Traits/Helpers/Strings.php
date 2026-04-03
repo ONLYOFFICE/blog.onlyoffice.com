@@ -53,9 +53,9 @@ trait Strings {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string $string     The string to convert.
-	 * @param  bool   $capitalize Whether or not to capitalize the first letter.
-	 * @return string             The converted string.
+	 * @param  string $string                   The string to convert.
+	 * @param  bool   $capitalizeFirstCharacter Whether to capitalize the first letter.
+	 * @return string                           The converted string.
 	 */
 	public function dashesToCamelCase( $string, $capitalizeFirstCharacter = false ) {
 		$string = str_replace( ' ', '', ucwords( str_replace( '-', ' ', $string ) ) );
@@ -74,7 +74,7 @@ trait Strings {
 	 * @param  string  $string             The string.
 	 * @param  int     $maxCharacters      The max. amount of characters.
 	 * @param  boolean $shouldHaveEllipsis Whether the string should have a trailing ellipsis (defaults to true).
-	 * @return string  $string             The string.
+	 * @return string                      The string.
 	 */
 	public function truncate( $string, $maxCharacters, $shouldHaveEllipsis = true ) {
 		$length       = strlen( $string );
@@ -84,7 +84,7 @@ trait Strings {
 			if ( 65535 < $length ) {
 				$string = substr( $string, 0, 65534 );
 			}
-			$string = preg_replace( "#[^\pZ\pP]*.{{$excessLength}}$#", '', $string );
+			$string = preg_replace( "#[^\pZ\pP]*.{{$excessLength}}$#", '', (string) $string );
 			if ( $shouldHaveEllipsis ) {
 				$string = $string . ' ...';
 			}
@@ -107,7 +107,7 @@ trait Strings {
 		if ( isset( $escapeRegex[ $string ] ) ) {
 			return $escapeRegex[ $string ];
 		}
-		$escapeRegex[ $string ] = preg_quote( $string, $delimiter );
+		$escapeRegex[ $string ] = preg_quote( (string) $string, $delimiter );
 
 		return $escapeRegex[ $string ];
 	}
@@ -159,7 +159,7 @@ trait Strings {
 		// The caveat is that we'd need to first trim off slash delimiters and add them back later - otherwise they'd be escaped as well.
 
 		$replacement         = $this->escapeRegexReplacement( $replacement );
-		$pregReplace[ $key ] = preg_replace( $pattern, $replacement, $subject );
+		$pregReplace[ $key ] = preg_replace( $pattern, $replacement, (string) $subject );
 
 		return $pregReplace[ $key ];
 	}
@@ -251,24 +251,26 @@ trait Strings {
 	 * Strips punctuation from a given string.
 	 *
 	 * @since 4.0.0
+	 * @version 4.7.9 Added the $keepSpaces parameter.
 	 *
 	 * @param  string $string           The string.
 	 * @param  array  $charactersToKeep The characters that can't be stripped (optional).
+	 * @param  bool   $keepSpaces       Whether to keep spaces.
 	 * @return string                   The string without punctuation.
 	 */
-	public function stripPunctuation( $string, $charactersToKeep = [] ) {
+	public function stripPunctuation( $string, $charactersToKeep = [], $keepSpaces = false ) {
 		$characterRegexPattern = '';
 		if ( ! empty( $charactersToKeep ) ) {
 			$characterString       = implode( '', $charactersToKeep );
 			$characterRegexPattern = "(?![$characterString])";
 		}
 
-		$string = aioseo()->helpers->decodeHtmlEntities( $string );
+		$string = aioseo()->helpers->decodeHtmlEntities( (string) $string );
 		$string = preg_replace( "/{$characterRegexPattern}[\p{P}\d+]/u", '', $string );
 		$string = aioseo()->helpers->encodeOutputHtml( $string );
 
 		// Trim both internal and external whitespace.
-		return preg_replace( '/\s\s+/u', ' ', trim( $string ) );
+		return $keepSpaces ? $string : preg_replace( '/\s\s+/u', ' ', trim( $string ) );
 	}
 
 	/**
@@ -280,6 +282,10 @@ trait Strings {
 	 * @return string         The encoded string.
 	 */
 	public function encodeOutputHtml( $string ) {
+		if ( ! is_string( $string ) ) {
+			return '';
+		}
+
 		return htmlspecialchars( $string, ENT_COMPAT | ENT_HTML401, $this->getCharset(), false );
 	}
 
@@ -299,9 +305,35 @@ trait Strings {
 
 		// We must manually decode non-breaking spaces since html_entity_decode doesn't do this.
 		$string                        = $this->pregReplace( '/&nbsp;/', ' ', $string );
-		$decodeHtmlEntities[ $string ] = html_entity_decode( (string) $string, ENT_QUOTES );
+		$decodeHtmlEntities[ $string ] = html_entity_decode( (string) $string, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401 );
 
 		return $decodeHtmlEntities[ $string ];
+	}
+
+	/**
+	 * Recursively decode HTML entities until no more decoding is possible.
+	 *
+	 * @since 4.8.7
+	 *
+	 * @param  string $string        The string to decode.
+	 * @param  int    $maxIterations The maximum number of iterations.
+	 * @return string                The decoded string.
+	 */
+	public function decodeHtmlEntitiesRecursive( $string, $maxIterations = 10 ) {
+		if ( ! is_string( $string ) ) {
+			return '';
+		}
+
+		$decodedValue = $string;
+		$iterations   = 0;
+		do {
+			$previousValue = $decodedValue;
+			$decodedValue  = $this->decodeHtmlEntities( $decodedValue );
+
+			$iterations++;
+		} while ( $previousValue !== $decodedValue && $iterations < $maxIterations );
+
+		return $decodedValue;
 	}
 
 	/**
@@ -351,15 +383,15 @@ trait Strings {
 	 *
 	 * @since 4.1.0
 	 *
-	 * @param  string $tags The JSON formatted data tags.
-	 * @return string       The comma separated values.
+	 * @param  string|array $tags The Array or JSON formatted data tags.
+	 * @return string             The comma separated values.
 	 */
 	public function jsonTagsToCommaSeparatedList( $tags ) {
-		$tags = json_decode( $tags );
+		$tags = is_string( $tags ) ? json_decode( $tags ) : $tags;
 
 		$values = [];
 		foreach ( $tags as $k => $tag ) {
-			$values[ $k ] = $tag->value;
+			$values[ $k ] = is_object( $tag ) ? $tag->value : $tag['value'];
 		}
 
 		return implode( ',', $values );
@@ -471,11 +503,11 @@ trait Strings {
 	 */
 	public function isValidRegex( $pattern ) {
 		// Set a custom error handler to prevent throwing errors on a bad Regular Expression.
-		set_error_handler( function() {}, E_WARNING );
+		set_error_handler( function() {}, E_WARNING ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
 
 		$isValid = true;
 
-		if ( false === preg_match( $pattern, null ) ) {
+		if ( false === preg_match( $pattern, '' ) ) {
 			$isValid = false;
 		}
 
@@ -579,7 +611,7 @@ trait Strings {
 	 * @return string         The converted string.
 	 */
 	public function toSentenceCase( $string ) {
-		$phrases = preg_split( '/([.?!]+)/', $string, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
+		$phrases = preg_split( '/([.?!]+)/', (string) $string, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 
 		$convertedString = '';
 		foreach ( $phrases as $index => $sentence ) {
@@ -601,5 +633,97 @@ trait Strings {
 	 */
 	public function substring( $string, $startIndex, $length ) {
 		return function_exists( 'mb_substr' ) ? mb_substr( $string, $startIndex, $length, $this->getCharset() ) : substr( $string, $startIndex, $length );
+	}
+
+	/**
+	 * Strips emoji characters from a given string.
+	 *
+	 * @since 4.7.3
+	 *
+	 * @param  string $string The string.
+	 * @return string         The string without emoji characters.
+	 */
+	public function stripEmoji( $string ) {
+		// First, decode HTML entities to convert them to actual Unicode characters.
+		$string = $this->decodeHtmlEntities( $string );
+
+		// Pattern to match emoji characters.
+		$emojiPattern = '/[\x{1F600}-\x{1F64F}' . // Emoticons
+						'\x{1F300}-\x{1F5FF}' . // Misc Symbols and Pictographs
+						'\x{1F680}-\x{1F6FF}' . // Transport and Map Symbols
+						'\x{1F1E0}-\x{1F1FF}' . // Flags (iOS)
+						'\x{2600}-\x{26FF}' . // Misc symbols
+						'\x{2700}-\x{27BF}' . // Dingbats
+						'\x{FE00}-\x{FE0F}' . // Variation Selectors
+						'\x{1F900}-\x{1F9FF}' . // Supplemental Symbols and Pictographs
+						']/u';
+
+		$filteredString = preg_replace( $emojiPattern, '', (string) $string );
+
+		// Re-encode special characters to HTML entities.
+		return $this->encodeOutputHtml( $filteredString );
+	}
+
+	/**
+	 * Creates a sha1 hash from the given arguments.
+	 *
+	 * @since 4.7.8
+	 *
+	 * @param  mixed  ...$args The arguments to create a sha1 hash from.
+	 * @return string          The sha1 hash.
+	 */
+	public function createHash( ...$args ) {
+		return sha1( wp_json_encode( $args ) );
+	}
+
+	/**
+	 * Extracts URLs from a given string.
+	 *
+	 * @since 4.8.1
+	 *
+	 * @param  string $string The string.
+	 * @return array          The extracted URLs.
+	 */
+	public function extractUrls( $string ) {
+		$urls = wp_extract_urls( $string );
+
+		if ( empty( $urls ) ) {
+			return [];
+		}
+
+		$allUrls = [];
+
+		// Attempt to split multiple URLs. Elementor does not always separate them properly.
+		foreach ( $urls as $url ) {
+			$splitUrls = preg_split( '/(?=https?:\/\/)/', $url, - 1, PREG_SPLIT_NO_EMPTY );
+			$allUrls   = array_merge( $allUrls, $splitUrls );
+		}
+
+		return $allUrls;
+	}
+
+	/**
+	 * Determines if a text string contains an emoji or not.
+	 *
+	 * @since 4.8.0
+	 *
+	 * @param  string $string The text string to detect emoji in.
+	 * @return bool
+	 */
+	public function hasEmojis( $string ) {
+		$emojisRegexPattern = '/[\x{1F600}-\x{1F64F}' . // Emoticons
+							'\x{1F300}-\x{1F5FF}' . // Misc Symbols and Pictographs
+							'\x{1F680}-\x{1F6FF}' . // Transport and Map Symbols
+							'\x{1F1E0}-\x{1F1FF}' . // Flags (iOS)
+							'\x{2600}-\x{26FF}' . // Misc symbols
+							'\x{2700}-\x{27BF}' . // Dingbats
+							'\x{FE00}-\x{FE0F}' . // Variation Selectors
+							'\x{1F900}-\x{1F9FF}' . // Supplemental Symbols and Pictographs
+							'\x{1F018}-\x{1F270}' . // Various Asian characters
+							'\x{238C}-\x{2454}' . // Misc items
+							'\x{20D0}-\x{20FF}' . // Combining Diacritical Marks for Symbols
+							']/u';
+
+		return preg_match( $emojisRegexPattern, $string );
 	}
 }

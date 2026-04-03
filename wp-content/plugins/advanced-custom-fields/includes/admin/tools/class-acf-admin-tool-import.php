@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -9,45 +18,42 @@ if ( ! class_exists( 'ACF_Admin_Tool_Import' ) ) :
 	class ACF_Admin_Tool_Import extends ACF_Admin_Tool {
 
 		/**
-		 *  initialize
+		 * initialize
 		 *
-		 *  This function will initialize the admin tool
+		 * This function will initialize the admin tool
 		 *
-		 *  @date    10/10/17
-		 *  @since   5.6.3
+		 * @date    10/10/17
+		 * @since   5.6.3
 		 *
-		 *  @param   n/a
-		 *  @return  n/a
+		 * @param   n/a
+		 * @return  n/a
 		 */
-
 		function initialize() {
 
 			// vars
 			$this->name  = 'import';
 			$this->title = __( 'Import Field Groups', 'acf' );
 			$this->icon  = 'dashicons-upload';
-
 		}
 
 
 		/**
-		 *  html
+		 * html
 		 *
-		 *  This function will output the metabox HTML
+		 * This function will output the metabox HTML
 		 *
-		 *  @date    10/10/17
-		 *  @since   5.6.3
+		 * @date    10/10/17
+		 * @since   5.6.3
 		 *
-		 *  @param   n/a
-		 *  @return  n/a
+		 * @param   n/a
+		 * @return  n/a
 		 */
-
 		function html() {
 
 			?>
 		<div class="acf-postbox-header">
 			<h2 class="acf-postbox-title"><?php esc_html_e( 'Import', 'acf' ); ?></h2>
-			<div class="acf-tip"><i tabindex="0" class="acf-icon acf-icon-help acf-js-tooltip" title="<?php esc_attr_e( 'Select the Advanced Custom Fields JSON file you would like to import. When you click the import button below, ACF will import the items in that file.', 'acf' ); ?>">?</i></div>
+			<div class="acf-tip"><i tabindex="0" class="acf-icon acf-icon-help acf-js-tooltip" title="<?php esc_attr_e( 'Choose an ACF JSON file to import. Use only files from trusted sources, then click Import.', 'acf' ); ?>">?</i></div>
 		</div>
 		<div class="acf-postbox-inner">
 			<div class="acf-fields">
@@ -55,11 +61,13 @@ if ( ! class_exists( 'ACF_Admin_Tool_Import' ) ) :
 
 				acf_render_field_wrap(
 					array(
-						'label'    => __( 'Select File', 'acf' ),
-						'type'     => 'file',
-						'name'     => 'acf_import_file',
-						'value'    => false,
-						'uploader' => 'basic',
+						'label'        => __( 'Select JSON File', 'acf' ),
+						'type'         => 'file',
+						'name'         => 'acf_import_file',
+						'value'        => false,
+						'uploader'     => 'basic',
+						'mime_types'   => 'application/json,application/x-json,application/x-javascript,text/javascript,text/x-javascript,text/json',
+						'instructions' => __( 'Import JSON containing field groups, post types, or taxonomies (trusted sources only)', 'acf' ),
 					)
 				);
 
@@ -133,21 +141,19 @@ if ( ! class_exists( 'ACF_Admin_Tool_Import' ) ) :
 			?>
 		</div>
 			<?php
-
 		}
 
 		/**
 		 * Imports the selected ACF posts and returns an admin notice on completion.
 		 *
-		 * @date 10/10/17
 		 * @since 5.6.3
 		 *
 		 * @return ACF_Admin_Notice
 		 */
 		public function submit() {
 			//phpcs:disable WordPress.Security.NonceVerification.Missing -- nonce verified before this function is called.
-			if ( 'cptui' === acf_request_arg( 'import_type', '' ) ) {
-				$import = acf_sanitize_request_args( $_POST['acf_import_cptui'] );
+			if ( 'cptui' === acf_request_arg( 'import_type', '' ) && ! empty( $_POST['acf_import_cptui'] ) ) {
+				$import = acf_sanitize_request_args( $_POST['acf_import_cptui'] ); //phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- unslash not needed.
 				return $this->import_cpt_ui( $import );
 			}
 
@@ -211,7 +217,7 @@ if ( ! class_exists( 'ACF_Admin_Tool_Import' ) ) :
 			// Add links to text.
 			$links = array();
 			foreach ( $ids as $id ) {
-				$links[] = '<a href="' . get_edit_post_link( $id ) . '">' . get_the_title( $id ) . '</a>';
+				$links[] = '<a href="' . esc_url( get_edit_post_link( $id ) ) . '">' . esc_html( get_the_title( $id ) ) . '</a>';
 			}
 			$text .= ' ' . implode( ', ', $links );
 
@@ -280,7 +286,7 @@ if ( ! class_exists( 'ACF_Admin_Tool_Import' ) ) :
 				// Add links to text.
 				$links = array();
 				foreach ( $imported as $id ) {
-					$links[] = '<a href="' . get_edit_post_link( $id ) . '">' . get_the_title( $id ) . '</a>';
+					$links[] = '<a href="' . esc_url( get_edit_post_link( $id ) ) . '">' . esc_html( get_the_title( $id ) ) . '</a>';
 				}
 
 				$text .= ' ' . implode( ', ', $links );
@@ -291,12 +297,10 @@ if ( ! class_exists( 'ACF_Admin_Tool_Import' ) ) :
 
 			return acf_add_admin_notice( __( 'Nothing to import', 'acf' ), 'warning' );
 		}
-
 	}
 
 	// Initialize.
 	acf_register_admin_tool( 'ACF_Admin_Tool_Import' );
-
 endif; // class_exists check.
 
 ?>

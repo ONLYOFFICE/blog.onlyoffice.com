@@ -18,7 +18,17 @@ class TextArea extends BaseComponent
     public function compile($data, $form)
     {
         $elementName = $data['element'];
-        $data = apply_filters('fluentform_rendering_field_data_' . $elementName, $data, $form);
+        $data = apply_filters_deprecated(
+            'fluentform_rendering_field_data_' . $elementName,
+            [
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_data_' . $elementName,
+            'Use fluentform/rendering_field_data_' . $elementName . ' instead of fluentform_rendering_field_data_' . $elementName
+        );
+        $data = apply_filters('fluentform/rendering_field_data_' . $elementName, $data, $form);
 
         $textareaValue = $this->extractValueFromAttributes($data);
 
@@ -34,7 +44,8 @@ class TextArea extends BaseComponent
             $ariaRequired = 'true';
         }
 
-        $elMarkup = '<textarea aria-invalid="false" aria-required='. $ariaRequired .' %s>%s</textarea>';
+        $ariaLabelledBy = 'label_' . ArrayHelper::get($data, 'attributes.id');
+        $elMarkup = '<textarea aria-required="' . $ariaRequired . '" aria-labelledby="' . $ariaLabelledBy . '" %s>%s</textarea>';
 
         $atts = $this->buildAttributes($data['attributes']);
 
@@ -44,8 +55,53 @@ class TextArea extends BaseComponent
             esc_attr($textareaValue)
         ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
 
-        $html = $this->buildElementMarkup($elMarkup, $data, $form);
+        $elMarkup = $this->buildInputGroup($elMarkup, $data);
 
-        $this->printContent('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
+        $html = $this->buildElementMarkup($elMarkup, $data, $form);
+    
+        $html = apply_filters_deprecated(
+            'fluentform_rendering_field_html_' . $elementName,
+            [
+                $html,
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_html_' . $elementName,
+            'Use fluentform/rendering_field_html_' . $elementName . ' instead of fluentform_rendering_field_html_' . $elementName
+        );
+
+        $this->printContent('fluentform/rendering_field_html_' . $elementName, $html, $data, $form);
+    }
+
+    /**
+     * Build input group with prefix/suffix
+     *
+     * @param string $textarea The textarea element HTML
+     * @param array  $data     The field data
+     *
+     * @return string
+     */
+    private function buildInputGroup($textarea, $data)
+    {
+        $prefix = ArrayHelper::get($data, 'settings.prefix_label');
+        $suffix = ArrayHelper::get($data, 'settings.suffix_label');
+
+        if ($prefix || $suffix) {
+            $wrapperClass = 'ff_input-group';
+           
+            $wrapper = '<div class="' . $wrapperClass . '">';
+            if ($prefix) {
+                $wrapper .= '<div class="ff_input-group-prepend"><span class="ff_input-group-text">' . fluentform_sanitize_html($prefix) . '</span></div>';
+            }
+            $wrapper .= $textarea;
+            if ($suffix) {
+                $wrapper .= '<div class="ff_input-group-append"><span class="ff_input-group-text">' . fluentform_sanitize_html($suffix) . '</span></div>';
+            }
+            $wrapper .= '</div>';
+            return $wrapper;
+        }
+
+        return $textarea;
     }
 }

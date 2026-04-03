@@ -2,7 +2,6 @@
 
 namespace FluentForm\App\Modules\Form;
 
-use FluentForm\App;
 use FluentForm\App\Modules\Acl\Acl;
 use FluentForm\Framework\Foundation\Application;
 use FluentForm\App\Services\FormBuilder\EditorShortCode;
@@ -71,8 +70,18 @@ class Inputs
             'input_image',
             'subscription_payment_component',
         ];
+    
+        $supportedConditionalFields = apply_filters_deprecated(
+            'fluentform_supported_conditional_fields',
+            [
+                $supportedConditionalFields
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/supported_conditional_fields',
+            'Use fluentform/supported_conditional_fields instead of fluentform_supported_conditional_fields.'
+        );
 
-        return apply_filters('fluentform_supported_conditional_fields', $supportedConditionalFields);
+        return apply_filters('fluentform/supported_conditional_fields', $supportedConditionalFields);
     }
 
     public function filterEditorFields($fields)
@@ -80,9 +89,7 @@ class Inputs
         foreach ($fields as $index => $field) {
             $element = ArrayHelper::get($field, 'element');
             if ('select_country' == $element) {
-                $fields[$index]['options'] = App::load(
-                    App::appPath('Services/FormBuilder/CountryNames.php')
-                );
+                $fields[$index]['options'] = getFluentFormCountryList();
             } elseif ('gdpr-agreement' == $element || 'terms_and_condition' == $element) {
                 $fields[$index]['options'] = ['on' => 'Checked'];
             }

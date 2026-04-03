@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 // Register store for form data.
 acf_register_store( 'form' );
@@ -113,9 +122,9 @@ function acf_form_data( $data = array() ) {
  * @date    15/10/13
  * @since   5.0.0
  *
- * @param   int|string $post_id The post id.
- * @param   array      $values An array of values to override $_POST.
- * @return  bool True if save was successful.
+ * @param   integer|string $post_id The post id.
+ * @param   array          $values  An array of values to override $_POST.
+ * @return  boolean True if save was successful.
  */
 function acf_save_post( $post_id = 0, $values = null ) {
 
@@ -155,7 +164,7 @@ function acf_save_post( $post_id = 0, $values = null ) {
  * @date    11/1/19
  * @since   5.7.10
  *
- * @param   int|string $post_id The post id.
+ * @param   integer|string $post_id The post id.
  * @return  void
  */
 function _acf_do_save_post( $post_id = 0 ) {

@@ -1,7 +1,8 @@
-@import '_preset.css';
+@import '_reset.css';
+@import '_presets.css';
 
 /* block theme -------------------------------------------------------------- */
-.democracy{ 
+.democracy{
 	border-color:#ccc; border: 1px solid rgba(0,0,0,.1); background-color:#eee; background-color:rgba(0,0,0,.1);
 	background-image: -webkit-linear-gradient(bottom, rgba(0,0,0,.05), transparent);background-image: linear-gradient(to top, rgba(0,0,0,.05), transparent);
 	padding:1em; padding-bottom:.5em; margin-bottom:1em;

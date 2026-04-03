@@ -3,11 +3,16 @@
 namespace FluentForm\App\Services\Migrator\Classes;
 
 
+use FluentForm\App\Helpers\Helper;
 use FluentForm\App\Modules\Form\Form;
 use FluentForm\Framework\Helpers\ArrayHelper;
 
 class GravityFormsMigrator extends BaseMigrator
 {
+    /**
+     * @var bool
+     */
+    protected $hasStep = false;
 
     public function __construct()
     {
@@ -403,7 +408,7 @@ class GravityFormsMigrator extends BaseMigrator
                         'icon_class' => 'ff-edit-column-' . $colsCount
                     ],
                     'columns'        => $fields,
-                    'uniqElKey'      => 'col' . '_' . md5(uniqid(mt_rand(), true))
+                    'uniqElKey'      => 'col' . '_' . md5(uniqid(wp_rand(), true))
                 ];
             } else {
                 //without container
@@ -512,15 +517,9 @@ class GravityFormsMigrator extends BaseMigrator
     {
         $formObject = new Form(wpFluentForm());
         $defaults = $formObject->getFormsDefaultSettings();
-
-        $array = array_reverse($form['confirmations']);
-        $firstConfirmation = array_pop($array);
-        $confirmation = wp_parse_args(
-            [
-                'messageToShow'        => $firstConfirmation['message'],
-                'samePageFormBehavior' => 'hide_form',
-            ], $defaults['confirmation']
-        );
+        $confirmationsFormatted = $this->getConfirmations($form, $defaults['confirmation']);
+        $defaultConfirmation = array_shift($confirmationsFormatted);
+        $notifications = $this->getNotifications($form);
         $defaults['restrictions']['requireLogin']['enabled'] = ArrayHelper::isTrue($form, 'requireLogin');
         $defaults['restrictions']['requireLogin']['requireLoginMsg'] = ArrayHelper::isTrue($form,
             'requireLoginMessage');
@@ -548,38 +547,245 @@ class GravityFormsMigrator extends BaseMigrator
             'error_message'   => '',
             'validation_type' => 'fail_on_condition_met'
         ];
-        $notifications = [];
-        foreach ($form['notifications'] as $notification) {
-            $notifications[] =
-                [
-                    'sendTo'      => [
-                        'type'    => 'email',
-                        'email'   => str_replace('{admin_email}', '{wp.admin_email}', $notification['to']),
-                        'field'   => '',
-                        'routing' => [],
-                    ],
-                    'enabled'     => ArrayHelper::isTrue($notification, 'isActive'),
-                    'name'        => $notification['name'],
-                    'subject'     => $notification['subject'],
-                    'to'          => str_replace('{admin_email}', '{wp.admin_email}', $notification['to']),
-                    'replyTo'     => ArrayHelper::get($notification, 'replyTo'),
-                    'message'     => str_replace('{all_fields}', '{all_data}', $notification['message']),
-                    'fromName'    => ArrayHelper::get($notification, 'fromName'),
-                    'fromAddress' => ArrayHelper::get($notification, 'from'),
-                    'bcc'         => ArrayHelper::get($notification, 'bcc'),
-                    'cc'          => ArrayHelper::get($notification, 'cc'),
-                ];
-
-        }
         return [
             'formSettings'               => [
-                'confirmation' => $confirmation,
+                'confirmation' => $defaultConfirmation,
                 'restrictions' => $defaults['restrictions'],
                 'layout'       => $defaults['layout'],
             ],
             'advancedValidationSettings' => $advancedValidation,
             'delete_entry_on_submission' => 'no',
+            'confirmations'              => $confirmationsFormatted,
             'notifications'              => $notifications
+        ];
+    }
+    private function getNotifications($form)
+    {
+        $notificationsFormatted = [];
+        foreach (ArrayHelper::get($form, 'notifications', []) as $notification) {
+            $fieldType = ArrayHelper::get($notification, 'toType', 'email');
+            $sendTo = [
+                'type'    => $fieldType,
+                'email'   => '',
+                'field'   => '',
+                'routing' => [],
+            ];
+            if ('field' == $fieldType) {
+                $sendTo['field'] = $this->getFormFieldName(ArrayHelper::get($notification, 'to', ''), $form);
+            } elseif('routing' == $fieldType) {
+                foreach (ArrayHelper::get($notification, 'routing', []) as $route) {
+                    $fieldName = $this->getFormFieldName(ArrayHelper::get($route, 'fieldId'), $form);
+                    $routeEmail = ArrayHelper::get($route, 'email');
+                    if (!$fieldName || !$routeEmail) {
+                        continue;
+                    }
+                    if ($operator = $this->getResolveOperator(ArrayHelper::get($route, 'operator', ''))) {
+                        $sendTo['routing'][] = [
+                            'field' => $fieldName,
+                            'operator' => $operator,
+                            'input_value' => $routeEmail,
+                            'value' => ArrayHelper::get($route, 'value', '')
+                        ];
+                    }
+                }
+            } else {
+                $sendTo['email'] = $this->getResolveShortcodes(ArrayHelper::get($notification, 'to', ''), $form);
+            }
+            $message = $this->getResolveShortcodes(ArrayHelper::get($notification, 'message', ''), $form);
+            $replyTo = $this->getResolveShortcodes(ArrayHelper::get($notification, 'replyTo', ''), $form);
+            $notificationsFormatted[] = [
+                'sendTo'       => $sendTo,
+                'enabled'      => ArrayHelper::get($notification, 'isActive', true),
+                'name'         => ArrayHelper::get($notification, 'name', 'Admin Notification'),
+                'subject'      => $this->getResolveShortcodes(ArrayHelper::get($notification, 'subject', 'Notification'), $form),
+                'to'           => $sendTo['email'],
+                'replyTo'      => $replyTo ?: '{wp.admin_email}',
+                'message'      => str_replace("\n", "<br />", $message),
+                'fromName'     => $this->getResolveShortcodes(ArrayHelper::get($notification, 'fromName', ''), $form),
+                'fromEmail'    => $this->getResolveShortcodes(ArrayHelper::get($notification, 'from', ''), $form),
+                'bcc'          => $this->getResolveShortcodes(ArrayHelper::get($notification, 'bcc', ''), $form),
+                'conditionals' => $this->getConditionals($notification,'notification', $form)
+            ];
+        }
+        return $notificationsFormatted;
+    }
+
+    private function getConditionals($notification, $key, $form)
+    {
+        $conditionals = ArrayHelper::get($notification, 'conditionalLogic', []);
+        $conditions = [];
+        if (!$conditionals) {
+            $conditionals = ArrayHelper::get($notification, $key.'_conditional_logic_object', []);
+        }
+        $type = 'any';
+        if ($conditionals) {
+            $type = ArrayHelper::get($conditionals, 'logicType', 'any');
+            foreach (ArrayHelper::get($conditionals, 'rules', []) as $rule) {
+                $fieldName = $this->getFormFieldName(ArrayHelper::get($rule, 'fieldId'), $form);
+                if (!$fieldName) {
+                    continue;
+                }
+                if ($operator = $this->getResolveOperator(ArrayHelper::get($rule, 'operator', ''))) {
+                    $conditions[] = [
+                        'field' => $fieldName,
+                        'operator' => $operator,
+                        'value' => ArrayHelper::get($rule, 'value', '')
+                    ];
+                }
+            }
+        }
+        return [
+            "status" => ArrayHelper::isTrue($notification, $key . '_conditional_logic'),
+            "type" => $type,
+            'conditions' => $conditions
+        ];
+    }
+
+    private function getConfirmations($form, $defaultValues)
+    {
+        $confirmationsFormatted = [];
+        foreach (ArrayHelper::get($form, 'confirmations', []) as $confirmation) {
+            $type = ArrayHelper::get($confirmation, 'type');
+            $queryString = "";
+            if ($type == 'redirect') {
+                $redirectTo = 'customUrl';
+                $queryString = $this->getResolveShortcodes(ArrayHelper::get($confirmation, 'queryString', ''), $form);
+            } elseif ($type == 'page') {
+                $queryString = $this->getResolveShortcodes(ArrayHelper::get($confirmation, 'queryString', ''), $form);
+                $redirectTo = 'customPage';
+            } else {
+                $redirectTo = 'samePage';
+            }
+
+            $format = [
+                'name'                 => ArrayHelper::get($confirmation, 'name', 'Confirmation'),
+                'messageToShow'        => str_replace("\n", "<br />", $this->getResolveShortcodes(ArrayHelper::get($confirmation, 'message', ''), $form)),
+                'samePageFormBehavior' => 'hide_form',
+                'redirectTo'           => $redirectTo,
+                'customPage'           => intval(ArrayHelper::get($confirmation, 'page')),
+                'customUrl'            => ArrayHelper::get($confirmation, 'url'),
+                'active'               => ArrayHelper::get($confirmation, 'isActive', true),
+                'enable_query_string'  => $queryString ? 'yes' : 'no',
+                'query_strings'        => $queryString,
+            ];
+            $isDefault = ArrayHelper::isTrue($confirmation, 'isDefault');
+            if (!$isDefault) {
+                $format['conditionals'] = $this->getConditionals($confirmation,'confirmation', $form);
+            }
+            $confirmationsFormatted[] =  wp_parse_args($format, $defaultValues);
+        }
+        return $confirmationsFormatted;
+    }
+
+    /**
+     * Get form field name in fluentforms format
+     *
+     * @param string $str
+     * @param array $form
+     * @return string
+     */
+    private function getFormFieldName($str, $form)
+    {
+        preg_match('/[0-9]+[.]?[0-9]*/', $str, $fieldId);
+        $fieldId = ArrayHelper::get($fieldId, 0, '0');
+        if (!$fieldId) {
+            return '';
+        }
+        $fieldIds = [];
+        if (strpos($fieldId, '.') !== false) {
+            $fieldIds = explode('.', $fieldId);
+            $fieldId = $fieldId[0];
+        }
+        $field = [];
+        foreach (ArrayHelper::get($form, 'fields', []) as $formField) {
+            if (isset($formField->id) && $formField->id == $fieldId) {
+                $field = (array)$formField;
+                break;
+            }
+        }
+        list($type, $args) = $this->formatFieldData($field);
+        $name = ArrayHelper::get($args, 'name', '');
+        if ($fieldIds && ArrayHelper::get($fieldIds, 1)) {
+            foreach (ArrayHelper::get($field, "inputs", []) as $input) {
+                if (ArrayHelper::get($input, 'id') != join('.', $fieldIds)) {
+                    continue;
+                }
+                if ($subName = $this->getInputName($input)) {
+                    $name .= ".$subName";
+                }
+                break;
+            }
+        }
+        return $name;
+    }
+
+    /**
+     * Resolve shortcode in fluentforms format
+     *
+     * @param string $message
+     * @param array $form
+     * @return string
+     */
+    private function getResolveShortcodes($message, $form)
+    {
+        if (!$message) {
+            return $message;
+        }
+        preg_match_all('/{(.*?)}/', $message, $matches);
+        if (!$matches[0]) {
+            return $message;
+        }
+        $shortcodes = $this->dynamicShortcodes();
+        foreach ($matches[0] as $match) {
+            $replace = '';
+            if (isset($shortcodes[$match])) {
+                $replace = $shortcodes[$match];
+            } elseif ($this->isFormField($match) && $name = $this->getFormFieldName($match, $form)) {
+                $replace = "{inputs.$name}";
+            }
+            $message = str_replace($match, $replace, $message);
+        }
+        return $message;
+    }
+
+    /**
+     * Get bool value depend on shortcode is form inputs or not
+     *
+     * @param string $shortcode
+     * @return boolean
+     */
+    private function isFormField($shortcode)
+    {
+        preg_match('/:[0-9]+[.]?[0-9]*/', $shortcode, $fieldId);
+        return ArrayHelper::isTrue($fieldId, '0');
+    }
+
+    /**
+     * Get shortcode in fluentforms format
+     * @return array
+     */
+    private function dynamicShortcodes()
+    {
+        return [
+            '{all_fields}'            => '{all_data}',
+            '{admin_email}'           => '{wp.admin_email}',
+            '{ip}'                    => '{ip}',
+            '{date_mdy}'              => '{date.m/d/Y}',
+            '{date_dmy}'              => '{date.d/m/Y}',
+            '{embed_post:ID}'         => '{embed_post.ID}',
+            '{embed_post:post_title}' => '{embed_post.post_title}',
+            '{embed_url}'             => '{embed_post.permalink}',
+            '{user:id}'               => '{user.ID}',
+            '{user:first_name}'       => '{user.first_name}',
+            '{user:last_name}'        => '{user.last_name}',
+            '{user:user_login}'       => '{user.user_login}',
+            '{user:display_name}'     => '{user.display_name}',
+            '{user_full_name}'        => '{user.first_name} {user.last_name}',
+            '{user:user_email}'       => '{user.user_email}',
+            '{entry_id}'              => '{submission.id}',
+            '{entry_url}'             => '{submission.admin_view_url}',
+            '{referer}'               => '{http_referer}',
+            '{user_agent}'            => '{browser.name}'
         ];
     }
 
@@ -634,7 +840,11 @@ class GravityFormsMigrator extends BaseMigrator
             'offset'    => $offset,
             'page_size' => $perPage
         ];
-        $submissions = \GFAPI::get_entries($formId, [], [], $paging);
+        $shorting = [
+            'key' => 'id',
+            'direction' => 'ASC',
+        ];
+        $submissions = \GFAPI::get_entries($formId, [], $shorting, $paging);
         $entries = [];
         if (!is_array($submissions)) {
             return $entries;
@@ -657,7 +867,7 @@ class GravityFormsMigrator extends BaseMigrator
                 if ("input_file" == $type && $value = $this->getSubmissionValue($id, $submission)) {
                     $finalValue = $this->migrateFilesAndGetUrls($value);
                 } elseif ("repeater_field" == $type && $value = $this->getSubmissionValue($id, $submission)) {
-                    if ($repeatData = (array)maybe_unserialize($value)) {
+                    if ($repeatData = (array)Helper::safeUnserialize($value)) {
                         $finalValue = [];
                         foreach ($repeatData as $data) {
                             $finalValue[] = array_values($data);
@@ -691,6 +901,16 @@ class GravityFormsMigrator extends BaseMigrator
             }
             if ($updated_at = ArrayHelper::get($submission, 'date_updated')) {
                 $entry['updated_at'] = $updated_at;
+            }
+            if ($is_favourite = ArrayHelper::get($submission, 'is_starred')) {
+                $entry['is_favourite'] = $is_favourite;
+            }
+            if ($status = ArrayHelper::get($submission, 'status')) {
+                if ('trash' == $status || 'spam' == $status) {
+                    $entry['status'] = 'trashed';
+                } elseif ('active' == $status && ArrayHelper::isTrue($submission, 'is_read')) {
+                    $entry['status'] = 'read';
+                }
             }
             $entries[] = $entry;
         }

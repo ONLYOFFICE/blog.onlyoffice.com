@@ -2,10 +2,13 @@
 
 namespace FluentForm\App\Services\Migrator;
 
+defined('ABSPATH') or die;
+
 use FluentForm\App\Services\Migrator\Classes\NinjaFormsMigrator;
 use FluentForm\App\Services\Migrator\Classes\CalderaMigrator;
 use FluentForm\App\Services\Migrator\Classes\GravityFormsMigrator;
 use FluentForm\App\Services\Migrator\Classes\WpFormsMigrator;
+use FluentForm\App\Services\Migrator\Classes\ContactForm7Migrator;
 class Bootstrap
 {
     protected $importer;
@@ -47,6 +50,12 @@ class Bootstrap
                 'key'  => 'wpforms',
             ];
         }
+        if ((new ContactForm7Migrator())->exist()) {
+            $migratorLinks[] = [
+                'name' => 'Contact Form 7',
+                'key'  => 'contactform7',
+            ];
+        }
         return $migratorLinks;
 
     }
@@ -68,9 +77,12 @@ class Bootstrap
             case 'wpforms':
                 $this->importer = new WpFormsMigrator();
                 break;
+            case 'contactform7':
+                $this->importer = new ContactForm7Migrator();
+                break;
             default:
                 wp_send_json([
-                    'message' => __('Unsupported Form Type!'),
+                    'message' => __('Unsupported Form Type!','fluentform'),
                     'success' => false,
                 ]);
         }
@@ -93,7 +105,10 @@ class Bootstrap
         \FluentForm\App\Modules\Acl\Acl::verify(['fluentform_settings_manager', 'fluentform_forms_manager']);
         
         $formIds = wpFluentForm('request')->get('form_ids');
-        $formIds = array_map('intval', $formIds);
+        if (!is_array($formIds)) {
+            $formIds = [];
+        }
+        $formIds = array_map('sanitize_text_field', $formIds);
 
         $this->setImporterType();
         $this->importer->import_forms($formIds);

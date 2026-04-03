@@ -17,8 +17,19 @@ class Checkable extends BaseComponent
     public function compile($data, $form)
     {
         $elementName = $data['element'];
+    
+        $data = apply_filters_deprecated(
+            'fluentform_rendering_field_data_' . $elementName,
+            [
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_data_' . $elementName,
+            'Use fluentform/rendering_field_data_' . $elementName . ' instead of fluentform_rendering_field_data_' . $elementName
+        );
 
-        $data = apply_filters('fluentform_rendering_field_data_' . $elementName, $data, $form);
+        $data = apply_filters('fluentform/rendering_field_data_' . $elementName, $data, $form);
 
         $data['attributes']['class'] = trim(
             'ff-el-form-check-input ' .
@@ -68,6 +79,26 @@ class Checkable extends BaseComponent
             shuffle($formattedOptions);
         }
 
+        // Add "Other" option if enabled
+        $enableOtherOption = ArrayHelper::get($data, 'settings.enable_other_option') === 'yes';
+        if ($enableOtherOption && in_array($data['attributes']['type'], ['checkbox', 'radio']) && defined('FLUENTFORMPRO')) {
+            $fieldName = sanitize_text_field(str_replace(['[', ']'], '', $data['attributes']['name']));
+            $otherLabel = ArrayHelper::get($data, 'settings.other_option_label', __('Other', 'fluentform'));
+            $formattedOptions[] = [
+                'label'      => $otherLabel,
+                'value'      => '__ff_other_' . $fieldName . '__',
+                'calc_value' => '',
+                'image'      => '',
+                'is_other'   => true,
+            ];
+        }
+//        @todo : Find a alternative screen reader support
+//        $legendId = $this->getUniqueid(str_replace(['[', ']'], ['', ''], $data['attributes']['name']));
+//        $elMarkup .= '<fieldset role="group"  style="border: none!important;margin: 0!important;padding: 0!important;background-color: transparent!important;box-shadow: none!important;outline: none!important; min-inline-size: 100%;" aria-labelledby="legend_' . $legendId . '">';
+//
+//        $elMarkup .= '<legend  style="  position: absolute;width: 1px;height: 1px;padding: 0;margin: 0;overflow: hidden;clip: rect(0, 0, 0, 0);border: 0;"  role="heading" id="legend_' . $legendId . '" class="ff-sreader-only">' . esc_attr($this->removeShortcode($data['settings']['label'])) . '</legend>';
+
+        $otherInputHtml = '';
         foreach ($formattedOptions as $option) {
             $displayType = isset($data['settings']['display_type']) ? ' ff-el-form-check-' . $data['settings']['display_type'] : '';
             $parentClass = 'ff-el-form-check' . esc_attr($displayType) . '';
@@ -103,24 +134,59 @@ class Checkable extends BaseComponent
             $ariaLabel = esc_attr($label);
             // Here we can push the visual items
             if ($hasImageOption) {
-                $elMarkup .= "<label style='background-image: url(" . esc_url($option['image']) . ")' class='ff-el-image-input-src' for='{$id}' aria-label='{$ariaLabel}'></label>";
+                $elMarkup .= "<label style='background-image: url(" . esc_url($option['image']) . ")' class='ff-el-image-input-src' for='{$id}' aria-label='{$this->removeShortcode($ariaLabel)}'></label>";
             }
 
             $ariaRequired = 'false';
             if (ArrayHelper::get($data, 'settings.validation_rules.required.value')) {
                 $ariaRequired = 'true';
             }
+    
+            $disabled = ArrayHelper::get($option, 'disabled') ? 'disabled' : '';
 
-            $elMarkup .= "<label class='ff-el-form-check-label' for={$id}><input {$atts} id='{$id}' aria-label='{$ariaLabel}' aria-invalid='false' aria-required={$ariaRequired}> <span>" . $label . '</span></label>';
+            $isOtherOption = ArrayHelper::get($option, 'is_other', false);
+            $otherClass = $isOtherOption ? ' ff-other-option' : '';
+
+            $elMarkup .= "<label class='ff-el-form-check-label{$otherClass}' for='{$id}'><input {$disabled} {$atts} id='{$id}' aria-label='{$this->removeShortcode($ariaLabel)}' aria-invalid='false' aria-required={$ariaRequired}> <span>" . $label . '</span></label>';
+            
+            // Add text input for "Other" option
+            if ($isOtherOption && defined('FLUENTFORMPRO')) {
+                $otherPlaceholder = ArrayHelper::get($data, 'settings.other_option_placeholder', __('Please specify...', 'fluentform'));
+                $fieldName = str_replace(['[', ']'], '', $data['attributes']['name']);
+                $otherInputName = $fieldName . '__ff_other_input__';
+                $otherValue = '';
+
+                $marginTop = $hasImageOption ? '20px' : '8px';
+                $otherInputHtml .= "<div class='ff-other-input-wrapper' style='display: none; margin-top: {$marginTop};' data-field='{$fieldName}'>";
+                $otherInputHtml .= "<input type='text' name='" . esc_attr($otherInputName) . "' class='ff-el-form-control' placeholder='" . esc_attr($otherPlaceholder) . "' value='" . esc_attr($otherValue) . "'>";
+                $otherInputHtml .= "</div>";
+            }
+            
             $elMarkup .= '</div>';
         }
 
         if ($hasImageOption) {
             $elMarkup .= '</div>';
         }
+        if ($otherInputHtml) {
+            $elMarkup .= $otherInputHtml;
+        }
+//        $elMarkup .= '</fieldset>';
 
         $html = $this->buildElementMarkup($elMarkup, $data, $form);
+    
+        $data = apply_filters_deprecated(
+            'fluentform_rendering_field_html_' . $elementName,
+            [
+                $html,
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_html_' . $elementName,
+            'Use fluentform/rendering_field_html_' . $elementName . ' instead of fluentform_nonce_verify.'
+        );
 
-        $this->printContent('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
+        $this->printContent('fluentform/rendering_field_html_' . $elementName, $html, $data, $form);
     }
 }

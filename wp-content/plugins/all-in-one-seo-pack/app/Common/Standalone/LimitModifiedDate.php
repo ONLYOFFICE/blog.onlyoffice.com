@@ -29,6 +29,7 @@ class LimitModifiedDate {
 		// Reset modified date when the post is updated.
 		add_filter( 'wp_insert_post_data', [ $this, 'resetModifiedDate' ], 99999, 2 );
 		add_filter( 'wp_insert_attachment_data', [ $this, 'resetModifiedDate' ], 99999, 2 );
+		add_action( 'woocommerce_before_product_object_save', [ $this, 'limitWooCommerceModifiedDate' ] );
 
 		add_action( 'rest_api_init', [ $this, 'registerRestHooks' ] );
 
@@ -77,9 +78,9 @@ class LimitModifiedDate {
 	 *
 	 * @since 4.1.8
 	 *
-	 * @param  Object          $preparedPost The post data.
-	 * @param  WP_REST_Request $restRequest  The request.
-	 * @return Object                        The modified post data.
+	 * @param  object           $preparedPost The post data.
+	 * @param  \WP_REST_Request $restRequest  The request.
+	 * @return object                         The modified post data.
 	 */
 	public function addLimitModifiedDateValue( $preparedPost, $restRequest = null ) {
 		if ( 'PUT' !== $restRequest->get_method() ) {
@@ -101,55 +102,89 @@ class LimitModifiedDate {
 	 *
 	 * @since 4.1.8
 	 *
-	 * @param  array $sanitizedData   The sanitized post data.
-	 * @param  array $unsanitizedData The unsanitized post data.
-	 * @return array                  The modified sanitized post data.
+	 * @param  array $data      An array of slashed, sanitized, and processed post data.
+	 * @param  array $postArray An array of sanitized (and slashed) but otherwise unmodified post data.
+	 * @return array            The modified sanitized post data.
 	 */
-	public function resetModifiedDate( $sanitizedData, $unsanitizedData = [] ) {
+	public function resetModifiedDate( $data, $postArray = [] ) {
 		// If the ID isn't set, a new post is being inserted.
-		if ( ! isset( $unsanitizedData['ID'] ) ) {
-			return $sanitizedData;
+		if ( ! isset( $postArray['ID'] ) ) {
+			return $data;
 		}
 
-		$shouldReset = false;
+		static $shouldReset = false;
 
 		// Handle the REST API request from the Block Editor.
 		if ( aioseo()->helpers->isRestApiRequest() ) {
 			// If the value isn't set, then the value wasn't changed in the editor, and we can grab it from the post.
-			if ( ! isset( $unsanitizedData['aioseo_limit_modified_date'] ) ) {
-				$aioseoPost = Models\Post::getPost( $unsanitizedData['ID'] );
+			if ( ! isset( $postArray['aioseo_limit_modified_date'] ) ) {
+				$aioseoPost = Models\Post::getPost( $postArray['ID'] );
 				if ( $aioseoPost->exists() && $aioseoPost->limit_modified_date ) {
 					$shouldReset = true;
 				}
 			} else {
-				if ( $unsanitizedData['aioseo_limit_modified_date'] ) {
+				if ( $postArray['aioseo_limit_modified_date'] ) {
 					$shouldReset = true;
 				}
 			}
 		}
 
 		// Handle the POST request.
-		if ( isset( $unsanitizedData['aioseo-post-settings'] ) ) {
-			$aioseoData = json_decode( stripslashes( $unsanitizedData['aioseo-post-settings'] ) );
+		if ( isset( $postArray['aioseo-post-settings'] ) ) {
+			$aioseoData = json_decode( stripslashes( $postArray['aioseo-post-settings'] ) );
 			if ( ! empty( $aioseoData->limit_modified_date ) ) {
 				$shouldReset = true;
 			}
 		}
 
 		// Handle post revision.
-		if ( ! empty( $GLOBALS['action'] ) && 'restore' === $GLOBALS['action'] ) {
-			$aioseoPost = Models\Post::getPost( $unsanitizedData['ID'] );
+		if ( ! empty( $GLOBALS['action'] ) && in_array( $GLOBALS['action'], [ 'restore',  'inline-save' ], true ) ) {
+			$aioseoPost = Models\Post::getPost( $postArray['ID'] );
 			if ( $aioseoPost->exists() && $aioseoPost->limit_modified_date ) {
 				$shouldReset = true;
 			}
 		}
 
-		if ( $shouldReset ) {
-			$sanitizedData['post_modified']     = $unsanitizedData['post_modified'];
-			$sanitizedData['post_modified_gmt'] = $unsanitizedData['post_modified_gmt'];
+		foreach ( aioseo()->standalone->pageBuilderIntegrations as $pageBuilder ) {
+			if ( $pageBuilder->isBuiltWith( $postArray['ID'] ) && $pageBuilder->limitModifiedDate( $postArray['ID'] ) ) {
+				$shouldReset = true;
+				break;
+			}
 		}
 
-		return $sanitizedData;
+		if ( $shouldReset && isset( $postArray['post_modified'], $postArray['post_modified_gmt'] ) ) {
+			$originalPost = get_post( $postArray['ID'] );
+
+			$data['post_modified']     = $originalPost->post_modified;
+			$data['post_modified_gmt'] = $originalPost->post_modified_gmt;
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Limits the modified date for WooCommerce products.
+	 *
+	 * @since 4.8.1
+	 *
+	 * @param  \WC_Product $product The WooCommerce product.
+	 * @return void
+	 */
+	public function limitWooCommerceModifiedDate( $product ) {
+		if ( ! isset( $_POST['PostSettingsNonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['PostSettingsNonce'] ) ), 'aioseoPostSettingsNonce' ) ) {
+			return;
+		}
+
+		if ( ! isset( $_POST['aioseo-post-settings'] ) ) {
+			return;
+		}
+
+		$aioseoData = json_decode( sanitize_text_field( wp_unslash( ( $_POST['aioseo-post-settings'] ) ) ) );
+		if ( empty( $aioseoData ) || empty( $aioseoData->limit_modified_date ) ) {
+			return;
+		}
+
+		$product->set_date_modified( get_post_field( 'post_modified', $product->get_id() ) );
 	}
 
 	/**
@@ -157,7 +192,7 @@ class LimitModifiedDate {
 	 *
 	 * @since 4.1.8
 	 *
-	 * @param  WP_Post $post The post object.
+	 * @param  \WP_Post $post The post object.
 	 * @return void
 	 */
 	public function classicEditorField( $post ) {
@@ -180,7 +215,7 @@ class LimitModifiedDate {
 	 * @param  string $postType The current post type.
 	 * @return bool             Whether the functionality is allowed.
 	 */
-	private function isAllowed( $postType = false ) {
+	private function isAllowed( $postType = '' ) {
 		if ( empty( $postType ) ) {
 			$postType = get_post_type();
 		}

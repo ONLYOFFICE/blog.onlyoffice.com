@@ -15,7 +15,17 @@ class Hcaptcha extends BaseComponent
     public function compile($data, $form)
     {
         $elementName = $data['element'];
-        $data = apply_filters('fluentform_rendering_field_data_' . $elementName, $data, $form);
+        $data = apply_filters_deprecated(
+            'fluentform_rendering_field_data_' . $elementName,
+            [
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_data_' . $elementName,
+            'Use fluentform/rendering_field_data_' . $elementName . ' instead of fluentform_rendering_field_data_' . $elementName
+        );
+        $data = apply_filters('fluentform/rendering_field_data_' . $elementName, $data, $form);
 
         $key = get_option('_fluentform_hCaptcha_details');
         if ($key && isset($key['siteKey'])) {
@@ -28,17 +38,26 @@ class Hcaptcha extends BaseComponent
             return false;
         }
 
-        wp_enqueue_script(
-            'hcaptcha',
-            'https://js.hcaptcha.com/1/api.js',
-            [],
-            FLUENTFORM_VERSION,
-            true
-        );
+        if (!wp_script_is('hcaptcha')) {
+            $apiUrl = 'https://js.hcaptcha.com/1/api.js?render=explicit';
+
+            $locale = apply_filters('fluentform/hcaptcha_lang', '');
+            if ($locale) {
+                $apiUrl .= '&hl=' . $locale;
+            }
+
+            wp_enqueue_script(
+                'hcaptcha',
+                $apiUrl,
+                [],
+                FLUENTFORM_VERSION,
+                true
+            );
+        }
 
         $hcaptchaBlock = "<div
 		data-sitekey='" . esc_attr($siteKey) . "'
-		id='fluentform-hcaptcha-{$form->id}'
+		id='fluentform-hcaptcha-{$form->id}-{$form->instance_index}'
 		class='ff-el-hcaptcha h-captcha'></div>";
 
         $label = '';
@@ -55,6 +74,18 @@ class Hcaptcha extends BaseComponent
 
         $html = "<div class='ff-el-group " . esc_attr($containerClass) . "' >" . fluentform_sanitize_html($label) . "{$el}</div>";
 
-        $this->printContent('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
+        $html = apply_filters_deprecated(
+            'fluentform_rendering_field_html_' . $elementName,
+            [
+                $html,
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_html_' . $elementName,
+            'Use fluentform/rendering_field_html_' . $elementName . ' instead of fluentform_rendering_field_html_' . $elementName
+        );
+
+        $this->printContent('fluentform/rendering_field_html_' . $elementName, $html, $data, $form);
     }
 }

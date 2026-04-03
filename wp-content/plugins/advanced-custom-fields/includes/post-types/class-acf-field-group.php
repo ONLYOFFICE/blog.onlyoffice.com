@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -93,6 +102,9 @@ if ( ! class_exists( 'ACF_Field_Group' ) ) {
 				'active'                => true,
 				'description'           => '',
 				'show_in_rest'          => false,
+				'display_title'         => '',
+				'allow_ai_access'       => false,
+				'ai_description'        => '',
 			);
 		}
 
@@ -101,8 +113,8 @@ if ( ! class_exists( 'ACF_Field_Group' ) ) {
 		 *
 		 * @since 6.1
 		 *
-		 * @param int|WP_Post $id The post ID being queried.
-		 * @return array|bool The main ACF array for the post, or false on failure.
+		 * @param integer|WP_Post $id The post ID being queried.
+		 * @return array|boolean The main ACF array for the post, or false on failure.
 		 */
 		public function get_post( $id = 0 ) {
 			// Allow WP_Post to be passed.
@@ -194,8 +206,8 @@ if ( ! class_exists( 'ACF_Field_Group' ) ) {
 		 *
 		 * @since 6.1
 		 *
-		 * @param int|string $id The ID of the field group to delete.
-		 * @return bool
+		 * @param integer|string $id The ID of the field group to delete.
+		 * @return boolean
 		 */
 		public function delete_post( $id = 0 ) {
 			// Disable filters to ensure ACF loads data from DB.
@@ -239,8 +251,8 @@ if ( ! class_exists( 'ACF_Field_Group' ) ) {
 		 *
 		 * @since 6.1
 		 *
-		 * @param int|string $id The ID of the field group to trash.
-		 * @return bool
+		 * @param integer|string $id The ID of the field group to trash.
+		 * @return boolean
 		 */
 		public function trash_post( $id = 0 ) {
 			// Disable filters to ensure ACF loads data from DB.
@@ -280,8 +292,8 @@ if ( ! class_exists( 'ACF_Field_Group' ) ) {
 		 *
 		 * @since 6.1
 		 *
-		 * @param int|string $id The ID of the ACF post to untrash.
-		 * @return bool
+		 * @param integer|string $id The ID of the ACF post to untrash.
+		 * @return boolean
 		 */
 		public function untrash_post( $id = 0 ) {
 			// Disable filters to ensure ACF loads data from DB.
@@ -320,8 +332,8 @@ if ( ! class_exists( 'ACF_Field_Group' ) ) {
 		 *
 		 * @since 6.1
 		 *
-		 * @param int|string $id          The ID of the post to duplicate.
-		 * @param int        $new_post_id Optional post ID to override.
+		 * @param integer|string $id          The ID of the post to duplicate.
+		 * @param integer        $new_post_id Optional post ID to override.
 		 * @return array The new ACF post array.
 		 */
 		public function duplicate_post( $id = 0, $new_post_id = 0 ) {
@@ -345,10 +357,15 @@ if ( ! class_exists( 'ACF_Field_Group' ) ) {
 				$post['title'] .= ' (' . __( 'copy', 'acf' ) . ')';
 			}
 
-			// When importing a new field group, insert a temporary post and set the field group's ID.
+			// When duplicating a field group, insert a temporary post and set the field group's ID.
 			// This allows fields to be updated before the field group (field group ID is needed for field parent setting).
 			if ( ! $post['ID'] ) {
-				$post['ID'] = wp_insert_post( array( 'post_title' => $post['key'] ) );
+				$post['ID'] = wp_insert_post(
+					array(
+						'post_title' => $post['key'],
+						'post_type'  => $this->post_type,
+					)
+				);
 			}
 
 			// Duplicate fields and update post.
@@ -495,9 +512,13 @@ if ( ! class_exists( 'ACF_Field_Group' ) ) {
 			// When importing a new field group, insert a temporary post and set the field group's ID.
 			// This allows fields to be updated before the field group (field group ID is needed for field parent setting).
 			if ( ! $post['ID'] ) {
-				$post['ID'] = wp_insert_post( array( 'post_title' => $post['key'] ) );
+				$post['ID'] = wp_insert_post(
+					array(
+						'post_title' => $post['key'],
+						'post_type'  => $this->post_type,
+					)
+				);
 			}
-
 			// Add field group data to $ids map.
 			$ids[ $post['key'] ] = $post['ID'];
 
@@ -539,7 +560,6 @@ if ( ! class_exists( 'ACF_Field_Group' ) ) {
 
 			return $post;
 		}
-
 	}
 
 }

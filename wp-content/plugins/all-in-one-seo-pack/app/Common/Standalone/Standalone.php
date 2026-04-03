@@ -1,6 +1,11 @@
 <?php
 namespace AIOSEO\Plugin\Common\Standalone;
 
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use AIOSEO\Plugin\Pro\Standalone as ProStandalone;
 
 /**
@@ -55,11 +60,38 @@ class Standalone {
 	public $primaryTerm = null;
 
 	/**
+	 * UserProfileTab class instance.
+	 *
+	 * @since 4.5.4
+	 *
+	 * @var UserProfileTab
+	 */
+	public $userProfileTab = null;
+
+	/**
+	 * BuddyPress class instance.
+	 *
+	 * @since 4.7.6
+	 *
+	 * @var BuddyPress\BuddyPress
+	 */
+	public $buddyPress = null;
+
+	/**
+	 * BbPress class instance.
+	 *
+	 * @since 4.8.1
+	 *
+	 * @var BbPress\BbPress
+	 */
+	public $bbPress = null;
+
+	/**
 	 * List of page builder integration class instances.
 	 *
 	 * @since 4.2.7
 	 *
-	 * @var array[Object]
+	 * @var object[]
 	 */
 	public $pageBuilderIntegrations = [];
 
@@ -68,7 +100,7 @@ class Standalone {
 	 *
 	 * @since 4.2.7
 	 *
-	 * @var array[Object]
+	 * @var object[]
 	 */
 	public $standaloneBlocks = [];
 
@@ -83,23 +115,35 @@ class Standalone {
 		$this->seoPreview       = new SeoPreview();
 		$this->setupWizard      = new SetupWizard();
 		$this->primaryTerm      = aioseo()->pro ? new ProStandalone\PrimaryTerm() : new PrimaryTerm();
+		$this->userProfileTab   = new UserProfileTab();
+		$this->buddyPress       = aioseo()->pro ? new ProStandalone\BuddyPress\BuddyPress() : new BuddyPress\BuddyPress();
+		$this->bbPress          = aioseo()->pro ? new ProStandalone\BbPress\BbPress() : new BbPress\BbPress();
 
 		aioseo()->pro ? new ProStandalone\DetailsColumn() : new DetailsColumn();
 
-		new UserProfileTab();
-		new PublishPanel();
+		new AdminBarNoindexWarning();
 		new LimitModifiedDate();
 		new Notifications();
+		new PublishPanel();
+		new WpCode();
 
 		$this->pageBuilderIntegrations = [
-			'elementor' => new PageBuilders\Elementor(),
-			'divi'      => new PageBuilders\Divi(),
-			'seedprod'  => new PageBuilders\SeedProd()
+			'elementor'  => new PageBuilders\Elementor(),
+			'divi'       => new PageBuilders\Divi(),
+			'seedprod'   => new PageBuilders\SeedProd(),
+			'wpbakery'   => new PageBuilders\WPBakery(),
+			'avada'      => new PageBuilders\Avada(),
+			'siteorigin' => new PageBuilders\SiteOrigin(),
+			'thrive'     => new PageBuilders\ThriveArchitect(),
+			'bricks'     => new PageBuilders\Bricks(),
+			'oxygen'     => new PageBuilders\Oxygen()
 		];
 
 		$this->standaloneBlocks = [
-			'tocBlock' => new Blocks\TableOfContents(),
-			'faqBlock' => new Blocks\FaqPage()
+			'tocBlock'       => new Blocks\TableOfContents(),
+			'faqBlock'       => new Blocks\FaqPage(),
+			'keyPointsBlock' => new Blocks\KeyPoints(),
+			'aiAssistant'    => new Blocks\AiAssistant()
 		];
 	}
 }

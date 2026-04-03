@@ -2,6 +2,9 @@
 
 namespace FluentForm\App\Modules\CLI;
 
+use FluentForm\App\Models\Form;
+use FluentForm\App\Models\Submission;
+
 class Commands
 {
     public function stats($args, $assoc_args)
@@ -9,16 +12,15 @@ class Commands
         $overallStats = [
             [
                 'title' => __('All Forms', 'fluentform'),
-                'count' => wpFluent()->table('fluentform_forms')->count(),
+                'count' => Form::count(),
             ],
             [
                 'title' => __('All Submissions', 'fluentform'),
-                'count' => wpFluent()->table('fluentform_submissions')->count(),
+                'count' => Submission::count(),
             ],
             [
                 'title' => __('Unread Submissions', 'fluentform'),
-                'count' => wpFluent()->table('fluentform_submissions')
-                    ->where('status', 'unread')
+                'count' => Submission::where('status', 'unread')
                     ->count(),
             ],
         ];

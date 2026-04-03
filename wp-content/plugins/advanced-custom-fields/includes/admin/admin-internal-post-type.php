@@ -1,12 +1,12 @@
 <?php
 /**
- * ACF Internal Post Type class
- *
- * Base class to add functionality to ACF internal post types.
- *
  * @package ACF
- * @subpackage Admin
- * @since 6.1
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -45,7 +45,6 @@ if ( ! class_exists( 'ACF_Admin_Internal_Post_Type' ) ) :
 			add_action( 'current_screen', array( $this, 'current_screen' ) );
 			add_action( 'save_post_' . $this->post_type, array( $this, 'save_post' ), 10, 2 );
 			add_action( 'wp_ajax_acf/link_field_groups', array( $this, 'ajax_link_field_groups' ) );
-			add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
 			add_filter( 'use_block_editor_for_post_type', array( $this, 'use_block_editor_for_post_type' ), 10, 2 );
 		}
 
@@ -54,9 +53,9 @@ if ( ! class_exists( 'ACF_Admin_Internal_Post_Type' ) ) :
 		 *
 		 * @since   5.8.0
 		 *
-		 * @param bool   $use_block_editor Whether the post type can be edited or not. Default true.
-		 * @param string $post_type        The post type being checked.
-		 * @return bool
+		 * @param boolean $use_block_editor Whether the post type can be edited or not. Default true.
+		 * @param string  $post_type        The post type being checked.
+		 * @return boolean
 		 */
 		public function use_block_editor_for_post_type( $use_block_editor, $post_type ) {
 			if ( $post_type === $this->post_type ) {
@@ -82,8 +81,6 @@ if ( ! class_exists( 'ACF_Admin_Internal_Post_Type' ) ) :
 		 * This function is fired when loading the admin page before HTML has been rendered.
 		 *
 		 * @since 5.0.0
-		 *
-		 * @return void
 		 */
 		public function current_screen() {
 			if ( ! acf_is_screen( $this->post_type ) ) {
@@ -94,12 +91,15 @@ if ( ! class_exists( 'ACF_Admin_Internal_Post_Type' ) ) :
 			acf_enqueue_scripts();
 
 			add_action( 'admin_body_class', array( $this, 'admin_body_class' ) );
+			add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
 			add_action( 'acf/input/admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 			add_action( 'acf/input/admin_head', array( $this, 'admin_head' ) );
 			add_action( 'acf/input/form_data', array( $this, 'form_data' ) );
 			add_action( 'acf/input/admin_footer', array( $this, 'admin_footer' ) );
 
 			add_filter( 'acf/input/admin_l10n', array( $this, 'admin_l10n' ) );
+
+			do_action( 'acf/internal_post_type/current_screen', $this->post_type );
 		}
 
 		/**
@@ -111,15 +111,14 @@ if ( ! class_exists( 'ACF_Admin_Internal_Post_Type' ) ) :
 		 * @return string
 		 */
 		public function admin_body_class( $classes ) {
-			return $classes . ' acf-admin-page acf-internal-post-type ' . esc_attr( $this->admin_body_class );
+			$classes .= ' acf-admin-page acf-internal-post-type ' . esc_attr( $this->admin_body_class );
+			return apply_filters( 'acf/internal_post_type/admin_body_classes', $classes, $this->post_type );
 		}
 
 		/**
 		 * Enqueues any scripts necessary for internal post type.
 		 *
 		 * @since 5.0.0
-		 *
-		 * @return void
 		 */
 		public function admin_enqueue_scripts() {
 			wp_enqueue_script( 'acf-internal-post-type' );
@@ -133,8 +132,6 @@ if ( ! class_exists( 'ACF_Admin_Internal_Post_Type' ) ) :
 		 * Set up functionality for the field group edit page.
 		 *
 		 * @since 3.1.8
-		 *
-		 * @return void
 		 */
 		public function admin_head() {
 			// Override as necessary.
@@ -143,10 +140,10 @@ if ( ! class_exists( 'ACF_Admin_Internal_Post_Type' ) ) :
 		/**
 		 * Adds extra HTML to the acf form data element.
 		 *
-		 *  @since 5.3.8
+		 * @since 5.3.8
 		 *
-		 *  @param array $args Arguments array to pass through to action.
-		 *  @return void
+		 * @param array $args Arguments array to pass through to action.
+		 * @return void
 		 */
 		public function form_data( $args ) {
 			// Override as necessary.
@@ -156,8 +153,6 @@ if ( ! class_exists( 'ACF_Admin_Internal_Post_Type' ) ) :
 		 * Admin footer third party hook support
 		 *
 		 * @since 5.3.2
-		 *
-		 * @return void
 		 */
 		public function admin_footer() {
 			// Override as necessary.
@@ -180,10 +175,9 @@ if ( ! class_exists( 'ACF_Admin_Internal_Post_Type' ) ) :
 		 *
 		 * @since 6.1
 		 *
-		 * @param int     $post_id The ID of the post being saved.
+		 * @param integer $post_id The ID of the post being saved.
 		 * @param WP_Post $post    The post object.
-		 *
-		 * @return bool
+		 * @return boolean
 		 */
 		public function verify_save_post( $post_id, $post ) {
 			// Do not save if this is an auto save routine.
@@ -224,8 +218,6 @@ if ( ! class_exists( 'ACF_Admin_Internal_Post_Type' ) ) :
 		 * Powers the modal for linking field groups to newly-created CPTs/taxonomies.
 		 *
 		 * @since 6.1
-		 *
-		 * @return void
 		 */
 		public function ajax_link_field_groups() {
 			// Disable filters to ensure ACF loads raw data from DB.
@@ -259,11 +251,22 @@ if ( ! class_exists( 'ACF_Admin_Internal_Post_Type' ) ) :
 						continue;
 					}
 
+					if ( 'acf-post-type' === $post_type ) {
+						$param = 'post_type';
+						$value = $saved_post['post_type'];
+					} elseif ( 'acf-taxonomy' === $post_type ) {
+						$param = 'taxonomy';
+						$value = $saved_post['taxonomy'];
+					} else {
+						$param = 'options_page';
+						$value = $saved_post['menu_slug'];
+					}
+
 					$field_group['location'][] = array(
 						array(
-							'param'    => 'acf-post-type' === $post_type ? 'post_type' : 'taxonomy',
+							'param'    => $param,
 							'operator' => '==',
-							'value'    => 'acf-post-type' === $post_type ? $saved_post['post_type'] : $saved_post['taxonomy'],
+							'value'    => $value,
 						),
 					);
 
@@ -305,6 +308,12 @@ if ( ! class_exists( 'ACF_Admin_Internal_Post_Type' ) ) :
 				}
 			}
 
+			$instructions = sprintf(
+				/* translators: %s - either "post type" or "taxonomy" */
+				__( 'Add this %s to the location rules of the selected field groups.', 'acf' ),
+				'acf-post-type' === $post_type ? __( 'post type', 'acf' ) : __( 'taxonomy', 'acf' )
+			);
+
 			$field = acf_get_valid_field(
 				array(
 					'type'         => 'select',
@@ -312,7 +321,8 @@ if ( ! class_exists( 'ACF_Admin_Internal_Post_Type' ) ) :
 					'choices'      => $choices,
 					'aria-label'   => __( 'Please select the field groups to link.', 'acf' ),
 					'placeholder'  => __( 'Select one or many field groups...', 'acf' ),
-					'instructions' => __( 'Field group(s)', 'acf' ),
+					'label'        => __( 'Field Group(s)', 'acf' ),
+					'instructions' => $instructions,
 					'ui'           => true,
 					'multiple'     => true,
 					'allow_null'   => true,
@@ -322,7 +332,7 @@ if ( ! class_exists( 'ACF_Admin_Internal_Post_Type' ) ) :
 			ob_start();
 			?>
 			<form id="acf-link-field-groups-form">
-				<?php acf_render_field_wrap( $field ); ?>
+				<?php acf_render_field_wrap( $field, 'div', 'field' ); ?>
 				<div class="acf-actions">
 					<button type="button" class="acf-btn acf-btn-secondary acf-close-popup"><?php esc_html_e( 'Cancel', 'acf' ); ?></button>
 					<button type="submit" class="acf-btn acf-btn-primary"><?php esc_html_e( 'Done', 'acf' ); ?></button>
@@ -330,21 +340,14 @@ if ( ! class_exists( 'ACF_Admin_Internal_Post_Type' ) ) :
 			</form>
 			<?php
 			$content = ob_get_clean();
-			$title   = sprintf(
-				/* translators: %1$s - name of newly created post. %2$s - either "post type" or "taxonomy". */
-				__( 'Link %1$s %2$s to field groups', 'acf' ),
-				isset( $saved_post['title'] ) ? $saved_post['title'] : '',
-				'acf-post-type' === $post_type ? __( 'post type', 'acf' ) : __( 'taxonomy', 'acf' )
-			);
 
 			wp_send_json_success(
 				array(
 					'content' => $content,
-					'title'   => $title,
+					'title'   => esc_html__( 'Link Existing Field Groups', 'acf' ),
 				)
 			);
 		}
-
 	}
 
 endif; // Class exists check.

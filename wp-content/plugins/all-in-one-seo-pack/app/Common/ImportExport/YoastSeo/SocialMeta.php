@@ -67,12 +67,13 @@ class SocialMeta {
 			'myspace_url'   => [ 'type' => 'string', 'newOption' => [ 'social', 'profiles', 'urls', 'myspaceUrl' ] ],
 			'pinterest_url' => [ 'type' => 'string', 'newOption' => [ 'social', 'profiles', 'urls', 'pinterestUrl' ] ],
 			'youtube_url'   => [ 'type' => 'string', 'newOption' => [ 'social', 'profiles', 'urls', 'youtubeUrl' ] ],
-			'wikipedia_url' => [ 'type' => 'string', 'newOption' => [ 'social', 'profiles', 'urls', 'wikipediaUrl' ] ]
+			'wikipedia_url' => [ 'type' => 'string', 'newOption' => [ 'social', 'profiles', 'urls', 'wikipediaUrl' ] ],
+			'wordpress_url' => [ 'type' => 'string', 'newOption' => [ 'social', 'profiles', 'urls', 'wordPressUrl' ] ],
 		];
 
 		if ( ! empty( $this->options['twitter_site'] ) ) {
 			aioseo()->options->social->profiles->urls->twitterUrl =
-				'https://twitter.com/' . aioseo()->helpers->sanitizeOption( $this->options['twitter_site'] );
+				'https://x.com/' . aioseo()->helpers->sanitizeOption( $this->options['twitter_site'] );
 		}
 
 		aioseo()->importExport->yoastSeo->helpers->mapOldToNew( $settings, $this->options );

@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AIOSEO\Plugin\Common\Integrations\BuddyPress as BuddyPressIntegration;
+
 /**
  * ProfilePage graph class.
  *
@@ -15,9 +17,76 @@ class ProfilePage extends WebPage {
 	/**
 	 * The graph type.
 	 *
-	 * @since 4.0.0
+	 * @since 4.5.6
 	 *
 	 * @var string
 	 */
 	protected $type = 'ProfilePage';
+
+	/**
+	 * Returns the graph data.
+	 *
+	 * @since 4.5.4
+	 *
+	 * @return array The graph data.
+	 */
+	public function get() {
+		$data = parent::get();
+
+		$post          = aioseo()->helpers->getPost();
+		$queriedObject = get_queried_object();
+		if (
+			( is_singular() && ! is_a( $post, 'WP_Post' ) ) ||
+			( ! is_singular() && ! is_a( $queriedObject, 'WP_User' ) )
+		) {
+			return [];
+		}
+
+		$isBuddyPressMemberPage = BuddyPressIntegration::isComponentPage() && 'bp-member_single' === aioseo()->standalone->buddyPress->component->templateType;
+
+		if ( $isBuddyPressMemberPage ) {
+			$author   = aioseo()->standalone->buddyPress->component->author;
+			$authorId = $author->ID;
+		} else {
+			$authorId = is_a( $queriedObject, 'WP_User' ) ? $queriedObject->ID : $post->post_author;
+			$author   = is_a( $queriedObject, 'WP_User' ) ? $queriedObject : get_user_by( 'id', $authorId );
+		}
+
+		global $wp_query; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+
+		$articles = [];
+		foreach ( $wp_query->posts as $post ) { // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+			if ( $post->post_author !== $authorId ) {
+				continue;
+			}
+
+			$articles[] = [
+				'@type'         => 'Article',
+				'url'           => get_permalink( $post->ID ),
+				'headline'      => $post->post_title,
+				'datePublished' => mysql2date( DATE_W3C, $post->post_date, false ),
+				'dateModified'  => mysql2date( DATE_W3C, $post->post_modified, false ),
+				'author'        => [
+					'@id' => get_author_posts_url( $authorId ) . '#author'
+				]
+			];
+		}
+
+		$data = array_merge( $data, [
+			'dateCreated' => mysql2date( DATE_W3C, $author->user_registered, false ),
+			'mainEntity'  => [
+				'@id' => get_author_posts_url( $authorId ) . '#author'
+			],
+			'hasPart'     => $articles
+
+		] );
+
+		if ( $isBuddyPressMemberPage ) {
+			$data['mainEntity']['@type'] = 'Person';
+			$data['mainEntity']['name']  = $author->display_name;
+			$data['mainEntity']['url']   = BuddyPressIntegration::getComponentSingleUrl( 'member', $authorId );
+		}
+
+		return $data;
+	}
 }

@@ -42,6 +42,7 @@ class Turnstile
 
         $settings['invisible'] = ArrayHelper::get($settings, 'invisible', 'no');
         $settings['theme'] = ArrayHelper::get($settings, 'theme', 'auto');
+        $settings['appearance'] = ArrayHelper::get($settings, 'appearance', 'always');
         unset($settings['token']);
 
         $values['_fluentform_turnstile_details'] = $settings;

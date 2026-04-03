@@ -29,17 +29,19 @@ class Post extends Model {
 	 * @var array
 	 */
 	protected $jsonFields = [
-		// 'keywords',
-		// 'keyphrases',
-		// 'page_analysis',
+		'keywords',
+		'keyphrases',
+		'page_analysis',
 		'schema',
-		// 'schema_type_options',
 		'images',
 		'videos',
-		'open_ai',
+		'ai',
 		'options',
 		'local_seo',
-		'primary_term'
+		'primary_term',
+		'breadcrumb_settings',
+		'og_article_tags',
+		'ai'
 	];
 
 	/**
@@ -70,6 +72,28 @@ class Post extends Model {
 		'robots_noodp',
 		'robots_notranslate',
 		'limit_modified_date',
+	];
+
+	/**
+	 * Fields that can be null when saved.
+	 *
+	 * @since 4.5.7
+	 *
+	 * @var array
+	 */
+	protected $nullFields = [
+		'priority'
+	];
+
+	/**
+	 * Fields that should be float values.
+	 *
+	 * @since 4.7.3
+	 *
+	 * @var array
+	 */
+	protected $floatFields = [
+		'priority'
 	];
 
 	/**
@@ -180,6 +204,7 @@ class Post extends Model {
 		$post = self::migrateRemovedQaSchema( $post );
 		$post = self::migrateImageTypes( $post );
 		$post = self::runDynamicSchemaMigration( $post );
+		$post = self::migrateKoreaCountryCodeSchemas( $post );
 
 		return $post;
 	}
@@ -207,11 +232,36 @@ class Post extends Model {
 		// is correctly propagated on the frontend after changing it.
 		$post->schema = self::getDefaultSchemaOptions( $post->schema );
 
+		// Filter out null or empty graphs.
+		$post->schema->graphs = array_filter( $post->schema->graphs, function( $graph ) {
+			return ! empty( $graph );
+		} );
+
 		foreach ( $post->schema->graphs as $graph ) {
 			// If the first character of the graph ID isn't a pound, add one.
 			// We have to do this because the schema migration in 4.2.5 didn't add the pound for custom graphs.
-			if ( '#' !== substr( $graph->id, 0, 1 ) ) {
+			if ( property_exists( $graph, 'id' ) && '#' !== substr( $graph->id, 0, 1 ) ) {
 				$graph->id = '#' . $graph->id;
+			}
+
+			// If the graph has an old rating value, we need to migrate it to the review.
+			if (
+				property_exists( $graph, 'id' ) &&
+				preg_match( '/(movie|software-application)/', (string) $graph->id ) &&
+				property_exists( $graph->properties, 'rating' ) &&
+				property_exists( $graph->properties->rating, 'value' )
+			) {
+				$graph->properties->review->rating = $graph->properties->rating->value;
+				unset( $graph->properties->rating->value );
+			}
+
+			// If the graph has audience data, we need to migrate it to the correct one.
+			if (
+				property_exists( $graph, 'id' ) &&
+				preg_match( '/(product|product-review)/', $graph->id ) &&
+				property_exists( $graph->properties, 'audience' )
+			) {
+				$graph->properties->audience = self::migratePostAudienceAgeSchema( $graph->properties->audience );
 			}
 		}
 
@@ -262,10 +312,10 @@ class Post extends Model {
 		}
 
 		$thePost = self::getPost( $postId );
-		// Before setting the data, we check if the title/description are the same as the defaults and clear them if so.
-		$data = self::checkForDefaultFormat( $postId, $thePost, $data );
+		$data    = apply_filters( 'aioseo_save_post', $data, $thePost );
 
-		$thePost = apply_filters( 'aioseo_save_post', $thePost );
+		// Before setting the data, we check if the title/description are the same as the defaults and clear them if so.
+		$data    = self::checkForDefaultFormat( $postId, $thePost, $data );
 		$thePost = self::sanitizeAndSetDefaults( $postId, $thePost, $data );
 
 		// Update traditional post meta so that it can be used by multilingual plugins.
@@ -278,6 +328,9 @@ class Post extends Model {
 		if ( ! empty( $lastError ) ) {
 			return $lastError;
 		}
+
+		// Fires once an AIOSEO post has been saved.
+		do_action( 'aioseo_insert_post', $postId );
 	}
 
 	/**
@@ -292,8 +345,8 @@ class Post extends Model {
 	 * @return array          The data.
 	 */
 	private static function checkForDefaultFormat( $postId, $thePost, $data ) {
-		$data['title']       = trim( $data['title'] );
-		$data['description'] = trim( $data['description'] );
+		$data['title']       = trim( (string) $data['title'] );
+		$data['description'] = trim( (string) $data['description'] );
 
 		$post                     = aioseo()->helpers->getPost( $postId );
 		$defaultTitleFormat       = trim( aioseo()->meta->title->getPostTypeTitle( $post->post_type ) );
@@ -368,8 +421,8 @@ class Post extends Model {
 
 		foreach ( $data['analysis'] as &$analysis ) {
 			foreach ( $analysis as $key => $result ) {
-				// Remove unnecessary 'title' and 'description'.
-				foreach ( [ 'title', 'description' ] as $keyToRemove ) {
+				// Remove unnecessary data.
+				foreach ( [ 'title', 'description', 'highlightSentences' ] as $keyToRemove ) {
 					if ( isset( $analysis[ $key ][ $keyToRemove ] ) ) {
 						unset( $analysis[ $key ][ $keyToRemove ] );
 					}
@@ -390,21 +443,21 @@ class Post extends Model {
 	 * @param  array $data    The data.
 	 * @return Post           The Post object with data set.
 	 */
-	private static function sanitizeAndSetDefaults( $postId, $thePost, $data ) {
+	protected static function sanitizeAndSetDefaults( $postId, $thePost, $data ) {
 		// General
 		$thePost->post_id                     = $postId;
 		$thePost->title                       = ! empty( $data['title'] ) ? sanitize_text_field( $data['title'] ) : null;
 		$thePost->description                 = ! empty( $data['description'] ) ? sanitize_text_field( $data['description'] ) : null;
-		$thePost->canonical_url               = ! empty( $data['canonicalUrl'] ) ? esc_url_raw( $data['canonicalUrl'] ) : null;
-		$thePost->keywords                    = ! empty( $data['keywords'] ) ? sanitize_text_field( $data['keywords'] ) : null;
+		$thePost->canonical_url               = ! empty( $data['canonicalUrl'] ) ? sanitize_text_field( $data['canonicalUrl'] ) : null;
+		$thePost->keywords                    = ! empty( $data['keywords'] ) ? aioseo()->helpers->sanitize( $data['keywords'] ) : null;
 		$thePost->pillar_content              = isset( $data['pillar_content'] ) ? rest_sanitize_boolean( $data['pillar_content'] ) : 0;
 		// TruSEO
-		$thePost->keyphrases                  = ! empty( $data['keyphrases'] ) ? wp_json_encode( self::sanitizeKeyphrases( $data['keyphrases'] ) ) : null;
-		$thePost->page_analysis               = ! empty( $data['page_analysis'] ) ? wp_json_encode( self::sanitizePageAnalysis( $data['page_analysis'] ) ) : null;
+		$thePost->keyphrases                  = ! empty( $data['keyphrases'] ) ? self::sanitizeKeyphrases( $data['keyphrases'] ) : null;
+		$thePost->page_analysis               = ! empty( $data['page_analysis'] ) ? self::sanitizePageAnalysis( $data['page_analysis'] ) : null;
 		$thePost->seo_score                   = ! empty( $data['seo_score'] ) ? sanitize_text_field( $data['seo_score'] ) : 0;
 		// Sitemap
-		$thePost->priority                    = ! empty( $data['priority'] ) ? sanitize_text_field( $data['priority'] ) : null;
-		$thePost->frequency                   = ! empty( $data['frequency'] ) ? sanitize_text_field( $data['frequency'] ) : null;
+		$thePost->priority                    = isset( $data['priority'] ) ? ( 'default' === sanitize_text_field( $data['priority'] ) ? null : (float) $data['priority'] ) : null;
+		$thePost->frequency                   = ! empty( $data['frequency'] ) ? sanitize_text_field( $data['frequency'] ) : 'default';
 		// Robots Meta
 		$thePost->robots_default              = isset( $data['default'] ) ? rest_sanitize_boolean( $data['default'] ) : 1;
 		$thePost->robots_noindex              = isset( $data['noindex'] ) ? rest_sanitize_boolean( $data['noindex'] ) : 0;
@@ -414,8 +467,8 @@ class Post extends Model {
 		$thePost->robots_noimageindex         = isset( $data['noimageindex'] ) ? rest_sanitize_boolean( $data['noimageindex'] ) : 0;
 		$thePost->robots_nosnippet            = isset( $data['nosnippet'] ) ? rest_sanitize_boolean( $data['nosnippet'] ) : 0;
 		$thePost->robots_noodp                = isset( $data['noodp'] ) ? rest_sanitize_boolean( $data['noodp'] ) : 0;
-		$thePost->robots_max_snippet          = ! empty( $data['maxSnippet'] ) ? (int) sanitize_text_field( $data['maxSnippet'] ) : -1;
-		$thePost->robots_max_videopreview     = ! empty( $data['maxVideoPreview'] ) ? (int) sanitize_text_field( $data['maxVideoPreview'] ) : -1;
+		$thePost->robots_max_snippet          = isset( $data['maxSnippet'] ) && is_numeric( $data['maxSnippet'] ) ? (int) sanitize_text_field( $data['maxSnippet'] ) : -1;
+		$thePost->robots_max_videopreview     = isset( $data['maxVideoPreview'] ) && is_numeric( $data['maxVideoPreview'] ) ? (int) sanitize_text_field( $data['maxVideoPreview'] ) : -1;
 		$thePost->robots_max_imagepreview     = ! empty( $data['maxImagePreview'] ) ? sanitize_text_field( $data['maxImagePreview'] ) : 'large';
 		// Open Graph Meta
 		$thePost->og_title                    = ! empty( $data['og_title'] ) ? sanitize_text_field( $data['og_title'] ) : null;
@@ -429,7 +482,7 @@ class Post extends Model {
 		$thePost->og_image_custom_fields      = ! empty( $data['og_image_custom_fields'] ) ? sanitize_text_field( $data['og_image_custom_fields'] ) : null;
 		$thePost->og_video                    = ! empty( $data['og_video'] ) ? sanitize_text_field( $data['og_video'] ) : '';
 		$thePost->og_article_section          = ! empty( $data['og_article_section'] ) ? sanitize_text_field( $data['og_article_section'] ) : null;
-		$thePost->og_article_tags             = ! empty( $data['og_article_tags'] ) ? sanitize_text_field( $data['og_article_tags'] ) : null;
+		$thePost->og_article_tags             = ! empty( $data['og_article_tags'] ) ? aioseo()->helpers->sanitize( $data['og_article_tags'] ) : null;
 		// Twitter Meta
 		$thePost->twitter_title               = ! empty( $data['twitter_title'] ) ? sanitize_text_field( $data['twitter_title'] ) : null;
 		$thePost->twitter_description         = ! empty( $data['twitter_description'] ) ? sanitize_text_field( $data['twitter_description'] ) : null;
@@ -440,16 +493,13 @@ class Post extends Model {
 		$thePost->twitter_image_custom_url    = ! empty( $data['twitter_image_custom_url'] ) ? esc_url_raw( $data['twitter_image_custom_url'] ) : null;
 		$thePost->twitter_image_custom_fields = ! empty( $data['twitter_image_custom_fields'] ) ? sanitize_text_field( $data['twitter_image_custom_fields'] ) : null;
 		// Schema
-		$thePost->schema                      = ! empty( $data['schema'] )
-			? wp_json_encode( self::getDefaultSchemaOptions( $data['schema'] ) )
-			: wp_json_encode( self::getDefaultSchemaOptions() );
+		$thePost->schema                      = ! empty( $data['schema'] ) ? self::getDefaultSchemaOptions( $data['schema'] ) : null;
 		$thePost->local_seo                   = ! empty( $data['local_seo'] ) ? $data['local_seo'] : null;
 		$thePost->limit_modified_date         = isset( $data['limit_modified_date'] ) ? rest_sanitize_boolean( $data['limit_modified_date'] ) : 0;
-		$thePost->open_ai                     = ! empty( $data['open_ai'] )
-			? wp_json_encode( self::getDefaultOpenAiOptions( $data['open_ai'] ) )
-			: wp_json_encode( self::getDefaultOpenAiOptions() );
+		$thePost->ai                          = ! empty( $data['ai'] ) ? self::getDefaultAiOptions( $data['ai'] ) : null;
 		$thePost->updated                     = gmdate( 'Y-m-d H:i:s' );
 		$thePost->primary_term                = ! empty( $data['primary_term'] ) ? $data['primary_term'] : null;
+		$thePost->breadcrumb_settings         = isset( $data['breadcrumb_settings']['default'] ) && false === $data['breadcrumb_settings']['default'] ? $data['breadcrumb_settings'] : null;
 
 		// Before we determine the OG/Twitter image, we need to set the meta data cache manually because the changes haven't been saved yet.
 		aioseo()->meta->metaData->bustPostCache( $thePost->post_id, $thePost );
@@ -459,6 +509,13 @@ class Post extends Model {
 
 		if ( ! $thePost->exists() ) {
 			$thePost->created = gmdate( 'Y-m-d H:i:s' );
+		}
+
+		// Update defaults from addons.
+		foreach ( aioseo()->addons->getLoadedAddons() as $addon ) {
+			if ( isset( $addon->postModel ) && method_exists( $addon->postModel, 'sanitizeAndSetDefaults' ) ) {
+				$thePost = $addon->postModel->sanitizeAndSetDefaults( $postId, $thePost, $data );
+			}
 		}
 
 		return $thePost;
@@ -530,7 +587,7 @@ class Post extends Model {
 	 * @param  array $data   The data.
 	 * @return void
 	 */
-	private static function updatePostMeta( $postId, $data ) {
+	public static function updatePostMeta( $postId, $data ) {
 		// Update the post meta as well for localization.
 		$keywords      = ! empty( $data['keywords'] ) ? aioseo()->helpers->jsonTagsToCommaSeparatedList( $data['keywords'] ) : [];
 		$ogArticleTags = ! empty( $data['og_article_tags'] ) ? aioseo()->helpers->jsonTagsToCommaSeparatedList( $data['og_article_tags'] ) : [];
@@ -551,9 +608,10 @@ class Post extends Model {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return object The default values.
+	 * @param  object|null $pageAnalysis The page analysis object.
+	 * @return object                    The default values.
 	 */
-	public static function getPageAnalysisDefaults() {
+	public static function getPageAnalysisDefaults( $pageAnalysis = null ) {
 		$defaults = [
 			'analysis' => [
 				'basic'       => [
@@ -580,7 +638,11 @@ class Post extends Model {
 			]
 		];
 
-		return json_decode( wp_json_encode( $defaults ) );
+		if ( empty( $pageAnalysis ) ) {
+			return json_decode( wp_json_encode( $defaults ) );
+		}
+
+		return $pageAnalysis;
 	}
 
 	/**
@@ -588,9 +650,9 @@ class Post extends Model {
 	 *
 	 * @since 4.2.5
 	 *
-	 * @param  string       $existingOptions The existing options in JSON.
-	 * @param  null|WP_Post $post            The post object.
-	 * @return string                        The existing options with defaults added in JSON.
+	 * @param  string        $existingOptions The existing options in JSON.
+	 * @param  null|\WP_Post $post            The post object.
+	 * @return object                         The existing options with defaults added in JSON.
 	 */
 	public static function getDefaultSchemaOptions( $existingOptions = '', $post = null ) {
 		$defaultGraphName = aioseo()->schema->getDefaultPostTypeGraph( $post );
@@ -607,13 +669,15 @@ class Post extends Model {
 					'Movie'               => [],
 					'Person'              => [],
 					'Product'             => [],
+					'ProductReview'       => [],
+					'Car'                 => [],
 					'Recipe'              => [],
 					'Service'             => [],
 					'SoftwareApplication' => [],
 					'WebPage'             => []
 				],
 				'graphName' => $defaultGraphName,
-				'isEnabled' => true,
+				'isEnabled' => true
 			],
 			'graphs'       => []
 		];
@@ -633,7 +697,9 @@ class Post extends Model {
 		}
 
 		// Reset the default graph type to make sure it's accurate.
-		$existingOptions['default']['graphName'] = $defaultGraphName;
+		if ( $defaultGraphName ) {
+			$existingOptions['default']['graphName'] = $defaultGraphName;
+		}
 
 		return json_decode( wp_json_encode( $existingOptions ) );
 	}
@@ -643,12 +709,11 @@ class Post extends Model {
 	 *
 	 * @since 4.1.7
 	 *
-	 * @param  string $keyphrases The database keyphrases.
-	 * @return object             The defaults.
+	 * @param  null|object $keyphrases The database keyphrases.
+	 * @return object                  The defaults.
 	 */
-	public static function getKeyphrasesDefaults( $keyphrases = '' ) {
-		$keyphrases = json_decode( (string) $keyphrases );
-		$defaults   = [
+	public static function getKeyphrasesDefaults( $keyphrases = null ) {
+		$defaults = [
 			'focus'      => [
 				'keyphrase' => '',
 				'score'     => 0,
@@ -712,23 +777,30 @@ class Post extends Model {
 	}
 
 	/**
-	 * Returns the default Open AI options.
+	 * Returns the default breadcrumb settings options.
 	 *
-	 * @since 4.3.2
+	 * @since 4.8.3
 	 *
-	 * @param  array $existingOptions The existing options.
-	 * @return array                  The default options.
+	 * @param  array  $postType        The post type.
+	 * @param  array  $existingOptions The existing options.
+	 * @return object                  The default options.
 	 */
-	public static function getDefaultOpenAiOptions( $existingOptions = '' ) {
+	public static function getDefaultBreadcrumbSettingsOptions( $postType, $existingOptions = [] ) {
+		$default       = aioseo()->dynamicOptions->breadcrumbs->postTypes->$postType->useDefaultTemplate ?? true;
+		$showHomeCrumb = $default ? aioseo()->options->breadcrumbs->homepageLink : aioseo()->dynamicOptions->breadcrumbs->postTypes->$postType->showHomeCrumb ?? true;
+		$allTaxonomies = get_object_taxonomies( $postType, 'objects' );
+		$taxonomy      = aioseo()->dynamicOptions->breadcrumbs->postTypes->$postType->taxonomy ?? array_values( $allTaxonomies )[0]->name ?? '';
+
 		$defaults = [
-			'title'       => [
-				'suggestions' => [],
-				'usage'       => 0
-			],
-			'description' => [
-				'suggestions' => [],
-				'usage'       => 0
-			]
+			'default'            => true,
+			'separator'          => aioseo()->options->breadcrumbs->separator,
+			'showHomeCrumb'      => $showHomeCrumb ?? true,
+			'showTaxonomyCrumbs' => aioseo()->dynamicOptions->breadcrumbs->postTypes->$postType->showTaxonomyCrumbs ?? true,
+			'showParentCrumbs'   => aioseo()->dynamicOptions->breadcrumbs->postTypes->$postType->showParentCrumbs ?? true,
+			'template'           => aioseo()->helpers->encodeOutputHtml( aioseo()->breadcrumbs->frontend->getDefaultTemplate( 'single' ) ),
+			'parentTemplate'     => aioseo()->helpers->encodeOutputHtml( aioseo()->breadcrumbs->frontend->getDefaultTemplate( 'single' ) ),
+			'taxonomy'           => $taxonomy,
+			'primaryTerm'        => null
 		];
 
 		if ( empty( $existingOptions ) ) {
@@ -736,7 +808,142 @@ class Post extends Model {
 		}
 
 		$existingOptions = json_decode( wp_json_encode( $existingOptions ), true );
+		if ( ! is_array( $existingOptions ) ) {
+			return json_decode( wp_json_encode( $defaults ) );
+		}
+
 		$existingOptions = array_replace_recursive( $defaults, $existingOptions );
+
+		return json_decode( wp_json_encode( $existingOptions ) );
+	}
+
+	/**
+	 * Migrates the post's audience age schema data when it is loaded.
+	 * Min age: [0 => newborns, 0.25 => infants, 1 => toddlers, 5 => kids, 13 => adults]
+	 * Max age: [0.25 => newborns, 1 => infants, 5 => toddlers, 13 => kids]
+	 *
+	 * @since 4.7.9
+	 *
+	 * @param  object $audience The audience data.
+	 * @return object
+	 */
+	public static function migratePostAudienceAgeSchema( $audience ) {
+		$ages = [ 0, 0.25, 1, 5, 13 ];
+
+		// converts variable to integer if it's a number otherwise is null.
+		$parsedMinAge = filter_var( $audience->minimumAge, FILTER_VALIDATE_FLOAT, FILTER_NULL_ON_FAILURE );
+		$parsedMaxAge = filter_var( $audience->maximumAge, FILTER_VALIDATE_FLOAT, FILTER_NULL_ON_FAILURE );
+
+		if ( null === $parsedMinAge && null === $parsedMaxAge ) {
+			return $audience;
+		}
+
+		$minAge = is_numeric( $parsedMinAge ) ? $parsedMinAge : 0;
+		$maxAge = is_numeric( $parsedMaxAge ) ? $parsedMaxAge : null;
+
+		// get the minimumAge if available or the nearest bigger one.
+		foreach ( $ages as $age ) {
+			if ( $age >= $minAge ) {
+				$audience->minimumAge = $age;
+				break;
+			}
+		}
+
+		// get the maximumAge if available or the nearest bigger one.
+		foreach ( $ages as $age ) {
+			if ( $age >= $maxAge ) {
+				$maxAge = $age;
+				break;
+			}
+		}
+
+		// makes sure the maximumAge is 13 below
+		if ( null !== $maxAge ) {
+			$audience->maximumAge = 13 < $maxAge ? 13 : $maxAge;
+		}
+
+		// Minimum age 13 is for adults.
+		// If minimumAge is still higher or equal 13 then it's for adults and maximumAge should be empty.
+		if ( 13 <= $audience->minimumAge ) {
+			$audience->minimumAge = 13;
+			$audience->maximumAge = null;
+		}
+
+		return $audience;
+	}
+
+	/**
+	 * Migrates update Korea country code for Person, Product, Event, and JobsPosting schemas.
+	 *
+	 * @since 4.7.1
+	 *
+	 * @param  Post $aioseoPost The post object.
+	 * @return Post             The modified post object.
+	 */
+	private static function migrateKoreaCountryCodeSchemas( $aioseoPost ) {
+		if ( empty( $aioseoPost->schema ) || empty( $aioseoPost->schema->graphs ) ) {
+			return $aioseoPost;
+		}
+
+		foreach ( $aioseoPost->schema->graphs as $key => $graph ) {
+			if ( isset( $aioseoPost->schema->graphs[ $key ]->properties->location->country ) ) {
+				$aioseoPost->schema->graphs[ $key ]->properties->location->country = self::invertKoreaCode( $graph->properties->location->country );
+			}
+
+			if ( isset( $aioseoPost->schema->graphs[ $key ]->properties->shippingDestinations ) ) {
+				$aioseoPost->schema->graphs[ $key ]->properties->shippingDestinations = array_map( function( $item ) {
+					$item->country = self::invertKoreaCode( $item->country );
+
+					return $item;
+				}, $graph->properties->shippingDestinations );
+			}
+		}
+
+		$aioseoPost->save();
+
+		return $aioseoPost;
+	}
+
+	/**
+	 * Utility function to invert the country code for Korea.
+	 *
+	 * @since 4.7.1
+	 *
+	 * @param  string $code country code.
+	 * @return string       country code.
+	 */
+	public static function invertKoreaCode( $code ) {
+		return 'KP' === $code ? 'KR' : $code;
+	}
+
+	/**
+	 * Returns the default AI options.
+	 *
+	 * @since 4.8.4
+	 *
+	 * @param  array $existingOptions The existing options.
+	 * @return object                 The default options.
+	 */
+	public static function getDefaultAiOptions( $existingOptions = [] ) {
+		$defaults = [
+			'faqs'         => [],
+			'keyPoints'    => [],
+			'titles'       => [],
+			'descriptions' => [],
+			'socialPosts'  => [
+				'email'     => [],
+				'linkedin'  => [],
+				'twitter'   => [],
+				'facebook'  => [],
+				'instagram' => []
+			]
+		];
+
+		if ( empty( $existingOptions ) ) {
+			return json_decode( wp_json_encode( $defaults ) );
+		}
+
+		$existingOptions = array_replace_recursive( $defaults, (array) $existingOptions );
 
 		return json_decode( wp_json_encode( $existingOptions ) );
 	}

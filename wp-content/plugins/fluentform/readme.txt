@@ -1,376 +1,425 @@
-=== Contact Form Plugin - Fastest Contact Form Builder Plugin for WordPress by Fluent Forms ===
+=== Fluent Forms – Customizable Contact Forms, Survey, Quiz, & Conversational Form Builder ===
 Contributors: techjewel,adreastrian,heera,wpmanageninja
-Tags: contact form, quiz, wp forms, forms, form builder, contact form builder, fluent forms, custom form, order form, contact forms
-Requires at least: 4.5
-Tested up to: 6.1
-Requires PHP: 5.6
-Stable tag: 4.3.25
+Tags: contact form, wp forms, forms, form builder, custom form
+Requires at least: 6.4
+Tested up to: 6.9
+Requires PHP: 7.4
+Stable tag: 6.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-The Fastest Contact Form Builder Plugin for WordPress. Drag and drop contact form builder plugin with all premium features.
+Get a fast contact form plugin. Create advanced forms using drag and drop form builder with all smart features.
 
 == Description ==
 
-= The Best and Fastest Contact Form Builder Plugin by Fluent Forms =
+= Fluent Forms is an advanced and lightweight Contact Form Builder =
 
-**Fluent Forms** is the ultimate user-friendly, **customizable drag-and-drop WordPress contact form plugin** that offers you all the premium features, plus many more completely unique additional features. Making forms with a **WordPress form builder** should be quick and effortless. And that’s why, we have developed Fluent Forms for you. With Fluent Forms, you can create stunning forms in minutes. Say goodbye to tedious form-building and hello to easy, intuitive design.
+**Fluent Forms** is the ultimate user-friendly, customizable **drag-and-drop WP contact form plugin** that offers you all the powerful features. It is a perfect **no-code form builder** for both beginners and advanced users.
 
-[youtube https://www.youtube.com/watch?v=FFR2ZZaVF3g]
+[youtube https://www.youtube.com/watch?v=s4RJS3GrmTI]
 
-[Demo](https://fluentforms.com/forms/) | [User Guide](https://wpmanageninja.com/docs/fluent-form/) | [Get Support](https://wpmanageninja.com/support-tickets/) | [Youtube Video Tutorials](https://www.youtube.com/watch?v=JJ0fBWMW174&list=PLXpD0vT4thWEu4gAkLE0Eq7PRCFp_8j2z) | [Official Facebook Community](https://www.facebook.com/groups/fluentforms/)
+[Demo](https://fluentforms.com/form-templates/) | [User Guide](https://fluentforms.com/docs/) | [Youtube Video Tutorials](https://www.youtube.com/playlist?list=PLXpD0vT4thWEY6CbwMISKDiXOd5KPC6wo) | [Get Support](https://wpmanageninja.com/support-tickets/) | [Official Facebook Community](https://www.facebook.com/groups/fluentforms/) | [Official Fluent Forms Community](https://community.wpmanageninja.com/portal/space/fluent-forms/home)
 
-Fluent Forms helps you create hassle-free contact forms, subscription forms, or any kind of WP Forms you need for your website in minutes.
+Anything from a simple contact form to a more advanced payment, quiz, or calculator form, Fluent Forms can meet virtually all your needs.
 
-[youtube https://www.youtube.com/watch?v=uysITMu7Ml8]
+==Powerful Features available in the Free Version==
 
-==Amazing Features==
+* Drag & drop builder
+* Smart conditional logic
+* Conversational form
+* Built-in AI Form Builder
+* 25+ ready-to-use input fields
+* Gutenberg Form Styler
+* Reusable form templates
+* Accept Payments with Stripe*
+* Reporting Dashboard*
+* Adjustable multi-column form layout
+* [Spam protection using reCAPTCHA, hCaptcha & more](https://fluentforms.com/form-security/)
+* Email notification
+* Form scheduling & restriction
+* Export/import forms
+* Export entries in CSV/Excel/ODS/JSON format
+* Filter entries & Form Finder
+* Undo/redo & Form Edit history
+* Role manager
+* Form analytics & Visual data report
+* Set default value for input fields or populate from URL parameters
+* Custom CSS & JS
+* Fully responsive & accessible for users with special needs
+* Migrate from WPForms, Contact Form 7, Gravity Forms, Ninja Forms & Caldera Forms
 
-* Conversational forms and classic form builder
-* Drag & drop contact form builder
-* Multi-column form layout
-* Smart conditional logic 
+==Features available in the Pro version==
+
+* 55+ input fields
+* [Payment](https://fluentforms.com/payment/)
+* [Numeric calculation](https://fluentforms.com/numeric-calculation/)
+* [Multi-step form](https://fluentforms.com/multi-step-form/)
+* [Advanced form styler](https://fluentforms.com/advanced-form-styler/)
+* [Quiz & survey module](https://fluentforms.com/quiz-and-survey/)
+* Inventory management
+* Dynamic field
+* Report module
+* Advanced search filter
+* Import form entries
+* Admin approval
 * Conditional confirmation messages
-* Build fully responsive and mobile-friendly web forms 
-* Pre-built templates to build various forms quickly
-* Spam protection with Google reCAPTCHA and hCaptcha for your contact forms
-* Placeholder customization for your contact forms
-* AJAX submission and both client-side and server-side data validation for contact forms
-* Send beautiful emails to users and admins after form submission
-* You can configure what will happen after a contact form submission: show a success message or redirect users to a URL
-* Restrict your forms by user role
-* Show forms only for a time/date range
-* 30+ form fields to build any web forms quickly
-* In-depth analytics where you can see how many times it's displayed and how many leads were captured through a specific form
-* Set default value on contact form fields or you can populate from URL parameters
-* Export/import contact forms
-* Mailchimp integration - add lead/contact on Mailchimp on form submission
-* Slack integration - send Slack notification of Contact Form Submission
-* Export data - you can export data as CSV/Excel/ODS or JSON format
-* Advanced data filtering where you can see data by status and also by date range
-
-What a good contact form builder plugin is if the users can’t use it with ease and the way they want. And deep inside, you know too as well, how important it is to present your audience a website that is designed keeping in mind the audience’s need and necessity first. So in times, you might as well feel like customizing a contact form or subscription form suitable for a specific portion of your audience. And this is where you will find that Fluent Forms is the most powerful and flexible form builder tool developed so far.
-
-And not only that, this form builder is so easy to use, even a beginner will be able to create and publish forms in less than 5 minutes! You can easily replace Contact Form 7 with Fluent Forms, since you'll get more advanced features in an easy interface.
-
-As responsiveness is a must for any online tool these days, Fluent Forms is developed as a 100% mobile responsive contact form builder, so that your forms look great on all kinds of devices (mobiles, tablets, laptops, and desktops). Moreover, this form builder also fits with accessiblity, which is a great option for people with disabilities.
-
-Here goes a list of all the premium features you will be enjoying in Fluent Forms:
+* Double opt-in
+* Advanced form validation
+* Auto-delete entries
+* Landing page
+* Geo-location provider
+* SMS notifications
+* Conditional email routing
+* User registration
+* [Advanced post/CPT creation](https://fluentforms.com/user-generated-content/)
+* [Address autocomplete](https://fluentforms.com/address-autocomplete/)
+* [60+ third-party integrations](https://fluentforms.com/integration/) (and a lot more via Zapier)
 
 == Super Fast Contact Forms ==
-Fluent Forms is built for speed. It does not slow down your site, nor loads lots of CSS and JS. A standard form only loads less than 30KB CSS and JS combined, which is the lowest among all the form builders out there. Fluent Forms will outperform a big way if you compare with all the form builder plugins. Most of the form builder plugins load at least 300KB assets to load a simple form where Fluent Forms loads 10% of the average size. Build the fastest contact forms and web forms in minutes.
+Fluent Forms is optimized for speed, minimally impacting site performance with less than 30KB of combined CSS and JS for a standard form. This is significantly faster than most form builders, which load over 300KB of assets. Build the fastest online forms quickly.
+
+== Drag & Drop Contact Form Builder ==
+Our drag-and-drop form builder allows you to easily create any form you can imagine in a few minutes without writing any code.
+
+== Input Fields ==
+
+**Available in the Free Version**
+
+* Name Fields
+* Email
+* Simple Text
+* Mask Input
+* Text Area
+* Address Fields
+* Country List
+* Numeric Field
+* Dropdown
+* Radio Field
+* Checkbox
+* Multiple Choice
+* Website URL
+* Time & Date
+* Custom HTML
+* Hidden Field
+* Section Break
+* reCAPTCHA
+* hCaptcha
+* Turnstile
+* Terms & Conditions
+* GDPR Agreement
+* Password Field
+* Custom Submit Button
+* One/Two/Three/Four/Five/Six Column Container
+* Payment Item
+* Subscription
+* Custom Payment Amount
+* Item Quantity
+* Payment Method
+* Payment Summary
+
+**Available in the Pro Version**
+
+* Image Upload
+* File Upload
+* Phone/Mobile
+* Shortcode
+* Action Hook
+* Form Step
+* Ratings
+* Checkable Grid
+* Range Slider
+* Net Promoter Score
+* Dynamic Field
+* Chained Select
+* Color Picker
+* Repeat Field
+* Post/CPT Selection
+* Rich Text Input
+* Save & Resume
+* Quiz Score
+* Coupon
+* Post Title
+* Post Content
+* Post Excerpt
+* Featured Image
+* Post Update
+* Post Taxonomy Fields (Categories, Tags, Formats)
+* Container Repeater
+* Accordion/Tab
+
+== Gutenberg Form Styler ==
+Customize form colors, typography, spacing, and borders directly within the Gutenberg interface. No more switching between editors or hunting for CSS selectors, style your forms right where you build your pages.
+
+== Fully Mobile Responsive Forms ==
+Fluent Forms has been developed to make sure that it satisfies devices of all display sizes. Display your forms on all devices without any extra hassle.
+
+== Reusable Form Templates ==
+Stop repetitive work. Fluent Forms offers pre-built forms with a single click, allowing quick tweaks and saving time. We provide dozens of useful templates for fast form building, including:
+* **Contact Form**
+* **Support Form**
+* **Event Registration Form**
+* **Vendor Contact Form**
+* **Patient Intake Form**
+* **Volunteer Application Form**
+* **Request for Quote Form**
+* **Conference Proposal Form**
+* **Report a bug Form**
+* **Polling Form**
+* **Tell A Friend Form**
+* **My Directory Information Form**
+* **Request for Leave Form**
+* **Admissions Form**
+* **Loan Application Form**
+* **Job Listing Form**
+* **Website Feedback Form**
+* **Comment & Rating Form**
+* **User Registration Form (Pro)**
+* **Donation Form (Pro)**
+* **Payment Form (Pro)**
+* **Subscription Payments Form (Pro)**
 
 == Conversational Forms ==
-Fluent Forms is more powerful than ever! With the most awaited Conversational Forms, the plugin became your no. 1 choice to build next-level WordPress forms.
+Fluent Forms excels in creating various forms, notably its [conversational forms](https://fluentforms.com/conversational-forms/). Unlike traditional forms, these present one question at a time, minimizing distraction and boosting completion rates. They offer multiple layout and sharing options (direct URLs, shortcodes, HTML embedding, etc.).
 
-[youtube https://www.youtube.com/watch?v=lLQWsjqrGtg]
+[youtube https://youtu.be/LSuZ7jOHLwE?si=rt4hKrtgvYKyvL8X]
 
-With Conversational Forms, you can easily build awesome high converting forms easily. It's completely free.
 [View Conversational Form Demo](https://fluentforms.com/?fluent-form=138)
-Conversational Forms have full-on keyboard access, with complete customization and multiple design options.  
-With Fluent Forms Pro, you can enjoy more advanced functionalities, such as payment, coupon, file upload, and checkable grid.
+Fluent Forms Pro offers advanced conversational forms. Users can navigate questions via scroll and key press, and customize fonts, colors, and backgrounds to align with their brand.
 
-== Built-in Data Analysis Tool ==
-Fluent Forms provides built-in data visualization tool. Using the data visualization module, you can analyze your data from your web and contact forms, analyze the data using a pie-chart, bar chart, tabular view. Using Ninja Tables, you can even show the submitted data in the frontend.
+== AI Form Builder ==
+Say hello to Free AI Form Builder! Fluent Forms AI Form Builder simplifies and speeds up form creation. Just describe your needs to generate effective forms with all necessary fields.
 
-== Best Contact Form Plugin in WordPress ==
-Fluent Forms is an extremely feature-rich plugin that delivers a beautiful and bright user interface. Everything works with drag-and-drop, which makes creating new forms quicker and more accessible, you will get all the premium components like conditional logics, more than 30 form fields, 3rd party integrations, built-in entry management system, etc.
+== Accept Payments with Stripe ==
+Fluent Forms 6.0 now offers payment fields to free users, allowing Stripe payments for events, donations, or sales with a 1.9% transaction fee. Recurring payments are also included via the Subscription field. Pro removes the 1.9% fee, leaving only Stripe's charges.
 
-Fluent Forms can be used for your regular contact forms, event forms, online forms and any data collection form. You can connect the form data with many 3rd party CRM without writing a single line of code. And the best thing is this is entirely free, and it always is free and open source.
+== Fluent Forms Report Module ==
+Fluent Forms Report Module provides powerful, data-informed insights through three sections: Overview, Payment, and Submissions. The free version includes basic analytics like submission/payment summaries, form ranking, API logs, and detailed charts. The Pro version unlocks advanced reporting, such as partial entry rates, submission data by country, and subscription analytics.
 
-== DRAG & DROP CONTACT FORM BUILDER ==
-Our powerful drag and drop form builder allows you to easily create WordPress contact forms and other online forms in just a few minutes without writing any code. Building forms is now easier for you than writing and drawing it on a piece of paper! Not only that, you can easily migrate from other from builders using our migrator that supports WPForms, Caldera Forms, Ninja Forms, and Gravity Forms.
+== Built-in Data Visualization Tool ==
+Fluent Forms allows easy analysis of form submissions with pie, bar, or tabular charts. As a form or quiz builder, it simplifies data analysis, providing real-time graphical results for surveys or polls.
 
-== MULTI-COLUMN FORM LAYOUT ==
-We have all faced the hassle of long forms, filling out which seems like meeting a Dementor from the Harry Potter series that might suck the soul out of you and leave you dead. These “long” forms are often nothing more than just mismanagement of space. Say, you are showing your potential lead a form that has ten input fields in it. Now stacking these 10 fields one after one makes it a long, tedious, and scary form. But if you cleverly stack them 2 or 3 columns, the whole thing looks compact, smart, and not that much scary at all!
+== Email Notification ==
+Get notified every time someone submits a form and also send a confirmation email to the one who fills out the form. To make it more advanced, you can use conditional email notifications to send emails when certain conditions are met.
 
-This is the most unique feature that helps Fluent Forms stand out from the herd. The **Multi-column form layout** option is a feature that you won’t even find in the premium form builder plugins! And also if you find any, those will not be as fluent, intuitive and easy to use as our one does.
+== Multi-column Form Layout ==
+Stack input fields in multiple columns and make the long, boring form appear compact and smart. This will lead to a lower form abandonment rate. There are six types of column containers to choose from.
 
-== 100% RESPONSIVE MOBILE-FRIENDLY CONTACT FORMS FOR YOUR AUDIENCE ==
-As of the current user behavior throughout the world, a significant portion of your visitors will be visiting your website with their handheld devices. And you do not want to disappoint them with some disoriented contact form. Keeping that in mind, Fluent Forms was developed to make sure that it satisfies devices of all sizes of display.
+== Conditional Logic ==
+Use [conditional logic](https://fluentforms.com/conditional-logic/) to show or hide form fields based on user behavior, preventing unnecessary clutter. Users can set multiple condition groups by selecting fields and defining rules (e.g., equal, greater than, includes). Conditional logic also allows for automatic email notifications and displaying different confirmation messages based on submission conditions.
 
-== CONDITIONAL LOGICS ==
-Why irritate your users with unnecessary fields that they do not need? Use Fluent Forms' Conditional Logic to make your forms more efficient and user-friendly. Show and hide specific fields according to users’ behavior so that they do not have to be bothered with unnecessary fields. You can show and hide entire sections or steps (in step forms).
+== Calculator for Advanced Form Calculation ==
+Fluent Forms' numeric field enables creation of smart calculators like car loan, BMI, mortgage, or tax calculators with ease. You can define the acceptable range for these numerical inputs by setting minimum and maximum values.
 
-Whereas, in most of the contact form plugins available, this Conditional Logic is a premium feature. But in Fluent Forms, you can enjoy this feature in our free version!
+== Create PDF Files from Form Submission ==
+[Generate PDF from your submitted entries](https://fluentforms.com/pdf-generator/) and let users download the PDF file or send it via email. You can use this feature to generate invoices, create reports, or provide order summaries.
 
-== CONDITIONAL CONFIRMATION ==
-Along with Conditional Logics, we have introduced Conditional Confirmations (pro) as well. It allows admins to convey to users customized messages if they do not comply with specific logics, or fail to achieve certain values while filling out forms. For an example, you are looking for a value of equal to or more than 2 in a certain field of your form. But what if they put 0 or 1 in that field? In that case, using a conditional confirmation feature, you can let your users know of what went wrong and how to fix it. Remember, this is an entirely different feature than the usual error messages.
+== Conditional Confirmation ==
+Fluent Forms Pro allows you to send customized confirmation messages to your users if they meet specific conditions.
 
-== GET REAL TIME EMAIL NOTIFICATION ==
-Get notified every time someone fills up a form with entry details. With Fluent Forms, you can also inform your team members every time someone fills up a form and also send back a confirmation email to the new subscriber. Fluent Forms also enables you to automatically send out certain submissions from the email notification process if they fail to comply with specific conditions set by the admin.
+== Advanced Form Styler ==
+Fluent Forms Pro's Advanced Form Styler allows easy contact form customization to boost conversions. Adjust colors, fonts, box shadows, borders, margins, and padding. You can also quickly import styles from previous forms.
 
-== REUSABLE FORM TEMPLATES ==
-Why do the same thing over and over again? Isn’t it madness?
-Fluent Forms enables you to reuse the same contact form again and again. You can copy the whole setup with a click and make necessary tweaks in a short time, which will be saving your precious time.
+== Build Quizzes & Surveys ==
+Fluent Forms Pro is a versatile tool, functioning as both a contact form and a powerful quiz builder. As a quiz plugin, it enables the creation of fun quizzes, personality tests, and trivia, with scoring assigned to questions. Users can see their performance immediately after submission or through email. It also supports running surveys and displaying the results.
 
-== FLEXIBLE CUSTOMIZATION ==
-Customizing your subscription forms has never been easier. According to your need, you can create forms with HTML blocks, tooltips, suitable orientations, custom CSS, etc.
+== Payment Forms ==
+Fluent Forms Pro is a powerful solution for creating payment, product order, and donation forms, in addition to contact forms. It easily accepts credit card payments via integration with popular gateways like PayPal, Stripe, Razorpay, Paddle, Square, Paystack, Mollie and Authorize.net.
+[youtube https://www.youtube.com/watch?v=78jS8G4j5q8]
 
-If you are interested in having a peek under the hood and see if it can be made more useful, we have that option too!
+== One-Click Migrator ==
+If you are already using Contact Form 7, WPForms, Caldera Forms, Ninja Forms or Gravity Forms and looking to move to Fluent Forms, you can do this with a single click.
 
-== MANAGE YOUR SUBSCRIPTIONS SMARTLY ==
-You are not installing a form builder plugin to lure in 5-10 subscribers, right? What do you do when thousands of visitors subscribe to your website? You will need a smart system to handle such an influx. That is where Fluent Forms can help you manage things easily. Managing your submitted data has never been easier!
+== Fluent Forms CLI ==
+Fluent Forms offers a powerful Command Line Interface (CLI) for managing forms without the graphical user interface. The CLI tool allows users to easily create, manage, import/export data, track submissions, and configure settings.
 
-With Fluent Forms, you can organize your submitted entries according to their value and export the whole list with just a click, or you can integrate with **Slack**, **Mailchimp**, and 16 more.
+== Enhanced Email Routing & Automation ==
+Boost website efficiency by using query strings to pre-fill visitor details and direct forms to designated teams via email routing, auto-response, and conditions.
 
-== Form Fields available in Fluent Forms ==
-- Name Fields
-- Email Address
-- Simple Text
-- Mask Input
-- Text Area / Multiline Texts
-- Address Fields
-- Country List
-- Numeric Field
-- Dropdown / Select
-- Radio Button
-- Check Box Field
-- Multiple Choice / Multi-Select Form Field
-- Website URL
-- Time & Date
-- Custom HTML
-- Hidden Field
-- Section Break
-- Google reCAPTCHA
-- hCaptcha
-- Terms and Conditions
-- GDPR Agreement Field
-- Password Field
-- Custom Submit Button
-- Two Column Container
-- Three Column Container
+== Integrations and Add-ons Available in the Free Version ==
 
-**More Advanced Fields in Pro**
-- Image Upload
-- Phone Field
-- File Upload
-- Shortcode Field
-- Action Hook Field
-- Form Step to build multi-step form
-- Google Maps & Address autocomplete
-- Quiz Module
-- Ratings Form Field
-- Checkable Grid
-- Range Slider
-- Color Picker
-- Net Promoter Score
-- Repeat Field
-- Save and Resume
-- Post/CPT selection field
-- Post Update
-- Chained Select
-- Post Creation Fields
-- Payment Field
-- Custom Payment
-- Inventory Module
-- Item Quantity
-- PayPal Payments
-- Credit Card Payments Via Stripe
-- Accept Payments Via RazorPay
-- Accept Payments Via Mollie
+* <a href="https://wordpress.org/plugins/fluent-crm" target="_blank">FluentCRM</a>
+* <a href="https://wordpress.org/plugins/fluent-support" target="_blank">Fluent Support</a>
+* <a href="https://wordpress.org/plugins/fluent-boards" target="_blank">FluentBoards</a>
+* <a href="https://wordpress.org/plugins/fluent-smtp" target="_blank">FluentSMTP</a>
+* <a href="https://wordpress.org/plugins/ninja-tables" target="_blank">Ninja Tables</a>
+* <a href="https://wordpress.org/plugins/fluent-booking" target="_blank">FluentBooking</a>
+* <a href="https://wordpress.org/plugins/wp-social-reviews" target="_blank">WP Social Ninja</a>
+* <a href="https://wordpress.org/plugins/fluentforms-pdf" target="_blank">Fluent Forms PDF Generator</a>
+* [MailChimp](https://fluentforms.com/integration/mailchimp/)
+* [Slack](https://fluentforms.com/integration/slack/)
+* [Mautic](https://fluentforms.com/integration/mautic/)
+* [Mailpoet](https://fluentforms.com/integration/mailpoet/)
 
-**Advanced Form Styler (Pro)**
-Advanced form styler is an amazing feature that you can use to easily style every element of a form.
-There are four pre-defined styles that you can just select and pre-defined CSS will be added applied realtime. If you choose custom design then the styler will show the style elements based on your form's available styles and you and you can design the form elements fro the style controls.
+== Integrations Available in the Pro Version ==
 
-**Build Quizzes Easily (Pro)**
-Fluent Forms Pro comes with a brilliant option for making quizzes. Now you can engage more users with enticing quizzes built with Fluent Forms inside yor WordPress dashboard. The quiz builder alllows you to create a survey quiz, fun quiz, personality quiz, trivia quiz, and more. You can assign scores to each question and let people know how they perform via instant or email notifications.
+* ActiveCampaign
+* AffiliateWP
+* Airtable
+* amoCRM
+* Automizy
+* Brevo (formerly SendInBlue)
+* BuddyBoss
+* Campaign Monitor
+* ChatGPT
+* CleverReach
+* ClickSend
+* Constant Contact
+* Kit, formerly ConvertKit
+* Discord
+* Drip
+* Gist
+* GetResponse
+* Google Maps
+* Google Sheets
+* HubSpot
+* iContact
+* Insightly
+* MailerLite
+* Mailjet
+* Mailster
+* Mollie
+* MooSend
+* Notion
+* OnePageCRM
+* Paddle
+* PayPal
+* Paystack
+* Pipedrive
+* Platformly
+* RazorPay
+* Salesflare
+* Salesforce
+* SendFox
+* Square
+* Stripe
+* Telegram
+* Trello
+* Twilo
+* User Registration
+* WebHook
+* Zapier
+* Zoho CRM
+* Authorize.net
 
-**Create PDF from Form Submission**
-Now, you can generate PDF from your templates and download or attach the PDF via email. This feature is completely free.
+== Check Out the Documentation and the Video Tutorials ==
 
-**Advanced Post Creation** 
-
-Fluent Forms offers an advanced post creation feature. With this feature, you can let others submit their posts directly from a post form. Also, users can update their post by submitting a form. Users can easily create posts with custom fields, categories, tags, and other meta-data. The advanced post creation feature allows users to automate their content creation process by setting up rules that automatically publish posts. This feature is particularly useful for content-heavy websites that frequently publish content. Overall, this feature streamlines the content creation process and saves your time and effort.
-
-== 66+ Pre-Built Forms ==
-We have added 66+ pre-built forms for you so you can easily select the right form and start using it.
-A few examples to get what's inside the pack:
-
-* **Contact Form** - a simple contact form for your site
-* **Support Form** - using this support form, users can ask questions
-* **Event Registration Form** - using this registration form, you can enable your event to achieve its goal
-* **Vendor Contact Form** - easily create a vendor contact form and get logged in user details easily
-* **Patient Intake Form** - using this form, you can get the patient information with the medical history
-* **Volunteer Application Form** - get volunteer applicants data according to their particular interests with working days
-* **Request for Quote Form** - get user request for quote using this simple form
-* **Conference Proposal Form** - this sample form is to make a conference proposal efficient and effective
-* **Report a bug Form** - you can get user feedback, bug reports, and the issue details from the user
-* **Polling Form** - a sample polling form to get user opinion from your scheduled time
-* **Tell A Friend Form** - get text from your site users
-* **My Directory Information Form** - this form allows you to get the directory information
-* **My Directory Information Form** - this form will enable you to get the directory information
-* **Request for Leave Form** - receive leave requests from your employee instantly
-* **Admissions Form** - receive new admission students' data along with their documents using this sample admission form
-* **Loan Application Form** - get loan applications from applicants with their detail information
-* **Job Application Form** - allow users to apply for a job online
-* **Website Feedback Form** - to make effective for your site users, you may get the feedback and suggestions using this sample form.
-* **Comment & Rating Form** - get user ratings and feedback instantly.
-* **User Registration Form (pro)** - create user and make automatic login as part of the form submission process. Fluent Forms made WordPress user registration and user update easy.
-* **Donation Form (pro)** - let your users input the donation amount and donate via PayPal, Stripe, Razorpay and Mollie as a form submission process.
-* **Payment Form (pro)** - you can easily create online order forms and process payments via PayPal, Stripe, Razorpay, Paystack, Mollie and offline payment methods.
-* **Subscription Payments (pro)** - accept and manage subscription payments easily with Fluent Forms Pro
-
-==Pro Integrations ==
+Fluent Forms has detailed step-by-step documentation. Some essential documentations are provided below:
 <ul>
-<li>Zapier Integration - Connect your Fluent Forms data with Zapier and push data to thousands of online softwares</li>
-<li>WebHook - Broadcast your WP Forms Submission to any web api endpoint with powerful webhook module.</li>
-<li>Google Sheet - Directly push your form entries to google sheet.</li>
-<li>ActiveCampaign - WordPress Forms ActiveCampaign Module allows you to create ActiveCampaign list signup forms in WordPress, so you can grow your email list.</li>
-<li>Campaign Monitor - Fluent Forms Campaign Monitor module allows you to create Campaign Monitor newsletter signup forms in WordPress, so you can grow your email list.</li>
-<li>Constant Contact - Connect Constant Contact with your WP Forms and create subscriptions forms right into WordPress and grow your list.</li>
-<li>ConvertKit - Connect ConvertKit with your WP Forms and create subscriptions forms right into WordPress and grow your list.</li>
-<li>GetResponse - Fluent Forms GetResponse module allows you to create GetResponse newsletter signup forms in WordPress, so you can grow your email list.</li>
-<li>HubSpot - Connect HubSpot with Your WP Forms and subscribe a contact when a form is submitted</li>
-<li>iContact - Connect iContact with your WP Forms and subscribe a contact when a form is submitted</li>
-<li>MooSend - Connect MooSend with WP Forms and subscribe a contact when a form is submitted</li>
-<li>SendFox - Connect SendFox with WP Forms and subscribe a contact when a form is submitted</li>
-<li>MailerLite - Connect your WP Forms with MailerLite and add subscribers easily</li>
-<li>MooSend - Connect MooSend with Fluent Forms and subscribe a contact when a form is submitted.</li>
-<li>SMS Notification - Send SMS when new submission will be happened in real time with Twilio</li>
-<li>Platform.ly - Connect Your WordPress form with Platform.ly</li>
-<li>Trello - Create Trello Cards in your boards on form submission</li>
-<li>Drip - Fluent Forms Drip Module allows you to create Drip subscribers from WordPress, so you can grow your email list.</li>
-<li>iContact - Connect iContact with Fluent Forms and subscribe a contact when a form is submitted.</li>
-<li>Sendinblue - Connect Your Contact Forms with SendinBlue CRM</li>
-<li>Automizy - Connect Your Contact Forms with Automizy Marketing Solution</li>
-<li>User Registration - Create WordPress users with form submissions</li>
-<li>Post/CPT integration - Create any type of posts from form submission. You can visually map the ACF fields from Fluent Forms</li>
-<li>PayPal - Create PayPal payment forms to easily collect payments, donations, and online orders. Sale your items easily using WordPress Forms</li>
-<li>Stripe - Create Stripe payment forms and easily collect credit card payments, donations, and online orders with Fluent Forms Pro. No Extra addon requires</li>
-<li>Mollie - Easily collect credit card payments, donations, and online orders with Fluent Forms Pro. No Extra addon requires</li>
-<li>RazorPay - Easily collect credit card payments, donations, and online orders with Fluent Forms Pro. No Extra addon requires</li>
-<li>Paystack - Easily collect credit card payments, donations, and online orders with Fluent Forms Pro. No Extra addon requires</li>
-<li>Discord - Get automated form notifications on your Discord server</li>
-<li>Salesflare - Connection with the Salesflare CRM got more 'Fluent' with this integration</li>
-<li>AffiliateWP – Generate referrals when users complete a payment with your forms</li>
-<li>Zoho CRM – A business tool to manage online sales, marketing, and customer support</li>
-<li>ClickSend – Send SMS notification instantly when a form is submitted</li>
-<li>CleverReach – Fluent Forms and CleverReach combo is a great way to grow your subscribers and manage email campaigns</li>
-<li>Salesforce - Conncet Salesforce with Fluent Forms and keep your Saleforce's objects streamlined with WordPress</li>
+        <li><a href="https://fluentforms.com/docs/getting-started-with-fluent-forms/" target="_blank">Getting started with Fluent Forms</a></li>
+        <li><a href="https://fluentforms.com/docs/setup-form-submission-confirmation-message-in-fluent-forms/" target="_blank">Set up Form Submission Confirmation Message</a></li>
+        <li><a href="https://fluentforms.com/docs/how-to-setup-admin-user-email-notifications/" target="_blank">Setting up Email Notifications in Fluent Forms Plugin</a></li>
+        <li><a href="https://fluentforms.com/docs/how-to-setup-admin-user-email-notifications/" target="_blank">Send Email Notifications on Form Submission</a></li>
+        <li><a href="https://fluentforms.com/docs/managing-entries-in-fluent-forms/" target="_blank">Managing the Submitted Entries in Fluent Forms</a></li>
+        <li><a href="https://fluentforms.com/docs/general-docs/field-types/" target="_blank">Available Field Types in WordPress Forms</a></li>
+        <li><a href="https://fluentforms.com/docs/set-up-forms-with-conditional-logic-in-fluent-forms/" target="_blank">Set up Forms with Conditional Logic</a></li>
+        <li><a href="https://fluentforms.com/docs/form-restrictions-feature-in-fluent-forms/" target="_blank">WordPress Form Scheduling and Restriction Feature</a></li>
+        <li><a href="https://fluentforms.com/docs/global-inventory-manager-in-fluent-forms/" target="_blank">Global Inventory Manager in Fluent Forms</a></li>
+        <li><a href="https://fluentforms.com/docs/general-docs/integrations/" target="_blank">All Available CRM and Marketing Tools Integration Modules</a></li>
 </ul>
 
-== PAYMENT FORM, DONATION FORM, ORDER FORM, AND MORE ==
-Fluent Forms started is not just a contact form plugin, it is a powerful forms solution that you can use to create a payment form, online donation form, user registration form, online booking form, guest posting forms and more.
+== What Our Users Say About Fluent Forms ==
 
-Fluent Forms Pro integrates with both PayPal and Stripe, so you can easily create a payment form to accept credit card payment on your website. You can also use PayPal payment method to make a donation form and accept payments online.
-
-Business owners also use Fluent Forms to create custom product purchase forms like t-shirt order forms, online booking forms, custom amount payment form and more.
-
-[youtube https://www.youtube.com/watch?v=iYOmHLtkRfQ]
-
-== Checkout The Documentation with video tutorial ==
-
-Fluent Forms Documentation comes with a detailed step-by-step instruction of how to use this Drag & Drop responsive WordPress form builder plugin. The following topics are covered in this documentation. Please check few of them as bellow:
-<ul>
-	<li><a href="https://wpmanageninja.com/docs/fluent-form/how-to-use-wp-fluent-form/create-fluent-form/" target="_blank">How to Create a Form in WordPress</a></li>
-	<li><a href="https://wpmanageninja.com/docs/fluent-form/how-to-use-wp-fluent-form/submission-confirmation-message/" target="_blank">Set up Form Submission Confirmation Message</a></li>
-	<li><a href="https://wpmanageninja.com/docs/fluent-form/how-to-use-wp-fluent-form/email-notification/" target="_blank">Setting up Email Notifications in Fluent Forms Plugin</a></li>
-	<li><a href="https://wpmanageninja.com/docs/fluent-form/how-to-use-wp-fluent-form/send-users-email-notification-wp-fluent-form/" target="_blank">Send Email Notifications on Form Submission</a></li>
-	<li><a href="https://wpmanageninja.com/docs/fluent-form/how-to-use-wp-fluent-form/managing-submitted-entries/" target="_blank">Managing the Submitted Entries in Fluent Forms</a></li>
-	<li><a href="https://wpmanageninja.com/docs/fluent-form/field-types/" target="_blank">Available Field Types in WordPress Forms</a></li>
-	<li><a href="https://wpmanageninja.com/docs/fluent-form/advanced-features-functionalities-in-wp-fluent-form/conditional-logic-fluent-form/" target="_blank">Set up Forms with Conditional Logic</a></li>
-	<li><a href="https://wpmanageninja.com/docs/fluent-form/advanced-features-functionalities-in-wp-fluent-form/form-restrictions/" target="_blank">WordPress Form Scheduling and Restriction Feature</a></li>
-	<li><a href="https://wpmanageninja.com/docs/fluent-form/integrations-availabel-in-wp-fluent-form/" target="_blank">All Available CRM and Marketing Tools Integration Modules</a></li>
-</ul>
-
-[youtube https://www.youtube.com/watch?v=z9W5p8TJK7I]
-
-== What our users saying about the Best Contact Form Plugin for WordPress ==
+>__Fantastic Form Plugin!__
+>I’ve tried a number of premium (and free) WP form plugins including Forminator Pro (by WPMU Dev) and Piotnet Forms. But I’ve come back to Fluent Forms as my favourite. It’s lightweight and easy to use!
+– By @jeremywardkcc
 
 >__Best form plugin ever with first class support__
 >This is the lightest form plugin I’ve ever used (except basic CF7 which is not enough for me). Great performances, great UI, great features, and above all, amazing dev/support team!!!
  Plugin is improving almost every week and they listen to you 🙂
-- By @yankiara
+– By @yankiara
 
->__Excellent !!!__
->This is going to replace the current form making plugin I’ve been using since 2012, and I won’t be looking back, it’s that good. And things will only get better with the development of this plugin. Looking forward for the repeat field, among other things. I wish I could give it 6 stars !!!
-- By @nick6352683
+>__Agency Owner / Web Designer__
+>Fluent forms is a great contact form plugin that allows customization and advanced features and addons such as taking payments. As a web designer / agency owner wpmanageninja is my go to for a lot of my software. Sure the software is great, but it is their support that keeps me coming back. I can count on them to assist me when my back is against the wall.
+– By @nickyeager123456
 
->__One of the best form builder__
->I been using other form builder plugins, and this form builder is easy and it gets the job done. I have switch all my sites to this form builder, and i’m not going back.
->The support team is very help full, I have message him about issues I have found, and he would be all over it to solve the issue. I recommend this builder, it has everything you need and more, specially with the builder making the plugin better over time. Looking forward to what other options will be available in the future. Thank you
-- By @antoniolucio
+>__Powerful Form Plugin__
+>Fluent Forms is very intuitive and easy to use form plugin. I am not an expert in website creation, and learned how to use it very easily. The documentation available in their official website is very usefull, it helps me a lot when in doubt on how to do something. The Pro is even better, and includes some functionalities that are worth it (if you need them, of course). Good deal with lifetime licence. Thank you.
+– By @francksdl
 
->__A great life time saver and what performances!__
->Great plugin, really. You have to test it… it’s super fast and super lightweight.
-- By @seventhose
-
->__Fluent Forms is just so excellent__
->I came in contact with Fluent Forms about 2weeks ago and has change my experience in using forms. The easiest and sweetest plugin available. Also Great support team.
->Thanks excellent Hasanuzzaman for your support
-- By @austinigbe
+>__Excellent Support__
+>Excellent customer service. I have fluent forms and fluent CRM, both pro versions, and not only do they work great but the support you get is excellent. Can totally recommend
+– By @facua1
 
 >__Free Version Has Options Found only in Premium Plugins__
 >This is a fantastic email form. It’s fast (very light weight), easy to use, and the support is great. To boot, the free version also has options usually found only in premium email forms. Don’t waste your time looking for another form. I spent countless hours looking for the “right” form, and this one is it, hands down.
-- By @nevrsmer
+– By @nevrsmer
 
-
-== ONE-CLICK MIGRATOR ==
-Already using a form plugin? If you are looking forward to switching to Fluent Forms, but already using WPForms, Caldera Forms, Ninja Forms or Gravity Forms; we will make the switch easy for you. Fluent Forms comes packed with a one-click migrator. With this migrator, you can import all of your forms along with the customizations, configuration, and form entries.
-
-== Migrating From Gravity Forms ==
-If you have forms in Gravity Forms then you can migrate forms built with Gravity Forms easily. In this case just go to the Fluent Forms -> Tools -> Migrator and you will find a section for Gravity Forms. You can see all the Gravity Forms and then click the Import Form button to migrate the form. To import the entries as well click the Import Entries button.
-
-== Migrating From Ninja Forms ==
-If you have forms in Ninja Forms then you can migrate forms built with Ninja Forms easily. In this case just go to the Fluent Forms -> Tools -> Migrator and you will find a section for Ninja Forms. You can see all the Ninja Forms and then click the Import Form button to migrate the form. To import the entries as well click the Import Entries button.
-
-== Migrating From Caldera Forms ==
-If you have forms in Caldera Forms then you can migrate forms built with Caldera Forms easily. In this case just go to the Fluent Forms -> Tools -> Migrator and you will find a section for Caldera Forms. You can see all the Caldera Forms and then click the Import Form button to migrate the form. To import the entries as well click the Import Entries button.
-
-== Migrating From WPForms ==
-If you have forms in WPForms then you can migrate forms built with WP Forms easily. In this case just go to the Fluent Forms -> Tools -> Migrator and you will find a section for WPForms. You can see all the WPForms and then click the Import Form button to migrate the form. To import the entries as well click the Import Entries button.
-
+== Follow Fluent Forms Social Media ==
+[X/Twitter](https://x.com/Fluent_Forms) | [Facebook](https://www.facebook.com/wpfluentforms) | [Youtube](https://www.youtube.com/@fluentforms) | [Instagram](https://www.instagram.com/fluentforms/) | [LinkedIn](https://www.linkedin.com/showcase/fluent-forms/) | [Official Fluent Forms Community](https://community.wpmanageninja.com/portal/space/fluent-forms/home)
 
 == Other Plugins By WPManageNinja Team ==
 <ul>
-	<li><a href="https://wordpress.org/plugins/ninja-tables//" target="_blank">Ninja Tables – Best WP DataTables Plugin for WordPress</a></li>
-	<li><a href="https://wordpress.org/plugins/ninja-charts/" target="_blank">Ninja Charts – Best WP Charts Plugin for WordPress</a></li>
-	<li><a href="https://wordpress.org/plugins/wp-payment-form/" target="_blank">WPPayForm - Stripe Payments Plugin for WordPress</a></li>
-	<li><a href="https://wordpress.org/plugins/mautic-for-fluent-forms/" target="_blank">Mautic Integration For Fluent Forms</a></li>
-	<li><a href="https://wordpress.org/plugins/fluentforms-pdf/" target="_blank">Fluent Forms PDF - PDF Entries for Fluent Forms</a></li>
-	<li><a href="https://wordpress.org/plugins/fluent-smtp/" target="_blank">FluentSMTP - The Most Advanced SMTP, SES Plugin for WordPress</a></li>
+        <li><a href="https://wordpress.org/plugins/fluentforms-pdf/" target="_blank">Fluent Forms PDF Generator Add-on</a></li>
+        <li><a href="https://wordpress.org/plugins/fluent-crm/" target="_blank">Email Marketing, Newsletter, Email Automation and CRM Plugin for WordPress by FluentCRM</a></li>
+        <li><a href="https://wordpress.org/plugins/ninja-tables/" target="_blank">Ninja Tables – Best WP DataTables Plugin for WordPress</a></li>
+        <li><a href="https://wordpress.org/plugins/fluent-support/" target="_blank">Fluent Support – WordPress Helpdesk and Customer Support Ticket Plugin</a></li>
+        <li><a href="https://wordpress.org/plugins/fluent-smtp/" target="_blank">FluentSMTP – The Most Advanced SMTP, SES Plugin for WordPress</a></li>
+        <li><a href="https://wordpress.org/plugins/wp-payment-form/" target="_blank">Simple Payment Donations & Subscriptions Plugin by Paymattic – Best Payments Plugin for WP</a></li>
+        <li><a href="https://wordpress.org/plugins/wp-social-reviews/" target="_blank">WP Social Ninja – Best Social Feed, Reviews Plugin for WordPress (Google Reviews, Photo Feeds, Chat & More)</a></li>
+        <li><a href="https://wordpress.org/plugins/fluent-booking" target="_blank">FluentBooking – The Ultimate WordPress Scheduling Plugin</a></li>
+              <li><a href="https://wordpress.org/plugins/fluent-boards/" target="_blank">FluentBoards – Project Management, Task Management, Goal Tracking, Kanban Board, and, Team Collaboration</a></li>
+        <li><a href="https://wordpress.org/plugins/fluent-community/" target="_blank">FluentCommunity – Full-fledge Social Network, Community & LMS</a></li>
+<li><a href="https://wordpress.org/plugins/fluent-cart/" target="_blank">FluentCart: A New Era of eCommerce with WordPress – Faster, Lighter, and Simpler</a></li>
+
+</a></li>
 </ul>
 
 == Installation ==
 This section describes how to install the plugin and get it working.
 
-e.g.
-
 1. Upload the plugin files to the `/wp-content/plugins/fluentform` directory, or install the plugin through the WordPress plugins screen directly.
 1. Activate the plugin through the \'Plugins\' screen in WordPress
-1. Use the `Fluent Forms` -> `Settings` screen to configure the plugin
+1. Use the `Fluent Forms` -> `Global Settings` screen to configure the plugin
 1. (Make your instructions match the desired user flow for activating and installing your plugin. Include any steps that might be needed for explanatory purposes)
 
 == Frequently Asked Questions ==
 = Do I need coding skill to use Fluent Forms? =
 
-No, You don't need any pre-requisite programming knowledge to build beautiful forms. With Powerful drag and drop features you can build any simple or complex form.
+
+No, you don't need any pre-requisite programming knowledge to build beautiful forms. With Powerful drag and drop features you can build any simple or complex form.
+
 
 = Will Fluent Forms slow down my website? =
 
+
 Absolutely not. We build Fluent Forms very carefully and maintained WP standards as well as we only load styles / scripts in the pages where you will use the Fluent Forms. Fluent Forms is faster than any form builder plugin. Fluent Forms only load less than 30KB css and js combined.
+
 
 = Can I use conditional logics when building a form? =
 
-Yes, With our powerful conditional logic panel you can build any type of complex forms. You can add one or multiple conditional logics to any field and it will work like a charm.
+
+Yes, with our powerful conditional logic panel you can build any type of complex forms. You can add one or multiple conditional logics to any field and it will work like a charm.
+
 
 = Can I build multi-column forms? =
 
-Yes, You can use 2 column or 3 column containers and you can build forms.
 
-= Can I export the form submission data? =
+Yes, you can use 2 column or 3 column containers and you can build forms.
 
-Yes, You can export your data in CSV, Excel, ODS, JSON format.
 
-= Do you have a public roadmap? =
+= Can I export/Import the form submission data? =
 
-Yes, Please check our <a href="https://trello.com/b/FaDlAD9B/public-roadmap-wp-fluent-forms">public road map in Trello</a>
+
+Yes, you can export your data in CSV, Excel, ODS, JSON format. You can also import in pro version.
+
+
+= Can I migrate from WPForms? =
+Yes. You can use Migrator feature of Fluent Forms to migrate from WPForms. To do so, just go to Fluent Forms -> Tools -> Migrator and you will find a section for the WPForms. Click the Import Form button to migrate your forms. To import the entries, click the Import Entries button.
+
+
+= Can I migrate from Gravity Forms? =
+Yes. You can use Migrator feature of Fluent Forms to migrate from Gravity Forms. To do so, just go to Fluent Forms -> Tools -> Migrator and you will find a section for Gravity Forms. Click the Import Form button to migrate your forms. To import the entries, click the Import Entries button.
+
+
+= Can I migrate from Ninja Forms? =
+Yes. You can use Migrator feature of Fluent Forms to migrate from Ninja Forms. To do so, just go to Fluent Forms -> Tools -> Migrator and you will find a section for Ninja Forms. Click the Import Form button to migrate your forms. To import the entries, click the Import Entries button.
+
 
 = I want to report a bug, where to report? =
 
+
 The entire source code is <a href="https://github.com/fluentform/fluentform">available on github</a>. Please feel free to fork and send a pull request or report a bug.
+You can get support from our official support thread at <a href="https://wpmanageninja.com/support-tickets/">wpmanageninja.com/support-tickets</a>
 
 
 == Screenshots ==
@@ -389,642 +438,217 @@ The entire source code is <a href="https://github.com/fluentform/fluentform">ava
 
 == Changelog ==
 
-= 4.3.25 (Date: March 15, 2023) =
-- Fixes aria-label issue
-- Fixes iframe tag issue
-
-= 4.3.24 (Date: February 03, 2023) =
-- Fixes Accessibility CSS issue
-
-= 4.3.23 (Date: February 02, 2023) =
- - Adds WPForms Form & Entry Migrator
- - Adds Form shortcode page finder
- - Improves Form Accessibility
- - Fixes Mp3 File issue in Conversational Form
- - Fixes Oxygen Builder Popup Form
- - Fixes Elementor v3.9.1 popup issue
- - Fixes Migration Issue of Gravity Form
- - Fixes Numeric Field US format Negative value
- - Fixes URL validation for Conversational Form
- - Fixes Asterisk Position for Conversational Forms
- - Fixes Conditional Shortcode contains ‘&’ character
- - Fixes Conversational Form Duplicated Form’s Design Issue
- - Fixes Conditional Logic Empty Ruleset for Conversational Form
- - Fixes Text Input field’s Max Text Length for Conversational Form
- - Fixes Conditional Logic with Calculation for Conversational Form
- - Fixes Conditional Logic Enabled Icon on Conversational Form Fields
- - Fixes Payment Quantity Field issue on Conversational Form Editor
- - Fixes Error Message instant Trigger For Numeric Field on Conversational Form
-
-= 4.3.22 (Date: November 11, 2022) =
-- Adds Conversational form to Regular form converter
-- Fixes conditional field for EU number style
-- Fixes rating field for conditional
-- Fixes file upload preview
-
-= 4.3.21 (Date: October 27, 2022) =
-- Adds Ninja Forms entry migrator
-- Adds Gravity Forms entry migrator
-- Adds Birthday field support on Mailchimp
-- Improves Sanitization
-- Improves Conversational Forms responsiveness
-- Improves UX
-
-= 4.3.20 (Date: October 22, 2022) =
-- Fixes Date / Time field config bug
-
-= 4.3.18 (Date: October 19, 2022) =
-- Improves Turnstile
-- Fixes condition checker nullable bug
-- Fixes Multi-Select upgrade bug
-
-= 4.3.17 (Date: October 18, 2022) =
-- Adds GDPR field in Conversational Form
-- Fixes Email Feed duplicate bug
-- Fixes Custom Button style in Containers
-- Fixes Custom Button style in Step Form
-- Improves Multi-Select field
-- Improves Conversational Form calculation
-
-= 4.3.16 (Date: October 16, 2022) =
-- Adds footer text customization for Slack
-- Improves Custom Button styles
-- Fixes conditional field rendering
-
-= 4.3.15 (Date: October 10, 2022) =
-- Fixes conditional support
-
-= 4.3.14 (Date: October 08, 2022) =
-- Fixes calculation module
-
-= 4.3.13 (Date: October 07, 2022) =
-- Adds Cloudflare Turnstile
-- Adds full admin side translations
-- Improves entry page styles
-- Improves label placement settings
-- Improves Slack integration for Checkable Grid
-- Improves Password truncate module
-- Improves AJAX calls
-- Fixes CSV export issue
-- Fixes multiple success message issue
-- Fixes conditional logics for Containers
-- Fixes long file names issue for file upload
-
-= 4.3.12 (Date: September 01, 2022) =
-- Adds manual control for Container width
-- Improves PHP 8 compatibility
-- Improves field deletion UX
-- Improves Conversational Forms Captcha
-- Fixes Global Default settings not being applied
-- Fixes form submission search for accented characters
-- Fixes Captcha Label placement
-- Fixes http_referer shortcode
-- Fixes URL field issue
-- Fixes additional shortcode Entry Count
-- Fixes Conversational form auto validation message issue
-- Fixes Conversational form long "Custom HTML Field" issue
-
-= 4.3.11 (Date: August 12, 2022) =
-- Adds reset button for Resizable Container
-- Adds Step Form options to Form Filtering
-- Improves Container Resizable feature
-
-= 4.3.10 (Date: August 04, 2022) =
-- Adds Forms type filter
-- Improves data sanitization
-- Improves email summary
-- Improves Resizeable Container
-- Fixes Conversational Form issue with Elementor popup
-
-= 4.3.9 (Date: July 04, 2022) =
-- Adds Resizeable Container Width
-- Adds hCaptcha in conversational form
-- Improves Regex pattern Condition
-- Fixes confirmation message responsive issue
-- Fixes conditional logic empty issue
-- Fixes form duplicate issue
-- Fixes auto captcha option issue with Custom Submit Button
-- Fixes tooltip issue
-
-= 4.3.8 (Date: June 02, 2022) =
-- Adds Oxygen 4.0 support
-- Adds auto include CAPTCHA support
-- Fixes footer credit HTML tag issue
-
-= 4.3.7 (Date: May 20, 2022) =
-- Fixes error notice display issue
-- Fixes file location settings issue
-- Fixes smart dropdown style issue
-
-= 4.3.6 (Date: May 19, 2022) =
-- Adds public PDF downloadable option
-- Improves Slack integration
-- Fixes Caldera migrator
-- Fixes CSS issue for multiple choice field options
-- Fixes email footer HTML issue
-- Fixes Numeric field formatting issue
-
-= 4.3.5 (Date: Apr 22, 2022) =
-- Adds CLI support
-- Adds Oxygen builder native widget support
-- Adds support for programmatically form rendering
-- Adds digits validation for numeric field
-- Adds mechanism for adding custom validation rules
-- Adds {all_data_without_hidden_fields} shortcode
-- Improves payment status translations
-- Improves deactivated form styles
-- Fixes help message tooltip position issue
-- Fixes tooltip behavior in Elementor Popup
-- Fixes reCAPTCHA v3 issue in Elementor Popup
-- Fixes entries table style
-- Fixes dropdown open style issue
-- Fixes Elementor widget issue
-
-= 4.3.4 (Date: Mar 18, 2022) =
-- Adds configuragion option for email summary subject
-- Adds RTL support for backend
-- Adds Datepicker field language support
-- Adds integration search option on form settings
-- Adds elementor popup support for Conversation Forms
-- Adds quick form deactivation toggle option
-- Adds Timezone preset for Dropdown field
-- Improves calculation module
-- Improves chained select CSV upload
-- Improves conditional rendering module
-- Improves Select field data rendering
-- Improves entry user update module
-- Fixes US style numerical value calculation
-- Fixes shareable link bug
-- Fixes mask field bug
-
-= 4.3.3 (Date: Feb 25, 2022) =
-- Fixes multiple calculated custom payment issue
-
-= 4.3.2 (Date: Feb 24, 2022) =
-- Adds address field inputs reordering option
-- Adds reCAPTCHA to Conversational Forms
-- Adds line break support for textarea field
-- Adds warning modal for Conversational Forms conversion
-- Fixes empty input in all_data filter issue
-- Fixes range slider field reset issue
-- Fixes calculation field initial state issue
-- Fixes file upload issue in PHP@8.1
-- Fixes country list issue in address field
-
-= 4.3.1 (Date: Feb 14, 2022) =
-- Adds advanced permission management system
-- Adds existing form to Conversational Forms converter
-- Adds Conversational Forms Key Hint configuration
-- Adds frontend PDF download shortcode after form submission for logged-in users
-- Adds line break support in PDF
-- Fixes multi-site permission issue
-- Fixes Conversational Forms Date Field bug
-- Fixes Numeric Field zero value issue
-- Fixes Mailchimp Address Field issue
-- Improves All Entries filters
-
-= 4.3.0 (Date: Jan 18, 2022) =
-- Adds other form plugins' migrator
-- Adds hCaptcha field
-- Adds malicious attack prevention mechanism
-- Adds support for advanced date configuration in Conversational Forms
-- Adds placeholder settings input for Conversational Forms
-- Adds advanced configuration of country field for Conversational forms
-- Adds validation rule message settings for Email and URL fields
-- Fixes PDF Feed issue on form duplication
-- Fixes url validation regex
-- Fixes Gutenberg block css class issue
-- Fixes Gutenberg block shortcode issue for Conversational Forms
-- Fixes PHP 8 warning issue
-- Improves backend translations
-- Removes file & images link from parser when auto delete enabled
-- Improves Helper Shortcode for submission count of payments
-- Improves Step forms for Autoslider with HTML input
-
-= 4.2.1 (Date: Sep 01, 2021) =
-- Improvements on Conversational Forms
-- RTL Improvements
-- UI Improvements
-- New developer APIs
-- Performance improvements for form submissions
-
-= 4.1.5 (Date: July 13, 2021) =
-- Improvements on Conversational Forms
-- Help Message positioning
-- Predefined Data Set for Checkable Input Fields
-- Raw HTML Email Templates
-- Regex on conditional Logic
-- Other Improvements
-
-= 4.1.0 (Date: June 30, 2021) =
-* Improvements on Conversational Forms
-* Introducing ReCaptcha V3
-* Elementor Integration Widget Improvements
-* Added prefix and suffix to text, email, mask inputs
-* Integration Improvements
-* Other CRON related issues fixed
-* Custom RAW HTML Email Body for advanced or simple designs
-
-= 4.0.0 (Date: June 08, 2021) =
-* Introducing Conversational Form Style
-* Dedicated landing page for Conversational Form
-* Added Layout Option for Conversational Form
-* Bulk Resend Notification Fixed
-* Various Integration Improvements
-* Editor UI improvements
-* PHP 8.0 Support
-* PHP API
-* Custom Submit Button
-
-= 3.6.74 (Date: May 27, 2021) =
-* Hot Fix: Form hide issue fixed after submission
-* A big update is coming soon
-
-= 3.6.72 (Date: May 22, 2021) =
-* Fixes Sanitize Data and Escaping on render for custom CSS and JS
-* Sub-Page Slug URL escaping issue fixed
-* Mailchimp Data Sanitization Fixed
-* Includes Licenses txt files
-* Fix smart filter UI saving
-* Added Column Re-order and show and hide data for form entries
-* Added ReSubscribe option for Mailchimp
-
-= 3.6.70 (Date: Mar 09, 2021) =
-* Fix Form Scheduling
-* Fix Preview Page Slug
-
-= 3.6.68 (Date: Mar 06, 2021) =
-* PHP 8 deprecated issue fixed
-* Export and Import Form/Entries Nonce issue fixed
-* Add Date range selection on entries chart
-
-= 3.6.67 (Date: Mar 05, 2021) =
-* Refactored VueJS build system, Form editor is now 40% faster.
-* Added Hooks for Smart Codes
-* Mailchimp Integration Issue fixed
-* Added Week-days to Date Field
-* Nonce check issue fixed on admin ajax
-* Admin Panel icon load issue fixed
-* PHP 8 compatibility issue fixed
-
-= 3.6.65 (Date: Feb 09, 2021) =
-* Randomize /Shuffle checkable options
-* PHP 8.0 support – Fluent Forms is not 100% compatible with PHP8
-* Limit how many option a user can select for a select field.
-* UI improvements
-* Elementor Widget improvement
-* Better CSS loading time
-* FluentSMTP support
-* Replace icon fonts with SVG
-
-= 3.6.62 (Date: Dec 20, 2020) =
-* Database Improvement
-* Smartcode improvement
-* UI Improvement
-
-= 3.6.61 (Date: Dec 01, 2020) =
-* Form Builder screen improvement
-* Smartcode parser improvement
-* Non-ASCI chars handling when redirecting fix
-* Internal Improvements
-
-= 3.6.60 (Date: Nov 23, 2020) =
-* New: Number formats on the fly for numeric fields
-* New: Import Global Styles from another form
-* New: Dynamic Input Values as Label HTML (Live Update)
-* New: Inline Conditional Tags on CRM integration Feeds
-* Improvement: Oxygen Builder & ACF Integration
-* Many other small bug fixes and improvements
-* Overall UI/UX improvement
-
-= 3.6.51 (Date: Aug 24, 2020) =
-* UI/UX improvement
-* Conditional Logic Improvement
-* Added Advanced Conditions
-* Plain Text Email issue fixed
-* Elementor Popup integration issue fixed
-* Email Notification issue fixed
-
-= 3.6.42 (Date: July 28, 2020) =
-* Email sending issue has been fixed
-* Input background issue has been fixed
-* Cleaner All entries chart
-
-= 3.6.41 (Date: July 27, 2020) =
-* Conditional Logic improvements
-* Validate Uniqueness for Text Input values
-* Replace select2 with choices.JS library (cool)
-* Enable Search option for single select options
-* Reset selects after form submission bug fix
-* Popup issue fix for Elementor
-* Added new tooltip style for better visibility
-* Translation loading issue fixed
-* Slack Notification issue has been fixed
-* Internal Improvements and Performence increase
-
-= 3.6.31 (Date: July 3, 2020) =
-* Conditional Logic improvement (Now you can add Conditional Logic to Containers)
-* Query String php notice fixed
-* wp_date() support for older versions
-* Added "Mark as Favorite" in the entry details page
-* Email Summary Error Issue fixed
-* Taxonomies issue has been fixed for container fields
-* File Upload for drag and drop issue fixed
-* Dutch translation has been added
-* RTL support has been added for some elements
-
-= 3.6.22 (Date: June 19, 2020) =
-* Address Field Parser Fix
-* Fix Conditional Logic issue for multi-select
-* Added {inputs.fieldName.label} smartcode for accessing checkable field label
-
-= 3.6.0 (Date: June 18, 2020) =
-* Brand new UI for Form Builder
-* Introducing Weekly Email Summary for all of your forms
-* See All the Entries aggregated from all the forms
-* Better Oxygen Page Builder Support
-* Advanced Form Validation (Less Spam)
-* Introducing Elementor widget
-* Added German Language File
-* Mobile-friendly Admin Panel
-* Conditional logic issues for “less than” and “less than equal”
-* Added priority-based country selection
-* Added Kosovo to the country list
-* Elementor and Oxygen popup issues for step forms
-* Option to position input labels below the fields
-* Added layout option to make Radio/Checkbox as Button Selection style
-* Passwords will be now truncated after feeds and API calls completed
-* Added conditional source support for Hidden Fields
-
-= 3.5.6 (Date: April 29, 2020) =
-* PDF module has been added, Now you can send PDF via email or download
-* Added 2 PDF templates
-* Added *Not Contains* conditional Logic
-* Improved Submit Button (no loader gif now)
-* Better RTP support
-* Remove Empty keys when redirecting to a new page after form submission
-* Internal Improvements under the hood
-
-= 3.5.5 (Date: April 17, 2020) =
-* Refactored Frontend Javascript, For a basic form, it will load only 12KB JS
-* Multiple Address block copy error fixed
-* Conditional Logic Refactored
-* Internal Improvements
-
-= 3.5.4 (Date: April 09, 2020) =
-* Refactored Conditional Logics JS (New it's really faster for complex conditions)
-* Custom Dynamic URL issue fixed
-* Editor Improvement
-
-= 3.5.3 (Date: April 03, 2020) =
-* Conditional Logic improvement
-* T&C and GDPR UI improvement
-* Submission JS improvement
-
-= 3.5.0 (Date: March 30, 2020) =
-* Mailchimp tags syncing bug fix
-* CleanTalk issue fix
-* Beaver Builder integration issue fix
-* Added indication icon for conditional fields
-* Internal Architecture improvement
-
-= 3.2.3 (Date: March 02, 2020) =
-* Minor Bug Fixes
-
-= 3.2.3 (Date: February 29, 2020) =
-* Conditional Fields Improvement
-* UI Improvement
-* Internal Code improvement and bug fixes
-
-= 3.2.0 (Date: February 10, 2020) =
-* Email delivery fix for multiple emails
-* Frontend Form Submission Error handle
-* prevent form submission on Enter key press
-* Re-Arrange issue fixed for the checkbox and radio
-* Add css class field for containers
-* Added Suffix and Prefix label for Numeric Fields
-* Few bug and typo fixed
-
-= 3.1.5 (Date: December 31, 2019) =
-* Conditional Logic improvement
-* Form rendering process has been improved
-* Few CSS issue has been fixed
-* Ability to Reset Form Analytics
-* Several Typo Fix
-* Ability to send email as Plain Text
-* Improve Email Delivery process
-* Date-Time Field improvement
-* Form init Javascript Refactored
-* Sorting issue fixed from checkable options
-* Improved form validation message for checkable fields
-* +28 issues have been resolved in this release
-* Total ~95 commits submitted to git (in this version alone)
-
-= 3.1.0 (Date: November 19, 2019) =
-* Added gutenberg block
-* Added native form widget for sidebars and widget arias
-* Added step attribute to numeric field
-* CSV/Excel export issue fixed
-* File attachment list view improved
-* Added hidden fields to conditional logics
-* Fix submission error handler
-* Added global activity logs
-* Improved Form Editor UX
-* Added success message for redirect type confirmations
-* Integration improvements
-* Internal improvements
-
-= 3.0.8 (Date: November 06, 2019) =
-* Empty form submission issue resolved
-* Admin UI improvement
-* File Upload issue resolved
-* Added extra css class to containers.
-* Fix ' and " in value issue
-* Editor Improvement
-* Added more hooks for developers.
-* Elementor Pro Popup issue fix for reCaptcha
-
-= 3.0.6 (Date: November 03, 2019) =
-* Conditional Logics improvements.
-* Dynamic Error Message fix.
-* Elementor PopUp Compatability
-* Compliance Settings improvement
-* Section Break alignment fix.
-* JS Duplicate event fix.
-* Export-Import Forms fix.
-* Use WP timestamp as a default
-* Checkbox value parse fix.
-* Help messages added to name fields
-
-= 3.0.5 (Date: October 20, 2019) =
-* Email sending improvement
-* Step Text improvement and Translatable
-* Added User meta as default value
-* Fix element attributes special chars
-* Added RTL support
-* Fix submit button styling issue.
-* Fix Multi-site Update Issue
-* Internal Improvements
-* Shortcode Parser Improvements
-* Improve Default values
-* Added More hooks for developers
-* Ability to hide name field's label
-
-= 3.0.3 (Date: October 16, 2019) =
-* Email sending bug fix
-* Typo fix
-* Added Submission Properties to Smart Codes
-* Added symmetric HTML to file upload
-* Add option to hide labels
-* Multisite installation fix
-* Honeypot added
-
-= 3.0.0 (Date: October 13. 2019) =
-* All new form editor screen with a simple, powerful and clean interface
-* Built-in Data analysis tool for form submissions.
-* Email bug fix
-* Added new DB table for advanced reporting
-* Submit button styling and customization option
-* Improve form security
-* Form Preview re-engineered now. In any theme, it will work fine.
-* Exporting data issue fixed
-* Entry status management improvement
-* File upload issue fixed
-* Lots of integration added
-* Global Integration and Module manager.
-
-= 2.0.1 (Date: June 01, 2019) =
-* Added lots of UI improvement
-* Add option to add custom css and JS
-* add response filter options
-* add an option to export data
-* Add Dashboard widget for a quick look
-* Fixes for some form fields
-
-= 1.8.0 (Date: April 10, 2019) =
-* Fix conditional logic for multiple dropdown fields
-* Added clean, responsive html email templates
-* Improve integrations
-* Added few filter and action hooks for developers.
-* improve backend performance
-* added pre-written email on default forms.
-
-= 1.7.5 (Date: November 19, 2018) =
-* Small Fixes for COnditional Logic
-* Added option to give access of Fluent Forms to other user roles
-* Fix editor Sidebar Elements disorder
-* Added More hooks for developers
-
-= 1.7.4 (Date: October 31, 2018) =
-* Fix for some theme compitability
-* CSS fix for rating field
-* Minor fix for CSV export for contact forms
-
-= 1.7.3 (Date: October 27, 2018) =
-* Conditional Logic Bug fix for Internet Explorer
-* CSS fix for other browsers
-
-= 1.7.2 (Date: October 20, 2018) =
-* Minor Bug Fixes
-* Change Form Submission Process, Now the form submission process is more faster
-
-= 1.7.0 (Date: October 11, 2018) =
-* Added Lots of New features
-* Added Brand New Fields
-* Improve Performance by around 50%
-* Added Integration Bugs
-* Conditional Fields have more options
-
-= 1.6.0 (Date: June 28, 2018) =
-* Added More Integrations
-* Added Rating fields
-* Improve Export Entries
-* Added GDPR Compliance
-*
-
-= 1.5.3 (Date: April 30, 2018) =
-* Improved Conditional Logics
-* Fix Builder Drag and Drop Bug
-
-= 1.5.2 (Date: April 24, 2018) =
-* Support for php 5.4
-
-= 1.5.1 (Date: April 20, 2018) =
-* Fix Admin Screen bug fix for special directory names for some servers
-
-= 1.5.0 (Date: April 19, 2018) =
-* Added Mask Input Field
-* Added Submit Button Customization
-* Added Dynamic Default Value from $_GET Parameter
-* Added + icon on Form Editor for faster Form Create and Edit
-* Placement of Required Items *
-* Added Ratings component
-* Add dynamic fields on Redirects
-
-= 1.4.3 ( Date: 24.03.2018 ) =
-* Added Name Input Field transformer
-* Make the input fields settings more User Friendly
-* Added Admin Label for all the elements
-* Fix Recaptcha on Form Submission
-* Restricts special chars on name attributes
-* Terms and Condition field bug fix
-* By default showing the entries latest first
-* Added compact mode on all entries page
-
-= 1.4.0 ( Date: 19.03.2018 ) =
-* Whole New Form Builder Editor
-* Improve the overall performance
-* Added More Input Fields
-* Reviewing form entries is more easy by going next and previous.
-* added capability to add custom fields for 3rd party developers.
-
-= 1.3.4 ( Date: 20.02.2018 ) =
-* Fix conflict with Jetpack
-* Added loading at form submission.
-* Improved entry view
-
-= 1.3.0 ( Date: 17.02.2018 ) =
-* Refactoring Form Builder for better performance
-* Add Image as Submit Button on form
-* Fix conflict with Jetpack
-* 20% performance increase at backend
-
-= 1.2.5 =
-* Google Recaptcha iOS UX Improvement ( Thanks to Antonio Lucio )
-* Unread Entries Navigation Improvement
-
-
-= 1.2.4 =
-* Fix Google Recaptca Conflict with Contact form 7
-* Form Builder Fix for Safari
-
-= 1.2.3 =
-* Fix Google Recaptca
-* Added Next and Previous Button on Form Entry
-* Simple Hidden Fields Editor
-
-= 1.1.3 =
-* Added More fields
-* Added more Field Customization options
-* Fix select and radio fields
-* Mailchimp double opt-in support
-
-= 1.1.3 =
-* Fix Mailchimp List Selection
-
-= 1.1.2 =
-* Fix Mailchimp Double Opt-In issue
-
-= 1.1.0 =
-* Added Mailchimp Integration
-* Added Slack Integration
-* Added Label positioning for each form element
-* Added Country Field
-* Improvements of Conditional Logic rendering
-* Lots of Improvement in Form Builder
-
-= 1.0.0 =
-* Init The most Advanced form builder plugin
+= 6.2.0 (Date: April 01, 2026) =
+- Upgrades internal framework for better performance and PHP 8.4 support
+- Improves Stripe payment confirmation security
+- Improves data export security
+- Improves database query performance for reports
+- Adds filter hook for conversational form extra inputs
+- Fixes textarea line breaks not displaying correctly in entries
+- Improves overall plugin security and stability
+- Dev: [Upgrade Guide for developers](https://developers.fluentforms.com/upgrade-guide/6.2.0/)
+
+= 6.1.21 (Date: March 17, 2026) =
+- Adds subscription end date to auto-calculate bill_times for subscrition payments
+- Hardens Stripe SCA payment confirmation endpoints against fraud and DoS
+- Fixes spoofable form_id in SCA payment confirmation that could select wrong Stripe API key
+- Adds transaction status validation (intended state) to prevent unauthorized payment confirmations
+- Adds payment amount verification after Stripe confirms payment
+- Fixes missing capability check on MailChimp interest groups endpoint
+- Fixes unsanitized sort_by parameter in Logger and Submission queries
+
+= 6.1.20 (Date: March 04, 2026) =
+- Fixes Stripe coupon discount rounding losing cents on multi-quantity line items
+- Fixes step form save and resume
+
+= 6.1.19 (Date: February 25, 2026) =
+- Adds backward-compatibility for deprecated classes
+
+= 6.1.18 (Date: February 25, 2026) =
+- Improves file delete endpoint security
+- Adds input sanitization to all report data endpoints
+- Adds sanitization to payment receipt shortcode request parameters
+- Fixes SQL LIKE wildcard injection in field uniqueness validation
+- Fixes mixed SQL escaping patterns in post type queries
+
+= 6.1.17 (Date: February 3, 2026) =
+- Fix conversational form subscription plan not showing in payment summary when first option is selected
+- Fix Custom JS disappearing after reload
+- Fix conversational form “Other Option” field not appearing for radio buttons using Button Style
+
+= 6.1.16 (Date: January 30, 2026) =
+- Fix input image issue in conversational form
+- Fix form entries export issue
+
+= 6.1.15 (Date: January 29, 2026) =
+- Adds default form style option which will auto apply to all new forms with form styler(pro) support
+- Adds option to apply  default style to imported forms
+- Adds prefix/suffix options for textarea, URL and password fields
+- Adds mobile keyboard type options for number and mask inputs
+- Adds verified plugins suggestions page
+- Improves AI form builder security
+- Improves multiselect accessibility with Choices.js dropdown
+- Improves form title generation in form history
+- Improves form saving UX
+
+= 6.1.14 (Date: January 15, 2026) =
+- Fixes issue with numeric field
+- Adds a Form edit button in elementor form widget
+
+= 6.1.13 (Date: January 14, 2026) =
+- Adds mobile keyboard type option for numeric and Mask Input fields
+- Adds 'Inherit Theme' option for Form Style Template in Elementor widget
+- Adds more string translation support for WPML
+- Improves country names according to the latest ISO 3166-1 alpha-2 list
+- Fixes Business Logo upload issue in payment settings
+- Fixes Dynamic SmartCode not working for conversational forms
+
+= 6.1.12 (Date: December 26, 2025) =
+- Fixes delay with condition and range slider field
+- Fixes top performing form report count
+- Fixes Button Style “Other Option” input issue with images
+- Improves security and sanitization for confirmation messages
+
+= 6.1.11 (Date: December 4, 2025) =
+- Fixes issue with saving showing invalid json
+- Fixes default behavior of regex in advanced validation
+
+= 6.1.10 (Date: December 2, 2025) =
+- Fix global settings save issue
+- Support other option in Conversational Form
+- Fix form submission delay issue for a large condition set
+
+= 6.1.8 (Date: November 28, 2025) =
+- Improves client IP detection
+- Improves sanitizations and security
+
+= 6.1.7 (Date: November 21, 2025) =
+- Added autosave feature global settings for Form Editor
+- Fix button issue with payment shortcode
+- Fix date timezone issue with form schedule
+
+= 6.1.6 (Date: November 12, 2025) =
+- Fix block css issue
+- Fix conversational form shortcode warnings
+
+= 6.1.5 (Date: November 12, 2025) =
+- Adds Gutenberg Block Form Style Customization
+- Adds Conversational Form Editor shortcode support
+- Adds Custom CSS/JS support in form AI creation (beta)
+- Adds warning message for Name Attribute changes to prevent entry data loss
+- Adds a dropdown in permission manager selection
+- Add signature field support in conversational form (For signature addon)
+- Updates export library to OpenSpout for better compatibility
+- Updates action Scheduler library to latest version
+- Improves database query performance with optimized indexes
+- Improves accessibility improvements for screen readers
+- Improves translations
+- Improves Design Preview color handling with block themes
+- Improves plugin security and escaping from plugin check suggestions
+- Fixes Payment Form submission failures inside Elementor popups
+- Fixes Custom style CSS backtick insertion issue
+- Fixes country name from "Turkey" to "Türkiye"
+- Fixes {user.meta.meta_key} shortcode for non-English languages
+- Fixes Advanced Filter UX issue with persistent dialog box
+- Fixes textarea line break in entry import/export
+- Fixes Entries table showing option values instead of labels for radio/select fields
+- Fixes Quantity field default value not working with conditional logic
+
+= 6.1.4 (Date: September 23, 2025) =
+– Updates language files
+
+= 6.1.3 (Date: September 23, 2025) =
+– Fixes Elementor backend editor not working when Fluent Forms was added
+– Fixes the multiple choice field not working in Elementor popup
+– Fixes Report Page UI not properly showing in RTL
+– Fixes Stripe payment error when global auto-load CAPTCHA is enabled in conversational forms
+– Fixes the Conversational Form Phone Field to return numbers in the full International format
+– Fixes Custom User Meta Fields not populating
+– Fixes the phone field search input style height
+– Fixes email notification triggering for empty payment method form
+– Fixes the PDF Download link in confirmation message
+– Fixes PHP 8 compatibility issues with Excel exports
+– Fixes the range slider in conversational forms causing incorrect progress percentage
+
+= 6.1.2 (Date: August 29, 2025) =
+– Changes iplocation service for country restriction
+– Fixes subscription payment translation issue
+
+= 6.1.1 (Date: August 27, 2025) =
+– Adds Report module
+– Adds conversational forms scroll to top option
+– Adds close button to payment summary items
+– Adds keyboard shortcut for delete input field in the editor
+– Adds conversational forms terms and condition hide disagree button
+– Adds injectable custom Vue component on form editor field view
+– Improves Export entries fields by remembering last selected fields
+– Improves IP detection
+– Improves consistency of settings deletion of captcha
+– Fixes form API empty title retrieval issue
+– Fixes WPForm Migrator with empty forms
+– Fixes radio field customization UI default value selection
+– Fixes video playback in Support section
+– Fixes CleanTalk/Akismet protection spam submitting forms twice
+– Fixes integrations page sidebar menu selection indication on reload
+– Fixes conversational forms GDPR checkbox implementation
+– Fixes captcha conflict when global and form-specific settings differ
+– Fixes hide after submission option setting for conversational forms
+– Fixes Terms & Conditions field validation error messages for not Accepted
+– Removes un used Reset Form button from conversational forms form settings
+– Fixes payment method 'Test' Instead 'Offline' in payments shortcode
+– Fixes multiple address field autocomplete in conversational forms
+– Fixes submission on Enter key press with selected radio/checkbox using keyboard
+– Fixes entries chart date range filtering
+– Fixes database creation errors in WordPress Studio environments
+– Fixed trailing comma in keyword restriction that incorrectly blocked all submissions
+– Fixes WP Text Editor sanitizer removing links in success messages with search parameters
+– Fixes Object Injection Vulnerability unserialize issue when using user profile specific shortcodes
+
+= 6.1.0. (Date: August 26, 2025) =
+– Added Fluent Forms Report module
+– Added conversational forms scroll to top option
+– Added keyboard shortcut for delete input field in the editor
+– Improved Export entries fields by remembering last selected fields
+– Improved IP detection
+– Improved consistency of settings deletion notifications
+– Fixed form API empty title retrieval issue
+– Fixed WPForm Migrator with empty forms
+– Fixed radio field customization UI default value selection
+– Fixed video playback in Support section
+– Fixed CleanTalk/Akismet protection spam submitting forms twice
+– Fixed integrations page sidebar menu selection indication on reload
+– Fixed conversational forms GDPR checkbox implementation
+– Fixed captcha conflict when global and form-specific settings differ
+– Fixed hide after submission option setting for conversational forms
+– Fixed Terms & Conditions field validation error messages for not Accepted
+– Removed non-functional Reset Form button from conversational forms
+– Fixed payment method 'Test' Instead 'Offline' in payments shortcode
+– Fixed multiple address field autocomplete in conversational forms
+– Fixed submission on Enter key press with selected radio/checkbox using keyboard
+– Fixed entries chart date range filtering
+– Fixed database creation errors in WordPress Studio environments
+– Fixed trailing comma in keyword restriction that incorrectly blocked all submissions
+– Fixed WP Text Editor sanitizer removing links in success messages with search parameters
+– Fixed Object Injection Vulnerability unserialize issue when using user profile specific shortcodes
+– Close button to payment summary items
+
+= 6.0.4 (Date: May 29, 2025) =
+– Fixed the net promoter score field's zero (0) value in the visual report
+– Fixed the multi-select values in the submission including commas
+– Fixed tooltip/help message
+– Fixed conversational form address field default value meta smart code
+– Fixed conversational form section break image layout position
+– Fixed email attachment missing for WordPress subdirectory
+– Fixed conversational form name and address fields prefilled using URL params
+– Fixed keyword-based restriction if IPInfo access key is provided
+– Fixed conversational form invisible turnstile autoload
+– Fixed email notification/integration sending after payment status change to paid
+– Fixed turnstile with WP Rocket compatibility
+– Improved honeypot condition check
+– Added support for WPML translation with the `Multilingual Forms for Fluent Forms with WPML` addon
+…
+
+[View full changelog for all versions](https://fluentforms.com/docs/changelog/).
 
 == Upgrade Notice ==
 The latest Version is compatible with previous version, So nothing to worry

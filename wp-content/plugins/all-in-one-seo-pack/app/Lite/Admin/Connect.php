@@ -41,24 +41,30 @@ class Connect {
 	}
 
 	/**
-	 * Checks to see if we should load the setup wizard.
+	 * Checks to see if we should load the connect page.
 	 *
 	 * @since 4.0.0
 	 *
 	 * @return void
 	 */
 	public function maybeLoadConnect() {
-		// Don't load the interface if doing an ajax call.
+		// Don't load the interface if doing an AJAX call.
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			return;
 		}
 
-		// Check for connect-specific parameter
-		// Allow plugins to disable the connect
-		// Check if current user is allowed to save settings.
+		// Check for connect-specific parameter.
+		// phpcs:disable HM.Security.ValidatedSanitizedInput.InputNotSanitized, HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended, Generic.Files.LineLength.MaxExceeded
+		if ( ! isset( $_GET['page'] ) ) {
+			return;
+		}
+
+		$page = sanitize_text_field( wp_unslash( $_GET['page'] ) );
+		// phpcs:enable
+
+		// Check if we're on the right page and if current user is allowed to save settings.
 		if (
-			! isset( $_GET['page'] ) ||
-			( 'aioseo-connect-pro' !== $_GET['page'] && 'aioseo-connect' !== wp_unslash( $_GET['page'] ) ) || // phpcs:ignore HM.Security.ValidatedSanitizedInput.InputNotSanitized
+			( 'aioseo-connect-pro' !== $page && 'aioseo-connect' !== $page ) ||
 			! current_user_can( 'aioseo_manage_seo' )
 		) {
 			return;
@@ -69,13 +75,14 @@ class Connect {
 		// Remove an action in the Gutenberg plugin ( not core Gutenberg ) which throws an error.
 		remove_action( 'admin_print_styles', 'gutenberg_block_editor_admin_print_styles' );
 
-		if ( 'aioseo-connect-pro' === wp_unslash( $_GET['page'] ) ) { // phpcs:ignore HM.Security.ValidatedSanitizedInput.InputNotSanitized
+		if ( 'aioseo-connect-pro' === $page ) {
 			$this->loadConnectPro();
 
 			return;
 		}
 
 		$this->loadConnect();
+		// phpcs:enable
 	}
 
 	/**
@@ -118,6 +125,7 @@ class Connect {
 	public function enqueueScripts() {
 		// We don't want any plugin adding notices to our screens. Let's clear them out here.
 		remove_all_actions( 'admin_notices' );
+		remove_all_actions( 'network_admin_notices' );
 		remove_all_actions( 'all_admin_notices' );
 
 		aioseo()->core->assets->load( 'src/vue/standalone/connect/main.js', [], aioseo()->helpers->getVueData() );
@@ -133,6 +141,7 @@ class Connect {
 	public function enqueueScriptsPro() {
 		// We don't want any plugin adding notices to our screens. Let's clear them out here.
 		remove_all_actions( 'admin_notices' );
+		remove_all_actions( 'network_admin_notices' );
 		remove_all_actions( 'all_admin_notices' );
 
 		aioseo()->core->assets->load( 'src/vue/standalone/connect-pro/main.js', [], aioseo()->helpers->getVueData() );
@@ -158,9 +167,6 @@ class Connect {
 				echo sprintf( esc_html__( '%1$s &rsaquo; Connect', 'all-in-one-seo-pack' ), esc_html( AIOSEO_PLUGIN_NAME ) );
 			?>
 			</title>
-			<?php do_action( 'admin_print_scripts' ); ?>
-			<?php do_action( 'admin_print_styles' ); ?>
-			<?php do_action( 'admin_head' ); ?>
 		</head>
 		<body class="aioseo-connect">
 		<?php
@@ -223,31 +229,29 @@ class Connect {
 		$active = activate_plugin( 'all-in-one-seo-pack-pro/all_in_one_seo_pack_pro', false, false, true );
 
 		if ( ! is_wp_error( $active ) ) {
-			// Deactivate plugin.
-			deactivate_plugins( plugin_basename( AIOSEO_FILE ), false, false );
-
 			return [
 				'error' => esc_html__( 'Pro version is already installed.', 'all-in-one-seo-pack' )
 			];
 		}
 
 		// Just check if network is set.
-		$network = isset( $_POST['network'] ) ? (bool) wp_unslash( $_POST['network'] ) : false; // phpcs:ignore HM.Security.ValidatedSanitizedInput.InputNotSanitized, HM.Security.NonceVerification.Missing, Generic.Files.LineLength.MaxExceeded
+		$network = isset( $_POST['network'] ) ? (bool) sanitize_text_field( wp_unslash( $_POST['network'] ) ) : false; // phpcs:ignore HM.Security.ValidatedSanitizedInput.InputNotSanitized, HM.Security.NonceVerification.Missing, WordPress.Security.NonceVerification, Generic.Files.LineLength.MaxExceeded
 		$network = ! empty( $network );
 
-		// Redirect.
-		$token = hash( 'sha512', wp_rand() );
+		// Generate a hash that can be compared after the user is redirected back.
+		$oth       = hash( 'sha512', wp_rand() );
+		$hashedOth = hash_hmac( 'sha512', $oth, wp_salt() );
 
 		// Save the options.
 		aioseo()->internalOptions->internal->connect->key     = $key;
 		aioseo()->internalOptions->internal->connect->time    = time();
 		aioseo()->internalOptions->internal->connect->network = $network;
-		aioseo()->internalOptions->internal->connect->token   = $token;
+		aioseo()->internalOptions->internal->connect->token   = $oth;
 
 		$url = add_query_arg( [
 			'key'      => $key,
 			'network'  => $network,
-			'token'    => $token,
+			'token'    => $hashedOth,
 			'version'  => aioseo()->version,
 			'siteurl'  => admin_url(),
 			'homeurl'  => home_url(),
@@ -271,32 +275,34 @@ class Connect {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param  string $downloadUrl The download URL.
-	 * @param  string $postToken   The token to validate.
-	 * @return array               An array containing a valid response or an error message.
+	 * @return array An array containing a valid response or an error message.
 	 */
 	public function process() {
-		// Verify params present (oth & download link).
-		$postToken   = ! empty( $_POST['token'] ) ? sanitize_text_field( wp_unslash( $_POST['token'] ) ) : ''; // phpcs:ignore HM.Security.NonceVerification.Missing
-		$downloadUrl = ! empty( $_POST['file'] ) ? esc_url_raw( wp_unslash( $_POST['file'] ) ) : ''; // phpcs:ignore HM.Security.NonceVerification.Missing
+		// phpcs:disable HM.Security.NonceVerification.Missing, WordPress.Security.NonceVerification
+		$hashedOth   = ! empty( $_POST['token'] ) ? sanitize_text_field( wp_unslash( $_POST['token'] ) ) : '';
+		$downloadUrl = ! empty( $_POST['file'] ) ? esc_url_raw( wp_unslash( $_POST['file'] ) ) : '';
+		// phpcs:enable
 
-		// Translators: 1 - The marketing site anchor name ("aioseo.com").
-		$error   = sprintf( esc_html__( 'Could not install upgrade. Please download from %1$s and install manually.', 'all-in-one-seo-pack' ), esc_html( AIOSEO_MARKETING_DOMAIN ) );
+		$error = sprintf(
+			// Translators: 1 - The marketing site domain ("aioseo.com").
+			esc_html__( 'Could not install upgrade. Please download from %1$s and install manually.', 'all-in-one-seo-pack' ),
+			esc_html( AIOSEO_MARKETING_DOMAIN )
+		);
+
 		$success = esc_html__( 'Plugin installed & activated.', 'all-in-one-seo-pack' );
 
-		// verify params present (token & download link).
-		if ( empty( $downloadUrl ) || empty( $postToken ) ) {
+		// Check if all required params are present.
+		if ( empty( $downloadUrl ) || empty( $hashedOth ) ) {
 			wp_send_json_error( $error );
 		}
 
-		// Verify token.
-		$token = aioseo()->internalOptions->internal->connect->token;
-		if ( empty( $token ) ) {
+		$oth = aioseo()->internalOptions->internal->connect->token;
+		if ( empty( $oth ) ) {
 			wp_send_json_error( $error );
 		}
 
-		// This function has been included in WP Core since 3.9.2. @see: https://developer.wordpress.org/reference/functions/hash_equals/
-		if ( ! hash_equals( $token, $postToken ) ) { // phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.hash_equalsFound
+		// Check if the stored hash matches the salted one that is sent back from the server.
+		if ( hash_hmac( 'sha512', $oth, wp_salt() ) !== $hashedOth ) {
 			wp_send_json_error( $error );
 		}
 
@@ -315,7 +321,7 @@ class Connect {
 		}
 
 		// Set the license key in a new option so we can get it when Pro is activated.
-		aioseo()->internalOptions->internal->validLicenseKey = $licenseKey;
+		aioseo()->internalOptions->internal->connectLicenseKey = $licenseKey;
 
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/class-wp-screen.php';
@@ -342,8 +348,6 @@ class Connect {
 
 			// Because the regular activation hooks won't run, we need to add capabilities for the installing user so that he doesn't run into an error on the first request.
 			aioseo()->activate->addCapabilitiesOnUpgrade();
-
-			deactivate_plugins( plugin_basename( AIOSEO_FILE ), false, $network );
 
 			wp_send_json_success( $success );
 		}
@@ -392,8 +396,6 @@ class Connect {
 
 		// Because the regular activation hooks won't run, we need to add capabilities for the installing user so that he doesn't run into an error on the first request.
 		aioseo()->activate->addCapabilitiesOnUpgrade();
-
-		deactivate_plugins( plugin_basename( AIOSEO_FILE ), false, $network );
 
 		wp_send_json_success( $success );
 	}

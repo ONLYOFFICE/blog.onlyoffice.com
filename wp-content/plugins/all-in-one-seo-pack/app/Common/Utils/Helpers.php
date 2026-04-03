@@ -16,10 +16,14 @@ use AIOSEO\Plugin\Common\Traits\Helpers as TraitHelpers;
 class Helpers {
 	use TraitHelpers\Api;
 	use TraitHelpers\Arrays;
+	use TraitHelpers\Blocks;
+	use TraitHelpers\Buffer;
 	use TraitHelpers\Constants;
 	use TraitHelpers\Deprecated;
 	use TraitHelpers\DateTime;
+	use TraitHelpers\Images;
 	use TraitHelpers\Language;
+	use TraitHelpers\Numbers;
 	use TraitHelpers\PostType;
 	use TraitHelpers\Request;
 	use TraitHelpers\Shortcodes;
@@ -32,6 +36,36 @@ class Helpers {
 	use TraitHelpers\WpContext;
 	use TraitHelpers\WpMultisite;
 	use TraitHelpers\WpUri;
+
+	/**
+	 * Holds the data for Vue.
+	 *
+	 * @since   4.4.9
+	 * @version 4.8.6.1 Moved from Vue trait as it's shared between Lite, Common and Pro.
+	 *
+	 * @var array
+	 */
+	protected $data = [];
+
+	/**
+	 * Optional arguments for setting the data.
+	 *
+	 * @since   4.4.9
+	 * @version 4.8.6.1 Moved from Vue trait as it's shared between Lite, Common and Pro.
+	 *
+	 * @var array
+	 */
+	protected $args = [];
+
+	/**
+	 * Holds the cached data.
+	 *
+	 * @since   4.5.1
+	 * @version 4.8.6.1 Moved from Vue trait as it's shared between Lite, Common and Pro.
+	 *
+	 * @var array
+	 */
+	protected $cache = [];
 
 	/**
 	 * Generate a UTM URL from the url and medium/content passed in.
@@ -79,7 +113,7 @@ class Helpers {
 	 * @return boolean True if we are, false if not.
 	 */
 	public function isDev() {
-		return aioseo()->isDev || isset( $_REQUEST['aioseo-dev'] ); // phpcs:ignore HM.Security.NonceVerification.Recommended
+		return aioseo()->isDev || isset( $_REQUEST['aioseo-dev'] ); // phpcs:ignore HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
 	}
 
 	/**
@@ -102,7 +136,7 @@ class Helpers {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return boolean Whether or not it is on apache.
+	 * @return bool Whether or not it is on nginx.
 	 */
 	public function isNginx() {
 		if ( ! isset( $_SERVER['SERVER_SOFTWARE'] ) ) {
@@ -119,6 +153,46 @@ class Helpers {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Checks if the server is running on LiteSpeed.
+	 *
+	 * @since 4.5.3
+	 *
+	 * @return bool Whether it is on LiteSpeed.
+	 */
+	public function isLiteSpeed() {
+		if ( ! isset( $_SERVER['SERVER_SOFTWARE'] ) ) {
+			return false;
+		}
+
+		$server = strtolower( sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) );
+
+		return false !== stripos( $server, 'litespeed' );
+	}
+
+	/**
+	 * Returns the server name: Apache, nginx or LiteSpeed.
+	 *
+	 * @since 4.5.3
+	 *
+	 * @return string The server name. An empty string if it's unknown.
+	 */
+	public function getServerName() {
+		if ( aioseo()->helpers->isApache() ) {
+			return 'apache';
+		}
+
+		if ( aioseo()->helpers->isNginx() ) {
+			return 'nginx';
+		}
+
+		if ( aioseo()->helpers->isLiteSpeed() ) {
+			return 'litespeed';
+		}
+
+		return '';
 	}
 
 	/**
@@ -148,7 +222,7 @@ class Helpers {
 	 * @since 4.0.0
 	 *
 	 * @param  integer $bytes The size of the file.
-	 * @return string         The size as a string.
+	 * @return array          The original and readable file size.
 	 */
 	public function convertFileSize( $bytes ) {
 		if ( empty( $bytes ) ) {
@@ -195,6 +269,13 @@ class Helpers {
 				}
 
 				return $sanitized;
+			case 'object':
+				$sanitized = [];
+				foreach ( (array) $value as $key => $child ) {
+					$sanitized[ $key ] = aioseo()->helpers->sanitizeOption( $child );
+				}
+
+				return $sanitized;
 			default:
 				return false;
 		}
@@ -206,23 +287,73 @@ class Helpers {
 	 *
 	 * @since 4.1.0.2
 	 *
-	 * @param  string       $string The string.
-	 * @return string|array         The string or unserialized data.
+	 * @param  string        $string         The string.
+	 * @param  array|boolean $allowedClasses The allowed classes for unserialize.
+	 * @return string|array                  The string or unserialized data.
 	 */
-	public function maybeUnserialize( $string ) {
+	public function maybeUnserialize( $string, $allowedClasses = false ) {
 		if ( ! is_string( $string ) ) {
 			return $string;
 		}
 
 		$string = trim( $string );
-		if ( is_serialized( $string ) && ! $this->stringContains( $string, 'O:' ) ) {
-			// We want to add extra hardening for PHP versions greater than 5.6.
-			return version_compare( PHP_VERSION, '7.0', '<' )
-				? @unserialize( $string )
-				: @unserialize( $string, [ 'allowed_classes' => false ] ); // phpcs:disable PHPCompatibility.FunctionUse.NewFunctionParameters.unserialize_optionsFound
+		if ( is_serialized( $string ) ) {
+			return @unserialize( $string, [ 'allowed_classes' => $allowedClasses ] ); // phpcs:disable PHPCompatibility.FunctionUse.NewFunctionParameters.unserialize_optionsFound
 		}
 
 		return $string;
+	}
+
+	/**
+	 * Returns a deep clone of the given object.
+	 * The built-in PHP clone KW provides a shallow clone. This method returns a deep clone that also clones nested object properties.
+	 * You can use this method to sever the reference to nested objects.
+	 *
+	 * @since 4.4.7
+	 *
+	 * @return object The cloned object.
+	 */
+	public function deepClone( $object ) {
+		return unserialize( serialize( $object ) );
+	}
+
+	/**
+	 * Sanitizes a given variable
+	 *
+	 * @since 4.5.6
+	 *
+	 * @param  mixed $variable             The variable.
+	 * @param  bool  $preserveHtml         Whether or not to preserve HTML for ALL fields.
+	 * @param  array $fieldsToPreserveHtml Specific fields to preserve HTML for.
+	 * @param  string $fieldName           The name of the current field (when looping over a list).
+	 * @return mixed                       The sanitized variable.
+	 */
+	public function sanitize( $variable, $preserveHtml = false, $fieldsToPreserveHtml = [], $fieldName = '' ) {
+		$type = gettype( $variable );
+		switch ( $type ) {
+			case 'boolean':
+				return (bool) $variable;
+			case 'string':
+				if ( $preserveHtml || in_array( $fieldName, $fieldsToPreserveHtml, true ) ) {
+					return aioseo()->helpers->decodeHtmlEntities( sanitize_text_field( htmlspecialchars( $variable, ENT_NOQUOTES, 'UTF-8' ) ) );
+				}
+
+				return sanitize_text_field( $variable );
+			case 'integer':
+				return intval( $variable );
+			case 'float':
+			case 'double':
+				return floatval( $variable );
+			case 'array':
+				$array = [];
+				foreach ( (array) $variable as $k => $v ) {
+					$array[ $k ] = $this->sanitize( $v, $preserveHtml, $fieldsToPreserveHtml, $k );
+				}
+
+				return $array;
+			default:
+				return false;
+		}
 	}
 
 	/**
@@ -240,5 +371,97 @@ class Helpers {
 		}
 
 		return $version;
+	}
+
+	/**
+	 * Retrieves the marketing site articles.
+	 *
+	 * @since 4.7.2
+	 *
+	 * @param  bool  $fetchImage Whether to fetch the article image.
+	 * @return array             The articles or an empty array on failure.
+	 */
+	public function fetchAioseoArticles( $fetchImage = false ) {
+		$items = aioseo()->core->networkCache->get( 'rss_feed' );
+		if ( is_array( $items ) ) {
+			return $items;
+		}
+
+		$lockKey = 'rss_feed_fetch_lock';
+		if ( null !== aioseo()->core->cache->get( $lockKey ) ) {
+			return [];
+		}
+
+		aioseo()->core->cache->update( $lockKey, true, MINUTE_IN_SECONDS );
+		$response = aioseo()->helpers->wpRemoteGetExternal( 'https://aioseo.com/wp-json/wp/v2/posts?per_page=4' );
+		if ( is_wp_error( $response ) ) {
+			aioseo()->core->networkCache->update( 'rss_feed', [], 10 * MINUTE_IN_SECONDS );
+			aioseo()->core->cache->delete( $lockKey );
+
+			return [];
+		}
+
+		$body  = wp_remote_retrieve_body( $response );
+		$items = ! empty( $body ) ? json_decode( $body, true ) : [];
+
+		if ( ! is_array( $items ) || empty( $items ) ) {
+			aioseo()->core->networkCache->update( 'rss_feed', [], HOUR_IN_SECONDS );
+			aioseo()->core->cache->delete( $lockKey );
+
+			return [];
+		}
+
+		$cached = [];
+		foreach ( $items as $k => $item ) {
+			$cached[ $k ] = [
+				'url'     => $item['link'],
+				'title'   => $item['title']['rendered'],
+				'date'    => date_i18n( get_option( 'date_format' ), strtotime( $item['date'] ) ),
+				'content' => wp_html_excerpt( $item['content']['rendered'], 128, '&hellip;' ),
+			];
+
+			if ( $fetchImage ) {
+				$imageUrl = $item['_links']['wp:featuredmedia'][0]['href'] ?? '';
+				if ( empty( $imageUrl ) ) {
+					continue;
+				}
+
+				$response = aioseo()->helpers->wpRemoteGetExternal( $imageUrl );
+				if ( is_wp_error( $response ) ) {
+					continue;
+				}
+
+				$body = wp_remote_retrieve_body( $response );
+				if ( ! $body ) {
+					continue;
+				}
+
+				$image = json_decode( $body, true );
+
+				$cached[ $k ]['image'] = [
+					'url'   => $image['source_url'] ?? '',
+					'alt'   => $image['alt_text'] ?? '',
+					'sizes' => $image['media_details']['sizes'] ?? ''
+				];
+			}
+		}
+
+		aioseo()->core->networkCache->update( 'rss_feed', $cached, DAY_IN_SECONDS );
+		aioseo()->core->cache->delete( $lockKey );
+
+		return $cached;
+	}
+
+	/**
+	 * Returns if the admin bar is enabled.
+	 *
+	 * @since 4.8.1
+	 *
+	 * @return bool Whether the admin bar is enabled.
+	 */
+	public function isAdminBarEnabled() {
+		$showAdminBarMenu = aioseo()->options->advanced->adminBarMenu;
+
+		return is_admin_bar_showing() && ( $showAdminBarMenu ?? true );
 	}
 }

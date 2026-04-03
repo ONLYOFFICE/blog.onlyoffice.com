@@ -7,10 +7,10 @@ use Elementor\Controls_Manager;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
-use Elementor\Core\Schemes\Typography as Scheme_Typography;
 use Elementor\Group_Control_Background;
-use Elementor\Core\Schemes\Color as Scheme_Color;
 use FluentForm\App\Helpers\Helper;
+use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
+use Elementor\Core\Kits\Documents\Tabs\Global_Colors;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -98,10 +98,38 @@ class FluentFormWidget extends Widget_Base
             'form_list',
             [
                 'label'       => esc_html__('Fluent Forms', 'fluentform'),
-                'type'        => Controls_Manager::SELECT,
+                'type'        => Controls_Manager::SELECT2,
                 'label_block' => true,
+                'multiple'    => false,
                 'options'     => Helper::getForms(),
                 'default'     => '0',
+            ]
+        );
+
+        $this->add_control(
+            'form_edit_button',
+            [
+                'type'      => Controls_Manager::RAW_HTML,
+                'raw'       => '<a href="#" class="fluentform-edit-link" style="display: block; text-align: center; padding: 10px; margin-top: 10px; background-color: #6EC1E4; color: #fff; border-radius: 3px; text-decoration: none; cursor: pointer;" target="_blank" rel="noopener" data-form-id="">' . esc_html__('Edit Form', 'fluentform') . '</a>',
+                'content_classes' => 'fluentform-edit-button-wrapper',
+                'condition' => [
+                    'form_list!' => '0',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'theme_style',
+            [
+                'label'   => __('Form Style Template', 'fluentform'),
+                'type'    => Controls_Manager::SELECT2,
+                'label_block' => true,
+                'multiple'    => false,
+                'options' => $this->getStylePresets(),
+                'default' => '',
+                'condition' => [
+                    'form_list!' => '0',
+                ],
             ]
         );
 
@@ -144,7 +172,7 @@ class FluentFormWidget extends Widget_Base
         $this->add_control(
             'labels_switch',
             [
-                'label'        => __('Labels', 'fluentform'),
+                'label'        => __('Labels ', 'fluentform'),
                 'type'         => Controls_Manager::SWITCHER,
                 'default'      => 'yes',
                 'label_on'     => __('Show', 'fluentform'),
@@ -340,8 +368,10 @@ class FluentFormWidget extends Widget_Base
             [
                 'name'      => 'heading_description_typography',
                 'label'     => __('Typography', 'fluentform'),
-                'scheme'    => Scheme_Typography::TYPOGRAPHY_4,
                 'selector'  => '{{WRAPPER}} .fluentform-widget-description',
+                'global'    => [
+                    'default' => Global_Typography::TYPOGRAPHY_ACCENT,
+                ],
                 'condition' => [
                     'custom_title_description' => 'yes',
                 ],
@@ -532,7 +562,6 @@ class FluentFormWidget extends Widget_Base
                 'tab'   => Controls_Manager::TAB_STYLE,
             ]
         );
-
         $this->add_control(
             'form_label_text_color',
             [
@@ -543,7 +572,7 @@ class FluentFormWidget extends Widget_Base
                 ],
             ]
         );
-
+        
         $this->add_group_control(
             Group_Control_Typography::get_type(),
             [
@@ -552,6 +581,42 @@ class FluentFormWidget extends Widget_Base
                 'selector' => '{{WRAPPER}} .fluentform-widget-wrapper .ff-el-input--label label',
             ]
         );
+        
+        $this->add_control(
+            'form_label_asterisk_color',
+            [
+                'label'     => __('Asterisk Color', 'fluentform'),
+                'type'      => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .ff-el-is-required.asterisk-right label:after' => 'color: {{VALUE}} !important',
+                ],
+            ]
+        );
+        $this->add_control(
+            'form_label_asterisk_size',
+            [
+                'label' => __('Asterisk Size', 'fluentform'),
+                'type'  => Controls_Manager::SLIDER,
+                'range' => [
+                    'px' => [
+                        'min'  => 0,
+                        'max'  => 30,
+                        'step' => 1,
+                    ],
+                    '%' => [
+                        'min'  => 0,
+                        'max'  => 30,
+                        'step' => 1,
+                    ],
+                ],
+                'size_units' => ['px', 'em', '%'],
+                'selectors'  => [
+                    '{{WRAPPER}} .ff-el-is-required.asterisk-right label:after' => 'font-size: {{SIZE}}{{UNIT}}',
+                ],
+                'separator' => 'before',
+            ]
+        );
+     
 
         $this->end_controls_section();
     }
@@ -561,7 +626,7 @@ class FluentFormWidget extends Widget_Base
         $this->start_controls_section(
             'section_form_fields_style',
             [
-                'label' => __('Input & Textarea', 'fluentform'),
+                'label' => __('Input & Text Area', 'fluentform'),
                 'tab'   => Controls_Manager::TAB_STYLE,
             ]
         );
@@ -1714,12 +1779,11 @@ class FluentFormWidget extends Widget_Base
                 [
                     'label'  => __('Label Color', 'fluentform'),
                     'type'   => Controls_Manager::COLOR,
-                    'scheme' => [
-                        'type'  => Scheme_Color::get_type(),
-                        'value' => Scheme_Color::COLOR_1,
-                    ],
                     'selectors' => [
                         '{{WRAPPER}} .ff-el-progress-status' => 'color: {{VALUE}}',
+                    ],
+                    'global' => [
+                        'default' => Global_Colors::COLOR_PRIMARY,
                     ],
                     'condition' => [
                         'show_label' => 'yes',
@@ -1732,8 +1796,10 @@ class FluentFormWidget extends Widget_Base
                 [
                     'name'      => 'form_progressbar_label_typography',
                     'label'     => __('Typography', 'fluentform'),
-                    'scheme'    => Scheme_Typography::TYPOGRAPHY_1,
                     'selector'  => '{{WRAPPER}} .ff-el-progress-status',
+                    'global'    => [
+                        'default' => Global_Typography::TYPOGRAPHY_PRIMARY
+                    ],
                     'condition' => [
                         'show_label' => 'yes',
                     ],
@@ -1799,6 +1865,7 @@ class FluentFormWidget extends Widget_Base
                     'condition' => [
                         'show_form_progressbar' => 'yes',
                     ],
+                    // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- Elementor widget parameter, not WP_Query
                     'exclude' => [
                         'image',
                     ],
@@ -1810,12 +1877,11 @@ class FluentFormWidget extends Widget_Base
                 [
                     'label'  => __('Text Color', 'fluentform'),
                     'type'   => Controls_Manager::COLOR,
-                    'scheme' => [
-                        'type'  => Scheme_Color::get_type(),
-                        'value' => Scheme_Color::COLOR_1,
-                    ],
                     'selectors' => [
                         '{{WRAPPER}} .ff-el-progress-bar span' => 'color: {{VALUE}};',
+                    ],
+                    'global' => [
+                        'default' => Global_Colors::COLOR_PRIMARY
                     ],
                     'condition' => [
                         'show_form_progressbar' => 'yes',
@@ -1894,6 +1960,7 @@ class FluentFormWidget extends Widget_Base
                     'condition' => [
                         'show_form_progressbar' => 'yes',
                     ],
+                    // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- Elementor widget parameter, not WP_Query
                     'exclude' => [
                         'image',
                     ],
@@ -1940,8 +2007,10 @@ class FluentFormWidget extends Widget_Base
                 [
                     'name'     => 'form_pagination_button_typography',
                     'label'    => __('Typography', 'fluentform'),
-                    'scheme'   => Scheme_Typography::TYPOGRAPHY_1,
                     'selector' => '{{WRAPPER}} .step-nav button',
+                    'global'   => [
+                        'default' => Global_Typography::TYPOGRAPHY_PRIMARY,
+                    ]
                 ]
             );
 
@@ -2135,7 +2204,7 @@ class FluentFormWidget extends Widget_Base
             [
                 'label'     => __('Background Color', 'fluentform'),
                 'type'      => Controls_Manager::COLOR,
-                'default'   => '#409EFF',
+                'default'   => '#1a7efb',
                 'selectors' => [
                     '{{WRAPPER}} .fluentform-widget-wrapper .ff-el-group .ff-btn-submit' => 'background-color: {{VALUE}} !important;',
                 ],
@@ -2392,6 +2461,14 @@ class FluentFormWidget extends Widget_Base
         $this->end_controls_section();
     }
 
+    private function getStylePresets()
+    {
+        return [
+            'ffs_default' => __('Default', 'fluentform'),
+            'ffs_inherit_theme' => __('Inherit Theme Style', 'fluentform'),
+        ];
+    }
+
     /**
      * Render the widget output on the frontend.
      *
@@ -2434,6 +2511,12 @@ class FluentFormWidget extends Widget_Base
         if ($form_container_alignment) {
             $this->add_render_attribute('fluentform_widget_wrapper', 'class', 'fluentform-widget-align-' . $form_container_alignment . '');
         }
+        
+        if (isset($theme_style)) {
+            $theme_style = sanitize_text_field($theme_style);
+        } else {
+            $theme_style = '';
+        }
 
         if (!empty($form_list)) { ?>
 
@@ -2454,7 +2537,7 @@ class FluentFormWidget extends Widget_Base
                 </div>
             <?php } ?>
 
-            <?php echo do_shortcode('[fluentform id="' . $form_list . '"]'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $form_list is escaped before being passed in.?>
+            <?php echo do_shortcode('[fluentform id="' . $form_list . '" theme="' . $theme_style . '"]'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $form_list is escaped before being passed in.?>
             </div>
 
             <?php

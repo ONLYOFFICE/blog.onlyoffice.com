@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -11,18 +20,17 @@ if ( ! class_exists( 'ACF_Admin' ) ) :
 		/**
 		 * Constructor.
 		 *
-		 * @date    23/06/12
-		 * @since   5.0.0
-		 *
-		 * @param   void
-		 * @return  void
+		 * @since 5.0.0
 		 */
-		function __construct() {
-			// Add actions.
+		public function __construct() {
 			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 			add_action( 'admin_body_class', array( $this, 'admin_body_class' ) );
 			add_action( 'current_screen', array( $this, 'current_screen' ) );
+			add_action( 'admin_notices', array( $this, 'maybe_show_escaped_html_notice' ) );
+			add_action( 'admin_notices', array( $this, 'maybe_show_select2_v3_deprecation_notice' ) );
+			add_action( 'admin_init', array( $this, 'dismiss_escaped_html_notice' ) );
+			add_action( 'admin_init', array( $this, 'clear_escaped_html_log' ) );
 			add_filter( 'parent_file', array( $this, 'ensure_menu_selection' ) );
 			add_filter( 'submenu_file', array( $this, 'ensure_submenu_selection' ) );
 		}
@@ -51,14 +59,20 @@ if ( ! class_exists( 'ACF_Admin' ) ) :
 		/**
 		 * Enqueues global admin styling.
 		 *
-		 * @date    28/09/13
 		 * @since   5.0.0
-		 *
-		 * @param   void
-		 * @return  void
 		 */
-		function admin_enqueue_scripts() {
+		public function admin_enqueue_scripts() {
 			wp_enqueue_style( 'acf-global' );
+			wp_enqueue_script( 'acf-escaped-html-notice' );
+
+			wp_localize_script(
+				'acf-escaped-html-notice',
+				'acf_escaped_html_notice',
+				array(
+					'show_details' => __( 'Show&nbsp;details', 'acf' ),
+					'hide_details' => __( 'Hide&nbsp;details', 'acf' ),
+				)
+			);
 		}
 
 		/**
@@ -73,13 +87,8 @@ if ( ! class_exists( 'ACF_Admin' ) ) :
 		public function admin_body_class( $classes ) {
 			global $wp_version;
 
-			// Determine body class version.
-			$wp_minor_version = floatval( $wp_version );
-			if ( $wp_minor_version >= 5.3 ) {
-				$classes .= ' acf-admin-5-3';
-			} else {
-				$classes .= ' acf-admin-3-8';
-			}
+			// Add body class.
+			$classes .= ' acf-admin-5-3';
 
 			// Add browser for specific CSS.
 			$classes .= ' acf-browser-' . esc_attr( acf_get_browser() );
@@ -102,6 +111,7 @@ if ( ! class_exists( 'ACF_Admin' ) ) :
 			if ( isset( $screen->post_type ) && in_array( $screen->post_type, acf_get_internal_post_types(), true ) ) {
 				add_action( 'in_admin_header', array( $this, 'in_admin_header' ) );
 				add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ) );
+				add_filter( 'update_footer', array( $this, 'admin_footer_version_text' ) );
 				$this->setup_help_tab();
 				$this->maybe_show_import_from_cptui_notice();
 			}
@@ -199,6 +209,115 @@ if ( ! class_exists( 'ACF_Admin' ) ) :
 		}
 
 		/**
+		 * Notifies the user that fields rendered via shortcode or the_field() have
+		 * had HTML removed/altered due to unsafe HTML being escaped.
+		 *
+		 * @since 6.2.5
+		 */
+		public function maybe_show_escaped_html_notice() {
+			// Only show to editors and above.
+			if ( ! current_user_can( 'edit_others_posts' ) ) {
+				return;
+			}
+
+			// Allow opting-out of the notice.
+			if ( apply_filters( 'acf/admin/prevent_escaped_html_notice', true ) ) {
+				return;
+			}
+
+			if ( get_option( 'acf_escaped_html_notice_dismissed' ) ) {
+				return;
+			}
+
+			$escaped = _acf_get_escaped_html_log();
+
+			// Notice for when HTML has already been escaped.
+			if ( ! empty( $escaped ) ) {
+				acf_get_view( 'escaped-html-notice', array( 'acf_escaped' => $escaped ) );
+			}
+		}
+
+		/**
+		 * Dismisses the escaped unsafe HTML notice.
+		 *
+		 * @since 6.2.5
+		 */
+		public function dismiss_escaped_html_notice() {
+			if ( empty( $_GET['acf-dismiss-esc-html-notice'] ) ) {
+				return;
+			}
+
+			$nonce = sanitize_text_field( wp_unslash( $_GET['acf-dismiss-esc-html-notice'] ) );
+
+			if (
+				! wp_verify_nonce( $nonce, 'acf/dismiss_escaped_html_notice' ) ||
+				! current_user_can( acf_get_setting( 'capability' ) )
+			) {
+				return;
+			}
+
+			update_option( 'acf_escaped_html_notice_dismissed', true );
+
+			_acf_delete_escaped_html_log();
+
+			wp_safe_redirect( remove_query_arg( 'acf-dismiss-esc-html-notice' ) );
+			exit;
+		}
+
+		/**
+		 * Clear the escaped unsafe HTML log.
+		 *
+		 * @since 6.2.5
+		 */
+		public function clear_escaped_html_log() {
+			if ( empty( $_GET['acf-clear-esc-html-log'] ) ) {
+				return;
+			}
+
+			$nonce = sanitize_text_field( wp_unslash( $_GET['acf-clear-esc-html-log'] ) );
+
+			if (
+				! wp_verify_nonce( $nonce, 'acf/clear_escaped_html_log' ) ||
+				! current_user_can( acf_get_setting( 'capability' ) )
+			) {
+				return;
+			}
+
+			_acf_delete_escaped_html_log();
+
+			wp_safe_redirect( remove_query_arg( 'acf-clear-esc-html-log' ) );
+			exit;
+		}
+
+		/**
+		 * Notifies the user that Select2 v3 has been deprecated and will be removed.
+		 *
+		 * @since 6.4.3
+		 *
+		 * @return void
+		 */
+		public function maybe_show_select2_v3_deprecation_notice() {
+			// Only show to editors and above.
+			if ( ! current_user_can( 'edit_others_posts' ) ) {
+				return;
+			}
+
+			if ( 3 === acf_get_setting( 'select2_version' ) ) {
+				$acf_plugin_name = acf_is_pro() ? 'ACF PRO' : 'ACF';
+				$acf_plugin_name = '<strong>' . $acf_plugin_name . ' &mdash;</strong>';
+
+				$text = sprintf(
+					/* translators: %1$s - Plugin name, %2$s URL to documentation */
+					__( '%1$s We have detected that this website is configured to use v3 of the Select2 jQuery library, which has been deprecated in favor of v4 and will be removed in a future version of ACF. <a href="%2$s" target="_blank">Learn more</a>.', 'acf' ),
+					$acf_plugin_name,
+					acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/resources/select2-v3-deprecation/', 'docs', 'select2-deprecation-notice' ),
+				);
+
+				acf_add_admin_notice( $text, 'warning', false );
+			}
+		}
+
+		/**
 		 * Renders the admin navigation element.
 		 *
 		 * @date    27/3/20
@@ -215,6 +334,8 @@ if ( ! class_exists( 'ACF_Admin' ) ) :
 			if ( isset( $screen->base ) && 'post' === $screen->base ) {
 				acf_get_view( 'global/form-top' );
 			}
+
+			do_action( 'acf/in_admin_header' );
 		}
 
 		/**
@@ -223,15 +344,56 @@ if ( ! class_exists( 'ACF_Admin' ) ) :
 		 * @date    7/4/20
 		 * @since   5.9.0
 		 *
-		 * @param   string $text The admin footer text.
+		 * @param   string $text The current admin footer text.
 		 * @return  string
 		 */
-		function admin_footer_text( $text ) {
-			if ( null === $text ) {
-				$text = '';
+		public function admin_footer_text( $text ) {
+			$wp_engine_link = acf_add_url_utm_tags( 'https://wpengine.com/', 'bx_prod_referral', acf_is_pro() ? 'acf_pro_plugin_footer_text' : 'acf_free_plugin_footer_text', false, 'acf_plugin', 'referral' );
+			$acf_link       = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/', 'footer', 'footer' );
+
+			if ( acf_is_pro() ) {
+				return sprintf(
+					/* translators: This text is prepended by a link to ACF's website, and appended by a link to WP Engine's website. */
+					'<a href="%1$s" target="_blank">ACF&#174;</a> and <a href="%1$s" target="_blank">ACF&#174; PRO</a> ' . __( 'are developed and maintained by', 'acf' ) . ' <a href="%2$s" target="_blank">WP Engine</a>.',
+					$acf_link,
+					$wp_engine_link
+				);
 			}
-			// Use RegExp to append "ACF" after the <a> element allowing translations to read correctly.
-			return preg_replace( '/(<a[\S\s]+?\/a>)/', '$1 ' . __( 'and', 'acf' ) . ' <a href="' . acf_add_url_utm_tags( 'https://www.advancedcustomfields.com', 'footer', 'footer' ) . '" target="_blank">ACF</a>', $text, 1 );
+
+			return sprintf(
+				/* translators: This text is prepended by a link to ACF's website, and appended by a link to WP Engine's website. */
+				'<a href="%1$s" target="_blank">ACF&#174;</a> ' . __( 'is developed and maintained by', 'acf' ) . ' <a href="%2$s" target="_blank">WP Engine</a>.',
+				$acf_link,
+				$wp_engine_link
+			);
+		}
+
+		/**
+		 * Modifies the admin footer version text.
+		 *
+		 * @since 6.2
+		 *
+		 * @param   string $text The current admin footer version text.
+		 * @return  string
+		 */
+		public function admin_footer_version_text( $text ) {
+			$documentation_link = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/resources/', 'footer', 'footer' );
+			$support_link       = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/support/', 'footer', 'footer' );
+			$feedback_link      = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/feedback/', 'footer', 'footer' );
+			$version_link       = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/changelog/', 'footer', 'footer' );
+
+			return sprintf(
+				'<a href="%s" target="_blank">%s</a> &#8729; <a href="%s" target="_blank">%s</a> &#8729; <a href="%s" target="_blank">%s</a> &#8729; <a href="%s" target="_blank">%s %s</a>',
+				$documentation_link,
+				__( 'Documentation', 'acf' ),
+				$support_link,
+				__( 'Support', 'acf' ),
+				$feedback_link,
+				__( 'Feedback', 'acf' ),
+				$version_link,
+				acf_is_pro() ? __( 'ACF PRO', 'acf' ) : __( 'ACF', 'acf' ),
+				ACF_VERSION
+			);
 		}
 
 		/**
@@ -268,10 +430,8 @@ if ( ! class_exists( 'ACF_Admin' ) ) :
 			}
 			return $submenu_file;
 		}
-
 	}
 
 	// Instantiate.
 	acf_new_instance( 'ACF_Admin' );
-
 endif; // class_exists check

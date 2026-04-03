@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -9,13 +18,11 @@ if ( ! class_exists( 'ACF_Admin_Post_Types' ) ) :
 	/**
 	 * The ACF Post Types admin controller class
 	 */
-	#[AllowDynamicProperties]
 	class ACF_Admin_Post_Types extends ACF_Admin_Internal_Post_Type_List {
 
 		/**
 		 * The slug for the internal post type.
 		 *
-		 * @since 6.1
 		 * @var string
 		 */
 		public $post_type = 'acf-post-type';
@@ -23,7 +30,6 @@ if ( ! class_exists( 'ACF_Admin_Post_Types' ) ) :
 		/**
 		 * The admin body class used for the post type.
 		 *
-		 * @since 6.1
 		 * @var string
 		 */
 		public $admin_body_class = 'acf-admin-post-types';
@@ -36,11 +42,19 @@ if ( ! class_exists( 'ACF_Admin_Post_Types' ) ) :
 		public $store = 'post-types';
 
 		/**
+		 * Constructor.
+		 *
+		 * @since 6.2
+		 */
+		public function __construct() {
+			add_action( 'admin_menu', array( $this, 'admin_menu' ), 8 );
+			parent::__construct();
+		}
+
+		/**
 		 * Current screen actions for the post types list admin page.
 		 *
-		 * @since   6.1
-		 *
-		 * @return  void
+		 * @since 6.1
 		 */
 		public function current_screen() {
 			// Bail early if not post types admin page.
@@ -92,7 +106,6 @@ if ( ! class_exists( 'ACF_Admin_Post_Types' ) ) :
 			// Set the "no found" label to be our custom HTML for no results.
 			if ( empty( acf_request_arg( 's' ) ) ) {
 				global $wp_post_types;
-				$this->not_found_label                                = $wp_post_types[ $this->post_type ]->labels->not_found;
 				$wp_post_types[ $this->post_type ]->labels->not_found = $this->get_not_found_html();
 			}
 
@@ -132,7 +145,7 @@ if ( ! class_exists( 'ACF_Admin_Post_Types' ) ) :
 
 				// Description.
 				case 'acf-description':
-					if ( is_string( $post['description'] ) && ! empty( $post['description'] ) ) {
+					if ( ( is_string( $post['description'] ) || is_numeric( $post['description'] ) ) && ! empty( $post['description'] ) ) {
 						echo '<span class="acf-description">' . acf_esc_html( $post['description'] ) . '</span>';
 					} else {
 						echo '<span class="acf-emdash" aria-hidden="true">—</span>';
@@ -183,7 +196,7 @@ if ( ! class_exists( 'ACF_Admin_Post_Types' ) ) :
 			$text          = implode( ', ', $shown_labels );
 
 			if ( ! empty( $hidden_labels ) ) {
-				$text .= ', <span class="acf-more-items acf-tooltip-js" title="' . implode( ', ', $hidden_labels ) . '">+' . count( $hidden_labels ) . '</span>';
+				$text .= ', <span class="acf-more-items acf-js-tooltip" title="' . implode( ', ', $hidden_labels ) . '">+' . count( $hidden_labels ) . '</span>';
 			}
 
 			echo acf_esc_html( $text );
@@ -237,7 +250,7 @@ if ( ! class_exists( 'ACF_Admin_Post_Types' ) ) :
 			$text          = implode( ', ', $shown_labels );
 
 			if ( ! empty( $hidden_labels ) ) {
-				$text .= ', <span class="acf-more-items acf-tooltip-js" title="' . implode( ', ', $hidden_labels ) . '">+' . count( $hidden_labels ) . '</span>';
+				$text .= ', <span class="acf-more-items acf-js-tooltip" title="' . implode( ', ', $hidden_labels ) . '">+' . count( $hidden_labels ) . '</span>';
 			}
 
 			echo acf_esc_html( $text );
@@ -283,8 +296,8 @@ if ( ! class_exists( 'ACF_Admin_Post_Types' ) ) :
 		 *
 		 * @since 6.1
 		 *
-		 * @param string $action The action being performed.
-		 * @param int    $count  The number of items the action was performed on.
+		 * @param string  $action The action being performed.
+		 * @param integer $count  The number of items the action was performed on.
 		 * @return string
 		 */
 		public function get_action_notice_text( $action, $count = 1 ) {
@@ -337,10 +350,8 @@ if ( ! class_exists( 'ACF_Admin_Post_Types' ) ) :
 			__( 'This post type could not be registered because its key is in use by another post type registered by another plugin or theme.', 'acf' ) .
 			'"></span> ' . _x( 'Registration Failed', 'post status', 'acf' );
 		}
-
 	}
 
 	// Instantiate.
 	acf_new_instance( 'ACF_Admin_Post_Types' );
-
 endif; // Class exists check.

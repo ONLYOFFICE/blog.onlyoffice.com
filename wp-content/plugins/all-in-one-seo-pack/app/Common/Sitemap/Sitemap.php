@@ -13,114 +13,69 @@ use AIOSEO\Plugin\Common\Models;
  *
  * @since 4.0.0
  */
-class Sitemap {
+class Sitemap extends SitemapAbstract {
 	/**
-	 * Content class instance.
+	 * The sitemap filename.
 	 *
-	 * @since 4.2.7
-	 *
-	 * @var Content
-	 */
-	public $content = null;
-
-	/**
-	 * Root class instance.
-	 *
-	 * @since 4.2.7
-	 *
-	 * @var Root
-	 */
-	public $root = null;
-
-	/**
-	 * Query class instance.
-	 *
-	 * @since 4.2.7
-	 *
-	 * @var Query
-	 */
-	public $query = null;
-
-	/**
-	 * File class instance.
-	 *
-	 * @since 4.2.7
-	 *
-	 * @var File
-	 */
-	public $file = null;
-
-	/**
-	 * Image class instance.
-	 *
-	 * @since 4.2.7
-	 *
-	 * @var Image\Image
-	 */
-	public $image = null;
-
-	/**
-	 * Ping class instance.
-	 *
-	 * @since 4.2.7
-	 *
-	 * @var Ping
-	 */
-	public $ping = null;
-
-	/**
-	 * Priority class instance.
-	 *
-	 * @since 4.2.7
-	 *
-	 * @var Priority
-	 */
-	public $priority = null;
-
-	/**
-	 * Output class instance.
-	 *
-	 * @since 4.2.7
-	 *
-	 * @var Output
-	 */
-	public $output = null;
-
-	/**
-	 * Helpers class instance.
-	 *
-	 * @since 4.2.7
-	 *
-	 * @var Helpers
-	 */
-	public $helpers = null;
-
-	/**
-	 * RequestParser class instance.
-	 *
-	 * @since 4.2.7
-	 *
-	 * @var RequestParser
-	 */
-	public $requestParser = null;
-
-	/**
-	 * Xsl class instance.
-	 *
-	 * @since 4.2.7
-	 *
-	 * @var Xsl
-	 */
-	public $xsl = null;
-
-	/**
-	 * The sitemap type (e.g. "general", "news", "video", "rss", etc.).
-	 *
-	 * @since 4.2.7
+	 * @since 4.4.2
 	 *
 	 * @var string
 	 */
-	public $type = '';
+	public $filename = '';
+
+	/**
+	 * Whether the sitemap indexes are enabled.
+	 *
+	 * @since 4.4.2
+	 *
+	 * @var bool
+	 */
+	public $indexes = false;
+
+	/**
+	 * The sitemap index name.
+	 *
+	 * @since 4.4.2
+	 *
+	 * @var string
+	 */
+	public $indexName = '';
+
+	/**
+	 * The number of links per index.
+	 *
+	 * @since 4.4.2
+	 *
+	 * @var int
+	 */
+	public $linksPerIndex = 1000;
+
+	/**
+	 * The current page number.
+	 *
+	 * @since 4.4.2
+	 *
+	 * @var int
+	 */
+	public $pageNumber = 0;
+
+	/**
+	 * The entries' offset.
+	 *
+	 * @since 4.4.2
+	 *
+	 * @var int
+	 */
+	public $offset = 0;
+
+	/**
+	 * Whether the sitemap is static.
+	 *
+	 * @since 4.4.2
+	 *
+	 * @var bool
+	 */
+	public $isStatic = false;
 
 	/**
 	 * Class constructor.
@@ -133,7 +88,6 @@ class Sitemap {
 		$this->query         = new Query();
 		$this->file          = new File();
 		$this->image         = new Image\Image();
-		$this->ping          = new Ping();
 		$this->priority      = new Priority();
 		$this->output        = new Output();
 		$this->helpers       = new Helpers();
@@ -201,17 +155,17 @@ class Sitemap {
 
 		$contents = aioseo()->helpers->decodeHtmlEntities( aioseo()->htaccess->getContents() );
 		if ( get_option( 'permalink_structure' ) ) {
-			if ( preg_match( '/All in One SEO Sitemap Rewrite Rules/i', $contents ) && ! aioseo()->core->cache->get( 'aioseo_sitemap_htaccess_rewrite_rules_remove' ) ) {
+			if ( preg_match( '/All in One SEO Sitemap Rewrite Rules/i', (string) $contents ) && ! aioseo()->core->cache->get( 'aioseo_sitemap_htaccess_rewrite_rules_remove' ) ) {
 				aioseo()->core->cache->update( 'aioseo_sitemap_htaccess_rewrite_rules_remove', time(), HOUR_IN_SECONDS );
 
-				$contents = preg_replace( "/$escapedRewriteRules/i", '', $contents );
+				$contents = preg_replace( "/$escapedRewriteRules/i", '', (string) $contents );
 				aioseo()->htaccess->saveContents( $contents );
 			}
 
 			return;
 		}
 
-		if ( preg_match( '/All in One SEO Sitemap Rewrite Rules/i', $contents ) || aioseo()->core->cache->get( 'aioseo_sitemap_htaccess_rewrite_rules_add' ) ) {
+		if ( preg_match( '/All in One SEO Sitemap Rewrite Rules/i', (string) $contents ) || aioseo()->core->cache->get( 'aioseo_sitemap_htaccess_rewrite_rules_add' ) ) {
 			return;
 		}
 
@@ -249,9 +203,9 @@ class Sitemap {
 		$detectedFiles = [];
 		if ( ! $isGeneralSitemapStatic ) {
 			foreach ( $files as $filename ) {
-				if ( preg_match( '#.*sitemap.*#', $filename ) ) {
+				if ( preg_match( '#.*sitemap.*#', (string) $filename ) ) {
 					// We don't want to delete the video sitemap here at all.
-					$isVideoSitemap = preg_match( '#.*video.*#', $filename ) ? true : false;
+					$isVideoSitemap = preg_match( '#.*video.*#', (string) $filename ) ? true : false;
 					if ( ! $isVideoSitemap ) {
 						$detectedFiles[] = $filename;
 					}
@@ -359,15 +313,15 @@ class Sitemap {
 		}
 
 		// This is a hack to prevent WordPress from running it's default stuff during our processing.
-		global $wp_query;
-		$wp_query->is_home = false;
+		global $wp_query; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+		$wp_query->is_home = false; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
 
 		// This prevents the sitemap from including terms twice when WPML is active.
 		if ( class_exists( 'SitePress' ) ) {
-			global $sitepress_settings;
+			global $sitepress_settings; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
 			// Before building the sitemap make sure links aren't translated.
 			// The setting should not be updated in the DB.
-			$sitepress_settings['auto_adjust_ids'] = 0;
+			$sitepress_settings['auto_adjust_ids'] = 0; // phpcs:ignore Squiz.NamingConventions.ValidVariableName, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 		}
 
 		// If requested sitemap should be static and doesn't exist, then generate it.
@@ -376,7 +330,7 @@ class Sitemap {
 
 		$options = aioseo()->options->noConflict();
 		if ( ! $options->sitemap->{aioseo()->sitemap->type}->enable ) {
-			$this->notFoundPage();
+			aioseo()->helpers->notFoundPage();
 
 			return;
 		}
@@ -384,17 +338,13 @@ class Sitemap {
 		$entries = aioseo()->sitemap->content->get();
 		$total   = aioseo()->sitemap->content->getTotal();
 		if ( ! $entries ) {
-			foreach ( aioseo()->addons->getLoadedAddons() as $loadedAddon ) {
-				if ( ! empty( $loadedAddon->content ) && method_exists( $loadedAddon->content, 'get' ) ) {
-					$entries = $loadedAddon->content->get();
-					$total   = count( $entries );
-					if ( method_exists( $loadedAddon->content, 'getTotal' ) ) {
-						$total = $loadedAddon->content->getTotal();
-					}
-
-					if ( $entries ) {
-						break;
-					}
+			$addonsEntries = aioseo()->addons->doAddonFunction( 'content', 'get' );
+			$addonTotals   = aioseo()->addons->doAddonFunction( 'content', 'getTotal' );
+			foreach ( $addonsEntries as $addonSlug => $addonEntries ) {
+				if ( ! empty( $addonEntries ) ) {
+					$entries = $addonEntries;
+					$total   = ! empty( $addonTotals[ $addonSlug ] ) ? $addonTotals[ $addonSlug ] : count( $entries );
+					break;
 				}
 			}
 		}
@@ -411,11 +361,7 @@ class Sitemap {
 
 		$this->headers();
 		aioseo()->sitemap->output->output( $entries );
-		foreach ( aioseo()->addons->getLoadedAddons() as $loadedAddon ) {
-			if ( ! empty( $loadedAddon->output ) && method_exists( $loadedAddon->output, 'output' ) ) {
-				$loadedAddon->output->output( $entries );
-			}
-		}
+		aioseo()->addons->doAddonFunction( 'output', 'output', [ $entries ] );
 
 		exit;
 	}
@@ -430,11 +376,7 @@ class Sitemap {
 	 * @return void
 	 */
 	protected function doesFileExist() {
-		foreach ( aioseo()->addons->getLoadedAddons() as $loadedAddon ) {
-			if ( ! empty( $loadedAddon->sitemap ) && method_exists( $loadedAddon->sitemap, 'doesFileExist' ) ) {
-				$loadedAddon->sitemap->doesFileExist();
-			}
-		}
+		aioseo()->addons->doAddonFunction( 'sitemap', 'doesFileExist' );
 
 		if (
 			'general' !== $this->type ||
@@ -446,7 +388,7 @@ class Sitemap {
 		}
 
 		require_once ABSPATH . 'wp-admin/includes/file.php';
-		if ( ! aioseo()->core->fs->exists( get_home_path() . $_SERVER['REQUEST_URI'] ) ) {
+		if ( isset( $_SERVER['REQUEST_URI'] ) && ! aioseo()->core->fs->exists( get_home_path() . sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) ) {
 			$this->scheduleRegeneration();
 		}
 	}
@@ -462,21 +404,6 @@ class Sitemap {
 		$charset = aioseo()->helpers->getCharset();
 		header( "Content-Type: text/xml; charset=$charset", true );
 		header( 'X-Robots-Tag: noindex, follow', true );
-	}
-
-	/**
-	 * Redirects to a 404 Not Found page if the sitemap is disabled.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @return void
-	 */
-	public function notFoundPage() {
-		global $wp_query;
-		$wp_query->set_404();
-		status_header( 404 );
-		include get_404_template();
-		exit;
 	}
 
 	/**

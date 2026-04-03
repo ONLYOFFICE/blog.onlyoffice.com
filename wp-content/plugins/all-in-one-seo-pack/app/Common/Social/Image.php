@@ -28,7 +28,7 @@ class Image {
 	 *
 	 * @since 4.1.6.2
 	 *
-	 * @var WP_Post
+	 * @var \WP_Post
 	 */
 	private $post;
 
@@ -55,19 +55,20 @@ class Image {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string       $type        The type ("Facebook" or "Twitter").
-	 * @param  string       $imageSource The image source.
-	 * @param  WP_Post      $post        The post object.
-	 * @return string|array              The image data.
+	 * @param  string        $type        The type ("Facebook" or "Twitter").
+	 * @param  string        $imageSource The image source.
+	 * @param  \WP_Post|null $post        The post object.
+	 * @return string|array               The image data.
 	 */
-	public function getImage( $type, $imageSource, $post ) {
+	public function getImage( $type, $imageSource, $post = null ) {
 		$this->type          = $type;
 		$this->post          = $post;
 		$this->thumbnailSize = apply_filters( 'aioseo_thumbnail_size', 'fullsize' );
+		$hash                = md5( wp_json_encode( [ $type, $imageSource, $post ] ) );
 
 		static $images = [];
-		if ( isset( $images[ $this->type ] ) ) {
-			return $images[ $this->type ];
+		if ( isset( $images[ $hash ] ) ) {
+			return $images[ $hash ];
 		}
 
 		if ( 'auto' === $imageSource && aioseo()->helpers->getPostPageBuilderName( $post->ID ) ) {
@@ -95,7 +96,7 @@ class Image {
 					$image = $this->getCustomFieldImage();
 					break;
 				case 'custom_image':
-					$metaData = aioseo()->meta->metaData->getMetaData();
+					$metaData = aioseo()->meta->metaData->getMetaData( $post );
 					if ( empty( $metaData ) ) {
 						break;
 					}
@@ -114,16 +115,16 @@ class Image {
 		}
 
 		if ( is_array( $image ) ) {
-			$images[ $this->type ] = $image;
+			$images[ $hash ] = $image;
 
-			return $images[ $this->type ];
+			return $images[ $hash ];
 		}
 
 		$imageWithoutDimensions = aioseo()->helpers->removeImageDimensions( $image );
 		$attachmentId           = aioseo()->helpers->attachmentUrlToPostId( $imageWithoutDimensions );
-		$images[ $this->type ]  = $attachmentId ? wp_get_attachment_image_src( $attachmentId, $this->thumbnailSize ) : $image;
+		$images[ $hash ]        = $attachmentId ? wp_get_attachment_image_src( $attachmentId, $this->thumbnailSize ) : $image;
 
-		return $images[ $this->type ];
+		return $images[ $hash ];
 	}
 
 	/**
@@ -187,7 +188,7 @@ class Image {
 		}
 
 		$postContent = aioseo()->helpers->getPostContent( $this->post );
-		preg_match_all( '|<img.*?src=[\'"](.*?)[\'"].*?>|i', $postContent, $matches );
+		preg_match_all( '|<img.*?src=[\'"](.*?)[\'"].*?>|i', (string) $postContent, $matches ); // phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
 
 		// Ignore cover block background image - WP >= 5.7.
 		if ( ! empty( $matches[0] ) && apply_filters( 'aioseo_social_image_ignore_cover_block', true, $this->post, $matches ) ) {
@@ -210,7 +211,7 @@ class Image {
 	 */
 	private function getAuthorAvatar() {
 		$avatar = get_avatar( $this->post->post_author, 300 );
-		preg_match( "/src='(.*?)'/i", $avatar, $matches );
+		preg_match( "/src='(.*?)'/i", (string) $avatar, $matches );
 
 		return ! empty( $matches[1] ) ? $matches[1] : '';
 	}
@@ -279,6 +280,8 @@ class Image {
 			$image = get_post_meta( $this->post->ID, $customField, true );
 
 			if ( ! empty( $image ) ) {
+				$image = is_array( $image ) ? $image[0] : $image;
+
 				return is_numeric( $image )
 					? wp_get_attachment_image_src( $image, $this->thumbnailSize )
 					: $image;
@@ -293,8 +296,8 @@ class Image {
 	 *
 	 * @since 4.1.6.2
 	 *
-	 * @param  WP_term      The object for which we need to get the cached image.
-	 * @return string|array The image URL or data.
+	 * @param  \WP_Term     $object The object for which we need to get the cached image.
+	 * @return string|array         The image URL or data.
 	 */
 	protected function getCachedImage( $object = null ) {
 		if ( null === $object ) {

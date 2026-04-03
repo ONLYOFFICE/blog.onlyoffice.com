@@ -2,7 +2,6 @@
 
 namespace FluentForm\App\Services\FormBuilder\Components;
 
-use FluentForm\App;
 use FluentForm\App\Helpers\Helper;
 use FluentForm\Framework\Helpers\ArrayHelper;
 
@@ -19,7 +18,17 @@ class SelectCountry extends BaseComponent
     public function compile($data, $form)
     {
         $elementName = $data['element'];
-        $data = apply_filters('fluentform_rendering_field_data_' . $elementName, $data, $form);
+        $data = apply_filters_deprecated(
+            'fluentform_rendering_field_data_' . $elementName,
+            [
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_data_' . $elementName,
+            'Use fluentform/rendering_field_data_' . $elementName . ' instead of fluentform_rendering_field_data_' . $elementName
+        );
+        $data = apply_filters('fluentform/rendering_field_data_' . $elementName, $data, $form);
 
         $data = $this->loadCountries($data);
         $defaultValues = (array) $this->extractValueFromAttributes($data);
@@ -65,9 +74,20 @@ class SelectCountry extends BaseComponent
 
         $html = $this->buildElementMarkup($elMarkup, $data, $form);
 
-        $this->printContent('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
-    }
+        $html = apply_filters_deprecated(
+            'fluentform_rendering_field_html_' . $elementName,
+            [
+                $html,
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_html_' . $elementName,
+            'Use fluentform/rendering_field_html_' . $elementName . ' instead of fluentform_rendering_field_html_' . $elementName
+        );
 
+        $this->printContent('fluentform/rendering_field_html_' . $elementName, $html, $data, $form);
+    }
     /**
      * Load countt list from file
      *
@@ -77,10 +97,10 @@ class SelectCountry extends BaseComponent
      */
     public function loadCountries($data)
     {
-        $app = App::make();
+        $app = wpFluentForm();
         $data['options'] = [];
         $activeList = ArrayHelper::get($data, 'settings.country_list.active_list');
-        $countries = $app->load($app->appPath('Services/FormBuilder/CountryNames.php'));
+        $countries = getFluentFormCountryList();
 
         if ('visible_list' == $activeList) {
             $selectCountries = ArrayHelper::get($data, 'settings.country_list.' . $activeList, []);
@@ -129,9 +149,8 @@ class SelectCountry extends BaseComponent
 
     public function getSelectedCountries($keys = [])
     {
-        $app = App::make();
         $options = [];
-        $countries = $app->load($app->appPath('Services/FormBuilder/CountryNames.php'));
+        $countries = getFluentFormCountryList();
         foreach ($keys as $value) {
             $options[$value] = $countries[$value];
         }

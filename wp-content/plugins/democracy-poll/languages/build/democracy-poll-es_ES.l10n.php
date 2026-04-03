@@ -1,0 +1,2 @@
+<?php
+return ['domain'=>NULL,'plural-forms'=>'nplurals=2; plural=(n != 1);','language'=>'es_ES','project-id-version'=>'Democracy','pot-creation-date'=>'2017-03-12 15:40+0500','po-revision-date'=>'2017-03-12 15:42+0500','x-generator'=>'Poedit 1.8.12','messages'=>[]];
