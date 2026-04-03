@@ -1,4 +1,5 @@
 <?php 
+  $formClass = "";
   if(get_search_query() != ""){
     $formClass = "focus hasValue";
   }
