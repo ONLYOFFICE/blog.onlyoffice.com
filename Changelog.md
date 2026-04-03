@@ -1,4 +1,26 @@
 ﻿# Changelog
+ 
+ 
+ ## 1.2.9
+### New
+* Update menu
+* Updated footer
+ 
+## 1.2.8
+### New
+* Update top banner
+ 
+## 1.2.7
+### New
+* Update menu
+* Updated footer
+* Update top banner
+ 
+
+## 1.2.6
+### New
+* Added plugin "Onlyoffice" for embedding documents in a post
+* Updated plugin "Trinity Audio"
 
 ## 1.2.5
 ### New
