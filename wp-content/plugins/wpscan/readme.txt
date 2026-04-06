@@ -2,8 +2,8 @@
 Contributors: ethicalhack3r, xfirefartx, erwanlr
 Tags: wpscan, wpvulndb, security, vulnerability, hack, scan, exploit, secure, alerts
 Requires at least: 3.4
-Tested up to: 5.8
-Stable tag: 1.15.6
+Tested up to: 6.9
+Stable tag: 1.16
 Requires PHP: 5.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl.html
@@ -92,8 +92,14 @@ The WPScan WordPress Security Plugin will also check for other security issues, 
 
 == Changelog ==
 
+= 1.16 =
+* Allow report to be POST-ed to webhook URL or downloaded as JSON.
+
+= 1.15.7 =
+* Fix the way the plugin handles extension versions to be more accurate.
+
 = 1.15.6 =
-* Added a notice mentioning Jetpack Protect
+* Added a notice pointing regular users to Jetpack Protect
 
 = 1.15.5 =
 * Update "Tested up to"

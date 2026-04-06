@@ -16,6 +16,9 @@ class Notification {
 	// Page slug.
 	private $page;
 
+	/** @var Plugin $parent */
+	private $parent;
+
 	/**
 	 * Class constructor.
 	 *
@@ -42,8 +45,10 @@ class Notification {
 	public function admin_init() {
 		$total = $this->parent->get_total();
 
-		register_setting( $this->page, $this->parent->OPT_EMAIL, array( $this, 'sanitize_email' ) );
-		register_setting( $this->page, $this->parent->OPT_INTERVAL, array( $this, 'sanitize_interval' ) );
+		\register_setting( $this->page, $this->parent->OPT_EMAIL, array( $this, 'sanitize_email' ) );
+		\register_setting( $this->page, $this->parent->OPT_INTERVAL, array( $this, 'sanitize_interval' ) );
+		\register_setting( $this->page, $this->parent->OPT_WEBHOOK, array( $this, 'sanitize_url' ) );
+
 
 		$section = $this->page . '_section';
 
@@ -62,12 +67,14 @@ class Notification {
 			$section
 		);
 
+		$webhook_section = $this->page . '_webhook_section';
+		add_settings_section( $webhook_section, null, array( $this, 'webhook_intro' ), $this->page );
 		add_settings_field(
-			$this->parent->OPT_INTERVAL,
+			$this->parent->OPT_WEBHOOK,
 			__( 'Send Alerts', 'wpscan' ),
-			array( $this, 'field_interval' ),
+			array( $this, 'field_webhook' ),
 			$this->page,
-			$section
+			$webhook_section
 		);
 	}
 
@@ -116,7 +123,7 @@ class Notification {
 	 * @return string
 	 */
 	public function introduction() {
-		echo '<p>' . __( 'Fill in the options below if you want to be notified by mail about new vulnerabilities. To add multiple e-mail addresses comma separate them.', 'wpscan' ) . '</p>';
+		echo '<p>' . __( 'Enter one or more email addresses (separated by a comma) to be notified by email about new vulnerabilities.', 'wpscan' ) . '</p>';
 	}
 
 	/**
@@ -160,6 +167,32 @@ class Notification {
 	}
 
 	/**
+	 * Instructions for the webhook setting field
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return string
+	 */
+	public function webhook_intro() {
+		echo '<p>' . __( 'Enter a webhook URL to receive report data as JSON.', 'wpscan' ) . '</p>';
+	}
+
+	/**
+	 * Email field
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return string
+	 */
+	public function field_webhook() {
+		echo sprintf(
+			'<input type="text" name="%s" value="%s" class="regular-text" placeholder="https://example.com/wpscan-webhook-receiver">',
+			esc_attr( $this->parent->OPT_WEBHOOK ),
+			esc_attr( get_option( $this->parent->OPT_WEBHOOK, '' ) )
+		);
+	}
+
+	/**
 	 * Sanitize email
 	 *
 	 * @since 1.0.0
@@ -200,6 +233,24 @@ class Notification {
 	}
 
 	/**
+	 * Sanitize URL
+	 * @since 1.15.8
+	 * @access public
+	 * 
+	 * @param string $value The URL to sanitize
+	 * @return string
+	 */
+	 public function sanitize_url( $value ) {
+		if ( ! empty( $value ) ) {
+			if ( ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
+				add_settings_error( $this->parent->OPT_WEBHOOK, 'invalid-url', __( 'You have entered an invalid webhook URL.', 'wpscan' ) );
+				$value = '';
+			}
+		}
+		return $value;
+	}
+
+	/**
 	 * Send the notification
 	 *
 	 * @since 1.0.0
@@ -211,8 +262,15 @@ class Notification {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		$email    = get_option( $this->parent->OPT_EMAIL );
-		$interval = get_option( $this->parent->OPT_INTERVAL, 'd' );
+		$email       = get_option( $this->parent->OPT_EMAIL );
+		$interval    = get_option( $this->parent->OPT_INTERVAL, 'd' );
+		$report      = get_option( $this->parent->OPT_REPORT );
+		$webhook_url = get_option( $this->parent->OPT_WEBHOOK );
+
+		// Check if the webhook is set.
+		if ( ! empty( $webhook_url ) ) {
+			$this->send_webhook_notification( $webhook_url, $report );
+		}
 
 		// Check email or if notifications are disabled.
 		if ( empty( $email ) || 'o' === $interval ) {
@@ -301,6 +359,23 @@ class Notification {
 			wp_mail( $email, $subject, $msg, $headers );
 		}
 	}
+
+	/**
+	 * Send the webhook notification
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function send_webhook_notification( $url, $report ) {
+		wp_safe_remote_post( $url, array(
+			'body'    => json_encode( $report ),
+			'headers' => array(
+				'Content-Type' => 'application/json',
+			),
+		) );
+	}
+
 
 	/**
 	 * List of vulnerabilities to send by mail
