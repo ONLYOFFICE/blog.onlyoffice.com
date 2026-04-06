@@ -124,7 +124,6 @@ class Discourse {
 	protected $discourse_webhook = array(
 		'use-discourse-webhook'      => 0,
 		'webhook-secret'             => '',
-		'webhook-match-old-topics'   => 0,
 		'use-discourse-user-webhook' => 0,
 		'webhook-match-user-email'   => 0,
 	);
@@ -164,6 +163,7 @@ class Discourse {
 		'sso-client-login-form-change'   => 0,
 		'sso-client-login-form-redirect' => '',
 		'sso-client-sync-by-email'       => 0,
+		'sso-client-disable-create-user' => 0,
 		'sso-client-sync-logout'         => 0,
 	);
 
@@ -208,7 +208,7 @@ class Discourse {
 	 * Initializes the plugin configuration, loads the text domain etc.
 	 */
 	public function initialize_plugin() {
-		load_plugin_textdomain( 'wp-discourse', false, basename( dirname( __FILE__ ) ) . '/languages' );
+		load_plugin_textdomain( 'wp-discourse', false, basename( __DIR__ ) . '/languages' );
 		$this->options = $this->get_options();
 
 		// Set the Discourse domain name option.
@@ -222,7 +222,7 @@ class Discourse {
 				$saved_values   = get_option( 'discourse_configurable_text' );
 				$default_values = $this->discourse_configurable_text;
 				$merged_values  = array_merge( $default_values, $saved_values );
-				array_walk( $merged_values, 'self::register_text_translations' );
+				array_walk( $merged_values, self::class . '::register_text_translations' );
 				update_option( $group_name, $merged_values );
 			} else {
 				add_option( $group_name, $this->$group_name );
@@ -297,6 +297,9 @@ class Discourse {
 	 * Adds the WP Discourse URL to the <head> for use in the client.
 	 */
 	public function wpdc_url() {
+    if ( empty( $this->options['url'] ) ) {
+				return;
+    }
 		echo '<meta name="wpdc-url" content="' . esc_html( $this->options['url'] ) . '" />';
 	}
 

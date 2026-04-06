@@ -7,16 +7,80 @@
 
 namespace WPDiscourse\Test;
 
-use \WPDiscourse\SSOClient\Client;
-use \WPDiscourse\SSOClient\Nonce;
-use \WPDiscourse\Test\UnitTest;
+use WPDiscourse\SSOClient\Client;
+use WPDiscourse\SSOClient\Nonce;
+use WPDiscourse\Test\UnitTest;
 
 /**
  * SSOClient test case.
  */
 class SSOClientTest extends UnitTest {
 
-  public static function setUpBeforeClass() {
+    /**
+     * Discourse user id
+     *
+     * @access protected
+     * @var int
+     */
+    protected $discourse_user_id;
+
+    /**
+     * User id
+     *
+     * @access protected
+     * @var int
+     */
+    protected $user_id;
+
+    /**
+     * Secret
+     *
+     * @access protected
+     * @var string
+     */
+    protected $secret;
+
+    /**
+     * Nonce
+     *
+     * @access protected
+     * @var string
+     */
+    protected $nonce;
+
+    /**
+     * Query args
+     *
+     * @access protected
+     * @var array
+     */
+    protected $query_args;
+
+    /**
+     * Client
+     *
+     * @access protected
+     * @var \WPDiscourse\SSOClient\Client
+     */
+    protected $sso_client;
+
+    /**
+     * Signaure
+     *
+     * @access protected
+     * @var string
+     */
+    protected $signature;
+
+    /**
+     * Payload
+     *
+     * @access protected
+     * @var array
+     */
+    protected $payload;
+
+    public static function setUpBeforeClass(): void {
 		parent::initialize_shared_variables();
 		wp_logout();
 
@@ -24,9 +88,9 @@ class SSOClientTest extends UnitTest {
 			// See https://core.trac.wordpress.org/ticket/35488
 			wp_set_current_user( 0 );
 			}
-  }
+    }
 
-  public function setUp() {
+    public function setUp(): void {
 		parent::setUp();
 
 		$this->discourse_user_id = 5;
@@ -58,9 +122,9 @@ class SSOClientTest extends UnitTest {
 
 		$_GET['sso'] = $this->payload;
 		$_GET['sig'] = rawurlencode( $this->signature );
-  }
+    }
 
-  public function tearDown() {
+    public function tearDown(): void {
 		parent::tearDown();
 
 		$_GET['sso'] = null;
@@ -73,12 +137,12 @@ class SSOClientTest extends UnitTest {
 			// See https://core.trac.wordpress.org/ticket/35488
 			wp_set_current_user( 0 );
 			}
-  }
+    }
 
-  /**
-   * parse_request authenticates a user and updates their metadata correctly.
-   */
-  public function test_parse_request() {
+    /**
+     * parse_request authenticates a user and updates their metadata correctly.
+     */
+    public function test_parse_request() {
 		add_user_meta( $this->user_id, 'discourse_sso_user_id', $this->discourse_user_id );
 
 		$parse_result = $this->sso_client->parse_request();
@@ -88,12 +152,12 @@ class SSOClientTest extends UnitTest {
 		$this->assertEquals( get_user_meta( $user->ID, 'discourse_username', true ), $this->query_args['username'] );
 		$this->assertEquals( get_user_meta( $user->ID, 'discourse_sso_user_id', true ), $this->query_args['external_id'] );
 		$this->assertEquals( $parse_result, $this->query_args['return_sso_url'] );
-  }
+    }
 
-  /**
-   * parse_request handles invalid signatures correctly.
-   */
-  public function test_parse_request_invalid_signature() {
+    /**
+     * parse_request handles invalid signatures correctly.
+     */
+    public function test_parse_request_invalid_signature() {
 		$_GET['sig']  = rawurlencode( hash_hmac( 'sha256', $this->payload, 'wrong-secret' ) );
 		$parse_result = $this->sso_client->parse_request();
 
@@ -101,13 +165,13 @@ class SSOClientTest extends UnitTest {
 		$this->assertNotEquals( $user->ID, $this->user_id );
 
 		$log = $this->get_last_log();
-		$this->assertRegExp( '/sso_client.ERROR: parse_request.invalid_signature/', $log );
-  }
+		$this->assertMatchesRegularExpression( '/sso_client.ERROR: parse_request.invalid_signature/', $log );
+    }
 
-  /**
-   * parse_request handles failure to get_user_id correctly
-   */
-  public function test_parse_request_get_user_failed() {
+    /**
+     * parse_request handles failure to get_user_id correctly
+     */
+    public function test_parse_request_get_user_failed() {
 		$this->query_args['username'] = '';
 		$this->query_args['email']    = '';
 		$this->payload                = base64_encode( http_build_query( $this->query_args ) );
@@ -120,13 +184,13 @@ class SSOClientTest extends UnitTest {
 		$this->assertNotEquals( $user->ID, $this->user_id );
 
 		$log = $this->get_last_log();
-		$this->assertRegExp( '/sso_client.ERROR: parse_request.get_user_id/', $log );
-  }
+		$this->assertMatchesRegularExpression( '/sso_client.ERROR: parse_request.get_user_id/', $log );
+    }
 
-  /**
-   * parse_request handles failure to update_user correctly
-   */
-  public function test_parse_request_update_user_failed() {
+    /**
+     * parse_request handles failure to update_user correctly
+     */
+    public function test_parse_request_update_user_failed() {
 		add_filter( 'wpdc_sso_client_updated_user', array( $this, 'invalid_update_user_filter' ), 10, 2 );
 
 		$parse_result = $this->sso_client->parse_request();
@@ -135,13 +199,27 @@ class SSOClientTest extends UnitTest {
 		$this->assertNotEquals( $user->ID, $this->user_id );
 
 		$log = $this->get_last_log();
-		$this->assertRegExp( '/sso_client.ERROR: parse_request.update_user/', $log );
+		$this->assertMatchesRegularExpression( '/sso_client.ERROR: parse_request.update_user/', $log );
 
 		remove_filter( 'wpdc_sso_client_updated_user', array( $this, 'invalid_update_user_filter' ), 10 );
-  }
+    }
 
-  public function invalid_update_user_filter( $updated_user, $query ) {
+    /**
+     * parse_request does not create new users if user creation is disabled.
+     */
+    public function test_parse_request_disable_create_user() {
+		self::$plugin_options['sso-client-disable-create-user'] = 1;
+		$this->sso_client->setup_options( self::$plugin_options );
+
+		$parse_result = $this->sso_client->parse_request();
+
+		$log = $this->get_last_log();
+		$this->assertMatchesRegularExpression( '/sso_client.ERROR: parse_request.get_user_id/', $log );
+		$this->assertMatchesRegularExpression( '/"code":"no_matching_user"/', $log );
+    }
+
+    public function invalid_update_user_filter( $updated_user, $query ) {
 		$updated_user['ID'] = 23;
 		return $updated_user;
-  }
+    }
 }

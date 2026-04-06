@@ -6,7 +6,6 @@ use GraphQL\Error\UserError;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
 use WPGraphQL\Data\UserMutation;
-use WPGraphQL\Model\User;
 
 /**
  * Class UserCreate
@@ -30,7 +29,9 @@ class UserCreate {
 								'non_null' => 'String',
 							],
 							// translators: the placeholder is the name of the type of post object being updated
-							'description' => __( 'A string that contains the user\'s username for logging in.', 'wp-graphql' ),
+							'description' => static function () {
+								return __( 'A string that contains the user\'s username for logging in.', 'wp-graphql' );
+							},
 						],
 					],
 					self::get_input_fields()
@@ -44,75 +45,107 @@ class UserCreate {
 	/**
 	 * Defines the mutation input field configuration.
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>
 	 */
 	public static function get_input_fields() {
 		return [
 			'password'    => [
 				'type'        => 'String',
-				'description' => __( 'A string that contains the plain text password for the user.', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'A string that contains the plain text password for the user.', 'wp-graphql' );
+				},
 			],
 			'nicename'    => [
 				'type'        => 'String',
-				'description' => __( 'A string that contains a URL-friendly name for the user. The default is the user\'s username.', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'A string that contains a URL-friendly name for the user. The default is the user\'s username.', 'wp-graphql' );
+				},
 			],
 			'websiteUrl'  => [
 				'type'        => 'String',
-				'description' => __( 'A string containing the user\'s URL for the user\'s web site.', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'A string containing the user\'s URL for the user\'s web site.', 'wp-graphql' );
+				},
 			],
 			'email'       => [
 				'type'        => 'String',
-				'description' => __( 'A string containing the user\'s email address.', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'A string containing the user\'s email address.', 'wp-graphql' );
+				},
 			],
 			'displayName' => [
 				'type'        => 'String',
-				'description' => __( 'A string that will be shown on the site. Defaults to user\'s username. It is likely that you will want to change this, for both appearance and security through obscurity (that is if you dont use and delete the default admin user).', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'A string that will be shown on the site. Defaults to user\'s username. It is likely that you will want to change this, for both appearance and security through obscurity (that is if you dont use and delete the default admin user).', 'wp-graphql' );
+				},
 			],
 			'nickname'    => [
 				'type'        => 'String',
-				'description' => __( 'The user\'s nickname, defaults to the user\'s username.', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'The user\'s nickname, defaults to the user\'s username.', 'wp-graphql' );
+				},
 			],
 			'firstName'   => [
 				'type'        => 'String',
-				'description' => __( '	The user\'s first name.', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'The user\'s first name.', 'wp-graphql' );
+				},
 			],
 			'lastName'    => [
 				'type'        => 'String',
-				'description' => __( 'The user\'s last name.', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'The user\'s last name.', 'wp-graphql' );
+				},
 			],
 			'description' => [
 				'type'        => 'String',
-				'description' => __( 'A string containing content about the user.', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'A string containing content about the user.', 'wp-graphql' );
+				},
 			],
 			'richEditing' => [
 				'type'        => 'String',
-				'description' => __( 'A string for whether to enable the rich editor or not. False if not empty.', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'A string for whether to enable the rich editor or not. False if not empty.', 'wp-graphql' );
+				},
 			],
 			'registered'  => [
 				'type'        => 'String',
-				'description' => __( 'The date the user registered. Format is Y-m-d H:i:s.', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'The date the user registered. Format is Y-m-d H:i:s.', 'wp-graphql' );
+				},
 			],
 			'roles'       => [
 				'type'        => [
 					'list_of' => 'String',
 				],
-				'description' => __( 'An array of roles to be assigned to the user.', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'An array of roles to be assigned to the user.', 'wp-graphql' );
+				},
 			],
 			'jabber'      => [
 				'type'        => 'String',
-				'description' => __( 'User\'s Jabber account.', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'User\'s Jabber account.', 'wp-graphql' );
+				},
 			],
 			'aim'         => [
 				'type'        => 'String',
-				'description' => __( 'User\'s AOL IM account.', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'User\'s AOL IM account.', 'wp-graphql' );
+				},
 			],
 			'yim'         => [
 				'type'        => 'String',
-				'description' => __( 'User\'s Yahoo IM account.', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'User\'s Yahoo IM account.', 'wp-graphql' );
+				},
 			],
 			'locale'      => [
 				'type'        => 'String',
-				'description' => __( 'User\'s locale.', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'User\'s locale.', 'wp-graphql' );
+				},
 			],
 		];
 	}
@@ -120,13 +153,15 @@ class UserCreate {
 	/**
 	 * Defines the mutation output field configuration.
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>
 	 */
 	public static function get_output_fields() {
 		return [
 			'user' => [
 				'type'        => 'User',
-				'description' => __( 'The User object mutation type.', 'wp-graphql' ),
+				'description' => static function () {
+					return __( 'The User object mutation type.', 'wp-graphql' );
+				},
 			],
 		];
 	}
@@ -134,18 +169,21 @@ class UserCreate {
 	/**
 	 * Defines the mutation data modification closure.
 	 *
-	 * @return callable
+	 * @return callable(array<string,mixed>$input,\WPGraphQL\AppContext $context,\GraphQL\Type\Definition\ResolveInfo $info):array<string,mixed>
 	 */
 	public static function mutate_and_get_payload() {
-		return function ( $input, AppContext $context, ResolveInfo $info ) {
+		return static function ( $input, AppContext $context, ResolveInfo $info ) {
 			if ( ! current_user_can( 'create_users' ) ) {
-				throw new UserError( __( 'Sorry, you are not allowed to create a new user.', 'wp-graphql' ) );
+				throw new UserError( esc_html__( 'Sorry, you are not allowed to create a new user.', 'wp-graphql' ) );
 			}
 
 			/**
 			 * Map all of the args from GQL to WP friendly
 			 */
-			$user_args = UserMutation::prepare_user_object( $input, 'createUser' );
+			// Flag this as a create operation so prepare_user_object() will generate
+			// a password if one isn't provided (required by WP 6.9+).
+			$input['is_create'] = true;
+			$user_args          = UserMutation::prepare_user_object( $input, 'createUser' );
 
 			/**
 			 * Create the new user
@@ -160,7 +198,7 @@ class UserCreate {
 				if ( ! empty( $error_message ) ) {
 					throw new UserError( esc_html( $error_message ) );
 				} else {
-					throw new UserError( __( 'The object failed to create but no error was provided', 'wp-graphql' ) );
+					throw new UserError( esc_html__( 'The object failed to create but no error was provided', 'wp-graphql' ) );
 				}
 			}
 
@@ -168,7 +206,7 @@ class UserCreate {
 			 * If the $post_id is empty, we should throw an exception
 			 */
 			if ( empty( $user_id ) ) {
-				throw new UserError( __( 'The object failed to create', 'wp-graphql' ) );
+				throw new UserError( esc_html__( 'The object failed to create', 'wp-graphql' ) );
 			}
 
 			/**

@@ -7,9 +7,9 @@
 
 namespace WPDiscourse\Test;
 
-use \WPDiscourse\DiscourseCommentFormatter\DiscourseCommentFormatter;
-use \WPDiscourse\DiscourseComment\DiscourseComment;
-use \WPDiscourse\Test\UnitTest;
+use WPDiscourse\DiscourseCommentFormatter\DiscourseCommentFormatter;
+use WPDiscourse\DiscourseComment\DiscourseComment;
+use WPDiscourse\Test\UnitTest;
 
 /**
  * DiscourseComment test case.
@@ -27,11 +27,11 @@ class DiscourseCommentTest extends UnitTest {
     /**
      * Setup each test.
      */
-    public function setUp() {
+    public function setUp(): void {
         parent::setUp();
 
-        $comment_formatter = new DiscourseCommentFormatter();
-        $this->comment     = new DiscourseComment( $comment_formatter );
+        $comment_formatter                                 = new DiscourseCommentFormatter();
+        $this->comment                                     = new DiscourseComment( $comment_formatter );
         self::$plugin_options['enable-discourse-comments'] = true;
         $this->comment->setup_options( self::$plugin_options );
         $this->comment->setup_logger();
@@ -110,11 +110,11 @@ class DiscourseCommentTest extends UnitTest {
 
         // Ensure we've made the right logs
         $log = $this->get_last_log();
-        $this->assertRegExp( '/comment.ERROR: sync_comments.response_error/', $log );
-        $this->assertRegExp( '/"message":"Not found"/', $log );
-        $this->assertRegExp( '/"discourse_topic_id":"' . $discourse_topic_id . '"/', $log );
-        $this->assertRegExp( '/"wp_post_id":' . $post_id . '/', $log );
-        $this->assertRegExp( '/"http_code":404/', $log );
+        $this->assertMatchesRegularExpression( '/comment.ERROR: sync_comments.response_error/', $log );
+        $this->assertMatchesRegularExpression( '/"message":"Not found"/', $log );
+        $this->assertMatchesRegularExpression( '/"discourse_topic_id":"' . $discourse_topic_id . '"/', $log );
+        $this->assertMatchesRegularExpression( '/"wp_post_id":' . $post_id . '/', $log );
+        $this->assertMatchesRegularExpression( '/"http_code":404/', $log );
 
         // Cleanup
         wp_delete_post( $post_id );
@@ -145,12 +145,12 @@ class DiscourseCommentTest extends UnitTest {
         $private_category_id = null;
 
         foreach ( $categories as $category ) {
-          if ( false === $category->read_restricted ) {
+            if ( false === $category->read_restricted ) {
 				$public_category_id = $category->id;
-          }
-          if ( true === $category->read_restricted ) {
+            }
+            if ( true === $category->read_restricted ) {
 				$private_category_id = $category->id;
-          }
+            }
         }
 
         // Add the posts.
@@ -202,12 +202,12 @@ class DiscourseCommentTest extends UnitTest {
         $private_category_id = null;
 
         foreach ( $categories as $category ) {
-          if ( false === $category->read_restricted ) {
+            if ( false === $category->read_restricted ) {
 				$public_category_id = $category->id;
-          }
-          if ( true === $category->read_restricted ) {
+            }
+            if ( true === $category->read_restricted ) {
 				$private_category_id = $category->id;
-          }
+            }
         }
 
         // Add the posts.
@@ -230,8 +230,8 @@ class DiscourseCommentTest extends UnitTest {
 
         // Ensure we've made the right logs
         $log = $this->get_last_log();
-        $this->assertRegExp( "/comment.ERROR: $context.get_discourse_category/", $log );
-        $this->assertRegExp( '/"message":"An invalid response was returned from Discourse"/', $log );
+        $this->assertMatchesRegularExpression( "/comment.ERROR: $context.get_discourse_category/", $log );
+        $this->assertMatchesRegularExpression( '/"message":"An invalid response was returned from Discourse"/', $log );
 
         // Cleanup.
         wp_delete_post( $public_post_id );

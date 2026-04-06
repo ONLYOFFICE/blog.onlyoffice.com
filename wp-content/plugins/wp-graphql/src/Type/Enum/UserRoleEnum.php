@@ -12,31 +12,64 @@ class UserRoleEnum {
 	 * @return void
 	 */
 	public static function register_type() {
-		global $wp_roles;
-		$all_roles      = $wp_roles->roles;
-		$editable_roles = apply_filters( 'editable_roles', $all_roles );
-		$roles          = [];
+		$all_roles = wp_roles()->roles;
+		$roles     = [];
 
-		if ( ! empty( $editable_roles ) && is_array( $editable_roles ) ) {
-			foreach ( $editable_roles as $key => $role ) {
+		foreach ( $all_roles as $key => $role ) {
+			$formatted_role = WPEnumType::get_safe_name( isset( $role['name'] ) ? $role['name'] : $key );
 
-				$formatted_role = WPEnumType::get_safe_name( isset( $role['name'] ) ? $role['name'] : $key );
-
-				$roles[ $formatted_role ] = [
-					'description' => __( 'User role with specific capabilities', 'wp-graphql' ),
-					'value'       => $key,
-				];
+			switch ( $role ) {
+				case 'administrator':
+					$description = static function () {
+						return __( 'Full system access with ability to manage all aspects of the site.', 'wp-graphql' );
+					};
+					break;
+				case 'editor':
+					$description = static function () {
+						return __( 'Content management access without administrative capabilities.', 'wp-graphql' );
+					};
+					break;
+				case 'author':
+					$description = static function () {
+						return __( 'Can publish and manage their own content.', 'wp-graphql' );
+					};
+					break;
+				case 'contributor':
+					$description = static function () {
+						return __( 'Can write and manage their own content but cannot publish.', 'wp-graphql' );
+					};
+					break;
+				case 'subscriber':
+					$description = static function () {
+						return __( 'Can only manage their profile and read content.', 'wp-graphql' );
+					};
+					break;
+				default:
+					$description = static function () {
+						return __( 'User role with specific capabilities', 'wp-graphql' );
+					};
 			}
+
+			$roles[ $formatted_role ] = [
+				'description' => $description,
+				'value'       => $key,
+				'role'        => $role,
+			];
 		}
 
-		if ( ! empty( $roles ) && is_array( $roles ) ) {
-			register_graphql_enum_type(
-				'UserRoleEnum',
-				[
-					'description' => __( 'Names of available user roles', 'wp-graphql' ),
-					'values'      => $roles,
-				]
-			);
+		// Bail if there are no roles to register.
+		if ( empty( $roles ) ) {
+			return;
 		}
+
+		register_graphql_enum_type(
+			'UserRoleEnum',
+			[
+				'description' => static function () {
+					return __( 'Permission levels for user accounts. Defines the standard access levels that control what actions users can perform within the system.', 'wp-graphql' );
+				},
+				'values'      => $roles,
+			]
+		);
 	}
 }

@@ -15,17 +15,25 @@ class Results extends Query {
 	const GLOBAL_DEFAULT_TTL = 600;
 
 	/**
-	 * Indicator of the GraphQL Query execution cached or not.
+	 * Indicator of the GraphQL Query keys cached or not.
 	 *
-	 * @array bool
+	 * @var array
 	 */
 	protected $is_cached = [];
 
 	/**
-	 * @var
+	 * Stores whether the object cache is enabled.
+	 *
+	 * This is cached after first determination to ensure consistent behavior
+	 * throughout the request lifecycle, even if WordPress auth state changes.
+	 *
+	 * @var bool|null
 	 */
-	protected $request;
+	protected $is_object_cache_enabled = null;
 
+	/**
+	 * @return void
+	 */
 	public function init() {
 		add_filter( 'pre_graphql_execute_request', [ $this, 'get_query_results_from_cache_cb' ], 10, 2 );
 		add_action( 'graphql_return_response', [ $this, 'save_query_results_to_cache_cb' ], 10, 8 );
@@ -33,7 +41,33 @@ class Results extends Query {
 		add_action( 'wpgraphql_cache_purge_all', [ $this, 'purge_all_cb' ], 10, 0 );
 		add_filter( 'graphql_request_results', [ $this, 'add_cache_key_to_response_extensions' ], 10, 7 );
 
+		// Set Cache-Control: no-store for authenticated requests to prevent network/CDN caching
+		add_filter( 'graphql_response_headers_to_send', [ $this, 'add_no_cache_headers_for_authenticated_requests' ], PHP_INT_MAX );
+
 		parent::init();
+	}
+
+	/**
+	 * Add Cache-Control: no-store header for authenticated requests.
+	 *
+	 * This prevents network caches (Varnish, CDN, etc.) from caching responses
+	 * that were made by authenticated users, which could contain sensitive data.
+	 *
+	 * Uses AppContext->viewer which is set at Request creation and doesn't change
+	 * even if wp_set_current_user(0) is called later.
+	 *
+	 * @param array $headers The headers to be sent with the response.
+	 *
+	 * @return array The modified headers.
+	 */
+	public function add_no_cache_headers_for_authenticated_requests( $headers ) {
+		// Use the viewer from AppContext, which is set at Request creation
+		// and doesn't change even if wp_set_current_user(0) is called later
+		if ( $this->request && $this->request->app_context->viewer->exists() ) {
+			$headers['Cache-Control'] = 'no-store';
+		}
+
+		return $headers;
 	}
 
 	/**
@@ -42,7 +76,7 @@ class Results extends Query {
 	 * @param string $query_id queryId from the graphql query request
 	 * @param string $query query string
 	 * @param array $variables Variables sent with request or null
-	 * @param string $operation Name of operation if specified on the request or null
+	 * @param string $operation_name Name of operation if specified on the request or null
 	 *
 	 * @return string|false unique id for this request or false if query not provided
 	 */
@@ -55,11 +89,11 @@ class Results extends Query {
 	 * Add a message to the extensions when a GraphQL request is returned from the GraphQL Object Cache
 	 *
 	 * @param mixed|array|object $response The response of the GraphQL Request
-	 * @param WPSchema   $schema    The schema object for the root query
-	 * @param string     $operation The name of the operation
-	 * @param string     $query     The query that GraphQL executed
+	 * @param \WPGraphQL\WPSchema   $schema    The schema object for the root query
+	 * @param string     $operation_name The name of the operation
+	 * @param string     $query_string     The query that GraphQL executed
 	 * @param array|null $variables Variables to passed to your GraphQL request
-	 * @param Request    $request   Instance of the Request
+	 * @param \WPGraphQL\Request    $request   Instance of the Request
 	 * @param string|null $query_id The query id that GraphQL executed
 	 *
 	 * @return array|mixed
@@ -87,7 +121,7 @@ class Results extends Query {
 
 			if ( is_array( $response ) ) {
 				$response['extensions']['graphqlSmartCache']['graphqlObjectCache'] = $message;
-			} if ( is_object( $response ) ) {
+			} if ( is_object( $response ) && property_exists( $response, 'extensions' ) ) {
 				$response->extensions['graphqlSmartCache']['graphqlObjectCache'] = $message;
 			}
 		}
@@ -101,17 +135,28 @@ class Results extends Query {
 	 *
 	 * @param mixed|array|object $result   The response from execution. Array for batch requests,
 	 *                                     single object for individual requests
-	 * @param Request            $request
+	 * @param \WPGraphQL\Request            $request
 	 *
 	 * @return mixed|array|object|null  The response or null if not found in cache
 	 */
 	public function get_query_results_from_cache_cb( $result, Request $request ) {
 		$this->request = $request;
 
+		// Reset the cached is_object_cache_enabled value for each new request
+		// This ensures we re-evaluate based on the current request's auth state
+		$this->is_object_cache_enabled = null;
+
 		// if caching is not enabled or the request is authenticated, bail early
 		// right now we're not supporting GraphQL cache for authenticated requests.
 		// Possibly in the future.
 		if ( ! $this->is_object_cache_enabled() ) {
+			return $result;
+		}
+
+		$root_operation = $request->get_query_analyzer()->get_root_operation();
+
+		// For mutation, do not cache
+		if ( ! empty( $root_operation ) && 'Query' !== $root_operation ) {
 			return $result;
 		}
 
@@ -138,9 +183,9 @@ class Results extends Query {
 	 * Unique identifier for this request is normalized query string, operation and variables
 	 *
 	 * @param string $query_id queryId from the graphql query request
-	 * @param string $query query string
-	 * @param array $variables Variables sent with request or null
-	 * @param string $operation Name of operation if specified on the request or null
+	 * @param string $query_string query string
+	 * @param array  $variables Variables sent with request or null
+	 * @param string $operation_name Name of operation if specified on the request or null
 	 *
 	 * @return string|null The response or null if not found in cache
 	 */
@@ -167,6 +212,12 @@ class Results extends Query {
 	 */
 	protected function is_object_cache_enabled() {
 
+		// Return cached value if already determined for this request.
+		// This ensures consistent behavior even if WordPress auth state changes mid-request.
+		if ( null !== $this->is_object_cache_enabled ) {
+			return (bool) $this->is_object_cache_enabled;
+		}
+
 		// default to disabled
 		$enabled = false;
 
@@ -175,25 +226,33 @@ class Results extends Query {
 			$enabled = true;
 		}
 
-		// however, if the user is logged in, we should bypass the cache
-		if ( is_user_logged_in() ) {
+		// Check if the user is authenticated using AppContext->viewer.
+		// This is more reliable than is_user_logged_in() because:
+		// 1. AppContext->viewer is set once at Request creation and doesn't change
+		// 2. WPGraphQL core may call wp_set_current_user(0) mid-request in has_authentication_errors(),
+		// or even within individual resolvers, etc which would cause is_user_logged_in()
+		// to return false even for authenticated requests
+		// 3. Using AppContext is more "GraphQL-native" and consistent with how WPGraphQL handles auth
+		if ( $this->request && $this->request->app_context->viewer->exists() ) {
 			$enabled = false;
 		}
 
 		// @phpcs:ignore
-		return (bool) apply_filters( 'graphql_cache_is_object_cache_enabled', $enabled, $this->request );
+		$this->is_object_cache_enabled = (bool) apply_filters( 'graphql_cache_is_object_cache_enabled', $enabled, $this->request );
+
+		return $this->is_object_cache_enabled;
 	}
 
 	/**
 	 * When a query response is being returned to the client, build map for each item and this query/queryId
 	 * That way we will know what to invalidate on data change.
 	 *
-	 * @param ExecutionResult $filtered_response The response after GraphQL Execution has been
+	 * @param \GraphQL\Executor\ExecutionResult $filtered_response The response after GraphQL Execution has been
 	 *                                           completed and passed through filters
-	 * @param ExecutionResult $response          The raw, unfiltered response of the GraphQL
+	 * @param \GraphQL\Executor\ExecutionResult $response          The raw, unfiltered response of the GraphQL
 	 *                                           Execution
-	 * @param Schema          $schema            The WPGraphQL Schema
-	 * @param string          $operation         The name of the Operation
+	 * @param \WPGraphQL\WPSchema $schema            The WPGraphQL Schema
+	 * @param string          $operation_name         The name of the Operation
 	 * @param string          $query             The query string
 	 * @param array           $variables         The variables for the query
 	 * @param Request         $request           The WPGraphQL Request object
@@ -224,6 +283,13 @@ class Results extends Query {
 			return;
 		}
 
+		$root_operation = $request->get_query_analyzer()->get_root_operation();
+
+		// For mutation, do not cache
+		if ( ! empty( $root_operation ) && 'Query' !== $root_operation ) {
+			return;
+		}
+
 		$key = $this->the_results_key( $query_id, $query, $variables, $operation_name );
 		if ( ! $key ) {
 			return;
@@ -242,6 +308,11 @@ class Results extends Query {
 	/**
 	 * When an item changed and this callback is triggered to delete results we have cached for that list of nodes
 	 * Related to the data type that changed.
+	 *
+	 * @param string $id An identifier for data stored in memory.
+	 * @param mixed|array|object|null $nodes The graphql response or false
+	 *
+	 * @return void
 	 */
 	public function purge_nodes_cb( $id, $nodes ) {
 		if ( is_array( $nodes ) && ! empty( $nodes ) ) {
@@ -256,6 +327,8 @@ class Results extends Query {
 
 	/**
 	 * Purge the local cache results if enabled
+	 *
+	 * @return void
 	 */
 	public function purge_all_cb() {
 		$this->purge_all();

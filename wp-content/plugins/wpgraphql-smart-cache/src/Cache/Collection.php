@@ -10,10 +10,15 @@ namespace WPGraphQL\SmartCache\Cache;
 use GraphQL\Executor\ExecutionResult;
 use GraphQL\Type\Schema;
 use WPGraphQL\Request;
+use WPGraphQL\SmartCache\Admin\Settings;
 
 class Collection extends Query {
 
-	// initialize the cache collection
+	/**
+	 * Initialize the cache collection
+	 *
+	 * @return void
+	 */
 	public function init() {
 		add_action( 'graphql_return_response', [ $this, 'save_query_mapping_cb' ], 10, 8 );
 		parent::init();
@@ -62,7 +67,20 @@ class Collection extends Query {
 		$request,
 		$query_id
 	) {
+
+		// If cache maps are not enabled, do nothing
+		if ( ! Settings::cache_maps_enabled() ) {
+			return;
+		}
+
+		// Set the request so build_key() can access AppContext->viewer for the user ID
+		$this->request = $request;
+
 		$request_key = $this->build_key( $query_id, $query, $variables, $operation );
+
+		if ( false === $request_key ) {
+			return;
+		}
 
 		// get the runtime nodes from the query analyzer
 		$runtime_nodes = $request->get_query_analyzer()->get_runtime_nodes() ?: [];
@@ -83,7 +101,7 @@ class Collection extends Query {
 
 		// Save/add the node ids for this query.  When one of these change in the future, we can purge the query
 		foreach ( $runtime_nodes as $node_id ) {
-			$this->store_content( $node_id, $request_key );
+			$this->store_content( (string) $node_id, $request_key );
 		}
 
 		// For each connection resolver, store the list types associated with this graphql query request

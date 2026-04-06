@@ -1,12 +1,16 @@
 === WPGraphQL Smart Cache ===
-Contributors: WPGraphQL, markkelnar, jasonbahl
-Tags: WPGraphQL, Cache, API, Invalidation, Persisted Queries, GraphQL, Performance, Speed
+Contributors: jasonbahl, markkelnar
+Tags: WPGraphQL, Cache, API, Persisted Queries, Performance
 Requires at least: 5.6
-Tested up to: 6.1
+Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 2.0.1
+Requires WPGraphQL: 2.0.0
+WPGraphQL Tested Up To: 2.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+WPGraphQL Smart Cache is a WordPress plugin that provides fast, accurate API responses by intelligently caching and invalidating WPGraphQL queries.
 
 === Description ===
 
@@ -65,6 +69,39 @@ Learn more about how [Appsero collects and uses this data](https://appsero.com/p
 
 == Upgrade Notice ==
 
+= 2.0.1 =
+
+This release fixes an issue where authenticated user data (such as draft posts) could be incorrectly cached and served to public users when using the Object Cache feature. Users with Object Cache enabled should update immediately.
+
+= 2.0.0 =
+
+This release includes breaking changes to be compatible with WPGraphQL 2.0.0. When upgrading WPGraphQL to v2.0.0, you must also upgrade WPGraphQL Smart Cache to v2.0.0. WPGraphQL Smart Cache v2.0.0 is not compatible with WPGraphQL v1.x.x.
+
+= 1.3.0 =
+
+This fixes a regression to WPGraphQL v1.20.0 where the Query Analyzer became optional and defaulted to "off". WPGraphQL Smart Cache force-enables the Query Analyzer to support Cache tagging and tag-based cache invalidation.
+
+= 1.2.0 =
+
+**Code Removal**
+This release removes some code specific to WP Engine that's been moved to WP Engine's MU Plugins.
+
+Updating to WPGraphQL Smart Cache v1.2.0 or newer should be done at the same time as updating to [WPGraphQL v1.16.0](https://github.com/wp-graphql/wp-graphql/releases)
+otherwise some caches might not evict properly in response to data changes.
+
+**Garbage Collection of GraphQL Document**
+When using "Automated Persisted Queries", documents are stored in the "GraphQL Document" post type and as client queries change over time an excess of persisted queries can be stored.
+
+Garbage collection allows for documents to be purged after a certain amount of time.
+
+You can enable "Garbage Collection" under "GraphQL > Settings > Saved Queries" and checking the option to "Delete Old Queries".
+
+When enabling this feature, documents that are not associated with a "Group" will be purged after xx amount of days according to the settings.
+
+Before enabling this setting, we recommend going through your saved GraphQL Documents and assigning a "group" to any that you want to skip garbage collection.
+
+Groups are like bookmarks or collections for your GraphQL Documents. You can use them for whatever reason you like, but if a document is grouped, it will not be automatically garbage collected.
+
 = 0.2.0 =
 
 This release removes a lot of code that has since been released as part of WPGraphQL core.
@@ -72,6 +109,109 @@ This release removes a lot of code that has since been released as part of WPGra
 In order to use v0.2.0+ of WPGraphQL Smart Cache, you will need WPGraphQL v1.12.0 or newer.
 
 == Changelog ==
+
+= 2.0.1 =
+
+**Bugfixes**
+
+- [#306](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/306): fix: prevent authenticated request data from being cached and served to public users. This fixes an issue where the object cache could incorrectly cache responses from authenticated users (containing draft posts, private content, etc.) due to WPGraphQL core calling `wp_set_current_user(0)` mid-request. The fix uses `AppContext->viewer` for reliable authentication state detection instead of `is_user_logged_in()`.
+
+**Chores**
+
+- ci: update deprecated GitHub Actions to v4
+- ci: fix Gherkin test compatibility by pinning behat/gherkin < 4.9
+
+= 2.0.0 =
+
+**Breaking Changes**
+
+- This release includes breaking changes to be compatible with WPGraphQL 2.0.0. When upgrading WPGraphQL to v2.0.0, you must also upgrade WPGraphQL Smart Cache to v2.0.0. WPGraphQL Smart Cache v2.0.0 is not compatible with WPGraphQL v1.x.x.
+
+**Chores / Bugfixes**
+
+= 1.3.3 =
+
+**Chores / Bugfixes**
+
+- [#294](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/294): fix: queryid not returning X-GraphQL-Keys headers
+- [#292](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/292): chore: update test workflow to use docker compose instead of docker-compose
+- [#291](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/291): fix: restore whitespace rules for PHPCBF
+- [#286](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/286): chore: update .wordpress-org assets
+- [#284](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/284): chore: Note that hosts might set a limit on caching
+
+= 1.3.2 =
+
+**Chores / Bugfixes**
+
+- [#278](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/278): ci: Update tests to run against WordPress 6.5
+
+= 1.3.1 =
+
+**Chores / Bugfixes**
+
+- [#273](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/273): fix: improve clarity on Cache settings page
+- [#272](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/272): fix: invalidate caches for menu items
+
+= 1.3.0 =
+
+**New Features**
+
+- [#270](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/270): feat: force enable query analyzer. This fixes a regression to WPGraphQL v1.20.0 where the Query Analyzer became optional and defaulted to "off". WPGraphQL Smart Cache force-enables the Query Analyzer to support Cache tagging and tag-based cache invalidation.
+
+= 1.2.1 =
+
+**Chores / Bugfixes**
+
+- [#266](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/266): ci: update tests to run against WordPres 6.4
+- [#266](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/266): fix: ensure store_content() is passed a string to adhere to phpstan standards
+- [#262](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/262): fix: remove invalid namespaces from autoloading. Thanks @szepeviktor!
+- [#251](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/251): ci: add WP 6.3 to test matrix
+- [#258](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/258): ci: add build-plugin command to set up no-dev
+
+
+= 1.2.0 =
+
+**New Features**
+
+- [#227](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/227): feat: add garbage collection for graphql_documents (see upgrade notice)
+
+**Chores / Bugfixes**
+
+- [#244](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/244): fix: handle errors when editing graphql documents in the admin
+- [#253](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/244): ci: add varnish docker image. Update docs.
+- [#247](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/247): fix: remove wpengine specific code (see upgrade notice).
+- [#257](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/247):257: ci: use .distignore when building plugin for github release
+
+= 1.1.4 =
+
+**Chores / Bugfixes**
+
+- [#237](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/237) fix: when creating a new query, do not show "something is wrong with form data" error
+- [#242](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/242) ci: increase phpstan to level 7
+- [#241](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/241) ci: increase phpstan to level 5,6
+- [#240](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/240) ci: increase phpstan to level 3,4
+- [#239](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/239) ci: increase phpstan to level 2
+- [#236](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/236) ci: add phpstan workflow to check code quality
+- [#234](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/234) fix: do not cache mutations to object cache results
+- [#235](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/235) ci: tests failing after wpgraphql v1.14.5 release
+
+= 1.1.3 =
+
+**Chores / Bugfixes**
+
+- [#230](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/230) fix: disable cache maps when "Use Object Cache" is disabled
+
+= 1.1.2 =
+
+**Chores / Bugfixes**
+
+- [#226](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/226) fix: add missing events to purge calls. Remove call to purge list of terms when term relationship has changed.
+
+= 1.1.1 =
+
+**Chores / Bugfixes**
+
+- [#221](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/221) fix: updating menus not assigned to locations doesn't purge menus, even if their model is public
 
 = 1.1.0 =
 
