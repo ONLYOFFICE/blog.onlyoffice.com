@@ -36,14 +36,17 @@ class UsersMessagesAttachments extends \WPMailSMTP\Vendor\Google\Service\Resourc
      * @param string $messageId The ID of the message containing the attachment.
      * @param string $id The ID of the attachment.
      * @param array $optParams Optional parameters.
+     *
+     * @opt_param bool temporaryEeccBypass
      * @return MessagePartBody
+     * @throws \Google\Service\Exception
      */
     public function get($userId, $messageId, $id, $optParams = [])
     {
         $params = ['userId' => $userId, 'messageId' => $messageId, 'id' => $id];
         $params = \array_merge($params, $optParams);
-        return $this->call('get', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\MessagePartBody::class);
+        return $this->call('get', [$params], MessagePartBody::class);
     }
 }
 // Adding a class alias for backwards compatibility with the previous class name.
-\class_alias(\WPMailSMTP\Vendor\Google\Service\Gmail\Resource\UsersMessagesAttachments::class, 'WPMailSMTP\\Vendor\\Google_Service_Gmail_Resource_UsersMessagesAttachments');
+\class_alias(UsersMessagesAttachments::class, 'WPMailSMTP\\Vendor\\Google_Service_Gmail_Resource_UsersMessagesAttachments');

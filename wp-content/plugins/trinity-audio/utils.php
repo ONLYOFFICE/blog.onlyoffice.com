@@ -29,7 +29,7 @@
 
       trinity_log($user_error_message, $error, trinity_dump_object($debug_data), TRINITY_AUDIO_ERROR_TYPES::error);
       if ($die) {
-        die($user_error_message ? $user_error_message : $error);
+        die(esc_html($user_error_message ? $user_error_message : $error));
       } else {
         return false;
       }
@@ -47,7 +47,7 @@
 
       trinity_log($user_error_message, $error, trinity_dump_object($debug_data), TRINITY_AUDIO_ERROR_TYPES::error);
       if ($die) {
-        die($user_error_message ? $user_error_message : $error);
+        die(esc_html($user_error_message ? $user_error_message : $error));
       } else {
         return false;
       }

@@ -102,14 +102,16 @@ class WP {
 	 * @param string $message        Message text (HTML is OK).
 	 * @param string $class          Display class (severity).
 	 * @param bool   $is_dismissible Whether the message should be dismissible.
+	 * @param string $key            Unique key for the notice. If defined, dismissible notice will be dismissed permanently.
 	 */
-	public static function add_admin_notice( $message, $class = self::ADMIN_NOTICE_INFO, $is_dismissible = true ) {
+	public static function add_admin_notice( $message, $class = self::ADMIN_NOTICE_INFO, $is_dismissible = true, $key = '' ) {
 
-		self::$admin_notices[] = array(
+		self::$admin_notices[] = [
 			'message'        => $message,
 			'class'          => $class,
 			'is_dismissible' => (bool) $is_dismissible,
-		);
+			'key'            => sanitize_key( $key ),
+		];
 	}
 
 	/**
@@ -120,11 +122,24 @@ class WP {
 	 */
 	public static function display_admin_notices() {
 
+		$has_notices = false;
+
 		foreach ( (array) self::$admin_notices as $notice ) :
-			$dismissible = $notice['is_dismissible'] ? 'is-dismissible' : '';
+			$is_dismissible = $notice['is_dismissible'];
+			$dismissible    = $is_dismissible ? 'is-dismissible' : '';
+
+			if (
+				$is_dismissible &&
+				! empty( $notice['key'] ) &&
+				(bool) get_user_meta( get_current_user_id(), "wp_mail_smtp_notice_{$notice['key']}_dismissed", true )
+			) {
+				continue;
+			}
+
+			$has_notices = true;
 			?>
 
-			<div class="notice wp-mail-smtp-notice <?php echo esc_attr( $notice['class'] ); ?> notice <?php echo esc_attr( $dismissible ); ?>">
+			<div class="notice wp-mail-smtp-notice <?php echo esc_attr( $notice['class'] ); ?> <?php echo esc_attr( $dismissible ); ?>" <?php echo ! empty( $notice['key'] ) ? 'data-notice="' . esc_attr( $notice['key'] ) . '"' : ''; ?>>
 				<p>
 					<?php echo wp_kses_post( $notice['message'] ); ?>
 				</p>
@@ -132,6 +147,24 @@ class WP {
 
 			<?php
 		endforeach;
+
+		if ( $has_notices ) {
+			wp_enqueue_script(
+				'wp-mail-smtp-admin-notices',
+				wp_mail_smtp()->assets_url . '/js/smtp-admin-notices' . self::asset_min() . '.js',
+				[ 'jquery' ],
+				WPMS_PLUGIN_VER,
+				true
+			);
+
+			wp_localize_script(
+				'wp-mail-smtp-admin-notices',
+				'wp_mail_smtp_admin_notices',
+				[
+					'nonce' => wp_create_nonce( 'wp-mail-smtp-admin' ),
+				]
+			);
+		}
 	}
 
 	/**
@@ -345,8 +378,8 @@ class WP {
 			$locale['']['plural_forms'] = $translations->headers['Plural-Forms'];
 		}
 
-		foreach ( $translations->entries as $msgid => $entry ) {
-			$locale[ $msgid ] = $entry->translations;
+		foreach ( $translations->entries as $entry ) {
+			$locale[ $entry->singular ] = $entry->translations;
 		}
 
 		return $locale;
@@ -799,5 +832,63 @@ class WP {
 		} else {
 			return is_string( $var ) ? sanitize_text_field( $var ) : $var;
 		}
+	}
+
+	/**
+	 * Get the current site URL,
+	 * or the network URL if using network-wide settings.
+	 *
+	 * @since 4.4.0
+	 *
+	 * @return string
+	 */
+	public static function get_site_url() {
+
+		$site_id = null;
+
+		if ( self::use_global_plugin_settings() ) {
+			$site_id = get_main_site_id();
+		}
+
+		/**
+		 * Whether to return the unfiltered site URL.
+		 *
+		 * @since 4.6.0
+		 *
+		 * @param bool $unfiltered Whether to return the unfiltered site URL.
+		 *
+		 * @return bool
+		 */
+		if ( apply_filters( 'wp_mail_smtp_wp_get_site_url_unfiltered', false ) ) {
+			return self::get_raw_site_url( $site_id );
+		}
+
+		return get_site_url( $site_id );
+	}
+
+	/**
+	 * Get the raw/unfiltered site URL.
+	 *
+	 * @since 4.6.0
+	 *
+	 * @param int $site_id The site ID.
+	 *
+	 * @return string
+	 */
+	private static function get_raw_site_url( $site_id ) {
+
+		if ( empty( $site_id ) || ! is_multisite() ) {
+			$url = get_option( 'siteurl' );
+		} else {
+			switch_to_blog( $site_id );
+
+			$url = get_option( 'siteurl' );
+
+			restore_current_blog();
+		}
+
+		$url = set_url_scheme( $url );
+
+		return $url;
 	}
 }

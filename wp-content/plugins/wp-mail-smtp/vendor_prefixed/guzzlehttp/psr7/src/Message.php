@@ -13,20 +13,20 @@ final class Message
      *
      * @param MessageInterface $message Message to convert to a string.
      */
-    public static function toString(\WPMailSMTP\Vendor\Psr\Http\Message\MessageInterface $message) : string
+    public static function toString(MessageInterface $message) : string
     {
-        if ($message instanceof \WPMailSMTP\Vendor\Psr\Http\Message\RequestInterface) {
+        if ($message instanceof RequestInterface) {
             $msg = \trim($message->getMethod() . ' ' . $message->getRequestTarget()) . ' HTTP/' . $message->getProtocolVersion();
             if (!$message->hasHeader('host')) {
                 $msg .= "\r\nHost: " . $message->getUri()->getHost();
             }
-        } elseif ($message instanceof \WPMailSMTP\Vendor\Psr\Http\Message\ResponseInterface) {
+        } elseif ($message instanceof ResponseInterface) {
             $msg = 'HTTP/' . $message->getProtocolVersion() . ' ' . $message->getStatusCode() . ' ' . $message->getReasonPhrase();
         } else {
             throw new \InvalidArgumentException('Unknown message type');
         }
         foreach ($message->getHeaders() as $name => $values) {
-            if (\strtolower($name) === 'set-cookie') {
+            if (\is_string($name) && \strtolower($name) === 'set-cookie') {
                 foreach ($values as $value) {
                     $msg .= "\r\n{$name}: " . $value;
                 }
@@ -44,7 +44,7 @@ final class Message
      * @param MessageInterface $message    The message to get the body summary
      * @param int              $truncateAt The maximum allowed size of the summary
      */
-    public static function bodySummary(\WPMailSMTP\Vendor\Psr\Http\Message\MessageInterface $message, int $truncateAt = 120) : ?string
+    public static function bodySummary(MessageInterface $message, int $truncateAt = 120) : ?string
     {
         $body = $message->getBody();
         if (!$body->isSeekable() || !$body->isReadable()) {
@@ -77,7 +77,7 @@ final class Message
      *
      * @throws \RuntimeException
      */
-    public static function rewindBody(\WPMailSMTP\Vendor\Psr\Http\Message\MessageInterface $message) : void
+    public static function rewindBody(MessageInterface $message) : void
     {
         $body = $message->getBody();
         if ($body->tell()) {
@@ -113,14 +113,14 @@ final class Message
         [$startLine, $rawHeaders] = $headerParts;
         if (\preg_match("/(?:^HTTP\\/|^[A-Z]+ \\S+ HTTP\\/)(\\d+(?:\\.\\d+)?)/i", $startLine, $matches) && $matches[1] === '1.0') {
             // Header folding is deprecated for HTTP/1.1, but allowed in HTTP/1.0
-            $rawHeaders = \preg_replace(\WPMailSMTP\Vendor\GuzzleHttp\Psr7\Rfc7230::HEADER_FOLD_REGEX, ' ', $rawHeaders);
+            $rawHeaders = \preg_replace(Rfc7230::HEADER_FOLD_REGEX, ' ', $rawHeaders);
         }
         /** @var array[] $headerLines */
-        $count = \preg_match_all(\WPMailSMTP\Vendor\GuzzleHttp\Psr7\Rfc7230::HEADER_REGEX, $rawHeaders, $headerLines, \PREG_SET_ORDER);
+        $count = \preg_match_all(Rfc7230::HEADER_REGEX, $rawHeaders, $headerLines, \PREG_SET_ORDER);
         // If these aren't the same, then one line didn't match and there's an invalid header.
         if ($count !== \substr_count($rawHeaders, "\n")) {
-            // Folding is deprecated, see https://tools.ietf.org/html/rfc7230#section-3.2.4
-            if (\preg_match(\WPMailSMTP\Vendor\GuzzleHttp\Psr7\Rfc7230::HEADER_FOLD_REGEX, $rawHeaders)) {
+            // Folding is deprecated, see https://datatracker.ietf.org/doc/html/rfc7230#section-3.2.4
+            if (\preg_match(Rfc7230::HEADER_FOLD_REGEX, $rawHeaders)) {
                 throw new \InvalidArgumentException('Invalid header syntax: Obsolete line folding');
             }
             throw new \InvalidArgumentException('Invalid header syntax');
@@ -157,7 +157,7 @@ final class Message
      *
      * @param string $message Request message string.
      */
-    public static function parseRequest(string $message) : \WPMailSMTP\Vendor\Psr\Http\Message\RequestInterface
+    public static function parseRequest(string $message) : RequestInterface
     {
         $data = self::parseMessage($message);
         $matches = [];
@@ -166,7 +166,7 @@ final class Message
         }
         $parts = \explode(' ', $data['start-line'], 3);
         $version = isset($parts[2]) ? \explode('/', $parts[2])[1] : '1.1';
-        $request = new \WPMailSMTP\Vendor\GuzzleHttp\Psr7\Request($parts[0], $matches[1] === '/' ? self::parseRequestUri($parts[1], $data['headers']) : $parts[1], $data['headers'], $data['body'], $version);
+        $request = new Request($parts[0], $matches[1] === '/' ? self::parseRequestUri($parts[1], $data['headers']) : $parts[1], $data['headers'], $data['body'], $version);
         return $matches[1] === '/' ? $request : $request->withRequestTarget($parts[1]);
     }
     /**
@@ -174,16 +174,16 @@ final class Message
      *
      * @param string $message Response message string.
      */
-    public static function parseResponse(string $message) : \WPMailSMTP\Vendor\Psr\Http\Message\ResponseInterface
+    public static function parseResponse(string $message) : ResponseInterface
     {
         $data = self::parseMessage($message);
-        // According to https://tools.ietf.org/html/rfc7230#section-3.1.2 the space
-        // between status-code and reason-phrase is required. But browsers accept
-        // responses without space and reason as well.
+        // According to https://datatracker.ietf.org/doc/html/rfc7230#section-3.1.2
+        // the space between status-code and reason-phrase is required. But
+        // browsers accept responses without space and reason as well.
         if (!\preg_match('/^HTTP\\/.* [0-9]{3}( .*|$)/', $data['start-line'])) {
             throw new \InvalidArgumentException('Invalid response string: ' . $data['start-line']);
         }
         $parts = \explode(' ', $data['start-line'], 3);
-        return new \WPMailSMTP\Vendor\GuzzleHttp\Psr7\Response((int) $parts[1], $data['headers'], $data['body'], \explode('/', $parts[0])[1], $parts[2] ?? null);
+        return new Response((int) $parts[1], $data['headers'], $data['body'], \explode('/', $parts[0])[1], $parts[2] ?? null);
     }
 }

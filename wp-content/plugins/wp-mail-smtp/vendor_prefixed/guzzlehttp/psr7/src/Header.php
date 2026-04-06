@@ -20,7 +20,7 @@ final class Header
         foreach ((array) $header as $value) {
             foreach (self::splitList($value) as $val) {
                 $part = [];
-                foreach (\preg_split('/;(?=([^"]*"[^"]*")*[^"]*$)/', $val) as $kvp) {
+                foreach (\preg_split('/;(?=([^"]*"[^"]*")*[^"]*$)/', $val) ?: [] as $kvp) {
                     if (\preg_match_all('/<[^>]+>|[^=]+/', $kvp, $matches)) {
                         $m = $matches[0];
                         if (isset($m[1])) {
@@ -81,7 +81,7 @@ final class Header
             $v = '';
             $isQuoted = \false;
             $isEscaped = \false;
-            for ($i = 0, $max = \strlen($value); $i < $max; $i++) {
+            for ($i = 0, $max = \strlen($value); $i < $max; ++$i) {
                 if ($isEscaped) {
                     $v .= $value[$i];
                     $isEscaped = \false;

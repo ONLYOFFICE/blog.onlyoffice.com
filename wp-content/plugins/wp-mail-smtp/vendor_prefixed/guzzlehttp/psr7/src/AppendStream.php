@@ -9,7 +9,7 @@ use WPMailSMTP\Vendor\Psr\Http\Message\StreamInterface;
  *
  * This is a read-only stream decorator.
  */
-final class AppendStream implements \WPMailSMTP\Vendor\Psr\Http\Message\StreamInterface
+final class AppendStream implements StreamInterface
 {
     /** @var StreamInterface[] Streams being decorated */
     private $streams = [];
@@ -49,7 +49,7 @@ final class AppendStream implements \WPMailSMTP\Vendor\Psr\Http\Message\StreamIn
      *
      * @throws \InvalidArgumentException if the stream is not readable
      */
-    public function addStream(\WPMailSMTP\Vendor\Psr\Http\Message\StreamInterface $stream) : void
+    public function addStream(StreamInterface $stream) : void
     {
         if (!$stream->isReadable()) {
             throw new \InvalidArgumentException('Each stream must be readable');
@@ -62,7 +62,7 @@ final class AppendStream implements \WPMailSMTP\Vendor\Psr\Http\Message\StreamIn
     }
     public function getContents() : string
     {
-        return \WPMailSMTP\Vendor\GuzzleHttp\Psr7\Utils::copyToString($this);
+        return Utils::copyToString($this);
     }
     /**
      * Closes each attached stream.
@@ -164,7 +164,7 @@ final class AppendStream implements \WPMailSMTP\Vendor\Psr\Http\Message\StreamIn
                 if ($this->current === $total) {
                     break;
                 }
-                $this->current++;
+                ++$this->current;
             }
             $result = $this->streams[$this->current]->read($remaining);
             if ($result === '') {
@@ -194,8 +194,6 @@ final class AppendStream implements \WPMailSMTP\Vendor\Psr\Http\Message\StreamIn
         throw new \RuntimeException('Cannot write to an AppendStream');
     }
     /**
-     * {@inheritdoc}
-     *
      * @return mixed
      */
     public function getMetadata($key = null)

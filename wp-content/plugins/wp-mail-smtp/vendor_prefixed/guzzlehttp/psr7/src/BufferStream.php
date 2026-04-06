@@ -12,7 +12,7 @@ use WPMailSMTP\Vendor\Psr\Http\Message\StreamInterface;
  * what the configured high water mark of the stream is, or the maximum
  * preferred size of the buffer.
  */
-final class BufferStream implements \WPMailSMTP\Vendor\Psr\Http\Message\StreamInterface
+final class BufferStream implements StreamInterface
 {
     /** @var int */
     private $hwm;
@@ -109,8 +109,6 @@ final class BufferStream implements \WPMailSMTP\Vendor\Psr\Http\Message\StreamIn
         return \strlen($string);
     }
     /**
-     * {@inheritdoc}
-     *
      * @return mixed
      */
     public function getMetadata($key = null)

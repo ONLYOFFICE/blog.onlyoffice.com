@@ -47,12 +47,13 @@ class UsersSettingsDelegates extends \WPMailSMTP\Vendor\Google\Service\Resource
      * @param Delegate $postBody
      * @param array $optParams Optional parameters.
      * @return Delegate
+     * @throws \Google\Service\Exception
      */
-    public function create($userId, \WPMailSMTP\Vendor\Google\Service\Gmail\Delegate $postBody, $optParams = [])
+    public function create($userId, Delegate $postBody, $optParams = [])
     {
         $params = ['userId' => $userId, 'postBody' => $postBody];
         $params = \array_merge($params, $optParams);
-        return $this->call('create', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\Delegate::class);
+        return $this->call('create', [$params], Delegate::class);
     }
     /**
      * Removes the specified delegate (which can be of any verification status), and
@@ -66,6 +67,7 @@ class UsersSettingsDelegates extends \WPMailSMTP\Vendor\Google\Service\Resource
      * @param string $delegateEmail The email address of the user to be removed as a
      * delegate.
      * @param array $optParams Optional parameters.
+     * @throws \Google\Service\Exception
      */
     public function delete($userId, $delegateEmail, $optParams = [])
     {
@@ -85,12 +87,13 @@ class UsersSettingsDelegates extends \WPMailSMTP\Vendor\Google\Service\Resource
      * relationship is to be retrieved.
      * @param array $optParams Optional parameters.
      * @return Delegate
+     * @throws \Google\Service\Exception
      */
     public function get($userId, $delegateEmail, $optParams = [])
     {
         $params = ['userId' => $userId, 'delegateEmail' => $delegateEmail];
         $params = \array_merge($params, $optParams);
-        return $this->call('get', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\Delegate::class);
+        return $this->call('get', [$params], Delegate::class);
     }
     /**
      * Lists the delegates for the specified account. This method is only available
@@ -101,13 +104,14 @@ class UsersSettingsDelegates extends \WPMailSMTP\Vendor\Google\Service\Resource
      * used to indicate the authenticated user.
      * @param array $optParams Optional parameters.
      * @return ListDelegatesResponse
+     * @throws \Google\Service\Exception
      */
     public function listUsersSettingsDelegates($userId, $optParams = [])
     {
         $params = ['userId' => $userId];
         $params = \array_merge($params, $optParams);
-        return $this->call('list', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\ListDelegatesResponse::class);
+        return $this->call('list', [$params], ListDelegatesResponse::class);
     }
 }
 // Adding a class alias for backwards compatibility with the previous class name.
-\class_alias(\WPMailSMTP\Vendor\Google\Service\Gmail\Resource\UsersSettingsDelegates::class, 'WPMailSMTP\\Vendor\\Google_Service_Gmail_Resource_UsersSettingsDelegates');
+\class_alias(UsersSettingsDelegates::class, 'WPMailSMTP\\Vendor\\Google_Service_Gmail_Resource_UsersSettingsDelegates');

@@ -6,7 +6,10 @@
   <!-- render iframe so we can generate report -->
   <iframe src="admin.php?page=trinity_audio_info" style="display: none"></iframe>
 
-  <h1 class="trinity-head">Trinity Audio - Contact us</h1>
+  <div class="wizard-progress-wrapper">
+    <div class="trinity-head">Contact us</div>
+    <?php require_once __DIR__ . '/../inc/progress.php'; ?>
+  </div>
 
   <div class="flex-grid">
     <div class="row">
@@ -18,35 +21,35 @@
             <div class="trinity-section-body">
 
               <div class="section-form-group">
-                <label class="section-form-title" for="<?php echo TRINITY_AUDIO_SENDER_NAME; ?>">
+                <label class="section-form-title" for="<?= esc_attr(TRINITY_AUDIO_SENDER_NAME); ?>">
                   Full name
                 </label>
                 <?php trinity_sender_name(); ?>
               </div>
 
               <div class="section-form-group">
-                <label class="section-form-title" for="<?php echo TRINITY_AUDIO_SENDER_EMAIL; ?>">
+                <label class="section-form-title" for="<?= esc_attr(TRINITY_AUDIO_SENDER_EMAIL); ?>">
                   Email
                 </label>
                 <?php trinity_sender_email(); ?>
               </div>
 
               <div class="section-form-group">
-                <label class="section-form-title" for="<?php echo TRINITY_AUDIO_SENDER_WEBSITE; ?>">
+                <label class="section-form-title" for="<?= esc_attr(TRINITY_AUDIO_SENDER_WEBSITE); ?>">
                   Website
                 </label>
                 <?php trinity_sender_website(); ?>
               </div>
 
               <div class="section-form-group">
-                <label class="section-form-title" for="<?php echo TRINITY_AUDIO_SENDER_MESSAGE; ?>">
+                <label class="section-form-title" for="<?= esc_attr(TRINITY_AUDIO_SENDER_MESSAGE); ?>">
                   Message
                 </label>
                 <?php trinity_sender_message(); ?>
               </div>
 
               <div class="section-form-group">
-                <label class="section-form-title" for="<?php echo TRINITY_AUDIO_SENDER_INCLUDE_LOG; ?>">
+                <label class="section-form-title" for="<?= esc_attr(TRINITY_AUDIO_SENDER_INCLUDE_LOG); ?>">
                   Include logs:
                 </label>
                 <?php trinity_sender_include_logs(); ?>
@@ -108,7 +111,7 @@
               </div>
 
               <div class="section-form-group">
-                <label for="<?php echo TRINITY_AUDIO_FEEDBACK_MESSAGE; ?>">
+                <label for="<?= esc_attr(TRINITY_AUDIO_FEEDBACK_MESSAGE); ?>">
                   Feedback
                 </label>
                 <?php  trinity_feedback_message(); ?>
@@ -133,16 +136,16 @@
 
   function trinity_sender_email() {
     $value = trinity_get_user_email();
-    echo "<input placeholder='Please enter a valid email address' class='trinity-custom-contact-input' type='text' required value='$value' name='email' id='" . TRINITY_AUDIO_SENDER_EMAIL . "' />";
+    echo "<input placeholder='Please enter a valid email address' class='trinity-custom-contact-input' type='text' required value='" . esc_attr($value) . "' name='email' id='" . esc_attr(TRINITY_AUDIO_SENDER_EMAIL) . "' />";
   }
 
   function trinity_sender_name() {
     $value = trinity_get_user_name();
-    echo "<input placeholder='Please enter your full name' class='trinity-custom-contact-input' type='text' value='$value' name='name' id='" . TRINITY_AUDIO_SENDER_NAME . "' />";
+    echo "<input placeholder='Please enter your full name' class='trinity-custom-contact-input' type='text' value='" . esc_attr($value) . "' name='name' id='" . esc_attr(TRINITY_AUDIO_SENDER_NAME) . "' required />";
   }
 
   function trinity_sender_website() {
-    echo "<input placeholder='Please enter a valid URL address' class='trinity-custom-contact-input' type='text' value='' name='website' id='" . TRINITY_AUDIO_SENDER_WEBSITE . "' />";
+    echo "<input placeholder='Please enter a valid URL address' class='trinity-custom-contact-input' type='text' value='' name='website' id='" . esc_attr(TRINITY_AUDIO_SENDER_WEBSITE) . "' required />";
   }
 
   function trinity_sender_message() {
@@ -151,7 +154,7 @@
     echo "<textarea 
         placeholder='Tell us more...' class='custom-textarea' 
         required rows='5' name='message' 
-        id='" . TRINITY_AUDIO_SENDER_MESSAGE . "' class='large-text'>" . esc_html($value) . '</textarea>';
+        id='" . esc_attr(TRINITY_AUDIO_SENDER_MESSAGE) . "' class='large-text'>" . esc_html($value) . '</textarea>';
   }
 
   function trinity_feedback_title() {
@@ -162,13 +165,13 @@
     echo "<textarea 
         placeholder='Tell us more...' autocomplete='off' 
         class='trinity-custom-contact-textarea large-text' 
-        required rows='5' name='message' id='" . TRINITY_AUDIO_FEEDBACK_MESSAGE . "'></textarea>";
+        required rows='5' name='message' id='" . esc_attr(TRINITY_AUDIO_FEEDBACK_MESSAGE) . "'></textarea>";
   }
 
   function trinity_sender_include_logs() {
-    echo "<label for='" . TRINITY_AUDIO_SENDER_INCLUDE_LOG . "' class='custom-checkbox'>
+    echo "<label for='" . esc_attr(TRINITY_AUDIO_SENDER_INCLUDE_LOG) . "' class='custom-checkbox'>
       <div class='text-label'>Include logs</div>
-      <input type='checkbox' name='include_log' id='" . TRINITY_AUDIO_SENDER_INCLUDE_LOG . "' checked value='1'>
+      <input type='checkbox' name='include_log' id='" . esc_attr(TRINITY_AUDIO_SENDER_INCLUDE_LOG) . "' checked value='1'>
       <div class='custom-hitbox'></div>
     </label>";
 

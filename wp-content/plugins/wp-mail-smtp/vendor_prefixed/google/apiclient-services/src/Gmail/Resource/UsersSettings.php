@@ -40,12 +40,13 @@ class UsersSettings extends \WPMailSMTP\Vendor\Google\Service\Resource
      * used to indicate the authenticated user.
      * @param array $optParams Optional parameters.
      * @return AutoForwarding
+     * @throws \Google\Service\Exception
      */
     public function getAutoForwarding($userId, $optParams = [])
     {
         $params = ['userId' => $userId];
         $params = \array_merge($params, $optParams);
-        return $this->call('getAutoForwarding', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\AutoForwarding::class);
+        return $this->call('getAutoForwarding', [$params], AutoForwarding::class);
     }
     /**
      * Gets IMAP settings. (settings.getImap)
@@ -54,12 +55,13 @@ class UsersSettings extends \WPMailSMTP\Vendor\Google\Service\Resource
      * used to indicate the authenticated user.
      * @param array $optParams Optional parameters.
      * @return ImapSettings
+     * @throws \Google\Service\Exception
      */
     public function getImap($userId, $optParams = [])
     {
         $params = ['userId' => $userId];
         $params = \array_merge($params, $optParams);
-        return $this->call('getImap', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\ImapSettings::class);
+        return $this->call('getImap', [$params], ImapSettings::class);
     }
     /**
      * Gets language settings. (settings.getLanguage)
@@ -68,12 +70,13 @@ class UsersSettings extends \WPMailSMTP\Vendor\Google\Service\Resource
      * used to indicate the authenticated user.
      * @param array $optParams Optional parameters.
      * @return LanguageSettings
+     * @throws \Google\Service\Exception
      */
     public function getLanguage($userId, $optParams = [])
     {
         $params = ['userId' => $userId];
         $params = \array_merge($params, $optParams);
-        return $this->call('getLanguage', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\LanguageSettings::class);
+        return $this->call('getLanguage', [$params], LanguageSettings::class);
     }
     /**
      * Gets POP settings. (settings.getPop)
@@ -82,12 +85,13 @@ class UsersSettings extends \WPMailSMTP\Vendor\Google\Service\Resource
      * used to indicate the authenticated user.
      * @param array $optParams Optional parameters.
      * @return PopSettings
+     * @throws \Google\Service\Exception
      */
     public function getPop($userId, $optParams = [])
     {
         $params = ['userId' => $userId];
         $params = \array_merge($params, $optParams);
-        return $this->call('getPop', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\PopSettings::class);
+        return $this->call('getPop', [$params], PopSettings::class);
     }
     /**
      * Gets vacation responder settings. (settings.getVacation)
@@ -96,12 +100,13 @@ class UsersSettings extends \WPMailSMTP\Vendor\Google\Service\Resource
      * used to indicate the authenticated user.
      * @param array $optParams Optional parameters.
      * @return VacationSettings
+     * @throws \Google\Service\Exception
      */
     public function getVacation($userId, $optParams = [])
     {
         $params = ['userId' => $userId];
         $params = \array_merge($params, $optParams);
-        return $this->call('getVacation', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\VacationSettings::class);
+        return $this->call('getVacation', [$params], VacationSettings::class);
     }
     /**
      * Updates the auto-forwarding setting for the specified account. A verified
@@ -114,12 +119,13 @@ class UsersSettings extends \WPMailSMTP\Vendor\Google\Service\Resource
      * @param AutoForwarding $postBody
      * @param array $optParams Optional parameters.
      * @return AutoForwarding
+     * @throws \Google\Service\Exception
      */
-    public function updateAutoForwarding($userId, \WPMailSMTP\Vendor\Google\Service\Gmail\AutoForwarding $postBody, $optParams = [])
+    public function updateAutoForwarding($userId, AutoForwarding $postBody, $optParams = [])
     {
         $params = ['userId' => $userId, 'postBody' => $postBody];
         $params = \array_merge($params, $optParams);
-        return $this->call('updateAutoForwarding', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\AutoForwarding::class);
+        return $this->call('updateAutoForwarding', [$params], AutoForwarding::class);
     }
     /**
      * Updates IMAP settings. (settings.updateImap)
@@ -129,12 +135,13 @@ class UsersSettings extends \WPMailSMTP\Vendor\Google\Service\Resource
      * @param ImapSettings $postBody
      * @param array $optParams Optional parameters.
      * @return ImapSettings
+     * @throws \Google\Service\Exception
      */
-    public function updateImap($userId, \WPMailSMTP\Vendor\Google\Service\Gmail\ImapSettings $postBody, $optParams = [])
+    public function updateImap($userId, ImapSettings $postBody, $optParams = [])
     {
         $params = ['userId' => $userId, 'postBody' => $postBody];
         $params = \array_merge($params, $optParams);
-        return $this->call('updateImap', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\ImapSettings::class);
+        return $this->call('updateImap', [$params], ImapSettings::class);
     }
     /**
      * Updates language settings. If successful, the return object contains the
@@ -149,12 +156,13 @@ class UsersSettings extends \WPMailSMTP\Vendor\Google\Service\Resource
      * @param LanguageSettings $postBody
      * @param array $optParams Optional parameters.
      * @return LanguageSettings
+     * @throws \Google\Service\Exception
      */
-    public function updateLanguage($userId, \WPMailSMTP\Vendor\Google\Service\Gmail\LanguageSettings $postBody, $optParams = [])
+    public function updateLanguage($userId, LanguageSettings $postBody, $optParams = [])
     {
         $params = ['userId' => $userId, 'postBody' => $postBody];
         $params = \array_merge($params, $optParams);
-        return $this->call('updateLanguage', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\LanguageSettings::class);
+        return $this->call('updateLanguage', [$params], LanguageSettings::class);
     }
     /**
      * Updates POP settings. (settings.updatePop)
@@ -164,12 +172,13 @@ class UsersSettings extends \WPMailSMTP\Vendor\Google\Service\Resource
      * @param PopSettings $postBody
      * @param array $optParams Optional parameters.
      * @return PopSettings
+     * @throws \Google\Service\Exception
      */
-    public function updatePop($userId, \WPMailSMTP\Vendor\Google\Service\Gmail\PopSettings $postBody, $optParams = [])
+    public function updatePop($userId, PopSettings $postBody, $optParams = [])
     {
         $params = ['userId' => $userId, 'postBody' => $postBody];
         $params = \array_merge($params, $optParams);
-        return $this->call('updatePop', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\PopSettings::class);
+        return $this->call('updatePop', [$params], PopSettings::class);
     }
     /**
      * Updates vacation responder settings. (settings.updateVacation)
@@ -179,13 +188,14 @@ class UsersSettings extends \WPMailSMTP\Vendor\Google\Service\Resource
      * @param VacationSettings $postBody
      * @param array $optParams Optional parameters.
      * @return VacationSettings
+     * @throws \Google\Service\Exception
      */
-    public function updateVacation($userId, \WPMailSMTP\Vendor\Google\Service\Gmail\VacationSettings $postBody, $optParams = [])
+    public function updateVacation($userId, VacationSettings $postBody, $optParams = [])
     {
         $params = ['userId' => $userId, 'postBody' => $postBody];
         $params = \array_merge($params, $optParams);
-        return $this->call('updateVacation', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\VacationSettings::class);
+        return $this->call('updateVacation', [$params], VacationSettings::class);
     }
 }
 // Adding a class alias for backwards compatibility with the previous class name.
-\class_alias(\WPMailSMTP\Vendor\Google\Service\Gmail\Resource\UsersSettings::class, 'WPMailSMTP\\Vendor\\Google_Service_Gmail_Resource_UsersSettings');
+\class_alias(UsersSettings::class, 'WPMailSMTP\\Vendor\\Google_Service_Gmail_Resource_UsersSettings');

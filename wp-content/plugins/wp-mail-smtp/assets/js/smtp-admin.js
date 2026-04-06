@@ -254,6 +254,49 @@ WPMailSMTP.Admin.Settings = WPMailSMTP.Admin.Settings || ( function( document, w
 				$button.find( 'span' ).hide();
 				$button.find( '.wp-mail-smtp-loading' ).show();
 			} );
+
+			$( '#wp-mail-smtp-setting-gmail-one_click_setup_enabled-lite' ).on( 'click', function( e ) {
+				e.preventDefault();
+
+				app.education.gmailOneClickSetupUpgrade();
+			} );
+
+			$( '#wp-mail-smtp-setting-misc-rate_limit-lite' ).on( 'click', function( e ) {
+				e.preventDefault();
+
+				app.education.rateLimitUpgrade();
+			} );
+
+			// Obfuscated fields
+			$( '.wp-mail-smtp-btn[data-clear-field]' ).on( 'click', function( e ) {
+				var $button = $( this );
+				var fieldId = $button.attr( 'data-clear-field' );
+				var $field = $( `#${fieldId}` );
+
+				$field.prop( 'disabled', false );
+				$field.attr( 'name', $field.attr( 'data-name' ) );
+				$field.removeAttr( 'value' );
+				$field.focus();
+				$button.remove();
+			} );
+
+			$( '.email_test_tab_removal_notice' ).on( 'click', '.notice-dismiss', function() {
+				var $button = $( this );
+
+				$.ajax( {
+					url: ajaxurl,
+					dataType: 'json',
+					type: 'POST',
+					data: {
+						action: 'wp_mail_smtp_ajax',
+						nonce: wp_mail_smtp.nonce,
+						task: 'email_test_tab_removal_notice_dismiss',
+					},
+					beforeSend: function() {
+						$button.prop( 'disabled', true );
+					},
+				} );
+			} );
 		},
 
 		education: {
@@ -261,15 +304,42 @@ WPMailSMTP.Admin.Settings = WPMailSMTP.Admin.Settings || ( function( document, w
 
 				var mailerName = $input.data( 'title' ).trim();
 
+				app.education.upgradeModal(
+					wp_mail_smtp.education.upgrade_title.replace( /%name%/g, mailerName ),
+					wp_mail_smtp.education.upgrade_content.replace( /%name%/g, mailerName ),
+					$input.val()
+				);
+			},
+
+			gmailOneClickSetupUpgrade: function() {
+
+				app.education.upgradeModal(
+					wp_mail_smtp.education.gmail.one_click_setup_upgrade_title,
+					wp_mail_smtp.education.gmail.one_click_setup_upgrade_content,
+					'gmail-one-click-setup'
+				);
+			},
+
+			rateLimitUpgrade: function() {
+
+				app.education.upgradeModal(
+					wp_mail_smtp.education.rate_limit.upgrade_title,
+					wp_mail_smtp.education.rate_limit.upgrade_content,
+					'rate-limit-setting'
+				);
+			},
+
+			upgradeModal: function( title, content, upgradeUrlUtmContent ) {
+
 				$.alert( {
 					backgroundDismiss: true,
 					escapeKey: true,
 					animationBounce: 1,
 					type: 'blue',
 					closeIcon: true,
-					title: wp_mail_smtp.education.upgrade_title.replace( /%name%/g, mailerName ),
+					title: title,
 					icon: '"></i>' + wp_mail_smtp.education.upgrade_icon_lock + '<i class="',
-					content: wp_mail_smtp.education.upgrade_content.replace( /%name%/g, mailerName ),
+					content: content,
 					boxWidth: '550px',
 					onOpenBefore: function() {
 						this.$btnc.after( '<div class="discount-note">' + wp_mail_smtp.education.upgrade_bonus + wp_mail_smtp.education.upgrade_doc + '</div>' );
@@ -282,7 +352,7 @@ WPMailSMTP.Admin.Settings = WPMailSMTP.Admin.Settings || ( function( document, w
 							keys: [ 'enter' ],
 							action: function() {
 								var appendChar = /(\?)/.test( wp_mail_smtp.education.upgrade_url ) ? '&' : '?',
-									upgradeURL = wp_mail_smtp.education.upgrade_url + appendChar + 'utm_content=' + encodeURIComponent( $input.val() );
+									upgradeURL = wp_mail_smtp.education.upgrade_url + appendChar + 'utm_content=' + encodeURIComponent( upgradeUrlUtmContent );
 
 								window.open( upgradeURL, '_blank' );
 							}
@@ -344,7 +414,7 @@ WPMailSMTP.Admin.Settings = WPMailSMTP.Admin.Settings || ( function( document, w
 			} );
 
 			// Set settings changed attribute, if any input was changed.
-			$( ':input:not( #wp-mail-smtp-setting-license-key, .wp-mail-smtp-not-form-input )', $settingPages ).on( 'change', function() {
+			$( ':input:not( #wp-mail-smtp-setting-license-key, .wp-mail-smtp-not-form-input, #wp-mail-smtp-setting-gmail-one_click_setup_enabled, #wp-mail-smtp-setting-outlook-one_click_setup_enabled )', $settingPages ).on( 'change', function() {
 				app.pluginSettingsChanged = true;
 			} );
 
@@ -417,21 +487,15 @@ WPMailSMTP.Admin.Settings = WPMailSMTP.Admin.Settings || ( function( document, w
 			// Special case: "from email" (group settings).
 			var $mainSettingInGroup = $( '.js-wp-mail-smtp-setting-from_email' );
 
-			$mainSettingInGroup.closest( '.wp-mail-smtp-setting-row' ).toggle(
+			$mainSettingInGroup.toggle(
 				mailerSupportedSettings['from_email'] || mailerSupportedSettings['from_email_force']
-			);
-			$mainSettingInGroup.siblings( '.wp-mail-smtp-setting-mid-row-sep' ).toggle(
-				mailerSupportedSettings['from_email'] && mailerSupportedSettings['from_email_force']
 			);
 
 			// Special case: "from name" (group settings).
 			$mainSettingInGroup = $( '.js-wp-mail-smtp-setting-from_name' );
 
-			$mainSettingInGroup.closest( '.wp-mail-smtp-setting-row' ).toggle(
+			$mainSettingInGroup.toggle(
 				mailerSupportedSettings['from_name'] || mailerSupportedSettings['from_name_force']
-			);
-			$mainSettingInGroup.siblings( '.wp-mail-smtp-setting-mid-row-sep' ).toggle(
-				mailerSupportedSettings['from_name'] && mailerSupportedSettings['from_name_force']
 			);
 		},
 

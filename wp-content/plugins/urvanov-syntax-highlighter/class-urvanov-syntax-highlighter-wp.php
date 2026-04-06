@@ -209,7 +209,18 @@ class Urvanov_Syntax_Highlighter_Settings_WP {
             });
         </script>
 
-        <div id="urvanov-syntax-highlighter-main-wrap" class="wrap">
+        <?php 
+        $hideHelpNonce = wp_create_nonce( "urvanov-syntax-highlighter-hide-help" );
+        $showPostsNonce = wp_create_nonce( "urvanov-syntax-highlighter-show-posts" );
+        $showLangsNonce = wp_create_nonce( "urvanov-syntax-highlighter-show-langs" );
+        $showPreviewNonce = wp_create_nonce( "urvanov-syntax-highlighter-show-preview" );
+        ?>
+        <div id="urvanov-syntax-highlighter-main-wrap" class="wrap"
+               data-hide-help-nonce="<?php echo esc_attr($hideHelpNonce ) ?>"
+               data-show-posts-nonce="<?php echo esc_attr($showPostsNonce) ?>"
+               data-show-langs-nonce="<?php echo esc_attr($showLangsNonce) ?>"
+               data-show-preview-nonce="<?php echo esc_attr($showPreviewNonce) ?>"
+                >
 
             <div id="icon-options-general" class="icon32">
                 <br>
@@ -243,10 +254,22 @@ class Urvanov_Syntax_Highlighter_Settings_WP {
                 </p>
             </form>
         </div>
-
-        <div id="urvanov-syntax-highlighter-theme-editor-wrap" class="wrap"></div>
-
-    <?php
+        <?php 
+        $themeEditorSaveNonce = wp_create_nonce( "urvanov-syntax-highlighter-theme-editor-save" );
+        $themeEditorDeleteNonce = wp_create_nonce( "urvanov-syntax-highlighter-theme-editor-delete" );
+        $themeEditorDuplicateNonce = wp_create_nonce( "urvanov-syntax-highlighter-theme-editor-duplicate" );
+        $themeEditorSubmitNonce = wp_create_nonce( "urvanov-syntax-highlighter-theme-editor-submit" );
+        $themeEditorGetNonce = wp_create_nonce( "urvanov-syntax-highlighter-theme-editor-get" );
+        
+        ?>
+        <div id="urvanov-syntax-highlighter-theme-editor-wrap" class="wrap"
+           data-save-nonce="<?php echo esc_attr($themeEditorSaveNonce) ?>"
+           data-delete-nonce="<?php echo esc_attr($themeEditorDeleteNonce) ?>"
+           data-duplicate-nonce="<?php echo esc_attr($themeEditorDuplicateNonce) ?>"
+           data-submit-nonce="<?php echo esc_attr($themeEditorSubmitNonce) ?>"
+           data-get-nonce="<?php echo esc_attr($themeEditorGetNonce) ?>"
+        ></div>
+   <?php
     }
 
     // Load the global settings and update them from the db
@@ -680,9 +703,9 @@ class Urvanov_Syntax_Highlighter_Settings_WP {
         foreach ($resources as $k => $v) {
             if (is_array($v) && count($v)) {
                 $data = $v[0];
-                $text = $v[1];
+                $text = Urvanov_Syntax_Highlighter_Global::urvanov__($v[1]);
             } else {
-                $text = $v;
+                $text = Urvanov_Syntax_Highlighter_Global::urvanov__($v);
             }
             $is_selected = $selected !== NULL && $selected == $k ? 'selected' : selected(self::$options[$id], $k, FALSE);
             $return .= '<option ' . (isset($data) ? 'data-value="' . $data . '"' : '') . ' value="' . $k . '" ' . $is_selected . '>' . $text . '</option>';
@@ -828,6 +851,7 @@ class Urvanov_Syntax_Highlighter_Settings_WP {
     }
 
     public static function show_langs() {
+        check_ajax_referer( 'urvanov-syntax-highlighter-show-langs' );
         Urvanov_Syntax_Highlighter_Settings_WP::load_settings();
         require_once(URVANOV_SYNTAX_HIGHLIGHTER_PARSER_PHP);
         if (($langs = Urvanov_Syntax_Highlighter_Parser::parse_all()) != FALSE) {
@@ -874,6 +898,7 @@ class Urvanov_Syntax_Highlighter_Settings_WP {
     }
 
     public static function show_posts() {
+        check_ajax_referer( 'urvanov-syntax-highlighter-show-posts' );
         Urvanov_Syntax_Highlighter_Settings_WP::load_settings();
         $postIDs = self::load_posts();
         $legacy_posts = self::load_legacy_posts();
@@ -913,6 +938,7 @@ class Urvanov_Syntax_Highlighter_Settings_WP {
     }
 
     public static function show_preview() {
+    	check_ajax_referer( 'urvanov-syntax-highlighter-show-preview' );
         echo '<div id="content">';
 
         self::load_settings(); // Run first to ensure global settings loaded
@@ -1065,6 +1091,7 @@ class Human {
         echo '<span id="urvanov-syntax-highlighter-subsection-copy-check">';
         self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::PLAIN_TOGGLE, Urvanov_Syntax_Highlighter_Global::urvanov__('Enable plain code toggling')));
         self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::SHOW_PLAIN_DEFAULT, Urvanov_Syntax_Highlighter_Global::urvanov__('Show the plain code by default')));
+        self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::HIGHLIGHT, Urvanov_Syntax_Highlighter_Global::urvanov__('Highlight code')));
         self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::COPY, Urvanov_Syntax_Highlighter_Global::urvanov__('Enable code copy/paste')));
         echo '</span>';
         self::checkbox(array(Urvanov_Syntax_Highlighter_Settings::POPUP, Urvanov_Syntax_Highlighter_Global::urvanov__('Enable opening code in a window')));

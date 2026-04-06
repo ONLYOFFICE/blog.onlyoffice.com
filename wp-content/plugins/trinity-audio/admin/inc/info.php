@@ -1,11 +1,13 @@
 <?php
+  require_once __DIR__ . '/../../initial_checking.php';
+
   // save content into variable.
   ob_start();
   require_once __DIR__ . '/info-content.php';
   $contents = ob_get_clean();
 
   // show content.
-  echo $contents;
+  echo wp_kses_post($contents);
 
   // write that content into file.
   trinity_log_to_file($contents, TRINITY_AUDIO_INFO_HTML, 'w');
@@ -22,10 +24,10 @@
     $cap_type = $credits_data->capType;
 
     if ($cap_type === 'chars') {
-      echo "<p>$credits_data->credits</p>
+      echo "<p>" . esc_html($credits_data->credits) . "</p>
             <p class='description'>Shows the amount of credits available to generate audio for new posts</p>";
     } else if ($cap_type === 'articles') {
-      echo "<p>Used {$credits_data->used} of {$credits_data->packageLimit}</p>
+      echo "<p>Used " . esc_html($credits_data->used) . " of " . esc_html($credits_data->packageLimit) . "</p>
             <p class='description'>Amount of articles used to audify</p>";
     } else if ($cap_type === 'no_limit') {
       echo "<p>Unlimited</p>
@@ -45,9 +47,9 @@
     echo "<table class='trinity-inner'>
             <thead>
               <tr>
-                <td><span class='bold-text'>Parameter name</span></td>
-                <td><span class='bold-text'>Minimum required value</span></td>
-                <td><span class='bold-text'>Actual value</span></td>
+                <td><span class='trinity-bold-text'>Parameter name</span></td>
+                <td><span class='trinity-bold-text'>Minimum required value</span></td>
+                <td><span class='trinity-bold-text'>Actual value</span></td>
               </tr>
             </thead>
             <body>
