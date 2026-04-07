@@ -1,0 +1,26 @@
+.oait-translate-status {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+}
+
+.oait-spinner.is-active {
+    visibility: visible;
+}
+
+#oait_translation_status ul li {
+    font-size: 12px;
+}
+
+#oait_translation_status .oait-language-list label {
+    cursor: pointer;
+}
+
+#oait_translation_status .oait-lang-checkbox {
+    margin-right: 4px;
+}
+
+#oait_translation_status .oait-select-all,
+#oait_translation_status .oait-deselect-all {
+    font-size: 12px;
+}
