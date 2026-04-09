@@ -11,9 +11,3 @@ RUN apt-get update && \
 
 RUN rm -rf /var/www/html/wp-content/*
 COPY wp-content/ /var/www/html/wp-content/
-
-# Move object-cache.php drop-in aside during build.
-# It will be activated by init container after wp-config.php is ready.
-# This prevents RedisException on startup before WordPress is configured.
-RUN mv /var/www/html/wp-content/object-cache.php \
-       /var/www/html/wp-content/object-cache.php.disabled
