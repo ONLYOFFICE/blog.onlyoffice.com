@@ -2,6 +2,8 @@
 
 namespace FluentForm\App\Services\FluentConversational\Classes\Elements;
 
+defined('ABSPATH') or die;
+
 use FluentForm\App\Services\FormBuilder\BaseFieldManager;
 use FluentForm\Framework\Helpers\ArrayHelper;
 
@@ -16,7 +18,7 @@ class WelcomeScreen extends BaseFieldManager
             'general'
         );
 
-        add_filter('fluent_conversational_editor_elements', [$this, 'pushConversationalComponent'], 10, 1);
+        add_filter('fluentform/conversational_editor_elements', [$this, 'pushConversationalComponent'], 10, 1);
     }
 
     public function getComponent()
@@ -43,14 +45,14 @@ class WelcomeScreen extends BaseFieldManager
                 'color'              => 'rgb(255, 255, 255)',
                 'hover_styles'       => (object) [
                     'backgroundColor' => '#ffffff',
-                    'borderColor'     => '#409EFF',
-                    'color'           => '#409EFF',
+                    'borderColor'     => '#1a7efb',
+                    'color'           => '#1a7efb',
                     'borderRadius'    => '',
                     'minWidth'        => '',
                 ],
                 'normal_styles' => (object) [
-                    'backgroundColor' => '#409EFF',
-                    'borderColor'     => '#409EFF',
+                    'backgroundColor' => '#1a7efb',
+                    'borderColor'     => '#1a7efb',
                     'color'           => '#ffffff',
                     'borderRadius'    => '',
                     'minWidth'        => '',
@@ -105,7 +107,21 @@ class WelcomeScreen extends BaseFieldManager
     public function render($data, $form)
     {
         $elementName = $data['element'];
-        $data = apply_filters('fluentform_rendering_field_data_' . $elementName, $data, $form);
+
+        $app = wpFluentForm();
+    
+        $data = apply_filters_deprecated(
+            'fluentform_rendering_field_data_' . $elementName,
+            [
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_data_' . $elementName,
+            'Use fluentform/rendering_field_data_' . $elementName . ' instead of fluentform_rendering_field_data_' . $elementName
+        );
+
+        $data = $app->applyFilters('fluentform/rendering_field_data_' . $elementName, $data, $form);
 
         $alignment = ArrayHelper::get($data, 'settings.align');
         if ($alignment) {
@@ -127,6 +143,6 @@ class WelcomeScreen extends BaseFieldManager
         $html .= "<div class='ff-section_break_desk'>" . fluentform_sanitize_html($data['settings']['description']) . '</div>';
         $html .= '</div>';
 
-        $this->printContent('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
+        $this->printContent('fluentform/rendering_field_html_' . $elementName, $html, $data, $form);
     }
 }

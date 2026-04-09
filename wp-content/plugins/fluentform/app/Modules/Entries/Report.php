@@ -4,9 +4,16 @@ namespace FluentForm\App\Modules\Entries;
 
 use FluentForm\App\Helpers\Helper;
 use FluentForm\App\Modules\Form\FormFieldsParser;
+use FluentForm\App\Services\Submission\SubmissionService;
 use FluentForm\Framework\Foundation\Application;
 use FluentForm\Framework\Helpers\ArrayHelper;
 
+/**
+ *
+ * @deprecated  use FluentForm\App\Services\Report\ReportHelper
+ * all used method reference updated with new ReportHelper, except Fluentformpro
+ *
+ */
 class Report
 {
     private $app;
@@ -120,8 +127,8 @@ class Report
                 'fluentform_entry_details.field_name',
                 'fluentform_entry_details.sub_field_name',
                 'fluentform_entry_details.field_value',
+                wpFluent()->raw('count(' . $wpdb->prefix . 'fluentform_entry_details.field_name) as total_count')
             ])
-            ->select(wpFluent()->raw('count(' . $wpdb->prefix . 'fluentform_entry_details.field_name) as total_count'))
             ->where('fluentform_entry_details.form_id', $formId)
             ->whereIn('fluentform_entry_details.field_name', $fieldNames)
             ->rightJoin('fluentform_submissions', 'fluentform_submissions.id', '=', 'fluentform_entry_details.submission_id');
@@ -138,7 +145,7 @@ class Report
         $formattedReports = [];
         foreach ($reports as $report) {
             $formattedReports[$report->field_name]['reports'][] = [
-                'value'     => maybe_unserialize($report->field_value),
+                'value'     => Helper::safeUnserialize($report->field_value),
                 'count'     => $report->total_count,
                 'sub_field' => $report->sub_field_name,
             ];
@@ -160,8 +167,8 @@ class Report
                 'fluentform_entry_details.field_name',
                 'fluentform_entry_details.sub_field_name',
                 'fluentform_entry_details.field_value',
+                wpFluent()->raw('count(' . $wpdb->prefix . 'fluentform_entry_details.field_name) as total_count')
             ])
-            ->select(wpFluent()->raw('count(' . $wpdb->prefix . 'fluentform_entry_details.field_name) as total_count'))
             ->where('fluentform_entry_details.form_id', $formId)
             ->whereIn('fluentform_entry_details.field_name', $fieldNames)
             ->leftJoin('fluentform_submissions', 'fluentform_submissions.id', '=', 'fluentform_entry_details.submission_id');
@@ -207,7 +214,7 @@ class Report
 
     protected function setReportForSubInput($report, &$formattedReports)
     {
-        $filedValue = maybe_unserialize($report['field_value']);
+        $filedValue = Helper::safeUnserialize($report['field_value']);
 
         if (is_array($filedValue)) {
             foreach ($filedValue as $fVal) {
@@ -262,17 +269,17 @@ class Report
                 'fluentform_submissions.response',
             ])
             ->where('fluentform_submissions.form_id', $formId)
-            ->where(wpFluent()->raw($wpdb->prefix . 'fluentform_submissions.id NOT IN (SELECT submission_id from ' . $wpdb->prefix . 'fluentform_entry_details)'))
+            ->whereRaw(wpFluent()->raw($wpdb->prefix . 'fluentform_submissions.id NOT IN (SELECT submission_id from ' . $wpdb->prefix . 'fluentform_entry_details)'))
             ->get();
 
         if (!$unmigratedData) {
             return Helper::setFormMeta($formId, 'report_data_migrated', 'yes');
         }
 
-        $entries = new Entries();
+        $submissionService = new SubmissionService();
         foreach ($unmigratedData as $datum) {
             $value = json_decode($datum->response, true);
-            $entries->recordEntryDetails($datum->id, $formId, $value);
+            $submissionService->recordEntryDetails($datum->id, $formId, $value);
         }
 
         return true;

@@ -7,11 +7,10 @@ use WPMailSMTP\Vendor\GuzzleHttp\BodySummarizerInterface;
 use WPMailSMTP\Vendor\Psr\Http\Client\RequestExceptionInterface;
 use WPMailSMTP\Vendor\Psr\Http\Message\RequestInterface;
 use WPMailSMTP\Vendor\Psr\Http\Message\ResponseInterface;
-use WPMailSMTP\Vendor\Psr\Http\Message\UriInterface;
 /**
  * HTTP Request exception
  */
-class RequestException extends \WPMailSMTP\Vendor\GuzzleHttp\Exception\TransferException implements \WPMailSMTP\Vendor\Psr\Http\Client\RequestExceptionInterface
+class RequestException extends TransferException implements RequestExceptionInterface
 {
     /**
      * @var RequestInterface
@@ -25,7 +24,7 @@ class RequestException extends \WPMailSMTP\Vendor\GuzzleHttp\Exception\TransferE
      * @var array
      */
     private $handlerContext;
-    public function __construct(string $message, \WPMailSMTP\Vendor\Psr\Http\Message\RequestInterface $request, \WPMailSMTP\Vendor\Psr\Http\Message\ResponseInterface $response = null, \Throwable $previous = null, array $handlerContext = [])
+    public function __construct(string $message, RequestInterface $request, ?ResponseInterface $response = null, ?\Throwable $previous = null, array $handlerContext = [])
     {
         // Set the code of the exception if the response is set and not future.
         $code = $response ? $response->getStatusCode() : 0;
@@ -37,9 +36,9 @@ class RequestException extends \WPMailSMTP\Vendor\GuzzleHttp\Exception\TransferE
     /**
      * Wrap non-RequestExceptions with a RequestException
      */
-    public static function wrapException(\WPMailSMTP\Vendor\Psr\Http\Message\RequestInterface $request, \Throwable $e) : \WPMailSMTP\Vendor\GuzzleHttp\Exception\RequestException
+    public static function wrapException(RequestInterface $request, \Throwable $e) : RequestException
     {
-        return $e instanceof \WPMailSMTP\Vendor\GuzzleHttp\Exception\RequestException ? $e : new \WPMailSMTP\Vendor\GuzzleHttp\Exception\RequestException($e->getMessage(), $request, null, $e);
+        return $e instanceof RequestException ? $e : new RequestException($e->getMessage(), $request, null, $e);
     }
     /**
      * Factory method to create a new exception with a normalized error message
@@ -50,7 +49,7 @@ class RequestException extends \WPMailSMTP\Vendor\GuzzleHttp\Exception\TransferE
      * @param array                        $handlerContext Optional handler context
      * @param BodySummarizerInterface|null $bodySummarizer Optional body summarizer
      */
-    public static function create(\WPMailSMTP\Vendor\Psr\Http\Message\RequestInterface $request, \WPMailSMTP\Vendor\Psr\Http\Message\ResponseInterface $response = null, \Throwable $previous = null, array $handlerContext = [], \WPMailSMTP\Vendor\GuzzleHttp\BodySummarizerInterface $bodySummarizer = null) : self
+    public static function create(RequestInterface $request, ?ResponseInterface $response = null, ?\Throwable $previous = null, array $handlerContext = [], ?BodySummarizerInterface $bodySummarizer = null) : self
     {
         if (!$response) {
             return new self('Error completing request', $request, null, $previous, $handlerContext);
@@ -58,47 +57,35 @@ class RequestException extends \WPMailSMTP\Vendor\GuzzleHttp\Exception\TransferE
         $level = (int) \floor($response->getStatusCode() / 100);
         if ($level === 4) {
             $label = 'Client error';
-            $className = \WPMailSMTP\Vendor\GuzzleHttp\Exception\ClientException::class;
+            $className = ClientException::class;
         } elseif ($level === 5) {
             $label = 'Server error';
-            $className = \WPMailSMTP\Vendor\GuzzleHttp\Exception\ServerException::class;
+            $className = ServerException::class;
         } else {
             $label = 'Unsuccessful request';
             $className = __CLASS__;
         }
-        $uri = $request->getUri();
-        $uri = static::obfuscateUri($uri);
+        $uri = \WPMailSMTP\Vendor\GuzzleHttp\Psr7\Utils::redactUserInfo($request->getUri());
         // Client Error: `GET /` resulted in a `404 Not Found` response:
         // <html> ... (truncated)
         $message = \sprintf('%s: `%s %s` resulted in a `%s %s` response', $label, $request->getMethod(), $uri->__toString(), $response->getStatusCode(), $response->getReasonPhrase());
-        $summary = ($bodySummarizer ?? new \WPMailSMTP\Vendor\GuzzleHttp\BodySummarizer())->summarize($response);
+        $summary = ($bodySummarizer ?? new BodySummarizer())->summarize($response);
         if ($summary !== null) {
             $message .= ":\n{$summary}\n";
         }
         return new $className($message, $request, $response, $previous, $handlerContext);
     }
     /**
-     * Obfuscates URI if there is a username and a password present
-     */
-    private static function obfuscateUri(\WPMailSMTP\Vendor\Psr\Http\Message\UriInterface $uri) : \WPMailSMTP\Vendor\Psr\Http\Message\UriInterface
-    {
-        $userInfo = $uri->getUserInfo();
-        if (\false !== ($pos = \strpos($userInfo, ':'))) {
-            return $uri->withUserInfo(\substr($userInfo, 0, $pos), '***');
-        }
-        return $uri;
-    }
-    /**
      * Get the request that caused the exception
      */
-    public function getRequest() : \WPMailSMTP\Vendor\Psr\Http\Message\RequestInterface
+    public function getRequest() : RequestInterface
     {
         return $this->request;
     }
     /**
      * Get the associated response
      */
-    public function getResponse() : ?\WPMailSMTP\Vendor\Psr\Http\Message\ResponseInterface
+    public function getResponse() : ?ResponseInterface
     {
         return $this->response;
     }

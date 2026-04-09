@@ -7,6 +7,9 @@
 
 /* eslint-disable no-undef */
 
+registerBlockType('aioseo/ai-assistant', {
+	title : 'AIOSEO - AI Assistant'
+})
 registerBlockType('aioseo/breadcrumbs', {
 	title : 'AIOSEO - Breadcrumbs'
 })
@@ -33,4 +36,22 @@ registerBlockType('aioseo/locationmap', {
 })
 registerBlockType('aioseo/openinghours', {
 	title : 'AIOSEO - Local Business Opening Hours'
+})
+registerBlockType('aioseo/author-bio', {
+	title : 'AIOSEO - Author Bio (E-E-A-T)'
+})
+registerBlockType('aioseo/author-tooltip', {
+	title : 'AIOSEO - Author Name (E-E-A-T)'
+})
+registerBlockType('aioseo/reviewer-tooltip', {
+	title : 'AIOSEO - Reviewer Name (E-E-A-T)'
+})
+registerBlockType('aioseo/key-points', {
+	title : 'AIOSEO - Key Points (TLDR)'
+})
+registerBlockType('aioseo/recipe', {
+	title : 'AIOSEO - Recipe'
+})
+registerBlockType('aioseo/product', {
+	title : 'AIOSEO - Product'
 })

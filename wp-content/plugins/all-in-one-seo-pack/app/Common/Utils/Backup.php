@@ -46,13 +46,13 @@ class Backup {
 		$backupTime = time();
 		$options    = $this->getOptions();
 
-		update_option( $this->optionsName . '_' . $backupTime, wp_json_encode( $options ) );
+		update_option( $this->optionsName . '_' . $backupTime, wp_json_encode( $options ), 'no' );
 
 		$backups = $this->all();
 
 		$backups[] = $backupTime;
 
-		update_option( $this->optionsName, wp_json_encode( $backups ) );
+		update_option( $this->optionsName, wp_json_encode( $backups ), 'no' );
 	}
 
 	/**
@@ -73,7 +73,7 @@ class Backup {
 			}
 		}
 
-		update_option( $this->optionsName, wp_json_encode( array_values( $backups ) ) );
+		update_option( $this->optionsName, wp_json_encode( array_values( $backups ) ), 'no' );
 	}
 
 	/**
@@ -85,6 +85,13 @@ class Backup {
 	 */
 	public function restore( $backupTime ) {
 		$backup = json_decode( get_option( $this->optionsName . '_' . $backupTime ), true );
+		if ( ! empty( $backup['options']['tools']['robots']['rules'] ) ) {
+			$backup['options']['tools']['robots']['rules'] = array_merge(
+				aioseo()->robotsTxt->extractSearchAppearanceRules(),
+				$backup['options']['tools']['robots']['rules']
+			);
+		}
+
 		aioseo()->options->sanitizeAndSave( $backup['options'] );
 		aioseo()->internalOptions->sanitizeAndSave( $backup['internalOptions'] );
 	}

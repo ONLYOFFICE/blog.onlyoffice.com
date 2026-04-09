@@ -24,7 +24,7 @@ $info['Drop-in'] = $roc->object_cache_dropin_exists()
 
 $info['Disabled'] = $disabled ? 'Yes' : 'No';
 
-if ( $dropin && ! $disabled ) {
+if ( $dropin && ! $disabled && class_exists('WP_Object_Cache') ) {
     $info[ 'Ping' ] = $wp_object_cache->diagnostics['ping'] ?? false;
 
     try {
@@ -44,10 +44,6 @@ $info['Credis'] = class_exists( 'Credis_Client' ) ? 'v1.14.0' : 'Not loaded';
 
 if ( defined( 'PHP_VERSION' ) ) {
     $info['PHP Version'] = PHP_VERSION;
-}
-
-if ( defined( 'HHVM_VERSION' ) ) {
-    $info['HHVM Version'] = HHVM_VERSION;
 }
 
 $info['Plugin Version'] = WP_REDIS_VERSION;

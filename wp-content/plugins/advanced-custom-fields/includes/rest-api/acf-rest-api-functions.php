@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 /**
  * Get the REST API schema for a given field.
@@ -35,8 +44,8 @@ acf_add_filter_variations( 'acf/rest/get_field_schema', array( 'type', 'name', '
  * @see \acf_field::get_rest_links()
  * @see https://developer.wordpress.org/rest-api/using-the-rest-api/linking-and-embedding/
  *
- * @param string|int $post_id
- * @param array      $field
+ * @param string|integer $post_id
+ * @param array          $field
  * @return array
  */
 function acf_get_field_rest_links( $post_id, array $field ) {
@@ -69,7 +78,6 @@ acf_add_filter_variations( 'acf/rest/get_field_links', array( 'type', 'name', 'k
 function acf_format_value_for_rest( $value, $post_id, $field, $format = 'light' ) {
 	if ( $format === 'standard' ) {
 		$value_formatted = acf_format_value( $value, $post_id, $field );
-
 	} else {
 		$type            = acf_get_field_type( $field['type'] );
 		$value_formatted = $type->format_value_for_rest( $value, $post_id, $field );

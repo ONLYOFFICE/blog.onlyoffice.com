@@ -66,11 +66,11 @@ class ImportExport {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string $content The .ini file contents.
-	 * @return array           The settings.
+	 * @param  string $contents The .ini file contents.
+	 * @return array            The settings.
 	 */
 	public function importIniData( $contents ) {
-		$lines = array_filter( preg_split( '/\r\n|\r|\n/', $contents ) );
+		$lines = array_filter( preg_split( '/\r\n|\r|\n/', (string) $contents ) );
 
 		$sections     = [];
 		$sectionLabel = '';
@@ -79,12 +79,12 @@ class ImportExport {
 		foreach ( $lines as $line ) {
 			$line = trim( $line );
 			// Ignore comments.
-			if ( preg_match( '#^;.*#', $line ) || preg_match( '#\<(\?php|script)#', $line ) ) {
+			if ( preg_match( '#^;.*#', (string) $line ) || preg_match( '#\<(\?php|script)#', (string) $line ) ) {
 				continue;
 			}
 
 			$matches = [];
-			if ( preg_match( '#^\[(\S+)\]$#', $line, $label ) ) {
+			if ( preg_match( '#^\[(\S+)\]$#', (string) $line, $label ) ) {
 				$sectionLabel = strval( $label[1] );
 				if ( 'post_data' === $sectionLabel ) {
 					$sectionCount++;
@@ -92,13 +92,13 @@ class ImportExport {
 				if ( ! isset( $sections[ $sectionLabel ] ) ) {
 					$sections[ $sectionLabel ] = [];
 				}
-			} elseif ( preg_match( "#^(\S+)\s*=\s*'(.*)'$#", $line, $matches ) ) {
+			} elseif ( preg_match( "#^(\S+)\s*=\s*'(.*)'$#", (string) $line, $matches ) ) {
 				if ( 'post_data' === $sectionLabel ) {
 					$sections[ $sectionLabel ][ $sectionCount ][ $matches[1] ] = $matches[2];
 				} else {
 					$sections[ $sectionLabel ][ $matches[1] ] = $matches[2];
 				}
-			} elseif ( preg_match( '#^(\S+)\s*=\s*NULL$#', $line, $matches ) ) {
+			} elseif ( preg_match( '#^(\S+)\s*=\s*NULL$#', (string) $line, $matches ) ) {
 				if ( 'post_data' === $sectionLabel ) {
 					$sections[ $sectionLabel ][ $sectionCount ][ $matches[1] ] = '';
 				} else {
@@ -360,9 +360,14 @@ class ImportExport {
 	 * @return boolean True if an import is currently running.
 	 */
 	public function isImportRunning() {
-		$importsRunning = aioseo()->core->cache->get( 'import_%_meta_%' );
+		static $importsRunning = null;
+		if ( null !== $importsRunning ) {
+			return $importsRunning;
+		}
 
-		return ! empty( $importsRunning );
+		$importsRunning = aioseo()->core->cache->get( 'import_%_meta_%' ) ?? false;
+
+		return $importsRunning;
 	}
 
 	/**
@@ -382,7 +387,7 @@ class ImportExport {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return void
+	 * @return array
 	 */
 	public function plugins() {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';

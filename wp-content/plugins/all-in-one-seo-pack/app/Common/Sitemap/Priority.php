@@ -71,12 +71,12 @@ class Priority {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string   $pageType   The type of page (e.g. homepage, blog, post, taxonomies, etc.).
-	 * @param  stdClass $object     The post/term object (optional).
-	 * @param  string   $objectType The post/term object type (optional).
-	 * @return float    $priority   The priority.
+	 * @param  string         $pageType   The type of page (e.g. homepage, blog, post, taxonomies, etc.).
+	 * @param  \stdClass|bool $object     The post/term object (optional).
+	 * @param  string         $objectType The post/term object type (optional).
+	 * @return float                      The priority.
 	 */
-	public function priority( $pageType, $object = false, $objectType = null ) {
+	public function priority( $pageType, $object = false, $objectType = '' ) {
 		// Store setting values in static properties so that we can cache them.
 		// Otherwise this has a significant impact on the load time of the sitemap.
 		if ( ! self::$advanced ) {
@@ -104,7 +104,6 @@ class Priority {
 		if ( empty( self::$grouped[ $pageType . $objectType ] ) && self::$advanced ) {
 			if ( ! isset( self::$objectTypePriority[ $pageType . $objectType ] ) ) {
 				$dynamicOptions = aioseo()->dynamicOptions->noConflict();
-
 				self::$objectTypePriority[ $pageType . $objectType ] = $dynamicOptions->sitemap->priority->has( $pageType ) && $dynamicOptions->sitemap->priority->$pageType->has( $objectType )
 					? json_decode( $dynamicOptions->sitemap->priority->$pageType->$objectType->priority )
 					: false;
@@ -129,12 +128,12 @@ class Priority {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  string   $pageType   The type of page (e.g. homepage, blog, post, taxonomies, etc.).
-	 * @param  stdClass $object     The post/term object (optional).
-	 * @param  string   $objectType The post/term object type (optional).
-	 * @return float    $frequency  The frequency.
+	 * @param  string         $pageType   The type of page (e.g. homepage, blog, post, taxonomies, etc.).
+	 * @param  \stdClass|bool $object     The post/term object (optional).
+	 * @param  string         $objectType The post/term object type (optional).
+	 * @return float                      The frequency.
 	 */
-	public function frequency( $pageType, $object = false, $objectType = null ) {
+	public function frequency( $pageType, $object = false, $objectType = '' ) {
 		// Store setting values in static properties so that we can cache them.
 		// Otherwise this has a significant impact on the load time of the sitemap.
 		if ( ! self::$advanced ) {
@@ -197,7 +196,7 @@ class Priority {
 			'archive'    => 0.5,
 			'author'     => 0.3,
 			'taxonomies' => 0.3,
-			'other'      => 0.5,
+			'other'      => 0.5
 		];
 
 		if ( array_key_exists( $pageType, $defaults ) ) {

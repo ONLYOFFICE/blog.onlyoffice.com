@@ -1,0 +1,63 @@
+{
+    "name": "wpfluent/wpfluent",
+    "type": "project",
+    "description": "WPFluent - The best framework to build WordPress plugins.",
+    "keywords": [
+        "WordPress",
+        "framework",
+        "WPFluent"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sheikh Heera",
+            "email": "heera.sheikh77@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/wpfluent/framework"
+        }
+    ],
+    "require": {
+        "wpfluent/framework": "^2.11.4",
+        "openspout/openspout": "^3.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "FluentForm\\App\\": "app/",
+            "FluentForm\\Framework\\": "vendor/wpfluent/framework/src/WPFluent"
+        },
+        "classmap": [
+            "database/",
+            "app/Compat/"
+        ],
+        "files": []
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        },
+        "wpfluent": {
+            "namespace": {
+                "current": "FluentForm"
+            }
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "FluentForm\\App\\ComposerScript::postInstall"
+        ],
+        "post-update-cmd": [
+            "FluentForm\\App\\ComposerScript::postUpdate"
+        ]
+    },
+    "config": {
+        "platform": {
+            "php": "7.4"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

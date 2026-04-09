@@ -1,5 +1,5 @@
 
-jQuery( document ).ready( function( $ ){
+document.addEventListener( 'DOMContentLoaded', function(){
 
 	tinymce.PluginManager.add( 'demTiny', function( editor ){
 

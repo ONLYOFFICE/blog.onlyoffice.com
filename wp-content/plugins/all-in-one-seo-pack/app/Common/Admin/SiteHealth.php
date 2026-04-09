@@ -32,24 +32,24 @@ class SiteHealth {
 	 */
 	public function registerTests( $tests ) {
 		$tests['direct']['aioseo_site_public'] = [
-			// Translators: 1 - The plugin short name ("AIOSEO").
-			'label' => sprintf( __( '%1$s Site Public', 'all-in-one-seo-pack' ), AIOSEO_PLUGIN_SHORT_NAME ),
+			'label' => 'AIOSEO Site Public',
 			'test'  => [ $this, 'testCheckSitePublic' ],
 		];
 		$tests['direct']['aioseo_site_info'] = [
-			// Translators: 1 - The plugin short name ("AIOSEO").
-			'label' => sprintf( __( '%1$s Site Info', 'all-in-one-seo-pack' ), AIOSEO_PLUGIN_SHORT_NAME ),
+			'label' => 'AIOSEO Site Info',
 			'test'  => [ $this, 'testCheckSiteInfo' ],
 		];
+		$tests['direct']['aioseo_google_search_console'] = [
+			'label' => 'AIOSEO Google Search Console',
+			'test'  => [ $this, 'testCheckGoogleSearchConsole' ],
+		];
 		$tests['direct']['aioseo_plugin_update'] = [
-			// Translators: 1 - The plugin short name ("AIOSEO").
-			'label' => sprintf( __( '%1$s Plugin Update', 'all-in-one-seo-pack' ), AIOSEO_PLUGIN_SHORT_NAME ),
+			'label' => 'AIOSEO Plugin Update',
 			'test'  => [ $this, 'testCheckPluginUpdate' ],
 		];
 
 		$tests['direct']['aioseo_schema_markup'] = [
-			// Translators: 1 - The plugin short name ("AIOSEO").
-			'label' => sprintf( __( '%1$s Schema Markup', 'all-in-one-seo-pack' ), AIOSEO_PLUGIN_SHORT_NAME ),
+			'label' => 'AIOSEO Schema Markup',
 			'test'  => [ $this, 'testCheckSchemaMarkup' ],
 		];
 
@@ -171,6 +171,34 @@ class SiteHealth {
 	}
 
 	/**
+	 * Checks whether Google Search Console is connected.
+	 *
+	 * @since 4.6.2
+	 *
+	 * @return array The test result.
+	 */
+	public function testCheckGoogleSearchConsole() {
+		$googleSearchConsole = aioseo()->searchStatistics->api->auth->isConnected();
+
+		if ( ! $googleSearchConsole ) {
+			return $this->result(
+				'aioseo_google_search_console',
+				'recommended',
+				__( 'Connect Your Site with Google Search Console', 'all-in-one-seo-pack' ),
+				__( 'Sync your site with Google Search Console and get valuable insights right inside your WordPress dashboard. Track keyword rankings and search performance for individual posts with actionable insights to help you rank higher in search results!', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
+				$this->actionLink( admin_url( 'admin.php?page=aioseo-settings&aioseo-scroll=google-search-console-settings&aioseo-highlight=google-search-console-settings#/webmaster-tools?activetool=googleSearchConsole' ), __( 'Connect to Google Search Console', 'all-in-one-seo-pack' ) ) // phpcs:ignore Generic.Files.LineLength.MaxExceeded
+			);
+		}
+
+		return $this->result(
+			'aioseo_google_search_console',
+			'good',
+			__( 'Google Search Console is Connected', 'all-in-one-seo-pack' ),
+			__( 'Awesome! Google Search Console is connected to your site. This will help you monitor and maintain your site\'s presence in Google Search results.', 'all-in-one-seo-pack' )
+		);
+	}
+
+	/**
 	 * Checks whether the required settings for our schema markup are set.
 	 *
 	 * @since 4.0.0
@@ -249,6 +277,33 @@ class SiteHealth {
 	}
 
 	/**
+	 * Checks if the plugin should be updated.
+	 *
+	 * @since 4.7.2
+	 *
+	 * @return bool Whether the plugin should be updated.
+	 */
+	public function shouldUpdate() {
+		$cacheKey      = 'site_health_latest_version';
+		$latestVersion = aioseo()->core->cache->get( $cacheKey );
+
+		if ( null === $latestVersion ) {
+			$response = aioseo()->helpers->wpRemoteGetExternal( 'https://api.wordpress.org/plugins/info/1.0/all-in-one-seo-pack.json' );
+			$body     = wp_remote_retrieve_body( $response );
+			if ( ! $body ) {
+				return false;
+			}
+
+			$pluginData    = json_decode( $body );
+			$latestVersion = $pluginData->version;
+
+			aioseo()->core->cache->update( $cacheKey, $latestVersion, DAY_IN_SECONDS );
+		}
+
+		return version_compare( AIOSEO_VERSION, $latestVersion, '<' );
+	}
+
+	/**
 	 * Checks whether the required settings for our schema markup are set.
 	 *
 	 * @since 4.0.0
@@ -256,17 +311,7 @@ class SiteHealth {
 	 * @return array The test result.
 	 */
 	public function testCheckPluginUpdate() {
-		$response = wp_remote_get( 'https://api.wordpress.org/plugins/info/1.0/all-in-one-seo-pack.json' );
-		$body     = wp_remote_retrieve_body( $response );
-		if ( ! $body ) {
-			// Something went wrong.
-			return;
-		}
-
-		$pluginData   = json_decode( $body );
-		$shouldUpdate = version_compare( AIOSEO_VERSION, $pluginData->version, '<' );
-
-		if ( $shouldUpdate ) {
+		if ( $this->shouldUpdate() ) {
 			return $this->result(
 				'aioseo_plugin_update',
 				'critical',

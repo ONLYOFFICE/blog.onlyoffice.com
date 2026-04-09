@@ -1,7 +1,6 @@
 <?php
 namespace WPGraphQL\Data\Loader;
 
-use Exception;
 use WPGraphQL\Model\Taxonomy;
 
 /**
@@ -12,33 +11,36 @@ use WPGraphQL\Model\Taxonomy;
 class TaxonomyLoader extends AbstractDataLoader {
 
 	/**
-	 * @param mixed $entry The User Role object
-	 * @param mixed $key The Key to identify the user role by
+	 * {@inheritDoc}
 	 *
-	 * @return mixed|\WPGraphQL\Model\Taxonomy
-	 * @throws \Exception
+	 * @param mixed|\WP_Taxonomy $entry The Taxonomy Object
+	 *
+	 * @return \WPGraphQL\Model\Taxonomy
 	 */
 	protected function get_model( $entry, $key ) {
 		return new Taxonomy( $entry );
 	}
 
 	/**
-	 * @param array $keys
+	 * {@inheritDoc}
 	 *
-	 * @return array
-	 * @throws \Exception
+	 * @param string[] $keys
+	 *
+	 * @return array<string,\WP_Taxonomy|null>
 	 */
 	public function loadKeys( array $keys ) {
 		$taxonomies = \WPGraphQL::get_allowed_taxonomies( 'objects' );
 
+		if ( empty( $taxonomies ) ) {
+			return [];
+		}
+
 		$loaded = [];
-		if ( ! empty( $taxonomies ) && is_array( $taxonomies ) ) {
-			foreach ( $keys as $key ) {
-				if ( isset( $taxonomies[ $key ] ) ) {
-					$loaded[ $key ] = $taxonomies[ $key ];
-				} else {
-					$loaded[ $key ] = null;
-				}
+		foreach ( $keys as $key ) {
+			if ( isset( $taxonomies[ $key ] ) ) {
+				$loaded[ $key ] = $taxonomies[ $key ];
+			} else {
+				$loaded[ $key ] = null;
 			}
 		}
 

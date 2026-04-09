@@ -27,6 +27,7 @@ class Plugin {
 	public $OPT_EMAIL = 'wpscan_mail';
 	public $OPT_INTERVAL = 'wpscan_interval';
 	public $OPT_IGNORED = 'wpscan_ignored';
+	public $OPT_WEBHOOK = 'wpscan_webhook';
 
 	// Report.
 	public $OPT_REPORT = 'wpscan_report';
@@ -754,8 +755,15 @@ class Plugin {
 
 		// Trim and remove potential leading 'v'.
 		$version = ltrim( trim( $version ), 'v' );
+		$version = $this->normalize_version( $version );
 
 		foreach ( $data->$key->vulnerabilities as $item ) {
+			if ( $item->introduced_in ) {
+				if ( version_compare( $version, $item->introduced_in, '<' ) ) {
+					continue;
+				}
+			}
+
 			if ( $item->fixed_in ) {
 				if ( version_compare( $version, $item->fixed_in, '<' ) ) {
 					$list[] = $item;
@@ -919,6 +927,28 @@ class Plugin {
 	 */
 	public function delete_doing_cron_transient() {
 		delete_transient( $this->WPSCAN_TRANSIENT_CRON );
+	}
+
+	/**
+	 * Normalizes version numbers
+	 *
+	 * @since 1.15.7
+	 * @access public
+	 * @return string
+	 */
+	public function normalize_version( $version ) {
+		if ( preg_match( '/(\.?\d+)+/', $version, $matches ) ) {
+			$version_string = $matches[0];
+		} else {
+			$version_string = '';
+		}
+
+		// if the version string looks like .5 then make it 0.5
+		if ( isset( $version_string[0] ) && $version_string[0] === '.' ) {
+			$version_string = '0' . $version_string;
+		}
+
+		return $version_string;
 	}
 
 	/**

@@ -13,9 +13,9 @@ final class HeaderProcessor
      *
      * @param string[] $headers
      *
-     * @throws \RuntimeException
-     *
      * @return array{0:string, 1:int, 2:?string, 3:array}
+     *
+     * @throws \RuntimeException
      */
     public static function parseHeaders(array $headers) : array
     {
@@ -31,6 +31,6 @@ final class HeaderProcessor
         if ($status === null) {
             throw new \RuntimeException('HTTP status code missing from header data');
         }
-        return [$version, (int) $status, $parts[2] ?? null, \WPMailSMTP\Vendor\GuzzleHttp\Utils::headersFromLines($headers)];
+        return [$version, (int) $status, $parts[2] ?? null, Utils::headersFromLines($headers)];
     }
 }

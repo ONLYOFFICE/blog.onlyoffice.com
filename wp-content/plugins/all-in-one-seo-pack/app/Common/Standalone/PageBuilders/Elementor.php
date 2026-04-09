@@ -55,12 +55,56 @@ class Elementor extends Base {
 		}
 
 		add_action( 'elementor/editor/before_enqueue_scripts', [ $this, 'enqueue' ] );
+		add_action( 'elementor/editor/before_enqueue_scripts', [ $this, 'addInlineScript' ] );
 		add_action( 'elementor/documents/register_controls', [ $this, 'registerDocumentControls' ] );
 		add_action( 'elementor/editor/footer', [ $this, 'addContainers' ] );
 
 		// Add the SEO tab to the main Elementor panel.
 		add_action( 'elementor/editor/footer', [ $this, 'startCapturing' ], 0 );
 		add_action( 'elementor/editor/footer', [ $this, 'endCapturing' ], 999 );
+	}
+
+	/**
+	 * Add the inline script to the Elementor editor.
+	 * We do this because our scripts are loaded with the `type="module"` attribute.
+	 * This means that the script is not executed until the DOM is fully loaded.
+	 * This is a hack to add the button to the Elementor editor.
+	 *
+	 * @since 4.9.2
+	 *
+	 * @return void
+	 */
+	public function addInlineScript() {
+		$title  = esc_js( __( 'Save (Don\'t Modify Date)', 'all-in-one-seo-pack' ) );
+		$script = "
+			(function($) {
+				$(window).on('elementor:init', () => {
+					if(!window?.elementorV2) {
+						return
+					}
+
+					window.elementorV2.editorAppBar.documentOptionsMenu.registerToggleAction({
+						priority : 10,
+						useProps : () => {
+							const currentDocument = window.elementor?.documents?.getCurrent() || null;
+							const isChanged = currentDocument?.editor?.isChanged ?? true;
+							const isSaving = currentDocument?.editor?.isSaving ?? false;
+
+							return {
+								title : '{$title}',
+								icon  : window.elementorV2.icons.CalendarIcon,
+								onClick : () => {
+									document.dispatchEvent(new Event('aioseo-limit-modified-date-save'))
+								},
+								disabled : !isChanged || isSaving
+							}
+						}
+					})
+				})
+			})(window.jQuery)
+		";
+
+		wp_add_inline_script( 'elementor-editor', $script, 'before' );
 	}
 
 	/**
@@ -194,5 +238,49 @@ class Elementor extends Base {
 		}
 
 		return $elementorDocument;
+	}
+
+	/**
+	 * Checks whether or not we should prevent the date from being modified.
+	 * This method is supposed to be used in the `wp_ajax_seedprod_pro_save_lpage` action.
+	 *
+	 * @since 4.5.2
+	 *
+	 * @param  int  $postId The Post ID.
+	 * @return bool         Whether or not we should prevent the date from being modified.
+	 */
+	public function limitModifiedDate( $postId ) {
+		// This method is supposed to be used in the `wp_ajax_elementor_ajax` action.
+		if ( empty( $_REQUEST['_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['_nonce'] ) ), 'elementor_ajax' ) ) {
+			return false;
+		}
+
+		$editorPostId = ! empty( $_REQUEST['editor_post_id'] ) ? (int) $_REQUEST['editor_post_id'] : false;
+		if ( $editorPostId !== $postId ) {
+			return false;
+		}
+
+		return ! empty( $_REQUEST['aioseo_limit_modified_date'] );
+	}
+
+	/**
+	 * Get the post ID.
+	 *
+	 * @since 4.6.9
+	 *
+	 * @return int|null The post ID or null.
+	 */
+	public function getPostId() {
+		// phpcs:disable HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
+		if ( aioseo()->helpers->isAjaxCronRestRequest() ) {
+			foreach ( [ 'editor_post_id', 'initial_document_id' ] as $key ) {
+				if ( ! empty( $_REQUEST[ $key ] ) ) {
+					return intval( wp_unslash( $_REQUEST[ $key ] ) );
+				}
+			}
+		}
+		// phpcs:enable
+
+		return parent::getPostId();
 	}
 }

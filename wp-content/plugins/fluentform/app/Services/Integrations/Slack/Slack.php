@@ -33,8 +33,20 @@ class Slack
         $inputs = FormFieldsParser::getEntryInputs($form);
 
         $labels = FormFieldsParser::getAdminLabels($form, $inputs);
+    
+        $labels = apply_filters_deprecated(
+            'fluentform_slack_field_label_selection',
+            [
+                $labels,
+                $settings,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/slack_field_label_selection',
+            'Use fluentform/slack_field_label_selection instead of fluentform_slack_field_label_selection.'
+        );
 
-        $labels = apply_filters('fluentform_slack_field_label_selection', $labels, $settings, $form);
+        $labels = apply_filters('fluentform/slack_field_label_selection', $labels, $settings, $form);
 
         foreach ($inputs as $name => $input) {
             if (empty($formData[$name])) {
@@ -119,9 +131,9 @@ class Slack
         }
 
         if ('failed' == $status) {
-            do_action('ff_integration_action_result', $feed, 'failed', $message);
+            do_action('fluentform/integration_action_result', $feed, 'failed', $message);
         } else {
-            do_action('ff_integration_action_result', $feed, 'success', 'Submission notification has been successfully delivered to slack channel');
+            do_action('fluentform/integration_action_result', $feed, 'success', 'Submission notification has been successfully delivered to slack channel');
         }
 
         return [

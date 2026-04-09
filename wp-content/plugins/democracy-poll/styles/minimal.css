@@ -1,4 +1,5 @@
-@import '_preset.css';
+@import '_reset.css';
+@import '_presets.css';
 
 
 /* minimalism theme --------------------------------------------------------------- */

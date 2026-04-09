@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AIOSEO\Plugin\Common\Integrations\BuddyPress as BuddyPressIntegration;
+
 /**
  * Class Frontend.
  *
@@ -33,59 +35,75 @@ class Frontend {
 			return apply_filters( 'aioseo_breadcrumbs_trail', $this->breadcrumbs );
 		}
 
-		$type      = '';
 		$reference = get_queried_object();
-		// These types need the queried object for reference.
-		if ( is_object( $reference ) ) {
-			if ( is_single() ) {
-				$type = 'single';
-			}
-
-			if ( is_singular( 'post' ) ) {
-				$type = 'post';
-			}
-
-			if ( is_page() && ! is_front_page() ) {
-				$type = 'page';
-			}
-
-			if ( is_category() || is_tag() ) {
-				$type = 'category';
-			}
-
-			if ( is_tax() ) {
-				$type = 'taxonomy';
-			}
-
-			if ( is_post_type_archive() ) {
-				$type = 'postTypeArchive';
-			}
-
-			if ( is_author() ) {
-				$type = 'author';
-			}
-
-			if ( is_home() ) {
-				$type = 'blog';
-			}
+		$type      = '';
+		if ( BuddyPressIntegration::isComponentPage() ) {
+			$type = 'buddypress';
 		}
 
-		if ( is_date() ) {
-			$type      = 'date';
-			$reference = [
-				'year'  => get_query_var( 'year' ),
-				'month' => get_query_var( 'monthnum' ),
-				'day'   => get_query_var( 'day' )
-			];
-		}
+		if ( ! $type ) {
+			// These types need the queried object for reference.
+			if ( is_object( $reference ) ) {
+				if ( is_single() ) {
+					$type = 'single';
+				}
 
-		if ( is_search() ) {
-			$type      = 'search';
-			$reference = htmlspecialchars( sanitize_text_field( get_search_query() ) );
-		}
+				if ( is_singular( 'post' ) ) {
+					$type = 'post';
+				}
 
-		if ( is_404() ) {
-			$type = 'notFound';
+				if ( is_page() && ! is_front_page() ) {
+					$type = 'page';
+				}
+
+				if ( is_category() || is_tag() ) {
+					$type = 'category';
+				}
+
+				if ( is_tax() ) {
+					$type = 'taxonomy';
+				}
+
+				if ( is_post_type_archive() ) {
+					$type = 'postTypeArchive';
+				}
+
+				if ( is_author() ) {
+					$type = 'author';
+				}
+
+				if ( is_home() ) {
+					$type = 'blog';
+				}
+
+				// Support WC shop page.
+				if ( aioseo()->helpers->isWooCommerceShopPage() ) {
+					$type = 'wcShop';
+				}
+
+				// Support WC products.
+				if ( aioseo()->helpers->isWooCommerceProductPage() ) {
+					$type = 'wcProduct';
+				}
+			}
+
+			if ( is_date() ) {
+				$type      = 'date';
+				$reference = [
+					'year'  => get_query_var( 'year' ),
+					'month' => get_query_var( 'monthnum' ),
+					'day'   => get_query_var( 'day' )
+				];
+			}
+
+			if ( is_search() ) {
+				$type      = 'search';
+				$reference = htmlspecialchars( sanitize_text_field( get_search_query() ), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401 );
+			}
+
+			if ( is_404() ) {
+				$type = 'notFound';
+			}
 		}
 
 		$paged = false;
@@ -149,7 +167,14 @@ class Frontend {
 	 * @return string|void       A html breadcrumb.
 	 */
 	public function display( $echo = true ) {
-		if ( ! aioseo()->options->breadcrumbs->enable || ! apply_filters( 'aioseo_breadcrumbs_output', true ) ) {
+		if (
+			in_array( 'breadcrumbsEnable', aioseo()->internalOptions->deprecatedOptions, true ) &&
+			! aioseo()->options->deprecated->breadcrumbs->enable
+		) {
+			return;
+		}
+
+		if ( ! apply_filters( 'aioseo_breadcrumbs_output', true ) ) {
 			return;
 		}
 
@@ -189,6 +214,7 @@ class Frontend {
 		}
 		$display .= '</div>';
 
+		// Final security cleaning.
 		$display = wp_kses_post( $display );
 
 		if ( $echo ) {
@@ -214,6 +240,13 @@ class Frontend {
 
 		// Do tags.
 		$templateItem['template'] = aioseo()->breadcrumbs->tags->replaceTags( $templateItem['template'], $item );
+		$templateItem['template'] = preg_replace_callback(
+			'/>(?![^<]*>)(?![^>]*")([^<]*?)>/',
+			function ( $matches ) {
+				return '>' . $matches[1] . '>';
+			},
+			htmlentities( $templateItem['template'], ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401 )
+		);
 
 		// Restore html.
 		$templateItem['template'] = aioseo()->helpers->decodeHtmlEntities( $templateItem['template'] );
@@ -225,9 +258,6 @@ class Frontend {
 
 		// Allow shortcodes to run in the final html.
 		$templateItem['template'] = do_shortcode( $templateItem['template'] );
-
-		// Final security cleaning.
-		$templateItem['template'] = wp_kses_post( $templateItem['template'] );
 
 		return $templateItem;
 	}
@@ -269,11 +299,9 @@ class Frontend {
 	 * @return string            The default crumb template.
 	 */
 	public function getDefaultTemplate( $type = '', $reference = '' ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
-		return <<<TEMPLATE
-<span class="aioseo-breadcrumb">
-	<a href="#breadcrumb_link" title="#breadcrumb_label">#breadcrumb_label</a>
-</span>
-TEMPLATE;
+		return '<span class="aioseo-breadcrumb">
+			<a href="#breadcrumb_link" title="#breadcrumb_label">#breadcrumb_label</a>
+		</span>';
 	}
 
 	/**
@@ -285,7 +313,7 @@ TEMPLATE;
 	 * @return string       A crumb html without links.
 	 */
 	public function stripLink( $html ) {
-		return preg_replace( '/<a\s.*?>|<\/a>/is', '', $html );
+		return preg_replace( '/<a\s.*?>|<\/a>/is', '', (string) $html );
 	}
 
 	/**
@@ -296,7 +324,14 @@ TEMPLATE;
 	 * @return string The separator html.
 	 */
 	public function getSeparator() {
-		$separator = apply_filters( 'aioseo_breadcrumbs_separator_symbol', aioseo()->options->breadcrumbs->separator );
+		$separator = aioseo()->options->breadcrumbs->separator;
+
+		$separatorToOverride = aioseo()->breadcrumbs->getOverride( 'separator' );
+		if ( ! empty( $separatorToOverride ) ) {
+			$separator = $separatorToOverride;
+		}
+
+		$separator = apply_filters( 'aioseo_breadcrumbs_separator_symbol', $separator );
 
 		return apply_filters( 'aioseo_breadcrumbs_separator', '<span class="aioseo-breadcrumb-separator">' . esc_html( $separator ) . '</span>' );
 	}

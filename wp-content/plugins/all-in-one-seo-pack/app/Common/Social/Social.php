@@ -15,15 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Social {
 	/**
-	 * The name of the action to bust the OG cache.
-	 *
-	 * @since 4.2.0
-	 *
-	 * @var string
-	 */
-	private $bustOgCacheActionName = 'aioseo_og_cache_bust_post';
-
-	/**
 	 * Image class instance.
 	 *
 	 * @since 4.2.7
@@ -81,11 +72,10 @@ class Social {
 	/**
 	 * Registers our hooks.
 	 *
-	 * @since 4.0.0
+	 * @since   4.0.0
+	 * @version 4.9.4.2 Fire OG cache bust directly instead of via Action Scheduler.
 	 */
 	protected function hooks() {
-		add_action( $this->bustOgCacheActionName, [ $this, 'bustOgCachePost' ] );
-
 		// To avoid duplicate sets of meta tags.
 		add_filter( 'jetpack_enable_open_graph', '__return_false' );
 
@@ -96,13 +86,14 @@ class Social {
 		}
 
 		// Forces a refresh of the Facebook cache.
-		add_action( 'post_updated', [ $this, 'scheduleBustOgCachePost' ], 10, 2 );
+		add_action( 'post_updated', [ $this, 'bustOgCachePost' ], 10, 2 );
 	}
 
 	/**
 	 * Adds our attributes to the registered language attributes.
 	 *
-	 * @since 4.0.0
+	 * @since   4.0.0
+	 * @version 4.4.5 Adds trim function the html tag removing empty spaces.
 	 *
 	 * @param  string $htmlTag The 'html' tag as a string.
 	 * @return string          The filtered 'html' tag as a string.
@@ -112,86 +103,30 @@ class Social {
 			return $htmlTag;
 		}
 
-		// Avoid having duplicate meta tags.
-		$type = aioseo()->social->facebook->getObjectType();
-		if ( empty( $type ) ) {
-			$type = 'website';
-		}
-
-		$schemaTypes = [
-			'album'      => 'MusicAlbum',
-			'article'    => 'Article',
-			'bar'        => 'BarOrPub',
-			'blog'       => 'Blog',
-			'book'       => 'Book',
-			'cafe'       => 'CafeOrCoffeeShop',
-			'city'       => 'City',
-			'country'    => 'Country',
-			'episode'    => 'Episode',
-			'food'       => 'FoodEvent',
-			'game'       => 'Game',
-			'hotel'      => 'Hotel',
-			'landmark'   => 'LandmarksOrHistoricalBuildings',
-			'movie'      => 'Movie',
-			'product'    => 'Product',
-			'profile'    => 'ProfilePage',
-			'restaurant' => 'Restaurant',
-			'school'     => 'School',
-			'sport'      => 'SportsEvent',
-			'website'    => 'WebSite',
-		];
-
-		if ( ! empty( $schemaTypes[ $type ] ) ) {
-			$type = $schemaTypes[ $type ];
-		} else {
-			$type = 'WebSite';
-		}
-
 		$attributes = apply_filters( 'aioseo_opengraph_attributes', [ 'prefix="og: https://ogp.me/ns#"' ] );
-
 		foreach ( $attributes as $attr ) {
 			if ( strpos( $htmlTag, $attr ) === false ) {
-				$htmlTag .= "\n\t$attr ";
+				$htmlTag .= " $attr ";
 			}
 		}
 
-		return $htmlTag;
-	}
-
-	/**
-	 * Schedule a ping to bust the OG cache.
-	 *
-	 * @since 4.2.0
-	 *
-	 * @param  int     $postId The post ID.
-	 * @param  WP_Post $post   The post object.
-	 * @return void
-	 */
-	public function scheduleBustOgCachePost( $postId, $post = null ) {
-		if ( ! aioseo()->helpers->isSbCustomFacebookFeedActive() || ! aioseo()->helpers->isValidPost( $post ) ) {
-			return;
-		}
-
-		if ( aioseo()->actionScheduler->isScheduled( $this->bustOgCacheActionName, [ 'postId' => $postId ] ) ) {
-			return;
-		}
-
-		// Schedule the new ping.
-		aioseo()->actionScheduler->scheduleAsync( $this->bustOgCacheActionName, [ 'postId' => $postId ] );
+		return trim( $htmlTag );
 	}
 
 	/**
 	 * Pings Facebook and asks them to bust the OG cache for a particular post.
+	 * Uses a non-blocking request so it doesn't delay the current page load.
 	 *
-	 * @since 4.2.0
+	 * @since   4.2.0
+	 * @version 4.9.4.2 Fire directly instead of via Action Scheduler.
 	 *
 	 * @see https://developers.facebook.com/docs/sharing/opengraph/using-objects#update
 	 *
-	 * @param  int  $postId The post ID.
+	 * @param  int      $postId The post ID.
+	 * @param  \WP_Post $post   The post object.
 	 * @return void
 	 */
-	public function bustOgCachePost( $postId ) {
-		$post              = get_post( $postId );
+	public function bustOgCachePost( $postId, $post = null ) {
 		$customAccessToken = apply_filters( 'aioseo_facebook_access_token', '' );
 
 		if (
@@ -231,6 +166,9 @@ class Social {
 			)
 		);
 
-		wp_remote_post( $url, [ 'blocking' => false ] );
+		aioseo()->helpers->wpRemotePostExternal( $url, [
+			'blocking'         => false,
+			'aioseo_skip_lock' => true
+		] );
 	}
 }

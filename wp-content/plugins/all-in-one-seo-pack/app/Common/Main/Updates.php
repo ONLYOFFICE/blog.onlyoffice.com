@@ -1,12 +1,12 @@
 <?php
 namespace AIOSEO\Plugin\Common\Main;
 
-use AIOSEO\Plugin\Common\Models;
-
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+use AIOSEO\Plugin\Common\Models;
 
 /**
  * Updater class.
@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 4.0.0
  */
 class Updates {
+
 	/**
 	 * Class constructor.
 	 *
@@ -68,10 +69,25 @@ class Updates {
 	 * @return void
 	 */
 	public function runUpdates() {
-		// The dynamic options have not yet fully loaded, so let's refresh here to force that to happen.
-		aioseo()->dynamicOptions->refresh(); // TODO: Check if we still need this since it already runs on 999 in the main AIOSEO file.
-
 		$lastActiveVersion = aioseo()->internalOptions->internal->lastActiveVersion;
+		// Don't run updates if the last active version is the same as the current version.
+		if ( aioseo()->version === $lastActiveVersion ) {
+			// Allow addons to run their updates.
+			do_action( 'aioseo_run_updates', $lastActiveVersion );
+
+			return;
+		}
+
+		// Try to acquire the lock.
+		if ( ! aioseo()->core->db->acquireLock( 'aioseo_run_updates_lock', 0 ) ) {
+			// If we couldn't acquire the lock, exit early without doing anything.
+			// This means another process is already running updates.
+			return;
+		}
+
+		// The dynamic options have not yet fully loaded, so let's refresh here to force that to happen.
+		aioseo()->dynamicOptions->refresh();
+
 		if ( version_compare( $lastActiveVersion, '4.0.5', '<' ) ) {
 			$this->addImageScanDateColumn();
 		}
@@ -114,7 +130,7 @@ class Updates {
 		if ( version_compare( $lastActiveVersion, '4.1.5', '<' ) ) {
 			aioseo()->actionScheduler->unschedule( 'aioseo_cleanup_action_scheduler' );
 			// Schedule routine to remove our old transients from the options table.
-			aioseo()->actionScheduler->scheduleSingle( aioseo()->core->cachePrune->getOptionCacheCleanAction(), MINUTE_IN_SECONDS );
+			aioseo()->actionScheduler->scheduleSingle( aioseo()->core->cache->getOptionCacheCleanAction(), MINUTE_IN_SECONDS );
 
 			// Refresh with new Redirects capability.
 			$this->accessControlNewCapabilities();
@@ -160,7 +176,7 @@ class Updates {
 		}
 
 		if ( version_compare( $lastActiveVersion, '4.2.2', '<' ) ) {
-			aioseo()->internalOptions->database->installedTables = '';
+			aioseo()->core->cache->delete( 'db_schema' );
 
 			$this->addOptionsColumn();
 			$this->removeTabsColumn();
@@ -171,7 +187,6 @@ class Updates {
 		}
 
 		if ( version_compare( $lastActiveVersion, '4.2.4', '<' ) ) {
-			$this->migrateContactTypes();
 			$this->addNotificationsAddonColumn();
 		}
 
@@ -193,9 +208,87 @@ class Updates {
 			$this->addPrimaryTermColumn();
 		}
 
+		if ( version_compare( $lastActiveVersion, '4.3.9', '<' ) ) {
+			$this->migratePriorityColumn();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.4.2', '<' ) ) {
+			$this->updateRobotsTxtRules();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.5.1', '<' ) ) {
+			$this->checkForGaAnalyticsV3();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.5.8', '<' ) ) {
+			$this->addQueryArgMonitorTables();
+			$this->addQueryArgMonitorNotification();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.5.9', '<' ) ) {
+			$this->deprecateNoPaginationForCanonicalUrlsSetting();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.6.5', '<' ) ) {
+			$this->deprecateBreadcrumbsEnabledSetting();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.7.4', '<' ) ) {
+			$this->addWritingAssistantTables();
+			aioseo()->access->addCapabilities();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.7.5', '<' ) ) {
+			$this->cancelScheduledSitemapPings();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.7.7', '<' ) ) {
+			$this->disableEmailReports();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.7.9', '<' ) ) {
+			$this->fixSavedHeadlines();
+			$this->rescheduleEmailReport();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.8.3', '<' ) ) {
+			$this->resetImageScanDate();
+			$this->addSeoAnalyzerResultsTable();
+			$this->migrateSeoAnalyzerResults();
+			$this->migrateSeoAnalyzerCompetitors();
+			$this->addBreadcrumbSettingsColumn();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.8.3.1', '<' ) ) {
+			aioseo()->core->cache->delete( 'analyze_site_code' );
+			aioseo()->core->cache->delete( 'analyze_site_body' );
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.8.4', '<' ) ) {
+			$this->addAiColumn();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.8.4.1', '<' ) ) {
+			aioseo()->ai->updateCredits( true );
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.8.7', '<' ) ) {
+			$this->addColumnIndexForCornerstoneContent();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.9.1', '<' ) ) {
+			$this->addAiInsightsKeywordReportsTable();
+			aioseo()->access->addCapabilities();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.9.4', '<' ) ) {
+			$this->addSeoChecklistToDashboardWidgets();
+		}
+
 		do_action( 'aioseo_run_updates', $lastActiveVersion );
 
 		// Always clear the cache if the last active version is different from our current.
+
 		if ( version_compare( $lastActiveVersion, AIOSEO_VERSION, '<' ) ) {
 			aioseo()->core->cache->clear();
 		}
@@ -233,7 +326,7 @@ class Updates {
 		aioseo()->internalOptions->internal->lastActiveVersion = aioseo()->version;
 
 		// Bust the tableExists and columnExists cache.
-		aioseo()->internalOptions->database->installedTables = '';
+		aioseo()->core->cache->delete( 'db_schema' );
 
 		// Bust the DB cache so we can make sure that everything is fresh.
 		aioseo()->core->db->bustCache();
@@ -354,7 +447,7 @@ class Updates {
 		}
 
 		// Reset the cache for the installed tables.
-		aioseo()->internalOptions->database->installedTables = '';
+		aioseo()->core->cache->delete( 'db_schema' );
 	}
 
 	/**
@@ -392,7 +485,27 @@ class Updates {
 			);
 
 			// Reset the cache for the installed tables.
-			aioseo()->internalOptions->database->installedTables = '';
+			aioseo()->core->cache->delete( 'db_schema' );
+		}
+	}
+
+	/**
+	 * Adds the breadcrumb settings column to our posts table.
+	 *
+	 * @since 4.8.3
+	 *
+	 * @return void
+	 */
+	public function addBreadcrumbSettingsColumn() {
+		if ( ! aioseo()->core->db->columnExists( 'aioseo_posts', 'breadcrumb_settings' ) ) {
+			$tableName = aioseo()->core->db->db->prefix . 'aioseo_posts';
+			aioseo()->core->db->execute(
+				"ALTER TABLE {$tableName}
+				ADD `breadcrumb_settings` longtext DEFAULT NULL AFTER local_seo"
+			);
+
+			// Reset the cache for the installed tables.
+			aioseo()->core->cache->delete( 'db_schema' );
 		}
 	}
 
@@ -441,7 +554,7 @@ class Updates {
 		$duplicates = aioseo()->core->db->start( 'aioseo_posts' )
 			->select( 'post_id, min(id) as id' )
 			->groupBy( 'post_id having count(post_id) > 1' )
-			->orderBy( 'count(post_id) DESC' )
+			->orderByRaw( 'count(post_id) DESC' )
 			->run()
 			->result();
 
@@ -450,11 +563,12 @@ class Updates {
 		}
 
 		foreach ( $duplicates as $duplicate ) {
-			$postId        = $duplicate->post_id;
-			$firstRecordId = $duplicate->id;
+			$postId        = esc_sql( $duplicate->post_id );
+			$firstRecordId = esc_sql( $duplicate->id );
 
 			aioseo()->core->db->delete( 'aioseo_posts' )
-				->whereRaw( "( id > $firstRecordId AND post_id = $postId )" )
+				->where( 'id >', $firstRecordId )
+				->where( 'post_id', $postId )
 				->run();
 		}
 	}
@@ -516,7 +630,7 @@ class Updates {
 			);
 
 			// Reset the cache for the installed tables.
-			aioseo()->internalOptions->database->installedTables = '';
+			aioseo()->core->cache->delete( 'db_schema' );
 
 			aioseo()->core->db
 				->update( 'aioseo_notifications' )
@@ -759,7 +873,7 @@ class Updates {
 			}
 
 			// Reset the cache for the installed tables.
-			aioseo()->internalOptions->database->installedTables = '';
+			aioseo()->core->cache->delete( 'db_schema' );
 		}
 	}
 
@@ -779,7 +893,7 @@ class Updates {
 			);
 
 			// Reset the cache for the installed tables.
-			aioseo()->internalOptions->database->installedTables = '';
+			aioseo()->core->cache->delete( 'db_schema' );
 		}
 	}
 
@@ -878,7 +992,7 @@ class Updates {
 			);
 
 			// Reset the cache for the installed tables.
-			aioseo()->internalOptions->database->installedTables = '';
+			aioseo()->core->cache->delete( 'db_schema' );
 		}
 	}
 
@@ -907,7 +1021,7 @@ class Updates {
 	 * @return void
 	 */
 	private function migrateUserContactMethods() {
-		$userMetaTableName = aioseo()->core->db->prefix . 'usermeta';
+		$userMetaTableName = aioseo()->core->db->db->usermeta;
 
 		aioseo()->core->db->execute(
 			"UPDATE `$userMetaTableName`
@@ -920,42 +1034,6 @@ class Updates {
 			SET `meta_key` = 'aioseo_twitter_url'
 			WHERE `meta_key` = 'aioseo_twitter'"
 		);
-	}
-
-	/**
-	 * Migrates some older values in the Knowledge Panel contact type setting that were removed.
-	 *
-	 * @since 4.2.4
-	 *
-	 * @return void
-	 */
-	public function migrateContactTypes() {
-		$oldValue          = aioseo()->options->searchAppearance->global->schema->contactType;
-		$oldValueLowerCase = strtolower( (string) $oldValue );
-
-		// Return if there is no value set or manual input is being used.
-		if ( ! $oldValue || 'manual' === $oldValueLowerCase ) {
-			return;
-		}
-
-		switch ( $oldValueLowerCase ) {
-			case 'billing support':
-			case 'customer support':
-			case 'reservations':
-			case 'sales':
-			case 'technical support':
-				// If we still support the value, do nothing.
-				return;
-			default:
-				// Otherwise, migrate the existing value to the manual input field.
-				if ( 'bagage tracking' === $oldValueLowerCase ) {
-					// Let's also fix this old typo.
-					$oldValue = 'Baggage Tracking';
-				}
-
-				aioseo()->options->searchAppearance->global->schema->contactType       = 'manual';
-				aioseo()->options->searchAppearance->global->schema->contactTypeManual = $oldValue;
-		}
 	}
 
 	/**
@@ -974,7 +1052,7 @@ class Updates {
 			);
 
 			// Reset the cache for the installed tables.
-			aioseo()->internalOptions->database->installedTables = '';
+			aioseo()->core->cache->delete( 'db_schema' );
 		}
 	}
 
@@ -1005,8 +1083,8 @@ class Updates {
 	private function schedulePostSchemaMigration() {
 		aioseo()->actionScheduler->scheduleSingle( 'aioseo_v4_migrate_post_schema', 10 );
 
-		if ( ! aioseo()->cache->get( 'v4_migrate_post_schema_default_date' ) ) {
-			aioseo()->cache->update( 'v4_migrate_post_schema_default_date', gmdate( 'Y-m-d H:i:s' ), 3 * MONTH_IN_SECONDS );
+		if ( ! aioseo()->core->cache->get( 'v4_migrate_post_schema_default_date' ) ) {
+			aioseo()->core->cache->update( 'v4_migrate_post_schema_default_date', gmdate( 'Y-m-d H:i:s' ), 3 * MONTH_IN_SECONDS );
 		}
 	}
 
@@ -1020,7 +1098,7 @@ class Updates {
 	public function migratePostSchema() {
 		$posts = aioseo()->core->db->start( 'aioseo_posts' )
 			->select( '*' )
-			->whereRaw( '`schema` IS NULL' )
+			->where( 'schema', null )
 			->limit( 40 )
 			->run()
 			->models( 'AIOSEO\\Plugin\\Common\\Models\\Post' );
@@ -1057,7 +1135,7 @@ class Updates {
 	 * @return void
 	 */
 	public function migratePostSchemaDefault() {
-		$migrationStartDate = aioseo()->cache->get( 'v4_migrate_post_schema_default_date' );
+		$migrationStartDate = esc_sql( aioseo()->core->cache->get( 'v4_migrate_post_schema_default_date' ) );
 		if ( ! $migrationStartDate ) {
 			return;
 		}
@@ -1065,13 +1143,13 @@ class Updates {
 		$posts = aioseo()->core->db->start( 'aioseo_posts' )
 			->select( '*' )
 			->where( 'schema_type =', 'default' )
-			->whereRaw( "updated < '$migrationStartDate'" )
+			->where( 'updated <', $migrationStartDate )
 			->limit( 40 )
 			->run()
 			->models( 'AIOSEO\\Plugin\\Common\\Models\\Post' );
 
 		if ( empty( $posts ) ) {
-			aioseo()->cache->delete( 'v4_migrate_post_schema_default_date' );
+			aioseo()->core->cache->delete( 'v4_migrate_post_schema_default_date' );
 
 			return;
 		}
@@ -1089,8 +1167,8 @@ class Updates {
 	 *
 	 * @since  4.2.5
 	 *
-	 * @param  Post $aioseoPost The AIOSEO post object.
-	 * @return Post             The modified AIOSEO post object.
+	 * @param  Models\Post $aioseoPost The AIOSEO post object.
+	 * @return Models\Post             The modified AIOSEO post object.
 	 */
 	public function migratePostSchemaHelper( $aioseoPost ) {
 		$post              = aioseo()->helpers->getPost( $aioseoPost->post_id );
@@ -1191,12 +1269,13 @@ class Updates {
 				];
 
 				$identifierType = ! empty( $schemaTypeOptions->product->identifierType ) ? $schemaTypeOptions->product->identifierType : '';
-				if ( preg_match( '/gtin/i', $identifierType ) ) {
-					$graph['properties']['identifiers']['gtin'] = $identifierType;
+				$identifier     = ! empty( $schemaTypeOptions->product->identifier ) ? $schemaTypeOptions->product->identifier : '';
+				if ( preg_match( '/gtin/i', (string) $identifierType ) ) {
+					$graph['properties']['identifiers']['gtin'] = $identifier;
 				}
 
-				if ( preg_match( '/mpn/i', $identifierType ) ) {
-					$graph['properties']['identifiers']['mpn'] = $identifierType;
+				if ( preg_match( '/mpn/i', (string) $identifierType ) ) {
+					$graph['properties']['identifiers']['mpn'] = $identifier;
 				}
 
 				$reviews = ! empty( $schemaTypeOptions->product->reviews ) ? $schemaTypeOptions->product->reviews : [];
@@ -1239,7 +1318,12 @@ class Updates {
 							'preparation' => ! empty( $schemaTypeOptions->recipe->preparationTime ) ? $schemaTypeOptions->recipe->preparationTime : '',
 							'cooking'     => ! empty( $schemaTypeOptions->recipe->cookingTime ) ? $schemaTypeOptions->recipe->cookingTime : ''
 						],
-						'instructions' => []
+						'instructions' => [],
+						'rating'       => [
+							'minimum' => 1,
+							'maximum' => 5
+						],
+						'reviews'      => []
 					]
 				];
 
@@ -1255,6 +1339,23 @@ class Updates {
 							'name'  => '',
 							'text'  => $instructionData->content,
 							'image' => ''
+						];
+					}
+				}
+
+				$reviews = ! empty( $schemaTypeOptions->recipe->reviews ) ? $schemaTypeOptions->recipe->reviews : [];
+				if ( ! empty( $reviews ) ) {
+					foreach ( $reviews as $reviewData ) {
+						$reviewData = json_decode( $reviewData );
+						if ( empty( $reviewData ) ) {
+							continue;
+						}
+
+						$graph['properties']['reviews'][] = [
+							'rating'   => $reviewData->rating,
+							'headline' => $reviewData->headline,
+							'content'  => $reviewData->content,
+							'author'   => $reviewData->author
 						];
 					}
 				}
@@ -1387,10 +1488,36 @@ class Updates {
 		$widgets = [ 'seoNews' ];
 
 		// If the dashboardWidgets was activated, let's turn on the other widgets.
-		if ( $rawOptions['advanced']['dashboardWidgets'] ) {
+		if ( ! empty( $rawOptions['advanced']['dashboardWidgets'] ) ) {
 			$widgets[] = 'seoOverview';
 			$widgets[] = 'seoSetup';
 		}
+
+		aioseo()->options->advanced->dashboardWidgets = $widgets;
+	}
+
+	/**
+	 * Adds the seoChecklist widget to existing dashboardWidgets arrays.
+	 *
+	 * @since 4.9.4
+	 *
+	 * @return void
+	 */
+	private function addSeoChecklistToDashboardWidgets() {
+		$rawOptions = $this->getRawOptions();
+
+		if ( empty( $rawOptions ) || ! isset( $rawOptions['advanced']['dashboardWidgets'] ) || ! is_array( $rawOptions['advanced']['dashboardWidgets'] ) ) {
+			return;
+		}
+
+		$widgets = $rawOptions['advanced']['dashboardWidgets'];
+
+		// If seoChecklist is already in the array, don't add it again.
+		if ( in_array( 'seoChecklist', $widgets, true ) ) {
+			return;
+		}
+
+		$widgets[] = 'seoChecklist';
 
 		aioseo()->options->advanced->dashboardWidgets = $widgets;
 	}
@@ -1421,5 +1548,611 @@ class Updates {
 	 */
 	private function scheduleRemoveRevisionsRecords() {
 		aioseo()->actionScheduler->scheduleSingle( 'aioseo_v419_remove_revision_records', 10, [], true );
+	}
+
+	/**
+	 * Casts the priority column to a float.
+	 *
+	 * @since 4.3.9
+	 *
+	 * @return void
+	 */
+	private function migratePriorityColumn() {
+		if ( ! aioseo()->core->db->columnExists( 'aioseo_posts', 'priority' ) ) {
+			return;
+		}
+
+		$prefix               = aioseo()->core->db->prefix;
+		$aioseoPostsTableName = $prefix . 'aioseo_posts';
+
+		// First, cast the default value to NULL since it's a string.
+		aioseo()->core->db->execute( "UPDATE {$aioseoPostsTableName} SET priority = NULL WHERE priority = 'default'" );
+
+		// Then, alter the column to a float.
+		aioseo()->core->db->execute( "ALTER TABLE {$aioseoPostsTableName} MODIFY priority float" );
+	}
+
+	/**
+	 * Update the custom robots.txt rules to the new format,
+	 * by replacing `rule` and `directoryPath` with `directive` and `fieldValue`, respectively.
+	 *
+	 * @since 4.4.2
+	 *
+	 * @return void
+	 */
+	private function updateRobotsTxtRules() {
+		$rawOptions   = $this->getRawOptions();
+		$currentRules = $rawOptions && ! empty( $rawOptions['tools']['robots']['rules'] )
+			? $rawOptions['tools']['robots']['rules']
+			: [];
+		if ( empty( $currentRules ) || ! is_array( $currentRules ) ) {
+			return;
+		}
+
+		$newRules = [];
+		foreach ( $currentRules as $oldRule ) {
+			$parsedRule = json_decode( $oldRule, true );
+			if ( empty( $parsedRule['rule'] ) && empty( $parsedRule['directoryPath'] ) ) {
+				continue;
+			}
+
+			$newRule = [
+				'userAgent'  => array_key_exists( 'userAgent', $parsedRule ) ? $parsedRule['userAgent'] : '',
+				'directive'  => array_key_exists( 'rule', $parsedRule ) ? $parsedRule['rule'] : '',
+				'fieldValue' => array_key_exists( 'directoryPath', $parsedRule ) ? $parsedRule['directoryPath'] : '',
+			];
+
+			$newRules[] = wp_json_encode( $newRule );
+		}
+
+		if ( $newRules ) {
+			aioseo()->options->tools->robots->rules = $newRules;
+		}
+	}
+
+	/**
+	 * Checks if the user is currently using the old GA Analytics v3 integration and create a notification.
+	 *
+	 * @since 4.5.1
+	 *
+	 * @return void
+	 */
+	private function checkForGaAnalyticsV3() {
+		// If either MonsterInsights or ExactMetrics is active, let's return early.
+		$pluginData = aioseo()->helpers->getPluginData();
+		if (
+			$pluginData['miPro']['activated'] ||
+			$pluginData['miLite']['activated'] ||
+			$pluginData['emPro']['activated'] ||
+			$pluginData['emLite']['activated']
+		) {
+			return;
+		}
+
+		$rawOptions = $this->getRawOptions();
+		if ( empty( $rawOptions['deprecated']['webmasterTools']['googleAnalytics']['id'] ) ) {
+			return;
+		}
+
+		// Let's clear the notification if the search is working again.
+		$notification = Models\Notification::getNotificationByName( 'google-analytics-v3-deprecation' );
+		if ( $notification->exists() ) {
+			$notification->dismissed = false;
+			$notification->save();
+
+			return;
+		}
+
+		// Determine which plugin name to use.
+		$pluginName = 'MonsterInsights';
+		if (
+			(
+				$pluginData['emPro']['installed'] ||
+				$pluginData['emLite']['installed']
+			) &&
+			! $pluginData['miPro']['installed'] &&
+			! $pluginData['miLite']['installed']
+		) {
+			$pluginName = 'ExactMetrics';
+		}
+
+		Models\Notification::addNotification( [
+			'slug'              => uniqid(),
+			'notification_name' => 'google-analytics-v3-deprecation',
+			'title'             => __( 'Universal Analytics V3 Deprecation Notice', 'all-in-one-seo-pack' ),
+			'content'           => sprintf(
+				// Translators: 1 - Line break HTML tags, 2 - Plugin short name ("AIOSEO"), Analytics plugin name (e.g. "MonsterInsights").
+				__( 'You have been using the %2$s Google Analytics V3 (Universal Analytics) integration which has been deprecated by Google and is no longer supported. This may affect your website\'s data accuracy and performance.%1$sTo ensure a seamless analytics experience, we recommend migrating to %3$s, a powerful analytics solution.%1$s%3$s offers advanced features such as real-time tracking, enhanced e-commerce analytics, and easy-to-understand reports, helping you make informed decisions to grow your online presence effectively.%1$sClick the button below to be redirected to the %3$s setup process, where you can start benefiting from its robust analytics capabilities immediately.', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
+				'<br><br>',
+				AIOSEO_PLUGIN_SHORT_NAME,
+				$pluginName
+			),
+			'type'              => 'error',
+			'level'             => [ 'all' ],
+			'button1_label'     => __( 'Fix Now', 'all-in-one-seo-pack' ),
+			'button1_action'    => admin_url( 'admin.php?page=aioseo-monsterinsights' ),
+			'start'             => gmdate( 'Y-m-d H:i:s' )
+		] );
+	}
+
+	/**
+	 * Adds our custom tables for the query arg monitor.
+	 *
+	 * @since 4.5.8
+	 *
+	 * @return void
+	 */
+	public function addQueryArgMonitorTables() {
+		$db             = aioseo()->core->db->db;
+		$charsetCollate = '';
+
+		if ( ! empty( $db->charset ) ) {
+			$charsetCollate .= "DEFAULT CHARACTER SET {$db->charset}";
+		}
+		if ( ! empty( $db->collate ) ) {
+			$charsetCollate .= " COLLATE {$db->collate}";
+		}
+
+		// Check for crawl cleanup logs table.
+		if ( ! aioseo()->core->db->tableExists( 'aioseo_crawl_cleanup_logs' ) ) {
+			$tableName = $db->prefix . 'aioseo_crawl_cleanup_logs';
+
+			aioseo()->core->db->execute(
+				"CREATE TABLE {$tableName} (
+					`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+					`slug` text NOT NULL,
+					`key` text NOT NULL,
+					`value` text,
+					`hash` varchar(40) NOT NULL,
+					`hits` int(20) NOT NULL DEFAULT 1,
+					`created` datetime NOT NULL,
+					`updated` datetime NOT NULL,
+					PRIMARY KEY (id),
+					UNIQUE KEY ndx_aioseo_crawl_cleanup_logs_hash (hash)
+				) {$charsetCollate};"
+			);
+		}
+
+		// Check for crawl cleanup blocked table.
+		if ( ! aioseo()->core->db->tableExists( 'aioseo_crawl_cleanup_blocked_args' ) ) {
+			$tableName = $db->prefix . 'aioseo_crawl_cleanup_blocked_args';
+
+			aioseo()->core->db->execute(
+				"CREATE TABLE {$tableName} (
+					`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+					`key` text,
+					`value` text,
+					`key_value_hash` varchar(40),
+					`regex` varchar(150),
+					`hits` int(20) NOT NULL DEFAULT 0,
+					`created` datetime NOT NULL,
+					`updated` datetime NOT NULL,
+					PRIMARY KEY (id),
+					UNIQUE KEY ndx_aioseo_crawl_cleanup_blocked_args_key_value_hash (key_value_hash),
+					UNIQUE KEY ndx_aioseo_crawl_cleanup_blocked_args_regex (regex)
+				) {$charsetCollate};"
+			);
+		}
+	}
+
+	/**
+	 * Adds a notification for the query arg monitor.
+	 *
+	 * @since 4.5.8
+	 *
+	 * @return void
+	 */
+	private function addQueryArgMonitorNotification() {
+		$options = $this->getRawOptions();
+		if (
+			empty( $options['searchAppearance']['advanced']['crawlCleanup']['enable'] ) ||
+			empty( $options['searchAppearance']['advanced']['crawlCleanup']['removeUnrecognizedQueryArgs'] )
+		) {
+			return;
+		}
+
+		$notification = Models\Notification::getNotificationByName( 'crawl-cleanup-updated' );
+		if ( $notification->exists() ) {
+			return;
+		}
+
+		Models\Notification::addNotification( [
+			'slug'              => uniqid(),
+			'notification_name' => 'crawl-cleanup-updated',
+			'title'             => __( 'Crawl Cleanup changes you should know about', 'all-in-one-seo-pack' ),
+			'content'           => __( 'We\'ve made some significant changes to how we monitor Query Args for our Crawl Cleanup feature. Instead of DISABLING all query args and requiring you to add individual exceptions, we\'ve now changed it to ALLOW all query args by default with the option to easily block unrecognized ones through our new log table.', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
+			'type'              => 'info',
+			'level'             => [ 'all' ],
+			'button1_label'     => __( 'Learn More', 'all-in-one-seo-pack' ),
+			'button1_action'    => 'http://route#aioseo-search-appearance&aioseo-scroll=aioseo-query-arg-monitoring&aioseo-highlight=aioseo-query-arg-monitoring:advanced',
+			'start'             => gmdate( 'Y-m-d H:i:s' )
+		] );
+	}
+
+	/**
+	 * Deprecates the "No Pagination for Canonical URLs" setting.
+	 *
+	 * @since 4.5.9
+	 *
+	 * @return void
+	 */
+	public function deprecateNoPaginationForCanonicalUrlsSetting() {
+		$options = $this->getRawOptions();
+		if ( empty( $options['searchAppearance']['advanced']['noPaginationForCanonical'] ) ) {
+			return;
+		}
+
+		$deprecatedOptions = aioseo()->internalOptions->deprecatedOptions;
+		if ( ! in_array( 'noPaginationForCanonical', $deprecatedOptions, true ) ) {
+			$deprecatedOptions[]                         = 'noPaginationForCanonical';
+			aioseo()->internalOptions->deprecatedOptions = $deprecatedOptions;
+		}
+
+		aioseo()->options->deprecated->searchAppearance->advanced->noPaginationForCanonical = true;
+	}
+
+	/**
+	 * Deprecates the "Breadcrumbs enabled" setting.
+	 *
+	 * @since 4.6.5
+	 *
+	 * @return void
+	 */
+	public function deprecateBreadcrumbsEnabledSetting() {
+		$options = $this->getRawOptions();
+		if ( ! isset( $options['breadcrumbs']['enable'] ) || 1 === intval( $options['breadcrumbs']['enable'] ) ) {
+			return;
+		}
+
+		$deprecatedOptions = aioseo()->internalOptions->deprecatedOptions;
+		if ( ! in_array( 'breadcrumbsEnable', $deprecatedOptions, true ) ) {
+			$deprecatedOptions[]                         = 'breadcrumbsEnable';
+			aioseo()->internalOptions->deprecatedOptions = $deprecatedOptions;
+		}
+
+		aioseo()->options->deprecated->breadcrumbs->enable = false;
+	}
+
+	/**
+	 * Add tables for Writing Assistant.
+	 *
+	 * @since 4.7.4
+	 *
+	 * @return void
+	 */
+	private function addWritingAssistantTables() {
+		$db             = aioseo()->core->db->db;
+		$charsetCollate = '';
+
+		if ( ! empty( $db->charset ) ) {
+			$charsetCollate .= "DEFAULT CHARACTER SET {$db->charset}";
+		}
+		if ( ! empty( $db->collate ) ) {
+			$charsetCollate .= " COLLATE {$db->collate}";
+		}
+
+		if ( ! aioseo()->core->db->tableExists( 'aioseo_writing_assistant_posts' ) ) {
+			$tableName = $db->prefix . 'aioseo_writing_assistant_posts';
+
+			aioseo()->core->db->execute(
+				"CREATE TABLE {$tableName} (
+					`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+					`post_id` bigint(20) unsigned DEFAULT NULL,
+					`keyword_id` bigint(20) unsigned DEFAULT NULL,
+					`content_analysis_hash` VARCHAR(40) DEFAULT NULL,
+					`content_analysis` text DEFAULT NULL,
+					`created` datetime NOT NULL,
+					`updated` datetime NOT NULL,
+					PRIMARY KEY (id),
+					UNIQUE KEY ndx_aioseo_writing_assistant_posts_post_id (post_id),
+					KEY ndx_aioseo_writing_assistant_posts_keyword_id (keyword_id)
+				) {$charsetCollate};"
+			);
+		}
+
+		if ( ! aioseo()->core->db->tableExists( 'aioseo_writing_assistant_keywords' ) ) {
+			$tableName = $db->prefix . 'aioseo_writing_assistant_keywords';
+
+			aioseo()->core->db->execute(
+				"CREATE TABLE {$tableName} (
+					`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+					`uuid` varchar(40) NOT NULL,
+					`keyword` varchar(255) NOT NULL,
+					`country` varchar(10) NOT NULL DEFAULT 'us',
+					`language` varchar(10) NOT NULL DEFAULT 'en',
+					`progress` tinyint(3) DEFAULT 0,
+					`keywords` mediumtext NULL,
+					`competitors` mediumtext NULL,
+					`created` datetime NOT NULL,
+					`updated` datetime NOT NULL,
+					PRIMARY KEY (id),
+					UNIQUE KEY ndx_aioseo_writing_assistant_keywords_uuid (uuid),
+					KEY ndx_aioseo_writing_assistant_keywords_keyword (keyword)
+				) {$charsetCollate};"
+			);
+		}
+	}
+
+	/**
+	 * Cancels all outstanding sitemap ping actions.
+	 * This is needed because we've removed the Ping class.
+	 *
+	 * @since 4.7.5
+	 *
+	 * @return void
+	 */
+	private function cancelScheduledSitemapPings() {
+		as_unschedule_all_actions( 'aioseo_sitemap_ping' );
+		as_unschedule_all_actions( 'aioseo_sitemap_ping_recurring' );
+	}
+
+	/**
+	 * Disable email reports.
+	 *
+	 * @since 4.7.7
+	 *
+	 * @return void
+	 */
+	private function disableEmailReports() {
+		aioseo()->options->advanced->emailSummary->enable = false;
+
+		// Schedule a notification to remind the user to enable email reports in 2 weeks.
+		aioseo()->actionScheduler->scheduleSingle( 'aioseo_email_reports_enable_reminder', 2 * WEEK_IN_SECONDS );
+	}
+
+	/**
+	 * Cancels all occurrences of the report summary task.
+	 * This is needed in order to force the scheduled date to be reset.
+	 *
+	 * @since 4.7.9
+	 *
+	 * @return void
+	 */
+	private function rescheduleEmailReport() {
+		as_unschedule_all_actions( aioseo()->emailReports->summary->actionHook );
+	}
+
+	/**
+	 * Fixes headlines that could not be analyzed.
+	 *
+	 * @since 4.7.9
+	 *
+	 * @return void
+	 */
+	private function fixSavedHeadlines() {
+		$headlines = aioseo()->internalOptions->internal->headlineAnalysis->headlines;
+		if ( empty( $headlines ) ) {
+			return;
+		}
+
+		foreach ( $headlines as $key => $headline ) {
+			if ( ! json_decode( $headline ) ) {
+				unset( $headlines[ $key ] );
+			}
+		}
+
+		aioseo()->internalOptions->internal->headlineAnalysis->headlines = $headlines;
+	}
+
+	/**
+	 * Resets the image scan date in order to force a new scan.
+	 * This is needed because we're now storing relative URLs in order to support site migrations.
+	 *
+	 * @since 4.8.3
+	 *
+	 * @return void
+	 */
+	private function resetImageScanDate() {
+		aioseo()->core->db->update( 'aioseo_posts' )
+			->set(
+				[
+					'image_scan_date' => null
+				]
+			)
+			->run();
+	}
+
+	/**
+	 * Adds our custom table for the SeoAnalysis/SeoAnalyzer homepage and competitor results.
+	 *
+	 * @since 4.8.3
+	 *
+	 * @return void
+	 */
+	private function addSeoAnalyzerResultsTable() {
+		$db             = aioseo()->core->db->db;
+		$charsetCollate = '';
+
+		if ( ! empty( $db->charset ) ) {
+			$charsetCollate .= "DEFAULT CHARACTER SET {$db->charset}";
+		}
+		if ( ! empty( $db->collate ) ) {
+			$charsetCollate .= " COLLATE {$db->collate}";
+		}
+
+		// Check for seo analyzer results table.
+		if ( ! aioseo()->core->db->tableExists( 'aioseo_seo_analyzer_results' ) ) {
+			$tableName = $db->prefix . 'aioseo_seo_analyzer_results';
+
+			aioseo()->core->db->execute(
+				"CREATE TABLE {$tableName} (
+					`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+					`data` text NOT NULL,
+					`score` varchar(255),
+					`competitor_url` varchar(255),
+					`created` datetime NOT NULL,
+					`updated` datetime NOT NULL,
+					PRIMARY KEY (id),
+					KEY ndx_aioseo_seo_analyzer_results_competitor_url (competitor_url)
+				) {$charsetCollate};"
+			);
+
+			// Reset the cache for the installed tables.
+			aioseo()->core->cache->delete( 'db_schema' );
+		}
+	}
+
+	/**
+	 * Migrate the SeoAnalyzer homepage results from the Internal Optinos to the new table.
+	 *
+	 * @since 4.8.3
+	 *
+	 * @return void
+	 */
+	private function migrateSeoAnalyzerResults() {
+		$internalOptions = $this->getRawInternalOptions();
+		$results         = ! empty( $internalOptions['internal']['siteAnalysis']['results'] ) ? $internalOptions['internal']['siteAnalysis']['results'] : [];
+		if ( empty( $results ) ) {
+			return;
+		}
+
+		$parsedData = [
+			'results' => is_string( $results ) ? json_decode( $results, true ) : $results,
+			'score'   => $internalOptions['internal']['siteAnalysis']['score'],
+		];
+
+		Models\SeoAnalyzerResult::addResults( $parsedData );
+
+		aioseo()->core->cache->delete( 'analyze_site_code' );
+		aioseo()->core->cache->delete( 'analyze_site_body' );
+	}
+
+	/**
+	 * Migrate the SeoAnalyzer competitors results from the Internal Optinos to the new table.
+	 *
+	 * @since 4.8.3
+	 *
+	 * @return void
+	 */
+	private function migrateSeoAnalyzerCompetitors() {
+		$internalOptions = $this->getRawInternalOptions();
+		$competitors     = ! empty( $internalOptions['internal']['siteAnalysis']['competitors'] ) ? $internalOptions['internal']['siteAnalysis']['competitors'] : [];
+		if ( empty( $competitors ) ) {
+			return;
+		}
+
+		foreach ( $competitors as $url => $competitor ) {
+			$parsedData = is_string( $competitor ) ? json_decode( $competitor, true ) : $competitor;
+			$results    = empty( $parsedData['results'] ) ? [] : $parsedData['results'];
+			if ( empty( $results ) ) {
+				continue;
+			}
+
+			Models\SeoAnalyzerResult::addResults( [
+				'results' => $results,
+				'score'   => $parsedData['score'],
+			], $url );
+		}
+
+		aioseo()->core->cache->delete( 'analyze_site_code' );
+		aioseo()->core->cache->delete( 'analyze_site_body' );
+	}
+
+	/**
+	* Adds the AI column to our posts table.
+	*
+	* @since 4.8.4
+	*
+	* @return void
+	*/
+	public function addAiColumn() {
+		if ( ! aioseo()->core->db->columnExists( 'aioseo_posts', 'ai' ) ) {
+			$tableName = aioseo()->core->db->db->prefix . 'aioseo_posts';
+			if ( aioseo()->core->db->columnExists( 'aioseo_posts', 'open_ai' ) ) {
+				aioseo()->core->db->execute(
+					"ALTER TABLE {$tableName}
+					ADD ai longtext DEFAULT NULL AFTER open_ai"
+				);
+			} else {
+				aioseo()->core->db->execute(
+					"ALTER TABLE {$tableName}
+					ADD ai longtext DEFAULT NULL AFTER options"
+				);
+			}
+		}
+	}
+
+	/**
+	 * Returns the raw options from the database.
+	 *
+	 * @since 4.8.3
+	 *
+	 * @return array
+	 */
+	private function getRawInternalOptions() {
+		// Options from the DB.
+		$internalOptions = json_decode( get_option( aioseo()->internalOptions->optionsName ), true );
+		if ( empty( $internalOptions ) ) {
+			$internalOptions = [];
+		}
+
+		return $internalOptions;
+	}
+
+	/**
+	 * Adds the column index for the cornerstone content table.
+	 *
+	 * @since 4.8.7
+	 *
+	 * @return void
+	 */
+	private function addColumnIndexForCornerstoneContent() {
+		if (
+			! aioseo()->core->db->columnExists( 'aioseo_posts', 'pillar_content' ) ||
+			aioseo()->core->db->indexExists( 'aioseo_posts', 'ndx_aioseo_posts_pillar_content' )
+		) {
+			return;
+		}
+
+		$tableName = aioseo()->core->db->db->prefix . 'aioseo_posts';
+		aioseo()->core->db->execute(
+			"ALTER TABLE {$tableName}
+			ADD INDEX ndx_aioseo_posts_pillar_content (pillar_content)"
+		);
+	}
+
+	/**
+	 * Adds tables for AI Insights Keyword Reports.
+	 *
+	 * @since 4.9.1
+	 *
+	 * @return void
+	 */
+	private function addAiInsightsKeywordReportsTable() {
+		$db             = aioseo()->core->db->db;
+		$charsetCollate = '';
+
+		if ( ! empty( $db->charset ) ) {
+			$charsetCollate .= "DEFAULT CHARACTER SET {$db->charset}";
+		}
+		if ( ! empty( $db->collate ) ) {
+			$charsetCollate .= " COLLATE {$db->collate}";
+		}
+
+		// Check for keyword tracker reports table.
+		if ( ! aioseo()->core->db->tableExists( 'aioseo_ai_insights_keyword_reports' ) ) {
+			$tableName = $db->prefix . 'aioseo_ai_insights_keyword_reports';
+
+			aioseo()->core->db->execute(
+				"CREATE TABLE {$tableName} (
+					`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+					`uuid` varchar(40) NOT NULL,
+					`keyword` varchar(255) NOT NULL,
+					`status` varchar(20) NOT NULL DEFAULT 'pending',
+					`brands` longtext DEFAULT NULL,
+					`brands_mentioned` int(11) DEFAULT 0,
+					`results` longtext DEFAULT NULL,
+					`created` datetime NOT NULL,
+					`updated` datetime NOT NULL,
+					PRIMARY KEY (id),
+					KEY ndx_aioseo_ai_insights_keyword_reports_uuid (uuid),
+					KEY ndx_aioseo_ai_insights_keyword_reports_keyword (keyword),
+					KEY ndx_aioseo_ai_insights_keyword_reports_status (status)
+				) {$charsetCollate};"
+			);
+		}
+
+		// Reset the cache for the installed tables.
+		aioseo()->core->cache->delete( 'db_schema' );
 	}
 }

@@ -3,11 +3,11 @@
 namespace FluentForm\App\Modules\Form;
 
 use FluentForm\Framework\Helpers\ArrayHelper;
-use WpFluent\Exception;
 
 class FormDataParser
 {
     protected static $data = null;
+    protected static $submissionId = null;
 
     public static function parseFormEntries($entries, $form, $fields = null)
     {
@@ -36,13 +36,17 @@ class FormDataParser
 
     public static function parseFormSubmission($submission, $form, $fields, $isHtml = false)
     {
-        if (is_null(static::$data)) {
+        // Sometimes submission will change inside loop. So we need to parse submission data for new one
+        $newSubmission = $submission->id != static::$submissionId;
+
+        if (is_null(static::$data) || $newSubmission) {
             static::$data = static::parseData(
                 json_decode($submission->response),
                 $fields,
                 $form->id,
                 $isHtml
             );
+            static::$submissionId = $submission->id;
         }
 
         $submission->user_inputs = static::$data;
@@ -53,12 +57,26 @@ class FormDataParser
     public static function parseData($response, $fields, $formId, $isHtml = false)
     {
         $trans = [];
-
         foreach ($fields as $field_key => $field) {
             if (isset($response->{$field_key})) {
-                $value = apply_filters(
+                $value = $response->{$field_key};
+                
+                $value = apply_filters_deprecated(
                     'fluentform_response_render_' . $field['element'],
-                    $response->{$field_key},
+                    [
+                        $value,
+                        $field,
+                        $formId,
+                        $isHtml
+                    ],
+                    FLUENTFORM_FRAMEWORK_UPGRADE,
+                    'fluentform/response_render_' . $field['element'],
+                    'Use fluentform/response_render_' . $field['element'] . ' instead of fluentform_response_render_' . $field['element']
+                );
+
+                $value = apply_filters(
+                    'fluentform/response_render_' . $field['element'],
+                    $value,
                     $field,
                     $formId,
                     $isHtml
@@ -119,6 +137,9 @@ class FormDataParser
         if (is_string($values)) {
             return $values;
         }
+    
+        $isHtml = apply_filters('fluentform/render_field_as_html', $isHtml, $values, $form_id);
+
 
         if (!$isHtml) {
             return fluentImplodeRecursive(', ', array_filter(array_values((array) $values)));
@@ -170,7 +191,7 @@ class FormDataParser
                         <thead>
                             <tr>
                                 <?php foreach ($repeatColumns as $repeatColumn) : ?>
-                                <th><?php echo fluentform_sanitize_html(ArrayHelper::get($repeatColumn, 'settings.label')); ?>
+                                <th><?php echo fluentform_sanitize_html(ArrayHelper::get($repeatColumn, 'settings.label')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- fluentform_sanitize_html() removes XSS vectors and uses wp_kses() with allowed tags ?>
                                 </th>
                                 <?php endforeach; ?>
                             </tr>
@@ -181,7 +202,7 @@ class FormDataParser
                             <tr>
                                 <?php for ($j = 0; $j < $columns; $j++) : ?>
                                 <td>
-                                    <?php echo fluentform_sanitize_html($value[$j][$i]); ?>
+                                    <?php echo fluentform_sanitize_html($value[$j][$i]); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- fluentform_sanitize_html() removes XSS vectors and uses wp_kses() with allowed tags ?>
                                 </td>
                                 <?php endfor; ?>
                             </tr>
@@ -192,7 +213,7 @@ class FormDataParser
                 <?php
             }
             return ob_get_clean();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
 
         return $value;
@@ -247,7 +268,7 @@ class FormDataParser
             $elMarkup .= '</tbody></table>';
 
             return $elMarkup;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
         return '';
     }
@@ -259,6 +280,7 @@ class FormDataParser
         $columns = $data['settings']['grid_columns'];
 
         foreach ($rows as $rowKey => $rowValue) {
+            $rowKey = trim(sanitize_text_field($rowKey));
             $table[$rowKey] = [
                 'name'    => $rowKey,
                 'label'   => $rowValue,
@@ -267,12 +289,11 @@ class FormDataParser
 
             foreach ($columns as $columnKey => $columnValue) {
                 $table[$rowKey]['columns'][] = [
-                    'name'  => $columnKey,
+                    'name'  => trim(sanitize_text_field($columnKey)),
                     'label' => $columnValue,
                 ];
             }
         }
-
         return $table;
     }
 
@@ -286,7 +307,14 @@ class FormDataParser
     public static function formatName($value)
     {
         if (is_array($value) || is_object($value)) {
-            return fluentImplodeRecursive(' ', array_filter(array_values((array) $value)));
+            $value = (array) $value;
+            $order = ['first_name', 'middle_name', 'last_name'];
+            uksort($value, function($a, $b) use ($order) {
+                $posA = array_search($a, $order);
+                $posB = array_search($b, $order);
+                return $posA - $posB;
+            });
+            return fluentImplodeRecursive(' ', array_filter(array_values($value)));
         }
 
         return $value;
@@ -295,11 +323,27 @@ class FormDataParser
     public static function formatCheckBoxValues($values, $field, $isHtml = false)
     {
         if (!$isHtml) {
+            if (
+                defined('FLUENTFORM_RENDERING_ENTRIES') &&
+                $values && is_array($values) &&
+                $options = ArrayHelper::get($field, 'raw.settings.advanced_options', [])
+            ) {
+                $options = array_column($options, 'label', 'value');
+                foreach ($values as &$value) {
+                    if ($label = ArrayHelper::get($options, $value)) {
+                        $value = $label;
+                    }
+                }
+            }
             return self::formatValue($values);
         }
 
-        if (!is_array($values) || empty($values)) {
+        if (!is_array($values)) {
             return $values;
+        }
+
+        if (empty($values)) {
+            return '';
         }
 
         if (!isset($field['options'])) {

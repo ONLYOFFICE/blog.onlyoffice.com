@@ -14,9 +14,9 @@ use WPMailSMTP\Vendor\Psr\Http\Message\StreamInterface;
  * the read() function of the PumpStream. The provided callable MUST return
  * false when there is no more data to read.
  */
-final class PumpStream implements \WPMailSMTP\Vendor\Psr\Http\Message\StreamInterface
+final class PumpStream implements StreamInterface
 {
-    /** @var callable|null */
+    /** @var callable(int): (string|false|null)|null */
     private $source;
     /** @var int|null */
     private $size;
@@ -27,7 +27,7 @@ final class PumpStream implements \WPMailSMTP\Vendor\Psr\Http\Message\StreamInte
     /** @var BufferStream */
     private $buffer;
     /**
-     * @param callable(int): (string|null|false)  $source  Source of the stream data. The callable MAY
+     * @param callable(int): (string|false|null)  $source  Source of the stream data. The callable MAY
      *                                                     accept an integer argument used to control the
      *                                                     amount of data to return. The callable MUST
      *                                                     return a string when called, or false|null on error
@@ -41,12 +41,12 @@ final class PumpStream implements \WPMailSMTP\Vendor\Psr\Http\Message\StreamInte
         $this->source = $source;
         $this->size = $options['size'] ?? null;
         $this->metadata = $options['metadata'] ?? [];
-        $this->buffer = new \WPMailSMTP\Vendor\GuzzleHttp\Psr7\BufferStream();
+        $this->buffer = new BufferStream();
     }
     public function __toString() : string
     {
         try {
-            return \WPMailSMTP\Vendor\GuzzleHttp\Psr7\Utils::copyToString($this);
+            return Utils::copyToString($this);
         } catch (\Throwable $e) {
             if (\PHP_VERSION_ID >= 70400) {
                 throw $e;
@@ -123,8 +123,6 @@ final class PumpStream implements \WPMailSMTP\Vendor\Psr\Http\Message\StreamInte
         return $result;
     }
     /**
-     * {@inheritdoc}
-     *
      * @return mixed
      */
     public function getMetadata($key = null)
@@ -136,9 +134,9 @@ final class PumpStream implements \WPMailSMTP\Vendor\Psr\Http\Message\StreamInte
     }
     private function pump(int $length) : void
     {
-        if ($this->source) {
+        if ($this->source !== null) {
             do {
-                $data = \call_user_func($this->source, $length);
+                $data = ($this->source)($length);
                 if ($data === \false || $data === null) {
                     $this->source = null;
                     return;

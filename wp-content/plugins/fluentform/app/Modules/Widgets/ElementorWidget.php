@@ -2,7 +2,8 @@
 
 namespace FluentForm\App\Modules\Widgets;
 
-use Elementor\Plugin as Elementor;
+defined('ABSPATH') or die;
+
 use FluentForm\App\Modules\Widgets\FluentFormWidget;
 
 class ElementorWidget
@@ -15,11 +16,9 @@ class ElementorWidget
         add_action('elementor/widgets/register', [$this, 'init_widgets']);
     }
 
-    public function init_widgets()
+    public function init_widgets($widgets_manager)
     {
         $this->enqueueAssets();
-
-        $widgets_manager = Elementor::instance()->widgets_manager;
 
         if (file_exists(FLUENTFORM_DIR_PATH . 'app/Modules/Widgets/FluentFormWidget.php')) {
             require_once FLUENTFORM_DIR_PATH . 'app/Modules/Widgets/FluentFormWidget.php';
@@ -29,6 +28,11 @@ class ElementorWidget
 
     public function enqueueAssets()
     {
-        wp_enqueue_style('fluentform-elementor-widget', $this->app->publicUrl('css/fluent-forms-elementor-widget.css'), [], FLUENTFORM_VERSION);
+        wp_enqueue_style('fluentform-elementor-widget', fluentformMix('css/fluent-forms-elementor-widget.css'), [], FLUENTFORM_VERSION);
+        wp_enqueue_script('fluentform-elementor', fluentformMix('js/fluent-forms-elementor-widget.js'), [], FLUENTFORM_VERSION, true);
+
+        wp_localize_script('fluentform-elementor', 'fluentformElementor', [
+            'adminUrl' => admin_url('admin.php'),
+        ]);
     }
 }

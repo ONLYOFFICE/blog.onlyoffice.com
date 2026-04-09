@@ -42,17 +42,17 @@ class HandlerStack
      */
     public static function create(?callable $handler = null) : self
     {
-        $stack = new self($handler ?: \WPMailSMTP\Vendor\GuzzleHttp\Utils::chooseHandler());
-        $stack->push(\WPMailSMTP\Vendor\GuzzleHttp\Middleware::httpErrors(), 'http_errors');
-        $stack->push(\WPMailSMTP\Vendor\GuzzleHttp\Middleware::redirect(), 'allow_redirects');
-        $stack->push(\WPMailSMTP\Vendor\GuzzleHttp\Middleware::cookies(), 'cookies');
-        $stack->push(\WPMailSMTP\Vendor\GuzzleHttp\Middleware::prepareBody(), 'prepare_body');
+        $stack = new self($handler ?: Utils::chooseHandler());
+        $stack->push(Middleware::httpErrors(), 'http_errors');
+        $stack->push(Middleware::redirect(), 'allow_redirects');
+        $stack->push(Middleware::cookies(), 'cookies');
+        $stack->push(Middleware::prepareBody(), 'prepare_body');
         return $stack;
     }
     /**
      * @param (callable(RequestInterface, array): PromiseInterface)|null $handler Underlying HTTP handler.
      */
-    public function __construct(callable $handler = null)
+    public function __construct(?callable $handler = null)
     {
         $this->handler = $handler;
     }
@@ -61,7 +61,7 @@ class HandlerStack
      *
      * @return ResponseInterface|PromiseInterface
      */
-    public function __invoke(\WPMailSMTP\Vendor\Psr\Http\Message\RequestInterface $request, array $options)
+    public function __invoke(RequestInterface $request, array $options)
     {
         $handler = $this->resolve();
         return $handler($request, $options);
@@ -76,13 +76,13 @@ class HandlerStack
         $depth = 0;
         $stack = [];
         if ($this->handler !== null) {
-            $stack[] = "0) Handler: " . $this->debugCallable($this->handler);
+            $stack[] = '0) Handler: ' . $this->debugCallable($this->handler);
         }
         $result = '';
         foreach (\array_reverse($this->stack) as $tuple) {
-            $depth++;
+            ++$depth;
             $str = "{$depth}) Name: '{$tuple[1]}', ";
-            $str .= "Function: " . $this->debugCallable($tuple[0]);
+            $str .= 'Function: ' . $this->debugCallable($tuple[0]);
             $result = "> {$str}\n{$result}";
             $stack[] = $str;
         }

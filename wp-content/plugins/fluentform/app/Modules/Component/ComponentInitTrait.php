@@ -2,6 +2,8 @@
 
 namespace FluentForm\App\Modules\Component;
 
+defined('ABSPATH') or die;
+
 trait ComponentInitTrait
 {
     /**
@@ -14,28 +16,28 @@ trait ComponentInitTrait
         $this->_fluentFormValidateComponent();
 
         // Hook to add component in the editor's components array
-        add_filter('fluent_editor_components', [$this, '_fluentEditorComponenstCallback']);
+        add_filter('fluentform/editor_components', [$this, '_fluentEditorComponenstCallback']);
 
         // Hook to add search keywords for the component
-        add_filter('fluent_editor_element_search_tags', [$this, '_fluentEditorElementSearchTagsCallback']);
+        add_filter('fluentform/editor_element_search_tags', [$this, '_fluentEditorElementSearchTagsCallback']);
 
         // Hook for component's editor items/options placement settings
-        add_filter('fluent_editor_element_settings_placement', [$this, '_fluentEditorElementSettingsPlacementCallback']);
+        add_filter('fluentform/editor_element_settings_placement', [$this, '_fluentEditorElementSettingsPlacementCallback']);
 
         // Hook for component's customization settings
-        add_filter('fluent_editor_element_customization_settings', [$this, '_fluentEditorElementCustomizationSettingsCallback']);
+        add_filter('fluentform/editor_element_customization_settings', [$this, '_fluentEditorElementCustomizationSettingsCallback']);
 
         // Hook for response data preperation on form submission
-        add_filter('fluentform_insert_response_data', [$this, '_fluentformInsertResponseDataCallback'], 10, 3);
+        add_filter('fluentform/insert_response_data', [$this, '_fluentformInsertResponseDataCallback'], 10, 3);
 
         // Hook to add component type in fluentform field types to be available in FormFieldParser.
-        add_filter('fluentform_form_input_types', [$this, '_fluentformFormInputTypesCallback']);
+        add_filter('fluentform/form_input_types', [$this, '_fluentformFormInputTypesCallback']);
 
         // Component render/compile hook (for form)
-        add_action('fluentform_render_item_' . $this->element(), [$this, '_elementRenderHookCallback'], 10, 2);
+        add_action('fluentform/render_item_' . $this->element(), [$this, '_elementRenderHookCallback'], 10, 2);
 
         // Component's used element response transformation hook (for entries)
-        add_filter('fluentform_response_render_' . $this->element(), [$this, '_elementEntryFormatCallback'], 10, 3);
+        add_filter('fluentform/response_render_' . $this->element(), [$this, '_elementEntryFormatCallback'], 10, 3);
     }
 
     /**
@@ -58,19 +60,19 @@ trait ComponentInitTrait
         $element = $this->element();
         if (! $element || ! is_string($element)) {
             $elements = 'text_input, text_email, textarea';
-            wp_die("The element must be one of the available elements, i.e: $elements e.t.c.");
+            wp_die(esc_html("The element must be one of the available elements, i.e: $elements e.t.c."));
         }
 
         $template = $this->template();
         if (! $template || ! is_string($template)) {
             $templates = 'inputText, selectCountry. addressFields';
-            wp_die("The template must be one of the available templates, i.e: $templates e.t.c.");
+            wp_die(esc_html("The template must be one of the available templates, i.e: $templates e.t.c."));
         }
 
         $group = $this->group();
         $groups = ['general', 'advanced', 'container'];
         if (! $group || ! in_array($group, $groups)) {
-            wp_die('Invalid group, available groups: ' . implode(', ', $groups) . '.');
+            wp_die(esc_html('Invalid group, available groups: ' . implode(', ', $groups) . '.'));
         }
     }
 

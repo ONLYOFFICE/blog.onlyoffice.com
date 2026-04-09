@@ -13,28 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 trait Request {
 	/**
-	 * Get the current URL.
-	 *
-	 * @since 4.2.1
-	 *
-	 * @return string The current URL.
-	 */
-	public function getCurrentUrl() {
-		return untrailingslashit( $this->getServer() ) . $this->getRequestUrl();
-	}
-
-	/**
-	 * Get the server.
-	 *
-	 * @since 4.2.1
-	 *
-	 * @return string The server.
-	 */
-	private function getServer() {
-		return $this->getProtocol() . '://' . $this->getServerName();
-	}
-
-	/**
 	 * Get the server port.
 	 *
 	 * @since 4.2.1
@@ -75,7 +53,7 @@ trait Request {
 		$host = $this->getRequestServerName();
 
 		if ( isset( $_SERVER['SERVER_NAME'] ) ) {
-			$host = wp_unslash( $_SERVER['SERVER_NAME'] ); // phpcs:ignore HM.Security.ValidatedSanitizedInput.InputNotSanitized
+			$host = sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ); // phpcs:ignore HM.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 
 		return $host;
@@ -92,7 +70,7 @@ trait Request {
 		$host = '';
 
 		if ( isset( $_SERVER['HTTP_HOST'] ) ) {
-			$host = $_SERVER['HTTP_HOST'];
+			$host = sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) );
 		}
 
 		return $host;
@@ -105,13 +83,35 @@ trait Request {
 	 *
 	 * @return string The request URL.
 	 */
-	private function getRequestUrl() {
+	public function getRequestUrl() {
 		$url = '';
 
 		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
-			$url = $_SERVER['REQUEST_URI'];
+			$url = sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) );
 		}
 
-		return rawurldecode( stripslashes( $url ) );
+		// Use the existing decodeUrl helper for proper non-Latin character handling
+		return aioseo()->helpers->decodeUrl( $url );
+	}
+
+	/**
+	 * Gets the LLMs URL if accessible.
+	 *
+	 * @since 4.8.8
+	 *
+	 * @param  bool   $full Whether to get the full version URL.
+	 * @return array        The LLMs URL if accessible, null otherwise.
+	 */
+	public function getLlmsUrl( $full = false ) {
+		$file = aioseo()->llms->getFilePath( $full );
+
+		// Use `dirname` of `WP_CONTENT_URL` to match `dirname` of `WP_CONTENT_DIR` used for file path.
+		// This ensures compatibility with non-standard setups like Bedrock where `site_url()` differs from the document root.
+		$baseUrl = trailingslashit( dirname( content_url() ) );
+
+		return [
+			'url'          => $baseUrl . basename( $file ),
+			'isAccessible' => aioseo()->core->fs->exists( $file )
+		];
 	}
 }

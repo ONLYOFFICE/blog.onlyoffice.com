@@ -2,6 +2,8 @@
 
 namespace FluentForm\App\Modules\Widgets;
 
+use FluentForm\App\Models\Form;
+
 class SidebarWidgets extends \WP_Widget
 {
     public function __construct()
@@ -21,18 +23,22 @@ class SidebarWidgets extends \WP_Widget
             return;
         }
 
-        echo $args['before_widget']; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $args['before_widget'] is provided by WordPress core
+        echo $args['before_widget'];
 
         if (!empty($instance['title'])) {
-            echo $args['before_title'] . apply_filters('widget_title', $instance['title']) . $args['after_title']; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $args['before_title'], $args['after_title'] are provided by WordPress core, widget_title filter is expected to return safe HTML
+            echo $args['before_title'] . apply_filters('widget_title', $instance['title']) . $args['after_title'];
         }
 
         if ('' != $selectedForm) {
             $shortcode = "[fluentform id='$selectedForm']";
-            echo do_shortcode($shortcode); // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- do_shortcode() output is safe
+            echo do_shortcode($shortcode);
         }
 
-        echo $args['after_widget']; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $args['after_widget'] is provided by WordPress core
+        echo $args['after_widget'];
     }
 
     public function form($instance)
@@ -42,21 +48,20 @@ class SidebarWidgets extends \WP_Widget
         if (isset($instance['title'])) {
             $title = $instance['title'];
         } else {
-            $title = __('', 'fluentform');
+            $title = '';
         }
         // Widget admin form
         ?>
         <p>
             <label
-                for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php _e('Title (optional):', 'fluentform'); ?></label>
+                for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php esc_html_e('Title (optional):', 'fluentform'); ?></label>
             <input class="widefat"
                 id="<?php echo esc_attr($this->get_field_id('title')); ?>"
                 name="<?php echo esc_attr($this->get_field_name('title')); ?>"
                 type="text" value="<?php echo esc_attr($title); ?>" />
         </p>
         <?php
-        $forms = wpFluent()->table('fluentform_forms')
-            ->select(['id', 'title'])
+        $forms = Form::select(['id', 'title'])
             ->orderBy('id', 'DESC')
             ->get();
         ?>
@@ -87,7 +92,7 @@ class SidebarWidgets extends \WP_Widget
     public function update($new_instance, $old_instance)
     {
         $instance = [];
-        $instance['title'] = (!empty($new_instance['title'])) ? strip_tags($new_instance['title']) : '';
+        $instance['title'] = (!empty($new_instance['title'])) ? wp_strip_all_tags($new_instance['title']) : '';
         $instance['allforms'] = intval($new_instance['allforms']);
         return $instance;
     }

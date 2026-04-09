@@ -2,9 +2,9 @@
 Contributors: scossar, cdck, angusmcleod, samsaffron, techapj
 Tags: discourse, forum, comments, sso
 Requires at least: 5.1
-Tested up to: 6.1
+Tested up to: 6.9.0
 Requires PHP: 5.6
-Stable tag: 2.4.9
+Stable tag: 2.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -122,6 +122,69 @@ To create a coherent top menu, see our tutorial on how to make a [Custom nav hea
 8. Configuring the plugin: the DiscourseConnect Client settings tab.
 
 == Changelog ==
+
+#### 2.6.1 29/01/2026
+
+- Support for Wordpress 6.9.0
+- Respect wp_send_new_user_notification_to_user filter
+
+#### 2.6.0 20/10/2025
+
+- Remove legacy 'Match Posts by Title' setting.
+- Only load Ajax posts if we have a post id.
+
+#### 2.5.9 10/06/2025
+
+- Updated publish post meta fields storage approach.
+- Wordpress 6.8.1 support.
+
+#### 2.5.8 23/05/2025
+
+- Sidebar and comment block JS upgrades.
+- Add wpdc_publish_featured_link filter.
+
+#### 2.5.7 28/03/2025
+
+- Sidebar and comment block JS upgrades.
+- Handle various deprecations.
+- Don't auto-publish when existing non-published posts are edited.
+
+#### 2.5.6 11/12/2024
+
+- Security updates.
+- Fix incorrect auto-publish of quick edits.
+
+#### 2.5.5 10/10/2024
+
+- Security updates.
+- Add wpdc_join_discussion_link_html filter.
+
+#### 2.5.4 28/06/2024
+
+- Various improvements to webhooks, including email matching for Update Userdata webhook.
+- PHP 8.1 deprecations.
+- Don't require existing wp comments to show wp comments with setting.
+
+#### 2.5.3 01/05/2024
+
+- Improve HTML entites decoding in titles.
+
+#### 2.5.2 08/04/2024
+
+- Add a 'Disable user creation' setting for the DiscourseConnect Client.
+- Various package updates, deprecations and minor fixes.
+- Convert HTML entites in titles before sending to Discourse.
+
+#### 2.5.1 25/01/2024
+
+- Fix DiscourseConnect user registration email verification link
+- Fix publish max tags setting
+- Add publish_to_discourse utility function
+
+#### 2.5.0 12/11/2023
+
+- Post publishing code improvements
+- PHPUnit updated to PHPUnit 9
 
 #### 2.4.9 02/16/2023
 

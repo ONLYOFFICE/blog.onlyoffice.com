@@ -53,7 +53,7 @@ class SetupWizard {
 		}
 
 		// Only do this for single site installs.
-		if ( isset( $_GET['activate-multi'] ) || is_network_admin() ) {
+		if ( isset( $_GET['activate-multi'] ) || is_network_admin() ) { // phpcs:ignore HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 
@@ -100,8 +100,10 @@ class SetupWizard {
 		// Allow plugins to disable the setup wizard
 		// Check if current user is allowed to save settings.
 		if (
+			// phpcs:disable HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
 			! isset( $_GET['page'] ) ||
-			'aioseo-setup-wizard' !== wp_unslash( $_GET['page'] ) || // phpcs:ignore HM.Security.ValidatedSanitizedInput.InputNotSanitized
+			'aioseo-setup-wizard' !== sanitize_text_field( wp_unslash( $_GET['page'] ) ) ||
+			// phpcs:enable
 			! current_user_can( aioseo()->admin->getPageRequiredCapability( 'aioseo-setup-wizard' ) )
 		) {
 			return;
@@ -143,6 +145,7 @@ class SetupWizard {
 	public function enqueueScripts() {
 		// We don't want any plugin adding notices to our screens. Let's clear them out here.
 		remove_all_actions( 'admin_notices' );
+		remove_all_actions( 'network_admin_notices' );
 		remove_all_actions( 'all_admin_notices' );
 
 		aioseo()->core->assets->load( 'src/vue/standalone/setup-wizard/main.js', [], aioseo()->helpers->getVueData( 'setup-wizard' ) );
@@ -173,9 +176,6 @@ class SetupWizard {
 				echo sprintf( esc_html__( '%1$s &rsaquo; Onboarding Wizard', 'all-in-one-seo-pack' ), esc_html( AIOSEO_PLUGIN_SHORT_NAME ) );
 			?>
 			</title>
-			<?php do_action( 'admin_print_scripts' ); ?>
-			<?php do_action( 'admin_print_styles' ); ?>
-			<?php do_action( 'admin_head' ); ?>
 		</head>
 		<body class="aioseo-setup-wizard">
 		<?php
@@ -207,8 +207,8 @@ class SetupWizard {
 		wp_print_scripts( 'aioseo-vendors' );
 		wp_print_scripts( 'aioseo-common' );
 		wp_print_scripts( 'aioseo-setup-wizard-script' );
-		do_action( 'admin_footer', '' );
-		do_action( 'admin_print_footer_scripts' );
+		do_action( 'admin_footer', '' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		do_action( 'admin_print_footer_scripts' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		// do_action( 'customize_controls_print_footer_scripts' );
 		?>
 		</body>
@@ -239,5 +239,31 @@ class SetupWizard {
 		}
 
 		return $currentStageCount + 1 === $totalStageCount;
+	}
+
+	/**
+	 * Get the next stage of the wizard.
+	 *
+	 * @since 4.6.2
+	 *
+	 * @return string The next stage or empty.
+	 */
+	public function getNextStage() {
+		$wizard    = (string) aioseo()->internalOptions->internal->wizard;
+		$wizard    = json_decode( $wizard );
+		if ( ! $wizard ) {
+			return '';
+		}
+
+		// Default to success.
+		$nextStage = 'success';
+
+		// Get the next stage of the wizard.
+		$currentStageIndex = array_search( $wizard->currentStage, $wizard->stages, true );
+		if ( ! empty( $wizard->stages[ $currentStageIndex + 1 ] ) ) {
+			$nextStage = $wizard->stages[ $currentStageIndex + 1 ];
+		}
+
+		return $nextStage;
 	}
 }

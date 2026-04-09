@@ -55,7 +55,7 @@ use WPMailSMTP\Vendor\Google\Auth\SignBlobInterface;
  * $res = $client->get('volumes?q=Henry+David+Thoreau&country=US');
  * ```
  */
-class AppIdentityCredentials extends \WPMailSMTP\Vendor\Google\Auth\CredentialsLoader implements \WPMailSMTP\Vendor\Google\Auth\SignBlobInterface, \WPMailSMTP\Vendor\Google\Auth\ProjectIdProviderInterface
+class AppIdentityCredentials extends CredentialsLoader implements SignBlobInterface, ProjectIdProviderInterface
 {
     /**
      * Result of fetchAuthToken.
@@ -114,7 +114,7 @@ class AppIdentityCredentials extends \WPMailSMTP\Vendor\Google\Auth\CredentialsL
      *     @type string $expiration_time
      * }
      */
-    public function fetchAuthToken(callable $httpHandler = null)
+    public function fetchAuthToken(?callable $httpHandler = null)
     {
         try {
             $this->checkAppEngineContext();
@@ -122,7 +122,7 @@ class AppIdentityCredentials extends \WPMailSMTP\Vendor\Google\Auth\CredentialsL
             return [];
         }
         /** @phpstan-ignore-next-line */
-        $token = \WPMailSMTP\Vendor\google\appengine\api\app_identity\AppIdentityService::getAccessToken($this->scope);
+        $token = AppIdentityService::getAccessToken($this->scope);
         $this->lastReceivedToken = $token;
         return $token;
     }
@@ -139,7 +139,7 @@ class AppIdentityCredentials extends \WPMailSMTP\Vendor\Google\Auth\CredentialsL
     {
         $this->checkAppEngineContext();
         /** @phpstan-ignore-next-line */
-        return \base64_encode(\WPMailSMTP\Vendor\google\appengine\api\app_identity\AppIdentityService::signForApp($stringToSign)['signature']);
+        return \base64_encode(AppIdentityService::signForApp($stringToSign)['signature']);
     }
     /**
      * Get the project ID from AppIdentityService.
@@ -149,7 +149,7 @@ class AppIdentityCredentials extends \WPMailSMTP\Vendor\Google\Auth\CredentialsL
      * @param callable $httpHandler Not used by this type.
      * @return string|null
      */
-    public function getProjectId(callable $httpHandler = null)
+    public function getProjectId(?callable $httpHandler = null)
     {
         try {
             $this->checkAppEngineContext();
@@ -157,7 +157,7 @@ class AppIdentityCredentials extends \WPMailSMTP\Vendor\Google\Auth\CredentialsL
             return null;
         }
         /** @phpstan-ignore-next-line */
-        return \WPMailSMTP\Vendor\google\appengine\api\app_identity\AppIdentityService::getApplicationId();
+        return AppIdentityService::getApplicationId();
     }
     /**
      * Get the client name from AppIdentityService.
@@ -168,12 +168,12 @@ class AppIdentityCredentials extends \WPMailSMTP\Vendor\Google\Auth\CredentialsL
      * @return string
      * @throws \Exception If AppEngine SDK or mock is not available.
      */
-    public function getClientName(callable $httpHandler = null)
+    public function getClientName(?callable $httpHandler = null)
     {
         $this->checkAppEngineContext();
         if (!$this->clientName) {
             /** @phpstan-ignore-next-line */
-            $this->clientName = \WPMailSMTP\Vendor\google\appengine\api\app_identity\AppIdentityService::getServiceAccountName();
+            $this->clientName = AppIdentityService::getServiceAccountName();
         }
         return $this->clientName;
     }

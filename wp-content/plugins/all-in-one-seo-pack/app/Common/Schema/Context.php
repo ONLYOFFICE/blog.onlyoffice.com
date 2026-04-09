@@ -19,7 +19,7 @@ class Context {
 	 *
 	 * @var Breadcrumb
 	 */
-	private $breadcrumb = null;
+	public $breadcrumb = null;
 
 	/**
 	 * Class constructor.
@@ -117,7 +117,7 @@ class Context {
 	 * @return array The context data.
 	 */
 	public function term() {
-		$term = get_queried_object();
+		$term = aioseo()->helpers->getTerm();
 		if ( ! $term ) {
 			return [
 				'name'        => '',
@@ -223,7 +223,7 @@ class Context {
 			'url'         => aioseo()->helpers->getUrl()
 		];
 
-		$context['breadcrumb'] = $this->breadcrumb->date( $context );
+		$context['breadcrumb'] = $this->breadcrumb->date();
 
 		return $context;
 	}

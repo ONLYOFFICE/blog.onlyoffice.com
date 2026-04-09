@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AIOSEO\Plugin\Common\Integrations\BuddyPress as BuddyPressIntegration;
+
 /**
  * Handles the (Open Graph) description.
  *
@@ -44,7 +46,15 @@ class Description {
 			return $description ? $description : aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'description' ) );
 		}
 
-		$description = $this->helpers->prepare( aioseo()->options->searchAppearance->global->metaDescription );
+		$description = aioseo()->options->searchAppearance->global->metaDescription;
+		if ( aioseo()->helpers->isWpmlActive() ) {
+			// Allow WPML to translate the title if the homepage is not static.
+			// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			$description = apply_filters( 'wpml_translate_single_string', $description, 'admin_texts_aioseo_options_localized', '[aioseo_options_localized]searchAppearance_global_metaDescription' );
+			// phpcs:enable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		}
+
+		$description = $this->helpers->prepare( $description );
 
 		return $description ? $description : aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'description' ) );
 	}
@@ -54,11 +64,15 @@ class Description {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  WP_Post $post    The post object (optional).
-	 * @param  boolean $default Whether we want the default value, not the post one.
-	 * @return string           The page description.
+	 * @param  \WP_Post $post    The post object (optional).
+	 * @param  boolean  $default Whether we want the default value, not the post one.
+	 * @return string            The page description.
 	 */
 	public function getDescription( $post = null, $default = false ) {
+		if ( BuddyPressIntegration::isComponentPage() ) {
+			return aioseo()->standalone->buddyPress->component->getMeta( 'description' );
+		}
+
 		if ( is_home() ) {
 			return $this->getHomePageDescription();
 		}
@@ -78,7 +92,7 @@ class Description {
 		}
 
 		if ( is_category() || is_tag() || is_tax() ) {
-			$term = $post ? $post : get_queried_object();
+			$term = $post ? $post : aioseo()->helpers->getTerm();
 
 			return $this->getTermDescription( $term, $default );
 		}
@@ -105,10 +119,7 @@ class Description {
 		if ( is_post_type_archive() ) {
 			$postType = get_queried_object();
 			if ( is_a( $postType, 'WP_Post_Type' ) ) {
-				$dynamicOptions = aioseo()->dynamicOptions->noConflict();
-				if ( $dynamicOptions->searchAppearance->archives->has( $postType->name ) ) {
-					return $this->helpers->prepare( aioseo()->dynamicOptions->searchAppearance->archives->{ $postType->name }->metaDescription );
-				}
+				return $this->helpers->prepare( $this->getArchiveDescription( $postType->name ) );
 			}
 		}
 
@@ -120,9 +131,9 @@ class Description {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  WP_Post|int $post    The post object or ID.
-	 * @param  boolean     $default Whether we want the default value, not the post one.
-	 * @return string               The post description.
+	 * @param  \WP_Post|int $post    The post object or ID.
+	 * @param  boolean      $default Whether we want the default value, not the post one.
+	 * @return string                The post description.
 	 */
 	public function getPostDescription( $post, $default = false ) {
 		$post = $post && is_object( $post ) ? $post : aioseo()->helpers->getPost( $post );
@@ -138,7 +149,7 @@ class Description {
 		$description = '';
 		$metaData    = aioseo()->meta->metaData->getMetaData( $post );
 		if ( ! empty( $metaData->description ) && ! $default ) {
-			$description = $this->helpers->prepare( $metaData->description, $post->ID, false, false );
+			$description = $this->helpers->prepare( $metaData->description, $post->ID, false );
 		}
 
 		if (
@@ -168,7 +179,7 @@ class Description {
 
 			$description = $this->helpers->sanitize( $description, $post->ID, $default );
 			if ( ! $description && $generateDescriptions && $post->post_content ) {
-				$description = $this->helpers->sanitize( aioseo()->helpers->getDescriptionFromContent( $post ), $post->ID, $default, false );
+				$description = $this->helpers->sanitize( aioseo()->helpers->getDescriptionFromContent( $post ), $post->ID, $default );
 			}
 		}
 
@@ -176,7 +187,7 @@ class Description {
 			if ( in_array( 'descriptionFormat', aioseo()->internalOptions->deprecatedOptions, true ) ) {
 				$descriptionFormat = aioseo()->options->deprecated->searchAppearance->global->descriptionFormat;
 				if ( $descriptionFormat ) {
-					$description = preg_replace( '/#description/', $description, $descriptionFormat );
+					$description = preg_replace( '/#description/', $description, (string) $descriptionFormat );
 				}
 			}
 		}
@@ -184,6 +195,30 @@ class Description {
 		$posts[ $post->ID ] = $description ? $this->helpers->prepare( $description, $post->ID, $default ) : $this->helpers->prepare( term_description( '' ), $post->ID, $default );
 
 		return $posts[ $post->ID ];
+	}
+
+	/**
+	 * Retrieve the default description for the archive template.
+	 *
+	 * @since 4.7.6
+	 *
+	 * @param  string $postType The custom post type.
+	 * @return string           The description.
+	 */
+	public function getArchiveDescription( $postType ) {
+		static $archiveDescription = [];
+		if ( isset( $archiveDescription[ $postType ] ) ) {
+			return $archiveDescription[ $postType ];
+		}
+
+		$archiveDescription[ $postType ] = '';
+
+		$dynamicOptions = aioseo()->dynamicOptions->noConflict();
+		if ( $dynamicOptions->searchAppearance->archives->has( $postType ) ) {
+			$archiveDescription[ $postType ] = aioseo()->dynamicOptions->searchAppearance->archives->{$postType}->metaDescription;
+		}
+
+		return $archiveDescription[ $postType ];
 	}
 
 	/**
@@ -214,9 +249,9 @@ class Description {
 	 *
 	 * @since 4.0.6
 	 *
-	 * @param  WP_Term $term    The term object.
-	 * @param  boolean $default Whether we want the default value, not the post one.
-	 * @return string           The term description.
+	 * @param  \WP_Term $term    The term object.
+	 * @param  boolean  $default Whether we want the default value, not the post one.
+	 * @return string            The term description.
 	 */
 	public function getTermDescription( $term, $default = false ) {
 		if ( ! is_a( $term, 'WP_Term' ) ) {

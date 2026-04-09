@@ -87,16 +87,29 @@ abstract class Base {
 	public function init() {}
 
 	/**
+	 * Check if the integration is active.
+	 *
+	 * @since 4.4.8
+	 *
+	 * @return bool Whether or not the integration is active.
+	 */
+	public function isActive() {
+		return $this->isPluginActive() || $this->isThemeActive();
+	}
+
+	/**
 	 * Check whether or not the plugin is active.
 	 *
 	 * @since 4.1.7
 	 *
-	 * @return boolean Whether or not the plugin is active.
+	 * @return bool Whether or not the plugin is active.
 	 */
 	public function isPluginActive() {
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-		foreach ( $this->plugins as $basename ) {
+		$plugins = apply_filters( 'aioseo_page_builder_integration_plugins', $this->plugins, $this->integrationSlug );
+
+		foreach ( $plugins as $basename ) {
 			if ( is_plugin_active( $basename ) ) {
 				return true;
 			}
@@ -110,11 +123,13 @@ abstract class Base {
 	 *
 	 * @since 4.1.7
 	 *
-	 * @return boolean Whether or not the theme is active.
+	 * @return bool Whether or not the theme is active.
 	 */
 	public function isThemeActive() {
+		$themes = apply_filters( 'aioseo_page_builder_integration_themes', $this->themes, $this->integrationSlug );
+
 		$theme = wp_get_theme();
-		foreach ( $this->themes as $name ) {
+		foreach ( $themes as $name ) {
 			if ( $name === $theme->stylesheet || $name === $theme->template ) {
 				return true;
 			}
@@ -132,9 +147,9 @@ abstract class Base {
 	 */
 	public function enqueue() {
 		$integrationSlug = $this->integrationSlug;
-		aioseo()->core->assets->load( "src/vue/standalone/$integrationSlug/main.js", [], aioseo()->helpers->getVueData( 'post', $this->getPostId(), $this->integrationSlug ) );
+		aioseo()->core->assets->load( "src/vue/standalone/page-builders/$integrationSlug/main.js", [], aioseo()->helpers->getVueData( 'post', $this->getPostId(), $integrationSlug ) );
 
-		aioseo()->core->assets->enqueueCss( 'src/vue/assets/scss/integrations/main.scss', [], 'src/vue/assets/scss/integrations/main.scss' );
+		aioseo()->core->assets->enqueueCss( 'src/vue/assets/scss/integrations/main.scss' );
 
 		aioseo()->admin->addAioseoModalPortal();
 		aioseo()->main->enqueueTranslations();
@@ -148,13 +163,13 @@ abstract class Base {
 	 * @return int|null The post ID or null.
 	 */
 	public function getPostId() {
-		if ( ! empty( $_GET['id'] ) ) {
-			return (int) $_GET['id'];
+		// phpcs:disable HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
+		foreach ( [ 'id', 'post', 'post_id' ] as $key ) {
+			if ( ! empty( $_GET[ $key ] ) ) {
+				return (int) sanitize_text_field( wp_unslash( $_GET[ $key ] ) );
+			}
 		}
-
-		if ( ! empty( $_GET['post'] ) ) {
-			return (int) $_GET['post'];
-		}
+		// phpcs:enable
 
 		if ( ! empty( $GLOBALS['post'] ) ) {
 			return (int) $GLOBALS['post']->ID;
@@ -185,5 +200,41 @@ abstract class Base {
 	 */
 	public function isBuiltWith( $postId ) { // phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		return false;
+	}
+
+	/**
+	 * Checks whether or not we should prevent the date from being modified.
+	 *
+	 * @since 4.5.2
+	 *
+	 * @param  int  $postId The Post ID.
+	 * @return bool         Whether or not we should prevent the date from being modified.
+	 */
+	public function limitModifiedDate( $postId ) { // phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		return false;
+	}
+
+	/**
+	 * Returns the processed page builder content.
+	 *
+	 * @since 4.5.2
+	 *
+	 * @param  int    $postId  The post id.
+	 * @param  mixed  $content The raw content.
+	 * @return string          The processed content.
+	 */
+	public function processContent( $postId, $content = null ) {
+		if ( empty( $content ) ) {
+			$post = get_post( $postId );
+			if ( is_a( $post, 'WP_Post' ) ) {
+				$content = $post->post_content;
+			}
+		}
+
+		if ( aioseo()->helpers->isAjaxCronRestRequest() ) {
+			return apply_filters( 'the_content', $content ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		}
+
+		return $content;
 	}
 }

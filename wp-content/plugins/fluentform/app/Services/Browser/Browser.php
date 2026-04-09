@@ -2,6 +2,8 @@
 
 namespace FluentForm\App\Services\Browser;
 
+defined('ABSPATH') or die;
+
 /**
  * File: Browser.php
  * Author: Chris Schuld (http://chrisschuld.com/)

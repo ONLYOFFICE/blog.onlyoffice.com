@@ -5,6 +5,9 @@
  * @since 4.0.0
  */
 
+// phpcs:disable Squiz.NamingConventions.ValidVariableName
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+
 // Exit if accessed directly.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
@@ -27,8 +30,8 @@ if ( class_exists( 'ActionScheduler_QueueRunner' ) ) {
 	ActionScheduler_QueueRunner::instance()->unhook_dispatch_async_request();
 }
 
-// Drop our custom tables.
-aioseo()->core->uninstallDb();
+// Drop our custom tables and data.
+aioseo()->uninstall->dropData();
 
 // Remove translation files.
 global $wp_filesystem;

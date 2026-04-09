@@ -2,7 +2,9 @@
 
 namespace FluentForm\App\Modules\Renderer\GlobalSettings;
 
+use FluentForm\App\Helpers\Helper;
 use FluentForm\App\Modules\Form\AkismetHandler;
+use FluentForm\App\Modules\Form\CleanTalkHandler;
 use FluentForm\App\Modules\Registerer\TranslationString;
 use FluentForm\Framework\Foundation\Application;
 
@@ -34,7 +36,7 @@ class Settings
     {
         $this->enqueue();
 
-        $this->app->view->render('admin.settings.settings');
+        $this->app->view->render('admin.globalSettings.settings');
     }
 
     /**
@@ -45,12 +47,19 @@ class Settings
     public function enqueue()
     {
         wp_enqueue_script('fluentform-global-settings-js');
-
-        wp_localize_script('fluentform-global-settings-js', 'FluentFormApp', [
-            'plugin' => $this->app->getSlug(),
-            'akismet_activated' => AkismetHandler::isPluginEnabled(),
-            'has_pro' =>  defined('FLUENTFORMPRO'),
-            'form_settings_str' => TranslationString::getGlobalSettingsI18n()
-        ]);
+        
+        $globalSettingAppData = [
+            'plugin'                => $this->app->config->get('app.slug'),
+            'akismet_activated'     => AkismetHandler::isPluginEnabled(),
+            'cleantalk_activated'   => CleanTalkHandler::isPluginEnabled(),
+            'has_pro'               => Helper::hasPro(),
+            'is_payment_compatible' => Helper::isPaymentCompatible(),
+            'form_settings_str'     => TranslationString::getGlobalSettingsI18n(),
+            'ace_path_url'          => fluentformMix('libs/ace'),
+        ];
+        if (Helper::isPaymentCompatible()) {
+            $globalSettingAppData = apply_filters('fluentform/global_settings_component_settings_data', $globalSettingAppData);
+        }
+        wp_localize_script('fluentform-global-settings-js', 'FluentFormApp', $globalSettingAppData);
     }
 }

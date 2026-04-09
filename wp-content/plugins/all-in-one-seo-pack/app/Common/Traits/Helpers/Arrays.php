@@ -126,6 +126,7 @@ trait Arrays {
 	 * Recursively intersects the two given arrays.
 	 * You can pass in an optional argument (allowedKey) to restrict the intersect to arrays with a specific key.
 	 * This is needed when we are e.g. sanitizing array values before setting/saving them to an option.
+	 * This helper method was mainly built to support our complex options architecture.
 	 *
 	 * @since 4.2.5
 	 *
@@ -137,7 +138,7 @@ trait Arrays {
 	 */
 	public function arrayIntersectRecursive( $array1, $array2, $allowedKey = '', $parentKey = '' ) {
 		if ( ! $allowedKey || $allowedKey === $parentKey ) {
-			$array1 = array_intersect_assoc( $array1, $array2 );
+			$array1 = $this->arrayIntersectRecursiveHelper( $array1, $array2 );
 		}
 
 		if ( empty( $array1 ) ) {
@@ -155,5 +156,133 @@ trait Arrays {
 		}
 
 		return $array1;
+	}
+
+	/**
+	 * Recursively intersects the two given arrays. Supports arrays with a mix of nested arrays and primitive values.
+	 * Helper function for arrayIntersectRecursive().
+	 *
+	 * @since 4.5.4
+	 *
+	 * @param  array $array1 The first array.
+	 * @param  array $array2 The second array.
+	 * @return array         The intersected array.
+	 */
+	private function arrayIntersectRecursiveHelper( $array1, $array2 ) {
+		if ( null === $array2 ) {
+			$array2 = [];
+		}
+
+		if ( is_array( $array1 ) ) {
+			// First, check with keys are nested arrays and which are primitive values.
+			$arrays     = [];
+			$primitives = [];
+			foreach ( $array1 as $k => $v ) {
+				if ( is_array( $v ) ) {
+					$arrays[ $k ] = $v;
+				} else {
+					$primitives[ $k ] = $v;
+				}
+			}
+
+			// Then, intersect the primitive values.
+			$intersectedPrimitives = array_intersect_assoc( $primitives, $array2 );
+
+			// Finally, recursively intersect the nested arrays.
+			$intersectedArrays = [];
+			foreach ( $arrays as $k => $v ) {
+				if ( isset( $array2[ $k ] ) ) {
+					$intersectedArrays[ $k ] = $this->arrayIntersectRecursiveHelper( $v, $array2[ $k ] );
+				} else {
+					// If the nested array doesn't exist in the second array, we can just unset it.
+					unset( $arrays[ $k ] );
+				}
+			}
+
+			// Merge the intersected arrays and primitive values.
+			return array_merge( $intersectedPrimitives, $intersectedArrays );
+		}
+
+		return array_intersect_assoc( $array1, $array2 );
+	}
+
+	/**
+	 * Sorts the keys of an array alphabetically.
+	 * The array is passed by reference, so it's not returned the same as in `ksort()`.
+	 *
+	 * @since 4.4.0.3
+	 *
+	 * @param array $array The array to sort, passed by reference.
+	 */
+	public function arrayRecursiveKsort( &$array ) {
+		foreach ( $array as &$value ) {
+			if ( is_array( $value ) ) {
+				$this->arrayRecursiveKsort( $value );
+			}
+		}
+
+		ksort( $array );
+	}
+
+	/**
+	 * Creates a multidimensional array from a list of keys and a value.
+	 *
+	 * @since 4.5.3
+	 *
+	 * @param  array $keys  The keys to create the array from.
+	 * @param  mixed $value The value to assign to the last key.
+	 * @param  array $array The array when recursing.
+	 * @return array        The multidimensional array.
+	 */
+	public function createMultidimensionalArray( $keys, $value, $array = [] ) {
+		$key = array_shift( $keys );
+		if ( empty( $array[ $key ] ) ) {
+			$array[ $key ] = null;
+		}
+
+		if ( 0 < count( $keys ) ) {
+			$array[ $key ] = $this->createMultidimensionalArray( $keys, $value, $array[ $key ] );
+		} else {
+			$array[ $key ] = $value;
+		}
+
+		return $array;
+	}
+
+	/**
+	 * Sorts an array of arrays by a specific key.
+	 *
+	 * @since 4.7.4
+	 *
+	 * @param  array  $arr   The input array.
+	 * @param  string $key   The key to sort by.
+	 * @param  string $order Designates ascending or descending order. Default 'asc'. Accepts 'asc', 'desc'.
+	 * @return void
+	 */
+	public function usortByKey( &$arr, $key, $order = 'asc' ) {
+		if ( empty( $arr ) || ! is_array( $arr ) ) {
+			return;
+		}
+
+		usort( $arr, function ( $a, $b ) use ( $key, $order ) {
+			return 'asc' === $order ? $a[ $key ] <=> $b[ $key ] : $b[ $key ] <=> $a[ $key ];
+		} );
+	}
+
+	/**
+	 * Flattens a multidimensional array.
+	 *
+	 * @since 4.7.6
+	 *
+	 * @param  array $arr The input array.
+	 * @return array      The flattened array.
+	 */
+	public function flatten( $arr ) {
+		$result = [];
+		array_walk_recursive( $arr, function ( $value ) use ( &$result ) {
+			$result[] = $value;
+		} );
+
+		return $result;
 	}
 }

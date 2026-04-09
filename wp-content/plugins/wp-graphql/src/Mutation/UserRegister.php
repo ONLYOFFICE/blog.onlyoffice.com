@@ -27,7 +27,7 @@ class UserRegister {
 	/**
 	 * Defines the mutation input field configuration.
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>
 	 */
 	public static function get_input_fields() {
 		$input_fields = array_merge(
@@ -38,11 +38,15 @@ class UserRegister {
 						'non_null' => 'String',
 					],
 					// translators: the placeholder is the name of the type of object being updated
-					'description' => __( 'A string that contains the user\'s username.', 'wp-graphql' ),
+					'description' => static function () {
+						return __( 'A string that contains the user\'s username.', 'wp-graphql' );
+					},
 				],
 				'email'    => [
 					'type'        => 'String',
-					'description' => __( 'A string containing the user\'s email address.', 'wp-graphql' ),
+					'description' => static function () {
+						return __( 'A string containing the user\'s email address.', 'wp-graphql' );
+					},
 				],
 			]
 		);
@@ -53,13 +57,12 @@ class UserRegister {
 		unset( $input_fields['role'], $input_fields['roles'] );
 
 		return $input_fields;
-
 	}
 
 	/**
 	 * Defines the mutation output field configuration.
 	 *
-	 * @return array
+	 * @return array<string,array<string,mixed>>
 	 */
 	public static function get_output_fields() {
 		return UserCreate::get_output_fields();
@@ -68,27 +71,29 @@ class UserRegister {
 	/**
 	 * Defines the mutation data modification closure.
 	 *
-	 * @return callable
+	 * @return callable(array<string,mixed>$input,\WPGraphQL\AppContext $context,\GraphQL\Type\Definition\ResolveInfo $info):array<string,mixed>
 	 */
 	public static function mutate_and_get_payload() {
-		return function ( $input, AppContext $context, ResolveInfo $info ) {
-
+		return static function ( $input, AppContext $context, ResolveInfo $info ) {
 			if ( ! get_option( 'users_can_register' ) ) {
-				throw new UserError( __( 'User registration is currently not allowed.', 'wp-graphql' ) );
+				throw new UserError( esc_html__( 'User registration is currently not allowed.', 'wp-graphql' ) );
 			}
 
 			if ( empty( $input['username'] ) ) {
-				throw new UserError( __( 'A username was not provided.', 'wp-graphql' ) );
+				throw new UserError( esc_html__( 'A username was not provided.', 'wp-graphql' ) );
 			}
 
 			if ( empty( $input['email'] ) ) {
-				throw new UserError( __( 'An email address was not provided.', 'wp-graphql' ) );
+				throw new UserError( esc_html__( 'An email address was not provided.', 'wp-graphql' ) );
 			}
 
 			/**
 			 * Map all of the args from GQL to WP friendly
 			 */
-			$user_args = UserMutation::prepare_user_object( $input, 'registerUser' );
+			// Flag this as a create operation so prepare_user_object() will generate
+			// a password if one isn't provided (required by WP 6.9+).
+			$input['is_create'] = true;
+			$user_args          = UserMutation::prepare_user_object( $input, 'registerUser' );
 
 			/**
 			 * Register the new user
@@ -103,7 +108,7 @@ class UserRegister {
 				if ( ! empty( $error_message ) ) {
 					throw new UserError( esc_html( $error_message ) );
 				} else {
-					throw new UserError( __( 'The user failed to register but no error was provided', 'wp-graphql' ) );
+					throw new UserError( esc_html__( 'The user failed to register but no error was provided', 'wp-graphql' ) );
 				}
 			}
 
@@ -111,7 +116,7 @@ class UserRegister {
 			 * If the $user_id is empty, we should throw an exception
 			 */
 			if ( empty( $user_id ) ) {
-				throw new UserError( __( 'The user failed to create', 'wp-graphql' ) );
+				throw new UserError( esc_html__( 'The user failed to create', 'wp-graphql' ) );
 			}
 
 			/**
@@ -137,7 +142,7 @@ class UserRegister {
 			/**
 			 * Prevent "Password Changed" emails from being sent.
 			 */
-			add_filter( 'send_password_change_email', [ __CLASS__, 'return_false' ] );
+			add_filter( 'send_password_change_email', [ self::class, 'return_false' ] );
 
 			/**
 			 * Update the registered user with the additional input (firstName, lastName, etc) from the mutation
@@ -147,7 +152,7 @@ class UserRegister {
 			/**
 			 * Remove filter preventing "Password Changed" emails.
 			 */
-			remove_filter( 'send_password_change_email', [ __CLASS__, 'return_false' ] );
+			remove_filter( 'send_password_change_email', [ self::class, 'return_false' ] );
 
 			/**
 			 * Update additional user data
@@ -161,14 +166,13 @@ class UserRegister {
 				'id'   => $user_id,
 				'user' => $context->get_loader( 'user' )->load_deferred( $user_id ),
 			];
-
 		};
 	}
 
 	/**
 	 * @return bool False.
 	 */
-	public static function return_false() : bool {
+	public static function return_false(): bool {
 		return false;
 	}
 }

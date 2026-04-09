@@ -1,6 +1,11 @@
 <?php
 namespace AIOSEO\Plugin\Common\Standalone;
 
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use AIOSEO\Plugin\Pro\Standalone as ProStandalone;
 
 /**
@@ -35,7 +40,11 @@ class UserProfileTab {
 			return;
 		}
 
-		$screen = get_current_screen();
+		$screen = aioseo()->helpers->getCurrentScreen();
+		if ( empty( $screen->id ) ) {
+			return;
+		}
+
 		if ( ! in_array( $screen->id, [ 'user-edit', 'profile' ], true ) ) {
 			if ( 'follow-up_page_followup-emails-reports' === $screen->id ) {
 				aioseo()->core->assets->load( 'src/vue/standalone/user-profile-tab/follow-up-emails-nav-bar.js' );
@@ -44,12 +53,16 @@ class UserProfileTab {
 			return;
 		}
 
-		global $user_id;
-		if ( ! intval( $user_id ) ) {
+		global $user_id; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+		if ( ! intval( $user_id ) ) { // phpcs:ignore Squiz.NamingConventions.ValidVariableName
 			return;
 		}
 
 		aioseo()->core->assets->load( 'src/vue/standalone/user-profile-tab/main.js', [], $this->getVueData() );
+		// Load script again so we can add extra data to localize the strings.
+		aioseo()->core->assets->load( 'src/vue/standalone/user-profile-tab/main.js', [], [
+			'translations' => aioseo()->helpers->getJedLocaleData( 'aioseo-eeat' )
+		], 'eeat' );
 	}
 
 	/**
@@ -59,29 +72,29 @@ class UserProfileTab {
 	 *
 	 * @return array
 	 */
-	private function getVueData() {
-		global $user_id;
+	public function getVueData() {
+		global $user_id; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
 
 		$socialProfiles = $this->getSocialProfiles();
 		foreach ( $socialProfiles as $platformKey => $v ) {
 			$metaName                        = 'aioseo_' . aioseo()->helpers->toSnakeCase( $platformKey );
-			$socialProfiles[ $platformKey ] = get_user_meta( $user_id, $metaName, true );
+			$socialProfiles[ $platformKey ] = get_user_meta( $user_id, $metaName, true ); // phpcs:ignore Squiz.NamingConventions.ValidVariableName
 		}
 
-		$sameUsername = get_user_meta( $user_id, 'aioseo_profiles_same_username', true );
+		$sameUsername = get_user_meta( $user_id, 'aioseo_profiles_same_username', true ); // phpcs:ignore Squiz.NamingConventions.ValidVariableName
 		if ( empty( $sameUsername ) ) {
 			$sameUsername = [
 				'enable'   => false,
 				'username' => '',
-				'included' => [ 'facebookPageUrl', 'twitterUrl', 'pinterestUrl', 'instagramUrl', 'youtubeUrl', 'linkedinUrl' ] // Same as in Options.php.
+				'included' => [ 'facebookPageUrl', 'twitterUrl', 'tiktokUrl', 'pinterestUrl', 'instagramUrl', 'youtubeUrl', 'linkedinUrl' ] // Same as in Options.php.
 			];
 		}
 
-		$additionalurls = get_user_meta( $user_id, 'aioseo_profiles_additional_urls', true );
+		$additionalurls = get_user_meta( $user_id, 'aioseo_profiles_additional_urls', true ); // phpcs:ignore Squiz.NamingConventions.ValidVariableName
 
 		$extraVueData = [
 			'userProfile' => [
-				'userData'                          => get_userdata( $user_id )->data,
+				'userData'                          => aioseo()->helpers->getUserData( $user_id )->data, // phpcs:ignore Squiz.NamingConventions.ValidVariableName
 				'profiles'                          => [
 					'sameUsername'   => $sameUsername,
 					'urls'           => $socialProfiles,
@@ -106,7 +119,7 @@ class UserProfileTab {
 	 * @return void
 	 */
 	public function updateUserSocialProfiles( $userId ) {
-		if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'update-user_' . $userId ) ) {
+		if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'update-user_' . $userId ) ) {
 			return;
 		}
 
@@ -139,7 +152,7 @@ class UserProfileTab {
 		}
 
 		$additionalUrls          = sanitize_text_field( $data['additionalUrls'] );
-		$sanitizedAdditionalUrls = preg_replace( '/\h/', "\n", $additionalUrls );
+		$sanitizedAdditionalUrls = preg_replace( '/\h/', "\n", (string) $additionalUrls );
 		update_user_meta( $userId, 'aioseo_profiles_additional_urls', $sanitizedAdditionalUrls );
 	}
 
@@ -155,6 +168,7 @@ class UserProfileTab {
 			'facebookPageUrl' => '',
 			'twitterUrl'      => '',
 			'instagramUrl'    => '',
+			'tiktokUrl'       => '',
 			'pinterestUrl'    => '',
 			'youtubeUrl'      => '',
 			'linkedinUrl'     => '',
@@ -162,7 +176,10 @@ class UserProfileTab {
 			'yelpPageUrl'     => '',
 			'soundCloudUrl'   => '',
 			'wikipediaUrl'    => '',
-			'myspaceUrl'      => ''
+			'myspaceUrl'      => '',
+			'wordPressUrl'    => '',
+			'blueskyUrl'      => '',
+			'threadsUrl'      => ''
 		];
 	}
 }

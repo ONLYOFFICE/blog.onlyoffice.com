@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -11,23 +20,18 @@ if ( ! class_exists( 'ACF_Ajax_Check_Screen' ) ) :
 		/** @var string The AJAX action name. */
 		var $action = 'acf/ajax/check_screen';
 
-		/** @var bool Prevents access for non-logged in users. */
+		/** @var boolean Prevents access for non-logged in users. */
 		var $public = false;
 
 		/**
-		 * get_response
-		 *
 		 * Returns the response data to sent back.
 		 *
-		 * @date    31/7/18
-		 * @since   5.7.2
+		 * @since 5.7.2
 		 *
-		 * @param   array $request The request args.
-		 * @return  mixed The response data or WP_Error.
+		 * @param array $request The request args.
+		 * @return array|WP_Error The response data or WP_Error.
 		 */
-		function get_response( $request ) {
-
-			// vars
+		public function get_response( $request ) {
 			$args = wp_parse_args(
 				$this->request,
 				array(
@@ -38,7 +42,10 @@ if ( ! class_exists( 'ACF_Ajax_Check_Screen' ) ) :
 				)
 			);
 
-			// vars
+			if ( ! acf_current_user_can_edit_post( (int) $args['post_id'] ) ) {
+				return new WP_Error( 'acf_invalid_permissions', __( 'Sorry, you do not have permission to do that.', 'acf' ) );
+			}
+
 			$response = array(
 				'results' => array(),
 				'style'   => '',
@@ -53,14 +60,14 @@ if ( ! class_exists( 'ACF_Ajax_Check_Screen' ) ) :
 
 					// vars
 					$item = array(
-						'id'       => 'acf-' . $field_group['key'],
-						'key'      => $field_group['key'],
-						'title'    => $field_group['title'],
-						'position' => $field_group['position'],
+						'id'       => esc_attr( 'acf-' . $field_group['key'] ),
+						'key'      => esc_attr( $field_group['key'] ),
+						'title'    => acf_esc_html( acf_get_field_group_title( $field_group ) ),
+						'position' => esc_attr( $field_group['position'] ),
 						'classes'  => postbox_classes( 'acf-' . $field_group['key'], $args['screen'] ),
-						'style'    => $field_group['style'],
-						'label'    => $field_group['label_placement'],
-						'edit'     => acf_get_field_group_edit_link( $field_group['ID'] ),
+						'style'    => esc_attr( $field_group['style'] ),
+						'label'    => esc_attr( $field_group['label_placement'] ),
+						'edit'     => esc_url( acf_get_field_group_edit_link( $field_group['ID'] ) ),
 						'html'     => '',
 					);
 
@@ -69,6 +76,8 @@ if ( ! class_exists( 'ACF_Ajax_Check_Screen' ) ) :
 					if ( is_array( $hidden_metaboxes ) && in_array( $item['id'], $hidden_metaboxes ) ) {
 						$item['classes'] = trim( $item['classes'] . ' hide-if-js' );
 					}
+
+					$item['classes'] = esc_attr( $item['classes'] );
 
 					// append html if doesnt already exist on page
 					if ( ! in_array( $field_group['key'], $args['exists'] ) ) {
@@ -104,7 +113,4 @@ if ( ! class_exists( 'ACF_Ajax_Check_Screen' ) ) :
 	}
 
 	acf_new_instance( 'ACF_Ajax_Check_Screen' );
-
 endif; // class_exists check
-
-

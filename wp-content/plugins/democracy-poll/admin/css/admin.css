@@ -91,7 +91,7 @@ background: #fff; }
 .wp-list-table .compact-answ{ height:40px; overflow:hidden; }
 .wp-list-table .compact-answ small{ opacity:.7; }
 
-.wp-list-table.dempolls .button{ border-radius:50%; }
+/*.wp-list-table.dempolls .button{ font-size: 80%; }*/
 
 /* logs */
 .wp-list-table .column-ip{ width:9em; }

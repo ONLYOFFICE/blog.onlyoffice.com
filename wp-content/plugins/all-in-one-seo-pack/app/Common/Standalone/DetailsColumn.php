@@ -48,7 +48,11 @@ class DetailsColumn {
 	 * @return void
 	 */
 	public function registerColumnHooks() {
-		$screen = get_current_screen();
+		$screen = aioseo()->helpers->getCurrentScreen();
+		if ( empty( $screen->base ) || empty( $screen->post_type ) ) {
+			return;
+		}
+
 		if ( ! $this->shouldRegisterColumn( $screen->base, $screen->post_type ) ) {
 			return;
 		}
@@ -87,8 +91,8 @@ class DetailsColumn {
 	 */
 	public function addPostColumnsAjax() {
 		if (
-			! isset( $_POST['_inline_edit'], $_POST['post_ID'] ) ||
-			! wp_verify_nonce( $_POST['_inline_edit'], 'inlineeditnonce' )
+			! isset( $_POST['_inline_edit'], $_POST['post_ID'], $_POST['aioseo-has-details-column'] ) ||
+			! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_inline_edit'] ) ), 'inlineeditnonce' )
 		) {
 			return;
 		}
@@ -165,16 +169,80 @@ class DetailsColumn {
 		}
 
 		// Add this column/post to the localized array.
-		global $wp_scripts;
+		global $wp_scripts; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+		if (
+			! is_object( $wp_scripts ) || // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+			! method_exists( $wp_scripts, 'get_data' ) || // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+			! method_exists( $wp_scripts, 'add_data' ) // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+		) {
+			return;
+		}
 
-		$data = $wp_scripts->get_data( 'aioseo/js/' . $this->scriptSlug, 'data' );
+		$data = null;
+		if ( is_object( $wp_scripts ) ) { // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+			$data = $wp_scripts->get_data( 'aioseo/js/' . $this->scriptSlug, 'data' ); // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+		}
 
 		if ( ! is_array( $data ) ) {
 			$data = json_decode( str_replace( 'var aioseo = ', '', substr( $data, 0, -1 ) ), true );
 		}
 
-		$nonce    = wp_create_nonce( "aioseo_meta_{$columnName}_{$postId}" );
+		// We have to temporarily modify the query here since the query incorrectly identifies
+		// the current page as a category page when posts are filtered by a specific category.
+		// phpcs:disable Squiz.NamingConventions.ValidVariableName
+		global $wp_query;
+		$originalQuery         = clone $wp_query;
+		$wp_query->is_category = false;
+		$wp_query->is_tag      = false;
+		$wp_query->is_tax      = false;
+		// phpcs:enable Squiz.NamingConventions.ValidVariableName
+
 		$posts    = ! empty( $data['posts'] ) ? $data['posts'] : [];
+		$postData = $this->getPostData( $postId, $columnName );
+
+		$addonsColumnData = array_filter( aioseo()->addons->doAddonFunction( 'admin', 'renderColumnData', [
+			$columnName,
+			$postId,
+			$postData
+		] ) );
+
+		$wp_query = $originalQuery; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+
+		foreach ( $addonsColumnData as $addonColumnData ) {
+			$postData = array_merge( $postData, $addonColumnData );
+		}
+
+		// Get broken link count if Broken Link Checker is active.
+		if (
+			function_exists( 'aioseoBrokenLinkChecker' ) &&
+			class_exists( '\AIOSEO\BrokenLinkChecker\Models\LinkStatus' ) &&
+			method_exists( '\AIOSEO\BrokenLinkChecker\Models\LinkStatus', 'getBrokenCountByPostId' ) &&
+			'aioseo-details' === $columnName
+		) {
+			$brokenCount                 = \AIOSEO\BrokenLinkChecker\Models\LinkStatus::getBrokenCountByPostId( $postId );
+			$postData['brokenLinkCount'] = (int) $brokenCount ?? 0;
+		}
+
+		$posts[]       = $postData;
+		$data['posts'] = $posts;
+
+		$wp_scripts->add_data( 'aioseo/js/' . $this->scriptSlug, 'data', '' ); // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+		wp_localize_script( 'aioseo/js/' . $this->scriptSlug, 'aioseo', $data );
+
+		require AIOSEO_DIR . '/app/Common/Views/admin/posts/columns.php';
+	}
+
+	/**
+	 * Gets the post data for the column.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @param  int    $postId     The Post ID.
+	 * @param  string $columnName The column name.
+	 * @return array              The post data.
+	 */
+	protected function getPostData( $postId, $columnName ) {
+		$nonce    = wp_create_nonce( "aioseo_meta_{$columnName}_{$postId}" );
 		$thePost  = Models\Post::getPost( $postId );
 		$postType = get_post_type( $postId );
 		$postData = [
@@ -182,30 +250,19 @@ class DetailsColumn {
 			'columnName'         => $columnName,
 			'nonce'              => $nonce,
 			'title'              => $thePost->title,
-			'titleParsed'        => aioseo()->meta->title->getPostTitle( $postId ),
 			'defaultTitle'       => aioseo()->meta->title->getPostTypeTitle( $postType ),
+			'showTitle'          => apply_filters( 'aioseo_details_column_post_show_title', true, $postId ),
 			'description'        => $thePost->description,
-			'descriptionParsed'  => aioseo()->meta->description->getPostDescription( $postId ),
 			'defaultDescription' => aioseo()->meta->description->getPostTypeDescription( $postType ),
-			'value'              => (int) $thePost->seo_score,
+			'showDescription'    => apply_filters( 'aioseo_details_column_post_show_description', true, $postId ),
+			'value'              => ! empty( $thePost->seo_score ) ? (int) $thePost->seo_score : 0,
 			'showMedia'          => false,
 			'isSpecialPage'      => aioseo()->helpers->isSpecialPage( $postId ),
-			'postType'           => $postType
+			'postType'           => $postType,
+			'isPostVisible'      => aioseo()->helpers->isPostPubliclyViewable( $postId )
 		];
 
-		foreach ( aioseo()->addons->getLoadedAddons() as $loadedAddon ) {
-			if ( isset( $loadedAddon->admin ) && method_exists( $loadedAddon->admin, 'renderColumnData' ) ) {
-				$postData = array_merge( $postData, $loadedAddon->admin->renderColumnData( $columnName, $postId, $postData ) );
-			}
-		}
-
-		$posts[]       = $postData;
-		$data['posts'] = $posts;
-
-		$wp_scripts->add_data( 'aioseo/js/' . $this->scriptSlug, 'data', '' );
-		wp_localize_script( 'aioseo/js/' . $this->scriptSlug, 'aioseo', $data );
-
-		require AIOSEO_DIR . '/app/Common/Views/admin/posts/columns.php';
+		return $postData;
 	}
 
 	/**
@@ -216,6 +273,11 @@ class DetailsColumn {
 	 * @return bool Whether the column should be registered.
 	 */
 	public function shouldRegisterColumn( $screen, $postType ) {
+		// Only allow users with the correct permissions to see the column.
+		if ( ! current_user_can( 'aioseo_page_general_settings' ) ) {
+			return false;
+		}
+
 		if ( 'type' === $postType ) {
 			$postType = '_aioseo_type';
 		}

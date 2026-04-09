@@ -17,7 +17,17 @@ class TabularGrid extends BaseComponent
     public function compile($data, $form)
     {
         $elementName = $data['element'];
-        $data = apply_filters('fluentform_rendering_field_data_' . $elementName, $data, $form);
+        $data = apply_filters_deprecated(
+            'fluentform_rendering_field_data_' . $elementName,
+            [
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_data_' . $elementName,
+            'Use fluentform/rendering_field_data_' . $elementName . ' instead of fluentform_rendering_field_data_' . $elementName
+        );
+        $data = apply_filters('fluentform/rendering_field_data_' . $elementName, $data, $form);
 
         $checked = $data['settings']['selected_grids'];
         $columnLabels = $data['settings']['grid_columns'];
@@ -27,12 +37,12 @@ class TabularGrid extends BaseComponent
         $elementHelpMessage = $this->getElementHelpMessage($data, $form);
         $elementLabel = $this->setClasses($data)->buildElementLabel($data, $form);
 
-        $elMarkup = "<table class='ff-table ff-checkable-grids ff_flexible_table'><thead><tr><th></th><th>" . fluentform_sanitize_html($columnHeaders) . '</th></tr></thead><tbody>';
+        $elMarkup = "<table class='ff-table ff-checkable-grids ff_flexible_table' role='table'><thead><tr><th></th><th>" . fluentform_sanitize_html($columnHeaders) . '</th></tr></thead><tbody>';
 
         $tabIndex = \FluentForm\App\Helpers\Helper::getNextTabIndex();
         foreach ($this->makeTabularData($data) as $index => $row) {
-            $elMarkup .= '<tr>';
-            $elMarkup .= "<td class='ff_grid_header'>" . fluentform_sanitize_html($row['label']) . '</td>';
+            $elMarkup .= '<tr role="row"">';
+            $elMarkup .= "<td class='ff_grid_header' role='cell'>" . fluentform_sanitize_html($row['label']) . '</td>';
             $isRowChecked = in_array($row['name'], $checked) ? 'checked' : '';
             foreach ($row['columns'] as $column) {
                 $name = $data['attributes']['name'] . '[' . $row['name'] . ']';
@@ -55,7 +65,7 @@ class TabularGrid extends BaseComponent
                     $ariaRequired = 'true';
                 }
 
-                $input = '<input aria-valuenow="'. $row['name'] .'-'. $column['label'] . '" ' . $attributes . " {$isChecked} aria-invalid='false' aria-required={$ariaRequired}>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $attributes is escaped before being passed in.
+                $input = '<input aria-label="'. $row['name'] .'-'. $column['label'] . '" ' . $attributes . " {$isChecked} aria-invalid='false' aria-required={$ariaRequired}>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $attributes is escaped before being passed in.
                 $elMarkup .= "<td data-label='" . fluentform_sanitize_html($column['label']) . "'>{$input}</td>";
             }
             $elMarkup .= '</tr>';
@@ -66,13 +76,25 @@ class TabularGrid extends BaseComponent
         $elMarkup = "<div class='ff-el-input--content'>{$elMarkup}" . fluentform_sanitize_html($elementHelpMessage) . '</div>';
 
         $html = sprintf(
-            "<div data-type='%s' data-name='%s' class='%s'>{$elementLabel}{$elMarkup}</div>",
+            "<div data-type='%s' data-name='%s' class='%s'>%s",
             $data['attributes']['data-type'],
             $data['attributes']['name'],
-            $data['attributes']['class']
-        ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $elementLabel is escaped before being passed in.
-
-        $this->printContent('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
+            $data['attributes']['class'],
+            $elementLabel
+        ) . $elMarkup . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $elementLabel is escaped before being passed in.
+            
+        $html = apply_filters_deprecated(
+            'fluentform_rendering_field_html_' . $elementName,
+            [
+                $html,
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_html_' . $elementName,
+            'Use fluentform/rendering_field_html_' . $elementName . ' instead of fluentform_rendering_field_html_' . $elementName
+        );
+        $this->printContent('fluentform/rendering_field_html_' . $elementName, $html, $data, $form);
     }
 
     public function makeTabularData($data)
@@ -82,6 +104,7 @@ class TabularGrid extends BaseComponent
         $columns = $data['settings']['grid_columns'];
 
         foreach ($rows as $rowKey => $rowValue) {
+            $rowKey = trim(sanitize_text_field($rowKey));
             $table[$rowKey] = [
                 'name'    => $rowKey,
                 'label'   => $rowValue,
@@ -89,6 +112,7 @@ class TabularGrid extends BaseComponent
             ];
 
             foreach ($columns as $columnKey => $columnValue) {
+                $columnKey = trim(sanitize_text_field($columnKey));
                 $table[$rowKey]['columns'][] = [
                     'name'  => $columnKey,
                     'label' => $columnValue,
@@ -102,7 +126,8 @@ class TabularGrid extends BaseComponent
     protected function getElementHelpMessage($data, $form)
     {
         $elementHelpMessage = '';
-        if ('under_input' == $form->settings['layout']['helpMessagePlacement']) {
+        $helpMessagePlacement = ArrayHelper::get($form->settings, 'layout.helpMessagePlacement', 'with_label');
+        if ('under_input' == $helpMessagePlacement) {
             $elementHelpMessage = $this->getInputHelpMessage($data);
         }
 

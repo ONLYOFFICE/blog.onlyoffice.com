@@ -17,7 +17,7 @@ class ThirdParty {
 	 *
 	 * @since 4.2.2
 	 *
-	 * @var WP_Post
+	 * @var \WP_Post
 	 */
 	private $post;
 
@@ -100,8 +100,8 @@ class ThirdParty {
 	 *
 	 * @since 4.2.2
 	 *
-	 * @param WP_Post $post              The post object.
-	 * @param string  $parsedPostContent The parsed post content.
+	 * @param \WP_Post $post              The post object.
+	 * @param string   $parsedPostContent The parsed post content.
 	 */
 	public function __construct( $post, $parsedPostContent ) {
 		$this->post              = $post;
@@ -118,9 +118,12 @@ class ThirdParty {
 	public function extract() {
 		$integrations = [
 			'acf',
+			'bricks',
 			'divi',
 			'nextGen',
-			'wooCommerce'
+			'oxygen',
+			'wooCommerce',
+			'kadenceBlocks'
 		];
 
 		foreach ( $integrations as $integration ) {
@@ -175,7 +178,7 @@ class ThirdParty {
 			}
 
 			// Capture the value if it's an image URL, but not the default thumbnail from ACF.
-			if ( is_string( $value ) && preg_match( aioseo()->sitemap->image->getImageExtensionRegexPattern(), $value ) && ! preg_match( '/media\/default\.png$/i', $value ) ) {
+			if ( is_string( $value ) && preg_match( aioseo()->sitemap->image->getImageExtensionRegexPattern(), (string) $value ) && ! preg_match( '/media\/default\.png$/i', (string) $value ) ) {
 				$images[] = $value;
 				continue;
 			}
@@ -191,6 +194,48 @@ class ThirdParty {
 		}
 
 		return $images;
+	}
+
+	/**
+	 * Extracts images from Bricks Builder content.
+	 *
+	 * Bricks stores content in post meta, not in post_content.
+	 * We need to render the Bricks content and extract images from the rendered HTML.
+	 *
+	 * @since 4.9.2
+	 *
+	 * @return void
+	 */
+	private function bricks() {
+		$bricksIntegration = aioseo()->standalone->pageBuilderIntegrations['bricks'] ?? null;
+		if ( empty( $bricksIntegration ) || ! $bricksIntegration->isBuiltWith( $this->post->ID ) ) {
+			return;
+		}
+
+		// Process the Bricks content to get rendered HTML.
+		$renderedContent = $bricksIntegration->processContent( $this->post->ID );
+		if ( empty( $renderedContent ) ) {
+			return;
+		}
+
+		// Extract image URLs from img tags in the rendered content.
+		$urls = [];
+		preg_match_all( '#<img[^>]+src=["\']([^"\'>]+)["\']#i', (string) $renderedContent, $matches );
+		if ( ! empty( $matches[1] ) ) {
+			foreach ( $matches[1] as $url ) {
+				$urls[] = aioseo()->helpers->makeUrlAbsolute( $url );
+			}
+		}
+
+		// Also extract background images from inline styles.
+		preg_match_all( '/background(?:-image)?:\s*url\(["\']?([^"\')]+)["\']?\)/i', (string) $renderedContent, $bgMatches );
+		if ( ! empty( $bgMatches[1] ) ) {
+			foreach ( $bgMatches[1] as $url ) {
+				$urls[] = aioseo()->helpers->makeUrlAbsolute( $url );
+			}
+		}
+
+		$this->images = array_merge( $this->images, $urls );
 	}
 
 	/**
@@ -210,7 +255,7 @@ class ThirdParty {
 
 		preg_match_all(
 			"/\[($regex)(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*+(?:\[(?!\/\2\])[^\[]*+)*+)\[\/\2\])?)(\]?)/i",
-			$this->post->post_content,
+			(string) $this->post->post_content,
 			$matches,
 			PREG_SET_ORDER
 		);
@@ -268,17 +313,17 @@ class ThirdParty {
 			return;
 		}
 
-		preg_match_all( '/data-image-id=\"([0-9]*)\"/i', $this->parsedPostContent, $imageIds );
+		preg_match_all( '/data-image-id=\"([0-9]*)\"/i', (string) $this->parsedPostContent, $imageIds );
 		if ( ! empty( $imageIds[1] ) ) {
 			$this->images = array_merge( $this->images, $imageIds[1] );
 		}
 
 		// For this specific check, we only want to parse blocks and do not want to run shortcodes because some NextGen blocks (e.g. Mosaic) are parsed into shortcodes.
 		// And after parsing the shortcodes, the attributes we're looking for are gone.
-		$contentWithBlocksParsed = function_exists( 'do_blocks' ) ? do_blocks( $this->post->post_content ) : $this->post->post_content; // phpcs:disable AIOSEO.WpFunctionUse.NewFunctions
+		$contentWithBlocksParsed = do_blocks( $this->post->post_content );
 
 		$imageIds = [];
-		preg_match_all( '/\[ngg.*src="galleries" ids="(.*?)".*\]/i', $contentWithBlocksParsed, $shortcodes );
+		preg_match_all( '/\[ngg.*src="galleries" ids="(.*?)".*\]/i', (string) $contentWithBlocksParsed, $shortcodes );
 		if ( empty( $shortcodes[1] ) ) {
 			return;
 		}
@@ -305,6 +350,48 @@ class ThirdParty {
 	}
 
 	/**
+	 * Extracts images from Oxygen Builder content.
+	 *
+	 * Oxygen (via Breakdance engine) stores content in its own data structure.
+	 * We need to render the content and extract images from the rendered HTML.
+	 *
+	 * @since 4.9.2
+	 *
+	 * @return void
+	 */
+	private function oxygen() {
+		$oxygenIntegration = aioseo()->standalone->pageBuilderIntegrations['oxygen'] ?? null;
+		if ( empty( $oxygenIntegration ) || ! $oxygenIntegration->isBuiltWith( $this->post->ID ) ) {
+			return;
+		}
+
+		// Process the Oxygen content to get rendered HTML.
+		$renderedContent = $oxygenIntegration->processContent( $this->post->ID );
+		if ( empty( $renderedContent ) ) {
+			return;
+		}
+
+		// Extract image URLs from img tags in the rendered content.
+		$urls = [];
+		preg_match_all( '#<img[^>]+src=["\']([^"\'>]+)["\']#i', (string) $renderedContent, $matches );
+		if ( ! empty( $matches[1] ) ) {
+			foreach ( $matches[1] as $url ) {
+				$urls[] = aioseo()->helpers->makeUrlAbsolute( $url );
+			}
+		}
+
+		// Also extract background images from inline styles.
+		preg_match_all( '/background(?:-image)?:\s*url\(["\']?([^"\')]+)["\']?\)/i', (string) $renderedContent, $bgMatches );
+		if ( ! empty( $bgMatches[1] ) ) {
+			foreach ( $bgMatches[1] as $url ) {
+				$urls[] = aioseo()->helpers->makeUrlAbsolute( $url );
+			}
+		}
+
+		$this->images = array_merge( $this->images, $urls );
+	}
+
+	/**
 	 * Extracts the image IDs of WooCommerce product galleries.
 	 *
 	 * @since 4.1.2
@@ -323,5 +410,26 @@ class ThirdParty {
 
 		$productImageIds = explode( ',', $productImageIds );
 		$this->images    = array_merge( $this->images, $productImageIds );
+	}
+
+	/**
+	 * Extracts the image IDs of Kadence Block galleries.
+	 *
+	 * @since 4.4.5
+	 *
+	 * @return void
+	 */
+	private function kadenceBlocks() {
+		if ( ! defined( 'KADENCE_BLOCKS_VERSION' ) ) {
+			return [];
+		}
+
+		$blocks = aioseo()->helpers->parseBlocks( $this->post );
+
+		foreach ( $blocks as $block ) {
+			if ( 'kadence/advancedgallery' === $block['blockName'] && ! empty( $block['attrs']['ids'] ) ) {
+				$this->images = array_merge( $this->images, $block['attrs']['ids'] );
+			}
+		}
 	}
 }

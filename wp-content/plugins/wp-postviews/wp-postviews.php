@@ -3,7 +3,7 @@
 Plugin Name: WP-PostViews
 Plugin URI: https://lesterchan.net/portfolio/programming/php/
 Description: Enables you to display how many times a post/page had been viewed.
-Version: 1.77
+Version: 1.78
 Author: Lester 'GaMerZ' Chan
 Author URI: https://lesterchan.net
 Text Domain: wp-postviews
@@ -11,7 +11,7 @@ Text Domain: wp-postviews
 
 
 /*
-	Copyright 2023  Lester Chan  (email : lesterchan@gmail.com)
+	Copyright 2025  Lester Chan  (email : lesterchan@gmail.com)
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -28,6 +28,8 @@ Text Domain: wp-postviews
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+### WP-PostViews Version
+define( 'WP_POSTVIEWS_VERSION', '1.78' );
 
 ### Create Text Domain For Translations
 add_action( 'plugins_loaded', 'postviews_textdomain' );
@@ -164,7 +166,7 @@ function wp_postview_cache_count_enqueue() {
 
 		$should_count = apply_filters( 'postviews_should_count', $should_count, (int) $post->ID );
 		if ( $should_count ) {
-			wp_enqueue_script( 'wp-postviews-cache', plugins_url( 'postviews-cache.js', __FILE__ ), array(), '1.68', true );
+			wp_enqueue_script( 'wp-postviews-cache', plugins_url( 'postviews-cache.js', __FILE__ ), array(), WP_POSTVIEWS_VERSION, true );
 			wp_localize_script( 'wp-postviews-cache', 'viewsCacheL10n', array( 'admin_ajax_url' => admin_url( 'admin-ajax.php' ), 'nonce' => wp_create_nonce( 'wp_postviews_nonce' ), 'post_id' => (int) $post->ID ) );
 		}
 	}
@@ -282,6 +284,7 @@ if ( ! function_exists( 'get_least_viewed' ) ) {
 				$temp = str_replace( '%POST_DATE%', get_the_time( get_option( 'date_format' ) ), $temp );
 				$temp = str_replace( '%POST_TIME%', get_the_time( get_option( 'time_format' ) ), $temp );
 				$temp = str_replace( '%POST_THUMBNAIL%', get_the_post_thumbnail( null,'thumbnail',true ), $temp);
+				$temp = str_replace( '%POST_THUMBNAIL_URL%', get_the_post_thumbnail_url( null,'thumbnail',true ), $temp);
 				$temp = str_replace( '%POST_CATEGORY_ID%', $post_category_id, $temp );
 				$temp = str_replace( '%POST_AUTHOR%', get_the_author(), $temp );
 				$output .= $temp;
@@ -344,6 +347,7 @@ if ( ! function_exists( 'get_most_viewed' ) ) {
 				$temp = str_replace( '%POST_DATE%', get_the_time( get_option( 'date_format' ) ), $temp );
 				$temp = str_replace( '%POST_TIME%', get_the_time( get_option( 'time_format' ) ), $temp );
 				$temp = str_replace( '%POST_THUMBNAIL%', get_the_post_thumbnail( null,'thumbnail',true ), $temp);
+				$temp = str_replace( '%POST_THUMBNAIL_URL%', get_the_post_thumbnail_url( null,'thumbnail',true ), $temp);
 				$temp = str_replace( '%POST_CATEGORY_ID%', $post_category_id, $temp );
 				$temp = str_replace( '%POST_AUTHOR%', get_the_author(), $temp );
 				$output .= $temp;
@@ -407,6 +411,7 @@ if ( ! function_exists( 'get_least_viewed_category' ) ) {
 				$temp = str_replace( '%POST_DATE%', get_the_time( get_option( 'date_format' ) ), $temp );
 				$temp = str_replace( '%POST_TIME%', get_the_time( get_option( 'time_format' ) ), $temp );
 				$temp = str_replace( '%POST_THUMBNAIL%', get_the_post_thumbnail( null,'thumbnail',true ), $temp);
+				$temp = str_replace( '%POST_THUMBNAIL_URL%', get_the_post_thumbnail_url( null,'thumbnail',true ), $temp);
 				$temp = str_replace( '%POST_CATEGORY_ID%', $post_category_id, $temp );
 				$temp = str_replace( '%POST_AUTHOR%', get_the_author(), $temp );
 				$output .= $temp;
@@ -470,6 +475,7 @@ if ( ! function_exists( 'get_most_viewed_category' ) ) {
 				$temp = str_replace( '%POST_DATE%', get_the_time( get_option( 'date_format' ) ), $temp );
 				$temp = str_replace( '%POST_TIME%', get_the_time( get_option( 'time_format' ) ), $temp );
 				$temp = str_replace( '%POST_THUMBNAIL%', get_the_post_thumbnail( null,'thumbnail',true ), $temp);
+				$temp = str_replace( '%POST_THUMBNAIL_URL%', get_the_post_thumbnail_url( null,'thumbnail',true ), $temp);
 				$temp = str_replace( '%POST_CATEGORY_ID%', $post_category_id, $temp );
 				$temp = str_replace( '%POST_AUTHOR%', get_the_author(), $temp );
 				$output .= $temp;
@@ -532,6 +538,7 @@ if ( ! function_exists( 'get_least_viewed_tag' ) ) {
 				$temp = str_replace( '%POST_DATE%', get_the_time( get_option( 'date_format' ) ), $temp );
 				$temp = str_replace( '%POST_TIME%', get_the_time( get_option( 'time_format' ) ), $temp );
 				$temp = str_replace( '%POST_THUMBNAIL%', get_the_post_thumbnail( null,'thumbnail',true ), $temp);
+				$temp = str_replace( '%POST_THUMBNAIL_URL%', get_the_post_thumbnail_url( null,'thumbnail',true ), $temp);
 				$temp = str_replace( '%POST_CATEGORY_ID%', $post_category_id, $temp );
 				$temp = str_replace( '%POST_AUTHOR%', get_the_author(), $temp );
 				$output .= $temp;
@@ -595,6 +602,7 @@ if ( ! function_exists( 'get_most_viewed_tag' ) ) {
 				$temp = str_replace( '%POST_DATE%', get_the_time( get_option( 'date_format' ) ), $temp );
 				$temp = str_replace( '%POST_TIME%', get_the_time( get_option( 'time_format' ) ), $temp );
 				$temp = str_replace( '%POST_THUMBNAIL%', get_the_post_thumbnail( null,'thumbnail',true ), $temp);
+				$temp = str_replace( '%POST_THUMBNAIL_URL%', get_the_post_thumbnail_url( null,'thumbnail',true ), $temp);
 				$temp = str_replace( '%POST_CATEGORY_ID%', $post_category_id, $temp );
 				$temp = str_replace( '%POST_AUTHOR%', get_the_author(), $temp );
 				$output .= $temp;

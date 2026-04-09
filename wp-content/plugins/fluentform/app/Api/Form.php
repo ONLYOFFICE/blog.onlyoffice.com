@@ -3,6 +3,9 @@
 namespace FluentForm\App\Api;
 
 use FluentForm\App\Helpers\Helper;
+use FluentForm\App\Models\FormMeta;
+use FluentForm\App\Models\Submission;
+use FluentForm\App\Services\Manager\FormManagerService;
 use FluentForm\Framework\Helpers\ArrayHelper;
 
 class Form
@@ -22,7 +25,7 @@ class Form
 
         $atts = wp_parse_args($atts, $defaultAtts);
 
-        $perPage = intval(ArrayHelper::get($atts, 'per_page', 10));
+        $perPage = (int) ArrayHelper::get($atts, 'per_page', 10);
         $search = sanitize_text_field(ArrayHelper::get($atts, 'search', ''));
         $status = sanitize_text_field(ArrayHelper::get($atts, 'status', 'all'));
         $filter_by = sanitize_text_field(ArrayHelper::get($atts, 'filter_by', 'all'));
@@ -30,13 +33,17 @@ class Form
         $is_filter_by_conv_or_step_form = $filter_by && ('conv_form' == $filter_by || 'step_form' == $filter_by);
 
         $shortColumn = sanitize_sql_orderby(ArrayHelper::get($atts, 'sort_column', 'id'));
+        $shortColumn = $shortColumn !== false && $shortColumn !== '' ? $shortColumn : 'id';
         $sortBy = Helper::sanitizeOrderValue(ArrayHelper::get($atts, 'sort_by', 'DESC'));
 
-        $query = wpFluent()->table('fluentform_forms')
-            ->orderBy($shortColumn, $sortBy);
+        $query = \FluentForm\App\Models\Form::orderBy($shortColumn, $sortBy)->getQuery();
 
         if ($status && 'all' != $status) {
             $query->where('status', $status);
+        }
+
+        if ($allowIds = FormManagerService::getUserAllowedForms()) {
+            $query->whereIn('id', $allowIds);
         }
 
         if ($filter_by && !$is_filter_by_conv_or_step_form) {
@@ -75,9 +82,44 @@ class Form
         $skip = $perPage * ($currentPage - 1);
 
         if ($is_filter_by_conv_or_step_form) {
-            $data = (array) $query->select('*')->get();
+            $data = $query->select('*')->get()->all();
         } else {
-            $data = (array) $query->select('*')->limit($perPage)->offset($skip)->get();
+            if ($total < $skip) {
+                $skip = 0;
+            }
+            $data = $query->select('*')->limit($perPage)->offset($skip)->get()->all();
+        }
+
+        // Fetch all counts in bulk before the loop
+        $formIds = array_column($data, 'id');
+
+        // Get all submission counts in one query using Submission model
+        $submissionCounts = Submission::select([
+                'form_id',
+                wpFluent()->raw('COUNT(*) as total_submissions'),
+                wpFluent()->raw("SUM(CASE WHEN status = 'unread' THEN 1 ELSE 0 END) as unread_count")
+            ])
+            ->whereIn('form_id', $formIds)
+            ->where('status', '!=', 'trashed')
+            ->groupBy('form_id')
+            ->get();
+
+        // Map counts by form_id for quick lookup
+        $countsMap = [];
+        foreach ($submissionCounts as $count) {
+            $countsMap[$count->form_id] = $count;
+        }
+
+        // Get all view counts in one query using FormMeta model
+        $viewCounts = FormMeta::select(['form_id', 'value'])
+            ->where('meta_key', '_total_views')
+            ->whereIn('form_id', $formIds)
+            ->get();
+
+        // Map view counts by form_id for quick lookup
+        $viewsMap = [];
+        foreach ($viewCounts as $view) {
+            $viewsMap[$view->form_id] = intval($view->value);
         }
 
         $conversationOrStepForms = [];
@@ -89,7 +131,7 @@ class Form
                 continue;
             }
             //  skip form if filter by step form but form is not step form
-            if ('step_form' == $filter_by && !Helper::isMultiStepForm($form->id)) {
+            if ('step_form' == $filter_by && !Helper::isMultiStepForm($form)) {
                 continue;
             }
             $formInstance = $this->form($form);
@@ -98,10 +140,20 @@ class Form
             $form->settings_url = Helper::getFormSettingsUrl($form);
             $form->entries_url = Helper::getFormAdminPermalink('entries', $form);
             $form->analytics_url = Helper::getFormAdminPermalink('analytics', $form);
-            $form->total_views = Helper::getFormMeta($form->id, '_total_views', 0);
-            $form->total_Submissions = $formInstance->submissionCount();
-            $form->unread_count = $formInstance->unreadCount();
-            $form->conversion = $formInstance->conversionRate();
+
+            // Use pre-fetched counts instead of individual queries
+            $form->total_views = $viewsMap[$form->id] ?? 0;
+            $counts = $countsMap[$form->id] ?? null;
+            $form->total_Submissions = $counts ? intval($counts->total_submissions) : 0;
+            $form->unread_count = $counts ? intval($counts->unread_count) : 0;
+
+            // Calculate conversion rate (same logic as FormProperties::conversionRate())
+            if ($form->total_Submissions && $form->total_views) {
+                $form->conversion = ceil(($form->total_Submissions / $form->total_views) * 100);
+            } else {
+                $form->conversion = 0;
+            }
+
             if ($is_conv_form) {
                 $form->conversion_preview = Helper::getPreviewUrl($form->id, 'conversational');
             }
@@ -115,6 +167,9 @@ class Form
         }
         if ($is_filter_by_conv_or_step_form) {
             $total = count($conversationOrStepForms);
+            if ($total < $skip) {
+                $skip = 0;
+            }
             $conversationOrStepForms = array_slice($conversationOrStepForms, $skip, $perPage);
             $dataCount = count($conversationOrStepForms);
         } else {
@@ -138,7 +193,7 @@ class Form
 
     public function find($formId)
     {
-        return wpFluent()->table('fluentform_forms')->where('id', $formId)->first();
+        return \FluentForm\App\Models\Form::where('id', $formId)->first();
     }
 
     /**

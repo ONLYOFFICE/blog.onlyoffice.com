@@ -1,23 +1,29 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! class_exists( 'acf_field_range' ) ) :
 
 	class acf_field_range extends acf_field_number {
 
 
-		/*
-		*  initialize
-		*
-		*  This function will setup the field type data
-		*
-		*  @type    function
-		*  @date    5/03/2014
-		*  @since   5.0.0
-		*
-		*  @param   n/a
-		*  @return  n/a
-		*/
-
+		/**
+		 * This function will setup the field type data
+		 *
+		 * @type    function
+		 * @date    5/03/2014
+		 * @since   5.0.0
+		 *
+		 * @param   n/a
+		 * @return  n/a
+		 */
 		function initialize() {
 
 			// vars
@@ -34,29 +40,24 @@ if ( ! class_exists( 'acf_field_range' ) ) :
 				'prepend'       => '',
 				'append'        => '',
 			);
-
 		}
 
 
-		/*
-		*  render_field()
-		*
-		*  Create the HTML interface for your field
-		*
-		*  @param   $field - an array holding all the field's data
-		*
-		*  @type    action
-		*  @since   3.6
-		*  @date    23/01/13
-		*/
-
+		/**
+		 * Create the HTML interface for your field
+		 *
+		 * @param   $field - an array holding all the field's data
+		 *
+		 * @type    action
+		 * @since   3.6
+		 * @date    23/01/13
+		 */
 		function render_field( $field ) {
 
 			// vars
 			$atts  = array();
 			$keys  = array( 'type', 'id', 'class', 'name', 'value', 'min', 'max', 'step' );
 			$keys2 = array( 'readonly', 'disabled', 'required' );
-			$html  = '';
 
 			// step
 			if ( ! $field['step'] ) {
@@ -98,7 +99,7 @@ if ( ! class_exists( 'acf_field_range' ) ) :
 			$atts = acf_clean_atts( $atts );
 
 			// open
-			$html .= '<div class="acf-range-wrap">';
+			$html = '<div class="acf-range-wrap">';
 
 			// prepend
 			if ( $field['prepend'] !== '' ) {
@@ -140,23 +141,20 @@ if ( ! class_exists( 'acf_field_range' ) ) :
 			$html .= '</div>';
 
 			// return
-			echo $html;
+			echo $html; //phpcs:ignore WordPress.Security.EscapeOutput -- Only populated with already escaped HTML.
 		}
 
 
-		/*
-		*  render_field_settings()
-		*
-		*  Create extra options for your field. This is rendered when editing a field.
-		*  The value of $field['name'] can be used (like bellow) to save extra data to the $field
-		*
-		*  @type    action
-		*  @since   3.6
-		*  @date    23/01/13
-		*
-		*  @param   $field  - an array holding all the field's data
-		*/
-
+		/**
+		 * Create extra options for your field. This is rendered when editing a field.
+		 * The value of $field['name'] can be used (like bellow) to save extra data to the $field
+		 *
+		 * @type    action
+		 * @since   3.6
+		 * @date    23/01/13
+		 *
+		 * @param   $field  - an array holding all the field's data
+		 */
 		function render_field_settings( $field ) {
 			acf_render_field_setting(
 				$field,
@@ -267,22 +265,28 @@ if ( ! class_exists( 'acf_field_range' ) ) :
 		/**
 		 * Apply basic formatting to prepare the value for default REST output.
 		 *
-		 * @param mixed      $value
-		 * @param string|int $post_id
-		 * @param array      $field
+		 * @param mixed          $value
+		 * @param string|integer $post_id
+		 * @param array          $field
 		 * @return mixed
 		 */
 		public function format_value_for_rest( $value, $post_id, array $field ) {
 			return acf_format_numerics( $value );
 		}
 
-
+		/**
+		 * Returns an array of JSON-LD Property output types that are supported by this field type.
+		 *
+		 * @since 6.8
+		 *
+		 * @return string[]
+		 */
+		public function get_jsonld_output_types(): array {
+			return array( 'Number', 'Integer' );
+		}
 	}
 
 
 	// initialize
 	acf_register_field_type( 'acf_field_range' );
-
 endif; // class_exists check
-
-

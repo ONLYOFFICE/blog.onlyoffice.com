@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Query {
 	/**
-	 * Returns all eligble sitemap entries for a given post type.
+	 * Returns all eligible sitemap entries for a given post type.
 	 *
 	 * @since 4.1.3
 	 *
@@ -35,6 +35,7 @@ class Query {
 				break;
 			case 'id':
 				$orderBy = 'ID';
+				break;
 			case 'publish_date':
 			default:
 				$orderBy = 'post_date_gmt';
@@ -185,8 +186,9 @@ class Query {
 			->select( 'YEAR(post_date) AS year, MONTH(post_date) AS month' )
 			->where( 'post_type', 'post' )
 			->where( 'post_status', 'publish' )
-			->whereRaw( "post_password=''" )
-			->orderBy( '`year` DESC, `month` DESC' )
+			->where( 'post_password', '' )
+			->orderBy( 'year DESC' )
+			->orderBy( 'month DESC' )
 			->run()
 			->result();
 

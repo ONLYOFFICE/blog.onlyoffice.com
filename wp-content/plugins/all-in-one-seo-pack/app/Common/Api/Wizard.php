@@ -124,6 +124,10 @@ class Wizard {
 				$options->searchAppearance->global->schema->organizationName = $additionalInformation['organizationName'];
 			}
 
+			if ( ! empty( $additionalInformation['organizationDescription'] ) ) {
+				$options->searchAppearance->global->schema->organizationDescription = $additionalInformation['organizationDescription'];
+			}
+
 			if ( ! empty( $additionalInformation['phone'] ) ) {
 				$options->searchAppearance->global->schema->phone = $additionalInformation['phone'];
 			}
@@ -138,14 +142,6 @@ class Wizard {
 
 			if ( ! empty( $additionalInformation['personLogo'] ) ) {
 				$options->searchAppearance->global->schema->personLogo = $additionalInformation['personLogo'];
-			}
-
-			if ( ! empty( $additionalInformation['contactType'] ) ) {
-				$options->searchAppearance->global->schema->contactType = $additionalInformation['contactType'];
-			}
-
-			if ( ! empty( $additionalInformation['contactTypeManual'] ) ) {
-				$options->searchAppearance->global->schema->contactTypeManual = $additionalInformation['contactTypeManual'];
 			}
 
 			if ( ! empty( $additionalInformation['socialShareImage'] ) ) {
@@ -184,6 +180,10 @@ class Wizard {
 						$options->social->profiles->urls->instagramUrl = $urls['instagramUrl'];
 					}
 
+					if ( ! empty( $urls['tiktokUrl'] ) ) {
+						$options->social->profiles->urls->tiktokUrl = $urls['tiktokUrl'];
+					}
+
 					if ( ! empty( $urls['pinterestUrl'] ) ) {
 						$options->social->profiles->urls->pinterestUrl = $urls['pinterestUrl'];
 					}
@@ -219,6 +219,18 @@ class Wizard {
 					if ( ! empty( $urls['googlePlacesUrl'] ) ) {
 						$options->social->profiles->urls->googlePlacesUrl = $urls['googlePlacesUrl'];
 					}
+
+					if ( ! empty( $urls['wordPressUrl'] ) ) {
+						$options->social->profiles->urls->wordPressUrl = $urls['wordPressUrl'];
+					}
+
+					if ( ! empty( $urls['blueskyUrl'] ) ) {
+						$options->social->profiles->urls->blueskyUrl = $urls['blueskyUrl'];
+					}
+
+					if ( ! empty( $urls['threadsUrl'] ) ) {
+						$options->social->profiles->urls->threadsUrl = $urls['threadsUrl'];
+					}
 				}
 			}
 
@@ -229,86 +241,10 @@ class Wizard {
 
 		// Save the features section.
 		if ( 'features' === $section && ! empty( $wizard['features'] ) ) {
-			$features   = $wizard['features'];
-			$pluginData = aioseo()->helpers->getPluginData();
+			self::installPlugins( $wizard['features'], $network );
 
-			// Install MI.
-			if ( in_array( 'analytics', $features, true ) ) {
-				$cantInstall = false;
-				if ( ! $pluginData['miPro']['activated'] && ! $pluginData['miLite']['activated'] ) {
-					if ( $pluginData['miPro']['installed'] ) {
-						aioseo()->addons->installAddon( 'miPro', $network );
-
-						// Stop the redirect from happening.
-						delete_transient( '_monsterinsights_activation_redirect' );
-					} else {
-						if ( $pluginData['miPro']['installed'] || aioseo()->addons->canInstall() ) {
-							aioseo()->addons->installAddon( 'miLite', $network );
-
-							// Stop the redirect from happening.
-							delete_transient( '_monsterinsights_activation_redirect' );
-						} else {
-							$cantInstall = true;
-						}
-					}
-				}
-
-				if ( $cantInstall ) {
-					$notification = Models\Notification::getNotificationByName( 'install-mi' );
-					if ( ! $notification->exists() ) {
-						Models\Notification::addNotification( [
-							'slug'              => uniqid(),
-							'notification_name' => 'install-mi',
-							'title'             => __( 'Install MonsterInsights', 'all-in-one-seo-pack' ),
-							'content'           => sprintf(
-								// Translators: 1 - The plugin short name ("AIOSEO").
-								__( 'You selected to install the free MonsterInsights Analytics plugin during the setup of %1$s, but there was an issue during installation. Click below to manually install.', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
-								AIOSEO_PLUGIN_SHORT_NAME
-							),
-							'type'              => 'info',
-							'level'             => [ 'all' ],
-							'button1_label'     => __( 'Install MonsterInsights', 'all-in-one-seo-pack' ),
-							'button1_action'    => $pluginData['miLite']['wpLink'],
-							'button2_label'     => __( 'Remind Me Later', 'all-in-one-seo-pack' ),
-							'button2_action'    => 'http://action#notification/install-mi-reminder',
-							'start'             => gmdate( 'Y-m-d H:i:s' )
-						] );
-					}
-				}
-			}
-
-			// Install OM.
-			if ( in_array( 'conversion-tools', $features, true ) ) {
-				if ( ! $pluginData['optinMonster']['activated'] ) {
-					if ( aioseo()->addons->canInstall() ) {
-						// Install and/or activate.
-						aioseo()->addons->installAddon( 'optinMonster', $network );
-
-						// Stop the redirect from happening.
-						delete_transient( 'optin_monster_api_activation_redirect' );
-					} else {
-						$notification = Models\Notification::getNotificationByName( 'install-om' );
-						if ( ! $notification->exists() ) {
-							Models\Notification::addNotification( [
-								'slug'              => uniqid(),
-								'notification_name' => 'install-om',
-								'title'             => __( 'Install OptinMonster', 'all-in-one-seo-pack' ),
-								'content'           => sprintf(
-									// Translators: 1 - The plugin short name ("AIOSEO").
-									__( 'You selected to install the free OptinMonster Conversion Tools plugin during the setup of %1$s, but there was an issue during installation. Click below to manually install.', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
-									AIOSEO_PLUGIN_SHORT_NAME
-								),
-								'type'              => 'info',
-								'level'             => [ 'all' ],
-								'button1_label'     => __( 'Install OptinMonster', 'all-in-one-seo-pack' ),
-								'button1_action'    => $pluginData['optinMonster']['wpLink'],
-								'button2_label'     => __( 'Remind Me Later', 'all-in-one-seo-pack' ),
-								'button2_action'    => 'http://action#notification/install-om-reminder',
-								'start'             => gmdate( 'Y-m-d H:i:s' )
-							] );
-						}
-					}
-				}
+			if ( in_array( 'email-reports', $wizard['features'], true ) ) {
+				$options->advanced->emailSummary->enable = true;
 			}
 		}
 
@@ -368,6 +304,10 @@ class Wizard {
 			if ( isset( $searchAppearance['redirectAttachmentPages'] ) && $dynamicOptions->searchAppearance->postTypes->has( 'attachment' ) ) {
 				$dynamicOptions->searchAppearance->postTypes->attachment->redirectAttachmentUrls = $searchAppearance['redirectAttachmentPages'] ? 'attachment' : 'disabled';
 			}
+
+			if ( isset( $searchAppearance['emailReports'] ) ) {
+				$options->advanced->emailSummary->enable = $searchAppearance['emailReports'];
+			}
 		}
 
 		// Save the smart recommendations section.
@@ -394,9 +334,163 @@ class Wizard {
 			}
 		}
 
+		// If the setup wizard is now completed, mark the SEO Checklist item.
+		if ( aioseo()->standalone->setupWizard->isCompleted() ) {
+			aioseo()->seoChecklist->completeCheck( 'finishSetupWizard' );
+		}
+
 		return new \WP_REST_Response( [
 			'success' => true,
 			'options' => aioseo()->options->all()
 		], 200 );
+	}
+
+	/**
+	 * Install all plugins that were selected in the features page of the Setup Wizard.
+	 *
+	 * @since 4.5.5
+	 *
+	 * @param  array $features The features that were selected.
+	 * @param  bool  $network  Whether to install the plugins on the network.
+	 * @return void
+	 */
+	private static function installPlugins( $features, $network ) {
+		$pluginData = aioseo()->helpers->getPluginData();
+
+		if ( in_array( 'analytics', $features, true ) ) {
+			self::installMonsterInsights( $network );
+		}
+
+		if ( in_array( 'conversion-tools', $features, true ) && ! $pluginData['optinMonster']['activated'] ) {
+			self::installOptinMonster( $network );
+		}
+
+		if ( in_array( 'broken-link-checker', $features, true ) && ! $pluginData['brokenLinkChecker']['activated'] ) {
+			self::installBlc( $network );
+		}
+	}
+
+	/**
+	 * Installs the MonsterInsights plugin.
+	 *
+	 * @since 4.5.5
+	 *
+	 * @param  bool $network Whether to install the plugin on the network.
+	 * @return void
+	 */
+	private static function installMonsterInsights( $network ) {
+		$pluginData = aioseo()->helpers->getPluginData();
+
+		$args = [
+			'id'                => 'miLite',
+			'pluginName'        => 'MonsterInsights',
+			'pluginLongName'    => 'MonsterInsights Analytics',
+			'notification-name' => 'install-mi'
+		];
+
+		// If MI Pro is active, bail.
+		if ( $pluginData['miPro']['activated'] ) {
+			return;
+		}
+
+		// If MI Pro is installed but not active, activate MI Pro.
+		if ( $pluginData['miPro']['installed'] ) {
+			$args['id'] = 'miPro';
+		}
+
+		if ( self::installPlugin( $args, $network ) ) {
+			delete_transient( '_monsterinsights_activation_redirect' );
+		}
+	}
+
+	/**
+	 * Installs the OptinMonster plugin.
+	 *
+	 * @since 4.5.5
+	 *
+	 * @param  bool $network Whether to install the plugin on the network.
+	 * @return void
+	 */
+	private static function installOptinMonster( $network ) {
+		$args = [
+			'id'                => 'optinMonster',
+			'pluginName'        => 'OptinMonster',
+			'pluginLongName'    => 'OptinMonster Conversion Tools',
+			'notification-name' => 'install-om'
+		];
+
+		if ( self::installPlugin( $args, $network ) ) {
+			delete_transient( 'optin_monster_api_activation_redirect' );
+		}
+	}
+
+	/**
+	 * Installs the Broken Link Checker plugin.
+	 *
+	 * @since 4.5.5
+	 *
+	 * @param  bool $network Whether to install the plugin on the network.
+	 * @return void
+	 */
+	private static function installBlc( $network ) {
+		$args = [
+			'id'                => 'brokenLinkChecker',
+			'pluginName'        => 'Broken Link Checker',
+			'notification-name' => 'install-blc'
+		];
+
+		if ( self::installPlugin( $args, $network ) && function_exists( 'aioseoBrokenLinkChecker' ) ) {
+			aioseoBrokenLinkChecker()->core->cache->delete( 'activation_redirect' );
+		}
+	}
+
+	/**
+	 * Helper method to install plugins through the Setup Wizard.
+	 * Creates a notification if the plugin can't be installed.
+	 *
+	 * @since 4.5.5
+	 *
+	 * @param  array $args    The plugin arguments.
+	 * @param  bool  $network Whether to install the plugin on the network.
+	 * @return bool           Whether the plugin was installed.
+	 */
+	private static function installPlugin( $args, $network = false ) {
+		if ( aioseo()->addons->canInstall() ) {
+			return aioseo()->addons->installAddon( $args['id'], $network );
+		}
+
+		$pluginData = aioseo()->helpers->getPluginData();
+
+		$notification = Models\Notification::getNotificationByName( $args['notification-name'] );
+		if ( ! $notification->exists() ) {
+			Models\Notification::addNotification( [
+				'slug'              => uniqid(),
+				'notification_name' => $args['notification-name'],
+				'title'             => sprintf(
+					// Translators: 1 - A plugin name (e.g. "MonsterInsights", "Broken Link Checker", etc.).
+					__( 'Install %1$s', 'all-in-one-seo-pack' ),
+					$args['pluginName']
+				),
+				'content'           => sprintf(
+					// Translators: 1 - A plugin name (e.g. "MonsterInsights", "Broken Link Checker", etc.), 2 - The plugin short name ("AIOSEO").
+					__( 'You selected to install the free %1$s plugin during the setup of %2$s, but there was an issue during installation. Click below to manually install.', 'all-in-one-seo-pack' ), // phpcs:ignore Generic.Files.LineLength.MaxExceeded
+					AIOSEO_PLUGIN_SHORT_NAME,
+					! empty( $args['pluginLongName'] ) ? $args['pluginLongName'] : $args['pluginName']
+				),
+				'type'              => 'info',
+				'level'             => [ 'all' ],
+				'button1_label'     => sprintf(
+					// Translators: 1 - A plugin name (e.g. "MonsterInsights", "Broken Link Checker", etc.).
+					__( 'Install %1$s', 'all-in-one-seo-pack' ),
+					$args['pluginName']
+				),
+				'button1_action'    => $pluginData[ $args['id'] ]['wpLink'],
+				'button2_label'     => __( 'Remind Me Later', 'all-in-one-seo-pack' ),
+				'button2_action'    => "http://action#notification/{$args['notification-name']}-reminder",
+				'start'             => gmdate( 'Y-m-d H:i:s' )
+			] );
+		}
+
+		return false;
 	}
 }

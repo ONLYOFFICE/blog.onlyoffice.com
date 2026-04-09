@@ -32,11 +32,7 @@ class File {
 	 * @return void
 	 */
 	public function generate( $force = false ) {
-		foreach ( aioseo()->addons->getLoadedAddons() as $loadedAddon ) {
-			if ( ! empty( $loadedAddon->file ) && method_exists( $loadedAddon->file, 'generate' ) ) {
-				$loadedAddon->file->generate( $force );
-			}
-		}
+		aioseo()->addons->doAddonFunction( 'file', 'generate', [ $force ] );
 
 		// Exit if static sitemap generation isn't enabled.
 		if (
@@ -72,6 +68,7 @@ class File {
 					continue;
 				}
 
+				// Decode Additional Page Url to properly show Unicode Characters.
 				$additionalPages[] = $additionalPage;
 			}
 		}
@@ -125,6 +122,7 @@ class File {
 				if ( ! $posts ) {
 					continue;
 				}
+
 				$total = aioseo()->sitemap->query->posts( $postType, [ 'count' => true ] );
 
 				// We need to temporarily reset the linksPerIndex count here so that we can properly chunk.
@@ -159,6 +157,7 @@ class File {
 				if ( ! $terms ) {
 					continue;
 				}
+
 				$total = aioseo()->sitemap->query->terms( $taxonomy, [ 'count' => true ] );
 
 				// We need to temporarily reset the linksPerIndex count here so that we can properly chunk.
@@ -250,12 +249,8 @@ class File {
 		aioseo()->sitemap->xsl->saveXslData( $filename, $entries, $total );
 
 		ob_start();
-		aioseo()->sitemap->output->output( $entries, $total );
-		foreach ( aioseo()->addons->getLoadedAddons() as $instance ) {
-			if ( ! empty( $instance->output ) && method_exists( $instance->output, 'output' ) ) {
-				$instance->output->output( $entries, $total );
-			}
-		}
+		aioseo()->sitemap->output->output( $entries );
+		aioseo()->addons->doAddonFunction( 'output', 'output', [ $entries, $total ] );
 		$content = ob_get_clean();
 
 		$fs         = aioseo()->core->fs;
@@ -282,7 +277,7 @@ class File {
 
 		$sitemapFiles = [];
 		foreach ( $files as $filename ) {
-			if ( preg_match( '#.*sitemap.*#', $filename ) ) {
+			if ( preg_match( '#.*sitemap.*#', (string) $filename ) ) {
 				$sitemapFiles[] = $filename;
 			}
 		}

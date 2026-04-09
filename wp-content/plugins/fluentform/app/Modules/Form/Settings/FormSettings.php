@@ -70,7 +70,20 @@ class FormSettings
                 $item->value['layout']['asteriskPlacement'] = 'asterisk-right';
             }
         }
-        $result = apply_filters('fluentform_get_meta_key_settings_response', $result, $this->formId, $metaKey);
+    
+        $result = apply_filters_deprecated(
+            'fluentform_get_meta_key_settings_response',
+            [
+                $result,
+                $this->formId,
+                $metaKey
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/get_meta_key_settings_response',
+            'Use fluentform/get_meta_key_settings_response instead of fluentform_get_meta_key_settings_response.'
+        );
+
+        $result = $this->app->applyFilters('fluentform/get_meta_key_settings_response', $result, $this->formId, $metaKey);
         wp_send_json_success(['result' => $result], 200);
     }
 
@@ -83,7 +96,18 @@ class FormSettings
             'advancedValidationSettings' => $form->getAdvancedValidationSettings($formId),
         ];
 
-        $settings = apply_filters('fluentform_form_settings_ajax', $settings, $formId);
+        $settings = apply_filters_deprecated(
+            'fluentform_form_settings_ajax',
+            [
+                $settings,
+                $formId
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/form_settings_ajax',
+            'Use fluentform/form_settings_ajax instead of fluentform_form_settings_ajax.'
+        );
+
+        $settings = $this->app->applyFilters('fluentform/form_settings_ajax', $settings, $formId);
 
         wp_send_json_success($settings, 200);
     }
@@ -95,37 +119,39 @@ class FormSettings
         $formSettings = \json_decode($this->request->get('formSettings'), true);
 
         $sanitizerMap = [
-            'redirectTo'                 => 'sanitize_text_field',
-            'redirectMessage'            => 'fluentform_sanitize_html',
-            'messageToShow'              => 'fluentform_sanitize_html',
-            'customPage'                 => 'sanitize_text_field',
-            'samePageFormBehavior'       => 'sanitize_text_field',
-            'customUrl'                  => 'sanitize_url',
-            'enabled'                    => 'rest_sanitize_boolean',
-            'numberOfEntries'            => 'intval',
-            'period'                     => 'intval',
-            'limitReachedMsg'            => 'sanitize_text_field',
-            'start'                      => 'sanitize_text_field',
-            'end'                        => 'sanitize_text_field',
-            'pendingMsg'                 => 'sanitize_text_field',
-            'expiredMsg'                 => 'sanitize_text_field',
-            'requireLoginMsg'            => 'sanitize_text_field',
-            'message'                    => 'sanitize_text_field',
-            'labelPlacement'             => 'sanitize_text_field',
-            'helpMessagePlacement'       => 'sanitize_text_field',
-            'errorMessagePlacement'      => 'sanitize_text_field',
-            'asteriskPlacement'          => 'sanitize_text_field',
-            'delete_entry_on_submission' => 'sanitize_text_field',
-            'id'                         => 'intval',
-            'showLabel'                  => 'rest_sanitize_boolean',
-            'showCount'                  => 'rest_sanitize_boolean',
-            'status'                     => 'rest_sanitize_boolean',
-            'type'                       => 'sanitize_text_field',
-            'field'                      => 'sanitize_text_field',
-            'operator'                   => 'sanitize_text_field',
-            'value'                      => 'sanitize_text_field',
-            'error_message'              => 'sanitize_text_field',
-            'validation_type'            => 'sanitize_text_field',
+            'redirectTo'                      => 'sanitize_text_field',
+            'redirectMessage'                 => 'fluentform_sanitize_html',
+            'messageToShow'                   => 'fluentform_sanitize_html',
+            'customPage'                      => 'sanitize_text_field',
+            'samePageFormBehavior'            => 'sanitize_text_field',
+            'customUrl'                       => 'sanitize_url',
+            'enabled'                         => 'rest_sanitize_boolean',
+            'numberOfEntries'                 => 'intval',
+            'period'                          => 'intval',
+            'limitReachedMsg'                 => 'sanitize_text_field',
+            'start'                           => 'sanitize_text_field',
+            'end'                             => 'sanitize_text_field',
+            'pendingMsg'                      => 'sanitize_text_field',
+            'expiredMsg'                      => 'sanitize_text_field',
+            'requireLoginMsg'                 => 'sanitize_text_field',
+            'message'                         => 'sanitize_text_field',
+            'labelPlacement'                  => 'sanitize_text_field',
+            'helpMessagePlacement'            => 'sanitize_text_field',
+            'errorMessagePlacement'           => 'sanitize_text_field',
+            'asteriskPlacement'               => 'sanitize_text_field',
+            'delete_entry_on_submission'      => 'sanitize_text_field',
+            'id'                              => 'intval',
+            'showLabel'                       => 'rest_sanitize_boolean',
+            'showCount'                       => 'rest_sanitize_boolean',
+            'status'                          => 'rest_sanitize_boolean',
+            'type'                            => 'sanitize_text_field',
+            'field'                           => 'sanitize_text_field',
+            'operator'                        => 'sanitize_text_field',
+            'value'                           => 'sanitize_text_field',
+            'error_message'                   => 'sanitize_text_field',
+            'validation_type'                 => 'sanitize_text_field',
+            'conv_form_per_step_save'         => 'rest_sanitize_boolean',
+            'conv_form_resume_from_last_step' => 'rest_sanitize_boolean',
         ];
         $formSettings = $this->sanitizeData($formSettings, $sanitizerMap);
 
@@ -152,7 +178,18 @@ class FormSettings
             $form->deleteMeta($formId, 'auto_delete_days');
         }
 
-        do_action('fluentform_after_save_form_settings', $formId, $this->request->all());
+        do_action_deprecated(
+            'fluentform_after_save_form_settings',
+            [
+                $formId,
+                $this->request->all()
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/after_save_form_settings',
+            'Use fluentform/after_save_form_settings instead of fluentform_after_save_form_settings.'
+        );
+
+        $this->app->doAction('fluentform/after_save_form_settings', $formId, $this->request->all());
 
         wp_send_json_success([
             'message' => __('Settings has been saved.', 'fluentform'),
@@ -224,7 +261,7 @@ class FormSettings
             $this->settingsQuery->where('id', $settings->id)->update($data);
             $insertId = $settings->id;
         } else {
-            $insertId = $this->settingsQuery->insert($data);
+            $insertId = $this->settingsQuery->insertGetId($data);
         }
 
         wp_send_json_success([

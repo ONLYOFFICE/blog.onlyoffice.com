@@ -43,6 +43,7 @@ class VueSettings {
 		'toggledCards'    => [
 			'dashboardOverview'            => true,
 			'dashboardSeoSetup'            => true,
+			'dashboardSeoChecklist'        => true,
 			'dashboardSeoSiteScore'        => true,
 			'dashboardNotifications'       => true,
 			'dashboardSupport'             => true,
@@ -86,6 +87,7 @@ class VueSettings {
 			'searchMediaAttachments'       => true,
 			'searchAdvanced'               => true,
 			'searchAdvancedCrawlCleanup'   => true,
+			'searchCleanup'                => true,
 			'authorArchives'               => true,
 			'dateArchives'                 => true,
 			'searchArchives'               => true,
@@ -98,7 +100,6 @@ class VueSettings {
 			'localBusinessMapsApiKey'      => true,
 			'localBusinessMapsSettings'    => true,
 			'robotsEditor'                 => true,
-			'badBotBlocker'                => true,
 			'databaseTools'                => true,
 			'htaccessEditor'               => true,
 			'databaseToolsLogs'            => true,
@@ -115,38 +116,53 @@ class VueSettings {
 			'htmlSitemapAdvancedSettings'  => true,
 			'linkAssistantSettings'        => true,
 			'domainActivations'            => true,
-			'404Settings'                  => true
+			'404Settings'                  => true,
+			'userProfiles'                 => true,
+			'queryArgLogs'                 => true,
+			'aiContentSettings'            => true,
+			'writingAssistantSettings'     => true,
+			'writingAssistantCta'          => true,
+			'llmsSitemap'                  => true,
+			'llmsSitemapAdvancedSettings'  => true,
+			'redirectLogsSettings'         => true,
 		],
 		'toggledRadio'    => [
-			'locationsShowOnWebsite'        => 'widget',
-			'breadcrumbsShowOnWebsite'      => 'shortcode',
 			'breadcrumbsShowMoreSeparators' => false,
 			'searchShowMoreSeparators'      => false,
 			'overviewPostType'              => 'post',
 		],
 		'dismissedAlerts' => [
-			'searchStatisticsContentRankings' => false
+			'searchStatisticsContentRankings' => false,
+			'searchConsoleNotConnected'       => false,
+			'searchConsoleSitemapErrors'      => false
 		],
 		'internalTabs'    => [
-			'authorArchives'    => 'title-description',
-			'dateArchives'      => 'title-description',
-			'searchArchives'    => 'title-description',
-			'seoAuditChecklist' => 'all-items'
+			'authorArchives' => 'title-description',
+			'dateArchives'   => 'title-description',
+			'searchArchives' => 'title-description',
 		],
 		'tablePagination' => [
-			'networkDomains'                     => 20,
-			'redirects'                          => 20,
-			'redirectLogs'                       => 20,
-			'redirect404Logs'                    => 20,
-			'sitemapAdditionalPages'             => 20,
-			'linkAssistantLinksReport'           => 20,
-			'linkAssistantPostsReport'           => 20,
-			'linkAssistantDomainsReport'         => 20,
-			'searchStatisticsSeoStatistics'      => 20,
-			'searchStatisticsKeywordRankings'    => 20,
-			'searchStatisticsContentRankings'    => 20,
-			'searchStatisticsPostDetailKeywords' => 20
-		]
+			'networkDomains'                         => 20,
+			'redirects'                              => 20,
+			'redirectLogs'                           => 20,
+			'redirect404Logs'                        => 20,
+			'sitemapAdditionalPages'                 => 20,
+			'linkAssistantLinksReport'               => 20,
+			'linkAssistantPostsReport'               => 20,
+			'linkAssistantDomainsReport'             => 20,
+			'searchStatisticsSeoStatistics'          => 20,
+			'searchStatisticsKeywordRankings'        => 20,
+			'searchStatisticsContentRankings'        => 20,
+			'searchStatisticsPostDetailKeywords'     => 20,
+			'searchStatisticsKrtKeywords'            => 20,
+			'searchStatisticsKrtGroups'              => 20,
+			'searchStatisticsKrtGroupsTableKeywords' => 10,
+			'searchStatisticsIndexStatus'            => 20,
+			'queryArgs'                              => 20,
+			'seoAnalysis'                            => 20,
+			'seoChecklist'                           => 20
+		],
+		'semrushCountry'  => 'US'
 	];
 
 	/**
@@ -160,8 +176,10 @@ class VueSettings {
 		$this->addDynamicDefaults();
 
 		$this->settingsName = $settings;
-		$this->settings     = get_user_meta( get_current_user_id(), $settings, true )
-			? array_replace_recursive( $this->defaults, get_user_meta( get_current_user_id(), $settings, true ) )
+
+		$dbSettings     = get_user_meta( get_current_user_id(), $settings, true );
+		$this->settings = $dbSettings
+			? array_replace_recursive( $this->defaults, $dbSettings )
 			: $this->defaults;
 	}
 
@@ -173,7 +191,7 @@ class VueSettings {
 	 * @return void
 	 */
 	private function addDynamicDefaults() {
-		$postTypes = aioseo()->helpers->getPublicPostTypes( false, false, true );
+		$postTypes = aioseo()->helpers->getPublicPostTypes( false, false, true, [ 'include' => [ 'buddypress' ] ] );
 		foreach ( $postTypes as $postType ) {
 			$this->defaults['toggledCards'][ $postType['name'] . 'SA' ] = true;
 			$this->defaults['internalTabs'][ $postType['name'] . 'SA' ] = 'title-description';
@@ -185,10 +203,16 @@ class VueSettings {
 			$this->defaults['internalTabs'][ $taxonomy['name'] . 'SA' ] = 'title-description';
 		}
 
-		$postTypes = aioseo()->helpers->getPublicPostTypes( false, true, true );
+		$postTypes = aioseo()->helpers->getPublicPostTypes( false, true, true, [ 'include' => [ 'buddypress' ] ] );
 		foreach ( $postTypes as $postType ) {
 			$this->defaults['toggledCards'][ $postType['name'] . 'ArchiveArchives' ] = true;
 			$this->defaults['internalTabs'][ $postType['name'] . 'ArchiveArchives' ] = 'title-description';
+		}
+
+		// Check any addons for defaults.
+		$addonsDefaults = array_filter( aioseo()->addons->doAddonFunction( 'vueSettings', 'addDynamicDefaults' ) );
+		foreach ( $addonsDefaults as $addonDefaults ) {
+			$this->defaults = array_merge_recursive( $this->defaults, $addonDefaults );
 		}
 	}
 

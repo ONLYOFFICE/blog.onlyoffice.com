@@ -33,6 +33,78 @@ class Addons {
 	protected $addonsUrl = 'https://licensing-cdn.aioseo.com/keys/lite/all-in-one-seo-pack-pro.json';
 
 	/**
+	 * The main Image SEO addon class.
+	 *
+	 * @since 4.4.2
+	 *
+	 * @var \AIOSEO\Plugin\Addon\ImageSeo\ImageSeo
+	 */
+	private $imageSeo = null;
+
+	/**
+	 * The main Index Now addon class.
+	 *
+	 * @since 4.4.2
+	 *
+	 * @var \AIOSEO\Plugin\Addon\IndexNow\IndexNow
+	 */
+	private $indexNow = null;
+
+	/**
+	 * The main Local Business addon class.
+	 *
+	 * @since 4.4.2
+	 *
+	 * @var \AIOSEO\Plugin\Addon\LocalBusiness\LocalBusiness
+	 */
+	private $localBusiness = null;
+
+	/**
+	 * The main News Sitemap addon class.
+	 *
+	 * @since 4.4.2
+	 *
+	 * @var \AIOSEO\Plugin\Addon\NewsSitemap\NewsSitemap
+	 */
+	private $newsSitemap = null;
+
+	/**
+	 * The main REST API addon class.
+	 *
+	 * @since 4.4.2
+	 *
+	 * @var \AIOSEO\Plugin\Addon\RestApi\RestApi
+	 */
+	private $restApi = null;
+
+	/**
+	 * The main Video Sitemap addon class.
+	 *
+	 * @since 4.4.2
+	 *
+	 * @var \AIOSEO\Plugin\Addon\VideoSitemap\VideoSitemap
+	 */
+	private $videoSitemap = null;
+
+	/**
+	 * The main Link Assistant addon class.
+	 *
+	 * @since 4.4.2
+	 *
+	 * @var \AIOSEO\Plugin\Addon\LinkAssistant\LinkAssistant
+	 */
+	private $linkAssistant = null;
+
+	/**
+	 * The main EEAT addon class.
+	 *
+	 * @since 4.5.4
+	 *
+	 * @var \AIOSEO\Plugin\Addon\LinkAssistant\LinkAssistant
+	 */
+	private $eeat = null;
+
+	/**
 	 * Returns our addons.
 	 *
 	 * @since 4.0.0
@@ -43,22 +115,40 @@ class Addons {
 	public function getAddons( $flushCache = false ) {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-		$addons = aioseo()->core->cache->get( 'addons' );
+		$addons        = aioseo()->core->cache->get( 'addons' );
+		$defaultAddons = $this->getDefaultAddons();
 		if ( null === $addons || $flushCache ) {
-			$response = aioseo()->helpers->wpRemoteGet( $this->getAddonsUrl() );
-			if ( 200 === wp_remote_retrieve_response_code( $response ) ) {
-				$addons = json_decode( wp_remote_retrieve_body( $response ) );
+			$lockKey = 'addons_fetch_lock';
+			if ( ! $flushCache && null !== aioseo()->core->cache->get( $lockKey ) ) {
+				$addons = aioseo()->core->cache->get( 'addons' );
 			}
 
-			if ( ! $addons || ! empty( $addons->error ) ) {
-				$addons = $this->getDefaultAddons();
+			if ( null === $addons || $flushCache ) {
+				aioseo()->core->cache->update( $lockKey, true, MINUTE_IN_SECONDS );
+				$addons = $this->fetchAddonsFromRemote( $defaultAddons );
+				aioseo()->core->cache->update( 'addons', $addons );
+				aioseo()->core->cache->delete( $lockKey );
 			}
-
-			aioseo()->core->cache->update( 'addons', $addons );
 		}
+
+		// Convert the addons array to objects using JSON. This is essential because we have lots of addons that rely on this to be an object, and changing it to an array would break them.
+
+		$addons = json_decode( wp_json_encode( $addons ) );
+
+		if ( is_string( $addons ) ) {
+			$addons = json_decode( $addons );
+		}
+
+		$addons = array_filter( $addons, function( $addon ) {
+			return ! is_object( $addon ) || 'aioseo-redirects' !== $addon->sku;
+		} );
 
 		$installedPlugins = array_keys( get_plugins() );
 		foreach ( $addons as $key => $addon ) {
+			if ( ! is_object( $addon ) ) {
+				continue;
+			}
+
 			$addons[ $key ]->basename          = $this->getAddonBasename( $addon->sku );
 			$addons[ $key ]->installed         = in_array( $this->getAddonBasename( $addon->sku ), $installedPlugins, true );
 			$addons[ $key ]->isActive          = is_plugin_active( $addons[ $key ]->basename );
@@ -68,7 +158,89 @@ class Addons {
 			$addons[ $key ]->capability        = $this->getManageCapability( $addon->sku );
 			$addons[ $key ]->minimumVersion    = '0.0.0';
 			$addons[ $key ]->hasMinimumVersion = false;
+			$addons[ $key ]->featured          = $this->setFeatured( $addon );
 		}
+
+		return $this->sortAddons( $addons );
+	}
+
+	/**
+	 * Fetches addon list from the remote CDN. Used by getAddons() behind a transient lock to avoid duplicate requests.
+	 *
+	 * @since 4.9.4.2
+	 *
+	 * @param  array $defaultAddons Fallback when the request fails or returns non-200.
+	 * @return array Addons array (decoded from JSON or default).
+	 */
+	protected function fetchAddonsFromRemote( $defaultAddons ) {
+		$response = aioseo()->helpers->wpRemoteGet( $this->getAddonsUrl() );
+		if ( 200 === wp_remote_retrieve_response_code( $response ) ) {
+			$addons = json_decode( wp_remote_retrieve_body( $response ), true );
+			if ( $addons && ( ! is_object( $addons ) || empty( $addons->error ) ) ) {
+				return $addons;
+			}
+		}
+
+		return $defaultAddons;
+	}
+
+	/**
+	 * Set the featured status for an addon.
+	 *
+	 * @since 4.6.9
+	 *
+	 * @param  object $addon The addon.
+	 * @return bool          The featured status.
+	 */
+	protected function setFeatured( $addon ) {
+		$defaultAddons = $this->getDefaultAddons();
+		$featured      = false;
+
+		// Find the addon in the default addons list and get the featured status.
+		foreach ( $defaultAddons as $defaultAddon ) {
+			if ( $addon->sku !== $defaultAddon['sku'] ) {
+				continue;
+			}
+
+			$featured = ! empty( $addon->featured )
+				? $addon->featured
+				: (
+					! empty( $defaultAddon['featured'] )
+						? $defaultAddon['featured']
+						: $featured
+					);
+			break;
+		}
+
+		return $featured;
+	}
+
+	/**
+	 * Sort the addons by moving the featured ones to the top.
+	 *
+	 * @since 4.6.9
+	 *
+	 * @param  array $addons The addons to sort.
+	 * @return array         The sorted addons.
+	 */
+	protected function sortAddons( $addons ) {
+		if ( ! is_array( $addons ) ) {
+			return $addons;
+		}
+
+		// Sort the addons by moving the featured ones to the top.
+		usort( $addons, function( $a, $b ) {
+			// Sort by featured value. It can be false, or numerical. If it's false, it will be moved to the bottom.
+			// If it's numerical, it will be moved to the top. Numbers will be sorted in descending order.
+			$featuredA = ! empty( $a->featured ) ? $a->featured : 0;
+			$featuredB = ! empty( $b->featured ) ? $b->featured : 0;
+
+			if ( $featuredA === $featuredB ) {
+				return 0;
+			}
+
+			return $featuredA > $featuredB ? -1 : 1;
+		} );
 
 		return $addons;
 	}
@@ -91,9 +263,6 @@ class Addons {
 			case 'aioseo-video-sitemap':
 			case 'aioseo-news-sitemap':
 				$capability = 'aioseo_sitemap_settings';
-				break;
-			case 'aioseo-redirects':
-				$capability = 'aioseo_redirects_settings';
 				break;
 			case 'aioseo-local-business':
 				$capability = 'aioseo_local_seo_settings';
@@ -129,6 +298,10 @@ class Addons {
 
 		$addons = $this->getAddons();
 		foreach ( $addons as $addon ) {
+			if ( ! is_object( $addon ) ) {
+				continue;
+			}
+
 			if ( $addon->isActive ) {
 				$unlicensed['addons'][] = $addon;
 			}
@@ -179,7 +352,7 @@ class Addons {
 
 		$keys = array_keys( $plugins );
 		foreach ( $keys as $key ) {
-			if ( preg_match( '|^' . $sku . '|', $key ) ) {
+			if ( preg_match( '|^' . $sku . '|', (string) $key ) ) {
 				return $key;
 			}
 		}
@@ -210,6 +383,24 @@ class Addons {
 		}
 
 		return [];
+	}
+
+	/**
+	 * Returns a list of addon SKUs.
+	 *
+	 * @since 4.5.6
+	 *
+	 * @return array The addon SKUs.
+	 */
+	public function getAddonSkus() {
+		$addons = $this->getAddons();
+		if ( empty( $addons ) ) {
+			return [];
+		}
+
+		return array_map( function( $addon ) {
+			return $addon->sku;
+		}, $addons );
 	}
 
 	/**
@@ -335,7 +526,12 @@ class Addons {
 	 * @return bool True if yes, false if not.
 	 */
 	public function canInstall() {
-		if ( ! current_user_can( 'install_plugins' ) ) {
+		if (
+			function_exists( 'wp_get_current_user' ) &&
+			is_user_logged_in() &&
+			! current_user_can( 'install_plugins' ) &&
+			! aioseo()->helpers->isDoingWpCli()
+		) {
 			return false;
 		}
 
@@ -355,7 +551,12 @@ class Addons {
 	 * @return bool True if yes, false if not.
 	 */
 	public function canUpdate() {
-		if ( ! current_user_can( 'update_plugins' ) && ! aioseo()->helpers->isDoingWpCli() ) {
+		if (
+			function_exists( 'wp_get_current_user' ) &&
+			is_user_logged_in() &&
+			! current_user_can( 'update_plugins' ) &&
+			! aioseo()->helpers->isDoingWpCli()
+		) {
 			return false;
 		}
 
@@ -375,7 +576,12 @@ class Addons {
 	 * @return bool True if yes, false if not.
 	 */
 	public function canActivate() {
-		if ( ! current_user_can( 'activate_plugins' ) ) {
+		if (
+			function_exists( 'wp_get_current_user' ) &&
+			is_user_logged_in() &&
+			! current_user_can( 'activate_plugins' ) &&
+			! aioseo()->helpers->isDoingWpCli()
+		) {
 			return false;
 		}
 
@@ -383,13 +589,12 @@ class Addons {
 	}
 
 	/**
-	 * Load an addon into aioseo
+	 * Load an addon into aioseo.
 	 *
 	 * @since 4.1.0
 	 *
-	 * @param string $slug
-	 * @param object $addon Addon class instance
-	 *
+	 * @param  string $slug
+	 * @param  object $addon Addon class instance.
 	 * @return void
 	 */
 	public function loadAddon( $slug, $addon ) {
@@ -398,12 +603,11 @@ class Addons {
 	}
 
 	/**
-	 * Return a loaded addon
+	 * Return a loaded addon.
 	 *
 	 * @since 4.1.0
 	 *
-	 * @param string $slug
-	 *
+	 * @param  string $slug
 	 * @return object|null
 	 */
 	public function getLoadedAddon( $slug ) {
@@ -438,7 +642,7 @@ class Addons {
 	 * @param  array  $args     The args for the function.
 	 * @return array            The response from each addon.
 	 */
-	public function doFunction( $class, $function, $args = [] ) {
+	public function doAddonFunction( $class, $function, $args = [] ) {
 		$addonResponses = [];
 
 		foreach ( $this->getLoadedAddons() as $addonSlug => $addon ) {
@@ -448,6 +652,25 @@ class Addons {
 		}
 
 		return $addonResponses;
+	}
+
+	/**
+	 * Merges the data for Vue.
+	 *
+	 * @since 4.4.1
+	 *
+	 * @param  array  $data The data to merge.
+	 * @param  string $page The current page.
+	 * @return array        The data.
+	 */
+	public function getVueData( $data = [], $page = null ) {
+		foreach ( $this->getLoadedAddons() as $addon ) {
+			if ( isset( $addon->helpers ) && method_exists( $addon->helpers, 'getVueData' ) ) {
+				$data = array_merge( $data, $addon->helpers->getVueData( $data, $page ) );
+			}
+		}
+
+		return $data;
 	}
 
 	/**
@@ -462,7 +685,7 @@ class Addons {
 		$addons = $this->getDefaultAddons();
 		$addon  = [];
 		foreach ( $addons as $a ) {
-			if ( $a->sku === $sku ) {
+			if ( $a['sku'] === $sku ) {
 				$addon = $a;
 			}
 		}
@@ -480,36 +703,37 @@ class Addons {
 	protected function getDefaultAddons() {
 		return json_decode( wp_json_encode( [
 			[
-				'sku'                => 'aioseo-redirects',
-				'name'               => 'Redirection Manager',
+				'sku'                => 'aioseo-eeat',
+				'name'               => 'Author SEO (E-E-A-T)',
 				'version'            => '1.0.0',
 				'image'              => null,
-				'icon'               => 'svg-redirect',
+				'icon'               => 'svg-eeat',
 				'levels'             => [
-					'agency',
-					'business',
+					'plus',
 					'pro',
-					'elite'
+					'elite',
 				],
 				'currentLevels'      => [
+					'plus',
 					'pro',
 					'elite'
 				],
 				'requiresUpgrade'    => true,
-				'description'        => '<p>Our Redirection Manager allows you to easily create and manage redirects for your broken links to avoid confusing search engines and users, as well as losing valuable backlinks. It even automatically sends users and search engines from your old URLs to your new ones.</p>', // phpcs:ignore Generic.Files.LineLength.MaxExceeded
+				'description'        => '<p>Optimize your site for Google\'s E-E-A-T ranking factor by proving your writer\'s expertise through author schema markup and new UI elements.</p>',
 				'descriptionVersion' => 0,
-				'productUrl'         => 'https://aioseo.com/features/redirection-manager/',
-				'learnMoreUrl'       => 'https://aioseo.com/features/redirection-manager/',
-				'manageUrl'          => 'https://route#aioseo-redirects',
-				'basename'           => 'aioseo-redirects/aioseo-redirects.php',
+				'productUrl'         => 'https://aioseo.com/author-seo-eeat/',
+				'learnMoreUrl'       => 'https://aioseo.com/author-seo-eeat/',
+				'manageUrl'          => 'https://route#aioseo-search-appearance:author-seo',
+				'basename'           => 'aioseo-eeat/aioseo-eeat.php',
 				'installed'          => false,
 				'isActive'           => false,
 				'canInstall'         => false,
 				'canActivate'        => false,
 				'canUpdate'          => false,
-				'capability'         => $this->getManageCapability( 'aioseo-redirects' ),
+				'capability'         => $this->getManageCapability( 'aioseo-eeat' ),
 				'minimumVersion'     => '0.0.0',
-				'hasMinimumVersion'  => false
+				'hasMinimumVersion'  => false,
+				'featured'           => 300
 			],
 			[
 				'sku'                => 'aioseo-link-assistant',
@@ -531,7 +755,7 @@ class Addons {
 				'descriptionVersion' => 0,
 				'productUrl'         => 'https://aioseo.com/feature/internal-link-assistant/',
 				'learnMoreUrl'       => 'https://aioseo.com/feature/internal-link-assistant/',
-				'manageUrl'          => 'https://route#aioseo-link-assistant',
+				'manageUrl'          => 'https://route#aioseo-link-assistant:overview',
 				'basename'           => 'aioseo-link-assistant/aioseo-link-assistant.php',
 				'installed'          => false,
 				'isActive'           => false,
@@ -540,7 +764,8 @@ class Addons {
 				'canUpdate'          => false,
 				'capability'         => $this->getManageCapability( 'aioseo-link-assistant' ),
 				'minimumVersion'     => '0.0.0',
-				'hasMinimumVersion'  => false
+				'hasMinimumVersion'  => false,
+				'featured'           => 100
 			],
 			[
 				'sku'                => 'aioseo-video-sitemap',
@@ -746,7 +971,7 @@ class Addons {
 				'minimumVersion'     => '0.0.0',
 				'hasMinimumVersion'  => false
 			]
-		] ) );
+		] ), true );
 	}
 
 	/**
@@ -757,4 +982,29 @@ class Addons {
 	 * @return void
 	 */
 	public function registerUpdateCheck() {}
+
+	/**
+	 * Updates a given addon or plugin.
+	 *
+	 * @since 4.4.3
+	 *
+	 * @param  string $name    The addon name/sku.
+	 * @param  bool   $network Whether we are in a network environment.
+	 * @return bool            Whether the installation was succesful.
+	 */
+	public function upgradeAddon( $name, $network ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		return false;
+	}
+
+	/**
+	 * Get the download URL for the given addon.
+	 *
+	 * @since 4.4.3
+	 *
+	 * @param  string $sku The addon sku.
+	 * @return string      The download url for the addon.
+	 */
+	public function getDownloadUrl( $sku ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		return '';
+	}
 }

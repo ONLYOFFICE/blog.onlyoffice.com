@@ -46,14 +46,14 @@ class CustomSubmitButton extends BaseFieldManager
                 'color'            => 'rgb(255, 255, 255)',
                 'hover_styles'     => (object) [
                     'backgroundColor' => '#ffffff',
-                    'borderColor'     => '#409EFF',
-                    'color'           => '#409EFF',
+                    'borderColor'     => '#1a7efb',
+                    'color'           => '#1a7efb',
                     'borderRadius'    => '',
                     'minWidth'        => '100%',
                 ],
                 'normal_styles' => (object) [
-                    'backgroundColor' => '#409EFF',
-                    'borderColor'     => '#409EFF',
+                    'backgroundColor' => '#1a7efb',
+                    'borderColor'     => '#1a7efb',
                     'color'           => '#ffffff',
                     'borderRadius'    => '',
                     'minWidth'        => '100%',
@@ -105,10 +105,32 @@ class CustomSubmitButton extends BaseFieldManager
             return '';
         }
 
-        add_filter('fluentform_is_hide_submit_btn_' . $form->id, '__return_true');
+        $hideSubmit = apply_filters_deprecated(
+            'fluentform_is_hide_submit_btn_' . $form->id,
+            [
+                '__return_true'
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/is_hide_submit_btn_' . $form->id,
+            'Use fluentform/is_hide_submit_btn_' . $form->id . ' instead of fluentform_is_hide_submit_btn_' . $form->id
+        );
+
+        add_filter('fluentform/is_hide_submit_btn_' . $form->id, $hideSubmit);
 
         $elementName = $data['element'];
-        $data = apply_filters('fluentform_rendering_field_data_' . $elementName, $data, $form);
+    
+        $data = apply_filters_deprecated(
+            'fluentform_rendering_field_data_' . $elementName,
+            [
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_data_' . $elementName,
+            'Use fluentform/rendering_field_data_' . $elementName . ' instead of fluentform_rendering_field_data_' . $elementName
+        );
+
+        $data = apply_filters('fluentform/rendering_field_data_' . $elementName, $data, $form);
 
         $btnStyle = ArrayHelper::get($data['settings'], 'button_style');
 
@@ -146,7 +168,7 @@ class CustomSubmitButton extends BaseFieldManager
 
             $activeStates = '';
             foreach ($buttonActiveStyles as $styleAtr => $styleValue) {
-                if (! $styleValue) {
+                if ('0' != $styleValue && !$styleValue) {
                     continue;
                 }
                 if ('borderRadius' == $styleAtr) {
@@ -159,7 +181,7 @@ class CustomSubmitButton extends BaseFieldManager
             }
             $hoverStates = '';
             foreach ($buttonHoverStyles as $styleAtr => $styleValue) {
-                if (! $styleValue) {
+                if ('0' != $styleValue && !$styleValue) {
                     continue;
                 }
                 if ('borderRadius' == $styleAtr) {
@@ -183,12 +205,14 @@ class CustomSubmitButton extends BaseFieldManager
         // ADDED IN v1.2.6 - updated in 1.4.4
         if (isset($data['settings']['button_ui'])) {
             if ('default' == $data['settings']['button_ui']['type']) {
-                $html .= '<button ' . $atts . '>' . fluentform_sanitize_html($data['settings']['button_ui']['text']) . '</button>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
+                $buttonText = $data['settings']['button_ui']['text'];
+                $html .= '<button ' . $atts . ' aria-label="' . esc_attr($this->removeShortcode($buttonText)) . '">' . fluentform_sanitize_html($buttonText) . '</button>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
             } else {
-                $html .= "<button class='ff-btn-submit' type='submit'><img style='max-width: 200px;' src='" . esc_url($data['settings']['button_ui']['img_url']) . "' alt='Submit Form'></button>";
+                $html .= "<button class='ff-btn-submit' type='submit' aria-label='Submit The Form'><img style='max-width: 200px;' src='" . esc_url($data['settings']['button_ui']['img_url']) . "' alt='Submit Form'></button>";
             }
         } else {
-            $html .= '<button ' . $atts . '>' . fluentform_sanitize_html($data['settings']['btn_text']) . '</button>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
+            $buttonText = $data['settings']['btn_text'];
+            $html .= '<button ' . $atts . ' aria-label="' . esc_attr($this->removeShortcode($buttonText)) . '">' . fluentform_sanitize_html($buttonText) . '</button>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
         }
 
         if ($styles) {
@@ -197,6 +221,18 @@ class CustomSubmitButton extends BaseFieldManager
 
         $html .= '</div>';
 
-        $this->printContent('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
+        $html = apply_filters_deprecated(
+            'fluentform_rendering_field_html_' . $elementName,
+            [
+                $html,
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_html_' . $elementName,
+            'Use fluentform/rendering_field_html_' . $elementName . ' instead of fluentform_rendering_field_html_' . $elementName
+        );
+
+        $this->printContent('fluentform/rendering_field_html_' . $elementName, $html, $data, $form);
     }
 }

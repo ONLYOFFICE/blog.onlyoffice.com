@@ -13,11 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 trait WpMultisite {
 	/**
-	 * Returns the network ID.
+	 * Returns the ID of the network's main site.
 	 *
 	 * @since 4.2.5
 	 *
-	 * @return int The integer of the blog/site id.
+	 * @return int The ID of the network's main site.
 	 */
 	public function getNetworkId() {
 		if ( is_multisite() ) {
@@ -33,7 +33,7 @@ trait WpMultisite {
 	 * @since 4.2.5
 	 *
 	 * @param  int          $blogId The blog ID.
-	 * @return WP_Site|null         The site.
+	 * @return \WP_Site|null         The site.
 	 */
 	public function getSiteByBlogId( $blogId ) {
 		$sites = $this->getSites();
@@ -51,7 +51,7 @@ trait WpMultisite {
 	 *
 	 * @since 4.2.5
 	 *
-	 * @return \WP_Site|Object A WP_Site instance of the current site or an object representing the same.
+	 * @return \WP_Site|object A WP_Site instance of the current site or an object representing the same.
 	 */
 	public function getSite() {
 		if ( is_multisite() ) {
@@ -59,8 +59,8 @@ trait WpMultisite {
 		}
 
 		return (object) [
-			'domain' => $this->getSiteDomain(),
-			'path'   => $this->getHomePath()
+			'domain' => $this->getSiteDomain( true ),
+			'path'   => $this->getHomePath( true )
 		];
 	}
 
@@ -78,7 +78,7 @@ trait WpMultisite {
 	 * @return array                   An array of sites.
 	 */
 	public function getSites( $limit = 'all', $offset = 0, $searchTerm = null, $filter = 'all', $orderBy = null, $orderDir = 'DESC' ) {
-		$countSites = wp_count_sites();
+		$countSites = $this->countSites();
 		$sites      = get_sites( [
 			'network_id' => get_current_network_id(),
 			'number'     => $countSites['public'],
@@ -155,6 +155,42 @@ trait WpMultisite {
 	}
 
 	/**
+	 * Count the number of sites in the network. A clone of wp_count_sites. We use this because
+	 * we don't yet support WordPress 5.3. Once we do, we can revert to wp_count_sites.
+	 *
+	 * @since 4.4.5
+	 *
+	 * @return array          An array of aliases.
+	 */
+	private function countSites() {
+		$networkId = get_current_network_id();
+
+		$counts = [];
+		$args   = [
+			'network_id'    => $networkId,
+			'number'        => 1,
+			'fields'        => 'ids',
+			'no_found_rows' => false,
+		];
+
+		$q             = new \WP_Site_Query( $args );
+		$counts['all'] = $q->found_sites;
+
+		$_args    = $args;
+		$statuses = [ 'public', 'archived', 'mature', 'spam', 'deleted' ];
+
+		foreach ( $statuses as $status ) {
+			$_args            = $args;
+			$_args[ $status ] = 1;
+
+			$q                 = new \WP_Site_Query( $_args );
+			$counts[ $status ] = $q->found_sites;
+		}
+
+		return $counts;
+	}
+
+	/**
 	 * Filter sites based on a passed in filter. Options include 'all', 'activated' or 'deactivated'.
 	 *
 	 * @since 4.2.5
@@ -168,18 +204,7 @@ trait WpMultisite {
 			return true;
 		}
 
-		static $activeSites = null;
-		if ( null === $activeSites ) {
-			$activeSites = json_decode( aioseo()->internalNetworkOptions->internal->sites->active );
-		}
-
-		$siteIsActive = false;
-		foreach ( $activeSites as $as ) {
-			if ( $as->domain === $site->domain && $as->path === $site->path ) {
-				$siteIsActive = true;
-			}
-		}
-
+		$siteIsActive = aioseo()->networkLicense->isSiteActive( $site );
 		if (
 			( 'deactivated' === $filter && ! $siteIsActive ) ||
 			( 'activated' === $filter && $siteIsActive )
@@ -227,14 +252,18 @@ trait WpMultisite {
 	 * @since 4.2.5
 	 *
 	 * @param  int  $blogId The blog ID to switch to.
-	 * @return bool         Always returns true.
+	 * @return bool         Whether the blog was switched to or not.
 	 */
 	public function switchToBlog( $blogId ) {
 		if ( ! is_multisite() ) {
-			return true;
+			return false;
 		}
 
-		return switch_to_blog( $blogId );
+		switch_to_blog( $blogId );
+
+		aioseo()->core->db->init();
+
+		return true;
 	}
 
 	/**
@@ -242,14 +271,18 @@ trait WpMultisite {
 	 *
 	 * @since 4.2.5
 	 *
-	 * @return bool True on success, false if we're already on the current blog or not in a multisite environment.
+	 * @return bool Whether the blog was restored or not.
 	 */
 	public function restoreCurrentBlog() {
 		if ( ! is_multisite() ) {
 			return false;
 		}
 
-		return restore_current_blog();
+		restore_current_blog();
+
+		aioseo()->core->db->init();
+
+		return true;
 	}
 
 	/**
@@ -275,5 +308,18 @@ trait WpMultisite {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Returns the current site domain.
+	 *
+	 * @since 4.7.7
+	 *
+	 * @return string The site domain.
+	 */
+	public function getMultiSiteDomain() {
+		$site = aioseo()->helpers->getSite();
+
+		return $site->domain . $site->path;
 	}
 }

@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -8,11 +17,19 @@ if ( ! class_exists( 'ACF_Ajax_User_Setting' ) ) :
 
 	class ACF_Ajax_User_Setting extends ACF_Ajax {
 
-		/** @var string The AJAX action name. */
-		var $action = 'acf/ajax/user_setting';
+		/**
+		 * The AJAX action name.
+		 *
+		 * @var string
+		 */
+		public $action = 'acf/ajax/user_setting';
 
-		/** @var bool Prevents access for non-logged in users. */
-		var $public = true;
+		/**
+		 * Prevents access for non-logged in users.
+		 *
+		 * @var boolean
+		 */
+		public $public = false;
 
 		/**
 		 * get_response
@@ -25,7 +42,10 @@ if ( ! class_exists( 'ACF_Ajax_User_Setting' ) ) :
 		 * @param   array $request The request args.
 		 * @return  mixed The response data or WP_Error.
 		 */
-		function get_response( $request ) {
+		public function get_response( $request ) {
+			if ( ! acf_current_user_can_admin() ) {
+				return new WP_Error( 'acf_invalid_permissions', __( 'Sorry, you do not have permission to do that.', 'acf' ) );
+			}
 
 			// update
 			if ( $this->has( 'value' ) ) {
@@ -39,5 +59,4 @@ if ( ! class_exists( 'ACF_Ajax_User_Setting' ) ) :
 	}
 
 	acf_new_instance( 'ACF_Ajax_User_Setting' );
-
 endif; // class_exists check

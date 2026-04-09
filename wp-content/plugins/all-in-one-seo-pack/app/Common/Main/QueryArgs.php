@@ -6,21 +6,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AIOSEO\Plugin\Common\Models\CrawlCleanupLog;
+use AIOSEO\Plugin\Common\Models\CrawlCleanupBlockedArg;
+
 /**
  * Query arguments class.
  *
- * @since 4.2.1
+ * @since   4.2.1
+ * @version 4.5.8
  */
 class QueryArgs {
-	/**
-	 * List of plugins to check against.
-	 *
-	 * @since 4.2.1
-	 *
-	 * @var array
-	 */
-	private $plugins;
-
 	/**
 	 * Construct method.
 	 *
@@ -30,465 +25,196 @@ class QueryArgs {
 		if (
 			is_admin() ||
 			aioseo()->helpers->isWpLoginPage() ||
-			aioseo()->helpers->isAjaxCronRestRequest()
+			aioseo()->helpers->isAjaxCronRestRequest() ||
+			aioseo()->helpers->isDoingWpCli()
 		) {
 			return;
 		}
 
-		if (
-			aioseo()->options->searchAppearance->advanced->crawlCleanup->enable &&
-			aioseo()->options->searchAppearance->advanced->crawlCleanup->removeUnrecognizedQueryArgs
-		) {
-			add_action( 'template_redirect', [ $this, 'removeUnrecognizedQueryArgs' ], 1 );
-		}
+		add_action( 'template_redirect', [ $this, 'maybeRemoveQueryArgs' ], 1 );
+
+		$this->removeReplyToCom();
 	}
 
 	/**
-	 * Remove any unrecognized query args.
+	 * Check if we can remove query args.
 	 *
-	 * @since 4.2.1
+	 * @since 4.5.8
 	 *
-	 * @return void
+	 * @return boolean True if the query args can be removed.
 	 */
-	public function removeUnrecognizedQueryArgs() {
-		$this->plugins = aioseo()->helpers->getPluginData();
-
+	private function canRemoveQueryArgs() {
 		if (
+			! aioseo()->options->searchAppearance->advanced->blockArgs->enable ||
 			is_user_logged_in() ||
 			is_admin() ||
 			is_robots() ||
 			get_query_var( 'aiosp_sitemap_path' ) ||
-			empty( $_GET )
+			empty( $_GET ) // phpcs:ignore HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
 		) {
-			return;
+			return false;
 		}
 
-		$currentUrl       = aioseo()->helpers->getCurrentUrl();
-		$currentUrlParsed = wp_parse_url( $currentUrl );
-
-		// No query args? Never mind!
-		if ( empty( $currentUrlParsed['query'] ) ) {
-			return;
-		}
-
-		$newUrl = '';
 		if ( is_singular() ) {
 			global $post;
 			$thePost = aioseo()->helpers->getPost( $post->ID );
 
 			// Leave the preview query arguments intact.
-			if ( isset( $_GET['preview'] ) && isset( $_GET['preview_nonce'] ) && current_user_can( 'edit_post', $thePost->ID ) ) {
-				return;
-			}
-
-			$newUrl = $this->getSingularUrl( $thePost );
-		}
-
-		if ( is_front_page() ) {
-			$newUrl = $this->getFrontPageUrl();
-		} elseif ( is_home() ) {
-			$newUrl = get_permalink( get_option( 'page_for_posts' ) );
-		}
-
-		if ( is_category() || is_tag() || is_tax() ) {
-			$newUrl = $this->getTaxonomyUrl();
-		}
-
-		if ( is_search() ) {
-			$newUrl = $this->getSearchUrl();
-		}
-
-		if ( is_404() ) {
-			$newUrl = $this->get404Url();
-		}
-
-		global $wp_query;
-		if (
-			! empty( $newUrl ) &&
-			0 !== $wp_query->query_vars['paged'] &&
-			0 !== $wp_query->post_count
-		) {
-			if ( is_search() ) {
-				$newUrl = get_bloginfo( 'url' ) . '/page/' . $wp_query->query_vars['paged'] . '/?s=' . rawurlencode( get_search_query() );
-			} else {
-				$newUrl = user_trailingslashit( trailingslashit( $newUrl ) . 'page/' . $wp_query->query_vars['paged'] );
+			if (
+				// phpcs:disable phpcs:ignore HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
+				isset( $_GET['preview'] ) &&
+				isset( $_GET['preview_nonce'] ) &&
+				// phpcs:enable
+				wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['preview_nonce'] ) ), 'post_preview_' . $thePost->ID ) &&
+				current_user_can( 'edit_post', $thePost->ID )
+			) {
+				return false;
 			}
 		}
 
-		$allowedQueryArgs = array_merge(
-			$this->getDefaultQueryArgs(),
-			$this->getWpQueryArgs(),
-			$this->getAioseoQueryArgs(),
-			$this->getAmpQueryArgs(),
-			$this->getWpFormsQueryArgs(),
-			$this->getRafflepressQueryArgs(),
-			$this->getEddQueryArgs(),
-			$this->getSmashBalloonQueryArgs(),
-			$this->getSearchWpQueryArgs(),
-			$this->getWooCommerceQueryArgs()
-		);
+		return true;
+	}
 
-		if ( aioseo()->options->searchAppearance->advanced->crawlCleanup->allowedQueryArgs ) {
-			$allowedQueryArgs = array_merge(
-				$allowedQueryArgs,
-				explode( "\n", aioseo()->options->searchAppearance->advanced->crawlCleanup->allowedQueryArgs )
-			);
+	/**
+	 * Maybe remove query args.
+	 *
+	 * @since 4.5.8
+	 *
+	 * @return void
+	 */
+	public function maybeRemoveQueryArgs() {
+		if ( ! $this->canRemoveQueryArgs() ) {
+			return;
 		}
 
-		$allowedQueryArgs      = array_unique( $allowedQueryArgs );
-		$allowedQueryArgs      = apply_filters( 'aioseo_unrecognized_allowed_query_args', $allowedQueryArgs );
-		$currentUrlQueryArgs   = explode( '&', $currentUrlParsed['query'] );
-		$recognizedQueryArgs   = [];
-		$unRecognizedQueryArgs = [];
-		foreach ( $currentUrlQueryArgs as $queryArg ) {
-			$queryArgArray = explode( '=', $queryArg );
-			$key           = $queryArgArray[0];
+		$currentRequest = aioseo()->helpers->getRequestUrl();
 
-			if ( in_array( $key, $allowedQueryArgs, true ) ) {
-				$recognizedQueryArgs[ $queryArgArray[0] ] = empty( $queryArgArray[1] ) ? true : $queryArgArray[1];
+		// Remove the home path from the url for subfolder installs.
+		$currentRequest       = aioseo()->helpers->excludeHomePath( $currentRequest );
+		$currentRequestParsed = wp_parse_url( $currentRequest );
+
+		// No query args? Never mind!
+		if ( empty( $currentRequestParsed['query'] ) ) {
+			return;
+		}
+
+		parse_str( $currentRequestParsed['query'], $currentRequestQueryArgs );
+		$notAllowed          = [];
+		$recognizedQueryLogs = [];
+
+		foreach ( $currentRequestQueryArgs as $key => $value ) {
+			if ( ! is_string( $value ) ) {
+				continue;
+			}
+			$this->addQueryLog( $currentRequestParsed['path'], $key, $value );
+
+			$blocked = CrawlCleanupBlockedArg::getByKeyValue( $key, null );
+			if ( ! $blocked->exists() ) {
+				$blocked = CrawlCleanupBlockedArg::getByKeyValue( $key, $value );
+			}
+
+			if ( ! $blocked->exists() ) {
+				$blocked = CrawlCleanupBlockedArg::matchRegex( $key, $value );
+			}
+
+			if ( $blocked->exists() ) {
+				$queryArg = $key . ( $value ? '=' . $value : null );
+				$notAllowed[] = $queryArg;
+				$blocked->addHit();
 				continue;
 			}
 
-			// Check if this is a RegEx pattern.
-			foreach ( $allowedQueryArgs as $allowedQueryArg ) {
-				if ( ! aioseo()->helpers->isValidRegex( $allowedQueryArg ) ) {
-					continue;
-				}
-
-				if ( preg_match( $allowedQueryArg, $key ) ) {
-					$recognizedQueryArgs[ $queryArgArray[0] ] = empty( $queryArgArray[1] ) ? true : $queryArgArray[1];
-					continue 2;
-				}
-			}
-
-			// If it's here we don't recognize it. Let's get rid of it.
-			$unRecognizedQueryArgs[] = $queryArg;
+			$recognizedQueryLogs[ $key ] = empty( $value ) ? true : $value;
 		}
 
-		if ( ! empty( $newUrl ) && ! empty( $unRecognizedQueryArgs ) ) {
+		if ( ! empty( $notAllowed ) ) {
+			$newUrl = home_url( $currentRequestParsed['path'] );
+
 			header( 'Content-Type: redirect', true );
 			header_remove( 'Content-Type' );
 			header_remove( 'Last-Modified' );
 			header_remove( 'X-Pingback' );
 
-			wp_safe_redirect( add_query_arg( $recognizedQueryArgs, $newUrl ), 301, AIOSEO_PLUGIN_SHORT_NAME . ' Crawl Cleanup' );
+			wp_safe_redirect( add_query_arg( $recognizedQueryLogs, $newUrl ), 301, AIOSEO_PLUGIN_SHORT_NAME . ' Crawl Cleanup' );
 			exit;
 		}
 	}
 
 	/**
-	 * Get the URL for the singular post.
+	 * Remove ?replytocom.
 	 *
-	 * @since 4.2.1
+	 * @since 4.5.8
 	 *
-	 * @param  WP_Post $thePost The post we are looking at.
-	 * @return string           The new URL.
+	 * @return void
 	 */
-	private function getSingularUrl( $thePost ) {
-		$page   = aioseo()->helpers->getPageNumber();
-		$newUrl = get_permalink( $thePost->ID );
-		if ( 1 < $page ) {
-			$newUrl    = user_trailingslashit( trailingslashit( get_permalink( $thePost->ID ) ) . $page );
-			$pageCount = substr_count( $thePost->post_content, '<!--nextpage-->' );
-			if ( $page > ( $pageCount + 1 ) ) {
-				$newUrl = user_trailingslashit( trailingslashit( get_permalink( $thePost->ID ) ) . ( $pageCount + 1 ) );
-			}
+	private function removeReplyToCom() {
+		if ( ! apply_filters( 'aioseo_remove_reply_to_com', true ) ) {
+			return;
 		}
 
-		if ( isset( $_SERVER['REQUEST_URI'] ) && preg_match( '/(\?replytocom=[^&]+)/', sanitize_text_field( $_SERVER['REQUEST_URI'] ), $matches ) ) {
-			$newUrl .= str_replace( '?replytocom=', '#comment-', $matches[0] );
-		}
-
-		return $newUrl;
+		add_filter( 'comment_reply_link', [ $this, 'removeReplyToComLink' ] );
+		add_action( 'template_redirect', [ $this, 'replyToComRedirect' ], 1 );
 	}
 
 	/**
-	 * Get the URL for the front page.
+	 * Remove ?replytocom.
 	 *
-	 * @since 4.2.1
+	 * @since 4.7.3
 	 *
-	 * @return string The new URL.
+	 * @param  string $link The comment link as a string.
+	 * @return string       The modified link.
 	 */
-	private function getFrontPageUrl() {
-		if ( ! aioseo()->helpers->isStaticHomePage() ) {
-			return get_bloginfo( 'url' ) . '/';
-		}
-
-		return get_permalink( $GLOBALS['post']->ID );
+	public function removeReplyToComLink( $link ) {
+		return preg_replace( '`href=(["\'])(?:.*(?:\?|&|&#038;)replytocom=(\d+)#respond)`', 'href=$1#comment-$2', (string) $link );
 	}
 
 	/**
-	 * Get the URL for the current taxonomy.
+	 * Redirects out the ?replytocom variables.
 	 *
-	 * @since 4.2.1
+	 * @since 4.7.3
 	 *
-	 * @return string The new URL.
+	 * @return void
 	 */
-	private function getTaxonomyUrl() {
-		global $wp_query;
-		$term   = $wp_query->get_queried_object();
-		$newUrl = get_term_link( $term, $term->taxonomy );
+	public function replyToComRedirect() {
+		// phpcs:ignore HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
+		$replyToCom = absint( sanitize_text_field( wp_unslash( $_GET['replytocom'] ?? null ) ) );
 
-		if ( is_feed() ) {
-			$newUrl = get_term_feed_link( $term->term_id, $term->taxonomy );
-		}
-
-		return $newUrl;
-	}
-
-	/**
-	 * Get the URL for the search page.
-	 *
-	 * @since 4.2.1
-	 *
-	 * @return string The new URL.
-	 */
-	private function getSearchUrl() {
-		$s = rawurlencode( preg_replace( '/(%20|\+)/', ' ', get_search_query() ) );
-
-		return get_bloginfo( 'url' ) . '/?s=' . $s;
-	}
-
-	/**
-	 * Get the URL for the 404 page.
-	 *
-	 * @since 4.2.1
-	 *
-	 * @return string The new URL.
-	 */
-	private function get404Url() {
-		$newUrl     = null;
-		$currentUrl = aioseo()->helpers->getCurrentUrl();
-
-		if (
-			is_multisite() &&
-			! is_subdomain_install() &&
-			is_main_site()
-		) {
-			if (
-				get_bloginfo( 'url' ) . '/blog/' === $currentUrl ||
-				get_bloginfo( 'url' ) . '/blog' === $currentUrl
-			) {
-				$newUrl = get_bloginfo( 'url' ) . '/';
-
-				if ( aioseo()->helpers->isStaticHomePage() ) {
-					$newUrl = get_permalink( get_option( 'page_for_posts' ) );
+		if ( ! empty( $replyToCom ) && is_singular() ) {
+			$url = get_permalink( $GLOBALS['post']->ID );
+			if ( isset( $_SERVER['QUERY_STRING'] ) ) {
+				$queryString = remove_query_arg( 'replytocom', sanitize_text_field( wp_unslash( $_SERVER['QUERY_STRING'] ) ) );
+				if ( ! empty( $queryString ) ) {
+					$url = add_query_arg( [], $url ) . '?' . $queryString;
 				}
 			}
+			$url = add_query_arg( [], $url ) . '#comment-' . $replyToCom;
+
+			wp_safe_redirect( $url, 301, AIOSEO_PLUGIN_SHORT_NAME );
+			exit;
 		}
-
-		return $newUrl;
 	}
 
 	/**
-	 * Get any default query args.
+	 * Add query args log.
 	 *
-	 * @since 4.2.1
+	 * @since 4.5.8
 	 *
-	 * @return array An array of query args.
+	 * @param string $path  A String of the path to create a slug.
+	 * @param string $key   A String of key from query arg.
+	 * @param string $value A String of value from query arg.
+	 * @return void
 	 */
-	private function getDefaultQueryArgs() {
-		$defaultArgs = [
-			'q',
-			's',
-			'action'
+	private function addQueryLog( $path, $key, $value = null ) {
+		$slug = $path . '?' . $key . ( 0 < strlen( $value ) ? '=' . $value : '' );
+		$log  = CrawlCleanupLog::getBySlug( $slug );
+
+		$data = [
+			'slug'  => $slug,
+			'key'   => $key,
+			'value' => $value
 		];
 
-		if ( ! get_option( 'permalink_structure' ) ) {
-			$defaultArgs = array_merge(
-				$defaultArgs,
-				[
-					'p',
-					'cat',
-					'tag',
-					'term'
-				]
-			);
-		}
-
-		return $defaultArgs;
-	}
-
-	/**
-	 * Get any query args for WP.
-	 *
-	 * @since 4.2.1
-	 *
-	 * @return array An array of query args.
-	 */
-	private function getWpQueryArgs() {
-		return [
-			'_wp-find-template'
-		];
-	}
-
-	/**
-	 * Get any query args for AMP.
-	 *
-	 * @since 4.2.1
-	 *
-	 * @return array An array of query args.
-	 */
-	private function getAmpQueryArgs() {
-		return [
-			'amp'
-		];
-	}
-
-	/**
-	 * Get any query args for AIOSEO.
-	 *
-	 * @since 4.2.1
-	 *
-	 * @return array An array of query args.
-	 */
-	private function getAioseoQueryArgs() {
-		return [
-			'/^aioseo-/'
-		];
-	}
-
-	/**
-	 * Get any query args for WPForms.
-	 *
-	 * @since 4.2.1
-	 *
-	 * @return array An array of query args.
-	 */
-	private function getWpFormsQueryArgs() {
-		if (
-			! $this->plugins['wpForms']['activated'] &&
-			! $this->plugins['wpFormsPro']['activated']
-		) {
-			return [];
-		}
-
-		return [
-			'/^wpforms/',
-			'/^wpf[0-9*]_/',
-			'hook_url',
-			'/^zap_/',
-			'login',
-			'key'
-		];
-	}
-
-	/**
-	 * Get any query args for Rafflepress.
-	 *
-	 * @since 4.2.1
-	 *
-	 * @return array An array of query args.
-	 */
-	private function getRafflepressQueryArgs() {
-		if (
-			! $this->plugins['rafflePress']['activated'] &&
-			! $this->plugins['rafflePressPro']['activated']
-		) {
-			return [];
-		}
-
-		return [
-			'/^rafflepress_/',
-			'/^rafflepres_/' // To account for a bug in rafflepress.
-		];
-	}
-
-	/**
-	 * Get any query args for Smash balloon plugins.
-	 *
-	 * @since 4.2.1
-	 *
-	 * @return array An array of query args.
-	 */
-	private function getEddQueryArgs() {
-		if (
-			! $this->plugins['easyDigitalDownloads']['activated']
-		) {
-			return [];
-		}
-
-		return [
-			'/^edd_/',
-			'/_id$/',
-			'license',
-			'discount',
-		];
-	}
-
-	/**
-	 * Get any query args for Smash balloon plugins.
-	 *
-	 * @since 4.2.1
-	 *
-	 * @return array An array of query args.
-	 */
-	private function getSmashBalloonQueryArgs() {
-		if (
-			! $this->plugins['instagramFeed']['activated'] &&
-			! $this->plugins['instagramFeedPro']['activated'] &&
-			! $this->plugins['facebookFeed']['activated'] &&
-			! $this->plugins['facebookFeedPro']['activated'] &&
-			! $this->plugins['twitterFeed']['activated'] &&
-			! $this->plugins['twitterFeedPro']['activated'] &&
-			! $this->plugins['youTubeFeed']['activated'] &&
-			! $this->plugins['youTubeFeedPro']['activated']
-		) {
-			return [];
-		}
-
-		return [
-			'sb_demo'
-		];
-	}
-
-	/**
-	 * Get any query args for the SearchWP plugin.
-	 *
-	 * @since 4.2.1
-	 *
-	 * @return array An array of query args.
-	 */
-	private function getSearchWpQueryArgs() {
-		if (
-			! $this->plugins['searchWp']['activated']
-		) {
-			return [];
-		}
-
-		return [
-			'searchwp',
-			'swppg'
-		];
-	}
-
-	/**
-	 * Get any query args for WooCommerce.
-	 *
-	 * @since 4.2.1
-	 *
-	 * @return array An array of query args.
-	 */
-	private function getWooCommerceQueryArgs() {
-		if (
-			! aioseo()->helpers->isWooCommerceActive()
-		) {
-			return [];
-		}
-
-		return [
-			'/^attribute_/',
-			'/_id$/',
-			'_wcsnonce',
-			'add-to-cart',
-			'add_coupon',
-			'item',
-			'key',
-			'orderby',
-			'post_type',
-			'product',
-			'product_cat',
-			'reset-link-sent'
-		];
+		$log->set( $data );
+		$log->create();
 	}
 }

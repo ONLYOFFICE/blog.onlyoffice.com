@@ -126,7 +126,7 @@ class OxyFluentFormWidget extends OxygenEl
         );
 
         $selector = '.fluentform .ff-el-input--label label';
-        $section_label->typographySection(__('Typography'), $selector, $this);
+        $section_label->typographySection(__('Typography', 'fluentform'), $selector, $this);
         $section_label->addStyleControls(
             [
                 [
@@ -165,7 +165,7 @@ class OxyFluentFormWidget extends OxygenEl
                     'unit'         => 'px',
                 ],
                 [
-                    'name'     => __('Margin Bottom'),
+                    'name'     => __('Margin Bottom', 'fluentform'),
                     'selector' => '.ff-el-group',
                     'property' => 'margin-bottom',
                 ],
@@ -210,17 +210,17 @@ class OxyFluentFormWidget extends OxygenEl
         $section_input_normal->addStyleControls(
             [
                 [
-                    'name'     => __('Color'),
+                    'name'     => __('Color', 'fluentform'),
                     'selector' => '.ff-el-form-control',
                     'property' => 'color',
                 ],
                 [
-                    'name'     => __('Background Color'),
+                    'name'     => __('Background Color', 'fluentform'),
                     'selector' => '.ff-el-form-control',
                     'property' => 'background-color',
                 ],
                 [
-                    'name'     => __('Placeholder Color'),
+                    'name'     => __('Placeholder Color', 'fluentform'),
                     'slug'     => 'fluentform_input_placeholder',
                     'selector' => '::placeholder',
                     'property' => 'color',
@@ -238,17 +238,17 @@ class OxyFluentFormWidget extends OxygenEl
         $section_input_hover->addStyleControls(
             [
                 [
-                    'name'     => __('Background Color'),
+                    'name'     => __('Background Color', 'fluentform'),
                     'selector' => '.ff-el-form-control:focus',
                     'property' => 'background-color',
                 ],
                 [
-                    'name'     => __('Text Color'),
+                    'name'     => __('Text Color', 'fluentform'),
                     'selector' => '.ff-el-form-control:focus',
                     'property' => 'color',
                 ],
                 [
-                    'name'         => __('Border Color'),
+                    'name'         => __('Border Color', 'fluentform'),
                     'selector'     => '.ff-el-form-control:focus',
                     'property'     => 'border-color',
                     'control_type' => 'colorpicker',
@@ -270,7 +270,7 @@ class OxyFluentFormWidget extends OxygenEl
         );
 
         $section_input->typographySection(
-            __('Typography'),
+            __('Typography', 'fluentform'),
             $selector,
             $this
         );
@@ -319,14 +319,14 @@ class OxyFluentFormWidget extends OxygenEl
         $section_checkbox_grid_spacing->addPreset(
             'padding',
             'fluentform_checkbox_grid_padding',
-            __('Table Head Cell Padding'),
+            __('Table Head Cell Padding', 'fluentform'),
             '.fluentform .ff-checkable-grids thead>tr>th'
         )->whiteList();
 
         $section_checkbox_grid_spacing->addPreset(
             'padding',
             'fluentform_checkbox_grid_padding_tb',
-            __('Table Body Cell Padding'),
+            __('Table Body Cell Padding', 'fluentform'),
             '.fluentform .ff-checkable-grids tbody>tr>td'
         )->whiteList();
 
@@ -390,7 +390,7 @@ class OxyFluentFormWidget extends OxygenEl
             $this
         );
 
-        $section_gdpr_terms->typographySection(__('Typography'), '.ff-el-tc , .ff_t_c', $this);
+        $section_gdpr_terms->typographySection(__('Typography', 'fluentform'), '.ff-el-tc , .ff_t_c', $this);
         $section_gdpr_terms->addStyleControls(
             [
                 [
@@ -466,7 +466,7 @@ class OxyFluentFormWidget extends OxygenEl
     public function render($options, $defaults, $content)
     {
         if ('no' == $options['ff_form']) {
-            echo '<h5 class="ff-template-missing">' . __('Select a Form', 'fluentform') . '</h5>';
+            echo '<h5 class="ff-template-missing">' . esc_html__('Select a Form', 'fluentform') . '</h5>';
             return;
         }
 
@@ -474,7 +474,7 @@ class OxyFluentFormWidget extends OxygenEl
             echo do_oxygen_elements('[fluentform id="' . (int) $options['ff_form'] . '"]'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         } else {
             if (Helper::isConversionForm($options['ff_form'])) {
-                _e('This is a Conversational Form. You must use the default Design tab for this type of forms.', 'fluentform');
+                esc_html_e('This is a Conversational Form. You must use the default Design tab for this type of forms.', 'fluentform');
                 return;
             }
             echo do_shortcode('[fluentform id="' . (int) $options['ff_form'] . '"]'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -490,14 +490,14 @@ class OxyFluentFormWidget extends OxygenEl
         if ($app->request->get('ct_builder')) {
             wp_enqueue_style(
                 'fluent-form-styles',
-                $app->publicUrl('css/fluent-forms-public.css'),
+                fluentFormMix('css/fluent-forms-public.css'),
                 [],
                 FLUENTFORM_VERSION
             );
 
             wp_enqueue_style(
                 'fluentform-public-default',
-                $app->publicUrl('css/fluentform-public-default.css'),
+                fluentFormMix('css/fluentform-public-default.css'),
                 [],
                 FLUENTFORM_VERSION
             );
@@ -505,13 +505,15 @@ class OxyFluentFormWidget extends OxygenEl
             if (!wp_script_is('flatpickr', 'registered')) {
                 wp_enqueue_style(
                     'flatpickr',
-                    $app->publicUrl('libs/flatpickr/flatpickr.min.css')
+                    fluentFormMix('libs/flatpickr/flatpickr.min.css'),
+                    [],
+                    FLUENTFORM_VERSION
                 );
             }
 
             wp_enqueue_style(
                 'ff_choices',
-                $app->publicUrl('css/choices.css'),
+                fluentFormMix('css/choices.css'),
                 [],
                 FLUENTFORM_VERSION
             );
@@ -604,7 +606,7 @@ class OxyFluentFormWidget extends OxygenEl
                 'type'    => 'radio',
                 'name'    => __('Enable Smart UI', 'fluentform'),
                 'slug'    => 'rc_smart_ui',
-                'value'   => ['yes' => __('Yes'), 'no' => __('No')],
+                'value'   => ['yes' => __('Yes', 'fluentform'), 'no' => __('No', 'fluentform')],
                 'default' => 'no',
                 'css'     => false,
             ]
@@ -613,7 +615,7 @@ class OxyFluentFormWidget extends OxygenEl
         $smart_ui->addStyleControl(
             [
                 'selector'     => $selector_after,
-                'name'         => __('Width'),
+                'name'         => __('Width', 'fluentform'),
                 'property'     => 'width|height',
                 'control_type' => 'slider-measurebox',
                 'unit'         => 'px',
@@ -623,7 +625,7 @@ class OxyFluentFormWidget extends OxygenEl
         $smart_ui->addStyleControl(
             [
                 'selector'     => $selector,
-                'name'         => __('Text Indent'),
+                'name'         => __('Text Indent', 'fluentform'),
                 'property'     => 'margin-right',
                 'control_type' => 'slider-measurebox',
                 'unit'         => 'px',
@@ -697,14 +699,14 @@ class OxyFluentFormWidget extends OxygenEl
         $input_section_radio_checkbox_space->addPreset(
             'margin',
             'fluentform_radio_checkbox_margin',
-            __('Checkbox/Radio Margin'),
+            __('Checkbox/Radio Margin', 'fluentform'),
             '.fluentform input[type=checkbox], .ff-el-group input[type=radio]'
         )->whiteList();
 
         $input_section_radio_checkbox_space->addPreset(
             'padding',
             'fluentform_radio_checkbox_padding',
-            __('Label Spacing'),
+            __('Label Spacing', 'fluentform'),
             '.ff-el-form-check-label, .ff_t_c'
         )->whiteList();
     }
@@ -883,7 +885,7 @@ class OxyFluentFormWidget extends OxygenEl
 
         $section_step_button->addStyleControl(
             [
-                'name'     => __('Width'),
+                'name'     => __('Width', 'fluentform'),
                 'selector' => '.step-nav .ff-btn',
                 'property' => 'width',
             ]

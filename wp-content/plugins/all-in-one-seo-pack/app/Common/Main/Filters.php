@@ -1,12 +1,13 @@
 <?php
 namespace AIOSEO\Plugin\Common\Main;
 
-use AIOSEO\Plugin\Common\Models as Models;
-
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+use AIOSEO\Plugin\Common\Models;
+use AIOSEO\Plugin\Common\Integrations\BuddyPress as BuddyPressIntegration;
 
 /**
  * Abstract class that Pro and Lite both extend.
@@ -38,6 +39,15 @@ abstract class Filters {
 	 * @since 4.0.0
 	 */
 	public function __construct() {
+		add_filter( 'wp_optimize_get_tables', [ $this, 'wpOptimizeAioseoTables' ] );
+
+		// This action needs to run on AJAX/cron for scheduled rewritten posts in Yoast Duplicate Post.
+		add_action( 'duplicate_post_after_rewriting', [ $this, 'updateRescheduledPostMeta' ], 10, 2 );
+
+		if ( wp_doing_ajax() || wp_doing_cron() ) {
+			return;
+		}
+
 		add_filter( 'plugin_row_meta', [ $this, 'pluginRowMeta' ], 10, 2 );
 		add_filter( 'plugin_action_links_' . AIOSEO_PLUGIN_BASENAME, [ $this, 'pluginActionLinks' ], 10, 2 );
 
@@ -45,11 +55,13 @@ abstract class Filters {
 		add_filter( 'genesis_detect_seo_plugins', [ $this, 'genesisTheme' ] );
 
 		// WeGlot compatibility.
-		if ( preg_match( '#(/default\.xsl)$#i', $_SERVER['REQUEST_URI'] ) ) {
+		if ( isset( $_SERVER['REQUEST_URI'] ) && preg_match( '#(/default-sitemap\.xsl)$#i', (string) sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) ) {
 			add_filter( 'weglot_active_translation_before_treat_page', '__return_false' );
 		}
 
-		if ( preg_match( '#(\.xml)$#i', $_SERVER['REQUEST_URI'] ) ) {
+		add_filter( 'wpml_tm_adjust_translation_fields', [ $this, 'defineMetaFieldsForWpml' ] );
+
+		if ( isset( $_SERVER['REQUEST_URI'] ) && preg_match( '#(\.xml)$#i', (string) sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) ) {
 			add_filter( 'jetpack_boost_should_defer_js', '__return_false' );
 		}
 
@@ -82,6 +94,31 @@ abstract class Filters {
 		if ( aioseo()->options->sitemap->general->enable ) {
 			add_filter( 'jetpack_get_available_modules', [ $this, 'disableJetpackSitemaps' ] );
 		}
+
+		add_action( 'after_setup_theme', [ $this, 'removeHelloElementorDescriptionTag' ] );
+		add_action( 'wp', [ $this, 'removeAvadaOgTags' ] );
+		add_action( 'init', [ $this, 'declareAioseoFollowingConsentApi' ] );
+	}
+
+	/**
+	 * Declares AIOSEO and its addons as following the Consent API.
+	 *
+	 * @since 4.6.5
+	 *
+	 * @return void
+	 */
+	public function declareAioseoFollowingConsentApi() {
+		add_filter( 'wp_consent_api_registered_all-in-one-seo-pack/all_in_one_seo_pack.php', '__return_true' );
+		add_filter( 'wp_consent_api_registered_all-in-one-seo-pack-pro/all_in_one_seo_pack.php', '__return_true' );
+
+		foreach ( aioseo()->addons->getAddons() as $addon ) {
+			if ( empty( $addon->installed ) || empty( $addon->basename ) ) {
+				continue;
+			}
+			if ( isset( $addon->basename ) ) {
+				add_filter( 'wp_consent_api_registered_' . $addon->basename, '__return_true' );
+			}
+		}
 	}
 
 	/**
@@ -92,8 +129,8 @@ abstract class Filters {
 	 * @return void
 	 */
 	public function removeEmojiDetectionScripts() {
-		global $wp_version;
-		if ( version_compare( $wp_version, '6.2', '>=' ) ) {
+		global $wp_version; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+		if ( version_compare( $wp_version, '6.2', '>=' ) ) { // phpcs:ignore Squiz.NamingConventions.ValidVariableName
 			remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
 		}
 	}
@@ -102,6 +139,7 @@ abstract class Filters {
 	 * Resets the current user if bbPress is active.
 	 * We have to do this because our calls to wp_get_current_user() set the current user early and this breaks core functionality in bbPress.
 	 *
+
 	 *
 	 * @since 4.1.5
 	 *
@@ -109,14 +147,15 @@ abstract class Filters {
 	 */
 	public function resetUserBBPress() {
 		if ( function_exists( 'bbpress' ) ) {
-			global $current_user;
-			$current_user = null;
+			global $current_user; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+			$current_user = null; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
 		}
 	}
 
 	/**
 	 * Removes the bbPress title filter when adding a new reply with empty title to avoid fatal error.
 	 *
+
 	 *
 	 * @since 4.3.1
 	 *
@@ -141,19 +180,16 @@ abstract class Filters {
 	 *
 	 * @since 4.1.1
 	 *
-	 * @param  integer $newPostId    The new post ID.
-	 * @param  WP_Post $originalPost The original post object.
+	 * @param  integer  $targetPostId The target post ID.
+	 * @param  \WP_Post $sourcePost   The source post object.
 	 * @return void
 	 */
-	public function duplicatePost( $newPostId, $originalPost = null ) {
-		$originalPostId     = is_object( $originalPost ) ? $originalPost->ID : $originalPost;
-		$originalAioseoPost = Models\Post::getPost( $originalPostId );
-		if ( ! $originalAioseoPost->exists() ) {
-			return;
-		}
+	public function duplicatePost( $targetPostId, $sourcePost = null ) {
+		$sourcePostId     = ! empty( $sourcePost->ID ) ? $sourcePost->ID : $sourcePost;
+		$sourceAioseoPost = Models\Post::getPost( $sourcePostId );
+		$targetPost       = Models\Post::getPost( $targetPostId );
 
-		$newAioseoPost = Models\Post::getPost( $newPostId );
-		$columns       = $originalAioseoPost->getColumns();
+		$columns = $sourceAioseoPost->getColumns();
 		foreach ( $columns as $column => $value ) {
 			// Skip the ID column.
 			if ( 'id' === $column ) {
@@ -161,13 +197,14 @@ abstract class Filters {
 			}
 
 			if ( 'post_id' === $column ) {
-				$newAioseoPost->$column = $newPostId;
+				$targetPost->$column = $targetPostId;
 				continue;
 			}
 
-			$newAioseoPost->$column = $originalAioseoPost->$column;
+			$targetPost->$column = $sourceAioseoPost->$column;
 		}
-		$newAioseoPost->save();
+
+		$targetPost->save();
 	}
 
 	/**
@@ -194,12 +231,30 @@ abstract class Filters {
 	}
 
 	/**
+	 * Updates the model when a post is republished.
+	 * Yoast Duplicate Post doesn't do this since we store our data in a custom table.
+	 *
+	 * @since 4.6.7
+	 *
+	 * @param  int  $scheduledPostId The ID of the scheduled post.
+	 * @param  int  $originalPostId  The ID of the original post.
+	 * @return void
+	 */
+	public function updateRescheduledPostMeta( $scheduledPostId, $originalPostId ) {
+		$this->duplicatePost( $originalPostId, $scheduledPostId );
+
+		// Delete the AIOSEO post record for the scheduled post.
+		$scheduledAioseoPost = Models\Post::getPost( $scheduledPostId );
+		$scheduledAioseoPost->delete();
+	}
+
+	/**
 	 * Schedules an action to duplicate our meta after the duplicated WooCommerce product has been saved.
 	 *
 	 * @since 4.1.4
 	 *
-	 * @param  \WP_Product $newProduct      The new, duplicated product.
-	 * @param  \WP_Product $originalProduct The original product.
+	 * @param  \WC_Product $newProduct      The new, duplicated product.
+	 * @param  \WC_Product $originalProduct The original product.
 	 * @return void
 	 */
 	public function scheduleDuplicateProduct( $newProduct, $originalProduct = null ) {
@@ -298,7 +353,12 @@ abstract class Filters {
 		if ( $this->plugin === $pluginFile && ! empty( $actionLinks ) ) {
 			foreach ( $actionLinks as $key => $value ) {
 				$link = [
-					$key => '<a href="' . $value['url'] . '">' . $value['label'] . '</a>'
+					$key => sprintf(
+						'<a href="%1$s" %2$s target="_blank">%3$s</a>',
+						esc_url( $value['url'] ),
+						isset( $value['title'] ) ? 'title="' . esc_attr( $value['title'] ) . '"' : '',
+						$value['label']
+					)
 				];
 
 				$actions = 'after' === $position ? array_merge( $actions, $link ) : array_merge( $link, $actions );
@@ -338,19 +398,47 @@ abstract class Filters {
 	 *
 	 * @since 4.1.9
 	 *
-	 * @param  array[Object]|array[string] $postTypes The post types.
-	 * @return array[Object]|array[string]            The filtered post types.
+	 * @param  object[]|string[] $postTypes The post types.
+	 * @return array                        The filtered post types.
 	 */
 	public function removeInvalidPublicPostTypes( $postTypes ) {
-		$elementorEnabled = isset( aioseo()->standalone->pageBuilderIntegrations['elementor'] ) &&
-			aioseo()->standalone->pageBuilderIntegrations['elementor']->isPluginActive();
-
-		if ( ! $elementorEnabled ) {
-			return $postTypes;
-		}
-
 		$postTypesToRemove = [
-			'elementor_library'
+			'fusion_element', // Avada
+			'elementor_library',
+			'redirect_rule', // Safe Redirect Manager
+			'seedprod',
+			'tcb_lightbox',
+			'bricks_template', // Bricks Builder
+
+			// Thrive Themes internal post types.
+			'tva_module',
+			'tvo_display',
+			'tvo_capture',
+			'tva_module',
+			'tve_lead_1c_signup',
+			'tve_form_type',
+			'tvd_login_edit',
+			'tve_global_cond_set',
+			'tve_cond_display',
+			'tve_lead_2s_lightbox',
+			'tcb_symbol',
+			'td_nm_notification',
+			'tvd_content_set',
+			'tve_saved_lp',
+			'tve_notifications',
+			'tve_user_template',
+			'tve_video_data',
+			'tva_course_type',
+			'tva-acc-restriction',
+			'tva_course_overview',
+			'tve_ult_schedule',
+			'tqb_optin',
+			'tqb_splash',
+			'tva_certificate',
+			'tva_course_overview',
+
+			// BuddyPress post types.
+			BuddyPressIntegration::getEmailCptSlug()
 		];
 
 		foreach ( $postTypes as $index => $postType ) {
@@ -372,19 +460,21 @@ abstract class Filters {
 	 *
 	 * @since 4.2.4
 	 *
-	 * @param  array[Object]|array[string] $taxonomies The taxonomies.
-	 * @return array[Object]|array[string]             The filtered taxonomies.
+	 * @param  object[]|string[] $taxonomies The taxonomies.
+	 * @return array                         The filtered taxonomies.
 	 */
 	public function removeInvalidPublicTaxonomies( $taxonomies ) {
-		// Check if the Avada Builder plugin is enabled.
-		if ( ! defined( 'FUSION_BUILDER_VERSION' ) ) {
-			return $taxonomies;
-		}
-
 		$taxonomiesToRemove = [
 			'fusion_tb_category',
 			'element_category',
-			'template_category'
+			'template_category',
+
+			// Bricks Builder internal taxonomies.
+			'template_tag',
+			'template_bundle',
+
+			// Thrive Themes internal taxonomies.
+			'tcb_symbols_tax'
 		];
 
 		foreach ( $taxonomies as $index => $taxonomy ) {
@@ -442,6 +532,11 @@ abstract class Filters {
 			wp_dequeue_script( 'pmt__vuejs' );
 			wp_dequeue_script( 'pmt__script' );
 		}
+
+		// Plugin: Wpbingo Core (By TungHV).
+		if ( strpos( wp_styles()->query( 'bwp-lookbook-css' )->src ?? '', 'wpbingo' ) !== false ) {
+			wp_dequeue_style( 'bwp-lookbook-css' );
+		}
 	}
 
 	/**
@@ -461,5 +556,86 @@ abstract class Filters {
 		if ( function_exists( 'learn_press_admin_assets' ) ) {
 			remove_action( 'admin_enqueue_scripts', [ learn_press_admin_assets(), 'load_scripts' ] );
 		}
+	}
+
+	/**
+	 * Removes the duplicate meta description tag from the Hello Elementor theme.
+	 *
+	 * @since 4.4.3
+	 *
+	 * @link https://developers.elementor.com/docs/hello-elementor-theme/hello_elementor_add_description_meta_tag/
+	 *
+	 * @return void
+	 */
+	public function removeHelloElementorDescriptionTag() {
+		remove_action( 'wp_head', 'hello_elementor_add_description_meta_tag' );
+	}
+
+	/**
+	 * Removes the Avada OG tags.
+	 *
+	 * @since 4.6.5
+	 *
+	 * @return void
+	 */
+	public function removeAvadaOgTags() {
+		if ( function_exists( 'Avada' ) ) {
+			$avada = Avada();
+			if ( is_object( $avada->head ?? null ) ) {
+				remove_action( 'wp_head', [ $avada->head, 'insert_og_meta' ], 5 );
+			}
+		}
+	}
+
+	/**
+	 * Prevent WP-Optimize from deleting our tables.
+	 *
+	 * @since 4.4.5
+	 *
+	 * @param  array $tables List of tables.
+	 * @return array         Filtered tables.
+	 */
+	public function wpOptimizeAioseoTables( $tables ) {
+		foreach ( $tables as &$table ) {
+			if (
+				is_object( $table ) &&
+				property_exists( $table, 'Name' ) &&
+				false !== stripos( $table->Name, 'aioseo_' )
+			) {
+				$table->is_using       = true;
+				$table->can_be_removed = false;
+			}
+		}
+
+		return $tables;
+	}
+
+	/**
+	 * Defines specific meta fields for WPML so character limits can be applied when auto-translating fields.
+	 *
+	 * @since 4.8.3.2
+	 *
+	 * @param  array $fields The fields.
+	 * @return array         The modified fields.
+	 */
+	public function defineMetaFieldsForWpml( $fields ) {
+		foreach ( $fields as &$field ) {
+			if ( empty( $field['field_type'] ) ) {
+				continue;
+			}
+
+			$fieldKey = strtolower( preg_replace( '/^(field-)(.*)(-0)$/', '$2', $field['field_type'] ) );
+
+			switch ( $fieldKey ) {
+				case '_aioseo_title':
+					$field['purpose'] = 'seo_title';
+					break;
+				case '_aioseo_description':
+					$field['purpose'] = 'seo_meta_description';
+					break;
+			}
+		}
+
+		return $fields;
 	}
 }

@@ -1,11 +1,13 @@
 <?php
 namespace WPGraphQL\SmartCache\Cache;
 
+use Exception;
 use GraphQLRelay\Relay;
 use WP_Comment;
 use WP_Post;
 use WP_Term;
 use WP_User;
+use WPGraphQL\Model\Menu;
 use WPGraphQL\SmartCache\Admin\Settings;
 
 /**
@@ -16,7 +18,7 @@ class Invalidation {
 	/**
 	 * @var Collection
 	 */
-	public $collection = [];
+	public $collection;
 
 	/**
 	 * @var array | null
@@ -27,6 +29,7 @@ class Invalidation {
 	 * Instantiate the Cache Invalidation class
 	 *
 	 * @param Collection $collection
+	 * @return void
 	 */
 	public function __construct( Collection $collection ) {
 		$this->collection = $collection;
@@ -34,13 +37,18 @@ class Invalidation {
 
 	/**
 	 * Initialize the actions to listen for
+	 *
+	 * @return void
 	 */
 	public function init() {
 		// @phpcs:ignore
 		do_action( 'graphql_cache_invalidation_init', $this );
 
+		// Listen for purge all, purge now request
+		add_action( 'wpgraphql_cache_purge_all', [ $this, 'on_purge_all_cb' ], 10, 0 );
+
 		## Log Purge Events
-		add_action( 'graphql_purge', [ $this, 'log_purge_events' ], 10, 2 );
+		add_action( 'graphql_purge', [ $this, 'log_purge_events' ], 10, 3 );
 
 		## POST ACTIONS
 
@@ -93,12 +101,16 @@ class Invalidation {
 
 		add_filter( 'pre_set_theme_mod_nav_menu_locations', [ $this, 'on_set_nav_menu_locations_cb' ], 10, 2 );
 		add_action( 'wp_update_nav_menu', [ $this, 'on_update_nav_menu_cb' ], 10, 1 );
+		add_action( 'wp_create_nav_menu', [ $this, 'on_create_nav_menu_cb' ], 10, 2 );
 
 		add_action( 'added_term_meta', [ $this, 'on_updated_menu_meta_cb' ], 10, 4 );
 		add_action( 'updated_term_meta', [ $this, 'on_updated_menu_meta_cb' ], 10, 4 );
 		add_action( 'deleted_term_meta', [ $this, 'on_updated_menu_meta_cb' ], 10, 4 );
 
 		// @todo: evict caches when meta on menu items are changed. This happens outside *_post_meta hooks as nav_menu_item is a "different" type of post type
+		add_action( 'added_term_relationship', [ $this, 'on_menu_item_added_to_menu_cb' ], 10, 3 );
+		add_action( 'wp_update_nav_menu_item', [ $this, 'on_menu_item_updated_cb' ], 10, 3 );
+		add_action( 'deleted_post', [ $this, 'on_menu_item_deleted_cb' ], 10, 2 );
 
 		add_action( 'updated_post_meta', [ $this, 'on_menu_item_change_cb' ], 10, 4 );
 		add_action( 'added_post_meta', [ $this, 'on_menu_item_change_cb' ], 10, 4 );
@@ -121,7 +133,7 @@ class Invalidation {
 	/**
 	 * Return a list of ignored meta keys
 	 *
-	 * @return array|null
+	 * @return array
 	 */
 	public static function get_ignored_meta_keys() {
 		if ( null !== self::$ignored_meta_keys ) {
@@ -162,13 +174,10 @@ class Invalidation {
 		/**
 		 * This filter allows plugins to opt-in or out of tracking for meta.
 		 *
-		 * @param bool $should_track Whether the meta key should be tracked.
-		 * @param string $meta_key Metadata key.
-		 * @param int $meta_id ID of updated metadata entry.
-		 * @param mixed $meta_value Metadata value. Serialized if non-scalar.
-		 * @param mixed $object The object the meta is being updated for.
-		 *
-		 * @param bool $tracked whether the meta key is tracked for purging caches
+		 * @param null|bool $should_track Whether the meta key should be tracked.
+		 * @param string    $meta_key Metadata key.
+		 * @param mixed     $meta_value Metadata value. Serialized if non-scalar.
+		 * @param mixed     $object The object the meta is being updated for.
 		 */
 		//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		$should_track = apply_filters( 'graphql_cache_should_track_meta_key', null, $meta_key, $meta_value, $object );
@@ -199,13 +208,17 @@ class Invalidation {
 	 *
 	 * @param string $key An identifiers for data stored in memory.
 	 * @param string $event The event that caused the purge
+	 *
+	 * @return void
 	 */
 	public function purge( $key, $event = 'undefined event' ) {
+
+		$graphql_endpoint = preg_replace( '#^.*?://#', '', graphql_get_endpoint_url() );
 
 		// This action is emitted with the key to purge.
 		// Plugins can respond to this action to evict caches for that key
 		// phpcs:ignore
-		do_action( 'graphql_purge', $key, $event );
+		do_action( 'graphql_purge', $key, $event, $graphql_endpoint );
 
 		$nodes = $this->collection->get( $key );
 		if ( is_array( $nodes ) && ! empty( $nodes ) ) {
@@ -222,8 +235,10 @@ class Invalidation {
 	 * @param string $id_prefix The type name specific to the id to form the "global ID" that is unique among all types
 	 * @param mixed|string|int $id The node entity identifier
 	 * @param string $event The event that caused the purge
+	 *
+	 * @return void
 	 */
-	public function purge_nodes( $id_prefix, $id, $event = '' ) {
+	public function purge_nodes( $id_prefix, $id, $event = 'unknown event' ) {
 		if ( ! method_exists( Relay::class, 'toGlobalId' ) ) {
 			return;
 		}
@@ -245,10 +260,11 @@ class Invalidation {
 	 *
 	 * @param string $key The key to purge from teh cache
 	 * @param string $event The Event that triggered the purge
+	 * @param string $hostname   The url endpoint associated with the cache key. These match the Url and Key headers provided when the results were cached.
 	 *
 	 * @return void
 	 */
-	public function log_purge_events( $key, $event ) {
+	public function log_purge_events( $key, $event, $hostname ) {
 
 		// If purge logging is not enabled, bail
 		if ( ! Settings::purge_logging_enabled() ) {
@@ -260,7 +276,7 @@ class Invalidation {
 		// @phpcs:ignore
 		$uri          = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
 		$current_page = ! empty( $uri ) ? wp_parse_url( $uri, PHP_URL_PATH ) : 'unknown page';
-		$message      = sprintf( '(graphql_purge) key: %1$s, event: %2$s, user: %3$d, page: %4$s', $key, $event, $current_user_id, $current_page );
+		$message      = sprintf( '(graphql_purge) key: %1$s, event: %2$s, user: %3$d, page: %4$s url: %5$s', $key, $event, $current_user_id, $current_page, $hostname );
 
 		// @phpcs:ignore
 		error_log( $message, 0 );
@@ -327,6 +343,8 @@ class Invalidation {
 	 * @param int    $term_id  Term ID.
 	 * @param int    $tt_id    Taxonomy term ID.
 	 * @param string $taxonomy Taxonomy name.
+	 *
+	 * @return void
 	 */
 	public function on_created_term_cb( $term_id, $tt_id, $taxonomy ) {
 		$tax_object = get_taxonomy( $taxonomy );
@@ -363,6 +381,8 @@ class Invalidation {
 	 * @param int    $tt_id        Taxonomy term ID.
 	 * @param string $taxonomy     Taxonomy name.
 	 * @param mixed  $deleted_term Deleted term object.
+	 *
+	 * @return void
 	 */
 	public function on_deleted_term_cb( $term_id, $tt_id, $taxonomy, $deleted_term ) {
 		$tax_object = get_taxonomy( $taxonomy );
@@ -386,6 +406,8 @@ class Invalidation {
 	 * @param int $object_id ID of the object metadata is for.
 	 * @param string $meta_key Metadata key.
 	 * @param mixed $meta_value Metadata value. Serialized if non-scalar.
+	 *
+	 * @return void
 	 */
 	public function on_updated_term_meta_cb( $meta_id, $object_id, $meta_key, $meta_value ) {
 		if ( empty( $term = get_term( $object_id ) ) || ! $term instanceof WP_Term ) {
@@ -435,12 +457,16 @@ class Invalidation {
 
 		$tax_object = get_taxonomy( $taxonomy );
 
+		if ( false === $tax_object ) {
+			return;
+		}
+
 		// Delete the cached results associated with this post/key
-		$this->purge_nodes( 'term', $term->term_id );
+		$this->purge_nodes( 'term', $term->term_id, 'term_saved' );
 
 		$type_name = strtolower( $tax_object->graphql_single_name );
 
-		$this->purge( 'list:' . $type_name );
+		$this->purge( 'list:' . $type_name, 'term_updated' );
 	}
 
 	/**
@@ -465,10 +491,14 @@ class Invalidation {
 
 		$tax_object = get_taxonomy( $taxonomy );
 
+		if ( false === $tax_object ) {
+			return;
+		}
+
 		// Delete the cached results associated with this post/key
-		$this->purge_nodes( 'term', $term->term_id );
+		$this->purge_nodes( 'term', $term->term_id, 'term_relationship_deleted' );
 		$type_name = strtolower( $tax_object->graphql_single_name );
-		$this->purge( 'list:' . $type_name );
+		$this->purge( 'list:' . $type_name, 'term_relationship_deleted' );
 	}
 
 	/**
@@ -492,12 +522,7 @@ class Invalidation {
 		}
 
 		// Delete the cached results associated with this post/key
-		$this->purge_nodes( 'term', $term->term_id, 'term_edited' );
-
-		$tax_object = get_taxonomy( $term->taxonomy );
-		$type_name  = strtolower( $tax_object->graphql_single_name );
-		$this->purge( 'list:' . $type_name, 'term_edited' );
-
+		$this->purge_nodes( 'term', $term->term_id, 'term_relationship_added' );
 	}
 
 	/**
@@ -507,6 +532,8 @@ class Invalidation {
 	 * @param string  $new_status The new status of the post
 	 * @param string  $old_status The old status of the post
 	 * @param WP_Post $post       The post being updated
+	 *
+	 * @return void
 	 */
 	public function on_transition_post_status_cb( $new_status, $old_status, WP_Post $post ) {
 
@@ -522,6 +549,10 @@ class Invalidation {
 		}
 
 		$post_type_object = get_post_type_object( $post->post_type );
+
+		if ( ! $post_type_object instanceof \WP_Post_Type ) {
+			return;
+		}
 
 		// If the post type is not public and not publicly queryable
 		// don't track it
@@ -559,18 +590,20 @@ class Invalidation {
 			$action_type = 'CREATE';
 		}
 
-		$post_type_object = get_post_type_object( $post->post_type );
-		$type_name        = strtolower( $post_type_object->graphql_single_name );
+		$type_name = strtolower( $post_type_object->graphql_single_name );
 
 		// if we create a post
 		// we need to purge lists of the type
 		// as the created node might affect the list
 		if ( 'CREATE' === $action_type ) {
+
+			// Purge any documents tagged with list:$type_name
 			$this->purge( 'list:' . $type_name, 'post_' . $action_type );
 
+			// Purge the terms associated with the node
 			$terms = wp_get_object_terms( $post->ID, \WPGraphQL::get_allowed_taxonomies() );
 
-			if ( ! empty( $terms ) ) {
+			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 				array_map(
 					function ( $term ) use ( $post ) {
 						if ( ! $term instanceof WP_Term ) {
@@ -594,7 +627,7 @@ class Invalidation {
 		if ( 'DELETE' === $action_type ) {
 			$terms = wp_get_object_terms( $post->ID, \WPGraphQL::get_allowed_taxonomies() );
 
-			if ( ! empty( $terms ) ) {
+			if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 				array_map(
 					function ( $term ) use ( $post ) {
 						if ( ! $term instanceof WP_Term ) {
@@ -613,6 +646,8 @@ class Invalidation {
 	 *
 	 * @param int     $user_id       User ID.
 	 * @param WP_User $old_user_data Object containing user's data prior to update.
+	 *
+	 * @return void
 	 */
 	public function on_user_profile_update_cb( $user_id, $old_user_data ) {
 		// Delete the cached results associated with this key
@@ -626,6 +661,8 @@ class Invalidation {
 	 * @param int    $object_id   ID of the object metadata is for.
 	 * @param string $meta_key    Metadata key.
 	 * @param mixed  $_meta_value Metadata value. Serialized if non-scalar.
+	 *
+	 * @return void
 	 */
 	public function on_user_meta_change_cb( $meta_id, $object_id, $meta_key, $_meta_value ) {
 		$user = get_user_by( 'id', $object_id );
@@ -643,10 +680,10 @@ class Invalidation {
 	}
 
 	/**
-	 *
 	 * @param int      $deleted_id       ID of the deleted user.
 	 * @param int|null $reassign_id ID of the user to reassign posts and links to.
 	 *                           Default null, for no reassignment.
+	 * @return void
 	 */
 	public function on_user_deleted_cb( $deleted_id, $reassign_id ) {
 		global $wpdb;
@@ -680,6 +717,8 @@ class Invalidation {
 	 * @param mixed  $meta_value Metadata value. This will be a PHP-serialized string
 	 *                           representation of the value if the value is an array, an object,
 	 *                           or itself a PHP-serialized string.
+	 *
+	 * @return void
 	 */
 	public function on_postmeta_change_cb( $meta_id, $post_id, $meta_key, $meta_value ) {
 
@@ -696,12 +735,11 @@ class Invalidation {
 			return;
 		}
 
-		// if the post type is not tracked, ignore it
-		if ( ! in_array( $post->post_type, \WPGraphQL::get_allowed_post_types(), true ) ) {
+		$post_type_object = get_post_type_object( $post->post_type );
+
+		if ( ! $post_type_object instanceof \WP_Post_Type ) {
 			return;
 		}
-
-		$post_type_object = get_post_type_object( $post->post_type );
 
 		// If the post type is not public and not publicly queryable
 		// don't track it
@@ -731,20 +769,16 @@ class Invalidation {
 	 * @param int $menu_id ID of the menu
 	 *
 	 * @return bool
+	 * @throws Exception
 	 */
-	public function is_menu_public( $menu_id ) {
-		$locations         = get_theme_mod( 'nav_menu_locations' );
-		$assigned_menu_ids = ! empty( $locations ) ? array_values( $locations ) : [];
-
-		if ( empty( $assigned_menu_ids ) ) {
+	public function is_menu_public( int $menu_id ): bool {
+		$nav_menu = get_term( $menu_id, 'nav_menu' );
+		if ( ! $nav_menu instanceof WP_Term ) {
 			return false;
 		}
+		$visibility = ( new Menu( $nav_menu ) )->get_visibility();
 
-		if ( in_array( $menu_id, $assigned_menu_ids, true ) ) {
-			return true;
-		}
-
-		return false;
+		return ( 'public' === $visibility );
 	}
 
 	/**
@@ -784,30 +818,49 @@ class Invalidation {
 	/**
 	 * Evict caches when nav menus are updated
 	 *
-	 * @param int   $menu_id The ID of the menu being updated
+	 * @param int $menu_id The ID of the menu being updated
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function on_update_nav_menu_cb( $menu_id ) {
-		if ( ! $this->is_menu_public( $menu_id ) ) {
+	public function on_update_nav_menu_cb( int $menu_id ): void {
+		if ( ! $this->is_menu_public( absint( $menu_id ) ) ) {
 			return;
 		}
 
 		$menu = get_term_by( 'id', absint( $menu_id ), 'nav_menu' );
 
 		// menus have a term:id relay global ID, as they use the term loader
-		$this->purge_nodes( 'term', $menu->term_id, 'updated_nav_menu' );
+		if ( $menu instanceof WP_Term ) {
+			$this->purge_nodes( 'term', $menu->term_id, 'updated_nav_menu' );
+		}
+	}
+
+	/**
+	 * @param int   $menu_id   The ID of the nav menu being created
+	 * @param array $menu_data The menu data of the menu being created
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function on_create_nav_menu_cb( int $menu_id, array $menu_data ) {
+		if ( ! $this->is_menu_public( absint( $menu_id ) ) ) {
+			return;
+		}
+
+		$this->purge( 'list:menu', 'nav_menu_created' );
 	}
 
 	/**
 	 * Evict caches when terms are updated
 	 *
-	 * @param int $meta_id ID of updated metadata entry.
-	 * @param int $object_id ID of the object metadata is for.
-	 * @param string $meta_key Metadata key.
-	 * @param mixed $meta_value Metadata value. Serialized if non-scalar.
+	 * @param int    $meta_id    ID of updated metadata entry.
+	 * @param int    $object_id  ID of the object metadata is for.
+	 * @param string $meta_key   Metadata key.
+	 * @param mixed  $meta_value Metadata value. Serialized if non-scalar.
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function on_updated_menu_meta_cb( $meta_id, $object_id, $meta_key, $meta_value ) {
 
@@ -822,7 +875,7 @@ class Invalidation {
 		}
 
 		// if the menu isn't public do nothing
-		if ( ! $this->is_menu_public( $term->term_id ) ) {
+		if ( ! $this->is_menu_public( absint( $term->term_id ) ) ) {
 			return;
 		}
 
@@ -832,6 +885,79 @@ class Invalidation {
 
 		$this->purge_nodes( 'term', $term->term_id, 'menu_meta_updated' );
 	}
+
+	/**
+	 * Listen for when a term relationship has changed between nav_menu_item and nav_menu
+	 *
+	 * @param int    $object_id The ID of the object the taxonomy is associated with
+	 * @param int    $tt_id     The Term Taxonomy ID of the term
+	 * @param string $taxonomy  The name of the taxonomy the term belongs to
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function on_menu_item_added_to_menu_cb( int $object_id, int $tt_id, string $taxonomy ): void {
+
+		if ( 'nav_menu' !== $taxonomy ) {
+			return;
+		}
+
+		$menu_term = get_term_by( 'term_taxonomy_id', absint( $tt_id ), $taxonomy );
+
+		// if the menu isn't public do nothing
+		if ( ! isset( $menu_term->term_id ) || ! $this->is_menu_public( absint( $menu_term->term_id ) ) ) {
+			return;
+		}
+
+		$this->purge( 'list:menuitem', 'nav_menu_item_added' );
+
+	}
+
+	/**
+	 * Listen for when a menu item is updated
+	 *
+	 * @param int   $menu_id         ID of the updated menu.
+	 * @param int   $menu_item_db_id ID of the updated menu item.
+	 * @param array $args            An array of arguments used to update a menu item.
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function on_menu_item_updated_cb( int $menu_id, int $menu_item_db_id, array $args ): void {
+
+		$menu_term = get_term_by( 'term_id', absint( $menu_id ), 'nav_menu' );
+
+		// if the menu isn't public do nothing
+		if ( ! isset( $menu_term->term_id ) || ! $this->is_menu_public( absint( $menu_term->term_id ) ) ) {
+			return;
+		}
+
+		$this->purge_nodes( 'post', $menu_item_db_id, 'update_menu_item' );
+
+	}
+
+	/**
+	 * Listen for menu items being deleted and purge relevant caches
+	 *
+	 * @param int     $post_id The ID of the post being deleted
+	 * @param WP_Post $post The Post object that is being deleted
+	 *
+	 * @return void
+	 */
+	public function on_menu_item_deleted_cb( int $post_id, WP_Post $post ): void {
+
+		if ( 'nav_menu_item' !== $post->post_type ) {
+			return;
+		}
+
+		if ( 'publish' !== $post->post_status ) {
+			return;
+		}
+
+		$this->purge_nodes( 'post', $post->ID, 'nav_menu_item_deleted' );
+
+	}
+
 
 	/**
 	 * Listens for changes to meta for menu items
@@ -844,6 +970,8 @@ class Invalidation {
 	 * @param mixed  $meta_value Metadata value. This will be a PHP-serialized string
 	 *                           representation of the value if the value is an array, an object,
 	 *                           or itself a PHP-serialized string.
+	 *
+	 * @return void
 	 */
 	public function on_menu_item_change_cb( $meta_id, $post_id, $meta_key, $meta_value ) {
 
@@ -889,11 +1017,18 @@ class Invalidation {
 	 * @param string $image      Unused.
 	 * @param string $mime_type  Unused.
 	 * @param int    $post_id    Post ID.
+	 *
+	 * @return void
 	 */
 	public function on_save_image_file_cb( $dummy, $filename, $image, $mime_type, $post_id ) {
 		$this->on_edit_attachment_cb( $post_id );
 	}
 
+	/**
+	 * @param int $attachment_id Attachment ID.
+	 *
+	 * @return void
+	 */
 	public function on_edit_attachment_cb( $attachment_id ) {
 		$attachment = get_post( $attachment_id );
 
@@ -907,7 +1042,7 @@ class Invalidation {
 	/**
 	 * Handle purging when attachment is deleted
 	 *
-	 * @param $attachment_id
+	 * @param int $attachment_id Attachment ID.
 	 *
 	 * @return void
 	 */
@@ -927,6 +1062,8 @@ class Invalidation {
 	 * @param int|string $new_status The new comment status.
 	 * @param int|string $old_status The old comment status.
 	 * @param WP_Comment $comment    Comment object.
+	 *
+	 * @return void
 	 */
 	public function on_comment_transition_cb( $new_status, $old_status, $comment ) {
 		// Only evict cache if transitioning to or from 'approved'
@@ -941,11 +1078,23 @@ class Invalidation {
 	 *
 	 * @param int        $comment_id The comment ID.
 	 * @param WP_Comment $comment    Comment object.
+	 *
+	 * @return void
 	 */
 	public function on_insert_comment_cb( $comment_id, $comment ) {
-		if ( isset( $comment->comment_approved ) && '1' === $comment->comment_approved ) {
+		if ( property_exists( $comment, 'comment_approved' ) && '1' === $comment->comment_approved ) {
 			$this->purge_nodes( 'comment', $comment_id, 'comment_approved' );
 			$this->purge( 'list:comment', 'comment_approved' );
 		}
+	}
+
+	/**
+	 * When admin user clicks 'Purge Cache Now'.
+	 * Trigger cache invalidation hooks/actions listening for 'graphql_purge'.
+	 *
+	 * @return void
+	 */
+	public function on_purge_all_cb() {
+		$this->purge( 'graphql:Query', 'purge all' );
 	}
 }

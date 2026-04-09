@@ -1,11 +1,19 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
 if ( ! class_exists( 'ACF_Legacy_Location' ) ) :
-
 	abstract class ACF_Legacy_Location {
 
 		/**
@@ -37,7 +45,7 @@ if ( ! class_exists( 'ACF_Legacy_Location' ) ) :
 		 * @date    10/4/20
 		 * @since   5.9.0
 		 *
-		 * @param   string $name The method name.
+		 * @param   string $name      The method name.
 		 * @param   array  $arguments The array of arguments.
 		 * @return  mixed
 		 */
