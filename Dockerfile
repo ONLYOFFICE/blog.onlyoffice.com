@@ -9,5 +9,8 @@ RUN apt-get update && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* /tmp/pear
 
-RUN rm -rf /var/www/html/wp-content/*
-COPY wp-content/ /var/www/html/wp-content/
+# Replace default wp-content with our own in the WordPress source directory.
+# The official entrypoint copies /usr/src/wordpress/ → /var/www/html/ on startup,
+# so our wp-content must be placed here to survive the copy.
+RUN rm -rf /usr/src/wordpress/wp-content/*
+COPY wp-content/ /usr/src/wordpress/wp-content/
