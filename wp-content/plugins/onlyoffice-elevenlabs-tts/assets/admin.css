@@ -1,0 +1,34 @@
+.oetl-status-msg {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+}
+
+.oetl-spinner.is-active {
+    visibility: visible;
+}
+
+#oetl_audio_status .oetl-preview audio {
+    max-width: 100%;
+}
+
+#oetl_audio_status .description {
+    font-size: 11px;
+    color: #666;
+}
+
+#oetl_audio_status .oetl-voice-override {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+#oetl_audio_status .oetl-voice-override label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+}
+
+#oetl_audio_status .oetl-voice-override select {
+    width: 100%;
+}
