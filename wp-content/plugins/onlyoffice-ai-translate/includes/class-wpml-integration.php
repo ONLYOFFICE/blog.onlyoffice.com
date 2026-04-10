@@ -63,7 +63,13 @@ class OAIT_WPML_Integration {
         update_post_meta( $new_post_id, '_ai_translated_date', current_time( 'mysql' ) );
         update_post_meta( $new_post_id, '_ai_source_post_id', $original_post_id );
 
-        // Step 6: Copy featured image
+        // Step 6: Clear copied TTS audio meta (each translation generates its own audio)
+        delete_post_meta( $new_post_id, '_oetl_audio_attachment_id' );
+        delete_post_meta( $new_post_id, '_oetl_audio_in_progress' );
+        delete_post_meta( $new_post_id, '_oetl_audio_error' );
+        delete_post_meta( $new_post_id, '_oetl_audio_generated_at' );
+
+        // Step 7: Copy featured image
         $thumbnail_id = get_post_meta( $original_post_id, '_thumbnail_id', true );
         if ( $thumbnail_id ) {
             update_post_meta( $new_post_id, '_thumbnail_id', $thumbnail_id );
