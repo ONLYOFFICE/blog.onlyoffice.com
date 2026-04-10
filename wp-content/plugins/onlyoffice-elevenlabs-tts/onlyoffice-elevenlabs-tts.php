@@ -130,15 +130,26 @@ function oetl_ajax_generate_audio() {
 
     // Clear previous error
     delete_post_meta( $post_id, '_oetl_audio_error' );
-    update_post_meta( $post_id, '_oetl_audio_in_progress', true );
 
-    if ( function_exists( 'as_enqueue_async_action' ) ) {
-        as_enqueue_async_action( 'oetl_generate_audio_async', array( 'post_id' => $post_id ), 'oetl' );
-    } else {
-        wp_schedule_single_event( time(), 'oetl_generate_audio_async', array( $post_id ) );
+    // Generate synchronously so the user gets immediate feedback
+    $generator = new OETL_TTS_Generator();
+    $result = $generator->generate( $post_id );
+
+    if ( is_wp_error( $result ) ) {
+        update_post_meta( $post_id, '_oetl_audio_error', $result->get_error_message() );
+        delete_post_meta( $post_id, '_oetl_audio_in_progress' );
+        wp_send_json_error( $result->get_error_message() );
     }
 
-    wp_send_json_success( 'Audio generation queued.' );
+    update_post_meta( $post_id, '_oetl_audio_attachment_id', $result );
+    update_post_meta( $post_id, '_oetl_audio_generated_at', current_time( 'mysql' ) );
+    delete_post_meta( $post_id, '_oetl_audio_in_progress' );
+    delete_post_meta( $post_id, '_oetl_audio_error' );
+
+    wp_send_json_success( array(
+        'audioUrl'    => wp_get_attachment_url( $result ),
+        'generatedAt' => current_time( 'mysql' ),
+    ) );
 }
 
 /**

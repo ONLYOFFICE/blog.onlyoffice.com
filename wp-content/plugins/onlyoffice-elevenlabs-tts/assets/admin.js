@@ -17,9 +17,15 @@
         $spinner.addClass('is-active');
         $status.hide();
 
+        $status
+            .text('Generating audio, please wait...')
+            .css('color', '#00a32a')
+            .show();
+
         $.ajax({
             url: oetlData.ajaxUrl,
             type: 'POST',
+            timeout: 300000, // 5 minutes for long texts
             data: {
                 action: 'oetl_generate_audio',
                 nonce: oetlData.nonce,
@@ -29,11 +35,7 @@
                 $spinner.removeClass('is-active');
 
                 if (response.success) {
-                    $status
-                        .text('Audio generation in progress...')
-                        .css('color', '#00a32a')
-                        .show();
-                    startPolling(postId);
+                    updateMetaBoxWithAudio(response.data);
                 } else {
                     $btn.prop('disabled', false);
                     $status
