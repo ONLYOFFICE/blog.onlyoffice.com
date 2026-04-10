@@ -37,6 +37,16 @@ class OETL_TTS_Generator {
             return new WP_Error( 'empty_content', 'Post has no text content to convert.' );
         }
 
+        // Pre-flight: verify we can write temp files before spending API tokens
+        $temp_dir = get_temp_dir();
+        if ( ! is_dir( $temp_dir ) ) {
+            wp_mkdir_p( $temp_dir );
+        }
+        $upload_dir = wp_upload_dir();
+        if ( ! is_writable( $temp_dir ) && ! is_writable( $upload_dir['path'] ) ) {
+            return new WP_Error( 'write_error', 'Neither temp directory nor uploads directory is writable. Cannot save audio.' );
+        }
+
         // Chunk text for API limits
         $chunks = $this->chunk_text( $text );
 
@@ -225,16 +235,38 @@ class OETL_TTS_Generator {
             wp_delete_attachment( $old_attachment_id, true );
         }
 
+        // Ensure temp directory exists
+        $temp_dir = get_temp_dir();
+        if ( ! is_dir( $temp_dir ) ) {
+            wp_mkdir_p( $temp_dir );
+        }
+
         // Write to temp file
         $filename = sanitize_file_name( $slug . '-audio.mp3' );
         $tmp_file = wp_tempnam( $filename );
 
-        if ( ! $tmp_file ) {
-            return new WP_Error( 'temp_file_error', 'Could not create temporary file.' );
+        // Fallback: if temp file was not created, use uploads directory
+        if ( ! $tmp_file || ! file_exists( $tmp_file ) ) {
+            $upload_dir = wp_upload_dir();
+            $tmp_file   = trailingslashit( $upload_dir['path'] ) . wp_unique_filename( $upload_dir['path'], $slug . '-audio.tmp' );
+            // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_touch
+            @touch( $tmp_file );
+            if ( ! file_exists( $tmp_file ) ) {
+                return new WP_Error( 'temp_file_error', 'Could not create temporary file in temp or uploads directory.' );
+            }
         }
 
         // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
-        file_put_contents( $tmp_file, $mp3_data );
+        $bytes_written = file_put_contents( $tmp_file, $mp3_data );
+        if ( false === $bytes_written || 0 === $bytes_written ) {
+            @unlink( $tmp_file );
+            return new WP_Error( 'temp_write_error', 'Could not write audio data to temporary file.' );
+        }
+
+        if ( ! is_readable( $tmp_file ) ) {
+            @unlink( $tmp_file );
+            return new WP_Error( 'temp_read_error', sprintf( 'Temporary file is not readable: %s', $tmp_file ) );
+        }
 
         // Prepare file array for media_handle_sideload
         $file_array = array(
