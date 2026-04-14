@@ -1,0 +1,47 @@
+.leafio-aspc-section {
+    background: #fafbfb;
+    padding: 15px;
+    margin: 20px;
+    border-radius: 5px;
+}
+
+
+.leafio-aspc-section.template-clean p.summary-header {
+    margin: 10px;
+    font-weight: 700;
+    border-bottom: 1px solid #e6e4e4;
+    padding: 5px 5px 9px 12px;
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+
+.leafio-aspc-section.template-light {
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    border: 1px solid #e1e1e1;
+    border-top: unset;
+}
+
+.leafio-aspc-section.template-light p.summary-header {
+    background: #2596a4;
+    color: white;
+    margin: 0 0 10px 0;
+    padding: 11px;
+}
+
+.leafio-aspc-section.template-dark {
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    border: 3px solid #e1e1e1;
+    border-top: unset;
+}
+
+.leafio-aspc-section.template-dark p.summary-header {
+    background: black;
+    color: white;
+    margin: 0 0 10px 0;
+    padding: 11px;
+}
