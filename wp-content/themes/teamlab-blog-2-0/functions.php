@@ -1121,3 +1121,24 @@ function discourse_publish_format_html( $output, $post_id ) {
 }
 
 add_filter( 'discourse_publish_format_html', 'discourse_publish_format_html', 10, 2 );
+
+/**
+ * Algolia: Add language attribute to searchable posts for multilingual filtering.
+ */
+add_filter( 'algolia_searchable_post_shared_attributes', function( $attributes, $post ) {
+    if ( function_exists( 'wpml_get_language_information' ) ) {
+        $lang_info = wpml_get_language_information( null, $post->ID );
+        if ( ! empty( $lang_info['language_code'] ) ) {
+            $attributes['language'] = $lang_info['language_code'];
+        }
+    }
+    return $attributes;
+}, 10, 2 );
+
+/**
+ * Algolia: Make language attribute filterable (facet).
+ */
+add_filter( 'algolia_searchable_posts_index_settings', function( $settings ) {
+    $settings['attributesForFaceting'][] = 'language';
+    return $settings;
+} );
