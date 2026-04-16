@@ -1124,14 +1124,38 @@ add_filter( 'discourse_publish_format_html', 'discourse_publish_format_html', 10
 
 /**
  * Algolia: Add language attribute to searchable posts for multilingual filtering.
+ * Tries several WPML APIs and falls back to the default WPML language so that
+ * every record always has a language attribute (needed for `language:xx` filter).
  */
 add_filter( 'algolia_searchable_post_shared_attributes', function( $attributes, $post ) {
-    if ( function_exists( 'wpml_get_language_information' ) ) {
+    $language_code = null;
+
+    // Method 1: WPML's recommended filter
+    $lang_details = apply_filters( 'wpml_post_language_details', null, $post->ID );
+    if ( ! empty( $lang_details['language_code'] ) ) {
+        $language_code = $lang_details['language_code'];
+    }
+
+    // Method 2: Legacy helper
+    if ( ! $language_code && function_exists( 'wpml_get_language_information' ) ) {
         $lang_info = wpml_get_language_information( null, $post->ID );
         if ( ! empty( $lang_info['language_code'] ) ) {
-            $attributes['language'] = $lang_info['language_code'];
+            $language_code = $lang_info['language_code'];
         }
     }
+
+    // Method 3: Fallback to default site language
+    if ( ! $language_code ) {
+        $default = apply_filters( 'wpml_default_language', null );
+        if ( ! empty( $default ) ) {
+            $language_code = $default;
+        }
+    }
+
+    if ( $language_code ) {
+        $attributes['language'] = $language_code;
+    }
+
     return $attributes;
 }, 10, 2 );
 
