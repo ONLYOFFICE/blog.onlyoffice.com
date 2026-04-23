@@ -11,11 +11,16 @@ class OAIS_Frontend {
     }
 
     public function render_summary( $content ) {
-        if ( ! is_singular() || ! in_the_loop() || ! is_main_query() ) {
+        // Skip feeds, admin screens, REST responses where $content is previewed mid-edit.
+        if ( is_feed() || is_admin() ) {
             return $content;
         }
 
         $post_id = get_the_ID();
+        if ( ! $post_id ) {
+            $post = get_post();
+            $post_id = $post ? $post->ID : 0;
+        }
         if ( ! $post_id ) {
             return $content;
         }
@@ -25,18 +30,11 @@ class OAIS_Frontend {
             return $content;
         }
 
-        if ( ! get_post_meta( $post_id, OAIS_META_ENABLED, true ) ) {
-            return $content;
-        }
-
         $summary = (string) get_post_meta( $post_id, OAIS_META_SUMMARY, true );
-        $summary = trim( $summary );
-        if ( $summary === '' ) {
-            return $content;
-        }
 
         $lines = preg_split( "/\r\n|\n|\r/", $summary );
-        $lines = array_values( array_filter( array_map( 'trim', $lines ), 'strlen' ) );
+        $lines = array_map( array( $this, 'normalize_whitespace' ), $lines );
+        $lines = array_values( array_filter( $lines, 'strlen' ) );
         if ( empty( $lines ) ) {
             return $content;
         }
@@ -53,5 +51,14 @@ class OAIS_Frontend {
 
         $position = get_option( 'oais_display_position', 'top' );
         return $position === 'bottom' ? $content . $html : $html . $content;
+    }
+
+    /**
+     * Trim a line of all whitespace, including non-breaking spaces (U+00A0)
+     * that can sneak in from copy-paste.
+     */
+    private function normalize_whitespace( $line ) {
+        $line = preg_replace( '/^[\s\x{00A0}]+|[\s\x{00A0}]+$/u', '', (string) $line );
+        return $line === null ? '' : $line;
     }
 }

@@ -50,10 +50,6 @@ class OAIS_Translator_Integration {
     }
 
     private function translate_for_post( $translated_post_id, $original_post_id, $target_lang ) {
-        if ( ! get_post_meta( $original_post_id, OAIS_META_ENABLED, true ) ) {
-            return;
-        }
-
         $summary = (string) get_post_meta( $original_post_id, OAIS_META_SUMMARY, true );
         if ( trim( $summary ) === '' ) {
             return;
@@ -73,7 +69,6 @@ class OAIS_Translator_Integration {
         }
 
         update_post_meta( $translated_post_id, OAIS_META_SUMMARY, $translated );
-        update_post_meta( $translated_post_id, OAIS_META_ENABLED, true );
         update_post_meta( $translated_post_id, OAIS_META_GENERATED_AT, current_time( 'mysql' ) );
     }
 }

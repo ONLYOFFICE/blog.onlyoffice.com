@@ -18,7 +18,6 @@ define( 'OAIS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'OAIS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 define( 'OAIS_META_SUMMARY',      '_oais_summary' );
-define( 'OAIS_META_ENABLED',      '_oais_enabled' );
 define( 'OAIS_META_GENERATED_AT', '_oais_generated_at' );
 
 require_once OAIS_PLUGIN_DIR . 'includes/class-admin-settings.php';

@@ -37,21 +37,15 @@ class OAIS_Meta_Box {
         wp_nonce_field( self::NONCE_ACTION, self::NONCE_NAME );
 
         $summary   = get_post_meta( $post->ID, OAIS_META_SUMMARY, true );
-        $enabled   = (bool) get_post_meta( $post->ID, OAIS_META_ENABLED, true );
         $generated = get_post_meta( $post->ID, OAIS_META_GENERATED_AT, true );
         $max_words = (int) get_option( 'oais_max_words', 120 );
         ?>
         <div class="oais-meta-box">
             <p>
-                <label>
-                    <input type="checkbox" name="oais_enabled" value="1" <?php checked( $enabled ); ?> />
-                    <strong>Enable summary for this post</strong>
-                </label>
-            </p>
-
-            <p>
                 <label for="oais_summary_field"><strong>Summary bullets</strong>
-                    <span class="description">(one bullet per line, no markers)</span>
+                    <span class="description">
+                        (one bullet per line, no markers &mdash; leave empty to hide the block)
+                    </span>
                 </label>
             </p>
 
@@ -107,12 +101,13 @@ class OAIS_Meta_Box {
             return;
         }
 
-        $enabled = ! empty( $_POST['oais_enabled'] );
-        update_post_meta( $post_id, OAIS_META_ENABLED, $enabled );
-
         $summary = isset( $_POST['oais_summary'] ) ? (string) wp_unslash( $_POST['oais_summary'] ) : '';
         $summary = $this->sanitize_summary( $summary );
-        update_post_meta( $post_id, OAIS_META_SUMMARY, $summary );
+        if ( $summary === '' ) {
+            delete_post_meta( $post_id, OAIS_META_SUMMARY );
+        } else {
+            update_post_meta( $post_id, OAIS_META_SUMMARY, $summary );
+        }
     }
 
     public function ajax_generate_summary() {
