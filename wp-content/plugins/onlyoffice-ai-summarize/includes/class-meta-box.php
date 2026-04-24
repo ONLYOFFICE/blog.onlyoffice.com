@@ -38,22 +38,22 @@ class OAIS_Meta_Box {
 
         $summary   = get_post_meta( $post->ID, OAIS_META_SUMMARY, true );
         $generated = get_post_meta( $post->ID, OAIS_META_GENERATED_AT, true );
-        $max_words = (int) get_option( 'oais_max_words', 120 );
+        $max_words = (int) get_option( 'oais_max_words', 80 );
+        $placeholder = "Intro paragraph in 2–3 sentences that answers the post's headline.\n\n- First key point in 5–10 words\n- Second key point in 5–10 words\n- Third key point in 5–10 words";
         ?>
         <div class="oais-meta-box">
             <p>
-                <label for="oais_summary_field"><strong>Summary bullets</strong>
-                    <span class="description">
-                        (one bullet per line, no markers &mdash; leave empty to hide the block)
-                    </span>
-                </label>
+                <label for="oais_summary_field"><strong>Summary text</strong></label>
+            </p>
+            <p class="description" style="margin:0 0 6px;">
+                Paragraph lines &mdash; no prefix. Bullet lines &mdash; start with <code>- </code> (dash + space). Bullets are optional. Leave empty to hide the block.
             </p>
 
             <textarea id="oais_summary_field"
                       name="oais_summary"
-                      rows="8"
+                      rows="10"
                       class="large-text code"
-                      placeholder="One bullet per line..."><?php echo esc_textarea( $summary ); ?></textarea>
+                      placeholder="<?php echo esc_attr( $placeholder ); ?>"><?php echo esc_textarea( $summary ); ?></textarea>
 
             <p class="oais-actions">
                 <button type="button"
@@ -64,7 +64,7 @@ class OAIS_Meta_Box {
                 </button>
                 <span class="spinner oais-spinner" style="float:none;margin:0 4px;"></span>
                 <span class="description">
-                    Max <?php echo esc_html( $max_words ); ?> words total.
+                    Max <?php echo esc_html( $max_words ); ?> words in the paragraph. Bullets optional (5&ndash;10 words each).
                 </span>
             </p>
 

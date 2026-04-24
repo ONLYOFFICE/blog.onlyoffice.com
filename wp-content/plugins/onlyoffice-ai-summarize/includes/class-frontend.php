@@ -39,15 +39,38 @@ class OAIS_Frontend {
             return $content;
         }
 
+        $paragraph_lines = array();
+        $bullet_lines    = array();
+        foreach ( $lines as $line ) {
+            if ( preg_match( '/^\s*(?:[-*•·‣▪◦]|\d+[\.\)])\s+(.*)$/u', $line, $m ) ) {
+                $body = $this->normalize_whitespace( $m[1] );
+                if ( $body !== '' ) {
+                    $bullet_lines[] = $body;
+                }
+            } else {
+                $paragraph_lines[] = $line;
+            }
+        }
+
+        if ( empty( $paragraph_lines ) && empty( $bullet_lines ) ) {
+            return $content;
+        }
+
         $title = (string) get_option( 'oais_section_title', 'Summary' );
 
         $html  = '<div class="leafio-aspc-section template-clean">';
         $html .= '<h2 class="summary-header">' . esc_html( $title ) . '</h2>';
-        $html .= '<ul>';
-        foreach ( $lines as $line ) {
-            $html .= '<li>' . esc_html( $line ) . '</li>';
+        if ( ! empty( $paragraph_lines ) ) {
+            $html .= '<p>' . esc_html( implode( ' ', $paragraph_lines ) ) . '</p>';
         }
-        $html .= '</ul></div>';
+        if ( ! empty( $bullet_lines ) ) {
+            $html .= '<ul>';
+            foreach ( $bullet_lines as $line ) {
+                $html .= '<li>' . esc_html( $line ) . '</li>';
+            }
+            $html .= '</ul>';
+        }
+        $html .= '</div>';
 
         $position = get_option( 'oais_display_position', 'top' );
         return $position === 'bottom' ? $content . $html : $html . $content;

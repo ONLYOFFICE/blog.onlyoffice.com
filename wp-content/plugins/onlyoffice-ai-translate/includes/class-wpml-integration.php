@@ -110,7 +110,12 @@ class OAIT_WPML_Integration {
         }
 
         if ( isset( $translations[ $lang_code ] ) && ! empty( $translations[ $lang_code ]->element_id ) ) {
-            return (int) $translations[ $lang_code ]->element_id;
+            $translated_id   = (int) $translations[ $lang_code ]->element_id;
+            $translated_post = get_post( $translated_id );
+            if ( ! $translated_post || $translated_post->post_status === 'trash' ) {
+                return null;
+            }
+            return $translated_id;
         }
 
         return null;
@@ -182,7 +187,12 @@ class OAIT_WPML_Integration {
             return false;
         }
 
-        return isset( $translations[ $lang_code ] ) && ! empty( $translations[ $lang_code ]->element_id );
+        if ( ! isset( $translations[ $lang_code ] ) || empty( $translations[ $lang_code ]->element_id ) ) {
+            return false;
+        }
+
+        $translated_post = get_post( (int) $translations[ $lang_code ]->element_id );
+        return $translated_post && $translated_post->post_status !== 'trash';
     }
 
     /**
@@ -204,9 +214,18 @@ class OAIT_WPML_Integration {
 
         $status = array();
         foreach ( OAIT_Translator::LANGUAGES as $code => $name ) {
-            $status[ $code ] = isset( $translations[ $code ] ) && ! empty( $translations[ $code ]->element_id )
+            $translated_id = isset( $translations[ $code ] ) && ! empty( $translations[ $code ]->element_id )
                 ? (int) $translations[ $code ]->element_id
                 : null;
+
+            if ( $translated_id ) {
+                $translated_post = get_post( $translated_id );
+                if ( ! $translated_post || $translated_post->post_status === 'trash' ) {
+                    $translated_id = null;
+                }
+            }
+
+            $status[ $code ] = $translated_id;
         }
 
         return $status;

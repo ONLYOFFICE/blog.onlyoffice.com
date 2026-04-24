@@ -36,7 +36,7 @@ class OAIS_Admin_Settings {
         register_setting( 'oais_settings', 'oais_max_words', array(
             'type'              => 'integer',
             'sanitize_callback' => array( $this, 'sanitize_max_words' ),
-            'default'           => 120,
+            'default'           => 80,
         ) );
 
         register_setting( 'oais_settings', 'oais_section_title', array(
@@ -131,11 +131,11 @@ class OAIS_Admin_Settings {
     }
 
     public function render_max_words_field() {
-        $value = (int) get_option( 'oais_max_words', 120 );
+        $value = (int) get_option( 'oais_max_words', 80 );
         ?>
         <input type="number" min="20" max="500" step="10" name="oais_max_words"
                value="<?php echo esc_attr( $value ); ?>" class="small-text" />
-        <p class="description">Total word budget across all bullet points (20&ndash;500).</p>
+        <p class="description">Word budget for the intro paragraph (20&ndash;500). Bullets, when present, follow a separate 5&ndash;10 words-per-bullet rule.</p>
         <?php
     }
 

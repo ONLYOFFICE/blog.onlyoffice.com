@@ -39,8 +39,7 @@ class OAIS_Summarizer {
         }
 
         $title   = trim( (string) $post->post_title );
-        $content = wp_strip_all_tags( (string) $post->post_content, true );
-        $content = trim( preg_replace( '/\s+/', ' ', $content ) );
+        $content = $this->prepare_content( (string) $post->post_content );
 
         if ( $content === '' ) {
             return new WP_Error( 'empty_content', 'Post content is empty.' );
@@ -51,25 +50,27 @@ class OAIS_Summarizer {
             $content = mb_substr( $content, 0, 15000 ) . '…';
         }
 
-        $max_words = (int) get_option( 'oais_max_words', 120 );
+        $max_words = (int) get_option( 'oais_max_words', 80 );
         if ( $max_words < 20 )  { $max_words = 20;  }
         if ( $max_words > 500 ) { $max_words = 500; }
 
         $system_prompt = "You are a technical writer for ONLYOFFICE — a software company producing office productivity tools (DocSpace, Docs, Desktop Editors, Workspace, Document Builder).
 
-Your task: given a blog post H1 title (which poses an explicit or implicit question) and the post content, write a bullet-point Summary that directly answers that question.
+Your task: given a blog post H1 title (which poses an explicit or implicit question) and the post content, write a Summary that directly answers that question.
+
+Structure:
+1. An intro paragraph of 2–3 sentences, 40–{$max_words} words total, that answers the title's question in prose.
+2. OPTIONALLY, a bulleted list of 3–5 bullets. Each bullet is ONE sentence of 5–10 words. Add bullets only if they genuinely help the reader scan key facts; otherwise return only the paragraph.
 
 Rules:
-- Each bullet is a short, self-contained, factual statement.
-- Bullets must collectively answer the question posed by the title.
-- Total word count across ALL bullets must NOT exceed {$max_words} words.
-- Produce between 3 and 6 bullets.
 - Do NOT invent facts that are not in the content.
 - Never translate brand names: ONLYOFFICE (all-caps), DocSpace, Docs, Desktop Editors, Workspace, Document Builder, and third-party names (WordPress, Linux, Windows, macOS, etc.).
 
 Output format:
-- Return ONLY the bullet lines, one per line.
-- Do NOT prefix lines with '-', '*', '•', or numbers.
+- Paragraph lines have NO prefix.
+- Bullet lines start with '- ' (dash + space). Do NOT use '*', '•', '·', or numbering.
+- Separate the paragraph from the bullet list with exactly one empty line.
+- If you choose not to add bullets, return only the paragraph — no trailing empty line, no stray markers.
 - Do NOT add a heading, preface, or trailing commentary.";
 
         $user_prompt = "H1 Title: {$title}\n\nPost content:\n{$content}";
@@ -79,7 +80,7 @@ Output format:
             return $response;
         }
 
-        return $this->normalize_bullets( $response );
+        return $this->normalize_lines( $response );
     }
 
     /**
@@ -101,12 +102,19 @@ Output format:
             : $target_lang_code;
 
         $system_prompt = "You are a professional translator for ONLYOFFICE — a software company producing office productivity tools.
-Translate the following bullet-point summary from English to {$language_name}.
+Translate the following summary from English to {$language_name}.
+
+Input format:
+- Each input line is one of two types:
+  (a) a paragraph line — NO prefix;
+  (b) a bullet line — starts with '- ' (dash + space).
+- Empty lines are separators between the paragraph and the bullet list.
 
 Rules:
-- Preserve the line structure EXACTLY: input lines count must equal output lines count. Each input line is one bullet — translate it to one output line.
-- Do NOT add or remove bullets.
-- Do NOT prefix lines with '-', '*', '•', or numbers.
+- Preserve the line structure EXACTLY: input lines count must equal output lines count, in the same order, with empty lines kept in place.
+- For every bullet line, keep the leading '- ' prefix UNCHANGED in the translation; translate only the text after it.
+- For paragraph lines, translate the text without adding any prefix.
+- Do NOT add, remove, merge or split lines. Do NOT add '*', '•', or numbering.
 - Never translate brand names: ONLYOFFICE (all-caps), DocSpace, Docs, Desktop Editors, Workspace, Document Builder.
 - Never translate third-party product or technology names: WordPress, Linux, Windows, macOS, Android, iOS, Docker, MySQL, PostgreSQL, etc.
 - Translate naturally for the target audience — avoid literal word-by-word translation.
@@ -119,7 +127,7 @@ Rules:
             return $response;
         }
 
-        return $this->normalize_bullets( $response );
+        return $this->normalize_lines( $response );
     }
 
     /**
@@ -179,25 +187,63 @@ Rules:
     }
 
     /**
-     * Strip leading bullet markers and blank lines from a model response.
+     * Clean post content before sending to the model:
+     *   - expand and then strip shortcodes (so a plain-text fallback remains when one exists)
+     *   - drop <script>, <style> and every HTML tag with its attributes
+     *   - drop HTML comments including Gutenberg block markers
+     *   - decode HTML entities (&amp;, &nbsp;, &mdash;, …) into real characters
+     *   - collapse runs of whitespace into single spaces
+     *
+     * @param string $raw
+     * @return string
+     */
+    private function prepare_content( $raw ) {
+        $text = (string) $raw;
+        $text = strip_shortcodes( $text );
+        $text = wp_strip_all_tags( $text, true );
+        $text = html_entity_decode( $text, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+        $text = preg_replace( '/\s+/u', ' ', $text );
+        return trim( (string) $text );
+    }
+
+    /**
+     * Normalize model output into the storage format:
+     *   - Paragraph lines stay unprefixed.
+     *   - Bullet lines keep a single unified "- " prefix (alternative markers
+     *     like "*", "•", "·", "▪", "‣", "◦" or "1." / "1)" are rewritten to "- ").
+     *   - Strip blank lines at the top/bottom; keep AT MOST one blank line
+     *     between paragraph and bullet list (collapses runs of blanks).
      *
      * @param string $text
      * @return string
      */
-    private function normalize_bullets( $text ) {
+    private function normalize_lines( $text ) {
         $lines = preg_split( "/\r\n|\n|\r/", (string) $text );
         $clean = array();
+        $prev_blank = true; // treat start of buffer as "after a blank" so leading blanks are dropped
         foreach ( $lines as $line ) {
-            $line = trim( $line );
+            $line = preg_replace( '/^[\s\x{00A0}]+|[\s\x{00A0}]+$/u', '', (string) $line );
             if ( $line === '' ) {
+                if ( ! $prev_blank ) {
+                    $clean[]    = '';
+                    $prev_blank = true;
+                }
                 continue;
             }
-            // Remove leading bullet/numbering markers if the model ignored instructions.
-            $line = preg_replace( '/^\s*(?:[-*•·‣▪◦]|\d+[\.\)])\s+/u', '', $line );
-            $line = trim( $line );
-            if ( $line !== '' ) {
-                $clean[] = $line;
+            if ( preg_match( '/^(?:[-*•·‣▪◦]|\d+[\.\)])\s+(.*)$/u', $line, $m ) ) {
+                $body = trim( $m[1] );
+                if ( $body !== '' ) {
+                    $clean[]    = '- ' . $body;
+                    $prev_blank = false;
+                }
+            } else {
+                $clean[]    = $line;
+                $prev_blank = false;
             }
+        }
+        // Drop a trailing blank line if it slipped through.
+        while ( ! empty( $clean ) && end( $clean ) === '' ) {
+            array_pop( $clean );
         }
         return implode( "\n", $clean );
     }
