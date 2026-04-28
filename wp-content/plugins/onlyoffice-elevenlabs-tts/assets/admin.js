@@ -15,50 +15,65 @@
 
         $btn.prop('disabled', true);
         $spinner.addClass('is-active');
-        $status.hide();
-
         $status
             .text('Generating audio, please wait...')
             .css('color', '#00a32a')
             .show();
 
+        // Polling is the source of truth for completion. The XHR may outlive
+        // browser/proxy idle limits on long posts (20+ min audio); even if it
+        // times out, server-side PHP keeps running (set_time_limit(0) +
+        // ignore_user_abort(true)) and the polling picks up the result from
+        // post meta.
+        startPolling(postId);
+
         $.ajax({
             url: oetlData.ajaxUrl,
             type: 'POST',
-            timeout: 300000, // 5 minutes for long texts
+            timeout: 0, // no client timeout — let polling decide when we're done
             data: {
                 action: 'oetl_generate_audio',
                 nonce: oetlData.nonce,
                 post_id: postId
             },
             success: function (response) {
-                $spinner.removeClass('is-active');
-
                 if (response.success) {
+                    stopPolling();
+                    $spinner.removeClass('is-active');
                     updateMetaBoxWithAudio(response.data);
                 } else {
-                    $btn.prop('disabled', false);
-                    $status
-                        .text('Error: ' + response.data)
-                        .css('color', '#d63638')
-                        .show();
+                    // Server reported a real error (validation, API key, etc.).
+                    // Polling will see _oetl_audio_error on its next tick;
+                    // surface it now instead of waiting up to 5s.
+                    stopPolling();
+                    $spinner.removeClass('is-active');
+                    updateMetaBoxWithError(response.data, postId);
                 }
             },
             error: function () {
-                $spinner.removeClass('is-active');
-                $btn.prop('disabled', false);
-                $status
-                    .text('Request failed. Please try again.')
-                    .css('color', '#d63638')
-                    .show();
+                // Network glitch / proxy timeout / browser abort. Do NOT show
+                // an error — the server may still be working. Let the polling
+                // continue and report the actual outcome.
             }
         });
     });
 
-    function startPolling(postId) {
+    function stopPolling() {
         if (pollTimer) {
             clearInterval(pollTimer);
+            pollTimer = null;
         }
+    }
+
+    function renderProgressLabel(data) {
+        if (data.progressTotal && data.progressCurrent) {
+            return 'Generating audio... (' + data.progressCurrent + '/' + data.progressTotal + ')';
+        }
+        return 'Generating audio...';
+    }
+
+    function startPolling(postId) {
+        stopPolling();
 
         pollTimer = setInterval(function () {
             $.ajax({
@@ -77,15 +92,26 @@
                     var data = response.data;
 
                     if (data.hasAudio) {
-                        clearInterval(pollTimer);
-                        pollTimer = null;
+                        stopPolling();
                         updateMetaBoxWithAudio(data);
                     } else if (data.error) {
-                        clearInterval(pollTimer);
-                        pollTimer = null;
+                        stopPolling();
                         updateMetaBoxWithError(data.error, postId);
+                    } else {
+                        // Still in progress — refresh the chunk counter.
+                        var $box = $('#oetl_audio_status .oetl-dynamic-content');
+                        var $statusMsg = $box.find('.oetl-status-msg');
+                        if ($statusMsg.length) {
+                            $statusMsg
+                                .text(renderProgressLabel(data))
+                                .css('color', '#00a32a')
+                                .show();
+                        }
+                        var $serverSideStatus = $box.find('.oetl-status em');
+                        if ($serverSideStatus.length) {
+                            $serverSideStatus.text(renderProgressLabel(data));
+                        }
                     }
-                    // If still in progress, keep polling
                 }
             });
         }, 5000);
