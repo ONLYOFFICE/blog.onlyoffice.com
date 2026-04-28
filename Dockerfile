@@ -12,6 +12,11 @@ COPY apache-mpm-prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 #   KeepAlive Off — ALB reuses backend connections; keepalive ties up
 #                   workers on idle sockets, costly with MaxRequestWorkers=40.
 #
+# Remove opcache-recommended.ini: PHP loads conf.d/*.ini alphabetically, so
+# this upstream file overrides our chart-mounted custom.ini. All values it
+# sets (memory_consumption, max_accelerated_files, interned_strings_buffer,
+# revalidate_freq) are explicitly defined in custom.ini.
+#
 # php-redis: required by the Redis Object Cache plugin.
 #
 # object-cache.php drop-in: must match the installed plugin version,
@@ -19,6 +24,7 @@ COPY apache-mpm-prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 RUN set -eux; \
     sed -i 's/^Timeout .*/Timeout 60/' /etc/apache2/apache2.conf; \
     sed -i 's/^KeepAlive .*/KeepAlive Off/' /etc/apache2/apache2.conf; \
+    rm /usr/local/etc/php/conf.d/opcache-recommended.ini; \
     apt-get update; \
     apt-get install -y --no-install-recommends $PHPIZE_DEPS; \
     pecl install redis; \
