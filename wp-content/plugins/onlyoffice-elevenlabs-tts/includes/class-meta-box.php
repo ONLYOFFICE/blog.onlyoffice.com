@@ -75,16 +75,26 @@ class OETL_Meta_Box {
         // Dynamic content area (rebuilt by JS after generation)
         echo '<div class="oetl-dynamic-content">';
 
-        $attachment_id = get_post_meta( $post->ID, '_oetl_audio_attachment_id', true );
-        $in_progress   = get_post_meta( $post->ID, '_oetl_audio_in_progress', true );
-        $error         = get_post_meta( $post->ID, '_oetl_audio_error', true );
-        $generated_at  = get_post_meta( $post->ID, '_oetl_audio_generated_at', true );
+        // Bypass Redis Object Cache so a reload during generation reflects the
+        // latest progress written by the AJAX-generate process.
+        wp_cache_delete( $post->ID, 'post_meta' );
+
+        $attachment_id    = get_post_meta( $post->ID, '_oetl_audio_attachment_id', true );
+        $in_progress      = get_post_meta( $post->ID, '_oetl_audio_in_progress', true );
+        $error            = get_post_meta( $post->ID, '_oetl_audio_error', true );
+        $generated_at     = get_post_meta( $post->ID, '_oetl_audio_generated_at', true );
+        $progress_current = get_post_meta( $post->ID, '_oetl_audio_progress_current', true );
+        $progress_total   = get_post_meta( $post->ID, '_oetl_audio_progress_total', true );
 
         if ( $in_progress ) {
+            $progress_label = 'Generating audio...';
+            if ( $progress_current !== '' && $progress_total !== '' ) {
+                $progress_label = sprintf( 'Generating audio... (%d/%d)', (int) $progress_current, (int) $progress_total );
+            }
             ?>
             <div class="oetl-status">
                 <span class="spinner is-active" style="float:none;margin:0 4px 0 0;"></span>
-                <em>Generating audio...</em>
+                <em><?php echo esc_html( $progress_label ); ?></em>
             </div>
             <?php
         } elseif ( $attachment_id ) {
