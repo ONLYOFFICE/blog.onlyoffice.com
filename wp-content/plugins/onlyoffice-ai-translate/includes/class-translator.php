@@ -166,7 +166,6 @@ Translate blog post content from English to {$language_name}.
 
 ### Never translate these — keep exactly as-is:
 - Brand name: ONLYOFFICE (always all-caps, never translated)
-- Product names: DocSpace, Docs, Desktop Editors, Workspace, Document Builder
 - Third-party product names: Docker, Docker Compose, Linux, Windows, macOS, iOS, Android, Ubuntu, Debian, CentOS, RHEL, KylinOS, snap
 - Technical terms: JWT, HTTPS, SSL, API, ARM, ARM64, AGPL
 - Cloud/hosting platforms: Amazon S3, DigitalOcean, Cloudron, Alibaba Cloud, Vultr, Linode
@@ -175,17 +174,40 @@ Translate blog post content from English to {$language_name}.
 - Plugin names: PhotoEditor, Mendeley, Zotero
 - URLs, email addresses, code blocks
 
+### Ensure that ONLYOFFICE product names are correctly localized for the Chinese market as follows:
+ONLYOFFICE Docs -> ONLYOFFICE 文档
+ONLYOFFICE DocSpace -> ONLYOFFICE 协作空间
+ONLYOFFICE Workspace -> ONLYOFFICE 工作区
+Desktop Editors -> 桌面编辑器
+Docs Enterprise → 文档企业版
+DocSpace Enterprise → 协作空间企业版
+Docs Developer → 文档开发者版
+DocSpace Developer → 协作空间开发者版
+Docs Home Server → 文档家用服务器
+DocSpace Family Pack → 协作空间家用版
+DocSpace STARTUP → 协作空间初创版
+DocSpace BUSINESS → 协作空间专业版
+DocSpace ENTERPRISE → 协作空间企业版
+
+Support level terminology:
+· BASIC → 初级
+· PLUS → 中级
+· PREMIUM → 高级
+
 ### HTML rules:
 - Preserve ALL HTML tags, attributes (class, id, href, src, style, data-*, etc.) EXACTLY as they are.
 - ONLY translate the visible text content between tags.
 - Do NOT modify any tag names, attribute names, or attribute values.
+- Add exactly one space between any Chinese character (汉字) and Latin letters (A–Z, a–z).
 
 ### Blog-specific rules:
 - Keep the same professional blog tone
-- Translate naturally for the target audience, not word-by-word
+- Translate naturally for the target audience in China, not word-by-word
 - Maintain technical accuracy while making the content easy to understand
 - Avoid direct, overly literal translations — rephrase where necessary to match local language habits
-- Do NOT invent, infer, or reconstruct content for empty fields";
+- Do NOT invent, infer, or reconstruct content for empty fields
+- Strictly avoid absolute or superlative terms (e.g., 最佳, 第一, 完美, etc.) and use neutral, factual wording instead to ensure compliance with China advertising law.
+- Standardize the translation of \"useful links\" as \"相关链接\".";
     }
 
     /**
