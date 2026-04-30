@@ -1,0 +1,26 @@
+.oais-meta-box textarea#oais_summary_field {
+    font-family: Consolas, Monaco, "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 160px;
+}
+
+.oais-meta-box .oais-actions {
+    margin-top: 10px;
+}
+
+.oais-meta-box .oais-status {
+    margin-top: 8px;
+    padding: 8px 12px;
+    border-left: 4px solid #72aee6;
+    background: #f6f7f7;
+}
+
+.oais-meta-box .oais-status.oais-status-success {
+    border-left-color: #00a32a;
+}
+
+.oais-meta-box .oais-status.oais-status-error {
+    border-left-color: #d63638;
+    color: #b32d2e;
+}

@@ -49,15 +49,22 @@ class OETL_TTS_Generator {
 
         // Chunk text for API limits
         $chunks = $this->chunk_text( $text );
+        $total  = count( $chunks );
+
+        update_post_meta( $post_id, '_oetl_audio_progress_total', $total );
+        wp_cache_delete( $post_id, 'post_meta' );
 
         // Generate audio for each chunk
         $audio_parts = array();
         foreach ( $chunks as $i => $chunk ) {
+            update_post_meta( $post_id, '_oetl_audio_progress_current', $i + 1 );
+            wp_cache_delete( $post_id, 'post_meta' );
+
             $audio = $this->call_api( $api_key, $voice_id, $chunk );
             if ( is_wp_error( $audio ) ) {
                 return new WP_Error(
                     $audio->get_error_code(),
-                    sprintf( 'Chunk %d/%d failed: %s', $i + 1, count( $chunks ), $audio->get_error_message() )
+                    sprintf( 'Chunk %d/%d failed: %s', $i + 1, $total, $audio->get_error_message() )
                 );
             }
             $audio_parts[] = $audio;

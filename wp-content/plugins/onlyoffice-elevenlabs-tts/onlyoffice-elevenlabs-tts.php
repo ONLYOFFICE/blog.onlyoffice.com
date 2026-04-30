@@ -95,12 +95,16 @@ function oetl_on_post_publish( $new_status, $old_status, $post ) {
  * Handle async audio generation.
  */
 function oetl_handle_async_generation( $post_id ) {
+    @set_time_limit( 0 );
+
     $generator = new OETL_TTS_Generator();
     $result = $generator->generate( $post_id );
 
     if ( is_wp_error( $result ) ) {
         update_post_meta( $post_id, '_oetl_audio_error', $result->get_error_message() );
         delete_post_meta( $post_id, '_oetl_audio_in_progress' );
+        delete_post_meta( $post_id, '_oetl_audio_progress_current' );
+        delete_post_meta( $post_id, '_oetl_audio_progress_total' );
         error_log( sprintf( 'OETL: Failed to generate audio for post %d: %s', $post_id, $result->get_error_message() ) );
         return;
     }
@@ -109,6 +113,8 @@ function oetl_handle_async_generation( $post_id ) {
     update_post_meta( $post_id, '_oetl_audio_generated_at', current_time( 'mysql' ) );
     delete_post_meta( $post_id, '_oetl_audio_in_progress' );
     delete_post_meta( $post_id, '_oetl_audio_error' );
+    delete_post_meta( $post_id, '_oetl_audio_progress_current' );
+    delete_post_meta( $post_id, '_oetl_audio_progress_total' );
 
     error_log( sprintf( 'OETL: Audio generated for post %d, attachment ID: %d', $post_id, $result ) );
 }
@@ -128,8 +134,17 @@ function oetl_ajax_generate_audio() {
         wp_send_json_error( 'Invalid post ID.' );
     }
 
-    // Clear previous error
+    // Long generations (20+ min audio) can exceed PHP/host limits and outlast the
+    // client connection. Decouple this request from both so the work always
+    // completes server-side; the JS polls _oetl_audio_in_progress / progress meta
+    // and picks up the result regardless of whether this XHR survives.
+    @set_time_limit( 0 );
+    @ignore_user_abort( true );
+
     delete_post_meta( $post_id, '_oetl_audio_error' );
+    delete_post_meta( $post_id, '_oetl_audio_progress_current' );
+    delete_post_meta( $post_id, '_oetl_audio_progress_total' );
+    update_post_meta( $post_id, '_oetl_audio_in_progress', true );
 
     // Generate synchronously so the user gets immediate feedback
     $generator = new OETL_TTS_Generator();
@@ -138,6 +153,8 @@ function oetl_ajax_generate_audio() {
     if ( is_wp_error( $result ) ) {
         update_post_meta( $post_id, '_oetl_audio_error', $result->get_error_message() );
         delete_post_meta( $post_id, '_oetl_audio_in_progress' );
+        delete_post_meta( $post_id, '_oetl_audio_progress_current' );
+        delete_post_meta( $post_id, '_oetl_audio_progress_total' );
         wp_send_json_error( $result->get_error_message() );
     }
 
@@ -145,6 +162,8 @@ function oetl_ajax_generate_audio() {
     update_post_meta( $post_id, '_oetl_audio_generated_at', current_time( 'mysql' ) );
     delete_post_meta( $post_id, '_oetl_audio_in_progress' );
     delete_post_meta( $post_id, '_oetl_audio_error' );
+    delete_post_meta( $post_id, '_oetl_audio_progress_current' );
+    delete_post_meta( $post_id, '_oetl_audio_progress_total' );
 
     wp_send_json_success( array(
         'audioUrl'    => wp_get_attachment_url( $result ),
@@ -167,10 +186,17 @@ function oetl_ajax_audio_status() {
         wp_send_json_error( 'Invalid post ID.' );
     }
 
-    $attachment_id = get_post_meta( $post_id, '_oetl_audio_attachment_id', true );
-    $in_progress   = get_post_meta( $post_id, '_oetl_audio_in_progress', true );
-    $error         = get_post_meta( $post_id, '_oetl_audio_error', true );
-    $generated_at  = get_post_meta( $post_id, '_oetl_audio_generated_at', true );
+    // Redis Object Cache (drop-in at wp-content/object-cache.php) shares post_meta
+    // across processes; bust it so the polling request sees writes from the
+    // separate AJAX-generate process in real time.
+    wp_cache_delete( $post_id, 'post_meta' );
+
+    $attachment_id    = get_post_meta( $post_id, '_oetl_audio_attachment_id', true );
+    $in_progress      = get_post_meta( $post_id, '_oetl_audio_in_progress', true );
+    $error            = get_post_meta( $post_id, '_oetl_audio_error', true );
+    $generated_at     = get_post_meta( $post_id, '_oetl_audio_generated_at', true );
+    $progress_current = get_post_meta( $post_id, '_oetl_audio_progress_current', true );
+    $progress_total   = get_post_meta( $post_id, '_oetl_audio_progress_total', true );
 
     $audio_url = '';
     if ( $attachment_id ) {
@@ -178,11 +204,13 @@ function oetl_ajax_audio_status() {
     }
 
     wp_send_json_success( array(
-        'audioUrl'    => $audio_url ?: '',
-        'inProgress'  => (bool) $in_progress,
-        'error'       => $error ?: '',
-        'generatedAt' => $generated_at ?: '',
-        'hasAudio'    => ! empty( $attachment_id ) && ! empty( $audio_url ),
+        'audioUrl'        => $audio_url ?: '',
+        'inProgress'      => (bool) $in_progress,
+        'error'           => $error ?: '',
+        'generatedAt'     => $generated_at ?: '',
+        'hasAudio'        => ! empty( $attachment_id ) && ! empty( $audio_url ),
+        'progressCurrent' => $progress_current !== '' ? (int) $progress_current : 0,
+        'progressTotal'   => $progress_total !== '' ? (int) $progress_total : 0,
     ) );
 }
 
