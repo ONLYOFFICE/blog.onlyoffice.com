@@ -77,6 +77,17 @@ class OAIT_WPML_Integration {
             update_post_meta( $new_post_id, '_wpml_media_duplicate', 1 );
         }
 
+        /**
+         * Fires after a new WPML translation has been created and filled.
+         * Extension hook for companion plugins (e.g. AI Summarize) to attach
+         * translated side content to the new post.
+         *
+         * @param int    $new_post_id      The translated post ID.
+         * @param int    $original_post_id The source post ID.
+         * @param string $target_lang      WPML language code.
+         */
+        do_action( 'oait_after_create_translation', $new_post_id, $original_post_id, $target_lang );
+
         return $new_post_id;
     }
 
@@ -99,7 +110,12 @@ class OAIT_WPML_Integration {
         }
 
         if ( isset( $translations[ $lang_code ] ) && ! empty( $translations[ $lang_code ]->element_id ) ) {
-            return (int) $translations[ $lang_code ]->element_id;
+            $translated_id   = (int) $translations[ $lang_code ]->element_id;
+            $translated_post = get_post( $translated_id );
+            if ( ! $translated_post || $translated_post->post_status === 'trash' ) {
+                return null;
+            }
+            return $translated_id;
         }
 
         return null;
@@ -108,11 +124,12 @@ class OAIT_WPML_Integration {
     /**
      * Update an existing translated post with new translated content.
      *
-     * @param int   $translated_post_id The existing translated post ID.
-     * @param array $translated_data    Translated fields array.
+     * @param int    $translated_post_id The existing translated post ID.
+     * @param array  $translated_data    Translated fields array.
+     * @param string $target_lang        WPML language code (optional, forwarded to extension hooks).
      * @return int|WP_Error The post ID or error.
      */
-    public function update_translation( $translated_post_id, $translated_data ) {
+    public function update_translation( $translated_post_id, $translated_data, $target_lang = '' ) {
         $update_result = wp_update_post( array(
             'ID'           => $translated_post_id,
             'post_title'   => $translated_data['title'],
@@ -139,6 +156,16 @@ class OAIT_WPML_Integration {
         update_post_meta( $translated_post_id, '_ai_translated', true );
         update_post_meta( $translated_post_id, '_ai_translated_date', current_time( 'mysql' ) );
 
+        /**
+         * Fires after an existing WPML translation has been re-filled with new content.
+         * Extension hook for companion plugins (e.g. AI Summarize) to refresh
+         * translated side content.
+         *
+         * @param int    $translated_post_id The translated post ID.
+         * @param string $target_lang        WPML language code (if available).
+         */
+        do_action( 'oait_after_update_translation', $translated_post_id, $target_lang );
+
         return $translated_post_id;
     }
 
@@ -160,7 +187,12 @@ class OAIT_WPML_Integration {
             return false;
         }
 
-        return isset( $translations[ $lang_code ] ) && ! empty( $translations[ $lang_code ]->element_id );
+        if ( ! isset( $translations[ $lang_code ] ) || empty( $translations[ $lang_code ]->element_id ) ) {
+            return false;
+        }
+
+        $translated_post = get_post( (int) $translations[ $lang_code ]->element_id );
+        return $translated_post && $translated_post->post_status !== 'trash';
     }
 
     /**
@@ -182,9 +214,18 @@ class OAIT_WPML_Integration {
 
         $status = array();
         foreach ( OAIT_Translator::LANGUAGES as $code => $name ) {
-            $status[ $code ] = isset( $translations[ $code ] ) && ! empty( $translations[ $code ]->element_id )
+            $translated_id = isset( $translations[ $code ] ) && ! empty( $translations[ $code ]->element_id )
                 ? (int) $translations[ $code ]->element_id
                 : null;
+
+            if ( $translated_id ) {
+                $translated_post = get_post( $translated_id );
+                if ( ! $translated_post || $translated_post->post_status === 'trash' ) {
+                    $translated_id = null;
+                }
+            }
+
+            $status[ $code ] = $translated_id;
         }
 
         return $status;

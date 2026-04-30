@@ -134,7 +134,7 @@ function oait_handle_async_translation( $post_id, $languages = null ) {
         }
 
         if ( $existing_post_id ) {
-            $result_id = $wpml->update_translation( $existing_post_id, $translated );
+            $result_id = $wpml->update_translation( $existing_post_id, $translated, $lang_code );
         } else {
             $result_id = $wpml->create_translation( $post_id, $translated, $lang_code );
         }
