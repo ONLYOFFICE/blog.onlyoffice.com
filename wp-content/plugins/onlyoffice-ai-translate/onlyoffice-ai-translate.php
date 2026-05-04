@@ -104,6 +104,10 @@ function oait_on_post_publish( $new_status, $old_status, $post ) {
  * Handle async translation via Action Scheduler.
  */
 function oait_handle_async_translation( $post_id, $languages = null ) {
+    // HTTP timeout to OpenAI is 300s; give PHP enough headroom on top.
+    @set_time_limit( 330 );
+    @ini_set( 'max_execution_time', '330' );
+
     $translator = new OAIT_Translator();
     $wpml       = new OAIT_WPML_Integration();
 
@@ -114,6 +118,55 @@ function oait_handle_async_translation( $post_id, $languages = null ) {
             $languages = array_keys( OAIT_Translator::LANGUAGES );
         }
     }
+
+    // Safety net: if PHP dies (fatal/timeout/OOM) before normal cleanup runs,
+    // still release this task's languages from _ai_translation_in_progress so
+    // the post can be re-translated from UI.
+    register_shutdown_function( function () use ( $post_id, $languages ) {
+        $in_progress = get_post_meta( $post_id, '_ai_translation_in_progress', true );
+        if ( ! is_array( $in_progress ) || empty( $in_progress ) ) {
+            return;
+        }
+
+        $stuck = array_values( array_intersect( $in_progress, $languages ) );
+        if ( empty( $stuck ) ) {
+            return;
+        }
+
+        update_post_meta(
+            $post_id,
+            '_ai_translation_in_progress',
+            array_values( array_diff( $in_progress, $languages ) )
+        );
+
+        $error    = error_get_last();
+        $is_fatal = $error && in_array(
+            $error['type'],
+            array( E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR ),
+            true
+        );
+
+        $results = get_post_meta( $post_id, '_ai_translation_results', true );
+        if ( ! is_array( $results ) ) {
+            $results = array();
+        }
+        foreach ( $stuck as $lang_code ) {
+            if ( isset( $results[ $lang_code ] ) ) {
+                continue;
+            }
+            $results[ $lang_code ] = $is_fatal
+                ? 'error: PHP fatal — ' . $error['message']
+                : 'error: process terminated unexpectedly';
+        }
+        update_post_meta( $post_id, '_ai_translation_results', $results );
+
+        error_log( sprintf(
+            'OAIT: Shutdown cleanup for post %d, stuck langs: %s, fatal: %s',
+            $post_id,
+            implode( ',', $stuck ),
+            $is_fatal ? 'yes' : 'no'
+        ) );
+    } );
 
     $results = array();
 
