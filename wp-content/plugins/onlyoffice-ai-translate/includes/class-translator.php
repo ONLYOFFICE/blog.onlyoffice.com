@@ -32,15 +32,33 @@ class OAIT_Translator {
         'zh-hans' => "Ensure that ONLYOFFICE product names are correctly localized for the Chinese market:
 - ONLYOFFICE Docs → ONLYOFFICE 文档
 - ONLYOFFICE DocSpace → ONLYOFFICE 协作空间
-- Enterprise (edition) → 企业版
-- Developer (edition) → 开发者版
-- Community (edition) → 社区版
+- ONLYOFFICE Workspace → ONLYOFFICE 工作区
 - ONLYOFFICE Desktop Editors → 桌面编辑器
 - Document Server → 文档服务器
 - Document Editor → 文档编辑器
 - Spreadsheet Editor → 电子表格编辑器
 - Presentation Editor → 演示文稿编辑器
-- Keep ONLYOFFICE, DocSpace, Workspace, Desktop Editors in Latin script inline with Chinese text.",
+
+Edition variants:
+- Docs Enterprise → 文档企业版
+- DocSpace Enterprise → 协作空间企业版
+- Docs Developer → 文档开发者版
+- DocSpace Developer → 协作空间开发者版
+- Docs Home Server → 文档家用服务器
+- DocSpace Family Pack → 协作空间家用版
+- DocSpace STARTUP → 协作空间初创版
+- DocSpace BUSINESS → 协作空间专业版
+- DocSpace ENTERPRISE → 协作空间企业版
+- Enterprise (edition) → 企业版
+- Developer (edition) → 开发者版
+- Community (edition) → 社区版
+
+Support level terminology:
+- BASIC → 初级
+- PLUS → 中级
+- PREMIUM → 高级
+
+Keep the ONLYOFFICE brand prefix in Latin script inline with Chinese text (e.g. 'ONLYOFFICE 文档').",
 
         'ja' => "Ensure that ONLYOFFICE product names are correctly localized for the Japanese market:
 - Enterprise (edition) → エンタープライズ版
@@ -106,8 +124,12 @@ class OAIT_Translator {
         'it' => "- Titles use sentence case.
 - Tab names: \"X tab\" → \"Scheda [TranslatedName]\" (e.g. \"File tab\" → \"Scheda File\").",
 
-        'zh-hans' => "- Keep ONLYOFFICE, DocSpace, Workspace, Desktop Editors in Latin script inline with Chinese text.
-- Use terminology commonly understood in the IT and office software industry, same as WPS Office and Microsoft Office where applicable.",
+        'zh-hans' => "- Keep the ONLYOFFICE brand prefix in Latin script inline with Chinese text.
+- Use terminology commonly understood in the IT and office software industry, same as WPS Office and Microsoft Office where applicable.
+- Add exactly one space between any Chinese character (汉字) and Latin letters (A–Z, a–z) — applies to translated text only, NOT to HTML attribute values.
+- Translate naturally for the target audience in China — adapt phrasing to local language habits rather than translating word-by-word.
+- Strictly avoid absolute or superlative terms (e.g. 最佳, 第一, 完美) — use neutral, factual wording instead to comply with China advertising law.
+- Standardize the translation of \"useful links\" as \"相关链接\".",
 
         'ar' => "- Maintain right-to-left text direction awareness.
 - Use Modern Standard Arabic for professional/technical content.",
@@ -139,7 +161,7 @@ class OAIT_Translator {
         $aioseo_title = get_post_meta( $post_id, '_aioseo_title', true ) ?: '';
         $aioseo_desc  = get_post_meta( $post_id, '_aioseo_description', true ) ?: '';
 
-        $system_prompt = $this->build_system_prompt( $language_name );
+        $system_prompt = $this->build_system_prompt( $language_name, $target_lang_code );
         $user_prompt   = $this->build_user_prompt( $target_lang_code, $language_name, $title, $content, $excerpt, $aioseo_title, $aioseo_desc );
 
         $response = $this->call_api( $system_prompt, $user_prompt );
@@ -158,7 +180,14 @@ class OAIT_Translator {
     /**
      * Build the system prompt with universal translation rules.
      */
-    private function build_system_prompt( $language_name ) {
+    private function build_system_prompt( $language_name, $lang_code ) {
+        // For Chinese, ONLYOFFICE Docs/DocSpace/Workspace/Desktop Editors must be localized
+        // (mapping lives in PRODUCT_LOCALIZATION['zh-hans']), so they are dropped from the
+        // Never-translate list. Document Builder has no Chinese mapping — keep it.
+        $product_names_line = ( 'zh-hans' === $lang_code )
+            ? '- Product names: Document Builder'
+            : '- Product names: DocSpace, Docs, Desktop Editors, Workspace, Document Builder';
+
         return "You are a professional translator for ONLYOFFICE — a software company producing office productivity tools.
 Translate blog post content from English to {$language_name}.
 
@@ -166,7 +195,7 @@ Translate blog post content from English to {$language_name}.
 
 ### Never translate these — keep exactly as-is:
 - Brand name: ONLYOFFICE (always all-caps, never translated)
-- Product names: DocSpace, Docs, Desktop Editors, Workspace, Document Builder
+{$product_names_line}
 - Third-party product names: Docker, Docker Compose, Linux, Windows, macOS, iOS, Android, Ubuntu, Debian, CentOS, RHEL, KylinOS, snap
 - Technical terms: JWT, HTTPS, SSL, API, ARM, ARM64, AGPL
 - Cloud/hosting platforms: Amazon S3, DigitalOcean, Cloudron, Alibaba Cloud, Vultr, Linode
