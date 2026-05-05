@@ -97,25 +97,49 @@ Output format:
             return new WP_Error( 'empty_text', 'Summary text is empty.' );
         }
 
-        $language_name = isset( self::LANGUAGES[ $target_lang_code ] )
-            ? self::LANGUAGES[ $target_lang_code ]
-            : $target_lang_code;
+        // Prefer OAIT_Translator's native-language names ("中文", "Français") over
+        // English-language names — they steer the model more reliably.
+        $translator_available = class_exists( 'OAIT_Translator' );
+        if ( $translator_available && isset( OAIT_Translator::LANGUAGES[ $target_lang_code ] ) ) {
+            $language_name = OAIT_Translator::LANGUAGES[ $target_lang_code ];
+        } elseif ( isset( self::LANGUAGES[ $target_lang_code ] ) ) {
+            $language_name = self::LANGUAGES[ $target_lang_code ];
+        } else {
+            $language_name = $target_lang_code;
+        }
+
+        // For Chinese, ONLYOFFICE Docs/DocSpace/Workspace/Desktop Editors must be localized
+        // (mapping lives in OAIT_Translator::PRODUCT_LOCALIZATION['zh-hans']), so they are
+        // dropped from the Never-translate list. Document Builder has no Chinese mapping — keep it.
+        $product_names_line = ( 'zh-hans' === $target_lang_code )
+            ? 'Document Builder'
+            : 'DocSpace, Docs, Desktop Editors, Workspace, Document Builder';
+
+        $localization_block = '';
+        if ( $translator_available && isset( OAIT_Translator::PRODUCT_LOCALIZATION[ $target_lang_code ] ) ) {
+            $localization_block .= "\n## Product name localization for {$language_name}:\n"
+                . OAIT_Translator::PRODUCT_LOCALIZATION[ $target_lang_code ] . "\n";
+        }
+        if ( $translator_available && isset( OAIT_Translator::LOCALE_RULES[ $target_lang_code ] ) ) {
+            $localization_block .= "\n## Locale-specific rules for {$language_name}:\n"
+                . OAIT_Translator::LOCALE_RULES[ $target_lang_code ] . "\n";
+        }
 
         $system_prompt = "You are a professional translator for ONLYOFFICE — a software company producing office productivity tools.
 Translate the following summary from English to {$language_name}.
-
-Input format:
+{$localization_block}
+## Input format:
 - Each input line is one of two types:
   (a) a paragraph line — NO prefix;
   (b) a bullet line — starts with '- ' (dash + space).
 - Empty lines are separators between the paragraph and the bullet list.
 
-Rules:
+## Rules:
 - Preserve the line structure EXACTLY: input lines count must equal output lines count, in the same order, with empty lines kept in place.
 - For every bullet line, keep the leading '- ' prefix UNCHANGED in the translation; translate only the text after it.
 - For paragraph lines, translate the text without adding any prefix.
 - Do NOT add, remove, merge or split lines. Do NOT add '*', '•', or numbering.
-- Never translate brand names: ONLYOFFICE (all-caps), DocSpace, Docs, Desktop Editors, Workspace, Document Builder.
+- Never translate brand names: ONLYOFFICE (always all-caps), {$product_names_line}.
 - Never translate third-party product or technology names: WordPress, Linux, Windows, macOS, Android, iOS, Docker, MySQL, PostgreSQL, etc.
 - Translate naturally for the target audience — avoid literal word-by-word translation.
 - Return ONLY the translated lines, nothing else.";
