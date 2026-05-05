@@ -97,52 +97,32 @@ Output format:
             return new WP_Error( 'empty_text', 'Summary text is empty.' );
         }
 
-        // Prefer OAIT_Translator's native-language names ("中文", "Français") over
-        // English-language names — they steer the model more reliably.
-        $translator_available = class_exists( 'OAIT_Translator' );
-        if ( $translator_available && isset( OAIT_Translator::LANGUAGES[ $target_lang_code ] ) ) {
-            $language_name = OAIT_Translator::LANGUAGES[ $target_lang_code ];
-        } elseif ( isset( self::LANGUAGES[ $target_lang_code ] ) ) {
-            $language_name = self::LANGUAGES[ $target_lang_code ];
+        $language_name = isset( self::LANGUAGES[ $target_lang_code ] )
+            ? self::LANGUAGES[ $target_lang_code ]
+            : $target_lang_code;
+
+        if ( 'zh-hans' === $target_lang_code ) {
+            $system_prompt = $this->build_chinese_translate_prompt( $language_name );
         } else {
-            $language_name = $target_lang_code;
-        }
-
-        // For Chinese, ONLYOFFICE Docs/DocSpace/Workspace/Desktop Editors must be localized
-        // (mapping lives in OAIT_Translator::PRODUCT_LOCALIZATION['zh-hans']), so they are
-        // dropped from the Never-translate list. Document Builder has no Chinese mapping — keep it.
-        $product_names_line = ( 'zh-hans' === $target_lang_code )
-            ? 'Document Builder'
-            : 'DocSpace, Docs, Desktop Editors, Workspace, Document Builder';
-
-        $localization_block = '';
-        if ( $translator_available && isset( OAIT_Translator::PRODUCT_LOCALIZATION[ $target_lang_code ] ) ) {
-            $localization_block .= "\n## Product name localization for {$language_name}:\n"
-                . OAIT_Translator::PRODUCT_LOCALIZATION[ $target_lang_code ] . "\n";
-        }
-        if ( $translator_available && isset( OAIT_Translator::LOCALE_RULES[ $target_lang_code ] ) ) {
-            $localization_block .= "\n## Locale-specific rules for {$language_name}:\n"
-                . OAIT_Translator::LOCALE_RULES[ $target_lang_code ] . "\n";
-        }
-
-        $system_prompt = "You are a professional translator for ONLYOFFICE — a software company producing office productivity tools.
+            $system_prompt = "You are a professional translator for ONLYOFFICE — a software company producing office productivity tools.
 Translate the following summary from English to {$language_name}.
-{$localization_block}
-## Input format:
+
+Input format:
 - Each input line is one of two types:
   (a) a paragraph line — NO prefix;
   (b) a bullet line — starts with '- ' (dash + space).
 - Empty lines are separators between the paragraph and the bullet list.
 
-## Rules:
+Rules:
 - Preserve the line structure EXACTLY: input lines count must equal output lines count, in the same order, with empty lines kept in place.
 - For every bullet line, keep the leading '- ' prefix UNCHANGED in the translation; translate only the text after it.
 - For paragraph lines, translate the text without adding any prefix.
 - Do NOT add, remove, merge or split lines. Do NOT add '*', '•', or numbering.
-- Never translate brand names: ONLYOFFICE (always all-caps), {$product_names_line}.
+- Never translate brand names: ONLYOFFICE (all-caps), DocSpace, Docs, Desktop Editors, Workspace, Document Builder.
 - Never translate third-party product or technology names: WordPress, Linux, Windows, macOS, Android, iOS, Docker, MySQL, PostgreSQL, etc.
 - Translate naturally for the target audience — avoid literal word-by-word translation.
 - Return ONLY the translated lines, nothing else.";
+        }
 
         $user_prompt = $text;
 
@@ -152,6 +132,74 @@ Translate the following summary from English to {$language_name}.
         }
 
         return $this->normalize_lines( $response );
+    }
+
+    /**
+     * Custom system prompt for Simplified Chinese (zh-hans).
+     * Mirrors the Chinese prompt used by OAIT_Translator::build_system_prompt(),
+     * with an extra "Output structure" section that enforces the summary's
+     * paragraph + "- " bullet line format (since summary input is plain text,
+     * not HTML).
+     */
+    private function build_chinese_translate_prompt( $language_name ) {
+        return <<<PROMPT
+You are a professional translator for ONLYOFFICE — a software company producing office productivity tools.
+Translate blog post content from English to {$language_name}.
+
+## Universal rules (apply to ALL locales):
+
+### Never translate these — keep exactly as-is:
+- Brand name: ONLYOFFICE (always all-caps, never translated)
+- Third-party product names: Docker, Docker Compose, Linux, Windows, macOS, iOS, Android, Ubuntu, Debian, CentOS, RHEL, KylinOS, snap
+- Technical terms: JWT, HTTPS, SSL, API, ARM, ARM64, AGPL
+- Cloud/hosting platforms: Amazon S3, DigitalOcean, Cloudron, Alibaba Cloud, Vultr, Linode
+- Integration connector names: Nextcloud, ownCloud, WordPress, Confluence, SharePoint, Jira, Moodle, Alfresco, HumHub, Mattermost, Odoo, Pipedrive, SuiteCRM and other third-party brands
+- Database names: MySQL, PostgreSQL, MsSQL, Oracle, Redis
+- Plugin names: PhotoEditor, Mendeley, Zotero
+- URLs, email addresses, code blocks
+
+### Ensure that ONLYOFFICE product names are correctly localized for the Chinese market as follows:
+ONLYOFFICE Docs -> ONLYOFFICE 文档
+ONLYOFFICE DocSpace -> ONLYOFFICE 协作空间
+ONLYOFFICE Workspace -> ONLYOFFICE 工作区
+Desktop Editors -> 桌面编辑器
+Docs Enterprise → 文档企业版
+DocSpace Enterprise → 协作空间企业版
+Docs Developer → 文档开发者版
+DocSpace Developer → 协作空间开发者版
+Docs Home Server → 文档家用服务器
+DocSpace Family Pack → 协作空间家用版
+DocSpace STARTUP → 协作空间初创版
+DocSpace BUSINESS → 协作空间专业版
+DocSpace ENTERPRISE → 协作空间企业版
+
+Support level terminology:
+· BASIC → 初级
+· PLUS → 中级
+· PREMIUM → 高级
+
+### HTML rules:
+- Preserve ALL HTML tags, attributes (class, id, href, src, style, data-*, etc.) EXACTLY as they are.
+- ONLY translate the visible text content between tags.
+- Do NOT modify any tag names, attribute names, or attribute values.
+- Add exactly one space between any Chinese character (汉字) and Latin letters (A–Z, a–z).
+
+### Blog-specific rules:
+- Keep the same professional blog tone
+- Translate naturally for the target audience in China, not word-by-word
+- Maintain technical accuracy while making the content easy to understand
+- Avoid direct, overly literal translations — rephrase where necessary to match local language habits
+- Do NOT invent, infer, or reconstruct content for empty fields
+- Strictly avoid absolute or superlative terms (e.g., 最佳, 第一, 完美, etc.) and use neutral, factual wording instead to ensure compliance with China advertising law.
+- Standardize the translation of "useful links" as "相关链接".
+
+## Output structure (summary only):
+- Each input line is either a paragraph line (no prefix) or a bullet line (starts with "- ").
+- Preserve the exact line count and order. Keep empty lines as separators between paragraph and bullet list.
+- For bullet lines, keep the leading "- " prefix unchanged in the translation; translate only the text after it.
+- Do NOT use "*", "•", or numbering. Do NOT add, remove, merge or split lines.
+- Return ONLY the translated lines, nothing else.
+PROMPT;
     }
 
     /**
