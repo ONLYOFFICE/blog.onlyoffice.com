@@ -200,6 +200,7 @@ class OETL_Admin_Settings {
         if ( ! current_user_can( 'manage_options' ) ) {
             return;
         }
+        $nonce = wp_create_nonce( 'oetl_audio_nonce' );
         ?>
         <div class="wrap">
             <h1>ONLYOFFICE ElevenLabs TTS Settings</h1>
@@ -210,6 +211,118 @@ class OETL_Admin_Settings {
                 submit_button();
                 ?>
             </form>
+
+            <hr style="margin:32px 0;" />
+
+            <h2>Repair existing audio</h2>
+            <p>
+                Re-runs ffmpeg over every stored audio file to rebuild its Xing/TOC header
+                and refresh the duration metadata. Use this once after upgrading the plugin
+                so older files (concatenated without a proper Xing header) start seeking
+                correctly. No ElevenLabs API credits are used.
+            </p>
+            <p>
+                <button type="button" class="button button-secondary" id="oetl-repair-button">
+                    Repair all audio files
+                </button>
+                <span id="oetl-repair-status" style="margin-left:12px;"></span>
+            </p>
+            <div id="oetl-repair-log"
+                 style="display:none;margin-top:12px;max-height:400px;overflow:auto;
+                        background:#f6f7f7;border:1px solid #dcdcde;padding:12px;
+                        font-family:Consolas,Menlo,monospace;font-size:12px;line-height:1.5;">
+            </div>
+
+            <script>
+            (function () {
+                var btn = document.getElementById('oetl-repair-button');
+                var status = document.getElementById('oetl-repair-status');
+                var log = document.getElementById('oetl-repair-log');
+                var ajaxUrl = <?php echo wp_json_encode( admin_url( 'admin-ajax.php' ) ); ?>;
+                var nonce = <?php echo wp_json_encode( $nonce ); ?>;
+
+                function appendLog(line, color) {
+                    log.style.display = 'block';
+                    var div = document.createElement('div');
+                    if (color) div.style.color = color;
+                    div.textContent = line;
+                    log.appendChild(div);
+                    log.scrollTop = log.scrollHeight;
+                }
+
+                function postForm(action, params) {
+                    var body = new URLSearchParams();
+                    body.append('action', action);
+                    body.append('nonce', nonce);
+                    Object.keys(params || {}).forEach(function (k) {
+                        body.append(k, params[k]);
+                    });
+                    return fetch(ajaxUrl, {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: body.toString(),
+                    }).then(function (r) { return r.json(); });
+                }
+
+                function formatDuration(seconds) {
+                    if (!seconds || !isFinite(seconds)) return '?';
+                    var m = Math.floor(seconds / 60);
+                    var s = Math.floor(seconds % 60);
+                    return m + ':' + (s < 10 ? '0' + s : s);
+                }
+
+                btn.addEventListener('click', function () {
+                    if (!confirm('Re-process all audio files? This will modify them in place.')) return;
+                    btn.disabled = true;
+                    log.innerHTML = '';
+                    status.textContent = 'Loading post list...';
+
+                    postForm('oetl_list_audio_posts', {}).then(function (resp) {
+                        if (!resp.success) {
+                            status.textContent = 'Failed: ' + (resp.data || 'unknown error');
+                            btn.disabled = false;
+                            return;
+                        }
+                        var posts = resp.data.posts;
+                        if (posts.length === 0) {
+                            status.textContent = 'No posts with audio found.';
+                            btn.disabled = false;
+                            return;
+                        }
+                        status.textContent = 'Processing 0 / ' + posts.length;
+                        var ok = 0, fail = 0;
+                        var i = 0;
+
+                        function next() {
+                            if (i >= posts.length) {
+                                status.textContent = 'Done. ' + ok + ' ok, ' + fail + ' failed.';
+                                btn.disabled = false;
+                                return;
+                            }
+                            var p = posts[i++];
+                            postForm('oetl_repair_audio', { post_id: p.id }).then(function (r) {
+                                if (r.success) {
+                                    ok++;
+                                    appendLog('[' + p.id + '] OK — ' + p.title + ' (' + formatDuration(r.data.duration) + ')');
+                                } else {
+                                    fail++;
+                                    appendLog('[' + p.id + '] FAIL — ' + p.title + ' — ' + (r.data || 'error'), '#b32d2e');
+                                }
+                                status.textContent = 'Processing ' + i + ' / ' + posts.length;
+                                next();
+                            }).catch(function (err) {
+                                fail++;
+                                appendLog('[' + p.id + '] ERROR — ' + (err.message || err), '#b32d2e');
+                                status.textContent = 'Processing ' + i + ' / ' + posts.length;
+                                next();
+                            });
+                        }
+                        next();
+                    });
+                });
+            })();
+            </script>
         </div>
         <?php
     }
