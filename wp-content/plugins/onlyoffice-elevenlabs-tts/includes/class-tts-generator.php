@@ -101,8 +101,11 @@ class OETL_TTS_Generator {
         }
 
         $remuxed = $this->fix_mp3_xing( $file_path );
-        if ( ! $remuxed ) {
-            return array( 'ok' => false, 'message' => 'ffmpeg remux failed (see error_log).' );
+        if ( $remuxed !== true ) {
+            return array(
+                'ok'      => false,
+                'message' => is_string( $remuxed ) ? $remuxed : 'ffmpeg remux failed',
+            );
         }
 
         $duration = $this->get_mp3_duration( $file_path );
@@ -131,13 +134,14 @@ class OETL_TTS_Generator {
      * when the user drags the slider to the end). `-c copy -write_xing 1`
      * remuxes without re-encoding and rebuilds the header.
      *
-     * Returns true on success, false if ffmpeg is unavailable or fails. On
-     * failure the original file is left untouched.
+     * Returns true on success, or a human-readable error string on failure
+     * (which the caller can surface in the admin UI). On failure the original
+     * file is left untouched.
      */
     private function fix_mp3_xing( $file_path ) {
         $ffmpeg = $this->get_ffmpeg_path();
         if ( ! $ffmpeg ) {
-            return false;
+            return 'ffmpeg binary not found (install ffmpeg in PATH or set the oetl_ffmpeg_path option)';
         }
 
         $output_path = $file_path . '.fixed.mp3';
@@ -154,17 +158,24 @@ class OETL_TTS_Generator {
 
         if ( $code !== 0 || ! file_exists( $output_path ) || filesize( $output_path ) === 0 ) {
             @unlink( $output_path );
-            error_log( sprintf( 'OETL: ffmpeg remux failed (code %d): %s', $code, implode( "\n", $output ) ) );
-            return false;
+            // ffmpeg prints progress on stderr; the actual error is usually in
+            // the last few lines, so trim to keep the admin message readable.
+            $tail   = array_slice( $output, -3 );
+            $detail = trim( implode( ' | ', $tail ) );
+            if ( $detail === '' ) {
+                $detail = 'no output captured';
+            }
+            $msg = sprintf( 'ffmpeg exit %d: %s', $code, $detail );
+            error_log( 'OETL: ' . $msg );
+            return $msg;
         }
 
-        // Replace the original file with the fixed one
         if ( ! @unlink( $file_path ) ) {
             @unlink( $output_path );
-            return false;
+            return 'failed to remove original file before rename';
         }
         if ( ! @rename( $output_path, $file_path ) ) {
-            return false;
+            return 'failed to rename fixed file over original';
         }
 
         return true;
