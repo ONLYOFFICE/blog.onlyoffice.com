@@ -71,17 +71,29 @@ class OETL_TTS_Generator {
             $audio_parts[] = $audio;
         }
 
-        // Concatenate MP3 chunks
+        // Concatenate raw chunks, then rebuild a single clean MP3 stream.
+        // ElevenLabs emits one self-contained MP3 per chunk (each with its own
+        // Xing/Info frame and possibly an ID3v2 tag); a plain implode leaves
+        // the first chunk's TOC describing only its own frames, which breaks
+        // browser seeking and produces an inaccurate duration.
         $mp3_data = implode( '', $audio_parts );
+        $audio_parts = null; // free the per-chunk buffer before the rebuild copy
 
-        // Save to media library
-        return $this->save_audio( $post_id, $post->post_name, $mp3_data );
+        try {
+            $builder = new OETL_MP3_Builder();
+            $rebuilt = $builder->rebuild( $mp3_data );
+        } catch ( Exception $e ) {
+            return new WP_Error( 'mp3_rebuild_failed', 'Failed to rebuild MP3: ' . $e->getMessage() );
+        }
+
+        return $this->save_audio( $post_id, $post->post_name, $rebuilt['data'], $rebuilt['duration'] );
     }
 
     /**
      * Re-process an already-stored audio attachment: rebuild its Xing header
-     * via ffmpeg and refresh `_oetl_audio_duration`. Used to retroactively fix
-     * files that were saved before the ffmpeg remux was added to the pipeline.
+     * with OETL_MP3_Builder and refresh `_oetl_audio_duration`. Used to
+     * retroactively fix files that were saved before the rebuild was added to
+     * the generation pipeline.
      *
      * @param int $post_id The post whose attached audio should be repaired.
      * @return array{ok: bool, message: string, duration?: float}
@@ -100,15 +112,24 @@ class OETL_TTS_Generator {
             return array( 'ok' => false, 'message' => "Attachment file not writable: {$file_path}" );
         }
 
-        $remuxed = $this->fix_mp3_xing( $file_path );
-        if ( $remuxed !== true ) {
-            return array(
-                'ok'      => false,
-                'message' => is_string( $remuxed ) ? $remuxed : 'ffmpeg remux failed',
-            );
+        $original = @file_get_contents( $file_path );
+        if ( $original === false ) {
+            return array( 'ok' => false, 'message' => "Could not read attachment file: {$file_path}" );
         }
 
-        $duration = $this->get_mp3_duration( $file_path );
+        try {
+            $builder = new OETL_MP3_Builder();
+            $rebuilt = $builder->rebuild( $original );
+        } catch ( Exception $e ) {
+            return array( 'ok' => false, 'message' => 'MP3 rebuild failed: ' . $e->getMessage() );
+        }
+        $original = null;
+
+        if ( false === @file_put_contents( $file_path, $rebuilt['data'] ) ) {
+            return array( 'ok' => false, 'message' => "Could not write rebuilt audio: {$file_path}" );
+        }
+
+        $duration = $rebuilt['duration'];
         if ( $duration > 0 ) {
             update_post_meta( $post_id, '_oetl_audio_duration', $duration );
         }
@@ -124,98 +145,6 @@ class OETL_TTS_Generator {
         }
 
         return array( 'ok' => true, 'message' => 'Repaired.', 'duration' => $duration );
-    }
-
-    /**
-     * Remux a concatenated MP3 file through ffmpeg so it gets a single, accurate
-     * Xing/Info header with a TOC. ElevenLabs returns one Xing-headed MP3 per
-     * chunk; concatenating them leaves the first chunk's TOC describing only its
-     * own frames, which breaks seeking (browsers land in the middle of the file
-     * when the user drags the slider to the end). `-c copy -write_xing 1`
-     * remuxes without re-encoding and rebuilds the header.
-     *
-     * Returns true on success, or a human-readable error string on failure
-     * (which the caller can surface in the admin UI). On failure the original
-     * file is left untouched.
-     */
-    private function fix_mp3_xing( $file_path ) {
-        $ffmpeg = $this->get_ffmpeg_path();
-        if ( ! $ffmpeg ) {
-            return 'ffmpeg binary not found (install ffmpeg in PATH or set the oetl_ffmpeg_path option)';
-        }
-
-        $output_path = $file_path . '.fixed.mp3';
-        $cmd = sprintf(
-            '%s -y -i %s -c copy -map 0:a -write_xing 1 -f mp3 %s 2>&1',
-            escapeshellcmd( $ffmpeg ),
-            escapeshellarg( $file_path ),
-            escapeshellarg( $output_path )
-        );
-
-        $output = array();
-        $code   = 0;
-        @exec( $cmd, $output, $code );
-
-        if ( $code !== 0 || ! file_exists( $output_path ) || filesize( $output_path ) === 0 ) {
-            @unlink( $output_path );
-            // ffmpeg prints progress on stderr; the actual error is usually in
-            // the last few lines, so trim to keep the admin message readable.
-            $tail   = array_slice( $output, -3 );
-            $detail = trim( implode( ' | ', $tail ) );
-            if ( $detail === '' ) {
-                $detail = 'no output captured';
-            }
-            $msg = sprintf( 'ffmpeg exit %d: %s', $code, $detail );
-            error_log( 'OETL: ' . $msg );
-            return $msg;
-        }
-
-        if ( ! @unlink( $file_path ) ) {
-            @unlink( $output_path );
-            return 'failed to remove original file before rename';
-        }
-        if ( ! @rename( $output_path, $file_path ) ) {
-            return 'failed to rename fixed file over original';
-        }
-
-        return true;
-    }
-
-    /**
-     * Get duration in seconds from an MP3 file via getID3 (bundled with WP).
-     * Returns 0.0 if it can't be determined.
-     */
-    private function get_mp3_duration( $file_path ) {
-        if ( ! class_exists( 'getID3' ) ) {
-            require_once ABSPATH . WPINC . '/ID3/getid3.php';
-        }
-        $getid3 = new getID3();
-        $info   = $getid3->analyze( $file_path );
-        if ( isset( $info['playtime_seconds'] ) && is_numeric( $info['playtime_seconds'] ) ) {
-            return (float) $info['playtime_seconds'];
-        }
-        return 0.0;
-    }
-
-    /**
-     * Resolve the ffmpeg binary. Honors the `oetl_ffmpeg_path` option, falls
-     * back to PATH lookup. Returns null if unavailable.
-     */
-    private function get_ffmpeg_path() {
-        $configured = get_option( 'oetl_ffmpeg_path', '' );
-        if ( ! empty( $configured ) && file_exists( $configured ) ) {
-            return $configured;
-        }
-
-        // PATH lookup
-        $output = array();
-        $code   = 0;
-        @exec( 'ffmpeg -version 2>&1', $output, $code );
-        if ( $code === 0 ) {
-            return 'ffmpeg';
-        }
-
-        return null;
     }
 
     /**
@@ -373,10 +302,13 @@ class OETL_TTS_Generator {
      *
      * @param int    $post_id   The post ID.
      * @param string $slug      The post slug for filename.
-     * @param string $mp3_data  Raw MP3 binary data.
+     * @param string $mp3_data  MP3 binary data — already rebuilt by
+     *                          OETL_MP3_Builder, with a single Xing/Info head.
+     * @param float  $duration  Pre-computed duration in seconds (returned by
+     *                          the builder).
      * @return array|WP_Error On success: ['attachment_id' => int, 'duration' => float].
      */
-    private function save_audio( $post_id, $slug, $mp3_data ) {
+    private function save_audio( $post_id, $slug, $mp3_data, $duration ) {
         // Delete old audio attachment if exists
         $old_attachment_id = get_post_meta( $post_id, '_oetl_audio_attachment_id', true );
         if ( $old_attachment_id ) {
@@ -415,13 +347,6 @@ class OETL_TTS_Generator {
             @unlink( $tmp_file );
             return new WP_Error( 'temp_read_error', sprintf( 'Temporary file is not readable: %s', $tmp_file ) );
         }
-
-        // Remux through ffmpeg to rebuild the Xing/TOC header on the
-        // concatenated stream — without this, browsers seek incorrectly.
-        $this->fix_mp3_xing( $tmp_file );
-
-        // Read the (now-correct) duration from the file headers
-        $duration = $this->get_mp3_duration( $tmp_file );
 
         // Prepare file array for media_handle_sideload
         $file_array = array(
