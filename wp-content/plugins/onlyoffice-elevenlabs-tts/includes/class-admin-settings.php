@@ -216,10 +216,10 @@ class OETL_Admin_Settings {
 
             <h2>Repair existing audio</h2>
             <p>
-                Re-runs ffmpeg over every stored audio file to rebuild its Xing/TOC header
-                and refresh the duration metadata. Use this once after upgrading the plugin
-                so older files (concatenated without a proper Xing header) start seeking
-                correctly. No ElevenLabs API credits are used.
+                Walks every stored audio file with the built-in PHP MP3 rebuilder to refresh
+                its Xing/TOC header and the duration metadata. Use this once after upgrading
+                the plugin so older files (concatenated without a proper Xing header) start
+                seeking correctly. No ElevenLabs API credits are used.
             </p>
             <p>
                 <button type="button" class="button button-secondary" id="oetl-repair-button">

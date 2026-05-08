@@ -41,6 +41,7 @@ function oetl_init() {
     }
 
     require_once OETL_PLUGIN_DIR . 'includes/class-admin-settings.php';
+    require_once OETL_PLUGIN_DIR . 'includes/class-mp3-builder.php';
     require_once OETL_PLUGIN_DIR . 'includes/class-tts-generator.php';
     require_once OETL_PLUGIN_DIR . 'includes/class-meta-box.php';
     require_once OETL_PLUGIN_DIR . 'includes/class-graphql.php';
@@ -250,7 +251,8 @@ function oetl_ajax_list_audio_posts() {
 }
 
 /**
- * AJAX: repair the audio attached to a single post (ffmpeg remux + duration).
+ * AJAX: repair the audio attached to a single post (rebuild Xing/TOC header
+ * via OETL_MP3_Builder and refresh the stored duration).
  */
 function oetl_ajax_repair_audio() {
     check_ajax_referer( 'oetl_audio_nonce', 'nonce' );
