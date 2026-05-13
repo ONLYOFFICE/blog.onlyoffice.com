@@ -1,0 +1,184 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+/*
+ * https://algolia.frontify.com/document/1?#/basics/colors
+ */
+:root {
+  --algolia-white: #fff;
+  --algolia-gray: #f5f5fa;
+  --algolia-blue: #003dff;
+  --algolia-blue-lighten: #07f;
+  --algolia-dark-blue: #003;
+  --algolia-neon: #ceff00;
+}
+
+.form-table .table-autocomplete th {
+  padding: 8px 10px !important;
+}
+
+.form-table .table-autocomplete {
+  width: auto;
+}
+
+.table-autocomplete .dashicons-move {
+  cursor: pointer;
+}
+
+/* Native search page */
+form .input-radio label {
+  font-weight: bold;
+}
+form .radio-info {
+  margin-bottom: 15px;
+  padding-left: 25px;
+}
+
+#toplevel_page_algolia .algolia-pro-indicator {
+  background-color: var(--algolia-blue);
+  border-radius: 3px;
+  color: var(--algolia-white);
+  font-size: 10px;
+  padding: 2px 3px;
+  vertical-align: text-top;
+}
+.algolia-menu-highlight {
+  color: var(--algolia-white);
+}
+#toplevel_page_algolia .algolia-submenu-highlight {
+  background-color: var(--algolia-blue);
+  font-weight: bold;
+}
+
+.algolia-pro-cta {
+  background-color: var(--algolia-white);
+  left: 50%;
+  margin-top: 0;
+  max-width: 850px;
+  padding: 30px 20px 40px;
+  position: absolute;
+  text-align: center;
+  top: 50px;
+  transform: translate(-50%) translateY(0);
+  width: 100%;
+}
+.algolia-pro-cta .algolia-pro-title {
+  color: #41495b;
+  font-size: 46px;
+  font-weight: 800;
+  line-height: 58px;
+  margin: 0 auto;
+  max-width: 600px;
+}
+.algolia-pro-cta .algolia-pro-desc {
+  color: #41495b;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 27px;
+  margin: 20px auto 20px;
+  max-width: 560px;
+}
+.algolia-pro-cta .algolia-pro-button {
+  background-color: var(--algolia-blue);
+  border-bottom: 0;
+  border-radius: 4px;
+  color: var(--algolia-white);
+  cursor: pointer;
+  display: inline-block;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 26px;
+  padding: 15px 40px;
+  text-decoration: none;
+}
+.algolia-pro-cta .algolia-pro-button:hover {
+  background-color: var(--algolia-blue-lighten);
+}
+.algolia-pro-cta .algolia-pro-more {
+  display: block;
+  font-size: 14px;
+  margin-top: 15px;
+  position: relative;
+  text-align: center;
+}
+.algolia-pro-cta .algolia-pro-more a {
+  color: var(--algolia-blue);
+  display: inline-block;
+  font-size: 14px;
+  font-style: italic;
+  outline: none;
+  text-decoration: none;
+}
+.algolia-pro-cta .algolia-pro-more a:hover {
+  color: var(--algolia-blue-lighten);
+}
+.algolia-pro-cta .algolia-pro-features {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  margin: 20px auto 40px;
+  text-align: left;
+}
+.algolia-pro-cta .algolia-pro-features h4 {
+  font-size: 18px;
+  margin: 12px;
+}
+.algolia-pro-cta .algolia-pro-feature {
+  align-items: center;
+  display: flex;
+}
+.algolia-pro-cta .algolia-pro-feature svg {
+  padding-right: 4px;
+}
+.algolia-premium-wrap-block {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: space-between;
+}
+.algolia-premium-support-block {
+  text-align: center;
+}
+.algolia-premium-support-block.algolia-pro-block {
+  text-align: left;
+}
+.wds-premium {
+  background: var(--algolia-blue);
+  color: var(--algolia-white);
+  padding: 10px;
+  border-radius: 9999px;
+  text-decoration: none;
+}
+.wds-premium:hover {
+  color: var(--algolia-white);
+}
+.algolia-flex {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.algolia-flex-item {
+  padding: 5px 10px;
+}
+.algolia-pro-flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: space-between;
+  gap: 10px;
+}
+.algolia-pro-flex-item {
+  border-color: var(--algolia-blue);
+  border-radius: 15px;
+  flex: 1;
+  width: 33%;
+}
+.algolia-pro-features {
+  padding-left: 15px;
+}
+.algolia-pro-features li {
+  list-style: disc;
+}
