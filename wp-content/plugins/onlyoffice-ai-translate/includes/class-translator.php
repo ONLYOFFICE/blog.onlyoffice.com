@@ -29,19 +29,6 @@ class OAIT_Translator {
      * Only languages where product names need localization are listed.
      */
     const PRODUCT_LOCALIZATION = array(
-        'zh-hans' => "Ensure that ONLYOFFICE product names are correctly localized for the Chinese market:
-- ONLYOFFICE Docs → ONLYOFFICE 文档
-- ONLYOFFICE DocSpace → ONLYOFFICE 协作空间
-- Enterprise (edition) → 企业版
-- Developer (edition) → 开发者版
-- Community (edition) → 社区版
-- ONLYOFFICE Desktop Editors → 桌面编辑器
-- Document Server → 文档服务器
-- Document Editor → 文档编辑器
-- Spreadsheet Editor → 电子表格编辑器
-- Presentation Editor → 演示文稿编辑器
-- Keep ONLYOFFICE, DocSpace, Workspace, Desktop Editors in Latin script inline with Chinese text.",
-
         'ja' => "Ensure that ONLYOFFICE product names are correctly localized for the Japanese market:
 - Enterprise (edition) → エンタープライズ版
 - Developer (edition) → デベロッパー版
@@ -106,9 +93,6 @@ class OAIT_Translator {
         'it' => "- Titles use sentence case.
 - Tab names: \"X tab\" → \"Scheda [TranslatedName]\" (e.g. \"File tab\" → \"Scheda File\").",
 
-        'zh-hans' => "- Keep ONLYOFFICE, DocSpace, Workspace, Desktop Editors in Latin script inline with Chinese text.
-- Use terminology commonly understood in the IT and office software industry, same as WPS Office and Microsoft Office where applicable.",
-
         'ar' => "- Maintain right-to-left text direction awareness.
 - Use Modern Standard Arabic for professional/technical content.",
 
@@ -139,7 +123,7 @@ class OAIT_Translator {
         $aioseo_title = get_post_meta( $post_id, '_aioseo_title', true ) ?: '';
         $aioseo_desc  = get_post_meta( $post_id, '_aioseo_description', true ) ?: '';
 
-        $system_prompt = $this->build_system_prompt( $language_name );
+        $system_prompt = $this->build_system_prompt( $language_name, $target_lang_code );
         $user_prompt   = $this->build_user_prompt( $target_lang_code, $language_name, $title, $content, $excerpt, $aioseo_title, $aioseo_desc );
 
         $response = $this->call_api( $system_prompt, $user_prompt );
@@ -158,7 +142,11 @@ class OAIT_Translator {
     /**
      * Build the system prompt with universal translation rules.
      */
-    private function build_system_prompt( $language_name ) {
+    private function build_system_prompt( $language_name, $lang_code ) {
+        if ( 'zh-hans' === $lang_code ) {
+            return $this->build_chinese_system_prompt( $language_name );
+        }
+
         return "You are a professional translator for ONLYOFFICE — a software company producing office productivity tools.
 Translate blog post content from English to {$language_name}.
 
@@ -189,21 +177,85 @@ Translate blog post content from English to {$language_name}.
     }
 
     /**
+     * Custom system prompt for Simplified Chinese (zh-hans). Self-contained:
+     * already includes product localization mappings, locale-specific rules and
+     * China-advertising-law constraints, so build_user_prompt() must NOT inject
+     * PRODUCT_LOCALIZATION / LOCALE_RULES blocks for this language.
+     */
+    private function build_chinese_system_prompt( $language_name ) {
+        return <<<PROMPT
+You are a professional translator for ONLYOFFICE — a software company producing office productivity tools.
+Translate blog post content from English to {$language_name}.
+
+## Universal rules (apply to ALL locales):
+
+### Never translate these — keep exactly as-is:
+- Brand name: ONLYOFFICE (always all-caps, never translated)
+- Third-party product names: Docker, Docker Compose, Linux, Windows, macOS, iOS, Android, Ubuntu, Debian, CentOS, RHEL, KylinOS, snap
+- Technical terms: JWT, HTTPS, SSL, API, ARM, ARM64, AGPL
+- Cloud/hosting platforms: Amazon S3, DigitalOcean, Cloudron, Alibaba Cloud, Vultr, Linode
+- Integration connector names: Nextcloud, ownCloud, WordPress, Confluence, SharePoint, Jira, Moodle, Alfresco, HumHub, Mattermost, Odoo, Pipedrive, SuiteCRM and other third-party brands
+- Database names: MySQL, PostgreSQL, MsSQL, Oracle, Redis
+- Plugin names: PhotoEditor, Mendeley, Zotero
+- URLs, email addresses, code blocks
+
+### Ensure that ONLYOFFICE product names are correctly localized for the Chinese market as follows:
+ONLYOFFICE Docs -> ONLYOFFICE 文档
+ONLYOFFICE DocSpace -> ONLYOFFICE 协作空间
+ONLYOFFICE Workspace -> ONLYOFFICE 工作区
+Desktop Editors -> 桌面编辑器
+Docs Enterprise → 文档企业版
+DocSpace Enterprise → 协作空间企业版
+Docs Developer → 文档开发者版
+DocSpace Developer → 协作空间开发者版
+Docs Home Server → 文档家用服务器
+DocSpace Family Pack → 协作空间家用版
+DocSpace STARTUP → 协作空间初创版
+DocSpace BUSINESS → 协作空间专业版
+DocSpace ENTERPRISE → 协作空间企业版
+
+Support level terminology:
+· BASIC → 初级
+· PLUS → 中级
+· PREMIUM → 高级
+
+### HTML rules:
+- Preserve ALL HTML tags, attributes (class, id, href, src, style, data-*, etc.) EXACTLY as they are.
+- ONLY translate the visible text content between tags.
+- Do NOT modify any tag names, attribute names, or attribute values.
+- Add exactly one space between any Chinese character (汉字) and Latin letters (A–Z, a–z).
+
+### Blog-specific rules:
+- Keep the same professional blog tone
+- Translate naturally for the target audience in China, not word-by-word
+- Maintain technical accuracy while making the content easy to understand
+- Avoid direct, overly literal translations — rephrase where necessary to match local language habits
+- Do NOT invent, infer, or reconstruct content for empty fields
+- Strictly avoid absolute or superlative terms (e.g., 最佳, 第一, 完美, etc.) and use neutral, factual wording instead to ensure compliance with China advertising law.
+- Standardize the translation of "useful links" as "相关链接".
+PROMPT;
+    }
+
+    /**
      * Build the user prompt with language-specific rules and content.
      */
     private function build_user_prompt( $lang_code, $language_name, $title, $content, $excerpt, $aioseo_title, $aioseo_desc ) {
         $prompt = "Translate the following blog post fields from English to {$language_name}.\n\n";
 
-        // Add product localization rules if available
-        if ( isset( self::PRODUCT_LOCALIZATION[ $lang_code ] ) ) {
-            $prompt .= "## Product name localization for {$language_name}:\n";
-            $prompt .= self::PRODUCT_LOCALIZATION[ $lang_code ] . "\n\n";
-        }
+        // For zh-hans the localization and locale rules are already embedded in the
+        // system prompt (build_chinese_system_prompt) — do not duplicate them here.
+        if ( 'zh-hans' !== $lang_code ) {
+            // Add product localization rules if available
+            if ( isset( self::PRODUCT_LOCALIZATION[ $lang_code ] ) ) {
+                $prompt .= "## Product name localization for {$language_name}:\n";
+                $prompt .= self::PRODUCT_LOCALIZATION[ $lang_code ] . "\n\n";
+            }
 
-        // Add locale-specific style rules if available
-        if ( isset( self::LOCALE_RULES[ $lang_code ] ) ) {
-            $prompt .= "## Locale-specific rules for {$language_name}:\n";
-            $prompt .= self::LOCALE_RULES[ $lang_code ] . "\n\n";
+            // Add locale-specific style rules if available
+            if ( isset( self::LOCALE_RULES[ $lang_code ] ) ) {
+                $prompt .= "## Locale-specific rules for {$language_name}:\n";
+                $prompt .= self::LOCALE_RULES[ $lang_code ] . "\n\n";
+            }
         }
 
         // Field instructions

@@ -41,6 +41,7 @@ function oetl_init() {
     }
 
     require_once OETL_PLUGIN_DIR . 'includes/class-admin-settings.php';
+    require_once OETL_PLUGIN_DIR . 'includes/class-mp3-builder.php';
     require_once OETL_PLUGIN_DIR . 'includes/class-tts-generator.php';
     require_once OETL_PLUGIN_DIR . 'includes/class-meta-box.php';
     require_once OETL_PLUGIN_DIR . 'includes/class-graphql.php';
@@ -55,6 +56,8 @@ function oetl_init() {
     // AJAX handlers
     add_action( 'wp_ajax_oetl_generate_audio', 'oetl_ajax_generate_audio' );
     add_action( 'wp_ajax_oetl_audio_status', 'oetl_ajax_audio_status' );
+    add_action( 'wp_ajax_oetl_list_audio_posts', 'oetl_ajax_list_audio_posts' );
+    add_action( 'wp_ajax_oetl_repair_audio', 'oetl_ajax_repair_audio' );
 
     // Auto-generate on publish
     add_action( 'transition_post_status', 'oetl_on_post_publish', 10, 3 );
@@ -109,14 +112,15 @@ function oetl_handle_async_generation( $post_id ) {
         return;
     }
 
-    update_post_meta( $post_id, '_oetl_audio_attachment_id', $result );
+    update_post_meta( $post_id, '_oetl_audio_attachment_id', $result['attachment_id'] );
+    update_post_meta( $post_id, '_oetl_audio_duration', $result['duration'] );
     update_post_meta( $post_id, '_oetl_audio_generated_at', current_time( 'mysql' ) );
     delete_post_meta( $post_id, '_oetl_audio_in_progress' );
     delete_post_meta( $post_id, '_oetl_audio_error' );
     delete_post_meta( $post_id, '_oetl_audio_progress_current' );
     delete_post_meta( $post_id, '_oetl_audio_progress_total' );
 
-    error_log( sprintf( 'OETL: Audio generated for post %d, attachment ID: %d', $post_id, $result ) );
+    error_log( sprintf( 'OETL: Audio generated for post %d, attachment ID: %d, duration: %.2fs', $post_id, $result['attachment_id'], $result['duration'] ) );
 }
 
 /**
@@ -158,7 +162,8 @@ function oetl_ajax_generate_audio() {
         wp_send_json_error( $result->get_error_message() );
     }
 
-    update_post_meta( $post_id, '_oetl_audio_attachment_id', $result );
+    update_post_meta( $post_id, '_oetl_audio_attachment_id', $result['attachment_id'] );
+    update_post_meta( $post_id, '_oetl_audio_duration', $result['duration'] );
     update_post_meta( $post_id, '_oetl_audio_generated_at', current_time( 'mysql' ) );
     delete_post_meta( $post_id, '_oetl_audio_in_progress' );
     delete_post_meta( $post_id, '_oetl_audio_error' );
@@ -166,8 +171,9 @@ function oetl_ajax_generate_audio() {
     delete_post_meta( $post_id, '_oetl_audio_progress_total' );
 
     wp_send_json_success( array(
-        'audioUrl'    => wp_get_attachment_url( $result ),
-        'generatedAt' => current_time( 'mysql' ),
+        'audioUrl'      => wp_get_attachment_url( $result['attachment_id'] ),
+        'audioDuration' => $result['duration'],
+        'generatedAt'   => current_time( 'mysql' ),
     ) );
 }
 
@@ -211,6 +217,65 @@ function oetl_ajax_audio_status() {
         'hasAudio'        => ! empty( $attachment_id ) && ! empty( $audio_url ),
         'progressCurrent' => $progress_current !== '' ? (int) $progress_current : 0,
         'progressTotal'   => $progress_total !== '' ? (int) $progress_total : 0,
+    ) );
+}
+
+/**
+ * AJAX: return the list of post IDs that have audio attached, so the UI can
+ * iterate and repair them one-by-one with progress feedback.
+ */
+function oetl_ajax_list_audio_posts() {
+    check_ajax_referer( 'oetl_audio_nonce', 'nonce' );
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_send_json_error( 'Insufficient permissions.' );
+    }
+
+    $query = new WP_Query( array(
+        'post_type'      => 'post',
+        'post_status'    => 'any',
+        'meta_key'       => '_oetl_audio_attachment_id',
+        'posts_per_page' => -1,
+        'fields'         => 'ids',
+        'no_found_rows'  => true,
+    ) );
+
+    $items = array();
+    foreach ( $query->posts as $post_id ) {
+        $items[] = array(
+            'id'    => (int) $post_id,
+            'title' => get_the_title( $post_id ),
+        );
+    }
+
+    wp_send_json_success( array( 'posts' => $items ) );
+}
+
+/**
+ * AJAX: repair the audio attached to a single post (rebuild Xing/TOC header
+ * via OETL_MP3_Builder and refresh the stored duration).
+ */
+function oetl_ajax_repair_audio() {
+    check_ajax_referer( 'oetl_audio_nonce', 'nonce' );
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_send_json_error( 'Insufficient permissions.' );
+    }
+
+    $post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+    if ( ! $post_id ) {
+        wp_send_json_error( 'Invalid post ID.' );
+    }
+
+    @set_time_limit( 0 );
+    $generator = new OETL_TTS_Generator();
+    $result    = $generator->repair_attachment( $post_id );
+
+    if ( empty( $result['ok'] ) ) {
+        wp_send_json_error( $result['message'] );
+    }
+
+    wp_send_json_success( array(
+        'duration' => isset( $result['duration'] ) ? $result['duration'] : 0,
+        'message'  => $result['message'],
     ) );
 }
 

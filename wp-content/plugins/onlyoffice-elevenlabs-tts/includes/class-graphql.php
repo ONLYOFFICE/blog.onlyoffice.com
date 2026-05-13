@@ -23,5 +23,17 @@ class OETL_GraphQL {
                 return '';
             },
         ) );
+
+        register_graphql_field( 'Post', 'audioDuration', array(
+            'type'        => 'Float',
+            'description' => 'Audio duration in seconds. Authoritative — read by the player instead of relying on browser-side MP3 parsing.',
+            'resolve'     => function ( $post ) {
+                $duration = get_post_meta( $post->ID, '_oetl_audio_duration', true );
+                if ( $duration === '' || $duration === false ) {
+                    return null;
+                }
+                return (float) $duration;
+            },
+        ) );
     }
 }
