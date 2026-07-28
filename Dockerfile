@@ -4,6 +4,11 @@ FROM wordpress:6.9.4-php8.2-apache
 # so wp-content must be placed in the source dir to survive the copy.
 COPY wp-content/ /usr/src/wordpress/wp-content/
 
+# Probe/health endpoint (plain PHP, no WordPress bootstrap, no DB) for
+# Kubernetes probes and the ALB health check. Must also go through
+# /usr/src/wordpress to end up in the docroot.
+COPY health.php /usr/src/wordpress/health.php
+
 # See apache-mpm-prefork.conf for rationale.
 COPY apache-mpm-prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 
