@@ -50,4 +50,4 @@ jobs:
         shell: bash
         run: |
           blog_webhook_hash=$(printf 'blog-webhook' | openssl dgst -sha256 -r -hmac "${{ secrets.BLOG_WEBHOOK_TOKEN }}" | awk '{print $1}')
-          curl ${{ secrets.BLOG_WEBHOOK_URL }} -X POST -H "X-Signature: sha256=${blog_webhook_hash}" -d 'blog-webhook'
+          curl -f ${{ secrets.BLOG_WEBHOOK_URL }} -X POST -H "X-Signature: sha256=${blog_webhook_hash}" -d 'blog-webhook'
