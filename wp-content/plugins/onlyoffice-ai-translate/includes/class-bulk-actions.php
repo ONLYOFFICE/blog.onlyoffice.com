@@ -27,6 +27,9 @@ class OAIT_Bulk_Actions {
 
     /**
      * Render translation status meta box with language checkboxes.
+     *
+     * The markup produced here must stay in sync with renderMetaBox() in
+     * assets/admin.js, which replaces it on every status poll.
      */
     public function render_translation_meta_box( $post ) {
         if ( $post->post_type !== 'post' ) {
@@ -55,78 +58,133 @@ class OAIT_Bulk_Actions {
             return;
         }
 
-        $wpml        = new OAIT_WPML_Integration();
-        $status      = $wpml->get_translation_status( $post->ID );
-        $enabled     = get_option( 'oait_enabled_languages', array() );
-        $in_progress = get_post_meta( $post->ID, '_ai_translation_in_progress', true );
-        if ( ! is_array( $in_progress ) ) {
-            $in_progress = array();
-        }
+        $payload = oait_build_status_payload( $post->ID );
 
-        // Select all checkbox
-        echo '<label style="display:block;margin:4px 0 8px;font-weight:600;"><input type="checkbox" id="oait_metabox_select_all" /> Select all</label>';
+        echo '<div class="oait-body">';
+        echo self::render_body( $payload, $post->ID ); // phpcs:ignore WordPress.Security.EscapeOutput -- markup assembled with escaping below.
+        echo '</div>';
+    }
 
-        echo '<ul style="margin:0;" class="oait-language-list">';
-        foreach ( OAIT_Translator::LANGUAGES as $code => $name ) {
-            $is_enabled    = empty( $enabled ) || in_array( $code, $enabled, true );
-            if ( ! $is_enabled ) {
-                continue; // Skip disabled languages
-            }
+    /**
+     * Build the metabox body from a status payload.
+     *
+     * @param array $payload Output of oait_build_status_payload().
+     * @param int   $post_id Source post ID.
+     * @return string
+     */
+    public static function render_body( array $payload, $post_id ) {
+        $languages   = $payload['languages'];
+        $has_actions = false;
 
-            $translated_id = isset( $status[ $code ] ) ? $status[ $code ] : null;
-            $is_in_progress = in_array( $code, $in_progress, true );
-            $label = esc_html( $name ) . ' (' . esc_html( $code ) . ')';
-
-            if ( $translated_id ) {
-                // Already translated: checkmark + edit link
-                $edit_link = get_edit_post_link( $translated_id );
-                $link_label = '<a href="' . esc_url( $edit_link ) . '">' . $label . '</a>';
-                printf(
-                    '<li style="padding:2px 0;"><span style="color:#00a32a;">&#10004;</span> %s</li>',
-                    $link_label
-                );
-            } elseif ( $is_in_progress ) {
-                // In progress: spinner
-                printf(
-                    '<li style="padding:2px 0;"><span class="spinner is-active" style="float:none;margin:0 4px 0 0;"></span> %s <em style="color:#999;">translating...</em></li>',
-                    $label
-                );
-            } else {
-                // Not translated: checkbox
-                printf(
-                    '<li style="padding:2px 0;"><label><input type="checkbox" class="oait-lang-checkbox" value="%s"> %s</label></li>',
-                    esc_attr( $code ),
-                    $label
-                );
+        foreach ( $languages as $lang ) {
+            // Every language that is not already translated can be selected —
+            // including queued/running ones, which re-queue as a forced restart.
+            // Before 1.1.0 an in-progress language rendered as a bare spinner,
+            // so a job that never reported back left the metabox with nothing
+            // to click and the post permanently "translating".
+            if ( $lang['enabled'] && ! $lang['postId'] ) {
+                $has_actions = true;
+                break;
             }
         }
-        echo '</ul>';
 
-        // Translate button
-        ?>
-        <div style="margin-top:10px;">
-            <button type="button" class="button button-primary oait-translate-btn"
-                    data-post-id="<?php echo esc_attr( $post->ID ); ?>">
-                Translate Selected
-            </button>
-            <span class="spinner oait-spinner" style="float:none;margin:0 4px;"></span>
-        </div>
-        <span class="oait-translate-status" style="display:none;margin-top:6px;"></span>
-        <?php
+        $html = '';
 
-        // Show errors from results
-        $results = get_post_meta( $post->ID, '_ai_translation_results', true );
-        if ( $results && is_array( $results ) ) {
-            $errors = array_filter( $results, function ( $r ) {
-                return strpos( $r, 'error' ) === 0;
-            } );
-            if ( ! empty( $errors ) ) {
-                echo '<hr/><p style="color:#d63638;"><strong>Errors:</strong></p><ul style="margin:0;">';
-                foreach ( $errors as $lang => $msg ) {
-                    printf( '<li><code>%s</code>: %s</li>', esc_html( $lang ), esc_html( $msg ) );
+        if ( $has_actions ) {
+            $html .= '<label style="display:block;margin:4px 0 8px;font-weight:600;">'
+                   . '<input type="checkbox" id="oait_metabox_select_all" /> Select all</label>';
+        }
+
+        $html .= '<ul style="margin:0;" class="oait-language-list">';
+
+        foreach ( $languages as $code => $lang ) {
+            if ( ! $lang['enabled'] ) {
+                continue;
+            }
+
+            $label = esc_html( $lang['name'] ) . ' (' . esc_html( $code ) . ')';
+
+            if ( $lang['postId'] ) {
+                $link = $lang['editLink']
+                    ? '<a href="' . esc_url( $lang['editLink'] ) . '">' . $label . '</a>'
+                    : $label;
+
+                $html .= '<li style="padding:2px 0;">'
+                       . '<span style="color:#00a32a;">&#10004;</span> ' . $link
+                       . '</li>';
+                continue;
+            }
+
+            $checkbox = '<label><input type="checkbox" class="oait-lang-checkbox" value="'
+                      . esc_attr( $code ) . '"> ' . $label . '</label>';
+
+            if ( $lang['active'] ) {
+                $note = 'queued' === $lang['status'] ? 'queued' : 'translating';
+                if ( $lang['elapsed'] ) {
+                    $note .= ' ' . self::format_elapsed( (int) $lang['elapsed'] );
                 }
-                echo '</ul>';
+
+                $html .= '<li style="padding:2px 0;">'
+                       . '<span class="spinner is-active" style="float:none;margin:0 4px 0 0;"></span> '
+                       . $checkbox
+                       . ' <em style="color:#999;font-size:11px;">(' . esc_html( $note ) . ')</em>'
+                       . '</li>';
+                continue;
             }
+
+            if ( in_array( $lang['status'], array( 'error', 'cancelled' ), true ) && $lang['message'] ) {
+                $colour = 'cancelled' === $lang['status'] ? '#996800' : '#d63638';
+
+                $html .= '<li style="padding:2px 0;">'
+                       . $checkbox
+                       . ' <em style="color:' . esc_attr( $colour ) . ';font-size:11px;">('
+                       . esc_html( $lang['message'] ) . ')</em>'
+                       . '</li>';
+                continue;
+            }
+
+            $html .= '<li style="padding:2px 0;">' . $checkbox . '</li>';
         }
+
+        $html .= '</ul>';
+
+        if ( $has_actions ) {
+            $html .= '<div style="margin-top:10px;">'
+                   . '<button type="button" class="button button-primary oait-translate-btn" data-post-id="'
+                   . esc_attr( $post_id ) . '">Translate Selected</button> ';
+
+            if ( $payload['active'] ) {
+                $html .= '<button type="button" class="button oait-cancel-btn" data-post-id="'
+                       . esc_attr( $post_id ) . '">Stop</button> ';
+            }
+
+            $html .= '<span class="spinner oait-spinner" style="float:none;margin:0 4px;"></span>'
+                   . '</div>';
+        }
+
+        if ( $payload['active'] ) {
+            $html .= '<p style="margin:8px 0 0;color:#999;font-size:11px;">'
+                   . 'A language stuck for more than '
+                   . esc_html( (string) round( $payload['staleTimeout'] / MINUTE_IN_SECONDS ) )
+                   . ' min is released automatically and can be re-run.</p>';
+        }
+
+        $html .= '<span class="oait-translate-status" style="display:none;margin-top:6px;"></span>';
+
+        return $html;
+    }
+
+    /**
+     * Format an elapsed duration as "1m 05s" / "42s".
+     *
+     * @param int $seconds Elapsed seconds.
+     * @return string
+     */
+    public static function format_elapsed( $seconds ) {
+        if ( $seconds < MINUTE_IN_SECONDS ) {
+            return $seconds . 's';
+        }
+
+        return sprintf( '%dm %02ds', intdiv( $seconds, MINUTE_IN_SECONDS ), $seconds % MINUTE_IN_SECONDS );
     }
 }

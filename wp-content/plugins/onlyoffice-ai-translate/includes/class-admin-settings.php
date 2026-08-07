@@ -43,6 +43,18 @@ class OAIT_Admin_Settings {
             'default'           => 'gpt-4o-mini',
         ) );
 
+        register_setting( 'oait_settings', 'oait_request_timeout', array(
+            'type'              => 'integer',
+            'sanitize_callback' => array( $this, 'sanitize_request_timeout' ),
+            'default'           => OAIT_Translator::DEFAULT_REQUEST_TIMEOUT,
+        ) );
+
+        register_setting( 'oait_settings', 'oait_stale_timeout', array(
+            'type'              => 'integer',
+            'sanitize_callback' => array( $this, 'sanitize_stale_timeout' ),
+            'default'           => OAIT_Job_State::DEFAULT_STALE_MINUTES,
+        ) );
+
         // API Section
         add_settings_section( 'oait_api_section', 'API Settings', null, 'oait-settings' );
 
@@ -58,6 +70,22 @@ class OAIT_Admin_Settings {
             'oait_model',
             'AI Model',
             array( $this, 'render_model_field' ),
+            'oait-settings',
+            'oait_api_section'
+        );
+
+        add_settings_field(
+            'oait_request_timeout',
+            'Request timeout',
+            array( $this, 'render_request_timeout_field' ),
+            'oait-settings',
+            'oait_api_section'
+        );
+
+        add_settings_field(
+            'oait_stale_timeout',
+            'Stuck job timeout',
+            array( $this, 'render_stale_timeout_field' ),
             'oait-settings',
             'oait_api_section'
         );
@@ -102,6 +130,37 @@ class OAIT_Admin_Settings {
         ?>
         <input type="text" name="oait_model" value="<?php echo esc_attr( $value ); ?>" class="regular-text" />
         <p class="description">Default: <code>gpt-4o-mini</code>. Other options: <code>gpt-4o</code>, <code>gpt-4.1-mini</code>, <code>gpt-4.1-nano</code></p>
+        <?php
+    }
+
+    public function render_request_timeout_field() {
+        $value = OAIT_Translator::get_request_timeout();
+        ?>
+        <input type="number" name="oait_request_timeout" value="<?php echo esc_attr( $value ); ?>"
+               min="<?php echo esc_attr( OAIT_Translator::MIN_REQUEST_TIMEOUT ); ?>"
+               max="<?php echo esc_attr( OAIT_Translator::MAX_REQUEST_TIMEOUT ); ?>" class="small-text" /> seconds
+        <p class="description">
+            How long to wait for the API before failing the language.
+            Default <code><?php echo esc_html( OAIT_Translator::DEFAULT_REQUEST_TIMEOUT ); ?></code>.
+            Keep it under 300 s — Action Scheduler marks any task still running after that as failed,
+            which would hide the real error and prevent a clean retry.
+        </p>
+        <?php
+    }
+
+    public function render_stale_timeout_field() {
+        $value = OAIT_Job_State::clamp_stale_minutes( get_option( 'oait_stale_timeout', OAIT_Job_State::DEFAULT_STALE_MINUTES ) );
+        ?>
+        <input type="number" name="oait_stale_timeout" value="<?php echo esc_attr( $value ); ?>"
+               min="<?php echo esc_attr( OAIT_Job_State::MIN_STALE_MINUTES ); ?>"
+               max="<?php echo esc_attr( OAIT_Job_State::MAX_STALE_MINUTES ); ?>" class="small-text" /> minutes
+        <p class="description">
+            A language queued or running longer than this without reporting back is released and
+            offered for retry in the post editor. Covers workers killed by OOM, pod restarts, and
+            tasks the cron never picked up. Default
+            <code><?php echo esc_html( OAIT_Job_State::DEFAULT_STALE_MINUTES ); ?></code>;
+            always kept above the request timeout.
+        </p>
         <?php
     }
 
@@ -206,6 +265,14 @@ class OAIT_Admin_Settings {
             return get_option( 'oait_api_key', '' );
         }
         return $value;
+    }
+
+    public function sanitize_request_timeout( $value ) {
+        return OAIT_Translator::clamp_request_timeout( $value );
+    }
+
+    public function sanitize_stale_timeout( $value ) {
+        return OAIT_Job_State::clamp_stale_minutes( $value );
     }
 
     public function sanitize_languages( $value ) {

@@ -1,32 +1,52 @@
 (function ($) {
     'use strict';
 
+    var POLL_INTERVAL = 5000;
     var pollTimer = null;
 
-    // Translate Selected button click
+    function $body() {
+        return $('#oait_translation_status .oait-body');
+    }
+
+    function esc(text) {
+        return $('<span>').text(text == null ? '' : text).html();
+    }
+
+    // Mirrors OAIT_Bulk_Actions::format_elapsed().
+    function formatElapsed(seconds) {
+        if (seconds < 60) {
+            return seconds + 's';
+        }
+        var m = Math.floor(seconds / 60);
+        var s = seconds % 60;
+        return m + 'm ' + (s < 10 ? '0' : '') + s + 's';
+    }
+
+    function setStatus($box, text, colour) {
+        $box.find('.oait-translate-status').text(text).css('color', colour).show();
+    }
+
+    // Translate Selected
     $(document).on('click', '.oait-translate-btn', function (e) {
         e.preventDefault();
 
         var $btn = $(this);
-        var $metabox = $('#oait_translation_status .inside');
-        var $status = $metabox.find('.oait-translate-status');
-        var $spinner = $metabox.find('.oait-spinner');
+        var $box = $body();
         var postId = $btn.data('post-id');
 
-        // Collect checked languages
         var selectedLangs = [];
-        $metabox.find('.oait-lang-checkbox:checked').each(function () {
+        $box.find('.oait-lang-checkbox:checked').each(function () {
             selectedLangs.push($(this).val());
         });
 
         if (selectedLangs.length === 0) {
-            $status.text('Please select at least one language.').css('color', '#d63638').show();
+            setStatus($box, 'Please select at least one language.', '#d63638');
             return;
         }
 
         $btn.prop('disabled', true);
-        $spinner.addClass('is-active');
-        $status.hide();
+        $box.find('.oait-spinner').addClass('is-active');
+        $box.find('.oait-translate-status').hide();
 
         $.ajax({
             url: oaitData.ajaxUrl,
@@ -38,29 +58,57 @@
                 languages: selectedLangs
             },
             success: function (response) {
-                $spinner.removeClass('is-active');
+                $box.find('.oait-spinner').removeClass('is-active');
 
                 if (response.success) {
-                    $status
-                        .text('Translation in progress...')
-                        .css('color', '#00a32a')
-                        .show();
-                    startPolling(postId);
+                    setStatus($box, response.data.message || 'Translation in progress...', '#00a32a');
+                    refresh(postId, true);
                 } else {
                     $btn.prop('disabled', false);
-                    $status
-                        .text('Error: ' + response.data)
-                        .css('color', '#d63638')
-                        .show();
+                    setStatus($box, 'Error: ' + response.data, '#d63638');
                 }
             },
             error: function () {
-                $spinner.removeClass('is-active');
+                $box.find('.oait-spinner').removeClass('is-active');
                 $btn.prop('disabled', false);
-                $status
-                    .text('Request failed. Please try again.')
-                    .css('color', '#d63638')
-                    .show();
+                setStatus($box, 'Request failed. Please try again.', '#d63638');
+            }
+        });
+    });
+
+    // Stop queued/running translations for this post.
+    $(document).on('click', '.oait-cancel-btn', function (e) {
+        e.preventDefault();
+
+        var $btn = $(this);
+        var $box = $body();
+        var postId = $btn.data('post-id');
+
+        $btn.prop('disabled', true);
+        $box.find('.oait-spinner').addClass('is-active');
+
+        $.ajax({
+            url: oaitData.ajaxUrl,
+            type: 'POST',
+            data: {
+                action: 'oait_cancel_translation',
+                nonce: oaitData.nonce,
+                post_id: postId
+            },
+            success: function (response) {
+                $box.find('.oait-spinner').removeClass('is-active');
+
+                if (response.success) {
+                    setStatus($box, response.data.message, '#996800');
+                } else {
+                    setStatus($box, 'Error: ' + response.data, '#d63638');
+                }
+                refresh(postId, true);
+            },
+            error: function () {
+                $box.find('.oait-spinner').removeClass('is-active');
+                $btn.prop('disabled', false);
+                setStatus($box, 'Request failed. Please try again.', '#d63638');
             }
         });
     });
@@ -77,56 +125,87 @@
         $('#oait_metabox_select_all').prop('checked', all.length === checked.length);
     });
 
-    function startPolling(postId) {
+    function stopPolling() {
         if (pollTimer) {
             clearInterval(pollTimer);
+            pollTimer = null;
         }
-
-        pollTimer = setInterval(function () {
-            $.ajax({
-                url: oaitData.ajaxUrl,
-                type: 'GET',
-                data: {
-                    action: 'oait_translation_status',
-                    nonce: oaitData.nonce,
-                    post_id: postId
-                },
-                success: function (response) {
-                    if (!response.success) {
-                        return;
-                    }
-
-                    var data = response.data;
-                    updateMetaBox(data.languages, data.results, postId);
-
-                    if (data.complete) {
-                        clearInterval(pollTimer);
-                        pollTimer = null;
-                    }
-                }
-            });
-        }, 5000);
     }
 
-    function updateMetaBox(languages, results, postId) {
-        var $box = $('#oait_translation_status .inside');
+    function startPolling(postId) {
+        stopPolling();
+        pollTimer = setInterval(function () {
+            refresh(postId, false);
+        }, POLL_INTERVAL);
+    }
+
+    /**
+     * Fetch the current status and repaint the metabox.
+     *
+     * @param {number}  postId
+     * @param {boolean} keepMessage Preserve the status line already on screen
+     *                              (it describes the action just taken).
+     */
+    function refresh(postId, keepMessage) {
+        $.ajax({
+            url: oaitData.ajaxUrl,
+            type: 'GET',
+            data: {
+                action: 'oait_translation_status',
+                nonce: oaitData.nonce,
+                post_id: postId
+            },
+            success: function (response) {
+                if (!response.success) {
+                    return;
+                }
+
+                var $box = $body();
+                var previous = keepMessage ? $box.find('.oait-translate-status') : null;
+                var text = previous && previous.length ? previous.text() : '';
+                var colour = previous && previous.length ? previous.css('color') : '';
+                var visible = previous && previous.length && previous.is(':visible');
+
+                renderMetaBox(response.data, postId);
+
+                if (visible && text) {
+                    setStatus($body(), text, colour);
+                }
+
+                if (response.data.active) {
+                    if (!pollTimer) {
+                        startPolling(postId);
+                    }
+                } else {
+                    stopPolling();
+                }
+            }
+        });
+    }
+
+    /**
+     * Repaint the metabox body. Must stay in sync with
+     * OAIT_Bulk_Actions::render_body().
+     */
+    function renderMetaBox(data, postId) {
+        var $box = $body();
         if (!$box.length) {
             return;
         }
 
-        // Count how many selectable languages exist (not translated, not in progress)
-        var hasCheckboxes = false;
+        var languages = data.languages;
+        var hasActions = false;
+
         $.each(languages, function (code, lang) {
-            if (lang.enabled && !lang.postId && !lang.inProgress) {
-                hasCheckboxes = true;
+            if (lang.enabled && !lang.postId) {
+                hasActions = true;
                 return false;
             }
         });
 
         var html = '';
 
-        // Select all checkbox (only show if there are checkboxes)
-        if (hasCheckboxes) {
+        if (hasActions) {
             html += '<label style="display:block;margin:4px 0 8px;font-weight:600;">'
                   + '<input type="checkbox" id="oait_metabox_select_all" /> Select all</label>';
         }
@@ -135,53 +214,85 @@
 
         $.each(languages, function (code, lang) {
             if (!lang.enabled) {
-                return; // skip disabled
+                return;
             }
 
-            var label = $('<span>').text(lang.name + ' (' + code + ')').html();
+            var label = esc(lang.name + ' (' + code + ')');
 
             if (lang.postId) {
-                // Already translated: checkmark + edit link
                 var link = lang.editLink
-                    ? '<a href="' + lang.editLink + '">' + label + '</a>'
+                    ? '<a href="' + esc(lang.editLink) + '">' + label + '</a>'
                     : label;
                 html += '<li style="padding:2px 0;">'
                       + '<span style="color:#00a32a;">&#10004;</span> ' + link
                       + '</li>';
-            } else if (lang.inProgress) {
-                // In progress: spinner
+                return;
+            }
+
+            var checkbox = '<label><input type="checkbox" class="oait-lang-checkbox" value="'
+                         + esc(code) + '"> ' + label + '</label>';
+
+            if (lang.active) {
+                var note = lang.status === 'queued' ? 'queued' : 'translating';
+                if (lang.elapsed) {
+                    note += ' ' + formatElapsed(lang.elapsed);
+                }
                 html += '<li style="padding:2px 0;">'
                       + '<span class="spinner is-active" style="float:none;margin:0 4px 0 0;"></span> '
-                      + label + ' <em style="color:#999;">translating...</em>'
+                      + checkbox
+                      + ' <em style="color:#999;font-size:11px;">(' + esc(note) + ')</em>'
                       + '</li>';
-            } else if (lang.error) {
-                // Error (timeout, API failure, etc): red error message + checkbox to retry
-                var errorText = lang.error.replace(/^error:\s*/i, '');
-                html += '<li style="padding:2px 0;">'
-                      + '<label><input type="checkbox" class="oait-lang-checkbox" value="' + code + '"> '
-                      + label + '</label>'
-                      + ' <em style="color:#d63638;font-size:11px;">(' + $('<span>').text(errorText).html() + ')</em>'
-                      + '</li>';
-            } else {
-                // Not translated: checkbox
-                html += '<li style="padding:2px 0;">'
-                      + '<label><input type="checkbox" class="oait-lang-checkbox" value="' + code + '"> '
-                      + label + '</label>'
-                      + '</li>';
+                return;
             }
+
+            if ((lang.status === 'error' || lang.status === 'cancelled') && lang.message) {
+                var colour = lang.status === 'cancelled' ? '#996800' : '#d63638';
+                html += '<li style="padding:2px 0;">'
+                      + checkbox
+                      + ' <em style="color:' + colour + ';font-size:11px;">('
+                      + esc(lang.message) + ')</em>'
+                      + '</li>';
+                return;
+            }
+
+            html += '<li style="padding:2px 0;">' + checkbox + '</li>';
         });
+
         html += '</ul>';
 
-        // Button (only show if there are checkboxes)
-        if (hasCheckboxes) {
+        if (hasActions) {
             html += '<div style="margin-top:10px;">'
                   + '<button type="button" class="button button-primary oait-translate-btn" '
-                  + 'data-post-id="' + postId + '">Translate Selected</button> '
-                  + '<span class="spinner oait-spinner" style="float:none;margin:0 4px;"></span>'
+                  + 'data-post-id="' + esc(postId) + '">Translate Selected</button> ';
+
+            if (data.active) {
+                html += '<button type="button" class="button oait-cancel-btn" '
+                      + 'data-post-id="' + esc(postId) + '">Stop</button> ';
+            }
+
+            html += '<span class="spinner oait-spinner" style="float:none;margin:0 4px;"></span>'
                   + '</div>';
         }
+
+        if (data.active) {
+            html += '<p style="margin:8px 0 0;color:#999;font-size:11px;">'
+                  + 'A language stuck for more than ' + Math.round(data.staleTimeout / 60)
+                  + ' min is released automatically and can be re-run.</p>';
+        }
+
         html += '<span class="oait-translate-status" style="display:none;margin-top:6px;"></span>';
 
         $box.html(html);
     }
+
+    // Refresh once on load. The server sweeps stale jobs while building the
+    // payload, so opening a post whose translation died is enough to release it
+    // — previously the metabox kept a frozen spinner because polling only ever
+    // started after clicking Translate.
+    $(function () {
+        if (typeof oaitData === 'undefined' || !oaitData.postId || !$body().length) {
+            return;
+        }
+        refresh(oaitData.postId, false);
+    });
 })(jQuery);

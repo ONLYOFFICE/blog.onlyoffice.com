@@ -8,6 +8,21 @@ class OAIT_Translator {
 
     const API_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
 
+    /**
+     * Seconds to wait for the API before giving up.
+     *
+     * Must stay below Action Scheduler's failure period (300s by default in AS
+     * 3.9.3), which marks any action still running past that point as failed.
+     * The previous 300s timeout hit both limits at the same instant: the task
+     * was declared failed by the scheduler at the exact moment its own request
+     * timed out, so the run ended with no usable error to show or retry.
+     */
+    const DEFAULT_REQUEST_TIMEOUT = 180;
+
+    /** Hard bounds for the configurable request timeout. */
+    const MIN_REQUEST_TIMEOUT = 30;
+    const MAX_REQUEST_TIMEOUT = 280;
+
     const LANGUAGES = array(
         'fr'      => 'Français',
         'de'      => 'Deutsch',
@@ -99,6 +114,37 @@ class OAIT_Translator {
         'hi' => "- Use Devanagari script consistently.
 - Technical terms that are commonly used in English may be kept in Latin script where natural.",
     );
+
+    /**
+     * Configured API request timeout, clamped to a range that keeps the task
+     * inside Action Scheduler's failure window.
+     *
+     * @return int Seconds.
+     */
+    public static function get_request_timeout() {
+        return self::clamp_request_timeout( get_option( 'oait_request_timeout', self::DEFAULT_REQUEST_TIMEOUT ) );
+    }
+
+    /**
+     * Bring a stored or submitted timeout into the supported range.
+     *
+     * Applied on read as well as on save, so a value written straight to the
+     * options table by WP-CLI cannot push a task past Action Scheduler's
+     * failure window. Empty or non-numeric input means "unset" and yields the
+     * default rather than the 30 s floor.
+     *
+     * @param mixed $timeout Raw value.
+     * @return int Seconds.
+     */
+    public static function clamp_request_timeout( $timeout ) {
+        $timeout = (int) $timeout;
+
+        if ( $timeout <= 0 ) {
+            return self::DEFAULT_REQUEST_TIMEOUT;
+        }
+
+        return max( self::MIN_REQUEST_TIMEOUT, min( self::MAX_REQUEST_TIMEOUT, $timeout ) );
+    }
 
     /**
      * Translate a post to the target language.
@@ -306,7 +352,7 @@ PROMPT;
         ) );
 
         $response = wp_remote_post( self::API_ENDPOINT, array(
-            'timeout' => 300,
+            'timeout' => self::get_request_timeout(),
             'headers' => array(
                 'Authorization' => 'Bearer ' . $api_key,
                 'Content-Type'  => 'application/json',
@@ -336,6 +382,18 @@ PROMPT;
         $data = json_decode( $body, true );
         if ( ! isset( $data['choices'][0]['message']['content'] ) ) {
             return new WP_Error( 'api_empty_response', 'Empty response from OpenAI API.' );
+        }
+
+        // A response cut off at max_tokens still carries a well-formed title and
+        // content marker, so parse_response() accepts it and the post is saved
+        // with a silently truncated body. Reject it instead and let the operator
+        // retry with a larger model or a shorter post.
+        $finish_reason = isset( $data['choices'][0]['finish_reason'] ) ? $data['choices'][0]['finish_reason'] : '';
+        if ( 'length' === $finish_reason ) {
+            return new WP_Error(
+                'api_truncated',
+                'Translation was cut off at the model output limit — the post is too long for this model.'
+            );
         }
 
         return $data['choices'][0]['message']['content'];

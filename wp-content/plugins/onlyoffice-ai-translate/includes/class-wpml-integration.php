@@ -69,6 +69,13 @@ class OAIT_WPML_Integration {
         delete_post_meta( $new_post_id, '_oetl_audio_error' );
         delete_post_meta( $new_post_id, '_oetl_audio_generated_at' );
 
+        // wpml_copy_post_to_language duplicates every custom field, including the
+        // source post's per-language job rows. Left in place they would make the
+        // translation look like it has translations of its own.
+        OAIT_Job_State::clear_all( $new_post_id );
+        delete_post_meta( $new_post_id, OAIT_Job_State::MIGRATED_FLAG );
+        delete_post_meta( $new_post_id, '_ai_translations_queued' );
+
         // Step 7: Copy featured image
         $thumbnail_id = get_post_meta( $original_post_id, '_thumbnail_id', true );
         if ( $thumbnail_id ) {
