@@ -36,7 +36,7 @@ class OAIT_Translator {
         'hi'      => 'हिन्दी',
         'ar'      => 'عربي',
         'sr'      => 'Srpski',
-        'hy'      => 'Հայերেն',
+        'hy'      => 'Հայերեն',
     );
 
     /**
@@ -107,6 +107,23 @@ class OAIT_Translator {
 
         'it' => "- Titles use sentence case.
 - Tab names: \"X tab\" → \"Scheda [TranslatedName]\" (e.g. \"File tab\" → \"Scheda File\").",
+
+        // Written from a translator's review of two published Greek articles.
+        // Gender agreement was by far the most frequent defect, so it leads the
+        // list. The wrong → right pairs are that review's actual examples and are
+        // deliberately kept verbatim: naming the noun's gender is what stops the
+        // model repeating them, a bare \"check agreement\" rule did not.
+        'el' => "- Article/adjective gender agreement is the most common error in Greek output — verify that the article AND every modifying adjective match the grammatical gender of the noun they refer to. Loanwords are normally neuter; nouns in -ος are usually masculine; nouns in -ι and -μα are neuter. Do not repeat these:
+  \"η πρόβλημα\" → \"το πρόβλημα\" (πρόβλημα is neuter)
+  \"στην πάνελ\" → \"στο πάνελ\" (πάνελ is neuter)
+  \"της σχολιασμού\" → \"του σχολιασμού\" (σχολιασμός is masculine)
+  \"μια εκπληκτική αριθμό\" → \"έναν εκπληκτικό αριθμό\" (αριθμός is masculine)
+  \"Αυτή τη καλοκαίρι\" → \"Αυτό το καλοκαίρι\" (καλοκαίρι is neuter)
+- When the source has a sequence of verbs in the same tense or mood (parallel actions, or a chain of subjunctives), keep every verb of that sequence in the same tense and mood — do not let one drift: \"σαρώνατε\" (past) inside a present-tense chain must be \"σαρώνετε\"; \"επαναφέρθηκε\" breaking a subjunctive chain must be \"επαναφερθεί\".
+- Never carry an English semicolon over into Greek: \";\" is the Greek question mark and silently turns the sentence into a question. Split into two sentences, or use the ano teleia \"·\".
+- Do not calque English idioms. Express the intended meaning in natural Greek even if the sentence has to be restructured completely — word-for-word renderings of phrases like \"punches above its weight\", \"quietly run the working world\" or \"no third-party cloud in the picture\" are confusing to a native reader.
+- Foreign acronyms and loanwords never take an English \"-s\" in the plural; the article alone marks number: \"τα PDF\", never \"τα PDFs\".
+- Do not translate software UI labels (button, tab and menu names) unless an official Greek localization of that exact product is confirmed — keep the English label so the instructions match what the reader sees on screen. E.g. the Zotero \"Marketplace\" tab stays \"Marketplace\", not \"Αγορά\".",
 
         'ar' => "- Maintain right-to-left text direction awareness.
 - Use Modern Standard Arabic for professional/technical content.",

@@ -228,8 +228,9 @@ function oait_handle_async_translation( $post_id, $languages = null ) {
     $run_token = function_exists( 'wp_generate_uuid4' ) ? wp_generate_uuid4() : uniqid( 'oait', true );
 
     // Safety net: if PHP dies (fatal, memory limit) before the loop finishes,
-    // the language would stay 'running' until the stale sweep releases it 20
-    // minutes later. Flip it to an error now so a retry is offered immediately.
+    // the language would stay 'running' until the stale sweep releases it an
+    // hour or more later. Flip it to an error now so a retry is offered
+    // immediately.
     // Only rows still owned by this run are touched, so a concurrent worker
     // handling another language is never clobbered.
     register_shutdown_function( function () use ( $post_id, $languages, $run_token ) {
