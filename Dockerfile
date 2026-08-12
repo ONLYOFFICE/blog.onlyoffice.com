@@ -1,4 +1,4 @@
-FROM wordpress:6.9.4-php8.2-apache
+FROM wordpress:7.0.3-php8.2-apache
 
 # The official entrypoint copies /usr/src/wordpress/ → /var/www/html/ on startup,
 # so wp-content must be placed in the source dir to survive the copy.
@@ -37,4 +37,4 @@ RUN set -eux; \
     apt-get purge -y --auto-remove $PHPIZE_DEPS; \
     rm -rf /var/lib/apt/lists/* /tmp/pear; \
     cp /usr/src/wordpress/wp-content/plugins/redis-cache/includes/object-cache.php \
-       /usr/src/wordpress/wp-content/object-cache.php
+    /usr/src/wordpress/wp-content/object-cache.php
