@@ -1,4 +1,4 @@
-FROM wordpress:7.0.3-php8.2-apache
+FROM wordpress:7.0.3-php8.4-apache
 
 # The official entrypoint copies /usr/src/wordpress/ → /var/www/html/ on startup,
 # so wp-content must be placed in the source dir to survive the copy.
