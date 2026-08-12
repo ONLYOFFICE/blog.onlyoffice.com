@@ -66,7 +66,7 @@ class FluentFormAsyncRequest
             'timeout' => 0.1,
             'blocking' => false,
             'body' => $data,
-            'cookies' => wpFluentForm('request')->cookie(),
+            'cookies' => $_COOKIE,
             'sslverify' => apply_filters('fluentform/https_local_ssl_verify', $sslVerify),
         );
 

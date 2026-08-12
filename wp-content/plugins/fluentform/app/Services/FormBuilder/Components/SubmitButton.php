@@ -141,12 +141,16 @@ class SubmitButton extends BaseComponent
             $html .= '<button ' . $atts . ' aria-label="' . esc_attr($this->removeShortcode($buttonText)) . '">' . fluentform_sanitize_html($buttonText) . '</button>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
         }
 
+        // SECURITY (FINDING-12): the custom-button style map keys and values are user-controlled
+        // and unsanitized at save; a value like "#fff}</style><script>..." would break out of the
+        // <style> element. fluentformSanitizeCSS() blanks any CSS containing a tag pattern.
+        $styles = fluentformSanitizeCSS($styles);
         if ($styles) {
             if (did_action('wp_footer') || Helper::isBlockEditor()) {
-                $html .= '<style>' . $styles . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $styles is escaped before being passed in.
+                $html .= '<style>' . $styles . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $styles is sanitized via fluentformSanitizeCSS().
             } else {
                 add_action('wp_footer', function () use ($styles) {
-                    echo '<style>' . $styles . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $styles is escaped before being passed in.
+                    echo '<style>' . $styles . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $styles is sanitized via fluentformSanitizeCSS().
                 });
             }
         }

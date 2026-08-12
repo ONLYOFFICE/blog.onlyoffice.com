@@ -21,7 +21,7 @@ class Notices {
 	 *
 	 * @var string
 	 */
-	private $url = 'https://plugin-cdn.aioseo.com/wp-content/notifications.json';
+	private $url = 'https://plugin-cdn.aioseo.com/notifications.json';
 
 	/**
 	 * Review class instance.
@@ -460,7 +460,7 @@ class Notices {
 	 */
 	private function blogVisibility() {
 		$notification = Models\Notification::getNotificationByName( 'blog-visibility' );
-		if ( get_option( 'blog_public' ) ) {
+		if ( ! aioseo()->helpers->isSearchEnginesDiscouraged() ) {
 			if ( $notification->exists() ) {
 				Models\Notification::deleteNotificationByName( 'blog-visibility' );
 			}

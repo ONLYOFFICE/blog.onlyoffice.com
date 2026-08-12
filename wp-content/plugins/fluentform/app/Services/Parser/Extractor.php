@@ -257,10 +257,12 @@ class Extractor
     protected function setOptions()
     {
         if (in_array('options', $this->with)) {
-            $options = Arr::get($this->field, 'options', []);
+                $options = Arr::get($this->field, 'options', []);
 
-            if(!$options) {
-                $newOptions = Arr::get($this->field, 'settings.advanced_options', []);
+                if(!$options) {
+                    $newOptions = \FluentForm\App\Helpers\Helper::flattenAdvancedOptions(
+                        Arr::get($this->field, 'settings.advanced_options', [])
+                    );
 
                 if(
                     !$newOptions
@@ -356,9 +358,13 @@ class Extractor
         $shouldSetMaxValidation = $maxLength && !$fieldHasMaxValidation;
 
         if ($shouldSetMaxValidation) {
+            $message = Helper::getGlobalDefaultMessage('max');
+            if (!$message) {
+                $message = __('Validation fails for maximum value', 'fluentform');
+            }
             $this->result[$this->attribute]['rules']['max'] = [
                 'value'   => $maxLength,
-                "message" => Helper::getGlobalDefaultMessage('max'),
+                'message' => $message,
             ];
         }
 

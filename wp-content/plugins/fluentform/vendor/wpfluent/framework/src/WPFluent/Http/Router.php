@@ -70,6 +70,12 @@ class Router
     protected $groupCount = 0;
 
     /**
+     * Weak references to groups pending execution.
+     * @var array
+     */
+    protected $pendingGroups = [];
+
+    /**
      * Construct the routet instance
      * @param \FluentForm\Framework\Foundation\Application $app
      */
@@ -263,8 +269,40 @@ class Router
     }
 
     /**
+     * Track a group so any instance kept alive past its statement
+     * can still be executed before routes are registered. A weak
+     * reference keeps the destructor firing at end of statement.
+     *
+     * @param  Group $group
+     * @return null
+     */
+    public function trackGroup(Group $group)
+    {
+        if (class_exists(\WeakReference::class)) {
+            $this->pendingGroups[] = \WeakReference::create($group);
+        }
+    }
+
+    /**
+     * Execute any groups still pending execution because a
+     * reference to them was held beyond their statement.
+     *
+     * @return null
+     */
+    protected function executePendingGroups()
+    {
+        while ($this->pendingGroups) {
+            $reference = array_shift($this->pendingGroups);
+
+            if ($group = $reference->get()) {
+                $group->execute();
+            }
+        }
+    }
+
+    /**
      * Execute the route group callback
-     * 
+     *
      * @param  Closure $callback
      * @return null
      */
@@ -468,6 +506,8 @@ class Router
      */
     public function registerRoutes()
     {
+        $this->executePendingGroups();
+
         foreach ($this->routes as $route) $route->register();
     }
 

@@ -1024,7 +1024,9 @@ class PaymentHelper
         }
 
         $customText = '';
-        if ($hasSignupFee) {
+        if ($hasSignupFee && isset($plan['bill_times']) && $plan['bill_times'] == 1) {
+            $customText = $cases['onetime_only'];
+        } else if ($hasSignupFee) {
             $customText = $cases['has_signup_fee'];
         } else if ($hasTrial) {
             if (ArrayHelper::get($plan, 'bill_times') == 1) {
@@ -1091,6 +1093,34 @@ class PaymentHelper
         return '';
     }
 
+    /**
+     * Stable encryption key, decoupled from WordPress salts (which some hosts and
+     * security plugins rotate, silently breaking salt-encrypted payment keys).
+     *
+     * For stronger at-rest protection, define FLUENTFORM_ENCRYPTION_KEY in
+     * wp-config.php so the key lives on the filesystem, not the database next to
+     * the ciphertext. Set it BEFORE saving keys — defining it after keys are
+     * stored makes existing values unreadable and requires re-entering them.
+     *
+     * @return string
+     */
+    public static function getEncryptionKey()
+    {
+        if (defined('FLUENTFORM_ENCRYPTION_KEY') && FLUENTFORM_ENCRYPTION_KEY) {
+            return FLUENTFORM_ENCRYPTION_KEY;
+        }
+
+        $key = get_option('_fluentform_encryption_key');
+        if (!$key) {
+            $key = base64_encode(openssl_random_pseudo_bytes(32)); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+            if (!add_option('_fluentform_encryption_key', $key, '', 'no')) {
+                $key = get_option('_fluentform_encryption_key');
+            }
+        }
+
+        return $key;
+    }
+
     public static function encryptKey($value)
     {
         if(!$value) {
@@ -1101,22 +1131,69 @@ class PaymentHelper
             return $value;
         }
 
-        $salt = (defined( 'LOGGED_IN_SALT' ) && '' !== LOGGED_IN_SALT) ? LOGGED_IN_SALT : 'this-is-a-fallback-salt-but-not-secure';
-        $key = ( defined( 'LOGGED_IN_KEY' ) && '' !== LOGGED_IN_KEY ) ? LOGGED_IN_KEY : 'this-is-a-fallback-key-but-not-secure';
-
+        $key    = self::getEncryptionKey();
         $method = 'aes-256-ctr';
         $ivlen  = openssl_cipher_iv_length( $method );
         $iv     = openssl_random_pseudo_bytes( $ivlen );
 
-        $raw_value = openssl_encrypt( $value . $salt, $method, $key, 0, $iv );
-        if ( ! $raw_value ) {
+        $ciphertext = openssl_encrypt( $value, $method, $key, OPENSSL_RAW_DATA, $iv );
+        if ( $ciphertext === false ) {
             return false;
         }
 
-        return base64_encode( $iv . $raw_value ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+        $hmac = hash_hmac( 'sha256', $iv . $ciphertext, $key, true );
+
+        return 'v2:' . base64_encode( $iv . $hmac . $ciphertext ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
     }
 
     public static function decryptKey( $raw_value ) {
+
+        if(!$raw_value) {
+            return $raw_value;
+        }
+
+        if ( strpos( $raw_value, 'v2:' ) !== 0 ) {
+            return self::legacyDecryptKey( $raw_value );
+        }
+
+        // A v2 blob is unrecoverable without openssl, so fail loud instead of
+        // handing the ciphertext back as if it were the key.
+        if ( ! extension_loaded( 'openssl' ) ) {
+            return false;
+        }
+
+        $key     = self::getEncryptionKey();
+        $decoded = base64_decode( substr( $raw_value, 3 ), true ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
+        $method  = 'aes-256-ctr';
+        $ivlen   = openssl_cipher_iv_length( $method );
+        $sha2len = 32;
+
+        if ( $decoded === false || strlen( $decoded ) < $ivlen + $sha2len ) {
+            return false;
+        }
+
+        $iv         = substr( $decoded, 0, $ivlen );
+        $hmac       = substr( $decoded, $ivlen, $sha2len );
+        $ciphertext = substr( $decoded, $ivlen + $sha2len );
+
+        // Encrypt-then-MAC: verify integrity (constant time) before decrypting.
+        $calcmac = hash_hmac( 'sha256', $iv . $ciphertext, $key, true );
+        if ( ! hash_equals( $hmac, $calcmac ) ) {
+            return false;
+        }
+
+        $value = openssl_decrypt( $ciphertext, $method, $key, OPENSSL_RAW_DATA, $iv );
+
+        return $value !== false ? $value : false;
+    }
+
+    /**
+     * Reads keys encrypted before v2, i.e. tied to LOGGED_IN_KEY / LOGGED_IN_SALT.
+     *
+     * @param string $raw_value
+     * @return string|bool
+     */
+    public static function legacyDecryptKey( $raw_value ) {
 
         if(!$raw_value) {
             return $raw_value;

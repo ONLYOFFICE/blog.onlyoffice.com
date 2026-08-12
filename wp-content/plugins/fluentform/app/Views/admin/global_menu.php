@@ -69,11 +69,7 @@ $page = sanitize_text_field($_GET['page']);
                 </a>
             <?php endif; ?>
         </li>
-        <li class="<?php echo ($page == 'fluent_forms_smtp') ? 'active' : '' ?>">
-            <?php if(!defined('FLUENT_MAIL') && !defined('FLUENTFORMPRO')): ?>
-                <a class="ff_menu_link" href="<?php echo esc_url(admin_url('admin.php?page=fluent_forms_smtp')); ?>">SMTP</a>
-            <?php endif; ?>
-        </li>
+
         <li class="<?php echo ($page == 'fluent_forms_docs') ? 'active' : '' ?>">
             <a href="<?php echo esc_url(admin_url('admin.php?page=fluent_forms_docs')); ?>" class="ff_menu_link">
                 <?php esc_html_e('Support', 'fluentform'); ?>
@@ -81,7 +77,7 @@ $page = sanitize_text_field($_GET['page']);
         </li>
         <?php if(!defined('FLUENTFORMPRO')): ?>
             <li>
-                <a target="_blank" rel="noopener" href="<?php echo esc_url(fluentform_upgrade_url()); ?>" class="ff_menu_link ff_menu_link_buy">
+                <a target="_blank" rel="noopener" href="<?php echo esc_url(fluentform_upgrade_url('top_bar')); ?>" class="ff_menu_link ff_menu_link_buy">
                     <?php esc_html_e('Upgrade to Pro', 'fluentform'); ?>
                 </a>
             </li>
@@ -129,16 +125,60 @@ $page = sanitize_text_field($_GET['page']);
         $globalSearchButtonClickScript
 
         // for setting sidebar
-        let globalSettingSidebarElem = jQuery('.ff_settings_sidebar_wrap');
+        let globalSettingSidebarElem = jQuery('#ff_global_settings_sidebar');
         let globalOverlayElem = jQuery('#global-overlay');
+        let globalSettingSidebarStateKey = 'fluentform_global_settings_sidebar_collapsed';
+        let globalSettingSidebarToggle = globalSettingSidebarElem.find('.ff_sidebar_toggle');
+        let isGlobalSettingDesktop = function() {
+            return window.matchMedia('(min-width: 769px)').matches;
+        };
+        let syncGlobalSettingSidebarMode = function() {
+            if (isGlobalSettingDesktop() && window.localStorage.getItem(globalSettingSidebarStateKey) === 'yes') {
+                globalSettingSidebarElem.addClass('ff_settings_sidebar_collapsed');
+            } else if (!isGlobalSettingDesktop()) {
+                globalSettingSidebarElem.removeClass('ff_settings_sidebar_collapsed');
+            }
+        };
+        let updateGlobalSettingToggleState = function() {
+            let collapseLabel = globalSettingSidebarToggle.data('collapse-label') || 'Collapse settings menu';
+            let expandLabel = globalSettingSidebarToggle.data('expand-label') || 'Expand settings menu';
+            let isExpanded = isGlobalSettingDesktop()
+                ? !globalSettingSidebarElem.hasClass('ff_settings_sidebar_collapsed')
+                : globalSettingSidebarElem.hasClass('active');
 
-        jQuery('.ff_sidebar_toggle').on('click', function() {
+            globalSettingSidebarToggle
+                .attr('aria-expanded', isExpanded ? 'true' : 'false')
+                .attr('aria-label', isExpanded ? collapseLabel : expandLabel)
+                .attr('title', isExpanded ? collapseLabel : expandLabel);
+        };
+
+        syncGlobalSettingSidebarMode();
+
+        globalSettingSidebarToggle.on('click', function() {
+            if (isGlobalSettingDesktop()) {
+                globalSettingSidebarElem.toggleClass('ff_settings_sidebar_collapsed');
+                window.localStorage.setItem(
+                    globalSettingSidebarStateKey,
+                    globalSettingSidebarElem.hasClass('ff_settings_sidebar_collapsed') ? 'yes' : 'no'
+                );
+                updateGlobalSettingToggleState();
+                return;
+            }
+
             jQuery(globalSettingSidebarElem).add(globalOverlayElem).toggleClass('active');
+            updateGlobalSettingToggleState();
         });
-        
+
         jQuery(globalOverlayElem).on('click', function() {
             jQuery(globalOverlayElem).add(globalSettingSidebarElem).removeClass('active');
+            updateGlobalSettingToggleState();
         });
+
+        jQuery(window).on('resize', function() {
+            syncGlobalSettingSidebarMode();
+            updateGlobalSettingToggleState();
+        });
+        updateGlobalSettingToggleState();
 
     ");
     ?>

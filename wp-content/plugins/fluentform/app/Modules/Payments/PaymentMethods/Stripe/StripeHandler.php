@@ -242,7 +242,9 @@ class StripeHandler
             $settings['live_secret_key'] = $prevSettings['live_secret_key'];
         }
 
-        return StripeSettings::encryptKeys($settings);
+        $settings = StripeSettings::encryptKeys($settings);
+
+        return StripeSettings::preserveUnreadableKeys($settings);
     }
 
 }

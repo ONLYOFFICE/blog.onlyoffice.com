@@ -17,16 +17,20 @@ class ConnectConfig
     public static function getConnectConfig()
     {
         $configBase = self::$connectBase . 'stripe-connect';
-        $hash = md5(site_url() . wp_generate_uuid4() . time());
+        // SECURITY (FINDING-24): the fluentforms.com connect proxy sets its own OAuth `state`, so
+        // our nonce can't ride there. Carry it in url_base — the proxy must redirect back to
+        // url_base, so the nonce returns to us intact as ff_connect_nonce for CSRF verification.
+        $hash = wp_create_nonce('ff_stripe_connect');
+        $urlBase = rawurlencode(admin_url('admin.php?page=fluent_forms_settings&ff_connect_nonce=' . $hash));
 
         $liveArgs = [
-            'url_base' => rawurlencode(admin_url('admin.php?page=fluent_forms_settings')),
+            'url_base' => $urlBase,
             'mode'     => 'live',
             'hash'     => $hash
         ];
 
         $testArgs = [
-            'url_base' => rawurlencode(admin_url('admin.php?page=fluent_forms_settings')),
+            'url_base' => $urlBase,
             'mode'     => 'test',
             'hash'     => $hash
         ];
@@ -59,12 +63,30 @@ class ConnectConfig
 
     public static function verifyAuthorizeSuccess($data)
     {
+        // SECURITY (FINDING-24): require the settings-manager capability and a valid connect nonce
+        // before exchanging the code. Otherwise a settings manager could be tricked (CSRF) into
+        // loading a callback carrying the attacker's Stripe code, overwriting the site's live
+        // Stripe credentials so all future payments settle into the attacker's account.
+        if (!current_user_can('fluentform_settings_manager')) {
+            return;
+        }
+        // The nonce is carried in url_base (see getConnectConfig) and returns as ff_connect_nonce,
+        // not in the proxy-controlled `state`.
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- this IS the nonce check
+        $connectNonce = isset($_GET['ff_connect_nonce']) ? sanitize_text_field(wp_unslash($_GET['ff_connect_nonce'])) : '';
+        if (!$connectNonce || !wp_verify_nonce($connectNonce, 'ff_stripe_connect')) {
+            echo '<div class="ff_message ff_message_error">' . esc_html__('Invalid or expired Stripe Connect request. Please start the connection again.', 'fluentform') . '</div>';
+            return;
+        }
+
+        // SECURITY (FINDING-24 / PRO-10): enable TLS verification on the exchange that returns the
+        // live Stripe secret key so a network-position attacker cannot read or substitute it.
         $response = wp_remote_post(self::$connectBase . 'stripe-verify-code', [
             'method'      => 'POST',
             'timeout'     => 45,
             'redirection' => 5,
             'httpversion' => '1.0',
-            'sslverify'   => false,
+            'sslverify'   => true,
             'blocking'    => true,
             'headers'     => array(),
             'body'        => $data,

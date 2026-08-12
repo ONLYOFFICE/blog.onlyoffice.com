@@ -53,6 +53,7 @@ class Settings
             'akismet_activated'     => AkismetHandler::isPluginEnabled(),
             'cleantalk_activated'   => CleanTalkHandler::isPluginEnabled(),
             'has_pro'               => Helper::hasPro(),
+            'upgrade_url'           => fluentform_upgrade_url(),
             'is_payment_compatible' => Helper::isPaymentCompatible(),
             'form_settings_str'     => TranslationString::getGlobalSettingsI18n(),
             'ace_path_url'          => fluentformMix('libs/ace'),

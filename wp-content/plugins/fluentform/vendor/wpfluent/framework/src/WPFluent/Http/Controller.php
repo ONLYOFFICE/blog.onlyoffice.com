@@ -7,6 +7,17 @@ use ReflectionException;
 use FluentForm\Framework\Foundation\App;
 use FluentForm\Framework\Validator\ValidationException;
 
+/**
+ * Base controller — exposes the Application, Request, and Response
+ * via protected properties. The `@property` annotations below are
+ * intentional in addition to the protected declarations: they help
+ * PHPStan disambiguate when a subclass declares a method with the
+ * same name as one of these properties (e.g., `function app()`).
+ *
+ * @property \FluentForm\Framework\Foundation\Application      $app
+ * @property \FluentForm\Framework\Http\Request\Request        $request
+ * @property \FluentForm\Framework\Http\Response\Response      $response
+ */
 abstract class Controller
 {
     /**

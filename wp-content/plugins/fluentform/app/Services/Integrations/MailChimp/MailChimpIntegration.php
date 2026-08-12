@@ -5,6 +5,7 @@ namespace FluentForm\App\Services\Integrations\MailChimp;
 defined('ABSPATH') or die;
 
 use FluentForm\App\Http\Controllers\IntegrationManagerController;
+use FluentForm\App\Modules\Acl\Acl;
 use FluentForm\App\Services\Integrations\MailChimp\MailChimpSubscriber as Subscriber;
 use FluentForm\Framework\Foundation\Application;
 use FluentForm\Framework\Helpers\ArrayHelper;
@@ -36,7 +37,7 @@ class MailChimpIntegration extends IntegrationManagerController
 
         add_filter('fluentform/save_integration_value_mailchimp', [$this, 'sanitizeSettings'], 10, 3);
 
-//        add_filter('fluentform/notifying_async_mailchimp', '__return_false');
+        //        add_filter('fluentform/notifying_async_mailchimp', '__return_false');
     }
 
     public function getGlobalFields($fields)
@@ -211,7 +212,10 @@ class MailChimpIntegration extends IntegrationManagerController
                     'sub_type'          => 'radio',
                     'category_label'    => __('Select Interest Category', 'fluentform'),
                     'subcategory_label' => __('Select Interest', 'fluentform'),
-                    'remote_url'        => admin_url('admin-ajax.php?action=fluentform_mailchimp_interest_groups'),
+                    'remote_url'        => add_query_arg([
+                        'action'  => 'fluentform_mailchimp_interest_groups',
+                        'form_id' => (int) $formId,
+                    ], admin_url('admin-ajax.php')),
                     'inline_tip'        => __('Select the mailchimp interest category and interest', 'fluentform'),
                 ],
                 [
@@ -372,9 +376,16 @@ class MailChimpIntegration extends IntegrationManagerController
 
     public function fetchInterestGroups()
     {
-        $settings = wp_unslash($this->app->request->get('settings'));
+        // SECURITY (FINDING-04): this AJAX action reads the site's global Mailchimp API key and
+        // issues an authenticated request on the caller's behalf; it had no capability/nonce check.
+        // Acl::verify enforces both the capability and the fluent_forms_admin_nonce for AJAX.
+        $formId = Acl::verifyFormId($this->app->request->get('form_id'));
+        Acl::verify('fluentform_forms_manager', $formId);
 
-        $listId = ArrayHelper::get($settings, 'list_id');
+        $settings = $this->app->request->get('settings', []);
+        $settings = is_array($settings) ? wp_unslash($settings) : [];
+
+        $listId = sanitize_text_field((string) ArrayHelper::get($settings, 'list_id'));
         if (! $listId) {
             wp_send_json_success([
                 'categories'    => [],
@@ -383,7 +394,7 @@ class MailChimpIntegration extends IntegrationManagerController
             ]);
         }
 
-        $categoryId = ArrayHelper::get($settings, 'interest_group.category');
+        $categoryId = sanitize_text_field((string) ArrayHelper::get($settings, 'interest_group.category'));
         $categories = $this->getInterestCategories($listId);
 
         $subCategories = [];

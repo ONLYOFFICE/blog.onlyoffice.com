@@ -12,9 +12,18 @@ class GlobalIntegrationController extends Controller
     public function index(GlobalIntegrationService $globalIntegrationService)
     {
         try {
-            $returnData = $globalIntegrationService->get($this->request->all());
+            $attributes = $this->request->all();
+            $returnData = $globalIntegrationService->get($attributes);
             if (Arr::isTrue($returnData, 'status')) {
                 return $this->sendSuccess($returnData);
+            }
+            // No settings_key provided is a list-style call, not an error; return 200 with empty payload.
+            if (!Arr::get($attributes, 'settings_key')) {
+                return $this->sendSuccess([
+                    'status'      => false,
+                    'integration' => [],
+                    'settings'    => [],
+                ]);
             }
             return $this->sendError($returnData);
         } catch (Exception $e) {
@@ -29,6 +38,11 @@ class GlobalIntegrationController extends Controller
         try {
             $settingsKey = sanitize_text_field($this->request->get('settings_key'));
             $integration = wp_unslash($this->request->get('integration'));
+
+            // SECURITY (FINDING-16): connected credentials are redacted on read; restore any field
+            // the browser posted back still masked so a re-save (e.g. "Verify Connection Again")
+            // cannot overwrite a live credential with the '********' mask.
+            $integration = (new GlobalIntegrationService())->unmaskCredentials($settingsKey, $integration);
 
             do_action_deprecated(
                 'fluentform_save_global_integration_settings_' . $settingsKey,

@@ -73,7 +73,10 @@ class Checkable extends BaseComponent
             $elMarkup .= '<div class="ff_el_checkable_photo_holders">';
         }
 
-        $data['settings']['container_class'] .= ' ' . ArrayHelper::get($data, 'settings.layout_class');
+        $data['settings']['container_class'] = trim(
+            ArrayHelper::get($data, 'settings.container_class', '')
+            . ' ' . ArrayHelper::get($data, 'settings.layout_class', '')
+        );
 
         if ('yes' == ArrayHelper::get($data, 'settings.randomize_options')) {
             shuffle($formattedOptions);

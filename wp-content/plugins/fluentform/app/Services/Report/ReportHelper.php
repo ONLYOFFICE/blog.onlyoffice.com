@@ -10,11 +10,25 @@ use FluentForm\App\Models\Log;
 use FluentForm\App\Models\Submission;
 use FluentForm\App\Modules\Form\FormFieldsParser;
 use FluentForm\App\Modules\Payments\PaymentHelper;
+use FluentForm\App\Services\Manager\FormManagerService;
 use FluentForm\App\Services\Submission\SubmissionService;
 use FluentForm\Framework\Helpers\ArrayHelper as Arr;
 
 class ReportHelper
 {
+    private static function scopeQueryToAllowedForms($query, $formId = null, $column = 'form_id')
+    {
+        if ($formId) {
+            return $query->where($column, $formId);
+        }
+
+        if (false !== ($allowedFormIds = FormManagerService::getUserAllowedFormsScope())) {
+            return $query->whereIn($column, $allowedFormIds ?: [0]);
+        }
+
+        return $query;
+    }
+
     public static function generateReport($form, $statuses = ['read', 'unread', 'unapproved', 'approved', 'declined', 'unconfirmed', 'confirmed'])
     {
         $formInputs = FormFieldsParser::getEntryInputs($form, ['admin_label', 'element', 'options']);
@@ -62,6 +76,20 @@ class ReportHelper
             $reports[$reportKey]['label'] = $inputLabels[$reportKey];
             $reports[$reportKey]['element'] = Arr::get($inputs, $reportKey, []);
             $reports[$reportKey]['options'] = $formInputs[$reportKey]['options'];
+
+            // Per-element override hook. Safe with no listener (default
+            // payload is returned unchanged). Pro hooks the ranking
+            // variant; third-party fields can extend the same pattern.
+            $element = $reports[$reportKey]['element'];
+            if (is_string($element) && $element !== '') {
+                $reports[$reportKey] = apply_filters(
+                    'fluentform/reports/format_field_' . $element,
+                    $reports[$reportKey],
+                    array_merge($formInputs[$reportKey], ['name' => $reportKey]),
+                    $form->id,
+                    $statuses
+                );
+            }
         }
 
         return [
@@ -444,37 +472,31 @@ class ReportHelper
         $previousEndDate = $previousEndDateTime->format('Y-m-d H:i:s');
 
         // Get submission counts
-        $periodSubmissions = Submission::whereBetween('created_at', [$startDate, $endDate])
-            ->when($formId, function ($q) use ($formId) {
-                return $q->where('form_id', $formId);
-            })->count();
-        $previousPeriodSubmissions = Submission::whereBetween('created_at',
-            [$previousStartDate, $previousEndDate])
-            ->when($formId, function ($q) use ($formId) {
-                return $q->where('form_id', $formId);
-            })->count();
+        $periodSubmissionsQuery = Submission::whereBetween('created_at', [$startDate, $endDate]);
+        self::scopeQueryToAllowedForms($periodSubmissionsQuery, $formId);
+        $periodSubmissions = $periodSubmissionsQuery->count();
+
+        $previousPeriodSubmissionsQuery = Submission::whereBetween('created_at', [$previousStartDate, $previousEndDate]);
+        self::scopeQueryToAllowedForms($previousPeriodSubmissionsQuery, $formId);
+        $previousPeriodSubmissions = $previousPeriodSubmissionsQuery->count();
 
         // Get submission status counts (grouped)
-        $statusCounts = Submission::whereBetween('created_at', [$startDate, $endDate])
+        $statusCountsQuery = Submission::whereBetween('created_at', [$startDate, $endDate])
             ->selectRaw('status, COUNT(*) as count')
-            ->when($formId, function ($q) use ($formId) {
-                return $q->where('form_id', $formId);
-            })
-            ->groupBy('status')
-            ->pluck('count', 'status');
+            ->groupBy('status');
+        self::scopeQueryToAllowedForms($statusCountsQuery, $formId);
+        $statusCounts = $statusCountsQuery->pluck('count', 'status');
 
         $unreadSubmissions = intval(Arr::get($statusCounts, 'unread', 0));
         $readSubmissions = intval(Arr::get($statusCounts, 'read', 0));
         $periodSpamSubmissions = intval(Arr::get($statusCounts, 'spam', 0));
 
 
-        $previousStatusCounts = Submission::whereBetween('created_at', [$previousStartDate, $previousEndDate])
+        $previousStatusCountsQuery = Submission::whereBetween('created_at', [$previousStartDate, $previousEndDate])
             ->selectRaw('status, COUNT(*) as count')
-            ->when($formId, function ($q) use ($formId) {
-                return $q->where('form_id', $formId);
-            })
-            ->groupBy('status')
-            ->pluck('count', 'status');
+            ->groupBy('status');
+        self::scopeQueryToAllowedForms($previousStatusCountsQuery, $formId);
+        $previousStatusCounts = $previousStatusCountsQuery->pluck('count', 'status');
 
         $previousSpamSubmissions = intval(Arr::get($previousStatusCounts, 'spam', 0));
 
@@ -508,10 +530,13 @@ class ReportHelper
         $spamType = $spamPercentage > 0 ? 'down' : ($spamPercentage < 0 ? 'up' : 'neutral'); // Refunds going up is bad
 
         // Active forms
-        $periodActiveFormsCount = Form::where('status', 'published')->whereBetween('created_at',
-            [$startDate, $endDate])->count();
-        $previousActiveFormsCount = Form::where('status', 'published')->whereBetween('created_at',
-            [$previousStartDate, $previousEndDate])->count();
+        $periodActiveFormsQuery = Form::where('status', 'published')->whereBetween('created_at', [$startDate, $endDate]);
+        self::scopeQueryToAllowedForms($periodActiveFormsQuery, $formId, 'id');
+        $periodActiveFormsCount = $periodActiveFormsQuery->count();
+
+        $previousActiveFormsQuery = Form::where('status', 'published')->whereBetween('created_at', [$previousStartDate, $previousEndDate]);
+        self::scopeQueryToAllowedForms($previousActiveFormsQuery, $formId, 'id');
+        $previousActiveFormsCount = $previousActiveFormsQuery->count();
         $activeFormsPercentage = 0;
         if ($previousActiveFormsCount > 0) {
             $activeFormsPercentage = round((($periodActiveFormsCount - $previousActiveFormsCount) / $previousActiveFormsCount) * 100,
@@ -599,13 +624,12 @@ class ReportHelper
                 COUNT(*) as count
             ')
                 ->whereBetween('created_at', [$startDate, $endDate])
-                ->when($formId, function ($q) use ($formId) {
-                    return $q->where('form_id', $formId);
-                })
                 ->whereNotIn('status', ['trashed', 'spam'])
                 ->groupBy('day_of_week', 'submission_hour')
                 ->orderBy('day_of_week')
                 ->orderBy('submission_hour');
+
+            self::scopeQueryToAllowedForms($query, $formId);
 
             return $query->get();
         }
@@ -661,9 +685,7 @@ class ReportHelper
                 ->orWhereNotIn('component', $excludedComponents);
         });
 
-        if ($formId) {
-            $logsQuery->where('parent_source_id', $formId);
-        }
+        self::scopeQueryToAllowedForms($logsQuery, $formId, 'parent_source_id');
 
         $results = $logsQuery->selectRaw($dateFormat . ' as log_date')
             ->selectRaw('status')
@@ -679,6 +701,8 @@ class ReportHelper
             $query->whereNull('component')
                 ->orWhereNotIn('component', $excludedComponents);
         });
+
+        self::scopeQueryToAllowedForms($totalsQuery, $formId, 'parent_source_id');
 
         $totalsResults = $totalsQuery->selectRaw('status')
             ->selectRaw('COUNT(*) as count')
@@ -738,13 +762,17 @@ class ReportHelper
     /**
      * Get top performing forms by entries, views, or payments
      */
-    public static function getTopPerformingForms($startDate, $endDate, $metric = 'entries')
+    public static function getTopPerformingForms($startDate, $endDate, $metric = 'entries', $formIds = false)
     {
         list($startDate, $endDate) = self::processDateRange($startDate, $endDate);
         global $wpdb;
         $prefix = $wpdb->prefix;
         $formResults = [];
         $disableMessage = '';
+        $hasFormScope = false !== $formIds;
+        $formIds = $hasFormScope
+            ? array_values(array_filter(array_map('intval', (array) $formIds)))
+            : [];
 
         switch ($metric) {
             case 'entries':
@@ -755,7 +783,13 @@ class ReportHelper
                             $q->whereBetween('created_at', [$startDate, $endDate]);
                             $q->whereNotIn('status', ['trashed', 'spam']);
                         }
-                    ])
+                    ]);
+
+                if ($hasFormScope) {
+                    $results->whereIn('id', $formIds ?: [0]);
+                }
+
+                $results = $results
                     ->orderBy('submissions_count', 'DESC')
                     ->limit(5)
                     ->get();
@@ -783,7 +817,13 @@ class ReportHelper
                         ->leftJoin('fluentform_transactions', 'fluentform_forms.id', '=',
                             'fluentform_transactions.form_id')
                         ->whereBetween('fluentform_transactions.created_at', [$startDate, $endDate])
-                        ->where('fluentform_transactions.status', 'paid')
+                        ->where('fluentform_transactions.status', 'paid');
+
+                    if ($hasFormScope) {
+                        $results->whereIn('fluentform_forms.id', $formIds ?: [0]);
+                    }
+
+                    $results = $results
                         ->groupBy('fluentform_forms.id')
                         ->orderBy('raw_value', 'DESC')
                         ->limit(5)
@@ -811,7 +851,13 @@ class ReportHelper
                         ])
                         ->leftJoin('fluentform_form_analytics', 'fluentform_forms.id', '=',
                             'fluentform_form_analytics.form_id')
-                        ->whereBetween('fluentform_form_analytics.created_at', [$startDate, $endDate])
+                        ->whereBetween('fluentform_form_analytics.created_at', [$startDate, $endDate]);
+
+                    if ($hasFormScope) {
+                        $results->whereIn('fluentform_forms.id', $formIds ?: [0]);
+                    }
+
+                    $results = $results
                         ->groupBy('fluentform_forms.id')
                         ->orderBy('value', 'DESC')
                         ->limit(5)
@@ -853,19 +899,17 @@ class ReportHelper
         // 1. Get UNIQUE VIEWS by IP address
         $viewsQuery = FormAnalytics::whereBetween('created_at', [$startDate, $endDate])
             ->whereNotNull('ip');
-
-        if ($formId) {
-            $viewsQuery->where('form_id', $formId);
-        }
+        self::scopeQueryToAllowedForms($viewsQuery, $formId);
 
         // Group by date and IP to count unique visitors
         if ($groupingMode === 'day') {
             $viewsQuery->selectRaw('DATE(created_at) as date_group, COUNT(DISTINCT ip) as unique_count');
         } elseif ($groupingMode === '3days') {
             // Get min date for reference
-            $minDateRecord = FormAnalytics::whereBetween('created_at', [$startDate, $endDate])
-                ->selectRaw('MIN(DATE(created_at)) as min_date')
-                ->first();
+            $minDateQuery = FormAnalytics::whereBetween('created_at', [$startDate, $endDate])
+                ->selectRaw('MIN(DATE(created_at)) as min_date');
+            self::scopeQueryToAllowedForms($minDateQuery, $formId);
+            $minDateRecord = $minDateQuery->first();
 
             if ($minDateRecord && $minDateRecord->min_date) {
                 $minDate = $minDateRecord->min_date;
@@ -941,11 +985,7 @@ class ReportHelper
     private static function getAggregatedData($startDate, $endDate, $groupingMode, $view, $formId)
     {
         $baseQuery = Submission::whereBetween('created_at', [$startDate, $endDate]);
-
-        // Filter by form ID if provided
-        if ($formId) {
-            $baseQuery->where('form_id', $formId);
-        }
+        self::scopeQueryToAllowedForms($baseQuery, $formId);
 
         if ($view === 'revenue') {
             // Clone the base query for each payment status
@@ -977,9 +1017,10 @@ class ReportHelper
                 $refundedQuery->selectRaw('DATE(created_at) as date_group')->groupBy('date_group');
             } elseif ($groupingMode === '3days') {
                 // Get minimum date for reference
-                $minDateRecord = Submission::whereBetween('created_at', [$startDate, $endDate])
-                    ->selectRaw('MIN(DATE(created_at)) as min_date')
-                    ->first();
+                $minDateQuery = Submission::whereBetween('created_at', [$startDate, $endDate])
+                    ->selectRaw('MIN(DATE(created_at)) as min_date');
+                self::scopeQueryToAllowedForms($minDateQuery, $formId);
+                $minDateRecord = $minDateQuery->first();
 
                 if ($minDateRecord && $minDateRecord->min_date) {
                     $minDate = $minDateRecord->min_date;
@@ -1052,9 +1093,10 @@ class ReportHelper
                 $query->selectRaw('DATE(created_at) as date_group')
                     ->groupBy('date_group');
             } elseif ($groupingMode === '3days') {
-                $minDateRecord = Submission::whereBetween('created_at', [$startDate, $endDate])
-                    ->selectRaw('MIN(DATE(created_at)) as min_date')
-                    ->first();
+                $minDateQuery = Submission::whereBetween('created_at', [$startDate, $endDate])
+                    ->selectRaw('MIN(DATE(created_at)) as min_date');
+                self::scopeQueryToAllowedForms($minDateQuery, $formId);
+                $minDateRecord = $minDateQuery->first();
 
                 if ($minDateRecord && $minDateRecord->min_date) {
                     $query->selectRaw("MIN(DATE(created_at)) as date_group")
@@ -1198,76 +1240,128 @@ class ReportHelper
         return ['dates' => $dates, 'labels' => $labels];
     }
     
-    public static function getPaymentsByType($startDate, $endDate, $type, $formId = 0)
+    /**
+     * All payment figures in ONE transaction scan, keyed 'onetime' / 'subscription'
+     * / 'all' (disabled module → each empty []). 'all' counts every transaction type
+     * with no filter, preserving getPaymentsByType()'s legacy no-type-filter contract.
+     * Each block keeps getPaymentsByType()'s shape — blended per-status totals for the
+     * admin consumer — plus a by_currency split for callers that must not blend
+     * currencies (MCP). One scan so consumers needing both types don't pay for two.
+     */
+    public static function getPaymentBreakdown($startDate, $endDate, $formId = 0)
     {
         $paymentSettings = get_option('__fluentform_payment_module_settings');
         if (!$paymentSettings || !Arr::isTrue($paymentSettings, 'status')) {
-            return []; // Return empty if payment module is disabled
+            return ['onetime' => [], 'subscription' => [], 'all' => []];
         }
         list($startDate, $endDate) = self::processDateRange($startDate, $endDate);
-        
-        // Base query for transactions
+
         $query = \FluentForm\App\Models\Transaction::whereBetween('created_at', [$startDate, $endDate]);
-        
-        // Filter by transaction type if specified
-        if ($type === 'subscription') {
-            $query->whereIn('transaction_type', ['subscription', 'subscription_signup_fee']);
-        } elseif ($type === 'onetime') {
-            $query->where('transaction_type', 'onetime');
-        }
-        
-        if ($formId) {
-            $query->where('form_id', $formId);
-        }
-        
-        // Get payments grouped by status
-        $payments = $query->select('status')
+        self::scopeQueryToAllowedForms($query, $formId);
+        $payments = $query->select('transaction_type', 'status', 'currency')
             ->selectRaw('SUM(payment_total) as total_amount')
             ->selectRaw('COUNT(*) as count')
-            ->groupBy('status')
+            ->groupBy('transaction_type', 'status', 'currency')
             ->get();
-        
-        // Get the total payment amount
-        $totalAmount = 0;
-        foreach ($payments as $payment) {
-            $totalAmount += $payment->total_amount;
-        }
-        
-        $formattedData = [];
-        foreach ($payments as $payment) {
-            $status = strtolower($payment->status);
-            $amount = $payment->total_amount / 100; // Convert from cents to dollars
-            $percentage = $totalAmount > 0 ? round(($payment->total_amount / $totalAmount) * 100, 2) : 0;
-            
-            $formattedData[$status] = [
-                'amount' => $amount,
-                'percentage' => $percentage,
-                'count' => $payment->count
-            ];
-        }
-        
-        // Calculate weekly average paid amount
+
         $daysInRange = self::getDateDifference($startDate, $endDate);
         $weeksInRange = max(1, round($daysInRange / 7, 1));
-        
+        $currencySign = Arr::get(PaymentHelper::getCurrencyConfig($formId), 'currency_sign', '$');
+        $defaultCurrency = strtoupper((string) Arr::get(PaymentHelper::getCurrencyConfig($formId), 'currency', 'USD'));
+
+        $blended     = ['onetime' => [], 'subscription' => [], 'all' => []];
+        $perCurrency = ['onetime' => [], 'subscription' => [], 'all' => []];
+        foreach ($payments as $payment) {
+            $status = strtolower((string) $payment->status);
+            $cents  = (int) $payment->total_amount;
+            $count  = (int) $payment->count;
+            $currency = strtoupper(trim((string) $payment->currency));
+            if ('' === $currency) {
+                $currency = $defaultCurrency;
+            }
+
+            self::addPaymentRow($blended['all'], $perCurrency['all'], $status, $currency, $cents, $count);
+
+            if ('onetime' === $payment->transaction_type) {
+                $type = 'onetime';
+            } elseif (in_array($payment->transaction_type, ['subscription', 'subscription_signup_fee'], true)) {
+                $type = 'subscription';
+            } else {
+                continue;
+            }
+            self::addPaymentRow($blended[$type], $perCurrency[$type], $status, $currency, $cents, $count);
+        }
+
+        $out = [];
+        foreach (['onetime', 'subscription', 'all'] as $type) {
+            $byCurrency = [];
+            foreach ($perCurrency[$type] as $currency => $statuses) {
+                $symbol = html_entity_decode(PaymentHelper::getCurrencySymbol($currency), ENT_QUOTES);
+                $byCurrency[$currency] = self::formatPaymentStatuses($statuses, $weeksInRange, $symbol);
+            }
+            $block = self::formatPaymentStatuses($blended[$type], $weeksInRange, $currencySign);
+            $block['by_currency'] = $byCurrency;
+            $out[$type] = $block;
+        }
+
+        return $out;
+    }
+
+    private static function addPaymentRow(array &$blended, array &$perCurrency, $status, $currency, $cents, $count)
+    {
+        if (!isset($blended[$status])) {
+            $blended[$status] = ['amount' => 0, 'count' => 0];
+        }
+        $blended[$status]['amount'] += $cents;
+        $blended[$status]['count']  += $count;
+
+        if (!isset($perCurrency[$currency][$status])) {
+            $perCurrency[$currency][$status] = ['amount' => 0, 'count' => 0];
+        }
+        $perCurrency[$currency][$status]['amount'] += $cents;
+        $perCurrency[$currency][$status]['count']  += $count;
+    }
+
+    public static function getPaymentsByType($startDate, $endDate, $type, $formId = 0)
+    {
+        return Arr::get(self::getPaymentBreakdown($startDate, $endDate, $formId), $type, []);
+    }
+
+    /**
+     * Shape a status => ['amount' => cents, 'count' => int] map into the payment
+     * block used by both the admin Reports payment overview and MCP: whole-unit
+     * amounts (cents ÷ 100), per-status share of the block total, integer counts,
+     * and the paid weekly average. One formatter so the two callers can never drift.
+     */
+    private static function formatPaymentStatuses(array $statuses, $weeksInRange, $currencySymbol)
+    {
+        $totalCents = 0;
+        foreach ($statuses as $bucket) {
+            $totalCents += $bucket['amount'];
+        }
+
+        $formatted = [];
         $paidAmount = 0;
-        foreach ($formattedData as $status => $data) {
-            if ($status === 'paid') {
-                $paidAmount = $data['amount'];
-                break;
+        foreach ($statuses as $status => $bucket) {
+            $amount = $bucket['amount'] / 100; // Convert from cents to dollars
+            $formatted[$status] = [
+                'amount'     => $amount,
+                'percentage' => $totalCents > 0 ? round(($bucket['amount'] / $totalCents) * 100, 2) : 0,
+                'count'      => (int) $bucket['count'],
+            ];
+            if ('paid' === $status) {
+                $paidAmount = $amount;
             }
         }
-        
-        $weeklyAverage = $paidAmount / $weeksInRange;
-        
+
         return [
-            'currency_symbol' => Arr::get(PaymentHelper::getCurrencyConfig($formId), 'currency_sign', '$'),
-            'payment_statuses' => $formattedData,
-            'total_amount'     => $totalAmount / 100, // Convert from cents to dollars
-            'weekly_average'   => round($weeklyAverage, 2)
+            'currency_symbol'  => $currencySymbol,
+            'payment_statuses' => $formatted,
+            'total_amount'     => $totalCents / 100, // Convert from cents to dollars
+            'weekly_average'   => round($paidAmount / $weeksInRange, 2),
         ];
     }
-    
+
     /**
      * Format payment method name for display
      */
@@ -1375,64 +1469,52 @@ class ReportHelper
     private static function getPaymentStats($startDate, $endDate, $previousStartDate, $previousEndDate, $formId)
     {
         // Get total payments (paid status) for current period
-        $currentPayments = wpFluent()
+        $currentPaymentsQuery = wpFluent()
             ->table('fluentform_transactions')
             ->whereBetween('created_at', [$startDate, $endDate])
-            ->where('status', 'paid')
-            ->when($formId, function ($q) use ($formId) {
-                return $q->where('form_id', $formId);
-            })
-            ->sum('payment_total');
+            ->where('status', 'paid');
+        self::scopeQueryToAllowedForms($currentPaymentsQuery, $formId);
+        $currentPayments = $currentPaymentsQuery->sum('payment_total');
 
         // Get total payments for previous period
-        $previousPayments = wpFluent()
+        $previousPaymentsQuery = wpFluent()
             ->table('fluentform_transactions')
             ->whereBetween('created_at', [$previousStartDate, $previousEndDate])
-            ->where('status', 'paid')
-            ->when($formId, function ($q) use ($formId) {
-                return $q->where('form_id', $formId);
-            })
-            ->sum('payment_total');
+            ->where('status', 'paid');
+        self::scopeQueryToAllowedForms($previousPaymentsQuery, $formId);
+        $previousPayments = $previousPaymentsQuery->sum('payment_total');
 
         // Get pending payments for current period
-        $currentPending = wpFluent()
+        $currentPendingQuery = wpFluent()
             ->table('fluentform_transactions')
             ->whereBetween('created_at', [$startDate, $endDate])
-            ->where('status', 'pending')
-            ->when($formId, function ($q) use ($formId) {
-                return $q->where('form_id', $formId);
-            })
-            ->sum('payment_total');
+            ->where('status', 'pending');
+        self::scopeQueryToAllowedForms($currentPendingQuery, $formId);
+        $currentPending = $currentPendingQuery->sum('payment_total');
 
         // Get pending payments for previous period
-        $previousPending = wpFluent()
+        $previousPendingQuery = wpFluent()
             ->table('fluentform_transactions')
             ->whereBetween('created_at', [$previousStartDate, $previousEndDate])
-            ->where('status', 'pending')
-            ->when($formId, function ($q) use ($formId) {
-                return $q->where('form_id', $formId);
-            })
-            ->sum('payment_total');
+            ->where('status', 'pending');
+        self::scopeQueryToAllowedForms($previousPendingQuery, $formId);
+        $previousPending = $previousPendingQuery->sum('payment_total');
 
         // Get total refunds for current period
-        $currentRefunds = wpFluent()
+        $currentRefundsQuery = wpFluent()
             ->table('fluentform_transactions')
             ->whereBetween('created_at', [$startDate, $endDate])
-            ->where('status', 'refunded')
-            ->when($formId, function ($q) use ($formId) {
-                return $q->where('form_id', $formId);
-            })
-            ->sum('payment_total');
+            ->where('status', 'refunded');
+        self::scopeQueryToAllowedForms($currentRefundsQuery, $formId);
+        $currentRefunds = $currentRefundsQuery->sum('payment_total');
 
         // Get total refunds for previous period
-        $previousRefunds = wpFluent()
+        $previousRefundsQuery = wpFluent()
             ->table('fluentform_transactions')
             ->whereBetween('created_at', [$previousStartDate, $previousEndDate])
-            ->where('status', 'refunded')
-            ->when($formId, function ($q) use ($formId) {
-                return $q->where('form_id', $formId);
-            })
-            ->sum('payment_total');
+            ->where('status', 'refunded');
+        self::scopeQueryToAllowedForms($previousRefundsQuery, $formId);
+        $previousRefunds = $previousRefundsQuery->sum('payment_total');
 
         // Convert from cents to dollars
         $currentPayments = $currentPayments ? $currentPayments / 100 : 0;

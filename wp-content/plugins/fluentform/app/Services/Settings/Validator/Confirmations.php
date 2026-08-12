@@ -38,7 +38,7 @@ class Confirmations extends Validate
     public static function conditionalValidations(Validator $validator)
     {
         $validator->sometimes('customUrl', 'required', function ($input) {
-            return 'customUrl' === $input['redirectTo'];
+            return isset($input['redirectTo']) && 'customUrl' === $input['redirectTo'];
         });
 
         return $validator;

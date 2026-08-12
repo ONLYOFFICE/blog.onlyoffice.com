@@ -2,9 +2,9 @@
 Contributors: jasonbahl, markkelnar
 Tags: WPGraphQL, Cache, API, Persisted Queries, Performance
 Requires at least: 5.6
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.0.1
+Stable tag: 2.3.0
 Requires WPGraphQL: 2.0.0
 WPGraphQL Tested Up To: 2.0.0
 License: GPLv2 or later
@@ -18,33 +18,35 @@ Do you want your API data _fast_ or _accurate_? With WPGraphQL Smart Cache, you 
 
 WPGraphQL Smart Cache is a free, open-source WordPress plugin that provides support for caching and cache invalidation of WPGraphQL Queries.
 
-To get the most out of this plugin, we recommend using GET requests with Network Caching, which requires your WordPress install to be on a [supported host](https://github.com/wp-graphql/wp-graphql-smart-cache/blob/main/docs/network-cache.md#supported-hosts).
+To get the most out of this plugin, we recommend using GET requests with Network Caching, which requires your WordPress install to be on a [supported host](https://github.com/wp-graphql/wp-graphql/blob/main/plugins/wp-graphql-smart-cache/docs/network-cache.md#supported-hosts).
+
+> **Note:** WPGraphQL Smart Cache is now part of the [WPGraphQL monorepo](https://github.com/wp-graphql/wp-graphql). All releases, issues, and discussions are managed in the main repository.
 
 *BREAKING CHANGES:* We may make breaking changes in the future to improve functionality and experience. If we do, we will use semver to do so. Pay attention to release notes and upgrade notices before updating.
 
 == Video Overview ==
 
-<a href="https://youtu.be/t_y6q02q7K4" target="_blank"><img src="https://github.com/wp-graphql/wp-graphql-smart-cache/raw/main/docs/images/banner-wp-graphql-smart-cache-v1.jpg" width="640px" /></a>
+<a href="https://youtu.be/t_y6q02q7K4" target="_blank"><img src="https://github.com/wp-graphql/wp-graphql/raw/main/plugins/wp-graphql-smart-cache/docs/images/banner-wp-graphql-smart-cache-v1.jpg" width="640px" /></a>
 
 == Docs ==
 
-- [Overview](https://github.com/wp-graphql/wp-graphql-smart-cache#overview)
-- [Quick Start](https://github.com/wp-graphql/wp-graphql-smart-cache#-quick-start)
+- [Overview](https://github.com/wp-graphql/wp-graphql/tree/main/plugins/wp-graphql-smart-cache#overview)
+- [Quick Start](https://github.com/wp-graphql/wp-graphql/tree/main/plugins/wp-graphql-smart-cache#-quick-start)
 - Features
-  - [Network Cache](https://github.com/wp-graphql/wp-graphql-smart-cache/blob/main/docs/network-cache.md)
-  - [Object Cache](https://github.com/wp-graphql/wp-graphql-smart-cache/blob/main/docs/object-cache.md)
-  - [Persisted Queries](https://github.com/wp-graphql/wp-graphql-smart-cache/blob/main/docs/persisted-queries.md)
-  - [Cache Invalidation](https://github.com/wp-graphql/wp-graphql-smart-cache/blob/main/docs/cache-invalidation.md)
-- [Extending / Customizing Functionality](https://github.com/wp-graphql/wp-graphql-smart-cache/blob/main/docs/extending.md)
-- [FAQ and Troubleshooting](https://github.com/wp-graphql/wp-graphql-smart-cache#faq--troubleshooting)
-- [Known Issues](https://github.com/wp-graphql/wp-graphql-smart-cache#known-issues)
-- [Providing Feedback](https://github.com/wp-graphql/wp-graphql-smart-cache#providing-feedback)
+  - [Network Cache](https://github.com/wp-graphql/wp-graphql/blob/main/plugins/wp-graphql-smart-cache/docs/network-cache.md)
+  - [Object Cache](https://github.com/wp-graphql/wp-graphql/blob/main/plugins/wp-graphql-smart-cache/docs/object-cache.md)
+  - [Persisted Queries](https://github.com/wp-graphql/wp-graphql/blob/main/plugins/wp-graphql-smart-cache/docs/persisted-queries.md)
+  - [Cache Invalidation](https://github.com/wp-graphql/wp-graphql/blob/main/plugins/wp-graphql-smart-cache/docs/cache-invalidation.md)
+- [Extending / Customizing Functionality](https://github.com/wp-graphql/wp-graphql/blob/main/plugins/wp-graphql-smart-cache/docs/extending.md)
+- [FAQ and Troubleshooting](https://github.com/wp-graphql/wp-graphql/tree/main/plugins/wp-graphql-smart-cache#faq--troubleshooting)
+- [Known Issues](https://github.com/wp-graphql/wp-graphql/tree/main/plugins/wp-graphql-smart-cache#known-issues)
+- [Providing Feedback](https://github.com/wp-graphql/wp-graphql/tree/main/plugins/wp-graphql-smart-cache#providing-feedback)
 
 = Upgrading =
 
 It is recommended that anytime you want to update WPGraphQL Smart Cache that you get familiar with what's changed in the release.
 
-WPGraphQL Smart Cache publishes [release notes on GitHub](https://github.com/wp-graphql/wp-graphql-smart-cache/releases).
+WPGraphQL Smart Cache publishes [release notes on GitHub](https://github.com/wp-graphql/wp-graphql/releases). Look for releases tagged with `wp-graphql-smart-cache/v*`.
 
 WPGraphQL Smart Cache will follow Semver versioning.
 
@@ -64,8 +66,14 @@ Appsero SDK **does not gather any data by default.** The SDK only starts gatheri
 
 Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without confirmation from users in any case.**
 
+When you opt in, each telemetry request is sent to Appsero and a duplicate is sent in a non-blocking request to WPGraphQL-operated infrastructure at https://telemetry.wpgraphql.com (the same categories of data as described for Appsero below).
+
 Learn more about how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
 
+== Screenshots ==
+
+1. The Smart Cache panel in the WPGraphQL IDE — see cache HIT/MISS, the session hit rate, TTL, the cache key, and the purge-map tags emitted for a response.
+2. Cache settings — configure the network-cache max-age, the object cache, purge-event logging, and on-demand purging.
 
 == Upgrade Notice ==
 
@@ -109,6 +117,51 @@ This release removes a lot of code that has since been released as part of WPGra
 In order to use v0.2.0+ of WPGraphQL Smart Cache, you will need WPGraphQL v1.12.0 or newer.
 
 == Changelog ==
+
+= 2.3.0 =
+
+**New Features**
+
+* **settings:** support per-entry config in the normalized settings map ([#4049](https://github.com/wp-graphql/wp-graphql/issues/4049))
+* **smart-cache:** invalidate settings-group caches on option updates ([#4095](https://github.com/wp-graphql/wp-graphql/issues/4095))
+
+**Bug Fixes**
+
+* **deps-dev:** bump guzzlehttp/guzzle from 7.12.1 to 7.15.1 in /plugins/wp-graphql-smart-cache ([#4100](https://github.com/wp-graphql/wp-graphql/issues/4100))
+
+= 2.2.2 =
+
+**Bug Fixes**
+
+* **deps-dev:** bump guzzlehttp/guzzle from 7.10.0 to 7.12.1 in /plugins/wp-graphql-smart-cache ([#3985](https://github.com/wp-graphql/wp-graphql/issues/3985))
+* **deps-dev:** bump guzzlehttp/psr7 from 2.11.0 to 2.12.1 in /plugins/wp-graphql-smart-cache ([#3987](https://github.com/wp-graphql/wp-graphql/issues/3987))
+* **deps-dev:** bump guzzlehttp/psr7 from 2.8.0 to 2.11.0 in /plugins/wp-graphql-smart-cache ([#3927](https://github.com/wp-graphql/wp-graphql/issues/3927))
+* support WordPress 7.0 in the integration test matrix ([#3960](https://github.com/wp-graphql/wp-graphql/issues/3960))
+
+= 2.2.1 =
+
+**Bug Fixes**
+
+* **deps-dev:** bump symfony/dom-crawler from 5.4.48 to 5.4.52 in /plugins/wp-graphql-smart-cache ([#3856](https://github.com/wp-graphql/wp-graphql/issues/3856))
+* **deps-dev:** bump symfony/yaml from 5.4.45 to 5.4.53 in /plugins/wp-graphql-smart-cache ([#3860](https://github.com/wp-graphql/wp-graphql/issues/3860))
+* guard null content when regenerating document hash on updateGraphqlDocument ([#3879](https://github.com/wp-graphql/wp-graphql/issues/3879))
+
+= 2.2.0 =
+
+**New Features**
+
+* support on-demand revalidation via graphql_purge ([#3810](https://github.com/wp-graphql/wp-graphql/issues/3810))
+
+= 2.1.0 =
+
+**New Features**
+
+* import WPGraphQL IDE into monorepo ([#3542](https://github.com/wp-graphql/wp-graphql/issues/3542))
+* **telemetry:** mirror Appsero insights to telemetry.wpgraphql.com ([#3785](https://github.com/wp-graphql/wp-graphql/issues/3785))
+
+**Bug Fixes**
+
+* resolve post by percent-encoded slug/URI when post_name is stored encoded ([#3582](https://github.com/wp-graphql/wp-graphql/issues/3582)) ([#3611](https://github.com/wp-graphql/wp-graphql/issues/3611))
 
 = 2.0.1 =
 
@@ -168,7 +221,6 @@ In order to use v0.2.0+ of WPGraphQL Smart Cache, you will need WPGraphQL v1.12.
 - [#251](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/251): ci: add WP 6.3 to test matrix
 - [#258](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/258): ci: add build-plugin command to set up no-dev
 
-
 = 1.2.0 =
 
 **New Features**
@@ -226,7 +278,6 @@ In order to use v0.2.0+ of WPGraphQL Smart Cache, you will need WPGraphQL v1.12.
 = 1.0.4 =
 
 - [#210](https://github.com/wp-graphql/wp-graphql-smart-cache/pull/210) fix: post_exists being called even though the `post_exists` function doesn't exist in this context. Check instanceof WP_Post instead.
-
 
 = 1.0.3 =
 
@@ -313,7 +364,6 @@ In order to use v0.2.0+ of WPGraphQL Smart Cache, you will need WPGraphQL v1.12.
 = 0.2.1 =
 
 - add temporary patch for wp-engine users. Will be removed when the wp engine mu plugin is updated.
-
 
 = 0.2.0
 

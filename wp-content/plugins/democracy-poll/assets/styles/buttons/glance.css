@@ -1,0 +1,20 @@
+/* button */
+.dem-button[class]{
+	padding:.5em 1em;
+	vertical-align: middle;
+	text-align: center;
+	text-shadow: 0 -1px 1px #777;
+	color: var(--dem-button-color, #fff);
+	border: 2px solid var(--dem-button-border-color, #F64C2B);
+	border-radius:3px;
+	box-shadow: 0 0 0 60px rgba(0,0,0,0) inset, .1em .1em .2em #800;
+	background: var(--dem-button-bg, #F45A38) linear-gradient(#FB9575, #F45A38 48%, #EA1502 52%, #F02F17);
+}
+
+.dem-button[class]:active {
+	top: .1em;
+	left: .1em;
+	box-shadow: 0 0 0 60px rgba(0,0,0,.05) inset;
+}
+
+.dem-button[class]:visited{ color:var(--dem-button-color, #fff); }

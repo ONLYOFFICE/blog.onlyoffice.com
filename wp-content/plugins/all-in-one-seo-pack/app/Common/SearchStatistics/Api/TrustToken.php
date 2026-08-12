@@ -21,10 +21,10 @@ class TrustToken {
 	 * @return string The trust token.
 	 */
 	public function get() {
-		$trustToken = aioseo()->internalOptions->internal->searchStatistics->trustToken;
+		$trustToken = aioseo()->sensitiveOptions->get( 'searchStatisticsTrustToken' );
 		if ( empty( $trustToken ) ) {
 			$trustToken = $this->generate();
-			aioseo()->internalOptions->internal->searchStatistics->trustToken = $trustToken;
+			aioseo()->sensitiveOptions->set( 'searchStatisticsTrustToken', $trustToken );
 		}
 
 		return $trustToken;
@@ -39,7 +39,7 @@ class TrustToken {
 	 */
 	public function rotate() {
 		$trustToken = $this->generate();
-		aioseo()->internalOptions->internal->searchStatistics->trustToken = $trustToken;
+		aioseo()->sensitiveOptions->set( 'searchStatisticsTrustToken', $trustToken );
 	}
 
 	/**

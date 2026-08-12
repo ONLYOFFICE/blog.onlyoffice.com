@@ -41,11 +41,13 @@ final class Experimental {
 		$extensions = new Extensions();
 		$extensions->init();
 
-		// Register Admin functionality.
-		if ( is_admin() ) {
-			$admin = new Admin();
-			$admin->init();
-		}
+		// Register Admin functionality. The Admin class only does
+		// registration work (register_graphql_settings_section/field plus an
+		// `updated_option` listener) — all of which is safe to run in any
+		// context. Keeping it un-gated lets the GraphQL endpoint resolve
+		// experiment settings without depending on an admin request.
+		$admin = new Admin();
+		$admin->init();
 	}
 
 	/**
@@ -58,8 +60,14 @@ final class Experimental {
 				// Constant is defined, use its value (final say)
 				$this->is_enabled = (bool) GRAPHQL_EXPERIMENTAL_FEATURES;
 			} else {
-				// Constant not defined, apply filter with default value
-				$this->is_enabled = apply_filters( 'wpgraphql_experimental_features_enabled', true );
+				/**
+				 * Filter whether WPGraphQL experimental features should be enabled.
+				 *
+				 * @param bool $is_enabled Whether experimental features should be enabled.
+				 * @hookGroup settings
+				 * @since 2.5.0
+				 */
+				$this->is_enabled = (bool) apply_filters( 'wpgraphql_experimental_features_enabled', true );
 			}
 		}
 

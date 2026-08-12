@@ -42,7 +42,7 @@ class FormMeta extends Model
     
         $formMeta[] = [
             'meta_key' => 'template_name',
-            'value'    => Arr::get($attributes, 'predefined'),
+            'value'    => Arr::get($attributes, 'predefined', Arr::get($attributes, 'type', '')),
         ];
     
         if (isset($predefinedForm['notifications'])) {
@@ -84,7 +84,13 @@ class FormMeta extends Model
     public static function store(Form $form, $formMeta)
     {
         foreach ($formMeta as $meta) {
-            $meta['value'] = trim(preg_replace('/\s+/', ' ', $meta['value']));
+            $metaValue = $meta['value'];
+
+            if (is_array($metaValue) || is_object($metaValue)) {
+                $metaValue = wp_json_encode($metaValue);
+            }
+
+            $meta['value'] = trim(preg_replace('/\s+/', ' ', (string) $metaValue));
 
             $form->formMeta()->create([
                 'meta_key' => $meta['meta_key'],

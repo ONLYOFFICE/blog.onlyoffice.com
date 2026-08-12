@@ -17,6 +17,7 @@ use FluentForm\Framework\Encryption\Encrypter;
 use FluentForm\Framework\Database\Orm\Model;
 use FluentForm\Framework\Validator\Validator;
 use FluentForm\Framework\Foundation\RequestGuard;
+use FluentForm\Framework\Foundation\Exceptions\ExceptionHandler;
 use FluentForm\Framework\Database\DatabaseManager;
 use FluentForm\Framework\Database\DatabaseTransactionsManager;
 use FluentForm\Framework\Database\ConnectionResolver;
@@ -55,6 +56,7 @@ class ComponentBinder
         'Mail',
         'Paginator',
         'Pipeline',
+        'ExceptionHandler',
     ];
 
     /**
@@ -343,7 +345,26 @@ class ComponentBinder
             return new Pipeline($app);
         });
 
-        $this->app->alias(Pipeline::class, 'pipeline');  
+        $this->app->alias(Pipeline::class, 'pipeline');
+    }
+
+    /**
+     * Bind the exception-handler registry into the container.
+     *
+     * Default is the bare `Foundation\Exceptions\ExceptionHandler` (no
+     * renderables registered). Plugins override by re-binding their own
+     * subclass to the same key from `boot/bindings.php` BEFORE the first
+     * request hits Route.
+     *
+     * @return null
+     */
+    protected function bindExceptionHandler()
+    {
+        $this->app->singleton(ExceptionHandler::class, function ($app) {
+            return new ExceptionHandler();
+        });
+
+        $this->app->alias(ExceptionHandler::class, 'exception.handler');
     }
 
     /**

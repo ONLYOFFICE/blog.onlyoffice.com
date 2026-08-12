@@ -53,7 +53,7 @@ abstract class BaseProcessor
         $data = wp_parse_args($data, $this->getTransactionDefaults());
 
         if (empty($data['transaction_hash'])) {
-            $data['transaction_hash'] = md5($data['transaction_type'] . '_payment_' . $data['submission_id'] . '-' . $data['form_id'] . '_' . $data['created_at'] . '-' . time() . '-' . wp_rand(100, 999));
+            $data['transaction_hash'] = wp_generate_password(32, false);
         }
 
         return Transaction::create($data)->id;
@@ -76,7 +76,7 @@ abstract class BaseProcessor
         }
 
         if (empty($data['transaction_hash'])) {
-            $data['transaction_hash'] = md5($data['transaction_type'] . '_payment_' . $data['submission_id'] . '-' . $data['form_id'] . '_' . $data['created_at'] . '-' . time() . '-' . wp_rand(100, 999));
+            $data['transaction_hash'] = wp_generate_password(32, false);
         }
 
         return Transaction::create($data)->id;
@@ -484,7 +484,7 @@ abstract class BaseProcessor
 
         $this->changeTransactionStatus($transaction->id, $status);
         $this->changeSubmissionPaymentStatus($status);
-        $uniqueHash = md5('refund_' . $submission->id . '-' . $submission->form_id . '-' . time() . '-' . wp_rand(100, 999));
+        $uniqueHash = wp_generate_password(32, false);
 
         $refundData = [
             'form_id'          => $submission->form_id,
@@ -747,7 +747,7 @@ abstract class BaseProcessor
             }
 
             if (empty($item['transaction_hash'])) {
-                $uniqueHash = md5('subscription_payment_' . $item['submission_id'] . '-' . $item['charge_id'] . '-' . time() . '-' . wp_rand(100, 999));
+                $uniqueHash = wp_generate_password(32, false);
                 $item['transaction_hash'] = $uniqueHash;
             }
 
@@ -956,7 +956,7 @@ abstract class BaseProcessor
 
         $form = $this->getForm();
 
-        $uniqueHash = md5($submission->id . '-' . $form->id . '-' . time() . '-' . wp_rand(100, 999));
+        $uniqueHash = wp_generate_password(32, false);
 
         $transactionData = [
             'transaction_type' => 'onetime',

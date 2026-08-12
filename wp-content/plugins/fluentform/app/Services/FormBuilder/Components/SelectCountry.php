@@ -32,7 +32,7 @@ class SelectCountry extends BaseComponent
 
         $data = $this->loadCountries($data);
         $defaultValues = (array) $this->extractValueFromAttributes($data);
-        $data['attributes']['class'] = trim('ff-el-form-control ' . $data['attributes']['class']);
+        $data['attributes']['class'] = trim('ff-el-form-control ' . ArrayHelper::get($data, 'attributes.class', ''));
         $data['attributes']['id'] = $this->makeElementId($data, $form);
         $isSearchable = ArrayHelper::get($data, 'settings.enable_select_2');
         if ('yes' == $isSearchable) {
@@ -61,9 +61,11 @@ class SelectCountry extends BaseComponent
             $priorityCountries = $this->getSelectedCountries($selectCountries);
             $primaryListLabel = ArrayHelper::get($data, 'settings.primary_label');
             $otherListLabel = ArrayHelper::get($data, 'settings.other_label');
-            $elMarkup .= '<optgroup label="' . wp_strip_all_tags($primaryListLabel) . '">';
+            // SECURITY (FINDING-12): esc_attr (not just strip_all_tags, which leaves quotes) the
+            // optgroup labels before interpolating them into the double-quoted label attribute.
+            $elMarkup .= '<optgroup label="' . esc_attr($primaryListLabel) . '">';
             $elMarkup .= $this->buildOptions($priorityCountries, $defaultValues);
-            $elMarkup .= '</optgroup><optgroup label="' . wp_strip_all_tags($otherListLabel) . '">';
+            $elMarkup .= '</optgroup><optgroup label="' . esc_attr($otherListLabel) . '">';
             $elMarkup .= $this->buildOptions($data['options'], $defaultValues);
             $elMarkup .= '</optgroup>';
         } else {

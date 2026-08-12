@@ -5,14 +5,14 @@
  */
 
 /*!
- * jQuery JavaScript Library v4.0.0
+ * jQuery JavaScript Library v3.7.1
  * https://jquery.com/
  *
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license
- * https://jquery.com/license/
+ * https://jquery.org/license
  *
- * Date: 2026-01-18T00:20Z
+ * Date: 2023-08-28T13:37Z
  */
 
 /*!

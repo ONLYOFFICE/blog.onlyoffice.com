@@ -215,6 +215,8 @@ class CustomSubmitButton extends BaseFieldManager
             $html .= '<button ' . $atts . ' aria-label="' . esc_attr($this->removeShortcode($buttonText)) . '">' . fluentform_sanitize_html($buttonText) . '</button>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
         }
 
+        // SECURITY (FINDING-12): neutralize any </style> breakout in the user-built custom-button CSS.
+        $styles = fluentformSanitizeCSS($styles);
         if ($styles) {
             $html .= '<style>' . $styles . '</style>';
         }

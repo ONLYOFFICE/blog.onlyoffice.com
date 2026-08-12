@@ -84,6 +84,12 @@ class Components implements \JsonSerializable
     public function sort($sortBy = 'index')
     {
         foreach ($this->items as $group => &$items) {
+            // NOTE: usort renumbers the groups 0..n, which is deliberate - the
+            // editor receives these as JSON and editor-inserter.vue declares
+            // generalMockList/advancedMockList/containerMockList as Array props,
+            // so they must not become JSON objects. Consumers that need to look
+            // an element up by name must re-key it themselves (see
+            // AiFormBuilder::getDefaultFields).
             usort($items, function ($a, $b) {
                 if (@$a['index'] == @$b['index']) {
                     return 0;

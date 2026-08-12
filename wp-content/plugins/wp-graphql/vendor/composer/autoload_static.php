@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit0abc4410b78531a50076455a91c46c8f
+class ComposerStaticInit70251bc718150f52a8d551d8174231f3
 {
     public static $prefixLengthsPsr4 = array (
         'W' =>
@@ -64,6 +64,7 @@ class ComposerStaticInit0abc4410b78531a50076455a91c46c8f
         'GraphQL\\Executor\\Executor' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Executor/Executor.php',
         'GraphQL\\Executor\\ExecutorImplementation' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Executor/ExecutorImplementation.php',
         'GraphQL\\Executor\\PromiseExecutor' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Executor/PromiseExecutor.php',
+        'GraphQL\\Executor\\Promise\\Adapter\\AmpFutureAdapter' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Executor/Promise/Adapter/AmpFutureAdapter.php',
         'GraphQL\\Executor\\Promise\\Adapter\\AmpPromiseAdapter' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Executor/Promise/Adapter/AmpPromiseAdapter.php',
         'GraphQL\\Executor\\Promise\\Adapter\\ReactPromiseAdapter' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Executor/Promise/Adapter/ReactPromiseAdapter.php',
         'GraphQL\\Executor\\Promise\\Adapter\\SyncPromise' => __DIR__ . '/..' . '/webonyx/graphql-php/src/Executor/Promise/Adapter/SyncPromise.php',
@@ -326,6 +327,7 @@ class ComposerStaticInit0abc4410b78531a50076455a91c46c8f
         'WPGraphQL\\Data\\Loader\\PluginLoader' => __DIR__ . '/../..' . '/src/Data/Loader/PluginLoader.php',
         'WPGraphQL\\Data\\Loader\\PostObjectLoader' => __DIR__ . '/../..' . '/src/Data/Loader/PostObjectLoader.php',
         'WPGraphQL\\Data\\Loader\\PostTypeLoader' => __DIR__ . '/../..' . '/src/Data/Loader/PostTypeLoader.php',
+        'WPGraphQL\\Data\\Loader\\SettingGroupLoader' => __DIR__ . '/../..' . '/src/Data/Loader/SettingGroupLoader.php',
         'WPGraphQL\\Data\\Loader\\TaxonomyLoader' => __DIR__ . '/../..' . '/src/Data/Loader/TaxonomyLoader.php',
         'WPGraphQL\\Data\\Loader\\TermObjectLoader' => __DIR__ . '/../..' . '/src/Data/Loader/TermObjectLoader.php',
         'WPGraphQL\\Data\\Loader\\ThemeLoader' => __DIR__ . '/../..' . '/src/Data/Loader/ThemeLoader.php',
@@ -357,6 +359,7 @@ class ComposerStaticInit0abc4410b78531a50076455a91c46c8f
         'WPGraphQL\\Model\\Plugin' => __DIR__ . '/../..' . '/src/Model/Plugin.php',
         'WPGraphQL\\Model\\Post' => __DIR__ . '/../..' . '/src/Model/Post.php',
         'WPGraphQL\\Model\\PostType' => __DIR__ . '/../..' . '/src/Model/PostType.php',
+        'WPGraphQL\\Model\\SettingGroup' => __DIR__ . '/../..' . '/src/Model/SettingGroup.php',
         'WPGraphQL\\Model\\Taxonomy' => __DIR__ . '/../..' . '/src/Model/Taxonomy.php',
         'WPGraphQL\\Model\\Term' => __DIR__ . '/../..' . '/src/Model/Term.php',
         'WPGraphQL\\Model\\Theme' => __DIR__ . '/../..' . '/src/Model/Theme.php',
@@ -403,6 +406,7 @@ class ComposerStaticInit0abc4410b78531a50076455a91c46c8f
         'WPGraphQL\\Type\\Enum\\CommentStatusEnum' => __DIR__ . '/../..' . '/src/Type/Enum/CommentStatusEnum.php',
         'WPGraphQL\\Type\\Enum\\CommentsConnectionOrderbyEnum' => __DIR__ . '/../..' . '/src/Type/Enum/CommentsConnectionOrderbyEnum.php',
         'WPGraphQL\\Type\\Enum\\ContentNodeIdTypeEnum' => __DIR__ . '/../..' . '/src/Type/Enum/ContentNodeIdTypeEnum.php',
+        'WPGraphQL\\Type\\Enum\\ContentTemplateEnum' => __DIR__ . '/../..' . '/src/Type/Enum/ContentTemplateEnum.php',
         'WPGraphQL\\Type\\Enum\\ContentTypeEnum' => __DIR__ . '/../..' . '/src/Type/Enum/ContentTypeEnum.php',
         'WPGraphQL\\Type\\Enum\\ContentTypeIdTypeEnum' => __DIR__ . '/../..' . '/src/Type/Enum/ContentTypeIdTypeEnum.php',
         'WPGraphQL\\Type\\Enum\\MediaItemSizeEnum' => __DIR__ . '/../..' . '/src/Type/Enum/MediaItemSizeEnum.php',
@@ -510,9 +514,9 @@ class ComposerStaticInit0abc4410b78531a50076455a91c46c8f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit0abc4410b78531a50076455a91c46c8f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit0abc4410b78531a50076455a91c46c8f::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit0abc4410b78531a50076455a91c46c8f::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit70251bc718150f52a8d551d8174231f3::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit70251bc718150f52a8d551d8174231f3::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit70251bc718150f52a8d551d8174231f3::$classMap;
 
         }, null, ClassLoader::class);
     }

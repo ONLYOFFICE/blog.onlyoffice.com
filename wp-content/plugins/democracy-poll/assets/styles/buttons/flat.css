@@ -1,0 +1,16 @@
+/* button */
+.dem-button[class]{
+	font-size:90%;
+	font-family: tahoma, arial, sans-serif;
+	padding: .8em 1.6em;
+	color: var(--dem-button-color, #fff);
+	background: var(--dem-button-bg, #61a9de);
+	text-transform: uppercase;
+}
+
+.dem-button[class]:hover {
+	color: var(--dem-button-hover-color, var(--dem-button-color, #fff));
+	background: var(--dem-button-hover-bg, #3b8bc6);
+}
+
+.dem-button[class]:visited{ color:var(--dem-button-color, #fff); }

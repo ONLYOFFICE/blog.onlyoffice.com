@@ -183,7 +183,10 @@ class StripeProcessor extends BaseProcessor
                 $checkoutArgs['subscription_data']['application_fee_percent'] = 1.9; // 1.9%
             } else {
                 // Total amount of 1.9%
-                $applicationFeeAmount = (int) ($transaction->payment_total * 0.019);
+                $applicationFeeAmount = $this->calculateApplicationFeeAmount(
+                    $transaction->payment_total,
+                    $transaction->currency
+                );
                 $checkoutArgs['payment_intent_data']['application_fee_amount'] = $applicationFeeAmount;
             }
         }
@@ -225,6 +228,15 @@ class StripeProcessor extends BaseProcessor
                 'insert_id' => $submission->id
             ]
         ], 200);
+    }
+
+    protected function calculateApplicationFeeAmount($paymentTotal, $currency)
+    {
+        if (PaymentHelper::isZeroDecimal($currency)) {
+            $paymentTotal = intval($paymentTotal / 100);
+        }
+
+        return (int) ($paymentTotal * 0.019);
     }
 
     protected function getPaymentIntentData($transaction, $submission, $form)
@@ -629,6 +641,8 @@ class StripeProcessor extends BaseProcessor
         $metaItems = ArrayHelper::get($paymentSettings, 'stripe_meta_data', []);
         if ((ArrayHelper::get($paymentSettings, 'push_meta_to_stripe') == 'yes') && !empty($metaItems)) {
 
+            $metaData = [];
+
             foreach ($metaItems as $metaItem) {
                 if ($itemValue = ArrayHelper::get($metaItem, 'item_value')) {
                     $metaData[ArrayHelper::get($metaItem, 'label', 'item')] = $itemValue;
@@ -637,7 +651,7 @@ class StripeProcessor extends BaseProcessor
 
             $metaData = ShortCodeParser::parse($metaData, $submission->id, $submission->response);
 
-            $metaData = array_filter($metaData);
+            $metaData = is_array($metaData) ? array_filter($metaData) : [];
 
             foreach ($metaData as $itemKey => $value) {
                 if (is_string($value) || is_numeric($value)) {

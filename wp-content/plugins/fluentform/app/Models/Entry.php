@@ -6,6 +6,15 @@ use Exception;
 use FluentForm\App\Modules\Payments\PaymentHelper;
 use FluentForm\Framework\Support\Arr;
 
+/**
+ * Legacy duplicate of the Submission model (deprecated code).
+ *
+ * @deprecated Dead pair with EntryMeta: they reference only each other (a circular
+ *             relation that is never invoked) plus Form. No external code in free or
+ *             Pro uses either class, and remove() has no callers. The live "Entry"
+ *             API is \FluentForm\App\Api\Entry; submissions go through Submission.
+ *             TODO: delete Entry AND EntryMeta together; remove() kept fail-closed meanwhile.
+ */
 class Entry extends Model
 {
     /**
@@ -175,8 +184,23 @@ class Entry extends Model
         $this->where('id', $id)->update($data);
     }
 
-    public static function remove($entryIds)
+    public static function remove($entryIds, $formId = null)
     {
+        // Fail-closed scope guard: $formId scopes every delete to its owning form;
+        // a missing scope throws rather than ever deleting unscoped.
+        if (empty($formId)) {
+            throw new \InvalidArgumentException('Entry::remove() requires a form id to scope the deletion.');
+        }
+
+        $entryIds = static::where('form_id', $formId)
+            ->whereIn('id', (array) $entryIds)
+            ->pluck('id')
+            ->all();
+
+        if (!$entryIds) {
+            return;
+        }
+
         static::whereIn('id', $entryIds)->delete();
 
         EntryMeta::whereIn('response_id', $entryIds)->delete();

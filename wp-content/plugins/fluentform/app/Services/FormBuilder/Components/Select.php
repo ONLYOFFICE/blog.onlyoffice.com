@@ -128,6 +128,30 @@ class Select extends BaseComponent
             $opts .= '<option value="">' . wp_strip_all_tags($data['attributes']['placeholder']) . '</option>';
         }
         foreach ($formattedOptions as $option) {
+            if (Helper::isOptionGroup($option)) {
+                $groupLabel = wp_strip_all_tags(ArrayHelper::get($option, 'label', ''));
+                $groupOptions = $this->buildOptionMarkup(
+                    ArrayHelper::get($option, 'options', []),
+                    $defaultValues
+                );
+
+                if ($groupOptions) {
+                    $opts .= '<optgroup label="' . esc_attr($groupLabel) . '">' . $groupOptions . '</optgroup>';
+                }
+                continue;
+            }
+
+            $opts .= $this->buildOptionMarkup([$option], $defaultValues);
+        }
+
+        return $opts;
+    }
+
+    protected function buildOptionMarkup($formattedOptions, $defaultValues)
+    {
+        $opts = '';
+
+        foreach ($formattedOptions as $option) {
             if (in_array($option['value'], $defaultValues)) {
                 $selected = 'selected';
             } else {

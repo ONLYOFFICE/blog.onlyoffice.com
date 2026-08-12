@@ -2,8 +2,8 @@
 Contributors: ivijanstefan, creativform, Atrax, SergeyBiryukov, karevn, webvitaly
 Tags: cyrillic, transliteration, russian, ukrainian, slugs
 Requires at least: 2.3
-Tested up to: 6.9
-Stable tag: 3.7.3
+Tested up to: 7.0
+Stable tag: 3.7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,6 +139,9 @@ Users should choose the plugin that best matches their needs:
 - use [Transliterator](https://wordpress.org/plugins/serbian-transliteration/) when full content-level transliteration is required
 
 == Changelog ==
+
+= 3.7.4 =
+* WordPress 7.0 compatibility
 
 = 3.7.3 =
 * Minor improvements to plugin metadata presentation in the WordPress admin.

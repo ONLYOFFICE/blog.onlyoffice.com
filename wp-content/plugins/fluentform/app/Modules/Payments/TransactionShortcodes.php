@@ -5,6 +5,7 @@ namespace FluentForm\App\Modules\Payments   ;
 use FluentForm\App\Helpers\Helper;
 use FluentForm\App\Models\Subscription;
 use FluentForm\App\Models\Transaction;
+use FluentForm\App\Modules\Acl\Acl;
 use FluentForm\Framework\Helpers\ArrayHelper;
 use FluentForm\App\Modules\Payments\Classes\PaymentReceipt;
 use FluentForm\App\Modules\Payments\Orders\OrderData;
@@ -231,7 +232,7 @@ class TransactionShortcodes
             $transaction->formatted_date = date_i18n($viewConfig['date_time_format'], strtotime($transaction->created_at));
 
             if (!$transaction->transaction_hash) {
-                $hash = md5(wp_generate_uuid4() . wp_rand(0, 1000));
+                $hash = wp_generate_password(32, false);
                 Transaction::where('id', $transaction->id)
                     ->update(['transaction_hash' => $hash]);
                 $transaction->transaction_hash = $hash;
@@ -292,7 +293,7 @@ class TransactionShortcodes
 
         foreach ($transactions as $transaction) {
             if (!$transaction->transaction_hash) {
-                $hash = md5(wp_generate_uuid4() . wp_rand(0, 1000));
+                $hash = wp_generate_password(32, false);
                 Transaction::where('id', $transaction->id)
                     ->update(['transaction_hash' => $hash]);
                 $transaction->transaction_hash = $hash;
@@ -452,10 +453,16 @@ class TransactionShortcodes
         $userid = get_current_user_id();
         $submission = fluentFormApi('submissions')->find($subscription->submission_id);
 
-        if (!$submission || ($submission->user_id != $userid && !$this->canCancelSubscription($subscription))) {
+        if (!$submission || !$this->canCancelSubscription($subscription)) {
             $this->sendError(__('Sorry, you can not cancel this subscription at this moment', 'fluentform'));
         }
-    
+
+        $canManagePayments = Acl::hasPermission('fluentform_manage_payments', $submission->form_id);
+
+        if (!$canManagePayments && (int) $submission->user_id !== (int) $userid) {
+            $this->sendError(__('Sorry, you can not cancel this subscription at this moment', 'fluentform'));
+        }
+
         $handler = apply_filters_deprecated(
             'fluentform_payment_manager_class_' . $submission->payment_method,
             [

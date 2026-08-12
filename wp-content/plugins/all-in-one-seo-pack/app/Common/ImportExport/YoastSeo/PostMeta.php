@@ -314,6 +314,11 @@ class PostMeta {
 				$meta['twitter_title']  = $title;
 			}
 
+			if ( isset( $meta['keyphrases'] ) ) {
+				// The keyphrases column is only kept for backwards compatibility; the post editor reads the keyword columns.
+				$meta = array_merge( $meta, Models\Post::getKeywordColumnsFromKeyphrases( $meta['keyphrases'] ) );
+			}
+
 			$aioseoPost = Models\Post::getPost( (int) $post->ID );
 			$aioseoPost->set( $meta );
 			$aioseoPost->save();

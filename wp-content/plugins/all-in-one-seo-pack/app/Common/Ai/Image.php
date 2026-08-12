@@ -35,18 +35,17 @@ class Image {
 	 *
 	 * @since 4.8.9
 	 *
-	 * @param  int|null $objectId The object ID.
-	 * @return array              The data.
+	 * @return array The data.
 	 */
-	public function getVueDataEdit( $objectId = null ) {
-		$objectId = $objectId ?: absint( get_the_ID() );
+	public function getVueDataEdit() {
+		$isEnabled = ! aioseo()->ai->isDisabled();
 
 		return [
-			'extend' => [
-				'imageBlockToolbar'     => apply_filters( 'aioseo_ai_image_generator_extend_image_block_toolbar', true, $objectId ),
-				'imageBlockPlaceholder' => apply_filters( 'aioseo_ai_image_generator_extend_image_block_placeholder', true, $objectId ),
-				'featuredImageButton'   => apply_filters( 'aioseo_ai_image_generator_extend_featured_image_button', true, $objectId ),
-			]
+			'extend' => array_fill_keys( [
+				'imageBlockToolbar',
+				'imageBlockPlaceholder',
+				'featuredImageButton'
+			], $isEnabled )
 		];
 	}
 
@@ -80,6 +79,7 @@ class Image {
 		$quality     = trim( $metadata['quality'] ?? '' );
 		$style       = trim( $metadata['style'] ?? '' );
 		$aspectRatio = trim( $metadata['aspectRatio'] ?? '' );
+		$model       = trim( $metadata['model'] ?? '' );
 
 		$filenameContext = substr( $prompt, 0, 25 ) . '-' . $quality . '-' . $style . '-' . $aspectRatio . '-' . date_i18n( 'Ymd-His' );
 		$filename        = 'aioseo-ai-' . aioseo()->helpers->toLowerCase( sanitize_file_name( $filenameContext ) ) . '.' . $format;
@@ -115,7 +115,8 @@ class Image {
 			'prompt'      => $prompt,
 			'quality'     => $quality,
 			'style'       => $style,
-			'aspectRatio' => $aspectRatio
+			'aspectRatio' => $aspectRatio,
+			'model'       => $model
 		] );
 
 		$parentImageId = ! empty( $metadata['parentImageId'] ) ? (int) $metadata['parentImageId'] : 0;
@@ -132,7 +133,7 @@ class Image {
 
 		if ( ! $width || ! $height ) {
 			list( $width, $height ) = [ 0, 0 ];
-			$wpImageSize = wp_getimagesize( $upload['file'] );
+			$wpImageSize = wp_getimagesize( $upload['file'] ); // phpcs:ignore
 			if ( $wpImageSize ) {
 				list( $width, $height ) = $wpImageSize;
 			}
@@ -144,6 +145,7 @@ class Image {
 			'format'        => $format,
 			'height'        => $height,
 			'id'            => $attachmentId,
+			'model'         => $model,
 			'parentImageId' => $parentImageId,
 			'prompt'        => $prompt,
 			'quality'       => $quality,
@@ -261,7 +263,7 @@ class Image {
 
 		if ( ! $width || ! $height ) {
 			list( $width, $height ) = [ 0, 0 ];
-			$wpImageSize = wp_getimagesize( get_attached_file( $attachmentId ) );
+			$wpImageSize = wp_getimagesize( get_attached_file( $attachmentId ) ); // phpcs:ignore
 			if ( $wpImageSize ) {
 				list( $width, $height ) = $wpImageSize;
 			}
@@ -273,6 +275,7 @@ class Image {
 			'format'        => $mimeType ? str_replace( 'image/', '', $mimeType ) : '',
 			'height'        => $height,
 			'id'            => $attachmentId,
+			'model'         => $aiData['model'] ?? null,
 			'parentImageId' => ! empty( $aiParent ) ? (int) $aiParent : 0,
 			'prompt'        => $aiData['prompt'] ?? null,
 			'quality'       => $aiData['quality'] ?? null,

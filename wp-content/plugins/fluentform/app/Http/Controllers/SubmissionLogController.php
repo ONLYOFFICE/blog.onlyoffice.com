@@ -28,16 +28,23 @@ class SubmissionLogController extends Controller
         }
     }
 
-    public function remove(Logger $logger)
+    public function remove(Logger $logger, $submissionId)
     {
         try {
             $attributes = $this->request->all();
             
             $sanitizeMap = [
-                'log_id' => 'intval',
-                'submission_id' => 'intval',
+                'log_ids' => function ($value) {
+                    if (is_array($value)) {
+                        return array_map('intval', $value);
+                    }
+
+                    return [];
+                },
+                'type' => 'sanitize_text_field',
             ];
             $attributes = fluentform_backend_sanitizer($attributes, $sanitizeMap);
+            $attributes['entry_id'] = intval($submissionId);
             
             return $this->sendSuccess(
                 $logger->remove($attributes)

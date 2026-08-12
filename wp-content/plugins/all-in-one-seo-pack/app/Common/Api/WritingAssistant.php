@@ -17,7 +17,8 @@ class WritingAssistant {
 	/**
 	 * Process the keyword.
 	 *
-	 * @since 4.7.4
+	 * @since   4.7.4
+	 * @version 4.9.10 Authorize the request against the target post (edit_post).
 	 *
 	 * @param  \WP_REST_Request  $request The REST Request
 	 * @return \WP_REST_Response          The response.
@@ -25,6 +26,10 @@ class WritingAssistant {
 	public static function processKeyword( $request ) {
 		$body        = $request->get_json_params();
 		$postId      = absint( $body['postId'] );
+		if ( ! current_user_can( 'edit_post', $postId ) ) {
+			return new \WP_REST_Response( [ 'success' => false ], 403 );
+		}
+
 		$keywordText = sanitize_text_field( $body['keyword'] );
 		$country     = sanitize_text_field( $body['country'] );
 		$language    = sanitize_text_field( strtolower( $body['language'] ) );
@@ -71,7 +76,8 @@ class WritingAssistant {
 	/**
 	 * Get current keyword for a Post.
 	 *
-	 * @since 4.7.4
+	 * @since   4.7.4
+	 * @version 4.9.10 Authorize the request against the target post (edit_post).
 	 *
 	 * @param  \WP_REST_Request  $request The REST Request
 	 * @return \WP_REST_Response          The response.
@@ -84,6 +90,10 @@ class WritingAssistant {
 				'success' => false,
 				'message' => __( 'Empty Post ID', 'all-in-one-seo-pack' )
 			], 404 );
+		}
+
+		if ( ! current_user_can( 'edit_post', (int) $postId ) ) {
+			return new \WP_REST_Response( [ 'success' => false ], 403 );
 		}
 
 		$keyword = Models\WritingAssistantPost::getKeyword( $postId );
@@ -129,16 +139,24 @@ class WritingAssistant {
 	/**
 	 * Get the content analysis for a post.
 	 *
-	 * @since 4.7.4
+	 * @since   4.7.4
+	 * @version 4.9.10 Authorize against the target post (edit_post) before running the_content.
 	 *
 	 * @param  \WP_REST_Request  $request The REST Request
 	 * @return \WP_REST_Response          The response.
 	 */
 	public static function getContentAnalysis( $request ) {
+		$postId = (int) $request->get_param( 'postId' );
+
+		// Authorize before running the_content: the filter executes shortcodes/oEmbed on the supplied
+		// content, a side effect that must not run for a caller who cannot edit the target post.
+		if ( ! current_user_can( 'edit_post', $postId ) ) {
+			return new \WP_REST_Response( [ 'success' => false ], 403 );
+		}
+
 		$title       = $request->get_param( 'title' );
 		$description = $request->get_param( 'description' );
 		$content     = apply_filters( 'the_content', $request->get_param( 'content' ) ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-		$postId      = $request->get_param( 'postId' );
 		if ( empty( $content ) || empty( $postId ) ) {
 			return new \WP_REST_Response( [
 				'success' => false,
@@ -296,14 +314,28 @@ class WritingAssistant {
 	/**
 	 * Set the report progress.
 	 *
-	 * @since 4.7.4
+	 * @since   4.7.4
+	 * @version 4.9.10 Authorize the request against the target post (edit_post).
+	 * @version 4.9.10 Guard against a missing keyword to avoid a fatal on the progress write.
 	 *
 	 * @param  \WP_REST_Request  $request The REST Request
 	 * @return \WP_REST_Response          The response.
 	 */
 	public static function setReportProgress( $request ) {
-		$body              = $request->get_json_params();
-		$keyword           = Models\WritingAssistantPost::getKeyword( (int) $body['postId'] );
+		$body   = $request->get_json_params();
+		$postId = (int) $body['postId'];
+		if ( ! current_user_can( 'edit_post', $postId ) ) {
+			return new \WP_REST_Response( [ 'success' => false ], 403 );
+		}
+
+		$keyword = Models\WritingAssistantPost::getKeyword( $postId );
+		if ( ! $keyword || ! $keyword->exists() ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'error'   => __( 'Keyword not found or not ready', 'all-in-one-seo-pack' )
+			], 200 );
+		}
+
 		$keyword->progress = (int) $body['progress'];
 		$keyword->save();
 

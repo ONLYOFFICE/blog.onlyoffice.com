@@ -48,10 +48,12 @@ class HoneyPot
 
     public function verify($insertData, $requestData, $formId)
     {
-        if (!$this->isEnabled($formId) || (
-                Helper::isConversionForm($formId) &&
-                ArrayHelper::isTrue($requestData, 'isFFConversational')
-            )) {
+        // SECURITY (FINDING-25): do NOT skip the check for conversational forms based on the
+        // client-supplied isFFConversational flag. The conversational renderer now injects the
+        // honeypot field (empty) into the submission (getConversationalHoneypotInput via
+        // extra_inputs), so the "present and empty" check passes for legitimate conversational
+        // submissions and the control can no longer be bypassed with a single flag.
+        if (!$this->isEnabled($formId)) {
             return;
         }
 
@@ -61,12 +63,12 @@ class HoneyPot
                 !ArrayHelper::exists($requestData, $honeyPotName) ||
                 !empty(ArrayHelper::get($requestData, $honeyPotName))
         ) {
-            wp_send_json(
-                [
-                    'errors' => __('Sorry! You can not submit this form at this moment!', 'fluentform'),
-                ],
-                422
+            $message = apply_filters(
+                'fluentform/honeypot_spam_message',
+                __('Sorry! You can not submit this form at this moment!', 'fluentform'),
+                $formId
             );
+            wp_send_json(['errors' => $message], 422);
         }
         return;
     }
@@ -76,6 +78,25 @@ class HoneyPot
         $option = get_option('_fluentform_global_form_settings');
         $status = 'yes' == ArrayHelper::get($option, 'misc.honeypotStatus');
         return apply_filters('fluentform/honeypot_status', $status, $formId);
+    }
+
+    /**
+     * SECURITY (FINDING-25): the conversational form is a JS app that never renders the DOM
+     * honeypot field, so verify() previously had to be skipped for it (via the client-controlled
+     * isFFConversational flag). Return the honeypot field pre-filled EMPTY so the conversational
+     * JS carries it in the submission and the "present and empty" check passes for a legitimate
+     * submission while the control is enforced server-side rather than bypassable by a flag.
+     *
+     * @param int $formId
+     * @return array
+     */
+    public function getConversationalHoneypotInput($formId)
+    {
+        if (!$this->isEnabled($formId)) {
+            return [];
+        }
+
+        return [$this->getFieldName($formId) => ''];
     }
 
     private function getFieldName($formId)

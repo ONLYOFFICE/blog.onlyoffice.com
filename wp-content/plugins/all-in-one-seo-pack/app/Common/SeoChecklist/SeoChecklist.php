@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AIOSEO\Plugin\Common\Models\SeoAnalyzerResult;
+
 class SeoChecklist {
 	protected $checks = [];
 
@@ -488,8 +490,10 @@ class SeoChecklist {
 			}
 		}
 
-		$defaultTitles = array_unique( [ 'Hello world!', __( 'Hello world!' ) ] ); // phpcs:ignore AIOSEO.Wp.I18n.MissingArgDomain
-		$defaultSlugs  = array_unique( [ 'hello-world', sanitize_title( _x( 'hello-world', 'Default post slug' ) ) ] ); // phpcs:ignore AIOSEO.Wp.I18n.MissingArgDomain
+		// phpcs:disable AIOSEO.Wp.I18n.MissingArgDomain, WordPress.WP.I18n.MissingArgDomain
+		$defaultTitles = array_unique( [ 'Hello world!', __( 'Hello world!' ) ] );
+		$defaultSlugs  = array_unique( [ 'hello-world', sanitize_title( _x( 'hello-world', 'Default post slug' ) ) ] );
+		// phpcs:enable
 
 		// WordPress appends "__trashed" to the post slug when a post is trashed (see wp_trash_post()).
 		$defaultSlugs = array_merge( $defaultSlugs, array_map( function ( $slug ) {
@@ -542,9 +546,7 @@ class SeoChecklist {
 	 * @return bool True if audit has been run.
 	 */
 	protected function checkRunHomepageAudit() {
-		$seoAnalysis = aioseo()->internalOptions->internal->siteAnalysis->score;
-
-		return ! empty( $seoAnalysis );
+		return ! empty( SeoAnalyzerResult::getResults() );
 	}
 
 	/**

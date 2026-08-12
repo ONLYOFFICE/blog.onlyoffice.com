@@ -1,6 +1,6 @@
 <?php
 
-defined('ABSPATH') or die;
+defined('ABSPATH') || die;
 
 use FluentForm\App\Modules\Component\Component;
 use FluentForm\App\Modules\Acl\Acl;
@@ -11,12 +11,14 @@ use FluentForm\Framework\Helpers\ArrayHelper;
  * All registered action's handlers should be in app\Hooks\Handlers,
  * addAction is similar to add_action and addCustomAction is just a
  * wrapper over add_action which will add a prefix to the hook name
- * using the plugin slug to make it unique in all wordpress plugins,
+ * using the plugin slug to make it unique in all WordPress plugins,
  * ex: $app->addCustomAction('foo', ['FooHandler', 'handleFoo']) is
  * equivalent to add_action('slug-foo', ['FooHandler', 'handleFoo']).
  */
 
 /**
+ * Application instance.
+ *
  * @var $app FluentForm\Framework\Foundation\Application
  */
 
@@ -151,7 +153,7 @@ add_action('admin_init', function () {
         'fluent_forms_all_entries',
         'msformentries',
         'fluent_forms_payment_entries',
-        'fluent_forms_reports'
+        'fluent_forms_reports',
     ];
 
     $page = wpFluentForm('request')->get('page');
@@ -160,6 +162,8 @@ add_action('admin_init', function () {
         remove_all_actions('admin_notices');
         \FluentForm\App\Modules\Registerer\ReviewQuery::register();
         \FluentForm\App\Modules\Registerer\MigrationNotice::register();
+        \FluentForm\App\Modules\Registerer\StripeKeyNotice::register();
+        \FluentForm\App\Modules\Registerer\CaptchaKeyNotice::register();
     }
 });
 
@@ -172,7 +176,7 @@ add_action('wp_print_scripts', function () {
             $isSkip = apply_filters_deprecated(
                 'fluentform_skip_no_conflict',
                 [
-                    $isSkip
+                    $isSkip,
                 ],
                 FLUENTFORM_FRAMEWORK_UPGRADE,
                 'fluentform/skip_no_conflict',
@@ -227,6 +231,18 @@ $app->addAction('fluentform/loading_editor_assets', function ($form) {
             $field['settings']['label_placement'] = '';
         }
         return $field;
+    });
+
+    add_filter('fluentform/editor_init_element_step_start', function ($item) {
+        if (!isset($item['settings']['progress_layout'])) {
+            $item['settings']['progress_layout'] = 'top';
+        }
+
+        if (!isset($item['settings']['tabs_show_progress_bar'])) {
+            $item['settings']['tabs_show_progress_bar'] = 'no';
+        }
+
+        return $item;
     });
 
     $upgradableCheckInputs = [
@@ -297,7 +313,9 @@ $app->addAction('fluentform/loading_editor_assets', function ($form) {
                 $element['settings']['values_visible'] = false;
             }
 
-      
+            if ('select' == $upgradeElement && !isset($element['settings']['enable_option_groups'])) {
+                $element['settings']['enable_option_groups'] = 'no';
+            }
 
             return $element;
         });
@@ -315,16 +333,39 @@ $app->addAction('fluentform/loading_editor_assets', function ($form) {
             if (!isset($element['settings']['file_location_type'])) {
                 $element['settings']['file_location_type'] = 'follow_global_settings';
             }
+            if ('input_image' === $element['element']) {
+                if (!isset($element['settings']['enable_crop'])) {
+                    $element['settings']['enable_crop'] = 'no';
+                }
+                if (!isset($element['settings']['crop_mode'])) {
+                    $element['settings']['crop_mode'] = (
+                        isset($element['settings']['enforce_image_dimensions']) &&
+                        'yes' === $element['settings']['enforce_image_dimensions']
+                    ) ? 'dimensions' : 'ratio';
+                }
+                if (!isset($element['settings']['crop_ratio'])) {
+                    $element['settings']['crop_ratio'] = 'free';
+                }
+                if (!isset($element['settings']['enforce_image_dimensions'])) {
+                    $element['settings']['enforce_image_dimensions'] = 'no';
+                }
+                if (!isset($element['settings']['crop_width'])) {
+                    $element['settings']['crop_width'] = '';
+                }
+                if (!isset($element['settings']['crop_height'])) {
+                    $element['settings']['crop_height'] = '';
+                }
+            }
             return $element;
         });
     }
-    
+
     $prefixSuffixInputs = [
         'textarea',
         'input_url',
         'input_password',
     ];
-    
+
     foreach ($prefixSuffixInputs as $inputType) {
         add_filter('fluentform/editor_init_element_' . $inputType, function ($item) {
             if (!isset($item['settings']['prefix_label'])) {
@@ -336,7 +377,7 @@ $app->addAction('fluentform/loading_editor_assets', function ($form) {
             return $item;
         });
     }
-    
+
     add_filter('fluentform/editor_init_element_gdpr_agreement', function ($element) {
         if (!isset($element['settings']['required_field_message'])) {
             $element['settings']['required_field_message'] = '';
@@ -365,6 +406,29 @@ $app->addAction('fluentform/loading_editor_assets', function ($form) {
         return $item;
     });
 
+    add_filter('fluentform/editor_init_element_ratings', function ($item) {
+        if (!isset($item['settings']['icon_source'])) {
+            $item['settings']['icon_source'] = 'preset';
+        }
+
+        if (!isset($item['settings']['icon_type'])) {
+            $item['settings']['icon_type'] = \FluentForm\App\Services\FormBuilder\RatingIcon::DEFAULT_ICON;
+        }
+
+        if (!isset($item['settings']['custom_icon_svg'])) {
+            $item['settings']['custom_icon_svg'] = '';
+        }
+
+        if (!isset($item['settings']['inactive_color'])) {
+            $item['settings']['inactive_color'] = \FluentForm\App\Services\FormBuilder\RatingIcon::DEFAULT_INACTIVE_COLOR;
+        }
+
+        if (!isset($item['settings']['active_color'])) {
+            $item['settings']['active_color'] = \FluentForm\App\Services\FormBuilder\RatingIcon::DEFAULT_ACTIVE_COLOR;
+        }
+
+        return $item;
+    });
 
     add_filter('fluentform/editor_init_element_container', function ($item) {
         if (!isset($item['settings']['conditional_logics'])) {
@@ -439,7 +503,6 @@ $app->addAction('fluentform/loading_editor_assets', function ($form) {
         return $item;
     });
 
-
     add_filter('fluentform/editor_init_element_input_text', function ($item) {
         if (isset($item['attributes']['data-mask'])) {
             if (!isset($item['settings']['data-mask-reverse'])) {
@@ -468,7 +531,7 @@ $app->addAction('fluentform/loading_editor_assets', function ($form) {
 
     if ($inputs = \FluentForm\App\Modules\Form\FormFieldsParser::getInputs($form, ['element'])) {
         foreach ($inputs as $input) {
-            add_filter('fluentform/editor_init_element_'. $input['element'], function ($field) {
+            add_filter('fluentform/editor_init_element_' . $input['element'], function ($field) {
                 Helper::resolveValidationRulesGlobalOption($field);
                 return $field;
             });
@@ -546,17 +609,17 @@ $app->addAction('fluentform/loading_editor_assets', function ($form) {
 
     add_filter('fluentform/editor_init_element_gdpr_agreement', function ($item, $form) {
         $isConversationalForm = Helper::isConversionForm($form->id);
-        
+
         if ($isConversationalForm) {
             $item['settings']['tc_agree_text'] = __('I accept', 'fluentform');
         }
-        
+
         return $item;
     }, 10, 2);
 
     add_filter('fluentform/editor_init_element_terms_and_condition', function ($item, $form) {
         $isConversationalForm = Helper::isConversionForm($form->id);
-        
+
         if ($isConversationalForm) {
             $item['settings']['hide_disagree'] = false;
         }
@@ -607,9 +670,7 @@ add_action('save_post', function ($post_id) use ($app) {
 
     // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verified by WordPress save_post action
     $post_content = isset($_REQUEST['post_content']) ? wp_kses_post(wp_unslash($_REQUEST['post_content'])) : false;
-    if ($post_content && is_string($post_content)) {
-        // Already sanitized above
-    } else {
+    if (!$post_content || !is_string($post_content)) {
         $post = get_post($post_id);
         $post_content = $post->post_content;
     }
@@ -697,7 +758,7 @@ add_action('wp', function () use ($app) {
             $globalVars = [
                 'ajaxurl'              => Helper::getAjaxUrl(),
                 'global_search_active' => apply_filters('fluentform/global_search_active', 'yes'),
-                'rest'                 => Helper::getRestInfo()
+                'rest'                 => Helper::getRestInfo(),
             ];
             if (Acl::hasAnyFormPermission()) {
                 $globalVars['fluent_forms_admin_nonce'] = wp_create_nonce('fluent_forms_admin_nonce');
@@ -705,14 +766,14 @@ add_action('wp', function () use ($app) {
             wp_localize_script('fluent_forms_global', 'fluent_forms_global_var', $globalVars);
             wp_enqueue_style('fluent-form-styles');
             $form = wpFluent()->table('fluentform_forms')->find(intval($app->request->get('preview_id')));
-            $postId = get_the_ID() ?: 0;
+            $postId = get_the_ID() ? get_the_ID() : 0;
 
             $loadPublicStyle = apply_filters_deprecated(
                 'fluentform_load_default_public',
                 [
                     true,
                     $form,
-                    $postId
+                    $postId,
                 ],
                 FLUENTFORM_FRAMEWORK_UPGRADE,
                 'fluentform/load_default_public',
@@ -734,7 +795,7 @@ add_action('wp', function () use ($app) {
                 );
 
                 wp_localize_script('fluentform-preview_app', 'fluent_preview_var', [
-                    'i18n'    => \FluentForm\App\Modules\Registerer\TranslationString::getPreviewI18n()
+                    'i18n'    => \FluentForm\App\Modules\Registerer\TranslationString::getPreviewI18n(),
                 ]);
             }
         });
@@ -772,7 +833,7 @@ function fluentform_after_submission_api_response_success($form, $entryId, $data
             [
                 $isDev,
                 $form,
-                $feed
+                $feed,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/api_success_log',
@@ -812,7 +873,7 @@ function fluentform_after_submission_api_response_failed($form, $entryId, $data,
             [
                 $isDev,
                 $form,
-                $feed
+                $feed,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/api_failed_log',
@@ -909,9 +970,21 @@ $app->addAction('fluentform/before_insert_submission', function ($insertData, $r
     $tokenBasedSpamProtection->verify($insertData, $requestData, $form->id);
 }, 9, 3);
 
+// The token-based spam check (FINDING-25) enforces on conversational forms too, but its ~1h TTL
+// token cannot be refreshed by the conversational JS app — it bakes hidden inputs statically at
+// render, so behind a full-page cache the token expires and rejects every legitimate submission.
+// Disable ONLY the token for conversational forms, resolved from server-side form meta (never the
+// client-supplied isFFConversational flag, which was the original bypass). The honeypot still applies.
+$app->addFilter('fluentform/token_based_spam_protection_status', function ($status, $formId) {
+    if ($status && \FluentForm\App\Helpers\Helper::isConversionForm($formId)) {
+        return false;
+    }
+    return $status;
+}, 10, 2);
+
 // Maybe update current user allowed form ids,
 // if current user has specific form permission and capable to create form
-$app->addAction('fluentform/inserted_new_form', function ($formId){
+$app->addAction('fluentform/inserted_new_form', function ($formId) {
     \FluentForm\App\Services\Manager\FormManagerService::maybeAddUserAllowedFormIds($formId);
 });
 
@@ -979,6 +1052,10 @@ add_action('fluentform/integration_action_result', function ($feed, $status, $no
         $note = $status;
     }
 
+    $note = is_scalar($note)
+        ? sanitize_text_field(wp_unslash((string) $note))
+        : sanitize_text_field((string) wp_json_encode($note));
+
     if (strlen($note) > 255) {
         if (function_exists('mb_substr')) {
             $note = mb_substr($note, 0, 251) . '...';
@@ -1010,6 +1087,10 @@ add_action('ff_integration_action_result', function ($feed, $status, $note = '')
         $note = $status;
     }
 
+    $note = is_scalar($note)
+        ? sanitize_text_field(wp_unslash((string) $note))
+        : sanitize_text_field((string) wp_json_encode($note));
+
     if (strlen($note) > 255) {
         if (function_exists('mb_substr')) {
             $note = mb_substr($note, 0, 251) . '...';
@@ -1032,7 +1113,7 @@ add_action('fluentform/global_notify_completed', function ($insertId, $form) use
         'fluentform_truncate_password_values',
         [
             true,
-            $form->id
+            $form->id,
         ],
         FLUENTFORM_FRAMEWORK_UPGRADE,
         'fluentform/truncate_password_values',
@@ -1088,7 +1169,6 @@ add_action('enqueue_block_editor_assets', function () {
         FLUENTFORM_VERSION
     );
 
-
     $forms = wpFluent()->table('fluentform_forms')
         ->select(['id', 'title'])
         ->orderBy('id', 'DESC')
@@ -1107,7 +1187,7 @@ add_action('enqueue_block_editor_assets', function () {
         ],
         [
             'label' => __('Inherit Theme Style', 'fluentform'),
-            'value' => 'ffs_inherit_theme'
+            'value' => 'ffs_inherit_theme',
         ],
     ];
 
@@ -1119,7 +1199,7 @@ add_action('enqueue_block_editor_assets', function () {
         'style_presets'           => $presets,
         'theme_style'             => apply_filters('fluentform/load_theme_style', false) ? 'ffs_inherit_theme' : '',
         'conversational_demo_img' => fluentFormMix('img/conversational-form-demo.png'),
-        'rest'                    => Helper::getRestInfo()
+        'rest'                    => Helper::getRestInfo(),
     ]);
 
     wp_enqueue_style(
@@ -1144,20 +1224,20 @@ add_action('enqueue_block_editor_assets', function () {
     );
 
     // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Checking post ID in admin context
-    $post_id = isset($_GET['post']) ? (int)$_GET['post'] : 0;
+    $post_id = isset($_GET['post']) ? (int) $_GET['post'] : 0;
     $loadPublicStyle = apply_filters_deprecated(
         'fluentform_load_default_public',
         [
             true,
-            (object)[],
-            $post_id
+            (object) [],
+            $post_id,
         ],
         FLUENTFORM_FRAMEWORK_UPGRADE,
         'fluentform/load_default_public',
         'Use fluentform/load_default_public instead of fluentform_load_default_public.'
     );
 
-    if (apply_filters('fluentform/load_default_public', $loadPublicStyle, (object)[], $post_id)) {
+    if (apply_filters('fluentform/load_default_public', $loadPublicStyle, (object) [], $post_id)) {
         wp_enqueue_style(
             'fluentform-public-default',
             $fluentFormPublicDefaultCss,
@@ -1176,34 +1256,29 @@ if (function_exists('register_block_type')) {
 }
 
 
-add_action('fluentform/before_updating_form',function ($form, $postData){
+add_action('fluentform/before_updating_form', function ($form, $postData) {
     (new FluentForm\App\Services\Form\HistoryService())->init($form, $postData);
-},10,2);
+}, 10, 2);
 
 
 // WordPress 6.3+ uses iframes for block editor preview
 // Official WordPress solution: Use enqueue_block_assets with proper context checking
 // See: https://make.wordpress.org/core/2023/07/18/miscellaneous-editor-changes-in-wordpress-6-3/
-add_action('enqueue_block_assets', function() {
-    // Check if we're in the block editor context (not frontend)
-    // This works for both the editor UI and the iframe preview in WordPress 6.3+
-    if (!is_admin() && !wp_is_block_theme()) {
+add_action('enqueue_block_assets', function () {
+    // enqueue_block_assets also fires on the front end, where wp_enqueue_scripts already loads these conditionally.
+    if (!is_admin()) {
         return;
     }
 
-    // Additional check: Only load if we're actually in a block editor screen
-    if (is_admin()) {
-        $current_screen = function_exists('get_current_screen') ? get_current_screen() : null;
-        if ($current_screen && !$current_screen->is_block_editor()) {
-            return;
-        }
+    $current_screen = function_exists('get_current_screen') ? get_current_screen() : null;
+    if ($current_screen && !$current_screen->is_block_editor()) {
+        return;
     }
 
     // Enqueue Fluent Forms CSS for block editor iframe preview
     // These styles are necessary for the live form preview in the block editor
     wp_enqueue_style('fluent-forms-public', fluentFormMix('css/fluent-forms-public.css'), [], FLUENTFORM_VERSION);
     wp_enqueue_style('fluentform-public-default', fluentFormMix('css/fluentform-public-default.css'), [], FLUENTFORM_VERSION);
-
 });
 
 

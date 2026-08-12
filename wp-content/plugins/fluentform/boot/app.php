@@ -7,6 +7,7 @@ use FluentForm\App\Hooks\Handlers\ActivationHandler;
 use FluentForm\App\Hooks\Handlers\DeactivationHandler;
 use FluentForm\App\Services\Migrator\Bootstrap as FormsMigrator;
 use FluentForm\App\Services\FluentConversational\Classes\Form as FluentConversational;
+use FluentForm\Database\Migrations\LegacyManagerScopes;
 use FluentForm\App\Helpers\Helper;
 
 return function ($file) {
@@ -28,24 +29,48 @@ return function ($file) {
                 add_action('fluentform/after_form_menu', $renderNotice);
             });
         }
+
+        fluentform_maybe_disable_contaminated_pro();
     });
 
     $app = new Application($file);
+
+    // Boot the MCP server (Abilities API tools + endpoint). Self-guards: ships
+    // off, and its Abilities/adapter hooks fire only when those systems exist.
+    \FluentForm\App\Modules\MCP\MCPInit::boot();
 
     register_activation_hook($file, function ($network_wide) use ($app) {
         ($app->make(ActivationHandler::class))->handle($network_wide);
     });
 
-    add_action('wp_insert_site', function ($blog) use ($app) {
-        if (is_plugin_active_for_network('fluentform/fluentform.php')) {
-            switch_to_blog($blog->blog_id);
-            ($app->make(ActivationHandler::class))->handle(false);
-            restore_current_blog();
+    $initializeNewSite = function ($blogId) use ($app) {
+        if (!is_plugin_active_for_network('fluentform/fluentform.php')) {
+            return;
         }
-    });
+
+        switch_to_blog($blogId);
+        ($app->make(ActivationHandler::class))->handle(false);
+        restore_current_blog();
+    };
+
+    if (function_exists('wp_initialize_site')) {
+        add_action('wp_initialize_site', function ($newSite) use ($initializeNewSite) {
+            $initializeNewSite($newSite->id);
+        }, 20, 1);
+    } else {
+        add_action('wpmu_new_blog', function ($blogId) use ($initializeNewSite) {
+            $initializeNewSite($blogId);
+        }, 10, 1);
+    }
 
     register_deactivation_hook($file, function () use ($app) {
         ($app->make(DeactivationHandler::class))->handle();
+    });
+
+    add_action('admin_init', function () {
+        if (!wp_doing_ajax()) {
+            LegacyManagerScopes::migrate();
+        }
     });
 
     add_action('plugins_loaded', function () use ($app) {
@@ -78,10 +103,12 @@ return function ($file) {
     (new FluentConversational)->boot();
     (new FormsMigrator())->boot();
     
-    /* Plugin Meta Links */
-    
-    add_filter('plugin_row_meta', 'fluentform_plugin_row_meta', 10, 2);
-    
+    /* Plugin Meta Links — registered on init to avoid early textdomain loading (WP 6.7+) */
+
+    add_action('init', function () {
+        add_filter('plugin_row_meta', 'fluentform_plugin_row_meta', 10, 2);
+    });
+
     function fluentform_plugin_row_meta($links, $file)
     {
         if ('fluentform/fluentform.php' == $file) {
@@ -91,7 +118,7 @@ return function ($file) {
                 'developer_docs' => '<a rel="noopener" href="https://developers.fluentforms.com" style="color: #197efb;font-weight: 600;" aria-label="' . esc_attr__('Developer Docs', 'fluentform') . '" target="_blank">' . esc_html__('Developer Docs', 'fluentform') . '</a>',
             ];
             if (!defined('FLUENTFORMPRO')) {
-                $row_meta['pro'] = '<a rel="noopener" href="https://fluentforms.com" style="color: #7742e6;font-weight: bold;" aria-label="' . esc_attr__('Upgrade to Pro', 'fluentform') . '" target="_blank">' . esc_html__('Upgrade to Pro', 'fluentform') . '</a>';
+                $row_meta['pro'] = '<a rel="noopener" href="' . esc_url(fluentform_upgrade_url('plugin_row_meta')) . '" style="color: #7742e6;font-weight: bold;" aria-label="' . esc_attr__('Upgrade to Pro', 'fluentform') . '" target="_blank">' . esc_html__('Upgrade to Pro', 'fluentform') . '</a>';
             }
             return array_merge($links, $row_meta);
         }

@@ -32,12 +32,14 @@ class FormAnalytics
 			  `ip` CHAR(15) NULL,
 			  `count` INT DEFAULT 1,
 			  `created_at` TIMESTAMP NULL,
-			  PRIMARY KEY (`id`) ) $charsetCollate;";
+			  PRIMARY KEY (`id`),
+			  KEY `form_id_ip` (`form_id`, `ip`),
+			  KEY `created_at` (`created_at`)) $charsetCollate;";
 
             require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
             dbDelta($sql);
-        }else{
+        } else {
             // increase column type of source_url from varchar to text - for already installed sites
             $column_name = 'source_url';
             $dataType = $wpdb->get_col_length($table, $column_name);
@@ -48,7 +50,41 @@ class FormAnalytics
                 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Migration file, schema change is the purpose, table/column names are safe
                 $wpdb->query($sql);
             }
+
+            // Add indexes to existing tables
+            self::maybeAddIndexes();
         }
-    
+    }
+
+    /**
+     * Add indexes to existing tables for better query performance.
+     *
+     * @return void
+     */
+    private static function maybeAddIndexes()
+    {
+        global $wpdb;
+
+        $table = $wpdb->prefix . 'fluentform_form_analytics';
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder -- Migration file, checking indexes, %1s is for identifier
+        $indexes = $wpdb->get_results($wpdb->prepare("SHOW INDEX FROM %1s", $table), ARRAY_A);
+
+        $existingIndexes = [];
+        foreach ($indexes as $index) {
+            $existingIndexes[] = $index['Key_name'];
+        }
+
+        // Add composite index form_id + ip if it doesn't exist
+        if (!in_array('form_id_ip', $existingIndexes)) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder -- Migration file, adding composite index for performance, %1s is for identifier
+            $wpdb->query($wpdb->prepare("ALTER TABLE %1s ADD KEY `form_id_ip` (`form_id`, `ip`)", $table));
+        }
+
+        // Add created_at index if it doesn't exist
+        if (!in_array('created_at', $existingIndexes)) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder -- Migration file, adding index for performance, %1s is for identifier
+            $wpdb->query($wpdb->prepare("ALTER TABLE %1s ADD KEY `created_at` (`created_at`)", $table));
+        }
     }
 }

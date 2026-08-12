@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
 
 class StripeInlineProcessor extends StripeProcessor
 {
-    
+
     public function init()
     {
         /*
@@ -43,7 +43,7 @@ class StripeInlineProcessor extends StripeProcessor
         $this->form = $form;
         $submission = $this->getSubmission();
         $paymentTotal = $this->getAmountTotal();
-        
+
         if (!$paymentTotal && !$hasSubscriptions) {
             return false;
         }
@@ -76,14 +76,17 @@ class StripeInlineProcessor extends StripeProcessor
                 'description'                 => $this->getProductNames(),
                 'statement_descriptor_suffix' => StripeSettings::getPaymentDescriptor($form),
                 'metadata'                    => $this->getIntentMetaData($submission, $form, $transaction, $paymentSettings),
-                'customer'                    => $customer->id
+                'customer'                    => $customer->id,
             ];
 
             $intentArgs = apply_filters('fluentform/stripe_checkout_args_inline', $intentArgs, $submission, $transaction, $form);
 
             // If FluentForm Pro is not installed, apply the fee 1.9% of the total amount
             if (!Helper::hasPro()) {
-                $applicationFeeAmount = (int) ($totalPayable * 0.019);
+                $applicationFeeAmount = $this->calculateApplicationFeeAmount(
+                    $totalPayable,
+                    $transaction->currency
+                );
                 $intentArgs['application_fee_amount'] = $applicationFeeAmount;
             }
             $this->handlePaymentIntent($transaction, $submission, $intentArgs);
@@ -103,7 +106,7 @@ class StripeInlineProcessor extends StripeProcessor
 
         $subscriptionTransactionArgs = Plan::getPriceIdsFromSubscriptionTransaction($subscription, $transaction);
 
-        if(is_wp_error($subscriptionTransactionArgs)) {
+        if (is_wp_error($subscriptionTransactionArgs)) {
             $this->handlePaymentChargeError($customer->get_error_message(), $submission, $transaction, false, 'customer');
         }
 
@@ -153,7 +156,7 @@ class StripeInlineProcessor extends StripeProcessor
             $subscriptionPayment->latest_invoice,
             $this->form->id,
             [
-                'expand' => ['payment_intent.charges']
+                'expand' => ['payment_intent.charges'],
             ]
         );
         if (is_wp_error($invoice)) {
@@ -173,7 +176,7 @@ class StripeInlineProcessor extends StripeProcessor
 
             $nonceAction = 'fluentform_sca_confirm_' . $submission->id;
             $nonce = wp_create_nonce($nonceAction);
-            
+
             wp_send_json_success([
                 'nextAction'             => 'payment',
                 'actionName'             => 'stripeSetupIntent',
@@ -187,8 +190,8 @@ class StripeInlineProcessor extends StripeProcessor
                 '_ff_stripe_nonce'       => $nonce,
                 'message'                => __('Verifying your card details. Please wait...', 'fluentform'),
                 'result'                 => [
-                    'insert_id' => $submission->id
-                ]
+                    'insert_id' => $submission->id,
+                ],
             ], 200);
         }
 
@@ -201,13 +204,13 @@ class StripeInlineProcessor extends StripeProcessor
         $customerArgs = [
             'payment_method'   => $paymentMethodId,
             'invoice_settings' => [
-                'default_payment_method' => $paymentMethodId
+                'default_payment_method' => $paymentMethodId,
             ],
             'metadata'         => [
                 'submission_id' => $submission->id,
                 'form_id'       => $submission->form_id,
-                'form_name'     => wp_strip_all_tags($this->form->title)
-            ]
+                'form_name'     => wp_strip_all_tags($this->form->title),
+            ],
         ];
 
         $receiptEmail = PaymentHelper::getCustomerEmail($submission, $this->form);
@@ -223,17 +226,17 @@ class StripeInlineProcessor extends StripeProcessor
             $customerArgs['description'] = $receiptName;
         }
 
-		$address = PaymentHelper::getCustomerAddress($submission);
-		if ($address) {
-			$customerArgs['address'] = [
-				'city'        => ArrayHelper::get($address, 'city'),
-				'country'     => ArrayHelper::get($address, 'country'),
-				'line1'       => ArrayHelper::get($address, 'address_line_1'),
-				'line2'       => ArrayHelper::get($address, 'address_line_2'),
-				'postal_code' => ArrayHelper::get($address, 'zip'),
-				'state'       => ArrayHelper::get($address, 'state'),
-			];
-		}
+        $address = PaymentHelper::getCustomerAddress($submission);
+        if ($address) {
+            $customerArgs['address'] = [
+                'city'        => ArrayHelper::get($address, 'city'),
+                'country'     => ArrayHelper::get($address, 'country'),
+                'line1'       => ArrayHelper::get($address, 'address_line_1'),
+                'line2'       => ArrayHelper::get($address, 'address_line_2'),
+                'postal_code' => ArrayHelper::get($address, 'zip'),
+                'state'       => ArrayHelper::get($address, 'state'),
+            ];
+        }
 
         return $customerArgs;
     }
@@ -242,7 +245,7 @@ class StripeInlineProcessor extends StripeProcessor
     {
         if ($invoice->status !== 'paid') {
             wp_send_json([
-                'errors' => __('Stripe Error: Payment Failed! Please try again.', 'fluentform')
+                'errors' => __('Stripe Error: Payment Failed! Please try again.', 'fluentform'),
             ], 423);
         }
 
@@ -293,7 +296,7 @@ class StripeInlineProcessor extends StripeProcessor
             // Generate nonce for secure SCA confirmation
             $nonceAction = 'fluentform_sca_confirm_' . $submission->id;
             $nonce = wp_create_nonce($nonceAction);
-            
+
             # Tell the client to handle the action
             wp_send_json_success([
                 'nextAction'    => 'payment',
@@ -303,11 +306,11 @@ class StripeInlineProcessor extends StripeProcessor
                 '_ff_stripe_nonce' => $nonce,
                 'message'       => apply_filters('fluentform/stripe_strong_customer_verify_waiting_message', __('Verifying strong customer authentication. Please wait...', 'fluentform')),
                 'result'        => [
-                    'insert_id' => $submission->id
-                ]
+                    'insert_id' => $submission->id,
+                ],
             ], 200);
 
-        } else if ($intent->status == 'succeeded') {
+        } elseif ('succeeded' == $intent->status) {
             // Payment is succeeded here
             $charge = $intent->charges->data[0];
 
@@ -329,7 +332,7 @@ class StripeInlineProcessor extends StripeProcessor
             'charge_id'      => $charge->payment_intent,
             'payment_method' => 'stripe',
             'payment_mode'   => $this->getPaymentMode(),
-            'payment_note'   => maybe_serialize($charge)
+            'payment_note'   => maybe_serialize($charge),
         ];
 
         $methodDetails = $charge->payment_method_details;
@@ -349,15 +352,18 @@ class StripeInlineProcessor extends StripeProcessor
             'component'        => 'Payment',
             'status'           => 'info',
             'title'            => __('Payment Status changed', 'fluentform'),
-            'description'      => __('Payment status changed to paid', 'fluentform')
+            'description'      => __('Payment status changed to paid', 'fluentform'),
         ];
 
         do_action('fluentform/log_data', $logData);
 
         $this->updateSubmission($submission->id, [
-            'payment_status' => 'paid',
             'payment_method' => 'stripe',
         ]);
+
+        // Trigger fluentform/after_payment_status_change (via BaseProcessor),
+        // consistent with hosted Stripe checkout and offline payment flows.
+        $this->changeSubmissionPaymentStatus('paid');
 
         $logData = [
             'parent_source_id' => $submission->form_id,
@@ -366,7 +372,7 @@ class StripeInlineProcessor extends StripeProcessor
             'component'        => 'Payment',
             'status'           => 'success',
             'title'            => __('Payment Complete', 'fluentform'),
-            'description'      => __('One time Payment Successfully made via Stripe. Charge ID: ', 'fluentform') . $charge->id
+            'description'      => __('One time Payment Successfully made via Stripe. Charge ID: ', 'fluentform') . $charge->id,
         ];
 
         do_action('fluentform/log_data', $logData);
@@ -416,7 +422,6 @@ class StripeInlineProcessor extends StripeProcessor
             return new \WP_Error('invalid_submission', __('Invalid submission.', 'fluentform'));
         }
 
-
         if ($submission->payment_status === 'paid') {
             return new \WP_Error(
                 'already_paid',
@@ -456,20 +461,20 @@ class StripeInlineProcessor extends StripeProcessor
                 'component'        => 'Payment',
                 'status'           => 'warning',
                 'title'            => __('Stripe SCA Security Warning', 'fluentform'),
-                'description'      => implode('; ', $warnings)
+                'description'      => implode('; ', $warnings),
             ];
             do_action('fluentform/log_data', $logData);
         }
 
         return [
             'valid'    => true,
-            'warnings' => $warnings
+            'warnings' => $warnings,
         ];
     }
 
     public function confirmScaPayment()
     {
-        $submissionId = isset($_REQUEST['submission_id']) ? (int)$_REQUEST['submission_id'] : 0;
+        $submissionId = isset($_REQUEST['submission_id']) ? (int) $_REQUEST['submission_id'] : 0;
         $paymentMethod = isset($_REQUEST['payment_method']) ? sanitize_text_field(wp_unslash($_REQUEST['payment_method'])) : '';
         $paymentIntentId = isset($_REQUEST['payment_intent_id']) ? sanitize_text_field(wp_unslash($_REQUEST['payment_intent_id'])) : '';
 
@@ -483,7 +488,7 @@ class StripeInlineProcessor extends StripeProcessor
 
         if (is_wp_error($validation)) {
             wp_send_json([
-                'errors' => $validation->get_error_message()
+                'errors' => $validation->get_error_message(),
             ], 423);
         }
 
@@ -491,7 +496,7 @@ class StripeInlineProcessor extends StripeProcessor
         $formId = $submission->form_id;
 
         $confirmation = SCA::confirmPayment($paymentIntentId, [
-            'payment_method' => $paymentMethod
+            'payment_method' => $paymentMethod,
         ], $formId);
 
         if (is_wp_error($confirmation)) {
@@ -501,6 +506,30 @@ class StripeInlineProcessor extends StripeProcessor
 
         if ($confirmation->status == 'succeeded') {
             $charge = $confirmation->charges->data[0];
+
+            $confirmedCurrency = strtolower((string) $confirmation->currency);
+            $transactionCurrency = strtolower((string) $transaction->currency);
+            if (!$confirmedCurrency || $confirmedCurrency !== $transactionCurrency) {
+                $logData = [
+                    'parent_source_id' => $submission->form_id,
+                    'source_type'      => 'submission_item',
+                    'source_id'        => $submission->id,
+                    'component'        => 'Payment',
+                    'status'           => 'error',
+                    'title'            => __('Stripe Currency Mismatch', 'fluentform'),
+                    'description'      => sprintf(
+                        // translators: %1$s is the expected currency, %2$s is the confirmed currency
+                        __('Expected %1$s but Stripe confirmed %2$s. Payment rejected.', 'fluentform'),
+                        strtoupper($transactionCurrency),
+                        strtoupper($confirmedCurrency)
+                    ),
+                ];
+                do_action('fluentform/log_data', $logData);
+
+                wp_send_json([
+                    'errors' => __('Payment currency verification failed.', 'fluentform'),
+                ], 423);
+            }
 
             // Verify the confirmed amount matches the transaction amount.
             // Normalize for zero-decimal currencies: FluentForm stores amounts x100 internally,
@@ -522,12 +551,12 @@ class StripeInlineProcessor extends StripeProcessor
                         __('Expected %1$d but Stripe confirmed %2$d. Payment rejected.', 'fluentform'),
                         intval($transaction->payment_total),
                         intval($confirmation->amount)
-                    )
+                    ),
                 ];
                 do_action('fluentform/log_data', $logData);
 
                 wp_send_json([
-                    'errors' => __('Payment amount verification failed.', 'fluentform')
+                    'errors' => __('Payment amount verification failed.', 'fluentform'),
                 ], 423);
             }
 
@@ -553,7 +582,7 @@ class StripeInlineProcessor extends StripeProcessor
 
         if (is_wp_error($validation)) {
             wp_send_json([
-                'errors' => $validation->get_error_message()
+                'errors' => $validation->get_error_message(),
             ], 423);
         }
 
@@ -563,8 +592,8 @@ class StripeInlineProcessor extends StripeProcessor
         // Let's retrieve the intent
         $intent = SCA::retrievePaymentIntent($intentId, [
             'expand' => [
-                'invoice.payment_intent'
-            ]
+                'invoice.payment_intent',
+            ],
         ], $formId);
 
         if (is_wp_error($intent)) {
@@ -581,13 +610,12 @@ class StripeInlineProcessor extends StripeProcessor
         try {
             $returnData = $this->getReturnData();
             wp_send_json_success($returnData, 200);
-    
+
         } catch (\Exception $e) {
             wp_send_json([
-                'errors' => $e->getMessage()
+                'errors' => $e->getMessage(),
             ], 423);
         }
-      
     }
 
     protected function processScaBeforeVerification($formId, $submissionId, $transactionId, $chargeId)
@@ -595,7 +623,7 @@ class StripeInlineProcessor extends StripeProcessor
         if ($transactionId) {
             $this->updateTransaction($transactionId, [
                 'charge_id'    => $chargeId,
-                'payment_mode' => $this->getPaymentMode()
+                'payment_mode' => $this->getPaymentMode(),
             ]);
 
             $this->changeTransactionStatus($transactionId, 'intended');
@@ -608,14 +636,15 @@ class StripeInlineProcessor extends StripeProcessor
             'component'        => 'Payment',
             'status'           => 'info',
             'title'            => __('Stripe SCA Required', 'fluentform'),
-            'description'      => __('SCA is required for this payment. Requested SCA info from customer', 'fluentform')
+            'description'      => __('SCA is required for this payment. Requested SCA info from customer', 'fluentform'),
         ];
 
         do_action('fluentform/log_data', $logData);
     }
-    
+
     /**
      * Products name comma separated
+     *
      * @return string
      */
     public function getProductNames()
@@ -623,11 +652,10 @@ class StripeInlineProcessor extends StripeProcessor
         $orderItems = $this->getOrderItems();
         $itemsHtml = '';
         foreach ($orderItems as $item) {
-            $itemsHtml != "" && $itemsHtml .= ", ";
-            $itemsHtml .=  $item->item_name ;
+            '' != $itemsHtml && $itemsHtml .= ', ';
+            $itemsHtml .=  $item->item_name;
         }
-        
+
         return $itemsHtml;
     }
-    
 }

@@ -27,11 +27,11 @@ class AddOnModule
     public function render()
     {
         $extraMenus = [];
-    
+
         $extraMenus = apply_filters_deprecated(
             'fluentform_addons_extra_menu',
             [
-                $extraMenus
+                $extraMenus,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/addons_extra_menu',
@@ -65,11 +65,11 @@ class AddOnModule
     public function showFluentAddOns()
     {
         wp_enqueue_script('fluentform-modules');
-    
+
         $addOns = apply_filters_deprecated(
             'fluentform_global_addons',
             [
-                []
+                [],
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/global_addons',
@@ -98,11 +98,11 @@ class AddOnModule
 
         wpFluentForm('view')->render('admin.addons.list', []);
     }
-    
+
     public function getPremiumAddOns()
     {
         $purchaseUrl = fluentform_upgrade_url();
-        return [
+        $addOns = [
             'paypal' => [
                 'title'        => __('PayPal', 'fluentform'),
                 'description'  => __('Accept Payments via paypal as a part of your form submission', 'fluentform'),
@@ -383,6 +383,46 @@ class AddOnModule
                 'purchase_url' => $purchaseUrl,
                 'category'     => 'crm',
             ],
+            'pipedrive' => [
+                'title'        => __('Pipedrive', 'fluentform'),
+                'description'  => __('By connecting Pipedrive with Fluent Forms, you can connect and organize leads and more.', 'fluentform'),
+                'logo'         => fluentFormMix('img/integrations/pipedrive.png'),
+                'enabled'      => 'no',
+                'purchase_url' => $purchaseUrl,
+                'category'     => 'crm',
+            ],
+            'amocrm' => [
+                'title'        => __('amoCRM', 'fluentform'),
+                'description'  => __('It can be a great way to manage your leads and tasks with amoCRM and Fluent Forms.', 'fluentform'),
+                'logo'         => fluentFormMix('img/integrations/amocrm.png'),
+                'enabled'      => 'no',
+                'purchase_url' => $purchaseUrl,
+                'category'     => 'crm',
+            ],
+            'onepagecrm' => [
+                'title'        => __('OnePageCRM', 'fluentform'),
+                'description'  => __('Complete your actions with the combination of Fluent Forms and OnePageCRM to collect leads and more.', 'fluentform'),
+                'logo'         => fluentFormMix('img/integrations/onepagecrm.png'),
+                'enabled'      => 'no',
+                'purchase_url' => $purchaseUrl,
+                'category'     => 'crm',
+            ],
+            'insightly' => [
+                'title'        => __('Insightly', 'fluentform'),
+                'description'  => __('With Insightly CRM, you can tailor the standard sales processes of contact, lead and opportunity management.', 'fluentform'),
+                'logo'         => fluentFormMix('img/integrations/insightly.png'),
+                'enabled'      => 'no',
+                'purchase_url' => $purchaseUrl,
+                'category'     => 'crm',
+            ],
+            'mailster' => [
+                'title'        => __('Mailster', 'fluentform'),
+                'description'  => __('Send Beautiful Email Newsletters in WordPress. Join more than 26,000 people worldwide and use Mailster to grow your business.', 'fluentform'),
+                'logo'         => fluentFormMix('img/integrations/mailster.png'),
+                'enabled'      => 'no',
+                'purchase_url' => $purchaseUrl,
+                'category'     => 'crm',
+            ],
             'quiz_addon' => [
                 'title'        => __('Quiz Module', 'fluentform'),
                 'description'  => __('With this module, you can create quizzes and show scores with grades, points, fractions, or percentages', 'fluentform'),
@@ -400,6 +440,13 @@ class AddOnModule
                 'category'     => 'crm',
             ],
         ];
+
+        foreach ($addOns as $key => &$addOn) {
+            $feature = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $key));
+            $addOn['purchase_url'] = fluentform_upgrade_url('feature_lock_' . $feature);
+        }
+
+        return $addOns;
     }
 
     /**
@@ -429,19 +476,33 @@ class AddOnModule
     {
         $plugins = [
             'fluent-cart' => [
-                'title'       => __('FluentCart A New Era of eCommerce', 'fluentform'),
-                'description' => __('It is a performance-first, self-hosted eCommerce platform for WordPres', 'fluentform'),
+                'title'       => __('FluentCart', 'fluentform'),
+                'description' => __('A performance-first, self-hosted eCommerce platform for WordPress', 'fluentform'),
                 'logo'        => 'fcart.svg',
                 'slug'        => 'fluent-cart/fluent-cart.php',
                 'basename'    => 'fluent-cart',
                 'badge_type'  => 'official',
                 'wporg_url'   => 'https://wordpress.org/plugins/fluent-cart/',
+                'setup_url'   => admin_url('admin.php?page=fluent-cart'),
+                'setup_label' => __('Dashboard', 'fluentform'),
+            ],
+            'fluent-smtp' => [
+                'title'       => __('FluentSMTP', 'fluentform'),
+                'description' => __('The Ultimate Free SMTP Plugin for WordPress. Safely send emails via Amazon SES, Mailgun, SendGrid, Outlook, Gmail, and more.',
+                    'fluentform'),
+                'logo'        => 'fluent-smtp.svg',
+                'slug'        => 'fluent-smtp/fluent-smtp.php',
+                'basename'    => 'fluent-smtp',
+                'badge_type'  => 'official',
+                'wporg_url'   => 'https://wordpress.org/plugins/fluent-smtp/',
+                'setup_url'   => admin_url('options-general.php?page=fluent-mail#/connections'),
+                'setup_label' => __('Configure', 'fluentform'),
             ],
             'multilingual-forms-fluent-forms-wpml' => [
                 'title'       => __('Multilingual Forms for Fluent Forms (WPML)', 'fluentform'),
                 'description' => __('Make Fluent Forms multilingual with WPML integration', 'fluentform'),
                 'logo'        => 'wpml-ff.png',
-                'slug'        => 'multilingual-forms-fluent-forms-wpml/multilingual-forms-fluent-forms-wpml.php',
+                'slug'        => 'multilingual-forms-fluent-forms-wpml/multilingual-forms-for-fluent-forms-with-wpml.php',
                 'basename'    => 'multilingual-forms-fluent-forms-wpml',
                 'badge_type'  => 'official',
                 'wporg_url'   => 'https://wordpress.org/plugins/multilingual-forms-fluent-forms-wpml/',
@@ -465,15 +526,19 @@ class AddOnModule
                 'basename'    => 'fluentforms-pdf',
                 'badge_type'  => 'official',
                 'wporg_url'   => 'https://wordpress.org/plugins/fluentforms-pdf/',
+                'setup_url'   => admin_url('admin.php?page=fluent_forms_add_ons&sub_page=fluentform_pdf'),
+                'setup_label' => __('Configure', 'fluentform'),
             ],
             'fluent-community'                     => [
-                'title'       => __('Fluent Community', 'fluentform'),
-                'description' => __('Build Your Own Community & Membership Site with Fluent Community', 'fluentform'),
+                'title'       => __('FluentCommunity', 'fluentform'),
+                'description' => __('Build Your Own Community & Membership Site with FluentCommunity', 'fluentform'),
                 'logo'        => 'fluent-community.svg',
                 'slug'        => 'fluent-community/fluent-community.php',
                 'basename'    => 'fluent-community',
                 'badge_type'  => 'official',
                 'wporg_url'   => 'https://wordpress.org/plugins/fluent-community/',
+                'setup_url'   => admin_url('admin.php?page=fluent-community'),
+                'setup_label' => __('Dashboard', 'fluentform'),
             ],
             'fluent-support'                       => [
                 'title'       => __('Fluent Support', 'fluentform'),
@@ -483,6 +548,8 @@ class AddOnModule
                 'basename'    => 'fluent-support',
                 'badge_type'  => 'official',
                 'wporg_url'   => 'https://wordpress.org/plugins/fluent-support/',
+                'setup_url'   => admin_url('admin.php?page=fluent-support'),
+                'setup_label' => __('Dashboard', 'fluentform'),
             ],
             'wp-social-reviews'                    => [
                 'title'       => __('WP Social Ninja', 'fluentform'),
@@ -493,6 +560,8 @@ class AddOnModule
                 'basename'    => 'wp-social-reviews',
                 'badge_type'  => 'official',
                 'wporg_url'   => 'https://wordpress.org/plugins/wp-social-reviews/',
+                'setup_url'   => admin_url('admin.php?page=wpsocialninja.php'),
+                'setup_label' => __('Dashboard', 'fluentform'),
             ],
             'fluent-crm'                           => [
                 'title'       => __('FluentCRM', 'fluentform'),
@@ -502,6 +571,8 @@ class AddOnModule
                 'basename'    => 'fluent-crm',
                 'badge_type'  => 'official',
                 'wporg_url'   => 'https://wordpress.org/plugins/fluent-crm/',
+                'setup_url'   => admin_url('admin.php?page=fluentcrm-admin'),
+                'setup_label' => __('Dashboard', 'fluentform'),
             ],
         ];
 
@@ -523,7 +594,7 @@ class AddOnModule
     {
         // Check if plugin file exists
         $pluginFile = WP_PLUGIN_DIR . '/' . $pluginSlug;
-        
+
         if (!file_exists($pluginFile)) {
             return 'not_installed';
         }

@@ -187,10 +187,12 @@ class Subscription extends BaseFieldManager
         }
 
         $inputAttributes = [
-            'type'  => 'hidden',
-            'name'  => $data['attributes']['name'],
-            'value' => '0',
-            'class' => 'ff_payment_item ff_subscription_item',
+            'type'              => 'hidden',
+            'name'              => $data['attributes']['name'],
+            'value'             => '0',
+            'class'             => 'ff_payment_item ff_subscription_item',
+            'data-name'         => $data['attributes']['name'],
+            'data-payment_item' => 'yes',
         ];
 
         $inputAttributes['id'] = $this->makeElementId($data, $form);

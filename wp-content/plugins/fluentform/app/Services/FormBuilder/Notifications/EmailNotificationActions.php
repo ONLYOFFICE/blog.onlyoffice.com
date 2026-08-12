@@ -130,13 +130,9 @@ class EmailNotificationActions
                 $fileUrls = ArrayHelper::get($formData, $name);
                 if ($fileUrls && is_array($fileUrls)) {
                     foreach ($fileUrls as $url) {
-                        if (strpos($url, $uploadDir['baseurl']) === 0) {
-                            $relativePath = str_replace($uploadDir['baseurl'], '', $url);
-                            $filePath = wp_normalize_path($uploadDir['basedir'] . $relativePath);
-
-                            if (file_exists($filePath)) {
-                                $attachments[] = $filePath;
-                            }
+                        $filePath = $this->resolveUploadAttachmentPath($url, $uploadDir);
+                        if ($filePath) {
+                            $attachments[] = $filePath;
                         }
                     }
                 }
@@ -148,13 +144,9 @@ class EmailNotificationActions
             $attachments = [];
             foreach ($mediaAttachments as $file) {
                 $fileUrl = ArrayHelper::get($file, 'url');
-                if ($fileUrl && strpos($fileUrl, $uploadDir['baseurl']) === 0) {
-                    $relativePath = str_replace($uploadDir['baseurl'], '', $fileUrl);
-                    $filePath = wp_normalize_path($uploadDir['basedir'] . $relativePath);
-
-                    if (file_exists($filePath)) {
-                        $attachments[] = $filePath;
-                    }
+                $filePath = $this->resolveUploadAttachmentPath($fileUrl, $uploadDir);
+                if ($filePath) {
+                    $attachments[] = $filePath;
                 }
             }
             $emailAttachments = array_merge($emailAttachments, $attachments);
@@ -183,6 +175,44 @@ class EmailNotificationActions
             $form
         );
         return $emailAttachments;
+    }
+
+    private function resolveUploadAttachmentPath($fileUrl, $uploadDir)
+    {
+        if (!$fileUrl || empty($uploadDir['baseurl']) || empty($uploadDir['basedir'])) {
+            return null;
+        }
+
+        $normalizedUrl = strtok($fileUrl, '?#');
+        if (strpos($normalizedUrl, $uploadDir['baseurl']) !== 0) {
+            return null;
+        }
+
+        $relativePath = rawurldecode(str_replace($uploadDir['baseurl'], '', $normalizedUrl));
+        $relativePath = ltrim(wp_normalize_path($relativePath), '/');
+
+        if (!$relativePath || strpos($relativePath, '../') !== false) {
+            return null;
+        }
+
+        $uploadsBaseDir = realpath($uploadDir['basedir']);
+        if (!$uploadsBaseDir) {
+            return null;
+        }
+
+        $uploadsBaseDir = trailingslashit(wp_normalize_path($uploadsBaseDir));
+        $resolvedPath = realpath($uploadsBaseDir . $relativePath);
+
+        if (!$resolvedPath) {
+            return null;
+        }
+
+        $resolvedPath = wp_normalize_path($resolvedPath);
+        if (strpos($resolvedPath, $uploadsBaseDir) !== 0 || !is_file($resolvedPath)) {
+            return null;
+        }
+
+        return $resolvedPath;
     }
 
     public function getFormData($submissionId)

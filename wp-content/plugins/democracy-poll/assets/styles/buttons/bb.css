@@ -1,0 +1,21 @@
+/* button */
+.dem-button[class]{
+	font-weight: 700;
+	color: var(--dem-button-color, #fff);
+	padding: .8em 1em calc(.8em + 3px);
+	border-radius: 3px;
+	background: var(--dem-button-bg, rgb(64,199,129));
+	box-shadow: 0 -3px rgb(53,167,110) inset;
+	transition: background .2s;
+}
+
+.dem-button[class]:hover {
+	background: var(--dem-button-hover-bg, rgb(53, 167, 110));
+	color: var(--dem-button-hover-color, var(--dem-button-color, #fff));
+}
+
+.dem-button[class]:active {
+	background: var(--dem-button-hover-bg, rgb(33,147,90));
+	box-shadow: 0 3px rgb(33,147,90) inset;
+}
+.dem-button[class]:visited{ color:var(--dem-button-color, #fff); }

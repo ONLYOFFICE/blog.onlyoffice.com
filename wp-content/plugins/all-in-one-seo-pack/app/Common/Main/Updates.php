@@ -85,18 +85,16 @@ class Updates {
 			return;
 		}
 
+		// Flush the object cache on plugin update to clear any stale data from persistent cache backends (e.g. Redis, Memcached).
+		wp_cache_flush();
+
 		// The dynamic options have not yet fully loaded, so let's refresh here to force that to happen.
 		aioseo()->dynamicOptions->refresh();
 
-		if ( version_compare( $lastActiveVersion, '4.0.5', '<' ) ) {
-			$this->addImageScanDateColumn();
-		}
+		// Sync database schema with dbDelta - this will create tables and add missing columns automatically
+		$this->updateDbSchema();
 
-		if ( version_compare( $lastActiveVersion, '4.0.6', '<' ) ) {
-			$this->disableTwitterUseOgDefault();
-			$this->updateMaxImagePreviewDefault();
-		}
-
+		// Data migrations and operations that dbDelta cannot handle
 		if ( ! aioseo()->pro && version_compare( $lastActiveVersion, '4.0.6', '=' ) && 'posts' !== get_option( 'show_on_front' ) ) {
 			aioseo()->migration->helpers->redoMigration();
 		}
@@ -114,7 +112,6 @@ class Updates {
 		}
 
 		if ( version_compare( $lastActiveVersion, '4.1.3', '<' ) ) {
-			$this->addNotificationsNewColumn();
 			$this->noindexWooCommercePages();
 			$this->accessControlNewCapabilities();
 		}
@@ -134,27 +131,16 @@ class Updates {
 
 			// Refresh with new Redirects capability.
 			$this->accessControlNewCapabilities();
-
-			// Regenerate the sitemap if using a static one to update the data for the new stylesheets.
 			aioseo()->sitemap->regenerateStaticSitemap();
-
-			$this->fixSchemaTypeDefault();
 		}
 
 		if ( version_compare( $lastActiveVersion, '4.1.6', '<' ) ) {
-			// Remove the recurring scheduled action for notifications.
 			aioseo()->actionScheduler->unschedule( 'aioseo_admin_notifications_update' );
-
 			$this->migrateOgTwitterImageColumns();
-
-			// Set the OG data to false for current installs.
 			aioseo()->options->social->twitter->general->useOgData = false;
 		}
 
 		if ( version_compare( $lastActiveVersion, '4.1.8', '<' ) ) {
-			$this->addLimitModifiedDateColumn();
-
-			// Refresh with new Redirects Page capability.
 			$this->accessControlNewCapabilities();
 		}
 
@@ -168,44 +154,27 @@ class Updates {
 		}
 
 		if ( version_compare( $lastActiveVersion, '4.2.1', '<' ) ) {
-			// Force WordPress to flush the rewrite rules.
 			aioseo()->options->flushRewriteRules();
-
 			Models\Notification::deleteNotificationByName( 'deprecated-filters' );
 			Models\Notification::deleteNotificationByName( 'deprecated-filters-v2' );
 		}
 
 		if ( version_compare( $lastActiveVersion, '4.2.2', '<' ) ) {
-			aioseo()->core->cache->delete( 'db_schema' );
-
-			$this->addOptionsColumn();
 			$this->removeTabsColumn();
 			$this->migrateUserContactMethods();
-
-			// Unschedule any static sitemap regeneration actions to remove any that failed and are still in-progress as a result.
 			aioseo()->actionScheduler->unschedule( 'aioseo_static_sitemap_regeneration' );
 		}
 
-		if ( version_compare( $lastActiveVersion, '4.2.4', '<' ) ) {
-			$this->addNotificationsAddonColumn();
-		}
-
 		if ( version_compare( $lastActiveVersion, '4.2.5', '<' ) ) {
-			$this->addSchemaColumn();
 			$this->schedulePostSchemaMigration();
 		}
 
 		if ( version_compare( $lastActiveVersion, '4.2.4.2', '>' ) && version_compare( $lastActiveVersion, '4.2.6', '<' ) ) {
-			// The default graphs only need to be remigrated if the user was on 4.2.5 or 4.2.5.1.
 			$this->schedulePostSchemaDefaultMigration();
 		}
 
 		if ( version_compare( $lastActiveVersion, '4.2.8', '<' ) ) {
 			$this->migrateDashboardWidgetsOptions();
-		}
-
-		if ( version_compare( $lastActiveVersion, '4.3.6', '<' ) ) {
-			$this->addPrimaryTermColumn();
 		}
 
 		if ( version_compare( $lastActiveVersion, '4.3.9', '<' ) ) {
@@ -221,7 +190,6 @@ class Updates {
 		}
 
 		if ( version_compare( $lastActiveVersion, '4.5.8', '<' ) ) {
-			$this->addQueryArgMonitorTables();
 			$this->addQueryArgMonitorNotification();
 		}
 
@@ -234,7 +202,6 @@ class Updates {
 		}
 
 		if ( version_compare( $lastActiveVersion, '4.7.4', '<' ) ) {
-			$this->addWritingAssistantTables();
 			aioseo()->access->addCapabilities();
 		}
 
@@ -253,19 +220,13 @@ class Updates {
 
 		if ( version_compare( $lastActiveVersion, '4.8.3', '<' ) ) {
 			$this->resetImageScanDate();
-			$this->addSeoAnalyzerResultsTable();
 			$this->migrateSeoAnalyzerResults();
 			$this->migrateSeoAnalyzerCompetitors();
-			$this->addBreadcrumbSettingsColumn();
 		}
 
 		if ( version_compare( $lastActiveVersion, '4.8.3.1', '<' ) ) {
 			aioseo()->core->cache->delete( 'analyze_site_code' );
 			aioseo()->core->cache->delete( 'analyze_site_body' );
-		}
-
-		if ( version_compare( $lastActiveVersion, '4.8.4', '<' ) ) {
-			$this->addAiColumn();
 		}
 
 		if ( version_compare( $lastActiveVersion, '4.8.4.1', '<' ) ) {
@@ -277,12 +238,28 @@ class Updates {
 		}
 
 		if ( version_compare( $lastActiveVersion, '4.9.1', '<' ) ) {
-			$this->addAiInsightsKeywordReportsTable();
 			aioseo()->access->addCapabilities();
 		}
 
 		if ( version_compare( $lastActiveVersion, '4.9.4', '<' ) ) {
 			$this->addSeoChecklistToDashboardWidgets();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.9.6', '<' ) ) {
+			$this->migrateSensitiveOptions();
+		}
+
+		if ( version_compare( $lastActiveVersion, '4.9.7', '<' ) ) {
+			$this->cleanupSearchStatisticsProfile();
+		}
+
+		if ( version_compare( $lastActiveVersion, '5.0.0', '<' ) ) {
+			$this->downloadDictionaries();
+		}
+
+		// Re-sync capabilities so aioseo_page_* caps added this release reach existing installs.
+		if ( version_compare( $lastActiveVersion, '4.9.10', '<' ) ) {
+			aioseo()->access->addCapabilities();
 		}
 
 		do_action( 'aioseo_run_updates', $lastActiveVersion );
@@ -303,7 +280,8 @@ class Updates {
 	 */
 	private function getRawOptions() {
 		// Options from the DB.
-		$commonOptions = json_decode( get_option( aioseo()->options->optionsName ), true );
+		$rawCommonOptions = get_option( aioseo()->options->optionsName );
+		$commonOptions    = is_string( $rawCommonOptions ) ? json_decode( $rawCommonOptions, true ) : $rawCommonOptions;
 		if ( empty( $commonOptions ) ) {
 			$commonOptions = [];
 		}
@@ -335,119 +313,15 @@ class Updates {
 	/**
 	 * Adds our custom tables for V4.
 	 *
+	 * Now uses dbDelta to update DB schema instead of manual table creation.
+	 *
 	 * @since 4.0.0
 	 *
 	 * @return void
 	 */
 	public function addInitialCustomTablesForV4() {
-		$db             = aioseo()->core->db->db;
-		$charsetCollate = '';
-
-		if ( ! empty( $db->charset ) ) {
-			$charsetCollate .= "DEFAULT CHARACTER SET {$db->charset}";
-		}
-		if ( ! empty( $db->collate ) ) {
-			$charsetCollate .= " COLLATE {$db->collate}";
-		}
-
-		// Check for notifications table.
-		if ( ! aioseo()->core->db->tableExists( 'aioseo_notifications' ) ) {
-			$tableName = $db->prefix . 'aioseo_notifications';
-
-			aioseo()->core->db->execute(
-				"CREATE TABLE {$tableName} (
-					id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-					slug varchar(13) NOT NULL,
-					title text NOT NULL,
-					content longtext NOT NULL,
-					type varchar(64) NOT NULL,
-					level text NOT NULL,
-					notification_id bigint(20) unsigned DEFAULT NULL,
-					notification_name varchar(255) DEFAULT NULL,
-					start datetime DEFAULT NULL,
-					end datetime DEFAULT NULL,
-					button1_label varchar(255) DEFAULT NULL,
-					button1_action varchar(255) DEFAULT NULL,
-					button2_label varchar(255) DEFAULT NULL,
-					button2_action varchar(255) DEFAULT NULL,
-					dismissed tinyint(1) NOT NULL DEFAULT 0,
-					created datetime NOT NULL,
-					updated datetime NOT NULL,
-					PRIMARY KEY (id),
-					UNIQUE KEY ndx_aioseo_notifications_slug (slug),
-					KEY ndx_aioseo_notifications_dates (start, end),
-					KEY ndx_aioseo_notifications_type (type),
-					KEY ndx_aioseo_notifications_dismissed (dismissed)
-				) {$charsetCollate};"
-			);
-		}
-
-		if ( ! aioseo()->core->db->tableExists( 'aioseo_posts' ) ) {
-			$tableName = $db->prefix . 'aioseo_posts';
-
-			// Incorrect defaults are adjusted below through migrations.
-			aioseo()->core->db->execute(
-				"CREATE TABLE {$tableName} (
-					id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-					post_id bigint(20) unsigned NOT NULL,
-					title text DEFAULT NULL,
-					description text DEFAULT NULL,
-					keywords mediumtext DEFAULT NULL,
-					keyphrases longtext DEFAULT NULL,
-					page_analysis longtext DEFAULT NULL,
-					canonical_url text DEFAULT NULL,
-					og_title text DEFAULT NULL,
-					og_description text DEFAULT NULL,
-					og_object_type varchar(64) DEFAULT 'default',
-					og_image_type varchar(64) DEFAULT 'default',
-					og_image_custom_url text DEFAULT NULL,
-					og_image_custom_fields text DEFAULT NULL,
-					og_custom_image_width int(11) DEFAULT NULL,
-					og_custom_image_height int(11) DEFAULT NULL,
-					og_video varchar(255) DEFAULT NULL,
-					og_custom_url text DEFAULT NULL,
-					og_article_section text DEFAULT NULL,
-					og_article_tags text DEFAULT NULL,
-					twitter_use_og tinyint(1) DEFAULT 1,
-					twitter_card varchar(64) DEFAULT 'default',
-					twitter_image_type varchar(64) DEFAULT 'default',
-					twitter_image_custom_url text DEFAULT NULL,
-					twitter_image_custom_fields text DEFAULT NULL,
-					twitter_title text DEFAULT NULL,
-					twitter_description text DEFAULT NULL,
-					seo_score int(11) DEFAULT 0 NOT NULL,
-					schema_type varchar(20) DEFAULT NULL,
-					schema_type_options longtext DEFAULT NULL,
-					pillar_content tinyint(1) DEFAULT NULL,
-					robots_default tinyint(1) DEFAULT 1 NOT NULL,
-					robots_noindex tinyint(1) DEFAULT 0 NOT NULL,
-					robots_noarchive tinyint(1) DEFAULT 0 NOT NULL,
-					robots_nosnippet tinyint(1) DEFAULT 0 NOT NULL,
-					robots_nofollow tinyint(1) DEFAULT 0 NOT NULL,
-					robots_noimageindex tinyint(1) DEFAULT 0 NOT NULL,
-					robots_noodp tinyint(1) DEFAULT 0 NOT NULL,
-					robots_notranslate tinyint(1) DEFAULT 0 NOT NULL,
-					robots_max_snippet int(11) DEFAULT NULL,
-					robots_max_videopreview int(11) DEFAULT NULL,
-					robots_max_imagepreview varchar(20) DEFAULT 'none',
-					tabs mediumtext DEFAULT NULL,
-					images longtext DEFAULT NULL,
-					priority tinytext DEFAULT NULL,
-					frequency tinytext DEFAULT NULL,
-					videos longtext DEFAULT NULL,
-					video_thumbnail text DEFAULT NULL,
-					video_scan_date datetime DEFAULT NULL,
-					local_seo longtext DEFAULT NULL,
-					created datetime NOT NULL,
-					updated datetime NOT NULL,
-					PRIMARY KEY (id),
-					KEY ndx_aioseo_posts_post_id (post_id)
-				) {$charsetCollate};"
-			);
-		}
-
-		// Reset the cache for the installed tables.
-		aioseo()->core->cache->delete( 'db_schema' );
+		// Use dbDelta to create all tables based on schema definitions
+		$this->updateDbSchema();
 	}
 
 	/**
@@ -466,80 +340,6 @@ class Updates {
 			if ( ! aioseo()->options->social->twitter->general->defaultImagePosts ) {
 				aioseo()->options->social->twitter->general->defaultImagePosts = $siteLogo;
 			}
-		}
-	}
-
-	/**
-	 * Adds the image scan date column to our posts table.
-	 *
-	 * @since 4.0.5
-	 *
-	 * @return void
-	 */
-	public function addImageScanDateColumn() {
-		if ( ! aioseo()->core->db->columnExists( 'aioseo_posts', 'image_scan_date' ) ) {
-			$tableName = aioseo()->core->db->db->prefix . 'aioseo_posts';
-			aioseo()->core->db->execute(
-				"ALTER TABLE {$tableName}
-				ADD image_scan_date datetime DEFAULT NULL AFTER images"
-			);
-
-			// Reset the cache for the installed tables.
-			aioseo()->core->cache->delete( 'db_schema' );
-		}
-	}
-
-	/**
-	 * Adds the breadcrumb settings column to our posts table.
-	 *
-	 * @since 4.8.3
-	 *
-	 * @return void
-	 */
-	public function addBreadcrumbSettingsColumn() {
-		if ( ! aioseo()->core->db->columnExists( 'aioseo_posts', 'breadcrumb_settings' ) ) {
-			$tableName = aioseo()->core->db->db->prefix . 'aioseo_posts';
-			aioseo()->core->db->execute(
-				"ALTER TABLE {$tableName}
-				ADD `breadcrumb_settings` longtext DEFAULT NULL AFTER local_seo"
-			);
-
-			// Reset the cache for the installed tables.
-			aioseo()->core->cache->delete( 'db_schema' );
-		}
-	}
-
-	/**
-	 * Modifes the default value of the twitter_use_og column.
-	 *
-	 * @since 4.0.6
-	 *
-	 * @return void
-	 */
-	protected function disableTwitterUseOgDefault() {
-		if ( aioseo()->core->db->tableExists( 'aioseo_posts' ) ) {
-			$tableName = aioseo()->core->db->db->prefix . 'aioseo_posts';
-			aioseo()->core->db->execute(
-				"ALTER TABLE {$tableName}
-				MODIFY twitter_use_og tinyint(1) DEFAULT 0"
-			);
-		}
-	}
-
-	/**
-	 * Modifes the default value of the robots_max_imagepreview column.
-	 *
-	 * @since 4.0.6
-	 *
-	 * @return void
-	 */
-	protected function updateMaxImagePreviewDefault() {
-		if ( aioseo()->core->db->tableExists( 'aioseo_posts' ) ) {
-			$tableName = aioseo()->core->db->db->prefix . 'aioseo_posts';
-			aioseo()->core->db->execute(
-				"ALTER TABLE {$tableName}
-				MODIFY robots_max_imagepreview varchar(20) DEFAULT 'large'"
-			);
 		}
 	}
 
@@ -612,32 +412,6 @@ class Updates {
 				]
 			)
 			->run();
-	}
-
-	/**
-	 * Adds the new flag to the notifications table.
-	 *
-	 * @since 4.1.3
-	 *
-	 * @return void
-	 */
-	public function addNotificationsNewColumn() {
-		if ( ! aioseo()->core->db->columnExists( 'aioseo_notifications', 'new' ) ) {
-			$tableName = aioseo()->core->db->db->prefix . 'aioseo_notifications';
-			aioseo()->core->db->execute(
-				"ALTER TABLE {$tableName}
-				ADD new tinyint(1) NOT NULL DEFAULT 1 AFTER dismissed"
-			);
-
-			// Reset the cache for the installed tables.
-			aioseo()->core->cache->delete( 'db_schema' );
-
-			aioseo()->core->db
-				->update( 'aioseo_notifications' )
-				->where( 'new', 1 )
-				->set( 'new', 0 )
-				->run();
-		}
 	}
 
 	/**
@@ -811,23 +585,6 @@ class Updates {
 	}
 
 	/**
-	 * Fixes the default value for the post schema type.
-	 *
-	 * @since 4.1.5
-	 *
-	 * @return void
-	 */
-	private function fixSchemaTypeDefault() {
-		if ( aioseo()->core->db->tableExists( 'aioseo_posts' ) && aioseo()->core->db->columnExists( 'aioseo_posts', 'schema_type' ) ) {
-			$tableName = aioseo()->core->db->db->prefix . 'aioseo_posts';
-			aioseo()->core->db->execute(
-				"ALTER TABLE {$tableName}
-				MODIFY schema_type varchar(20) DEFAULT 'default'"
-			);
-		}
-	}
-
-	/**
 	 * Add in image with/height columns and image URL for caching.
 	 *
 	 * @since 4.1.6
@@ -871,26 +628,6 @@ class Updates {
 					"ALTER TABLE {$tableName} ADD twitter_image_url text DEFAULT NULL AFTER twitter_image_type"
 				);
 			}
-
-			// Reset the cache for the installed tables.
-			aioseo()->core->cache->delete( 'db_schema' );
-		}
-	}
-
-	/**
-	 * Adds the limit modified date column to our posts table.
-	 *
-	 * @since 4.1.8
-	 *
-	 * @return void
-	 */
-	private function addLimitModifiedDateColumn() {
-		if ( ! aioseo()->core->db->columnExists( 'aioseo_posts', 'limit_modified_date' ) ) {
-			$tableName = aioseo()->core->db->db->prefix . 'aioseo_posts';
-			aioseo()->core->db->execute(
-				"ALTER TABLE {$tableName}
-				ADD limit_modified_date tinyint(1) NOT NULL DEFAULT 0 AFTER local_seo"
-			);
 
 			// Reset the cache for the installed tables.
 			aioseo()->core->cache->delete( 'db_schema' );
@@ -977,27 +714,8 @@ class Updates {
 	}
 
 	/**
-	 * Add options column.
-	 *
-	 * @since 4.2.2
-	 *
-	 * @return void
-	 */
-	private function addOptionsColumn() {
-		if ( ! aioseo()->core->db->columnExists( 'aioseo_posts', 'options' ) ) {
-			$tableName = aioseo()->core->db->db->prefix . 'aioseo_posts';
-			aioseo()->core->db->execute(
-				"ALTER TABLE {$tableName}
-				ADD `options` longtext DEFAULT NULL AFTER `limit_modified_date`"
-			);
-
-			// Reset the cache for the installed tables.
-			aioseo()->core->cache->delete( 'db_schema' );
-		}
-	}
-
-	/**
 	 * Remove the tabs column as it is unnecessary.
+	 * This method is kept because dbDelta cannot handle DROP COLUMN operations.
 	 *
 	 * @since 4.2.2
 	 *
@@ -1034,43 +752,6 @@ class Updates {
 			SET `meta_key` = 'aioseo_twitter_url'
 			WHERE `meta_key` = 'aioseo_twitter'"
 		);
-	}
-
-	/**
-	 * Add an addon column to the notifications table.
-	 *
-	 * @since 4.2.4
-	 *
-	 * @return void
-	 */
-	private function addNotificationsAddonColumn() {
-		if ( ! aioseo()->core->db->columnExists( 'aioseo_notifications', 'addon' ) ) {
-			$tableName = aioseo()->core->db->db->prefix . 'aioseo_notifications';
-			aioseo()->core->db->execute(
-				"ALTER TABLE {$tableName}
-				ADD `addon` varchar(64) DEFAULT NULL AFTER `slug`"
-			);
-
-			// Reset the cache for the installed tables.
-			aioseo()->core->cache->delete( 'db_schema' );
-		}
-	}
-
-	/**
-	 * Adds the schema column.
-	 *
-	 * @since 4.2.5
-	 *
-	 * @return void
-	 */
-	private function addSchemaColumn() {
-		if ( ! aioseo()->core->db->columnExists( 'aioseo_posts', 'schema' ) ) {
-			$tableName = aioseo()->core->db->db->prefix . 'aioseo_posts';
-			aioseo()->core->db->execute(
-				"ALTER TABLE {$tableName}
-				ADD `schema` longtext DEFAULT NULL AFTER `seo_score`"
-			);
-		}
 	}
 
 	/**
@@ -1523,23 +1204,6 @@ class Updates {
 	}
 
 	/**
-	 * Adds the primary_term column to the aioseo_posts table.
-	 *
-	 * @since 4.3.6
-	 *
-	 * @return void
-	 */
-	private function addPrimaryTermColumn() {
-		if ( ! aioseo()->core->db->columnExists( 'aioseo_posts', 'primary_term' ) ) {
-			$tableName = aioseo()->core->db->db->prefix . 'aioseo_posts';
-			aioseo()->core->db->execute(
-				"ALTER TABLE {$tableName}
-				ADD `primary_term` longtext DEFAULT NULL AFTER `page_analysis`"
-			);
-		}
-	}
-
-	/**
 	 * Schedules the revision records removal.
 	 *
 	 * @since 4.3.1
@@ -1676,66 +1340,6 @@ class Updates {
 	}
 
 	/**
-	 * Adds our custom tables for the query arg monitor.
-	 *
-	 * @since 4.5.8
-	 *
-	 * @return void
-	 */
-	public function addQueryArgMonitorTables() {
-		$db             = aioseo()->core->db->db;
-		$charsetCollate = '';
-
-		if ( ! empty( $db->charset ) ) {
-			$charsetCollate .= "DEFAULT CHARACTER SET {$db->charset}";
-		}
-		if ( ! empty( $db->collate ) ) {
-			$charsetCollate .= " COLLATE {$db->collate}";
-		}
-
-		// Check for crawl cleanup logs table.
-		if ( ! aioseo()->core->db->tableExists( 'aioseo_crawl_cleanup_logs' ) ) {
-			$tableName = $db->prefix . 'aioseo_crawl_cleanup_logs';
-
-			aioseo()->core->db->execute(
-				"CREATE TABLE {$tableName} (
-					`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-					`slug` text NOT NULL,
-					`key` text NOT NULL,
-					`value` text,
-					`hash` varchar(40) NOT NULL,
-					`hits` int(20) NOT NULL DEFAULT 1,
-					`created` datetime NOT NULL,
-					`updated` datetime NOT NULL,
-					PRIMARY KEY (id),
-					UNIQUE KEY ndx_aioseo_crawl_cleanup_logs_hash (hash)
-				) {$charsetCollate};"
-			);
-		}
-
-		// Check for crawl cleanup blocked table.
-		if ( ! aioseo()->core->db->tableExists( 'aioseo_crawl_cleanup_blocked_args' ) ) {
-			$tableName = $db->prefix . 'aioseo_crawl_cleanup_blocked_args';
-
-			aioseo()->core->db->execute(
-				"CREATE TABLE {$tableName} (
-					`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-					`key` text,
-					`value` text,
-					`key_value_hash` varchar(40),
-					`regex` varchar(150),
-					`hits` int(20) NOT NULL DEFAULT 0,
-					`created` datetime NOT NULL,
-					`updated` datetime NOT NULL,
-					PRIMARY KEY (id),
-					UNIQUE KEY ndx_aioseo_crawl_cleanup_blocked_args_key_value_hash (key_value_hash),
-					UNIQUE KEY ndx_aioseo_crawl_cleanup_blocked_args_regex (regex)
-				) {$charsetCollate};"
-			);
-		}
-	}
-
-	/**
 	 * Adds a notification for the query arg monitor.
 	 *
 	 * @since 4.5.8
@@ -1811,66 +1415,6 @@ class Updates {
 		}
 
 		aioseo()->options->deprecated->breadcrumbs->enable = false;
-	}
-
-	/**
-	 * Add tables for Writing Assistant.
-	 *
-	 * @since 4.7.4
-	 *
-	 * @return void
-	 */
-	private function addWritingAssistantTables() {
-		$db             = aioseo()->core->db->db;
-		$charsetCollate = '';
-
-		if ( ! empty( $db->charset ) ) {
-			$charsetCollate .= "DEFAULT CHARACTER SET {$db->charset}";
-		}
-		if ( ! empty( $db->collate ) ) {
-			$charsetCollate .= " COLLATE {$db->collate}";
-		}
-
-		if ( ! aioseo()->core->db->tableExists( 'aioseo_writing_assistant_posts' ) ) {
-			$tableName = $db->prefix . 'aioseo_writing_assistant_posts';
-
-			aioseo()->core->db->execute(
-				"CREATE TABLE {$tableName} (
-					`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-					`post_id` bigint(20) unsigned DEFAULT NULL,
-					`keyword_id` bigint(20) unsigned DEFAULT NULL,
-					`content_analysis_hash` VARCHAR(40) DEFAULT NULL,
-					`content_analysis` text DEFAULT NULL,
-					`created` datetime NOT NULL,
-					`updated` datetime NOT NULL,
-					PRIMARY KEY (id),
-					UNIQUE KEY ndx_aioseo_writing_assistant_posts_post_id (post_id),
-					KEY ndx_aioseo_writing_assistant_posts_keyword_id (keyword_id)
-				) {$charsetCollate};"
-			);
-		}
-
-		if ( ! aioseo()->core->db->tableExists( 'aioseo_writing_assistant_keywords' ) ) {
-			$tableName = $db->prefix . 'aioseo_writing_assistant_keywords';
-
-			aioseo()->core->db->execute(
-				"CREATE TABLE {$tableName} (
-					`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-					`uuid` varchar(40) NOT NULL,
-					`keyword` varchar(255) NOT NULL,
-					`country` varchar(10) NOT NULL DEFAULT 'us',
-					`language` varchar(10) NOT NULL DEFAULT 'en',
-					`progress` tinyint(3) DEFAULT 0,
-					`keywords` mediumtext NULL,
-					`competitors` mediumtext NULL,
-					`created` datetime NOT NULL,
-					`updated` datetime NOT NULL,
-					PRIMARY KEY (id),
-					UNIQUE KEY ndx_aioseo_writing_assistant_keywords_uuid (uuid),
-					KEY ndx_aioseo_writing_assistant_keywords_keyword (keyword)
-				) {$charsetCollate};"
-			);
-		}
 	}
 
 	/**
@@ -1953,46 +1497,6 @@ class Updates {
 	}
 
 	/**
-	 * Adds our custom table for the SeoAnalysis/SeoAnalyzer homepage and competitor results.
-	 *
-	 * @since 4.8.3
-	 *
-	 * @return void
-	 */
-	private function addSeoAnalyzerResultsTable() {
-		$db             = aioseo()->core->db->db;
-		$charsetCollate = '';
-
-		if ( ! empty( $db->charset ) ) {
-			$charsetCollate .= "DEFAULT CHARACTER SET {$db->charset}";
-		}
-		if ( ! empty( $db->collate ) ) {
-			$charsetCollate .= " COLLATE {$db->collate}";
-		}
-
-		// Check for seo analyzer results table.
-		if ( ! aioseo()->core->db->tableExists( 'aioseo_seo_analyzer_results' ) ) {
-			$tableName = $db->prefix . 'aioseo_seo_analyzer_results';
-
-			aioseo()->core->db->execute(
-				"CREATE TABLE {$tableName} (
-					`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-					`data` text NOT NULL,
-					`score` varchar(255),
-					`competitor_url` varchar(255),
-					`created` datetime NOT NULL,
-					`updated` datetime NOT NULL,
-					PRIMARY KEY (id),
-					KEY ndx_aioseo_seo_analyzer_results_competitor_url (competitor_url)
-				) {$charsetCollate};"
-			);
-
-			// Reset the cache for the installed tables.
-			aioseo()->core->cache->delete( 'db_schema' );
-		}
-	}
-
-	/**
 	 * Migrate the SeoAnalyzer homepage results from the Internal Optinos to the new table.
 	 *
 	 * @since 4.8.3
@@ -2049,30 +1553,6 @@ class Updates {
 	}
 
 	/**
-	* Adds the AI column to our posts table.
-	*
-	* @since 4.8.4
-	*
-	* @return void
-	*/
-	public function addAiColumn() {
-		if ( ! aioseo()->core->db->columnExists( 'aioseo_posts', 'ai' ) ) {
-			$tableName = aioseo()->core->db->db->prefix . 'aioseo_posts';
-			if ( aioseo()->core->db->columnExists( 'aioseo_posts', 'open_ai' ) ) {
-				aioseo()->core->db->execute(
-					"ALTER TABLE {$tableName}
-					ADD ai longtext DEFAULT NULL AFTER open_ai"
-				);
-			} else {
-				aioseo()->core->db->execute(
-					"ALTER TABLE {$tableName}
-					ADD ai longtext DEFAULT NULL AFTER options"
-				);
-			}
-		}
-	}
-
-	/**
 	 * Returns the raw options from the database.
 	 *
 	 * @since 4.8.3
@@ -2081,7 +1561,8 @@ class Updates {
 	 */
 	private function getRawInternalOptions() {
 		// Options from the DB.
-		$internalOptions = json_decode( get_option( aioseo()->internalOptions->optionsName ), true );
+		$rawInternalOptions = get_option( aioseo()->internalOptions->optionsName );
+		$internalOptions    = is_string( $rawInternalOptions ) ? json_decode( $rawInternalOptions, true ) : $rawInternalOptions;
 		if ( empty( $internalOptions ) ) {
 			$internalOptions = [];
 		}
@@ -2112,47 +1593,221 @@ class Updates {
 	}
 
 	/**
-	 * Adds tables for AI Insights Keyword Reports.
+	 * Synchronizes database schema with defined schema using dbDelta.
 	 *
-	 * @since 4.9.1
+	 * This method uses WordPress's dbDelta() function to automatically:
+	 * - Create tables that don't exist
+	 * - Add missing columns to existing tables
+	 * - Modify column definitions that have changed
+	 *
+	 * Note: dbDelta CANNOT drop columns or rename columns. Those operations
+	 * must be handled separately with custom SQL in version-gated migrations.
+	 *
+	 * @since 4.9.7
 	 *
 	 * @return void
 	 */
-	private function addAiInsightsKeywordReportsTable() {
-		$db             = aioseo()->core->db->db;
-		$charsetCollate = '';
-
-		if ( ! empty( $db->charset ) ) {
-			$charsetCollate .= "DEFAULT CHARACTER SET {$db->charset}";
-		}
-		if ( ! empty( $db->collate ) ) {
-			$charsetCollate .= " COLLATE {$db->collate}";
+	private function updateDbSchema() {
+		if ( ! function_exists( 'dbDelta' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		}
 
-		// Check for keyword tracker reports table.
-		if ( ! aioseo()->core->db->tableExists( 'aioseo_ai_insights_keyword_reports' ) ) {
-			$tableName = $db->prefix . 'aioseo_ai_insights_keyword_reports';
+		// Ensure the cache table is properly cleaned before running dbDelta.
+		// This is a safety net for cases where PreUpdates couldn't acquire its lock
+		// (e.g. concurrent requests) and the table still has the old schema with rows.
+		// Without this, dbDelta adds the 'name' column with default '' to all existing rows,
+		// causing "Duplicate entry" errors when adding the UNIQUE KEY.
+		aioseo()->preUpdates->createCacheTable();
+		aioseo()->preUpdates->createCrawlCleanupLogsTable();
 
-			aioseo()->core->db->execute(
-				"CREATE TABLE {$tableName} (
-					`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-					`uuid` varchar(40) NOT NULL,
-					`keyword` varchar(255) NOT NULL,
-					`status` varchar(20) NOT NULL DEFAULT 'pending',
-					`brands` longtext DEFAULT NULL,
-					`brands_mentioned` int(11) DEFAULT 0,
-					`results` longtext DEFAULT NULL,
-					`created` datetime NOT NULL,
-					`updated` datetime NOT NULL,
-					PRIMARY KEY (id),
-					KEY ndx_aioseo_ai_insights_keyword_reports_uuid (uuid),
-					KEY ndx_aioseo_ai_insights_keyword_reports_keyword (keyword),
-					KEY ndx_aioseo_ai_insights_keyword_reports_status (status)
-				) {$charsetCollate};"
-			);
-		}
+		// Get all schema definitions and run dbDelta
+		$schemas = aioseo()->dbSchema->getSchema();
+		dbDelta( $schemas );
 
-		// Reset the cache for the installed tables.
+		// Clear schema cache so columnExists/tableExists work correctly
 		aioseo()->core->cache->delete( 'db_schema' );
+	}
+
+	/**
+	 * Downloads the spell checker dictionary for the current locale if needed.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @return void
+	 */
+	private function downloadDictionaries() {
+		if ( ! aioseo()->options->advanced->spellChecker ) {
+			return;
+		}
+
+		$dictionary       = new \AIOSEO\Plugin\Common\SpellChecker\Dictionary();
+		$supportedLocales = $dictionary->getSpellCheckableLocales();
+		$locale           = get_locale();
+
+		if ( ! in_array( $locale, $supportedLocales, true ) ) {
+			return;
+		}
+
+		if ( ! $dictionary->needsDownload( $locale ) ) {
+			return;
+		}
+
+		$result = $dictionary->downloadForLocale( $locale );
+		if ( is_wp_error( $result ) ) {
+			$notification = Models\Notification::getNotificationByName( 'spell-checker-dictionary-download-failed' );
+			if ( ! $notification->exists() ) {
+				Models\Notification::addNotification( [
+					'slug'              => uniqid(),
+					'notification_name' => 'spell-checker-dictionary-download-failed',
+					'title'             => __( 'Spell Checker Dictionary Download Failed', 'all-in-one-seo-pack' ),
+					'content'           => __( 'We were unable to download the spell checker dictionary for your language. You can try again from the Settings page.', 'all-in-one-seo-pack' ),
+					'type'              => 'warning',
+					'level'             => [ 'all' ],
+					'button1_label'     => __( 'Go to Settings', 'all-in-one-seo-pack' ),
+					'button1_action'    => 'http://route#aioseo-settings:advanced',
+					'start'             => gmdate( 'Y-m-d H:i:s' )
+				] );
+			}
+		}
+	}
+
+	/**
+	 * Migrates sensitive values from Options/InternalOptions to the new SensitiveOptions storage.
+	 *
+	 * @since 4.9.5
+	 *
+	 * @return void
+	 */
+	private function migrateSensitiveOptions() {
+		// Migrate from InternalOptions.
+		$rawInternalOptions = json_decode( (string) get_option( 'aioseo_options_internal', '' ), true );
+		if ( ! is_array( $rawInternalOptions ) ) {
+			$rawInternalOptions = [];
+		}
+
+		$internalMappings = [
+			'connectLicenseKey'          => [ 'internal', 'connectLicenseKey' ],
+			'aiAccessToken'              => [ 'internal', 'ai', 'accessToken' ],
+			'semrushAccessToken'         => [ 'integrations', 'semrush', 'accessToken' ],
+			'semrushRefreshToken'        => [ 'integrations', 'semrush', 'refreshToken' ],
+			'searchStatisticsTrustToken' => [ 'internal', 'searchStatistics', 'trustToken' ],
+			'siteAnalysisConnectToken'   => [ 'internal', 'siteAnalysis', 'connectToken' ]
+		];
+
+		$internalOptionsChanged = false;
+		foreach ( $internalMappings as $newKey => $path ) {
+			$value = aioseo()->helpers->getNestedValue( $rawInternalOptions, $path );
+			if ( ! empty( $value ) && is_string( $value ) ) {
+				aioseo()->sensitiveOptions->set( $newKey, $value );
+
+				// Remove the old value from the internal options.
+				$this->unsetNestedValue( $rawInternalOptions, $path );
+				$internalOptionsChanged = true;
+			}
+		}
+
+		// Migrate search statistics profile key and token from the profile array.
+		$profile = aioseo()->helpers->getNestedValue( $rawInternalOptions, [ 'internal', 'searchStatistics', 'profile' ] );
+		if ( is_array( $profile ) ) {
+			if ( ! empty( $profile['key'] ) && is_string( $profile['key'] ) ) {
+				aioseo()->sensitiveOptions->set( 'searchStatisticsProfileKey', $profile['key'] );
+				unset( $rawInternalOptions['internal']['searchStatistics']['profile']['key'] );
+				$internalOptionsChanged = true;
+			}
+			if ( ! empty( $profile['token'] ) && is_string( $profile['token'] ) ) {
+				aioseo()->sensitiveOptions->set( 'searchStatisticsProfileToken', $profile['token'] );
+				unset( $rawInternalOptions['internal']['searchStatistics']['profile']['token'] );
+				$internalOptionsChanged = true;
+			}
+		}
+
+		if ( $internalOptionsChanged ) {
+			update_option( 'aioseo_options_internal', wp_json_encode( $rawInternalOptions ), false );
+		}
+
+		// Migrate Lite connect key/token.
+		if ( ! aioseo()->pro ) {
+			$rawLiteInternalOptions = json_decode( (string) get_option( 'aioseo_options_internal_lite', '' ), true );
+			if ( is_array( $rawLiteInternalOptions ) ) {
+				$liteOptionsChanged = false;
+
+				$connectKey = aioseo()->helpers->getNestedValue( $rawLiteInternalOptions, [ 'internal', 'connect', 'key' ] );
+				if ( ! empty( $connectKey ) && is_string( $connectKey ) ) {
+					aioseo()->sensitiveOptions->set( 'connectKey', $connectKey );
+					unset( $rawLiteInternalOptions['internal']['connect']['key'] );
+					$liteOptionsChanged = true;
+				}
+
+				$connectToken = aioseo()->helpers->getNestedValue( $rawLiteInternalOptions, [ 'internal', 'connect', 'token' ] );
+				if ( ! empty( $connectToken ) && is_string( $connectToken ) ) {
+					aioseo()->sensitiveOptions->set( 'connectToken', $connectToken );
+					unset( $rawLiteInternalOptions['internal']['connect']['token'] );
+					$liteOptionsChanged = true;
+				}
+
+				if ( $liteOptionsChanged ) {
+					update_option( 'aioseo_options_internal_lite', wp_json_encode( $rawLiteInternalOptions ), false );
+				}
+			}
+		}
+
+		// Force save the sensitive options.
+		aioseo()->sensitiveOptions->save( true );
+	}
+
+	/**
+	 * Removes leaked `key` and `token` from the Search Statistics profile array.
+	 *
+	 * The 4.9.6 sensitive-options migration unset these on the raw DB option, but the
+	 * in-memory InternalOptions model (already loaded at boot) re-saved them on shutdown
+	 * because `searchStatistics.profile` was a generic `array` leaf — its inner keys
+	 * weren't filtered against the schema. The schema is now structured, so a forced
+	 * save strips legacy subkeys automatically; backfill sensitive options first in case
+	 * the prior migration missed them.
+	 *
+	 * @since 4.9.7
+	 *
+	 * @return void
+	 */
+	private function cleanupSearchStatisticsProfile() {
+		$rawInternalOptions = json_decode( (string) get_option( 'aioseo_options_internal', '' ), true );
+		$profile            = is_array( $rawInternalOptions )
+			? aioseo()->helpers->getNestedValue( $rawInternalOptions, [ 'internal', 'searchStatistics', 'profile' ] )
+			: null;
+
+		if ( is_array( $profile ) ) {
+			if ( ! empty( $profile['key'] ) && is_string( $profile['key'] ) && ! aioseo()->sensitiveOptions->hasValue( 'searchStatisticsProfileKey' ) ) {
+				aioseo()->sensitiveOptions->set( 'searchStatisticsProfileKey', $profile['key'] );
+			}
+			if ( ! empty( $profile['token'] ) && is_string( $profile['token'] ) && ! aioseo()->sensitiveOptions->hasValue( 'searchStatisticsProfileToken' ) ) {
+				aioseo()->sensitiveOptions->set( 'searchStatisticsProfileToken', $profile['token'] );
+			}
+			aioseo()->sensitiveOptions->save( true );
+		}
+
+		// Force-save internal options so the structured `profile` schema strips legacy subkeys.
+		aioseo()->internalOptions->save( true );
+	}
+
+	/**
+	 * Unsets a nested value in an array by path.
+	 *
+	 * @since 4.9.6
+	 *
+	 * @param  array $array The array to modify (passed by reference).
+	 * @param  array $path  The path to the value.
+	 * @return void
+	 */
+	private function unsetNestedValue( &$array, $path ) {
+		$lastKey = array_pop( $path );
+		$current = &$array;
+		foreach ( $path as $key ) {
+			if ( ! isset( $current[ $key ] ) || ! is_array( $current[ $key ] ) ) {
+				return;
+			}
+			$current = &$current[ $key ];
+		}
+
+		unset( $current[ $lastKey ] );
 	}
 }

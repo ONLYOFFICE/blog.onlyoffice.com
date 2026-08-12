@@ -217,6 +217,75 @@ trait ThirdParty {
 	}
 
 	/**
+	 * Returns the WooCommerce product facts the TruSEO product identifier and SKU assessments need.
+	 * NOTE: reports the saved product; the editor merges in unsaved field values on top of this.
+	 *
+	 * @since 5.0.0.1
+	 *
+	 * @param  int         $postId The product ID.
+	 * @return array|null          The product data, or null when the post is not a Woo product.
+	 */
+	public function getWooCommerceProductData( $postId ) {
+		if ( ! $this->isWooCommerceActive() || ! function_exists( 'wc_get_product' ) ) {
+			return null;
+		}
+
+		$product = wc_get_product( $postId );
+		if ( ! $product ) {
+			return null;
+		}
+
+		// get_global_unique_id() is the native GTIN/UPC/EAN/ISBN field, added in WooCommerce 9.2.
+		$canRetrieveGlobalIdentifier = method_exists( $product, 'get_global_unique_id' );
+
+		$data = [
+			'productType'                   => $product->get_type(),
+			'hasVariants'                   => false,
+			'canRetrieveGlobalSku'          => true,
+			'hasGlobalSKU'                  => (bool) $product->get_sku(),
+			'canRetrieveGlobalIdentifier'   => $canRetrieveGlobalIdentifier,
+			'hasGlobalIdentifier'           => $canRetrieveGlobalIdentifier && (bool) $product->get_global_unique_id(),
+			// Only meaningful for variable products; overwritten below when variations exist.
+			'canRetrieveVariantSkus'        => true,
+			'canRetrieveVariantIdentifiers' => $canRetrieveGlobalIdentifier,
+			'doAllVariantsHaveSKU'          => true,
+			'doAllVariantsHaveIdentifier'   => true
+		];
+
+		if ( ! $product->is_type( 'variable' ) ) {
+			return $data;
+		}
+
+		$variationIds = $product->get_children();
+		if ( empty( $variationIds ) ) {
+			return $data;
+		}
+
+		$data['hasVariants'] = true;
+
+		foreach ( $variationIds as $variationId ) {
+			$variation = wc_get_product( $variationId );
+			if ( ! $variation ) {
+				continue;
+			}
+
+			if ( ! $variation->get_sku() ) {
+				$data['doAllVariantsHaveSKU'] = false;
+			}
+
+			if (
+				$canRetrieveGlobalIdentifier &&
+				method_exists( $variation, 'get_global_unique_id' ) &&
+				! $variation->get_global_unique_id()
+			) {
+				$data['doAllVariantsHaveIdentifier'] = false;
+			}
+		}
+
+		return $data;
+	}
+
+	/**
 	 * Checks whether the queried object is a WooCommerce taxonomy page.
 	 *
 	 * @since 4.5.5
@@ -852,9 +921,10 @@ trait ThirdParty {
 	 */
 	public function isPluginActive( $slug ) {
 		$mapped = [
-			'buddypress' => 'buddypress/bp-loader.php',
-			'bbpress'    => 'bbpress/bbpress.php',
-			'weglot'     => 'weglot/weglot.php'
+			'buddypress'  => 'buddypress/bp-loader.php',
+			'bbpress'     => 'bbpress/bbpress.php',
+			'weglot'      => 'weglot/weglot.php',
+			'universally' => 'universally-language-translation-multilingual-tool/universally.php'
 		];
 
 		static $output = [];

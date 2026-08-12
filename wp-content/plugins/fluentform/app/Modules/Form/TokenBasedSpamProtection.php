@@ -65,22 +65,49 @@ class TokenBasedSpamProtection
         $timeStamp = current_time('timestamp');
         $fieldName = $this->getFieldName($formId);
         $data = implode('|', [$timeStamp, $formId, $fieldName]);
-        
+
         return apply_filters('fluentform/generated_protection_token', Protector::encrypt($data), $formId, $timeStamp);
+    }
+
+    /**
+     * SECURITY (FINDING-25): mint a token input for the conversational form so it is carried in the
+     * submission (the conversational JS forwards every extra_input) and the token check can be
+     * enforced server-side instead of being skippable via the client isFFConversational flag. This
+     * is static and self-contained to avoid the constructor's action registrations; it mirrors
+     * isEnabled() / getFieldName() / generateToken() above (same filters, same payload format, so
+     * validateToken() accepts it).
+     *
+     * @param int $formId
+     * @return array
+     */
+    public static function getConversationalTokenInput($formId)
+    {
+        $option = get_option('_fluentform_global_form_settings');
+        $enabled = 'yes' === Arr::get($option, 'misc.tokenBasedProtectionStatus');
+        $enabled = apply_filters('fluentform/token_based_spam_protection_status', $enabled, $formId);
+        if (!$enabled) {
+            return [];
+        }
+
+        $fieldName = apply_filters('fluentform/token_protection_name', '__fluent_protection_token_' . $formId, $formId);
+        $timeStamp = current_time('timestamp');
+        $data = implode('|', [$timeStamp, $formId, $fieldName]);
+        $token = apply_filters('fluentform/generated_protection_token', Protector::encrypt($data), $formId, $timeStamp);
+
+        return [$fieldName => $token];
     }
     
     public function verify($insertData, $requestData, $formId)
     {
-        if (
-            !$this->isEnabled($formId) ||
-            (
-                Helper::isConversionForm($formId) &&
-                Arr::isTrue($requestData, 'isFFConversational')
-            )
-        ) {
+        // SECURITY (FINDING-25): do NOT skip the check for conversational forms based on the
+        // client-supplied isFFConversational flag — that let an attacker bypass token protection by
+        // adding one parameter. The conversational renderer now injects a valid token into the
+        // submission (getConversationalTokenInput via extra_inputs), so the check is enforced for
+        // conversational and regular forms alike; only a genuinely-disabled feature is skipped.
+        if (!$this->isEnabled($formId)) {
             return;
         }
-        
+
         $fieldName = $this->getFieldName($formId);
         $token = sanitize_text_field(Arr::get($requestData, $fieldName));
         if (!$token || !$this->validateToken($token, $formId)) {
@@ -121,6 +148,14 @@ class TokenBasedSpamProtection
             }
     
             $isValid = (int)$tokenFormId === $formId && $fieldName === $this->getFieldName($formId);
+
+            // NOTE (FINDING-27): a per-token single-use cap was intentionally NOT implemented here.
+            // Storing one WordPress transient per minted token would create unbounded options-table
+            // writes on this high-frequency public path (tokens are cheaply minted via the public
+            // endpoint and expired transients are not proactively cleaned). The token remains a
+            // defence-in-depth anti-bot control (a bot must fetch a nonce-gated, form/field-bound,
+            // time-limited token); replay within the expiration window is the accepted LOW residual.
+
             return apply_filters('fluentform/token_based_validation_result',
                 $isValid,
                 $timestamp,

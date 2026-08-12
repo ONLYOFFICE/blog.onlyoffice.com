@@ -4,18 +4,16 @@ namespace DemocracyPoll;
 
 /**
  * Main:
- * @property-read int    $inline_js_css          Eg: 1
- * @property-read int    $keep_logs              Eg: 1
- * @property-read string $before_title           Eg: '<strong class="dem-poll-title">'
- * @property-read string $after_title            Eg: '</strong>'
+ * @property-read int    $allow_same_ip_votes    Eg: 0
+ * @property-read string $title_markup           Eg: '<strong class="dem-poll-title">{question}</strong>'
  * @property-read int    $force_cachegear        Eg: 0
  * @property-read int    $archive_page_id        Eg: 0
  * @property-read string $order_answers          Eg: 'by_winner'
+ * @property-read string $order_answers_voted    Eg: 'by_winner'
  * @property-read int    $use_widget             Eg: 1
  * @property-read int    $hide_vote_button       Eg: 0
  * @property-read int    $toolbar_menu           Eg: 1
  * @property-read int    $tinymce_button         Eg: 1
- * @property-read int    $show_copyright         Eg: 1
  * @property-read int    $only_for_users         Eg: 0
  * @property-read int    $dont_show_results      Eg: 0
  * @property-read int    $dont_show_results_link Eg: 0
@@ -25,7 +23,6 @@ namespace DemocracyPoll;
  * @property-read array  $access_roles           Eg: []
  * @property-read int    $soft_ip_detect         Eg: 0
  * @property-read int    $post_metabox_off       Eg: 0
- * @property-read int    $disable_js             Eg: 0
  *
  * Design:
  * @property-read string $loader_fname         Eg: 'css-roller.css3'
@@ -33,7 +30,7 @@ namespace DemocracyPoll;
  * @property-read string $css_button           Eg: 'flat.css'
  * @property-read string $loader_fill          Eg: ''
  * @property-read int    $graph_from_total     Eg: 1
- * @property-read int    $answs_max_height     Eg: 500
+ * @property-read string $answs_max_height     Eg: 35rem
  * @property-read int    $anim_speed           Eg: 400
  * @property-read string $checkradio_fname     Eg: ''
  * @property-read string $line_bg              Eg: ''
@@ -51,54 +48,50 @@ namespace DemocracyPoll;
  */
 class Options {
 
-	const OPT_NAME = 'democracy_options';
+	public const OPT_NAME = 'democracy_options';
 
-	private $opt = [];
+	protected array $opt = [];
 
-	private $default_options = [
+	protected array $default_options = [
 		'main'   => [
-			// встараивать стили и скрипты в HTML
-			'inline_js_css'          => 1,
-			// вести лог в БД
-			'keep_logs'              => 1,
-			'before_title'           => '<strong class="dem-poll-title">',
-			'after_title'            => '</strong>',
+			// Allow guests with different browser fingerprints to vote from the same IP address.
+			'allow_same_ip_votes'    => 0,
+			'title_markup'           => '<strong class="dem-poll-title">{question}</strong>',
 			'force_cachegear'        => 0,
 			'archive_page_id'        => 0,
 			'order_answers'          => 'by_winner',
+			'order_answers_voted'    => 'by_winner',
 			'use_widget'             => 1,
-			// прятать кнопку голосования где это можно, тогда голосование будет происходить по клику на ответ
+			// Hide the vote button where possible and vote by clicking an answer.
 			'hide_vote_button'       => 0,
 			'toolbar_menu'           => 1,
 			'tinymce_button'         => 1,
-			'show_copyright'         => 1,
 			'only_for_users'         => 0,
-			// Не показывать результаты опроса. До закрытия голосования. Глобальная опция.
+			// Do not show poll results until voting is closed. Global option.
 			'dont_show_results'      => 0,
-			// Не показывать только ссылку на результаты. Результаты будут видны после голосования. Глобальная опция.
+			// Hide only the results link. Results remain visible after voting. Global option.
 			'dont_show_results_link' => 0,
 			'democracy_off'          => 0,
-			// глобальная опция democracy
+			// Global Democracy option.
 			'revote_off'             => 0,
-			// глобальная опция переголосование
+			// Global revoting option.
 			'cookie_days'            => 365,
 			'access_roles'           => [],
 			'soft_ip_detect'         => 0,
-			// определять IP не только через REMOTE_ADDR
+			// Detect IP addresses using sources other than REMOTE_ADDR.
 			'post_metabox_off'       => 0,
-			// выключить ли метабокс для записей?
-			'disable_js'             => 0,
-			// Дебаг: отключает JS
+			// Disable the post metabox.
 		],
 		'design' => [
 			'loader_fname'         => 'css-roller.css3',
 			'css_file_name'        => 'alternate.css',
-			// название файла стилей который будет использоваться для опроса.
+			// Name of the stylesheet used for polls.
 			'css_button'           => 'flat.css',
 			'loader_fill'          => '',
-			// как заполнять шкалу прогресса
+			// How to fill the progress bar.
 			'graph_from_total'     => 1,
-			'answs_max_height'     => 500,
+			// eg: 500px, 50em. Leave empty to disable
+			'answs_max_height'     => '',
 			// px
 			'anim_speed'           => 400,
 			// msec
@@ -150,21 +143,39 @@ class Options {
 			if( ! $this->opt ){
 				$this->reset_options( 'all' );
 			}
+			else {
+				// backward compatibility: v6.4.1+
+				if( ! isset( $this->opt['title_markup'] ) ){
+					$before_title = $this->opt['before_title'] ?? '<strong class="dem-poll-title">';
+					$after_title  = $this->opt['after_title'] ?? '</strong>';
+					$this->opt['title_markup'] = "$before_title{question}$after_title";
+				}
+
+				// `keep_logs` previously controlled both logging and repeat-vote checks.
+				if( ! isset( $this->opt['allow_same_ip_votes'] ) ){
+					$this->opt['allow_same_ip_votes'] = isset( $this->opt['keep_logs'] )
+						? (int) empty( $this->opt['keep_logs'] )
+						: 0;
+				}
+			}
+
+			unset( $this->opt['before_title'], $this->opt['after_title'], $this->opt['keep_logs'] );
 		}
 
 		// append default values
 		foreach( $this->default_options as $part => $options ){
-			foreach( $options as $key => $val ){
-				if( ! isset( $this->opt[ $key ] ) ){
-					$this->opt[ $key ] = $val;
+			foreach( $options as $name => $val ){
+				if( ! isset( $this->opt[ $name ] ) ){
+					$this->opt[ $name ] = $val;
 				}
+
+				$this->prepare_option( $name, $this->opt[ $name ] );
 			}
 		}
 	}
 
 	// TODO: refactor and join with update_options()
 	public function update_single_option( $option_name, $value ): bool {
-
 		if( $this->is_option_exists( $option_name ) ){
 			$newopt = $this->opt;
 			$newopt[ $option_name ] = $value;
@@ -178,28 +189,26 @@ class Options {
 	/**
 	 * @param string $type  What group of option to update: main, design.
 	 */
-	public function update_options( string $type ): bool {
-
+	public function handle_update_options( string $type ): bool {
 		// sanitize on POST request
 		$POSTDATA = wp_unslash( $_POST ); // TODO: move it out of here
 		if( isset( $POSTDATA['dem'] ) && ( $type === 'main' || $type === 'design' ) ){
-			$this->sanitize_request_options( $POSTDATA, $type );
+			$this->sanitize_request_options_and_set_opt( $POSTDATA, $type );
 		}
 
 		// update css styles option
 		if( $type === 'design' ){
-			## Обновляет опцию "democracy_css"
+			## Update the "democracy_css" option.
 			$additional_css = $_POST['additional_css'] ?? '';
 			$additional = strip_tags( stripslashes( $additional_css ) );
 
-			( new \DemocracyPoll\Options_CSS() )->regenerate_democracy_css( $additional );
+			container()->get( Options_CSS::class )->regenerate_democracy_css( $additional );
 		}
 
 		return (bool) update_option( self::OPT_NAME, $this->opt );
 	}
 
 	public function reset_options( $type ): bool {
-
 		if( $type === 'all' ){
 			foreach( $this->default_options[ 'main' ] as $key => $value ){
 				$this->opt[ $key ] = $value;
@@ -214,7 +223,7 @@ class Options {
 			}
 
 			if( $type === 'design' ){
-				( new \DemocracyPoll\Options_CSS() )->regenerate_democracy_css( '' );
+				container()->get( Options_CSS::class )->regenerate_democracy_css( '' );
 			}
 		}
 
@@ -224,25 +233,18 @@ class Options {
 	/**
 	 * Updates {@see self::$opt} based on request data.
 	 * If the option is not passed, 0 will be written in its place.
+	 *
+	 * TODO: refactor
 	 */
-	private function sanitize_request_options( array $request_data, string $type ): void {
+	private function sanitize_request_options_and_set_opt( array $request_data, string $type ): void {
+		foreach( $this->default_options[ $type ] as $key => $foo ){
+			$value = $request_data['dem'][ $key ] ?? 0; // Use 0/null for checkboxes.
 
-		foreach( $this->default_options[ $type ] as $key => $v ){
-
-			$value = $request_data['dem'][ $key ] ?? 0; // именно 0/null, а не $v для checkbox
-
-			if( in_array( $key, [ 'before_title', 'after_title' ] ) ){
+			if( $key === 'title_markup' ){
 				$value = wp_kses( $value, 'post' );
 			}
 			elseif( $key === 'access_roles' ){
-				// sanitize anyway
-				if( plugin()->super_access ){
-					$value = array_map( 'sanitize_key', (array) $value );
-				}
-				// leave as it is - only admin can change 'access_roles'
-				else{
-					$value = (array) $this->opt[ $key ];
-				}
+				$value = array_map( 'sanitize_key', (array) $value );
 			}
 			else{
 				$value = is_array( $value )
@@ -255,7 +257,6 @@ class Options {
 	}
 
 	private function is_option_exists( string $option_name ): bool {
-
 		foreach( $this->default_options as $part => $options ){
 			if( array_key_exists( $option_name, $options ) ){
 				return true;
@@ -263,6 +264,18 @@ class Options {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Prepare some options values before set.
+	 * For backward compatability.
+	 */
+	private function prepare_option( $name, & $val ): void {
+		if( $name === 'answs_max_height' ){
+			if( $val === '-1' || $val === '0' ){
+				$val = '';
+			}
+		}
 	}
 
 }

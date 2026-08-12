@@ -190,6 +190,9 @@ class FormCssJs
     public function getSettingsAjax()
     {
         $formId = absint($this->request->get('form_id'));
+        // SECURITY (H-02): this handler is currently unregistered, but it read form CSS/JS with no
+        // capability check. Guard it so it is safe if ever wired to an action.
+        \FluentForm\App\Modules\Acl\Acl::verify('fluentform_forms_manager', $formId);
         wp_send_json_success([
             'custom_css' => $this->getData($formId, '_custom_form_css'),
             'custom_js'  => $this->getData($formId, '_custom_form_js'),
@@ -201,6 +204,9 @@ class FormCssJs
      */
     public function saveSettingsAjax()
     {
+        // SECURITY (H-02): this handler is currently unregistered; guard it (forms_manager scope)
+        // so it is safe if ever wired. The unfiltered_html gate below still applies on top.
+        \FluentForm\App\Modules\Acl\Acl::verify('fluentform_forms_manager', absint($this->request->get('form_id')));
         if (!fluentformCanUnfilteredHTML()) {
             wp_send_json_error([
                 'message' => __('You need unfiltered_html permission to save Custom CSS & JS', 'fluentform'),

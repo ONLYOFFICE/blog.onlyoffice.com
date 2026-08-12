@@ -29,8 +29,10 @@ class Address extends BaseComponent
 
         $rootName = $data['attributes']['name'];
         $hasConditions = $this->hasConditions($data) ? 'has-conditions ' : '';
-        $data['attributes']['class'] .= ' ff-name-address-wrapper ' . $this->wrapperClass . ' ' . $hasConditions;
-        $data['attributes']['class'] = trim($data['attributes']['class']);
+        $data['attributes']['class'] = trim(
+            ArrayHelper::get($data, 'attributes.class', '')
+            . ' ff-name-address-wrapper ' . $this->wrapperClass . ' ' . $hasConditions
+        );
 
         $provider = ArrayHelper::get($data, 'settings.autocomplete_provider');
         $legacyGoogleEnable = ArrayHelper::get($data, 'settings.enable_g_autocomplete', 'no') === 'yes';

@@ -69,6 +69,15 @@ namespace AIOSEO\Plugin {
 		public $uninstall = null;
 
 		/**
+		 * Database schema class instance.
+		 *
+		 * @since 4.9.7
+		 *
+		 * @var Common\Db\Schema|Pro\Db\Schema
+		 */
+		public $dbSchema = null;
+
+		/**
 		 * Main AIOSEO Instance.
 		 *
 		 * Insures that only one instance of AIOSEO exists in memory at any one
@@ -219,16 +228,29 @@ namespace AIOSEO\Plugin {
 		 * @return void
 		 */
 		private function preLoad() {
-			$this->core = new Common\Core\Core();
+			$this->core     = new Common\Core\Core();
+			$this->dbSchema = $this->pro ? new Pro\Db\Schema() : new Common\Db\Schema();
 
 			// Internal Options.
-			$this->helpers                = $this->pro ? new Pro\Utils\Helpers() : new Lite\Utils\Helpers(); // Needs to load before preUpdates.
-			$this->internalNetworkOptions = ( $this->pro && $this->helpers->isPluginNetworkActivated() ) ? new Pro\Options\InternalNetworkOptions() : new Common\Options\InternalNetworkOptions();
-			$this->internalOptions        = $this->pro ? new Pro\Options\InternalOptions() : new Lite\Options\InternalOptions();
-			$this->uninstall              = new Common\Main\Uninstall();
+			$this->helpers                 = $this->pro ? new Pro\Utils\Helpers() : new Lite\Utils\Helpers(); // Needs to load before preUpdates.
+			$this->internalNetworkOptions  = ( $this->pro && $this->helpers->isPluginNetworkActivated() ) ? new Pro\Options\InternalNetworkOptions() : new Common\Options\InternalNetworkOptions();
+			$this->internalOptions         = $this->pro ? new Pro\Options\InternalOptions() : new Lite\Options\InternalOptions();
+			$this->sensitiveOptions        = $this->pro ? new Pro\Options\SensitiveOptions() : new Lite\Options\SensitiveOptions();
+			$this->networkSensitiveOptions = ( $this->pro && $this->helpers->isPluginNetworkActivated() ) ? new Pro\Options\NetworkSensitiveOptions() : null;
+			$this->uninstall               = new Common\Main\Uninstall();
 
 			// Run pre-updates.
 			$this->preUpdates = $this->pro ? new Pro\Main\PreUpdates() : new Common\Main\PreUpdates();
+
+			// Run the migration runner. Hosts the new, individually-tracked schema repairs
+			// that don't rely on lastActiveVersion as a "did it run?" signal — verify() is.
+			// Runs after preUpdates so legacy version-gated work has already had its turn.
+			$this->migrationRunner = new Common\Main\Migrations\MigrationRunner();
+			$this->migrationRunner->register( new Common\Main\Migrations\Definitions\DropLegacyCacheIndexes() );
+			if ( $this->pro ) {
+				$this->migrationRunner->register( new Pro\Main\Migrations\Definitions\AddUploadFilesCapability() );
+			}
+			$this->migrationRunner->run();
 		}
 
 		/**
@@ -307,8 +329,12 @@ namespace AIOSEO\Plugin {
 			$this->seoAnalysis        = $this->pro ? new Pro\SeoAnalysis\SeoAnalysis() : new Common\SeoAnalysis\SeoAnalysis();
 			$this->thirdParty         = new Common\ThirdParty\ThirdParty();
 			$this->writingAssistant   = new Common\WritingAssistant\WritingAssistant();
+			$this->seoAlerts          = new Common\SeoAlerts\SeoAlerts();
+			$this->newsroom           = new Common\Newsroom\Newsroom();
 			$this->llms               = $this->pro ? new Pro\Llms\Llms() : new Common\Llms\Llms();
+			$this->abilities          = $this->pro ? new Pro\Abilities\Abilities() : new Common\Abilities\Abilities();
 			$this->redirects          = $this->pro ? new Pro\Redirects\Redirects() : null;
+			$this->restApi            = $this->pro ? new Pro\RestApi\RestApi() : new Common\RestApi\RestApi();
 
 			if ( ! wp_doing_ajax() && ! wp_doing_cron() ) {
 				$this->rss       = new Common\Rss();
@@ -348,7 +374,53 @@ namespace AIOSEO\Plugin {
 		 * @return void
 		 */
 		public function loadAddons() {
+			$this->maybeDeactivateLegacyAddons();
+
 			do_action( 'aioseo_loaded' );
+		}
+
+		/**
+		 * Deactivates legacy addons that have since been integrated into the core plugin.
+		 *
+		 * Without this, upgrading from older versions while an old addon is still activated
+		 * causes a fatal error because the addon tries to load files that no longer exist.
+		 *
+		 * @since   4.9.7
+		 * @version 4.9.8 Renamed from maybeDeactivateLegacyRedirectsAddon(), generalized to also deactivate the legacy REST API addon and to handle network-activated installs on multisite.
+		 *
+		 * @return void
+		 */
+		private function maybeDeactivateLegacyAddons() {
+			$legacyAddons = [
+				'aioseo-redirects/aioseo-redirects.php' => 'aioseo_redirects_load',
+				'aioseo-rest-api/aioseo-rest-api.php'   => 'aioseo_rest_api_load'
+			];
+
+			foreach ( $legacyAddons as $basename => $loadCallback ) {
+				// Remove the old addon's load callback to prevent fatal errors in this request.
+				if ( function_exists( $loadCallback ) ) {
+					remove_action( 'aioseo_loaded', $loadCallback );
+				}
+
+				// Deactivate the plugin to prevent it from loading on future requests.
+				$activePlugins = get_option( 'active_plugins', [] );
+				$key           = array_search( $basename, $activePlugins, true );
+
+				if ( false !== $key ) {
+					unset( $activePlugins[ $key ] );
+					update_option( 'active_plugins', array_values( $activePlugins ) );
+				}
+
+				// On multisite, the addon may be network-activated instead.
+				if ( is_multisite() ) {
+					$networkActivePlugins = get_site_option( 'active_sitewide_plugins', [] );
+
+					if ( isset( $networkActivePlugins[ $basename ] ) ) {
+						unset( $networkActivePlugins[ $basename ] );
+						update_site_option( 'active_sitewide_plugins', $networkActivePlugins );
+					}
+				}
+			}
 		}
 	}
 }

@@ -4,7 +4,10 @@ namespace DemocracyPoll;
 
 class Shortcodes {
 
-	public function __construct(){
+	private Options $options;
+
+	public function __construct( Options $options ){
+		$this->options = $options;
 	}
 
 	public function init(): void {
@@ -13,10 +16,10 @@ class Shortcodes {
 	}
 
 	public function democracy_archives_shortcode( $args ): string {
-
 		$args = shortcode_atts( [
-			'before_title'   => '',
-			'after_title'    => '',
+			// 'before_title' => '', // deprecated since 6.4.1
+			// 'after_title'  => '', // deprecated since 6.4.1
+			'title_markup'   => '',
 			'active'         => null,    // 1 (active), 0 (not active) or null (param not set).
 			'open'           => null,    // 1 (opened), 0 (closed) or null (param not set) polls.
 			'screen'         => 'voted',
@@ -29,21 +32,33 @@ class Shortcodes {
 	}
 
 	public function democracy_shortcode( $atts ): string {
-
 		$atts = shortcode_atts( [
 			'id' => '', // number or 'current', 'last'
-			// 'before_title'  => '', // IMP! can't be added - security reason
-			// 'after_title'   => '', // IMP! can't be added - security reason
+			// 'before_title' => '', // IMP! can't be added - security reason
+			// 'after_title'  => '', // IMP! can't be added - security reason
 		], $atts, 'democracy' );
 
-		// для опредления к какой записи относиться опрос. проверка, если шорткод вызван не из контента...
+		// Determine which post the poll belongs to when the shortcode is used outside the content.
 		$post_id = ( is_singular() && is_main_query() ) ? $GLOBALS['post']->ID : 0;
+		$poll = self::normalize_poll_id_attr( $atts['id'] );
 
-		if( $atts['id'] === 'current' ){
-			$atts['id'] = \DemocracyPoll\Admin\Post_Metabox::get_post_poll_id( $post_id );
+		if( $poll === 'current' ){
+			$poll = Admin\Post_Metabox::get_post_poll_id( $post_id ) ?: 'rand';
 		}
 
-		return '<div class="dem-poll-shortcode">' . get_democracy_poll( $atts['id'], '', '', $post_id ) . '</div>';
+		if( $poll === 'last' || $poll === 'rand' ){
+			$poll = Poll_Storage::get_db_data( $poll );
+		}
+
+		return '<div class="dem-poll-shortcode">' . get_democracy_poll( [
+			'poll'         => $poll,
+			'title_markup' => $this->options->title_markup,
+			'from_post'    => $post_id,
+		] ) . '</div>';
+	}
+
+	private static function normalize_poll_id_attr( $poll_id ): string {
+		return sanitize_key( html_entity_decode( (string) $poll_id, ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
 	}
 
 }

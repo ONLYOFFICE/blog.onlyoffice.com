@@ -5,10 +5,10 @@ namespace DemocracyPoll;
 class Poll_Answer {
 
 	/** Unique ID of the answer. */
-	public string $aid;
+	public int $aid;
 
-	/** Unique ID of the question this answer belongs to. */
-	public string $qid;
+	/** Unique ID of the question of this answer. */
+	public int $qid;
 
 	/** The answer text. */
 	public string $answer;
@@ -28,8 +28,8 @@ class Poll_Answer {
 	public function __construct( $data ) {
 		$data = (array) $data;
 
-		$this->aid      = (string) $data['aid'];
-		$this->qid      = (string) $data['qid'];
+		$this->aid      = (int) $data['aid'];
+		$this->qid      = (int) $data['qid'];
 		$this->answer   = (string) $data['answer'];
 		$this->votes    = (int) $data['votes'];
 		$this->aorder   = (int) $data['aorder'];

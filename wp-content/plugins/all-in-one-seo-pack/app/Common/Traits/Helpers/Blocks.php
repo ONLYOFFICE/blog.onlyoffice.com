@@ -26,7 +26,8 @@ trait Blocks {
 	/**
 	 * Returns the content with blocks replaced.
 	 *
-	 * @since 4.8.7
+	 * @since   4.8.7
+	 * @version 4.9.8 Guard against null block names (freeform/classic content) to prevent a PHP deprecation warning on newer PHP versions.
 	 *
 	 * @param  string $content    The content.
 	 * @param  bool   $noConflict Whether to remove the conflicting blocks.
@@ -39,7 +40,9 @@ trait Blocks {
 			static $preRenderBlockCallback = null;
 			if ( null === $preRenderBlockCallback ) {
 				$preRenderBlockCallback = function( $preRender, $parsedBlock ) use ( $conflictingBlocks ) {
-					if ( isset( $conflictingBlocks[ $parsedBlock['blockName'] ] ) ) {
+					// Classic/freeform blocks have a null blockName, which PHP 8.5 deprecates as an array offset.
+					$blockName = isset( $parsedBlock['blockName'] ) ? (string) $parsedBlock['blockName'] : '';
+					if ( isset( $conflictingBlocks[ $blockName ] ) ) {
 						return '';
 					}
 

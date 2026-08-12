@@ -1,8 +1,10 @@
 <?php
 
-defined('ABSPATH') or die;
+defined('ABSPATH') || exit;
 
 /**
+ * REST API route definitions.
+ *
  * @var $router \FluentForm\Framework\Http\Router
  */
 
@@ -67,7 +69,7 @@ $router->prefix('submissions')->withPolicy('SubmissionPolicy')->group(function (
 
     $router->prefix('{entry_id}')->group(function ($router) {
         $router->get('/', 'SubmissionController@find');
-    
+
         $router->post('status', 'SubmissionController@updateStatus');
         $router->post('is-favorite', 'SubmissionController@toggleIsFavorite');
 
@@ -76,9 +78,9 @@ $router->prefix('submissions')->withPolicy('SubmissionPolicy')->group(function (
 
         $router->get('notes', 'SubmissionNoteController@get');
         $router->post('notes', 'SubmissionNoteController@store');
-        
-        $router->get('submission-users','SubmissionController@submissionUsers');
-        $router->post('update-submission-user','SubmissionController@updateSubmissionUser');
+
+        $router->get('submission-users', 'SubmissionController@submissionUsers');
+        $router->post('update-submission-user', 'SubmissionController@updateSubmissionUser');
     });
 });
 
@@ -93,20 +95,20 @@ $router->prefix('logs')->withPolicy('SubmissionPolicy')->group(function ($router
 /*
 * Global Integrations
 */
-$router->prefix('integrations')->withPolicy('FormPolicy')->group(function ($router) {
-    $router->get('/', 'GlobalIntegrationController@index');
-    $router->post('/', 'GlobalIntegrationController@updateIntegration');
-    $router->post('update-status', 'GlobalIntegrationController@updateModuleStatus');
-    
+$router->prefix('integrations')->group(function ($router) {
+    $router->get('/', 'GlobalIntegrationController@index')->withPolicy('GlobalIntegrationPolicy');
+    $router->post('/', 'GlobalIntegrationController@updateIntegration')->withPolicy('GlobalIntegrationPolicy');
+    $router->post('update-status', 'GlobalIntegrationController@updateModuleStatus')->withPolicy('GlobalIntegrationPolicy');
+
     /*
     * Form Integrations
     */
-    $router->prefix('{form_id}')->group(function ($router) {
+    $router->prefix('{form_id}')->withPolicy('FormPolicy')->group(function ($router) {
         $router->get('/form-integrations', 'FormIntegrationController@index');
         $router->get('/', 'FormIntegrationController@find');
         $router->post('/', 'FormIntegrationController@update');
         $router->delete('/', 'FormIntegrationController@delete');
-        
+
         $router->get('/integration-list-id', 'FormIntegrationController@integrationListComponent');
     });
 });
@@ -116,6 +118,15 @@ $router->prefix('integrations')->withPolicy('FormPolicy')->group(function ($rout
 $router->prefix('global-settings')->withPolicy('GlobalSettingsPolicy')->group(function ($router) {
     $router->get('/', 'GlobalSettingsController@index');
     $router->post('/', 'GlobalSettingsController@store');
+});
+/*
+* MCP (Model Context Protocol) Settings
+*/
+$router->prefix('mcp')->withPolicy('GlobalSettingsPolicy')->group(function ($router) {
+    $router->get('status', 'McpSettingsController@status');
+    $router->post('toggle', 'McpSettingsController@toggle');
+    $router->post('install-adapter', 'McpSettingsController@installAdapter');
+    $router->get('config-snippets', 'McpSettingsController@getConfigSnippets');
 });
 /*
 * Permission Roles

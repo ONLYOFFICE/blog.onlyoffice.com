@@ -6,6 +6,23 @@ use FluentForm\App\Modules\Payments\PaymentHelper;
 use FluentForm\Framework\Support\Arr;
 use FluentForm\App\Models\Traits\PredefinedForms;
 
+/**
+ * Column properties resolved at runtime via the ORM's magic __get; declared
+ * here so static analysis can verify attribute access against the real schema
+ * (database/Migrations/Forms.php).
+ *
+ * @property int $id
+ * @property string $title
+ * @property string|null $status
+ * @property string|null $appearance_settings
+ * @property string|null $form_fields
+ * @property int $has_payment
+ * @property string|null $type
+ * @property string|null $conditions
+ * @property int|null $created_by
+ * @property string|null $created_at
+ * @property string|null $updated_at
+ */
 class Form extends Model
 {
     use PredefinedForms;

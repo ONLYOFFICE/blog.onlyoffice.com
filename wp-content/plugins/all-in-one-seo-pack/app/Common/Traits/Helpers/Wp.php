@@ -763,12 +763,16 @@ trait Wp {
 	/**
 	 * Returns the post title or a placeholder if there isn't one.
 	 *
-	 * @since 4.3.0
+	 * @since   4.3.0
+	 * @version 4.9.8 Casts $postId to int so a null/empty ID (e.g. a link row with no linked post) doesn't
+	 *                 trigger the "null array offset" deprecation on the static cache.
 	 *
 	 * @param  int    $postId The post ID.
 	 * @return string         The post title.
 	 */
 	public function getPostTitle( $postId ) {
+		$postId = (int) $postId;
+
 		static $titles = [];
 		if ( isset( $titles[ $postId ] ) ) {
 			return $titles[ $postId ];
@@ -837,6 +841,23 @@ trait Wp {
 		$postStatus = get_post_status( $post );
 
 		return is_post_type_viewable( $postType ) && $this->isPostStatusViewable( $postStatus );
+	}
+
+	/**
+	 * Whether the current admin list table is filtered to the Trash view.
+	 * Mirrors how WordPress core determines the trash view in WP_Posts_List_Table and WP_Media_List_Table.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @return bool Whether the current list view shows trashed items.
+	 */
+	public function isTrashListView() {
+		// phpcs:disable HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
+		$postStatus       = sanitize_text_field( wp_unslash( $_REQUEST['post_status'] ?? '' ) );
+		$attachmentFilter = sanitize_text_field( wp_unslash( $_REQUEST['attachment-filter'] ?? '' ) );
+		// phpcs:enable HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
+
+		return 'trash' === $postStatus || 'trash' === $attachmentFilter;
 	}
 
 	/**

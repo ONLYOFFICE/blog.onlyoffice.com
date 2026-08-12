@@ -121,7 +121,11 @@ class FormDataParser
             if (!$value) {
                 continue;
             }
-            $html .= '<li><a href="' . $value . '" target="_blank">' . basename($value) . '</a></li>';
+            // SECURITY (FINDING-23): escape the submitted upload value. It reaches this HTML sink
+            // via an unauthenticated submission and is only sanitize_text_field'd (keeps " and :),
+            // so a javascript: URL or an " onmouseover=" attribute breakout would otherwise render
+            // in the admin entry view, notification email and PDF. esc_url enforces a safe scheme.
+            $html .= '<li><a href="' . esc_url($value) . '" target="_blank">' . esc_html(basename($value)) . '</a></li>';
         }
 
         $html .= '</ul>';
@@ -152,7 +156,8 @@ class FormDataParser
             if (!$value) {
                 return '';
             }
-            return '<a href="' . $value . '" target="_blank"><img style="max-width:180px" src="' . $value . '" /></a>';
+            // SECURITY (FINDING-23): escape the submitted upload value (see formatFileValues).
+            return '<a href="' . esc_url($value) . '" target="_blank"><img style="max-width:180px" src="' . esc_url($value) . '" /></a>';
         }
 
         $html = '<ul class="ff_entry_list ff_entry_images">';
@@ -160,7 +165,8 @@ class FormDataParser
             if (!$value) {
                 continue;
             }
-            $html .= '<li style="margin: 20px 20px 20px 0px; display: inline-block; margin-right: 20px;"><a href="' . $value . '" target="_blank"><img style="max-width:180px" src="' . $value . '" /></a></li>';
+            // SECURITY (FINDING-23): escape the submitted upload value (see formatFileValues).
+            $html .= '<li style="margin: 20px 20px 20px 0px; display: inline-block; margin-right: 20px;"><a href="' . esc_url($value) . '" target="_blank"><img style="max-width:180px" src="' . esc_url($value) . '" /></a></li>';
         }
 
         $html .= '</ul>';
@@ -328,7 +334,7 @@ class FormDataParser
                 $values && is_array($values) &&
                 $options = ArrayHelper::get($field, 'raw.settings.advanced_options', [])
             ) {
-                $options = array_column($options, 'label', 'value');
+                $options = \FluentForm\App\Helpers\Helper::advancedOptionsValueLabelMap($options);
                 foreach ($values as &$value) {
                     if ($label = ArrayHelper::get($options, $value)) {
                         $value = $label;
@@ -347,10 +353,9 @@ class FormDataParser
         }
 
         if (!isset($field['options'])) {
-            $field['options'] = [];
-            foreach (ArrayHelper::get($field, 'raw.settings.advanced_options', []) as $option) {
-                $field['options'][$option['value']] = $option['label'];
-            }
+            $field['options'] = \FluentForm\App\Helpers\Helper::advancedOptionsValueLabelMap(
+                ArrayHelper::get($field, 'raw.settings.advanced_options', [])
+            );
         }
 
         $html = '<ul style="white-space: normal;">';

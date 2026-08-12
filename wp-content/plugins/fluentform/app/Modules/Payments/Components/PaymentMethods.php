@@ -29,7 +29,7 @@ class PaymentMethods extends BaseFieldManager
 
         add_filter('fluentform/response_render_' . $this->key, function ($value) {
             if ($value == 'test') {
-                return 'Offline';
+                return __('Offline', 'fluentform');
             }
             return $value;
         });

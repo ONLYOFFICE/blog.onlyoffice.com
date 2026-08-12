@@ -88,7 +88,7 @@ trait MailChimpSubscriber
             return false;
         }
 
-        $mergeFields = array_filter(ArrayHelper::get($feedData, 'merge_fields'));
+        $mergeFields = array_filter((array) ArrayHelper::get($feedData, 'merge_fields', []));
         $status = ArrayHelper::isTrue($feedData, 'doubleOptIn') ? 'pending' : 'subscribed';
 
         $listId = $feedData['list_id'];

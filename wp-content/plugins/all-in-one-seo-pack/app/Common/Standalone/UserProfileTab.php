@@ -68,7 +68,8 @@ class UserProfileTab {
 	/**
 	 * Returns the data Vue requires.
 	 *
-	 * @since 4.2.2
+	 * @since   4.2.2
+	 * @version 4.9.10 Strip site-global configuration for users who cannot manage AIOSEO.
 	 *
 	 * @return array
 	 */
@@ -107,7 +108,7 @@ class UserProfileTab {
 		$vueData = aioseo()->helpers->getVueData();
 		$vueData = array_merge( $vueData, $extraVueData );
 
-		return $vueData;
+		return aioseo()->helpers->filterPrivilegedVueData( $vueData );
 	}
 
 	/**

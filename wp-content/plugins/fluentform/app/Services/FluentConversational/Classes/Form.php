@@ -94,10 +94,12 @@ class Form
         }
 
         wp_localize_script('fluent_forms_conversational_design', 'ffc_conv_vars', [
-            'form_id'     => $formId,
-            'preview_url' => Helper::getFrontendFacingUrl('?' . $paramKey . '=' . $formId),
-            'fonts'       => Fonts::getFonts(),
-            'has_pro'     => defined('FLUENTFORMPRO'),
+            'form_id'            => $formId,
+            'preview_url'        => Helper::getFrontendFacingUrl('?' . $paramKey . '=' . $formId),
+            'fonts'              => Fonts::getFonts(),
+            'has_pro'            => defined('FLUENTFORMPRO'),
+            'has_pro_share_page' => defined('FLUENTFORMPRO') && class_exists('\FluentFormPro\classes\SharePage\SharePage'),
+            'upgrade_url'        => fluentform_upgrade_url(),
         ]);
 
         wp_enqueue_style(
@@ -157,13 +159,18 @@ class Form
                 'key_hint_text'        => 'Key',
                 'key_hint_tooltip'     => 'Press the key to select',
                 'choose_file'          => '<b>Choose file</b> or <b>drag here</b>',
-                'limit'                => 'Size limit: '
+                'limit'                => 'Size limit: ',
+                'ranking_reset'        => 'Reset order'
             ],
         ];
 
         if ($settings && !isset($settings['i18n']['key_hint_text'])) {
             $settings['i18n']['key_hint_text'] = $defaults['i18n']['key_hint_text'];
             $settings['i18n']['key_hint_tooltip'] = $defaults['i18n']['key_hint_tooltip'];
+        }
+
+        if ($settings && !isset($settings['i18n']['ranking_reset'])) {
+            $settings['i18n']['ranking_reset'] = $defaults['i18n']['ranking_reset'];
         }
 
         if (!$settings || empty($settings['title'])) {
@@ -184,7 +191,7 @@ class Form
             }
         }
 
-        return $prefix . ' { background-color: #FFFFFF; }' . $prefix . ' .ffc-counter-div span { color: #0445AF; }' . $prefix . ' .ffc-counter-div .counter-icon-span svg { fill: #0445AF !important; }' . $prefix . ' .f-label-wrap, ' . $prefix . ' .f-answer { color: #0445AF !important; }' . $prefix . ' .f-label-wrap .f-key { border-color: #0445AF !important; }' . $prefix . ' .f-label-wrap .f-key-hint { border-color: #0445AF !important; }' . $prefix . ' .f-answer .f-radios-wrap ul li { background-color: rgba(4,69,175, 0.1) !important; border: 1px solid #0445AF; }' . $prefix . ' .f-answer .f-radios-wrap ul li:focus { background-color: rgba(4,69,175, 0.3) !important }' . $prefix . ' .f-answer .f-radios-wrap ul li:hover { background-color: rgba(4,69,175, 0.3) !important }' . $prefix . ' .f-answer .f-radios-wrap ul li.f-selected .f-key { background-color: #0445AF !important; color: white; }' . $prefix . ' .f-answer .f-radios-wrap ul li.f-selected .f-key-hint { background-color: #0445AF; }' . $prefix . ' .f-answer .f-radios-wrap ul li.f-selected svg { fill: #0445AF !important; }' . $prefix . ' .f-answer input, ' . $prefix . ' .f-answer textarea{ color: #0445AF !important; box-shadow: #0445AF  0px 1px; }' . $prefix . ' .f-answer input:focus, ' . $prefix . ' .f-answer textarea:focus { box-shadow: #0445AF  0px 2px !important; }' . $prefix . ' .f-answer textarea::placeholder, ' . $prefix . ' .f-answer input::placeholder { color: #0445AF !important; }' . $prefix . ' .text-success { color: #0445AF !important; }' . $prefix . ' .f-answer .f-matrix-table tbody td { background-color: rgba(4,69,175, 0.1); }' . $prefix . ' .f-answer .f-matrix-table input { border-color: rgba(4,69,175, 0.8); }' . $prefix . ' .f-answer .f-matrix-table input.f-radio-control:checked::after { background-color: #0445AF; }' . $prefix . ' .f-answer .f-matrix-table input:focus::before { border-color: #0445AF; }' . $prefix . ' .f-answer .f-matrix-table input.f-checkbox-control:checked { background-color: #0445AF; }' . $prefix . ' .f-answer .f-matrix-table tbody tr::after { border-right-color: #0445AF; }' . $prefix . ' .f-answer .f-matrix-table .f-table-cell.f-row-cell { box-shadow: rgba(4,69,175, 0.1) 0px 0px 0px 100vh inset; }' . $prefix . ' .f-answer .ff_file_upload_field_wrap { background-color: rgba(4,69,175, 0.1); border-color: rgba(4,69,175, 0.8); }' . $prefix . ' .f-answer .ff_file_upload_field_wrap:hover { background-color: rgba(4,69,175, 0.3);}' . $prefix . ' .f-answer .ff_file_upload_field_wrap:focus-within { background-color: rgba(4,69,175, 0.3); }' . $prefix . ' .f-answer .ff-upload-preview { border-color: rgba(4,69,175, 0.8); }' . $prefix . ' .f-answer .ff-upload-preview .ff-upload-thumb { background-color: rgba(4,69,175, 0.3); }' . $prefix . ' .f-answer .ff-upload-preview .ff-upload-details { border-left-color: rgba(4,69,175, 0.8); }' . $prefix . ' .f-answer .ff-upload-preview .ff-upload-details .ff-el-progress { border-left-color: rgba(4,69,175, 0.8); }' . $prefix . ' .f-answer .ff-upload-preview .ff-upload-details .ff-el-progress { background-color: rgba(4,69,175, 0.1); }' . $prefix . ' .f-answer .ff-upload-preview .ff-upload-details .ff-el-progress .ff-el-progress-bar { background-color: #0445AF; }' . $prefix . ' .f-answer .f-star-wrap .f-star-field-wrap::before { background-color: #0445AF; }' . $prefix . ' .f-answer .f-star-wrap .f-star-field-wrap .f-star-field .f-star-field-star .symbolOutline { fill: #0445AF; }' . $prefix . ' .f-answer .f-star-wrap .f-star-field-wrap .f-star-field .f-star-field-rating { color: #0445AF; }' . $prefix . ' .f-answer .f-star-wrap .f-star-field-wrap.is-hovered .symbolFill { fill: rgba(4,69,175, 0.1); }' . $prefix . ' .f-answer .f-star-wrap .f-star-field-wrap.is-selected .symbolFill { fill: #0445AF; }' . $prefix . ' .f-answer .f-payment-summary-wrap tbody td { background-color: rgba(4,69,175, 0.1); }' . $prefix . ' .f-answer .f-payment-summary-wrap tfoot th { background-color: rgba(4,69,175, 0.1); }' . $prefix . ' .f-answer .stripe-inline-holder { border-bottom: 1px solid #0445AF; }' . $prefix . ' .f-answer .StripeElement--focus { border-bottom: 2.5px solid #0445AF; }' . $prefix . ' .ff_conv_input .f-info { color: #0445AF; }' . $prefix . ' .fh2 .f-text { color: #191919; }' . $prefix . ' .fh2 .f-tagline, ' . $prefix . ' .f-sub .f-help { color: rgba(25,25,25, 0.70); }' . $prefix . ' .fh2 .stripe-inline-header { color: #191919; }' . $prefix . ' .q-inner .o-btn-action, ' . $prefix . ' .footer-inner-wrap .f-nav { background-color: #0445AF; }' . $prefix . ' .q-inner .o-btn-action span, ' . $prefix . ' .footer-inner-wrap .f-nav a { color: #FFFFFF; } ' . $prefix . ' .f-enter .f-enter-desc { color: #0445AF; }' . $prefix . ' .footer-inner-wrap .f-nav a svg { fill: #FFFFFF; }' . $prefix . ' .vff-footer .f-progress-bar { background-color: rgba(4,69,175, 0.3); }' . $prefix . ' .vff-footer .f-progress-bar-inner { background-color: #0445AF; }' . $prefix . ' .q-inner .o-btn-action:hover { background-color: #0445AFD6; }' . $prefix . ' .q-inner .o-btn-action:focus::after { border-radius: 6px; inset: -3px; box-shadow: #0445AF 0px 0px 0px 2px; }' . $prefix . ' .f-answer .f-radios-wrap ul li.f-selected .f-key { color: #FFFFFF; }';
+        return $prefix . ' { background-color: #FFFFFF; }' . $prefix . ' .ffc-counter-div span { color: #0445AF; }' . $prefix . ' .ffc-counter-div .counter-icon-span svg { fill: #0445AF !important; }' . $prefix . ' .f-label-wrap, ' . $prefix . ' .f-answer { color: #0445AF !important; }' . $prefix . ' .f-label-wrap .f-key { border-color: #0445AF !important; }' . $prefix . ' .f-label-wrap .f-key-hint { border-color: #0445AF !important; }' . $prefix . ' .f-answer .f-radios-wrap ul li { background-color: rgba(4,69,175, 0.1) !important; border: 1px solid #0445AF; }' . $prefix . ' .f-answer .f-radios-wrap ul li:focus { background-color: rgba(4,69,175, 0.3) !important }' . $prefix . ' .f-answer .f-radios-wrap ul li:hover { background-color: rgba(4,69,175, 0.3) !important }' . $prefix . ' .f-answer .f-radios-wrap ul li.f-selected .f-key { background-color: #0445AF !important; color: white; }' . $prefix . ' .f-answer .f-radios-wrap ul li.f-selected .f-key-hint { background-color: #0445AF; }' . $prefix . ' .f-answer .f-radios-wrap ul li.f-selected svg { fill: #0445AF !important; }' . $prefix . ' .f-answer input, ' . $prefix . ' .f-answer textarea{ color: #0445AF !important; box-shadow: #0445AF  0px 1px; }' . $prefix . ' .f-answer input:focus, ' . $prefix . ' .f-answer textarea:focus { box-shadow: #0445AF  0px 2px !important; }' . $prefix . ' .f-answer textarea::placeholder, ' . $prefix . ' .f-answer input::placeholder { color: #0445AF !important; }' . $prefix . ' .text-success { color: #0445AF !important; }' . $prefix . ' .f-answer .f-matrix-table tbody td { background-color: rgba(4,69,175, 0.1); }' . $prefix . ' .f-answer .f-matrix-table input { border-color: rgba(4,69,175, 0.8); }' . $prefix . ' .f-answer .f-matrix-table input.f-radio-control:checked::after { background-color: #0445AF; }' . $prefix . ' .f-answer .f-matrix-table input:focus::before { border-color: #0445AF; }' . $prefix . ' .f-answer .f-matrix-table input.f-checkbox-control:checked { background-color: #0445AF; }' . $prefix . ' .f-answer .f-matrix-table tbody tr::after { border-right-color: #0445AF; }' . $prefix . ' .f-answer .f-matrix-table .f-table-cell.f-row-cell { box-shadow: rgba(4,69,175, 0.1) 0px 0px 0px 100vh inset; }' . $prefix . ' .f-answer .ff_file_upload_field_wrap { background-color: rgba(4,69,175, 0.1); border-color: rgba(4,69,175, 0.8); }' . $prefix . ' .f-answer .ff_file_upload_field_wrap:hover { background-color: rgba(4,69,175, 0.3);}' . $prefix . ' .f-answer .ff_file_upload_field_wrap:focus-within { background-color: rgba(4,69,175, 0.3); }' . $prefix . ' .f-answer .ff-upload-preview { border-color: rgba(4,69,175, 0.8); }' . $prefix . ' .f-answer .ff-upload-preview .ff-upload-thumb { background-color: rgba(4,69,175, 0.3); }' . $prefix . ' .f-answer .ff-upload-preview .ff-upload-details { border-left-color: rgba(4,69,175, 0.8); }' . $prefix . ' .f-answer .ff-upload-preview .ff-upload-details .ff-el-progress { border-left-color: rgba(4,69,175, 0.8); }' . $prefix . ' .f-answer .ff-upload-preview .ff-upload-details .ff-el-progress { background-color: rgba(4,69,175, 0.1); }' . $prefix . ' .f-answer .ff-upload-preview .ff-upload-details .ff-el-progress .ff-el-progress-bar { background-color: #0445AF; }' . $prefix . ' .f-answer .f-star-wrap .f-star-field-wrap::before { background-color: #0445AF; }' . $prefix . ' .f-answer .f-star-wrap .f-star-field-wrap .f-star-field .f-star-field-star .symbolOutline { fill: #0445AF; }' . $prefix . ' .f-answer .f-star-wrap .f-star-field-wrap .f-star-field .f-star-field-rating { color: #0445AF; }' . $prefix . ' .f-answer .f-star-wrap .f-star-field-wrap .f-star-field-star .ff-rating-icon-svg-holder { display: block; line-height: 0; width: 100%; }' . $prefix . ' .f-answer .f-star-wrap .f-star-field-wrap .ff-rating-icon-svg { color: var(--ff-rating-inactive-color, rgba(4,69,175, 0.25)); display: block; height: auto; max-height: 64px; max-width: 64px; width: 100%; }' . $prefix . ' .f-answer .f-star-wrap .f-star-field-wrap .ff-rating-icon-svg [fill]:not([fill="none"]) { fill: currentColor !important; }' . $prefix . ' .f-answer .f-star-wrap .f-star-field-wrap .ff-rating-icon-svg [stroke]:not([stroke="none"]) { stroke: currentColor !important; }' . $prefix . ' .f-answer .f-star-wrap .f-star-field-wrap.is-hovered .symbolFill { fill: rgba(4,69,175, 0.1); }' . $prefix . ' .f-answer .f-star-wrap .f-star-field-wrap.is-hovered .ff-rating-icon-svg { color: var(--ff-rating-hover-color, rgba(4,69,175, 0.4)); }' . $prefix . ' .f-answer .f-star-wrap .f-star-field-wrap.is-selected .symbolFill { fill: #0445AF; }' . $prefix . ' .f-answer .f-star-wrap .f-star-field-wrap.is-selected .ff-rating-icon-svg { color: var(--ff-rating-active-color, #0445AF); }' . $prefix . ' .f-answer .f-payment-summary-wrap tbody td { background-color: rgba(4,69,175, 0.1); }' . $prefix . ' .f-answer .f-payment-summary-wrap tfoot th { background-color: rgba(4,69,175, 0.1); }' . $prefix . ' .f-answer .stripe-inline-holder { border-bottom: 1px solid #0445AF; }' . $prefix . ' .f-answer .StripeElement--focus { border-bottom: 2.5px solid #0445AF; }' . $prefix . ' .ff_conv_input .f-info { color: #0445AF; }' . $prefix . ' .fh2 .f-text { color: #191919; }' . $prefix . ' .fh2 .f-tagline, ' . $prefix . ' .f-sub .f-help { color: rgba(25,25,25, 0.70); }' . $prefix . ' .fh2 .stripe-inline-header { color: #191919; }' . $prefix . ' .q-inner .o-btn-action, ' . $prefix . ' .footer-inner-wrap .f-nav { background-color: #0445AF; }' . $prefix . ' .q-inner .o-btn-action span, ' . $prefix . ' .footer-inner-wrap .f-nav a { color: #FFFFFF; } ' . $prefix . ' .f-enter .f-enter-desc { color: #0445AF; }' . $prefix . ' .footer-inner-wrap .f-nav a svg { fill: #FFFFFF; }' . $prefix . ' .vff-footer .f-progress-bar { background-color: rgba(4,69,175, 0.3); }' . $prefix . ' .vff-footer .f-progress-bar-inner { background-color: #0445AF; }' . $prefix . ' .q-inner .o-btn-action:hover { background-color: #0445AFD6; }' . $prefix . ' .q-inner .o-btn-action:focus::after { border-radius: 6px; inset: -3px; box-shadow: #0445AF 0px 0px 0px 2px; }' . $prefix . ' .f-answer .f-radios-wrap ul li.f-selected .f-key { color: #FFFFFF; }';
     }
 
     public function render()
@@ -333,7 +340,8 @@ class Form
             'save_progress_button',
             'dynamic_field',
             'rangeslider',
-            'net_promoter_score'
+            'net_promoter_score',
+            'input_ranking'
         ];
 
         if (defined('FLUENTFORM_SIGNATURE')) {
@@ -548,15 +556,24 @@ class Form
     public function renderShortcode($form)
     {
         $formId = $form->id;
+        $fileUploadSettings = apply_filters('fluentform/file_upload_settings_for_js', [], $form);
+
         $form = Converter::convert($form);
+
         $this->enqueueScripts();
+        do_action('fluentform/conversational_enqueue_assets', $form, $fileUploadSettings);
+
         $submitCss = $this->getSubmitBttnStyle($form);
         $metaSettings = $this->getMetaSettings($formId);
         $designSettings = $this->getDesignSettings($formId);
         $instanceId = $form->instance_index;
         $varName = 'fluent_forms_global_var_' . $instanceId;
-        wp_localize_script('fluent_forms_conversational_form', $varName, [
-            'fluent_forms_admin_nonce' => wp_create_nonce('fluent_forms_admin_nonce'),
+
+        $localizedVars = [
+            // SECURITY (H-01): do not emit the admin AJAX nonce on the public conversational form
+            // page — the public form JS never uses it, and on a page an admin happens to view it
+            // would embed that admin's own valid nonce. Emit it only for a viewer who could use it.
+            'fluent_forms_admin_nonce' => current_user_can('fluentform_dashboard_access') ? wp_create_nonce('fluent_forms_admin_nonce') : '',
             'ajaxurl'                  => admin_url('admin-ajax.php'),
             'nonce'                    => wp_create_nonce(),
             'form'                     => $this->getLocalizedForm($form),
@@ -573,8 +590,15 @@ class Form
             'request_error_txt'        => __('An error occurred while processing your request', 'fluentform'),
             'paymentConfig'            => $this->getPaymentConfig($form),
             'date_i18n'                => \FluentForm\App\Modules\Component\Component::getDatei18n(),
-            'file_delete_nonce'        => wp_create_nonce('fluentform_file_delete')
-        ]);
+            'file_delete_nonce'        => wp_create_nonce('fluentform_file_delete'),
+            'file_upload_settings'     => $fileUploadSettings,
+        ];
+
+        wp_localize_script(
+            'fluent_forms_conversational_form',
+            $varName,
+            apply_filters('fluentform/global_form_vars', $localizedVars)
+        );
 
         $hasSaveProgressButton = false;
         $saveProgressButton = [];
@@ -662,6 +686,25 @@ class Form
             '_wp_http_referer'                            => esc_attr(wp_unslash(wpFluentForm('request')->server('REQUEST_URI'))),
         ];
 
+        // SECURITY (FINDING-25): carry the anti-spam honeypot field (empty) and a freshly minted
+        // token in the conversational submission. The conversational JS forwards every extra_input
+        // into the submission payload, so these reach the server-side checks — which no longer skip
+        // conversational forms — WITHOUT any client/JS change. This closes the bypass where adding
+        // isFFConversational=1 disabled honeypot + token protection entirely.
+        //
+        // The token itself is disabled for conversational forms server-side (see the
+        // fluentform/token_based_spam_protection_status filter in actions.php): its ~1h TTL cannot be
+        // refreshed by the conversational JS, so behind a full-page cache the baked-in token would
+        // expire and reject every submission. getConversationalTokenInput() therefore returns [] for
+        // conversational forms; the honeypot (static empty field) still applies.
+        $honeyPot = new \FluentForm\App\Modules\Form\HoneyPot(wpFluentForm());
+        $inputs = array_merge($inputs, $honeyPot->getConversationalHoneypotInput($formId));
+
+        $inputs = array_merge(
+            $inputs,
+            \FluentForm\App\Modules\Form\TokenBasedSpamProtection::getConversationalTokenInput($formId)
+        );
+
         return apply_filters('fluentform/conversational_extra_inputs', $inputs, $formId);
     }
 
@@ -670,7 +713,7 @@ class Form
         return fluentFormGetRandomPhoto();
     }
 
-    private function renderFormHtml($formId, $providedKey = '')
+    public function renderFormHtml($formId, $providedKey = '')
     {
         $form = wpFluent()->table('fluentform_forms')->find($formId);
 
@@ -730,8 +773,12 @@ class Form
         $form = wpFluentForm()->applyFilters('fluentform_rendering_form', $form);
 
         $form = wpFluentForm()->applyFilters('fluentform/rendering_form', $form);
+        $fileUploadSettings = apply_filters('fluentform/file_upload_settings_for_js', [], $form);
+
         $form = Converter::convert($form);
+
         $this->enqueueScripts();
+        do_action('fluentform/conversational_enqueue_assets', $form, $fileUploadSettings);
 
         $formSettings = wpFluent()
             ->table('fluentform_form_meta')
@@ -749,8 +796,11 @@ class Form
 
         $designSettings = $this->getDesignSettings($formId);
 
-        wp_localize_script('fluent_forms_conversational_form', 'fluent_forms_global_var', [
-            'fluent_forms_admin_nonce' => wp_create_nonce('fluent_forms_admin_nonce'),
+        $localizedVars = [
+            // SECURITY (H-01): do not emit the admin AJAX nonce on the public conversational form
+            // page — the public form JS never uses it, and on a page an admin happens to view it
+            // would embed that admin's own valid nonce. Emit it only for a viewer who could use it.
+            'fluent_forms_admin_nonce' => current_user_can('fluentform_dashboard_access') ? wp_create_nonce('fluent_forms_admin_nonce') : '',
             'ajaxurl'                  => admin_url('admin-ajax.php'),
             'nonce'                    => wp_create_nonce(),
             'form'                     => $this->getLocalizedForm($form),
@@ -767,8 +817,15 @@ class Form
             'paymentConfig'            => $this->getPaymentConfig($form),
             'date_i18n'                => \FluentForm\App\Modules\Component\Component::getDatei18n(),
             'rest'                     => Helper::getRestInfo(),
-            'file_delete_nonce'        => wp_create_nonce('fluentform_file_delete')
-        ]);
+            'file_delete_nonce'        => wp_create_nonce('fluentform_file_delete'),
+            'file_upload_settings'     => $fileUploadSettings,
+        ];
+
+        wp_localize_script(
+            'fluent_forms_conversational_form',
+            'fluent_forms_global_var',
+            apply_filters('fluentform/global_form_vars', $localizedVars)
+        );
         
         $hasSaveProgressButton = false;
         $saveProgressButton = [];

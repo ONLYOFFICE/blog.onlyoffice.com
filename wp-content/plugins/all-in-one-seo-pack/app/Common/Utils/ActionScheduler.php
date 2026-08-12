@@ -138,8 +138,38 @@ class ActionScheduler {
 			);"
 		);
 
+		// Remove any duplicate pending actions, keeping only the earliest per hook+args combination.
+		$this->deduplicatePendingActions( $prefix );
+
 		// Set a transient to prevent this from running again for a while.
 		aioseo()->core->cache->update( 'action_scheduler_log_cleanup', true, DAY_IN_SECONDS );
+	}
+
+	/**
+	 * Removes duplicate pending actions for the aioseo group, keeping only the earliest per hook+args.
+	 *
+	 * @since 4.9.5.2
+	 *
+	 * @param  string $prefix The database table prefix.
+	 * @return void
+	 */
+	private function deduplicatePendingActions( $prefix ) {
+		aioseo()->core->db->execute(
+			"DELETE aa FROM {$prefix}actionscheduler_actions AS aa
+			JOIN {$prefix}actionscheduler_groups AS ag ON ag.group_id = aa.group_id
+			WHERE ag.slug = '{$this->actionSchedulerGroup}'
+			AND aa.status = 'pending'
+			AND aa.action_id NOT IN (
+				SELECT action_id FROM (
+					SELECT MIN(aa2.action_id) AS action_id
+					FROM {$prefix}actionscheduler_actions AS aa2
+					JOIN {$prefix}actionscheduler_groups AS ag2 ON ag2.group_id = aa2.group_id
+					WHERE ag2.slug = '{$this->actionSchedulerGroup}'
+					AND aa2.status = 'pending'
+					GROUP BY aa2.hook, aa2.args
+				) AS keepers
+			);"
+		);
 	}
 
 	/**
@@ -162,8 +192,8 @@ class ActionScheduler {
 			return false;
 		}
 
-		// Set lock for 5 seconds.
-		set_transient( $lockKey, 1, 5 );
+		// Set lock for 60 seconds.
+		set_transient( $lockKey, 1, 60 );
 
 		try {
 			if ( $forceSchedule || ! $this->isScheduled( $actionName, $args ) ) {
@@ -245,8 +275,8 @@ class ActionScheduler {
 			return false;
 		}
 
-		// Set lock for 5 seconds.
-		set_transient( $lockKey, 1, 5 );
+		// Set lock for 60 seconds.
+		set_transient( $lockKey, 1, 60 );
 
 		try {
 			if ( ! $this->isScheduled( $actionName, $args ) ) {
@@ -282,8 +312,8 @@ class ActionScheduler {
 			return;
 		}
 
-		// Set lock for 5 seconds.
-		set_transient( $lockKey, 1, 5 );
+		// Set lock for 60 seconds.
+		set_transient( $lockKey, 1, 60 );
 
 		try {
 			// Only schedule if not already scheduled to prevent duplicate actions.

@@ -31,10 +31,8 @@ class InternalOptions extends CommonOptions\InternalOptions {
 			'firstActivated' => [ 'type' => 'number', 'default' => 0 ],
 			'installed'      => [ 'type' => 'number', 'default' => 0 ],
 			'connect'        => [
-				'key'     => [ 'type' => 'string' ],
 				'time'    => [ 'type' => 'number', 'default' => 0 ],
-				'network' => [ 'type' => 'boolean', 'default' => false ],
-				'token'   => [ 'type' => 'string' ]
+				'network' => [ 'type' => 'boolean', 'default' => false ]
 			]
 		]
 		// phpcs:enable WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound

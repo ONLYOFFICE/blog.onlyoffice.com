@@ -627,7 +627,11 @@ class FormHandler
         }
 
         $errors = [
-            '_fluentformakismet' => __('Submission marked as spammed. Please try again', 'fluentform'),
+            '_fluentformakismet' => apply_filters(
+                'fluentform/akismet_spam_message',
+                __('Submission marked as spammed. Please try again', 'fluentform'),
+                $this->form->id
+            ),
         ];
 
         wp_send_json(['errors' => $errors], 422);
@@ -699,13 +703,12 @@ class FormHandler
             $isValid = ReCaptcha::validate($token, $keys['secretKey'], $version);
 
             if (!$isValid) {
-                wp_send_json([
-                    'errors' => [
-                        'g-recaptcha-response' => [
-                            __('reCaptcha verification failed, please try again.', 'fluentform'),
-                        ],
-                    ],
-                ], 422);
+                $message = apply_filters(
+                    'fluentform/recaptcha_failed_message',
+                    __('reCaptcha verification failed, please try again.', 'fluentform'),
+                    $this->form
+                );
+                wp_send_json(['errors' => ['g-recaptcha-response' => [$message]]], 422);
             }
         }
     }
@@ -734,13 +737,12 @@ class FormHandler
             $isValid = HCaptcha::validate($token, $keys['secretKey']);
 
             if (!$isValid) {
-                wp_send_json([
-                    'errors' => [
-                        'h-captcha-response' => [
-                            __('hCaptcha verification failed, please try again.', 'fluentform'),
-                        ],
-                    ],
-                ], 422);
+                $message = apply_filters(
+                    'fluentform/hcaptcha_failed_message',
+                    __('hCaptcha verification failed, please try again.', 'fluentform'),
+                    $this->form
+                );
+                wp_send_json(['errors' => ['h-captcha-response' => [$message]]], 422);
             }
         }
     }
@@ -768,13 +770,12 @@ class FormHandler
             $isValid = Turnstile::validate($token, $keys['secretKey']);
 
             if (!$isValid) {
-                wp_send_json([
-                    'errors' => [
-                        'cf-turnstile-response' => [
-                            __('Turnstile verification failed, please try again.', 'fluentform'),
-                        ],
-                    ],
-                ], 422);
+                $message = apply_filters(
+                    'fluentform/turnstile_failed_message',
+                    __('Turnstile verification failed, please try again.', 'fluentform'),
+                    $this->form
+                );
+                wp_send_json(['errors' => ['cf-turnstile-response' => [$message]]], 422);
             }
         }
     }

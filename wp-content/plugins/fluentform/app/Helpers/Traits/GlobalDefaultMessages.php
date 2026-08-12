@@ -17,6 +17,8 @@ trait GlobalDefaultMessages
             static::setGlobalDefaultMessages();
         } else if ($message = Arr::get($globalSettings, 'default_messages.' . $key, '')) {
             static::$globalDefaultMessages[$key] = $message;
+        } else {
+            static::setGlobalDefaultMessages();
         }
         return apply_filters('fluentform/global_default_message', Arr::get(static::$globalDefaultMessages, $key , ''), $key);
     }

@@ -13,6 +13,7 @@ use AIOSEO\Plugin\Common\Utils;
  *
  * @since 4.0.0
  */
+#[\AllowDynamicProperties]
 class Addons {
 	/**
 	 * Holds our list of loaded addons.
@@ -31,6 +32,15 @@ class Addons {
 	 * @var string
 	 */
 	protected $addonsUrl = 'https://licensing-cdn.aioseo.com/keys/lite/all-in-one-seo-pack-pro.json';
+
+	/**
+	 * The Action Scheduler action name for refreshing the addons cache.
+	 *
+	 * @since 4.9.5.2
+	 *
+	 * @var string
+	 */
+	protected $actionName = 'aioseo_addons_refresh';
 
 	/**
 	 * The main Image SEO addon class.
@@ -69,15 +79,6 @@ class Addons {
 	private $newsSitemap = null;
 
 	/**
-	 * The main REST API addon class.
-	 *
-	 * @since 4.4.2
-	 *
-	 * @var \AIOSEO\Plugin\Addon\RestApi\RestApi
-	 */
-	private $restApi = null;
-
-	/**
 	 * The main Video Sitemap addon class.
 	 *
 	 * @since 4.4.2
@@ -105,9 +106,49 @@ class Addons {
 	private $eeat = null;
 
 	/**
+	 * Class constructor.
+	 *
+	 * @since 4.9.5.2
+	 */
+	public function __construct() {
+		add_action( 'admin_init', [ $this, 'scheduleRefresh' ] );
+		add_action( $this->actionName, [ $this, 'refresh' ] );
+	}
+
+	/**
+	 * Schedules the daily recurring addons cache refresh.
+	 * Hooked into `admin_init` action hook.
+	 *
+	 * @since 4.9.5.2
+	 *
+	 * @return void
+	 */
+	public function scheduleRefresh() {
+		if ( aioseo()->actionScheduler->isScheduled( $this->actionName ) ) {
+			return;
+		}
+
+		aioseo()->actionScheduler->scheduleRecurrent( $this->actionName, 0, DAY_IN_SECONDS );
+	}
+
+	/**
+	 * Refreshes the addons cache.
+	 * Hooked into `aioseo_addons_refresh` action hook.
+	 *
+	 * @since 4.9.5.2
+	 *
+	 * @return void
+	 */
+	public function refresh() {
+		$this->getAddons( true );
+	}
+
+	/**
 	 * Returns our addons.
 	 *
-	 * @since 4.0.0
+	 * @since   4.0.0
+	 * @version 4.9.7.2 Strict null cache-miss check; non-array values fall back to {@see self::getDefaultAddons()} to prevent PHP 8+ array_filter/foreach TypeErrors.
+	 * @version 4.9.8  Also filter out the merged aioseo-rest-api addon.
 	 *
 	 * @param  boolean $flushCache Whether or not to flush the cache.
 	 * @return array               An array of addon data.
@@ -115,21 +156,30 @@ class Addons {
 	public function getAddons( $flushCache = false ) {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-		$addons        = aioseo()->core->cache->get( 'addons' );
-		$defaultAddons = $this->getDefaultAddons();
+		$addons = aioseo()->core->networkCache->get( 'addons' );
+
 		if ( null === $addons || $flushCache ) {
-			$lockKey = 'addons_fetch_lock';
-			if ( ! $flushCache && null !== aioseo()->core->cache->get( $lockKey ) ) {
-				$addons = aioseo()->core->cache->get( 'addons' );
+			$addons = $this->fetchAddonsFromRemote();
+			aioseo()->core->networkCache->update( 'addons', $addons );
+		}
+
+		// Guard against empty/non-array values (stale cache from older code, malformed CDN response, etc.) — array_filter() throws a TypeError on non-arrays in PHP 8+.
+		if ( empty( $addons ) || ! is_array( $addons ) ) {
+			$addons = $this->getDefaultAddons();
+		}
+
+		// Addons that have since been merged into the core plugin and should no longer be listed.
+		$mergedSkus = [ 'aioseo-redirects', 'aioseo-rest-api' ];
+
+		$addons = array_values( array_filter( $addons, function( $addon ) use ( $mergedSkus ) {
+			if ( is_object( $addon ) && ! empty( $addon->sku ) && in_array( $addon->sku, $mergedSkus, true ) ) {
+				return false;
+			} elseif ( is_array( $addon ) && ! empty( $addon['sku'] ) && in_array( $addon['sku'], $mergedSkus, true ) ) {
+				return false;
 			}
 
-			if ( null === $addons || $flushCache ) {
-				aioseo()->core->cache->update( $lockKey, true, MINUTE_IN_SECONDS );
-				$addons = $this->fetchAddonsFromRemote( $defaultAddons );
-				aioseo()->core->cache->update( 'addons', $addons );
-				aioseo()->core->cache->delete( $lockKey );
-			}
-		}
+			return true;
+		} ) );
 
 		// Convert the addons array to objects using JSON. This is essential because we have lots of addons that rely on this to be an object, and changing it to an array would break them.
 
@@ -139,13 +189,14 @@ class Addons {
 			$addons = json_decode( $addons );
 		}
 
-		$addons = array_filter( $addons, function( $addon ) {
-			return ! is_object( $addon ) || 'aioseo-redirects' !== $addon->sku;
-		} );
+		// Guard the foreach/sortAddons call below — round-trip can yield null on encode failure, which would fatal on PHP 8+.
+		if ( empty( $addons ) || ! is_array( $addons ) ) {
+			$addons = $this->getDefaultAddons();
+		}
 
 		$installedPlugins = array_keys( get_plugins() );
 		foreach ( $addons as $key => $addon ) {
-			if ( ! is_object( $addon ) ) {
+			if ( ! is_object( $addon ) || empty( $addon->sku ) ) {
 				continue;
 			}
 
@@ -169,10 +220,9 @@ class Addons {
 	 *
 	 * @since 4.9.4.2
 	 *
-	 * @param  array $defaultAddons Fallback when the request fails or returns non-200.
 	 * @return array Addons array (decoded from JSON or default).
 	 */
-	protected function fetchAddonsFromRemote( $defaultAddons ) {
+	protected function fetchAddonsFromRemote() {
 		$response = aioseo()->helpers->wpRemoteGet( $this->getAddonsUrl() );
 		if ( 200 === wp_remote_retrieve_response_code( $response ) ) {
 			$addons = json_decode( wp_remote_retrieve_body( $response ), true );
@@ -181,7 +231,7 @@ class Addons {
 			}
 		}
 
-		return $defaultAddons;
+		return $this->getDefaultAddons();
 	}
 
 	/**
@@ -325,7 +375,7 @@ class Addons {
 		$addon     = null;
 		$allAddons = $this->getAddons( $flushCache );
 		foreach ( $allAddons as $a ) {
-			if ( $sku === $a->sku ) {
+			if ( is_object( $a ) && $sku === $a->sku ) {
 				$addon = $a;
 			}
 		}
@@ -443,7 +493,12 @@ class Addons {
 		require_once ABSPATH . 'wp-admin/includes/screen.php';
 
 		// Set the current screen to avoid undefined notices.
-		set_current_screen( 'toplevel_page_aioseo' );
+		// We assign the globals ourselves rather than calling set_current_screen(), which also fires the
+		// `current_screen` action. Most callers are REST routes, and that action makes every plugin on the site run
+		// its admin-screen code inside a request that must return nothing but JSON.
+		$GLOBALS['current_screen'] = \WP_Screen::get( 'toplevel_page_aioseo' );
+		$GLOBALS['typenow']        = $GLOBALS['current_screen']->post_type;
+		$GLOBALS['taxnow']         = $GLOBALS['current_screen']->taxonomy;
 
 		// Prepare variables.
 		$url = esc_url_raw(
@@ -679,7 +734,7 @@ class Addons {
 	 * @since 4.0.0
 	 *
 	 * @param  string $sku The sku of the addon.
-	 * @return array       An array of addon data.
+	 * @return object      The addon data object.
 	 */
 	public function getDefaultAddon( $sku ) {
 		$addons = $this->getDefaultAddons();
@@ -690,13 +745,14 @@ class Addons {
 			}
 		}
 
-		return $addon;
+		return json_decode( wp_json_encode( $addon ) );
 	}
 
 	/**
 	 * Retrieves a default list of addons if the API cannot be reached.
 	 *
-	 * @since 4.0.0
+	 * @since   4.0.0
+	 * @version 4.9.8 Removed the aioseo-rest-api addon since it was merged into the core plugin.
 	 *
 	 * @return array An array of addons.
 	 */
@@ -900,39 +956,6 @@ class Addons {
 				'canActivate'        => false,
 				'canUpdate'          => false,
 				'capability'         => $this->getManageCapability( 'aioseo-index-now' ),
-				'minimumVersion'     => '0.0.0',
-				'hasMinimumVersion'  => false
-			],
-			[
-				'sku'                => 'aioseo-rest-api',
-				'name'               => 'REST API',
-				'version'            => '1.0.0',
-				'image'              => null,
-				'icon'               => 'svg-code',
-				'levels'             => [
-					'plus',
-					'pro',
-					'elite'
-				],
-				'currentLevels'      => [
-					'plus',
-					'pro',
-					'elite'
-				],
-				'requiresUpgrade'    => true,
-				'description'        => '<p>Manage your post and term SEO meta via the WordPress REST API. This addon also works seamlessly with headless WordPress installs.</p>', // phpcs:ignore Generic.Files.LineLength.MaxExceeded
-				'descriptionVersion' => 0,
-				'downloadUrl'        => '',
-				'productUrl'         => 'https://aioseo.com/feature/rest-api/',
-				'learnMoreUrl'       => 'https://aioseo.com/feature/rest-api/',
-				'manageUrl'          => null,
-				'basename'           => 'aioseo-rest-api/aioseo-rest-api.php',
-				'installed'          => false,
-				'isActive'           => false,
-				'canInstall'         => false,
-				'canActivate'        => false,
-				'canUpdate'          => false,
-				'capability'         => null,
 				'minimumVersion'     => '0.0.0',
 				'hasMinimumVersion'  => false
 			],

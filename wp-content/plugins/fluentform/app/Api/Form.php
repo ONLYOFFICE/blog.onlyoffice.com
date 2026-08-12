@@ -42,8 +42,8 @@ class Form
             $query->where('status', $status);
         }
 
-        if ($allowIds = FormManagerService::getUserAllowedForms()) {
-            $query->whereIn('id', $allowIds);
+        if (false !== ($allowIds = FormManagerService::getUserAllowedFormsScope())) {
+            $query->whereIn('id', $allowIds ?: [0]);
         }
 
         if ($filter_by && !$is_filter_by_conv_or_step_form) {

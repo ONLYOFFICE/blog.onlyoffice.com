@@ -96,7 +96,7 @@ class ShortCodeParser
                         [
                             false,
                             $provider,
-                            $key
+                            $key,
                         ],
                         FLUENTFORM_FRAMEWORK_UPGRADE,
                         'fluentform/will_return_html',
@@ -107,7 +107,7 @@ class ShortCodeParser
                 $parsable[$key] = static::parseShortCodeFromString($value, $isUrl, $isHtml, $htmlSanitized);
             }
         }
-        
+
         return $parsable;
     }
 
@@ -125,7 +125,7 @@ class ShortCodeParser
             if (false !== strpos($matches[1], 'inputs.')) {
                 $formProperty = substr($matches[1], strlen('inputs.'));
                 $value = static::getFormData($formProperty, $isHtml);
-            } else if (false !== strpos($matches[1], 'labels.')) {
+            } elseif (false !== strpos($matches[1], 'labels.')) {
                 $formLabelProperty = substr($matches[1], strlen('labels.'));
                 $value = static::getFormLabelData($formLabelProperty);
             } elseif (false !== strpos($matches[1], 'user.')) {
@@ -142,15 +142,15 @@ class ShortCodeParser
                 $value = static::getSubmissionData($submissionProperty);
             } elseif (false !== strpos($matches[1], 'cookie.')) {
                 $scookieProperty = substr($matches[1], strlen('cookie.'));
-                $value = wpFluentForm('request')->cookie($scookieProperty);
+                $value = array_key_exists($scookieProperty, $_COOKIE) ? sanitize_text_field(wp_unslash($_COOKIE[$scookieProperty])) : '';
             } elseif (false !== strpos($matches[1], 'payment.')) {
                 $property = substr($matches[1], strlen('payment.'));
                 $deprecatedValue = apply_filters_deprecated(
                     'fluentform_payment_smartcode', [
-                    '',
-                    $property,
-                    self::getInstance()
-                ],
+                        '',
+                        $property,
+                        self::getInstance(),
+                    ],
                     FLUENTFORM_FRAMEWORK_UPGRADE,
                     'fluentform/payment_smartcode',
                     'Use fluentform/payment_smartcode instead of fluentform_payment_smartcode.'
@@ -166,8 +166,11 @@ class ShortCodeParser
             }
 
             if ($isUrl) {
-                $value = rawurlencode($value);
-            } else if ($htmlSanitized) {
+                // Don't encode values that are already complete URLs like {wp.site_url}
+                if (!preg_match('#^https?://#i', (string) $value)) {
+                    $value = rawurlencode($value);
+                }
+            } elseif ($htmlSanitized) {
                 $value = fluentform_sanitize_html($value);
             }
 
@@ -224,7 +227,7 @@ class ShortCodeParser
                     $originalInput,
                     $field,
                     static::getForm()->id,
-                    $isHtml
+                    $isHtml,
                 ],
                 FLUENTFORM_FRAMEWORK_UPGRADE,
                 'fluentform/response_render_' . $field['element'],
@@ -245,7 +248,7 @@ class ShortCodeParser
                 static::$store['inputs'][$key],
                 $field,
                 static::getForm()->id,
-                $isHtml
+                $isHtml,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/response_render_' . $field['element'],
@@ -278,7 +281,7 @@ class ShortCodeParser
         }
         $inputLabel = ArrayHelper::get(ArrayHelper::get(static::$formFields, $key, []), 'label', '');
         $inputLabel = str_replace(['[', ']'], '', $inputLabel);
-        $keys = explode(".", $key);
+        $keys = explode('.', $key);
         if (count($keys) > 1) {
             $parentKey = array_shift($keys);
             $inputLabel = str_replace($parentKey, '', $inputLabel);
@@ -299,7 +302,29 @@ class ShortCodeParser
         if (is_null(static::$store['user'])) {
             static::$store['user'] = wp_get_current_user();
         }
-        return static::$store['user']->{$key};
+
+        $user = static::$store['user'];
+
+        // SECURITY (FINDING-11): `$user->{$key}` reads straight from the wp_users row via
+        // WP_User::__get, so an author-controlled {user.user_pass} (or {user.user_activation_key})
+        // would exfiltrate the *submitting* user's password hash / reset token in a notification.
+        // Allow only a fixed set of safe profile fields; resolve anything else from user meta,
+        // which never contains the sensitive wp_users columns.
+        $allowed = [
+            'ID', 'id', 'display_name', 'first_name', 'last_name', 'user_email',
+            'user_login', 'user_nicename', 'nickname', 'user_url', 'description', 'roles',
+            'user_registered', // non-sensitive wp_users column; keep {user.user_registered} working
+        ];
+        if (in_array($key, $allowed, true)) {
+            return $user->{$key};
+        }
+
+        $key = (string) $key;
+        if ($user->ID && '' !== $key) {
+            return get_user_meta($user->ID, $key, true);
+        }
+
+        return '';
     }
 
     protected static function getPostData($key)
@@ -368,7 +393,9 @@ class ShortCodeParser
             return '';
         }
 
-        if (property_exists($entry, $key)) {
+        $columns = Helper::getEntryColumns($entry);
+
+        if (array_key_exists($key, $columns)) {
             if ('total_paid' == $key || 'payment_total' == $key) {
                 return round($entry->{$key} / 100, 2);
             }
@@ -379,6 +406,8 @@ class ShortCodeParser
         }
         if ('admin_view_url' == $key) {
             return admin_url('admin.php?page=fluent_forms&route=entries&form_id=' . $entry->form_id . '#/entries/' . $entry->id);
+        } elseif ('entry_uid' == $key) {
+            return static::getShortEntryUid($entry);
         } elseif ('entry_uid_link' == $key) {
             return static::getEntryUidLink($entry);
         } elseif (false !== strpos($key, 'meta.')) {
@@ -414,7 +443,7 @@ class ShortCodeParser
             $status = apply_filters_deprecated(
                 'fluentform_all_data_skip_password_field',
                 [
-                    __return_true()
+                    __return_true(),
                 ],
                 FLUENTFORM_FRAMEWORK_UPGRADE,
                 'fluentform/all_data_skip_password_field',
@@ -434,7 +463,7 @@ class ShortCodeParser
             $hideHiddenField = apply_filters_deprecated(
                 'fluentform_all_data_without_hidden_fields',
                 [
-                    $hideHiddenField
+                    $hideHiddenField,
                 ],
                 FLUENTFORM_FRAMEWORK_UPGRADE,
                 'fluentform/all_data_without_hidden_fields',
@@ -469,7 +498,7 @@ class ShortCodeParser
                     $html,
                     $formFields,
                     $inputLabels,
-                    $response
+                    $response,
                 ],
                 FLUENTFORM_FRAMEWORK_UPGRADE,
                 'fluentform/all_data_shortcode_html',
@@ -482,7 +511,7 @@ class ShortCodeParser
             $key = apply_filters_deprecated(
                 'fluentform_shortcode_parser_callback_pdf.download_link.public',
                 [
-                    $key, static::getInstance()
+                    $key, static::getInstance(),
                 ],
                 FLUENTFORM_FRAMEWORK_UPGRADE,
                 'fluentform/shortcode_parser_callback_pdf.download_link.public',
@@ -522,12 +551,10 @@ class ShortCodeParser
             return '';
         }
 
-
         // if it's multi line then just return
         if (false !== strpos($key, PHP_EOL)) { // most probably it's a css
             return '{' . $key . '}';
         }
-
 
         $groups = explode('.', $key);
         if (count($groups) > 1) {
@@ -537,7 +564,7 @@ class ShortCodeParser
                 'fluentform_smartcode_group_' . $group,
                 [
                     $property,
-                    static::getInstance()
+                    static::getInstance(),
                 ],
                 FLUENTFORM_FRAMEWORK_UPGRADE,
                 'fluentform/smartcode_group_' . $group,
@@ -555,13 +582,12 @@ class ShortCodeParser
             'fluentform_shortcode_parser_callback_' . $key,
             [
                 '{' . $key . '}',
-                static::getInstance()
+                static::getInstance(),
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/shortcode_parser_callback_' . $key,
             'Use fluentform/shortcode_parser_callback_' . $key . ' instead of fluentform_shortcode_parser_callback_' . $key
         );
-
 
         $handlerValue = apply_filters('fluentform/shortcode_parser_callback_' . $key, $handlerValue, static::getInstance());
 
@@ -654,6 +680,22 @@ class ShortCodeParser
 
         // Generate the link
         return site_url('?ff_entry=1&hash=' . $meta->value);
+    }
+
+    protected static function getShortEntryUid($entry)
+    {
+        if (empty($entry->id)) {
+            return '';
+        }
+
+        $entryId = strtoupper(base_convert((string) absint($entry->id), 10, 36));
+        $entryHash = SubmissionMeta::retrieve('_entry_uid_hash', $entry->id);
+
+        if (!$entryHash) {
+            return $entryId;
+        }
+
+        return $entryId . '-' . strtoupper(substr($entryHash, 0, 4));
     }
 
     public static function resetData()

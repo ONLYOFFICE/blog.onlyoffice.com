@@ -59,15 +59,11 @@ class FormController extends Controller
         }
     }
     
-    public function duplicate(FormService $formService)
+    public function duplicate(FormService $formService, $formId)
     {
         try {
             $attributes = $this->request->all();
-            
-            $sanitizeMap = [
-                'form_id' => 'intval',
-            ];
-            $attributes = fluentform_backend_sanitizer($attributes, $sanitizeMap);
+            $attributes['form_id'] = (int) $formId;
             
             $form = $formService->duplicate($attributes);
             
@@ -83,10 +79,10 @@ class FormController extends Controller
         }
     }
     
-    public function find(FormService $formService)
+    public function find(FormService $formService, $formId)
     {
         try {
-            $id = (int)$this->request->get('form_id');
+            $id = (int) $formId;
             
             $form = $formService->find($id);
             
@@ -98,10 +94,10 @@ class FormController extends Controller
         }
     }
     
-    public function delete(FormService $formService)
+    public function delete(FormService $formService, $formId)
     {
         try {
-            $id = (int)$this->request->get('form_id');
+            $id = (int) $formId;
             
             $formService->delete($id);
             
@@ -115,11 +111,12 @@ class FormController extends Controller
         }
     }
     
-    public function update(FormService $formService)
+    public function update(FormService $formService, $formId)
     {
         try {
             // Sanitization handled in Updater::update() — only title, status, form_id, formFields are extracted
             $attributes = $this->request->all();
+            $attributes['form_id'] = (int) $formId;
 
             $formService->update($attributes);
             
@@ -133,10 +130,10 @@ class FormController extends Controller
         }
     }
     
-    public function convert(FormService $formService)
+    public function convert(FormService $formService, $formId)
     {
         try {
-            $formId = (int)$this->request->get('form_id');
+            $formId = (int) $formId;
             $formService->convert($formId);
             
             return $this->sendSuccess([
@@ -199,10 +196,10 @@ class FormController extends Controller
         return $this->sendSuccess($historyService::get($formId));
     }
     
-    public function clearEditHistory(HistoryService $historyService)
+    public function clearEditHistory(HistoryService $historyService, $formId)
     {
         try {
-            $id = (int)$this->request->get('form_id');
+            $id = (int) $formId;
             
             $historyService->delete($id);
             return $this->sendSuccess([

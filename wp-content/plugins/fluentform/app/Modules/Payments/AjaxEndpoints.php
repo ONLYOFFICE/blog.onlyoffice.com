@@ -409,38 +409,72 @@ class AjaxEndpoints
 
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verified in route registration
         $transactionId = ArrayHelper::get($attributes, 'transaction_id', 0);
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verified in route registration
-        $submissionId = ArrayHelper::get($attributes, 'submission_id', 0);
 
-        $oldTransaction = Transaction::find($transactionId);
+        // SECURITY (FINDING-29): bind the cancelled records to the AUTHORIZED SUBSCRIPTION itself,
+        // not merely its form. The submission is derived from the subscription (not the request), and
+        // the transaction must belong to that submission AND this subscription — so a per-form
+        // payment manager cannot flip an unrelated subscription's transaction/submission from the
+        // same form to cancelled. subscription_id is null on some legacy rows, so it is matched with
+        // a null-safe fallback while submission_id (1:1 with the subscription) does the hard binding.
+        $subscriptionSubmissionId = (int) $subscription->submission_id;
 
-        $oldSubmission = Submission::find($submissionId);
+        $subscriptionTxnScope = function ($query) use ($subscription, $subscriptionSubmissionId) {
+            return $query
+                ->where('submission_id', $subscriptionSubmissionId)
+                ->where(function ($q) use ($subscription) {
+                    $q->where('subscription_id', $subscription->id)
+                      ->orWhereNull('subscription_id')
+                      ->orWhere('subscription_id', 0);
+                });
+        };
 
-        if ($oldTransaction && $oldSubmission) {
-            $isStatusNotCancelled = $oldTransaction->status !== 'cancelled' && $oldSubmission->payment_status !== 'cancelled';
+        // FINDING-29 + review #243: derive the subscription's OWN transaction from the authorized
+        // scope. Prefer the request's transaction_id only when it resolves inside that scope; the id
+        // is optional in the admin UI, so a missing/stale/mismatched value must not leave the local
+        // transaction active while the submission and gateway are cancelled — fall back to the
+        // subscription's transaction.
+        $oldTransaction = $subscriptionTxnScope(
+            $transactionId ? Transaction::where('id', $transactionId) : Transaction::query()
+        )->first();
 
-            if ($isStatusNotCancelled) {
-                Transaction::where('id', $transactionId)
-                    ->update([
-                        'status' => 'cancelled',
-                        'updated_at' => current_time('mysql')
-                    ]);
-
-                Submission::where('id', $submissionId)
-                    ->update([
-                        'payment_status' => 'cancelled',
-                        'updated_at' => current_time('mysql')
-                    ]);
-            }
+        if (!$oldTransaction) {
+            $oldTransaction = $subscriptionTxnScope(Transaction::query())->first();
         }
 
+        $oldSubmission = Submission::where('id', $subscriptionSubmissionId)->first();
+
+        // CORRECTNESS (review #243): cancel at the gateway FIRST — it holds the authoritative state.
+        // Only touch local records after it confirms, so a gateway failure never leaves us showing
+        // "cancelled" locally while the subscription keeps charging.
         $response = (new PaymentManagement())->cancelSubscription($subscription);
 
-        if(is_wp_error($response)) {
+        if (is_wp_error($response)) {
             wp_send_json_error([
-                'message' => $response->get_error_code().' - '.$response->get_error_message()
+                'message' => $response->get_error_code() . ' - ' . $response->get_error_message()
             ], 423);
         }
+
+        // Gateway cancelled: reconcile each local record independently (so a partially-cancelled
+        // state is completed rather than skipped) and atomically. The transaction stays scoped to
+        // this subscription (FINDING-29), so an unrelated same-form transaction cannot be flipped.
+        $now = current_time('mysql');
+        wpFluent()->transaction(function () use ($subscriptionTxnScope, $subscriptionSubmissionId, $oldTransaction, $oldSubmission, $now) {
+            if ($oldTransaction && $oldTransaction->status !== 'cancelled') {
+                $subscriptionTxnScope(Transaction::where('id', $oldTransaction->id))
+                    ->update([
+                        'status'     => 'cancelled',
+                        'updated_at' => $now
+                    ]);
+            }
+
+            if ($oldSubmission && $oldSubmission->payment_status !== 'cancelled') {
+                Submission::where('id', $subscriptionSubmissionId)
+                    ->update([
+                        'payment_status' => 'cancelled',
+                        'updated_at'     => $now
+                    ]);
+            }
+        });
 
         wp_send_json_success([
             'message' => $response

@@ -2,39 +2,45 @@
 
 namespace DemocracyPoll\Admin;
 
-use function DemocracyPoll\plugin;
-use function DemocracyPoll\options;
+use DemocracyPoll\Plugin;
+use function DemocracyPoll\container;
 
 class Admin_Page_Polls implements Admin_Subpage_Interface {
 
-	/** @var List_Table_Polls */
-	public $list_table;
+	private Plugin $plugin;
+	private Admin_Page $admpage;
+	private List_Table_Polls $list_table;
 
-	/** @var Admin_Page */
-	private $admpage;
-
-	public function __construct( Admin_Page $admin_page ){
+	public function __construct(
+		Plugin $plugin,
+		Admin_Page $admin_page,
+		List_Table_Polls $list_table /** @see List_Table_Polls::__construct() */
+	){
+		$this->plugin = $plugin;
 		$this->admpage = $admin_page;
+		$this->list_table = $list_table;
 	}
 
-	public function load(){
-		$this->list_table = new List_Table_Polls( $this );
+	public function load(): void {
+		$this->list_table->load();
 	}
 
-	public function request_handler(){
-
-		if( ! plugin()->admin_access ){
+	public function request_handler(): void {
+		if( ! $this->plugin->admin_access ){
 			return;
 		}
-
 	}
 
-	public function render(){
+	public function render(): void {
 		echo $this->admpage->subpages_menu();
-
-		$this->list_table->search_box( __( 'Search', 'democracy-poll' ), 'style="margin:1em 0 -1em;"' );
-
-		$this->list_table->display();
+		?>
+		<div class="demoptions dempage-polls">
+			<?php
+			$this->list_table->search_box( __( 'Search', 'democracy-poll' ), 'style="margin:1em 0 -1em;"' );
+			$this->list_table->display();
+			?>
+		</div>
+		<?php
 	}
 
 }

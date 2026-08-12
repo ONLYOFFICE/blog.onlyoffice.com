@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AIOSEO\Plugin\Common\Models;
+
 /**
  * Handles the headline analysis.
  *
@@ -51,6 +53,11 @@ class HeadlineAnalyzer {
 			return;
 		}
 
+		$screen = get_current_screen();
+		if ( is_object( $screen ) && ! empty( $screen->post_type ) && ! $this->supportsPostType( $screen->post_type ) ) {
+			return;
+		}
+
 		$path = '/vendor/jwhennessey/phpinsight/autoload.php';
 		if ( ! aioseo()->core->fs->exists( AIOSEO_DIR . $path ) ) {
 			return;
@@ -58,6 +65,78 @@ class HeadlineAnalyzer {
 		require_once AIOSEO_DIR . $path;
 
 		aioseo()->core->assets->load( 'src/vue/standalone/headline-analyzer/main.js' );
+	}
+
+	/**
+	 * Determines whether the Headline Analyzer applies to the given post type.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @param  string $postType The post type.
+	 * @return bool             Whether the analyzer applies to the post type.
+	 */
+	public function supportsPostType( $postType ) {
+		// The scoring targets editorial headlines; WooCommerce product titles are
+		// commercial and don't map to it, so products are excluded.
+		return ! in_array( $postType, [ 'product' ], true );
+	}
+
+	/**
+	 * Determines whether the Headline Analyzer applies to the given analysis locale.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @param  string $locale The analysis locale.
+	 * @return bool           Whether the analyzer applies to the locale.
+	 */
+	public function supportsLocale( $locale ) {
+		// The scoring engine matches against hard-coded English word lists and
+		// {@see self::getHeadlineScore()} strips the headline to ASCII, so a non-English
+		// headline either scores meaninglessly or can't be scored at all.
+		return 'en' === strtolower( (string) preg_replace( '/[-_].*$/', '', (string) $locale ) );
+	}
+
+	/**
+	 * Returns the score for a post's current title, or null when the analyzer doesn't apply.
+	 *
+	 * The score isn't persisted per post, so every consumer recomputes it. Owning the
+	 * applicability rule here keeps those consumers from drifting apart.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @param  int              $postId     The post ID.
+	 * @param  Models\Post|null $aioseoPost The AIOSEO post, for the analysis locale. Fetched when omitted.
+	 * @return int|null                     The score, or null when the analyzer doesn't apply.
+	 */
+	public function getScoreForPost( $postId, $aioseoPost = null ) {
+		if ( ! aioseo()->options->advanced->headlineAnalyzer ) {
+			return null;
+		}
+
+		if ( ! $this->supportsPostType( get_post_type( $postId ) ) ) {
+			return null;
+		}
+
+		$aioseoPost = $aioseoPost ? $aioseoPost : Models\Post::getPost( $postId );
+		$locale     = ! empty( $aioseoPost->truseo_locale ) ? $aioseoPost->truseo_locale : get_locale();
+		if ( ! $this->supportsLocale( $locale ) ) {
+			return null;
+		}
+
+		// Sanitizing first keeps the score consistent with the editor, which analyzes the
+		// title only after it has been through the same sanitization.
+		$title = sanitize_text_field( get_the_title( $postId ) );
+		if ( '' === trim( $title ) ) {
+			return null;
+		}
+
+		// The scoring library is autoloaded, so this only fails when the vendor directory
+		// has been trimmed — bail instead of fataling.
+		if ( ! class_exists( '\PHPInsight\Sentiment' ) ) {
+			return null;
+		}
+
+		return (int) $this->getResult( $title )['score'];
 	}
 
 	/**
@@ -91,6 +170,11 @@ class HeadlineAnalyzer {
 		$result                           = new \stdClass();
 		$result->originalExplodedHeadline = explode( ' ', wp_unslash( $title ) );
 
+		// The full headline as displayed (spaces + punctuation kept), for the
+		// character count below. Captured before the word-matching passes strip it
+		// down to ASCII alphanumerics.
+		$fullHeadline = trim( (string) preg_replace( '!\s+!', ' ', wp_unslash( (string) $title ) ) );
+
 		// Strip useless characters and whitespace.
 		$title = preg_replace( '/[^A-Za-z0-9 ]/', '', (string) $title );
 		$title = preg_replace( '!\s+!', ' ', (string) $title );
@@ -111,8 +195,9 @@ class HeadlineAnalyzer {
 		$result->explodedHeadline = $explodedHeadline;
 		$result->err              = false;
 
-		// The optimal length is 55 characters.
-		$result->length = strlen( str_replace( ' ', '', $title ) );
+		// The optimal length is 55 characters — measured on the full headline as
+		// search engines display it (multibyte-safe), not the stripped word tokens.
+		$result->length = function_exists( 'mb_strlen' ) ? mb_strlen( $fullHeadline ) : strlen( $fullHeadline );
 		$totalScore     = $totalScore + 3;
 
 		//phpcs:disable Squiz.ControlStructures.ControlSignature
@@ -207,7 +292,10 @@ class HeadlineAnalyzer {
 		}
 
 		$result->headlineTypes = $headlineTypes;
-		$result->score         = $totalScore >= 93 ? 93 : $totalScore;
+
+		// The individual signals can sum past 100 (e.g. a keyword-rich how-to list
+		// with strong sentiment), so clamp to a 0-100 scale. 100 is achievable.
+		$result->score = min( 100, $totalScore );
 
 		return $result;
 	}
@@ -278,7 +366,7 @@ class HeadlineAnalyzer {
 	 */
 	private function secondaryQuestionIndicators() {
 		return [
-			'you', 'they', 'he', 'she', 'your', 'it', 'they', 'my', 'have', 'has', 'does', 'do', 'can', 'are', 'will' // phpcs:ignore Generic.Files.LineLength.MaxExceeded, WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine
+			'you', 'they', 'he', 'she', 'your', 'it', 'my', 'have', 'has', 'does', 'do', 'can', 'are', 'will' // phpcs:ignore Generic.Files.LineLength.MaxExceeded, WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine
 		];
 	}
 
@@ -304,7 +392,7 @@ class HeadlineAnalyzer {
 	 */
 	private function commonWords() {
 		return [
-			'a', 'for', 'about', 'from', 'after', 'get', 'all', 'has', 'an', 'have', 'and', 'he', 'are', 'her', 'as', 'his', 'at', 'how', 'be', 'I', 'but', 'if', 'by', 'in', 'can', 'is', 'did', 'it', 'do', 'just', 'ever', 'like', 'll', 'these', 'me', 'they', 'most', 'things', 'my', 'this', 'no', 'to', 'not', 'up', 'of', 'was', 'on', 'what', 're', 'when', 'she', 'who', 'sould', 'why', 'so', 'will', 'that', 'with', 'the', 'you', 'their', 'your', 'there' // phpcs:ignore Generic.Files.LineLength.MaxExceeded, WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine
+			'a', 'for', 'about', 'from', 'after', 'get', 'all', 'has', 'an', 'have', 'and', 'he', 'are', 'her', 'as', 'his', 'at', 'how', 'be', 'I', 'but', 'if', 'by', 'in', 'can', 'is', 'did', 'it', 'do', 'just', 'ever', 'like', 'these', 'me', 'they', 'most', 'things', 'my', 'this', 'no', 'to', 'not', 'up', 'of', 'was', 'on', 'what', 'when', 'she', 'who', 'should', 'why', 'so', 'will', 'that', 'with', 'the', 'you', 'their', 'your', 'there' // phpcs:ignore Generic.Files.LineLength.MaxExceeded, WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine
 		];
 	}
 
@@ -330,7 +418,7 @@ class HeadlineAnalyzer {
 	 */
 	private function emotionPowerWords() {
 		return [
-			'destroy', 'extra', 'in a', 'devastating', 'eye-opening', 'gift', 'in the world', 'devoted', 'fail', 'in the', 'faith', 'grateful', 'inexpensive', 'dirty', 'famous', 'disastrous', 'fantastic', 'greed', 'grit', 'insanely', 'disgusting', 'fearless', 'disinformation', 'feast', 'insidious', 'dollar', 'feeble', 'gullible', 'double', 'fire', 'hack', 'fleece', 'had enough', 'invasion', 'drowning', 'floundering', 'happy', 'ironclad', 'dumb', 'flush', 'hate', 'irresistibly', 'hazardous', 'is the', 'fool', 'is what happens when', 'fooled', 'helpless', 'it looks like a', 'embarrass', 'for the first time', 'help are the', 'jackpot', 'forbidden', 'hidden', 'jail', 'empower', 'force-fed', 'high', 'jaw-dropping', 'forgotten', 'jeopardy', 'energize', 'hoax', 'jubilant', 'foul', 'hope', 'killer', 'frantic', 'horrific', 'know it all', 'epic', 'how to make', 'evil', 'freebie', 'frenzy', 'hurricane', 'excited', 'fresh on the mind', 'frightening', 'hypnotic', 'lawsuit', 'frugal', 'illegal', 'fulfill', 'lick', 'explode', 'lies', 'exposed', 'gambling', 'like a normal', 'nightmare', 'results', 'line', 'no good', 'pound', 'loathsome', 'no questions asked', 'revenge', 'lonely', 'looks like a', 'obnoxious', 'preposterous', 'revolting', 'looming', 'priced', 'lost', 'prison', 'lowest', 'of the', 'privacy', 'rich', 'lunatic', 'off-limits', 'private', 'risky', 'lurking', 'offer', 'prize', 'ruthless', 'lust', 'official', 'luxurious', 'on the', 'profit', 'scary', 'lying', 'outlawed', 'protected', 'scream', 'searing', 'overcome', 'provocative', 'make you', 'painful', 'pummel', 'secure', 'pale', 'punish', 'marked down', 'panic', 'quadruple', 'seductively', 'massive', 'pay zero', 'seize', 'meltdown', 'payback', 'might look like a', 'peril', 'mind-blowing', 'shameless', 'minute', 'rave', 'shatter', 'piranha', 'reckoning', 'shellacking', 'mired', 'pitfall', 'reclaim', 'mistakes', 'plague', 'sick and tired', 'money', 'played', 'refugee', 'silly', 'money-grubbing', 'pluck', 'refund', 'moneyback', 'plummet', 'plunge', 'murder', 'pointless', 'sinful', 'myths', 'poor', 'remarkably', 'six-figure', 'never again', 'research', 'surrender', 'to the', 'varify', 'skyrocket', 'toxic', 'vibrant', 'slaughter', 'swindle', 'trap', 'victim', 'sleazy', 'taboo', 'treasure', 'victory', 'smash', 'tailspin', 'vindication', 'smug', 'tank', 'triple', 'viral', 'smuggled', 'tantalizing', 'triumph', 'volatile', 'sniveling', 'targeted', 'truth', 'vulnerable', 'snob', 'tawdry', 'try before you buy', 'tech', 'turn the tables', 'wanton', 'soaring', 'warning', 'teetering', 'unauthorized', 'spectacular', 'temporary fix', 'unbelievably', 'spine', 'tempting', 'uncommonly', 'what happened', 'spirit', 'what happens when', 'terror', 'under', 'what happens', 'staggering', 'underhanded', 'what this', 'that will make you', 'undo","when you see', 'that will make', 'unexpected', 'when you', 'strangle', 'that will', 'whip', 'the best', 'whopping', 'stuck up', 'the ranking of', 'wicked', 'stunning', 'the most', 'will make you', 'stupid', 'the reason why is', 'unscrupulous', 'thing ive ever seen', 'withheld', 'this is the', 'this is what happens', 'unusually', 'wondrous', 'this is what', 'uplifting', 'worry', 'sure', 'this is', 'wounded', 'surge', 'thrilled', 'you need to know', 'thrilling', 'valor', 'you need to', 'you see what', 'surprising', 'tired', 'you see', 'surprisingly', 'to be', 'vaporize' // phpcs:ignore Generic.Files.LineLength.MaxExceeded, WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine
+			'destroy', 'extra', 'in a', 'devastating', 'eye-opening', 'gift', 'in the world', 'devoted', 'fail', 'in the', 'faith', 'grateful', 'inexpensive', 'dirty', 'famous', 'disastrous', 'fantastic', 'greed', 'grit', 'insanely', 'disgusting', 'fearless', 'disinformation', 'feast', 'insidious', 'dollar', 'feeble', 'gullible', 'double', 'fire', 'hack', 'fleece', 'had enough', 'invasion', 'drowning', 'floundering', 'happy', 'ironclad', 'dumb', 'flush', 'hate', 'irresistibly', 'hazardous', 'is the', 'fool', 'is what happens when', 'fooled', 'helpless', 'it looks like a', 'embarrass', 'for the first time', 'help are the', 'jackpot', 'forbidden', 'hidden', 'jail', 'empower', 'force-fed', 'high', 'jaw-dropping', 'forgotten', 'jeopardy', 'energize', 'hoax', 'jubilant', 'foul', 'hope', 'killer', 'frantic', 'horrific', 'know it all', 'epic', 'how to make', 'evil', 'freebie', 'frenzy', 'hurricane', 'excited', 'fresh on the mind', 'frightening', 'hypnotic', 'lawsuit', 'frugal', 'illegal', 'fulfill', 'lick', 'explode', 'lies', 'exposed', 'gambling', 'like a normal', 'nightmare', 'results', 'line', 'no good', 'pound', 'loathsome', 'no questions asked', 'revenge', 'lonely', 'looks like a', 'obnoxious', 'preposterous', 'revolting', 'looming', 'priced', 'lost', 'prison', 'lowest', 'of the', 'privacy', 'rich', 'lunatic', 'off-limits', 'private', 'risky', 'lurking', 'offer', 'prize', 'ruthless', 'lust', 'official', 'luxurious', 'on the', 'profit', 'scary', 'lying', 'outlawed', 'protected', 'scream', 'searing', 'overcome', 'provocative', 'make you', 'painful', 'pummel', 'secure', 'pale', 'punish', 'marked down', 'panic', 'quadruple', 'seductively', 'massive', 'pay zero', 'seize', 'meltdown', 'payback', 'might look like a', 'peril', 'mind-blowing', 'shameless', 'minute', 'rave', 'shatter', 'piranha', 'reckoning', 'shellacking', 'mired', 'pitfall', 'reclaim', 'mistakes', 'plague', 'sick and tired', 'money', 'played', 'refugee', 'silly', 'money-grubbing', 'pluck', 'refund', 'moneyback', 'plummet', 'plunge', 'murder', 'pointless', 'sinful', 'myths', 'poor', 'remarkably', 'six-figure', 'never again', 'research', 'surrender', 'to the', 'varify', 'skyrocket', 'toxic', 'vibrant', 'slaughter', 'swindle', 'trap', 'victim', 'sleazy', 'taboo', 'treasure', 'victory', 'smash', 'tailspin', 'vindication', 'smug', 'tank', 'triple', 'viral', 'smuggled', 'tantalizing', 'triumph', 'volatile', 'sniveling', 'targeted', 'truth', 'vulnerable', 'snob', 'tawdry', 'try before you buy', 'tech', 'turn the tables', 'wanton', 'soaring', 'warning', 'teetering', 'unauthorized', 'spectacular', 'temporary fix', 'unbelievably', 'spine', 'tempting', 'uncommonly', 'what happened', 'spirit', 'what happens when', 'terror', 'under', 'what happens', 'staggering', 'underhanded', 'what this', 'that will make you', 'undo', 'when you see', 'that will make', 'unexpected', 'when you', 'strangle', 'that will', 'whip', 'the best', 'whopping', 'stuck up', 'the ranking of', 'wicked', 'stunning', 'the most', 'will make you', 'stupid', 'the reason why is', 'unscrupulous', 'thing ive ever seen', 'withheld', 'this is the', 'this is what happens', 'unusually', 'wondrous', 'this is what', 'uplifting', 'worry', 'sure', 'this is', 'wounded', 'surge', 'thrilled', 'you need to know', 'thrilling', 'valor', 'you need to', 'you see what', 'surprising', 'tired', 'you see', 'surprisingly', 'to be', 'vaporize' // phpcs:ignore Generic.Files.LineLength.MaxExceeded, WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine
 		];
 	}
 }

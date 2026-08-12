@@ -2,732 +2,966 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Plugins - Democracy Poll - Stable (latest release)\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: \n"
+"Last-Translator: Kama <tnkamaev@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2025-07-20T18:39:28+05:00\n"
 "PO-Revision-Date: 2024-03-21 21:46:18+0000\n"
-"Language: ru\n"
+"Language: ru_RU\n"
 "Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2);\n"
-"X-Generator: GlotPress/4.0.1\n"
+"X-Generator: Poedit 1.8.12\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
+"X-Poedit-SearchPathExcluded-2: assets/build\n"
+"X-Poedit-KeywordsList: __;_e;esc_html__;esc_html_e;esc_attr__;esc_attr_e;_ex:1,2c;_x:1,2c;_n:1,2;_nx:1,2,3c;_n_noop:1,2;_nx_noop:1,2,3c\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
-msgid "ERROR: You select more number of answers than it is allowed..."
+#: classes/Poll_Voting.php:48
+msgid "ERROR: You selected more answers than allowed."
 msgstr "ОШИБКА: вы выбрали большее количество ответов, чем допускается..."
 
+#: classes/Admin/tpl/settings.php:199
 msgid "Or if IP detection is wrong. (for cloudflare)"
 msgstr "Или если определение IP работает неправильно. (для cloudflare)"
 
+#: classes/Admin/tpl/settings.php:40
 msgid "To set hours use float number - 0.04 = 1 hour."
 msgstr "Для установки часов используйте дробное значение - 0.04 = 1 час."
 
+#: includes/theme-functions.php:150
 msgid "Poll results hidden for now..."
 msgstr "Результаты опроса пока скрыты..."
 
+#: classes/Admin/Admin_Page.php:264
 msgid "If you like this plugin, please <a>leave your review</a>"
 msgstr "Если плагин понравился, пожалуйста, <a>оставьте отзыв</a>"
 
+#: classes/Admin/tpl/design.php:386
 msgid "are you sure?"
 msgstr "Уверены?"
 
-msgid "This field cleaned manually, if you reset options of this page or change/set another theme, the field will not be touched."
+#: classes/Admin/tpl/design.php:371
+msgid "This field must be cleared manually, if you reset options of this page or change/set another theme, the field will not be touched."
 msgstr "Это полу очищается вручную, если сбросить опции на этой странице или изменить тему оформления, это поле останется нетронутым."
 
-msgid "In this field you can add some additional css properties or completely replace current css theme. Write here css and it will be added at the bottom of current Democracy css. To complete replace styles, check \"No theme\" and describe all styles."
+#: classes/Admin/tpl/design.php:370
+msgid "In this field you can add some additional css properties or completely replace current css theme. Write here css and it will be added at the bottom of current Democracy css. To completely replace styles, check \"No theme\" and describe all styles."
 msgstr "В этом поле вы можете добавить дополнительные css стили или можете полностью переписать стили. Добавьте сюда css код и он будет добавлен в конце базовых стилей опросов. Чтобы полностью переписать стили, отключите тему оформления и опишите стили здесь..."
 
+#: classes/Admin/tpl/design.php:316
 msgid "No (dots...)"
 msgstr "Нет (точки...)"
 
+#: classes/Admin/tpl/design.php:62
+#: classes/Admin/tpl/design.php:192
 msgid "No (default)"
 msgstr "Нет (по умолчанию)"
 
+#: classes/Admin/tpl/design.php:35
 msgid "No theme"
 msgstr "Без темы"
 
+#: classes/Poll_Renderer.php:620
 msgctxt "front"
-msgid "Only registered users can vote. <a>Login</a> to vote."
+msgid "Only registered users can vote. <a>Log in</a> to vote."
 msgstr "Голосовать могут только зарегистрированные пользователи. <a>Войдите</a>."
 
-#, php-format
-msgid "%s - shortcode"
-msgstr "%s - шорткод"
-
-msgid "random active poll"
-msgstr "случайный активный опрос"
-
-msgid "Attach a poll to the post"
-msgstr "Прикрепить опрос к записи"
-
+#: classes/Admin/tpl/design.php:273
 msgid "Hover button colors"
 msgstr "Цвета при наведении на кнопку"
 
+#: classes/Admin/tpl/design.php:251
 msgid "Button colors"
 msgstr "Цвета кнопки"
 
+#: classes/Admin/tpl/design.php:178
 msgid "Progress line animation effect speed (default 1500). Set 0 to disable animation."
 msgstr "Скорость анимации линии прогресса (по умолчанию 1500). Укажите 0, чтобы отключить анимацию."
 
+#: includes/theme-functions.php:378
 msgid "From posts:"
 msgstr "Из записей:"
 
+#: classes/Admin/List_Table_Logs.php:140
 msgid "Expire"
 msgstr "Истекает"
 
+#: classes/Poll_Widget.php:109
 msgid "Which poll to show?"
 msgstr "Какой опрос показывать?"
 
+#: classes/Poll_Widget.php:94
 msgid "- Last open poll"
 msgstr "- Последний открытый опрос"
 
+#: classes/Poll_Widget.php:93
 msgid "- Active (random all active)"
 msgstr "- Активный (рандомно все активные)"
 
+#: classes/Poll_Widget.php:84
 msgid "Poll title:"
 msgstr "Заголовок опроса:"
 
+#: classes/Poll_Widget.php:79
 msgid "Poll question = widget title?"
 msgstr "Вопрос опроса = заголовок виджета?"
 
+#: classes/Poll_Widget.php:14
 msgid "Democracy Poll Widget"
 msgstr "Виджет опроса Democracy"
 
+#: classes/Poll_Renderer.php:630
 msgctxt "front"
-msgid "You or your IP had already vote."
+msgid "You or your IP have already voted."
 msgstr "Вы или с вашего IP уже голосовали."
 
+#: classes/Poll_Renderer.php:596
 msgctxt "front"
-msgid "Are you sure you want cancel the votes?"
+msgid "Are you sure you want to cancel the votes?"
 msgstr "Точно отменить голоса?"
 
+#: classes/Poll_Renderer.php:594
 msgctxt "front"
 msgid "Revote"
 msgstr "Переголосовать"
 
+#: classes/Poll_Renderer.php:498
 msgctxt "front"
 msgid "Polls Archive"
 msgstr "Архив опросов"
 
+#: classes/Poll_Renderer.php:495
 msgctxt "front"
 msgid "Voting is closed"
 msgstr "Опрос закрыт"
 
+#: classes/Poll_Renderer.php:492
 msgctxt "front"
 msgid " - added by visitor"
 msgstr " - добавлен посетителем"
 
+#: classes/Poll_Renderer.php:481
 msgctxt "front"
 msgid "End"
 msgstr "Конец"
 
+#: classes/Poll_Renderer.php:480
 msgctxt "front"
 msgid "Begin"
 msgstr "Начало"
 
+#: classes/Poll_Renderer.php:487
 #, php-format
 msgctxt "front"
 msgid "Voters: %s"
 msgstr "Голосовало: %s"
 
+#: classes/Poll_Renderer.php:479
 #, php-format
 msgctxt "front"
 msgid "Total Votes: %s"
 msgstr "Всего голосов: %s"
 
+#: classes/Poll_Renderer.php:421
+#: classes/Poll_Renderer.php:433
 msgctxt "front"
 msgid "vote,votes,votes"
 msgstr "голос,голоса,голосов"
 
-#, php-format
-msgctxt "front"
-msgid "%s - %s%% of all votes"
-msgstr "%s - %s%% из всех голосов"
-
+#: classes/Poll_Renderer.php:446
 msgctxt "front"
 msgid "The answer was added by a visitor"
 msgstr "Ответ добавлен посетителем"
 
+#: classes/Poll_Renderer.php:396
 msgctxt "front"
-msgid "This is Your vote."
+msgid "This is your vote."
 msgstr "Это Ваш голос."
 
+#: classes/Poll_Renderer.php:343
 msgctxt "front"
 msgid "Results"
 msgstr "Результаты"
 
+#: classes/Poll_Renderer.php:316
+#: classes/Poll_Renderer.php:559
 msgctxt "front"
 msgid "Vote"
 msgstr "Голосовать"
 
+#: classes/Poll_Renderer.php:305
 msgctxt "front"
 msgid "Already voted..."
 msgstr "Уже голосовали..."
 
+#: classes/Poll_Renderer.php:284
 msgctxt "front"
 msgid "Add your answer"
 msgstr "Добавить свой ответ"
 
-msgid "Download the Democracy Poll"
-msgstr "Скачать Democracy Poll"
-
+#: classes/Admin/Admin_Page_Logs.php:218
+#: classes/Admin/Admin_Page_Logs.php:263
 msgid "Failed to delete"
 msgstr "Не удалось удалить"
 
+#: classes/Admin/Admin_Page_Settings.php:87
 msgid "Polls Archive"
 msgstr "Архив опросов"
 
+#: classes/Admin/Admin_Page_Edit_Poll.php:272
 msgid "Poll Updated"
 msgstr "Опрос обновлён"
 
+#: classes/Admin/Admin_Page_Edit_Poll.php:541
 msgid "Poll Deactivated"
 msgstr "Опрос деактивирован"
 
+#: classes/Admin/Admin_Page_Edit_Poll.php:540
 msgid "Poll Activated"
 msgstr "Опрос активирован"
 
+#: classes/Admin/Admin_Page_Edit_Poll.php:531
 msgid "You can not activate closed poll..."
 msgstr "Нельзя активировать закрытый опрос..."
 
+#: classes/Admin/Admin_Page_Edit_Poll.php:457
 msgid "Poll Deleted"
 msgstr "Опрос удален"
 
+#: classes/Admin/Admin_Page_l10n.php:47
+#: classes/Admin/Admin_Page_Design.php:69
+#: classes/Admin/Admin_Page_Settings.php:47
 msgid "Nothing was updated"
 msgstr "Ничего не обновлено"
 
+#: classes/Admin/Admin_Page_l10n.php:46
+#: classes/Admin/Admin_Page_Design.php:68
+#: classes/Admin/Admin_Page_Settings.php:46
 msgid "Updated"
 msgstr "Обновленно"
 
+#: classes/Admin/Admin_Page_Edit_Poll.php:47
 msgid "New Poll Added"
 msgstr "Новый опрос создан"
 
+#: classes/Admin/Post_Metabox.php:30
+#: classes/Admin/Admin_Page.php:63
 msgid "Democracy Poll"
 msgstr "Democracy Poll"
 
+#: classes/Admin/tpl/design.php:381
 msgid "Save All Changes"
 msgstr "Сохранить все изменения"
 
+#: classes/Admin/Admin_Page_Design.php:148
 msgid "AJAX loader view:"
 msgstr "Вид AJAX загрузчика:"
 
+#: classes/Admin/Admin_Page_Design.php:147
 msgid "Vote view:"
 msgstr "Вид голосования:"
 
+#: classes/Admin/Admin_Page_Design.php:146
 msgid "Results view:"
 msgstr "Вид результатов:"
 
+#: classes/Admin/Admin_Page_Edit_Poll.php:426
 msgid "Open voting"
 msgstr "Открыть голосование"
 
+#: classes/Admin/Admin_Page_Edit_Poll.php:421
 msgid "Close voting"
 msgstr "Закрыть голосование"
 
+#: classes/Admin/Admin_Page_Edit_Poll.php:405
 msgid "Activate"
 msgstr "Активировать"
 
+#: classes/Admin/Admin_Page_Edit_Poll.php:400
 msgid "Deactivate"
 msgstr "Деактивировать"
 
-msgid "Texts changes"
+#: classes/Admin/Admin_Page.php:220
+#: classes/System/Plugin_Initor.php:140
+msgid "Text changes"
 msgstr "Изменение текстов"
 
+#: classes/Admin/Admin_Page.php:215
+#: classes/System/Plugin_Initor.php:139
 msgid "Theme Settings"
 msgstr "Настройки Дизайна"
 
+#: classes/Admin/Admin.php:53
+#: classes/Admin/Admin_Page.php:210
+#: classes/System/Plugin_Initor.php:138
 msgid "Settings"
 msgstr "Настройки"
 
+#: classes/Admin/Admin_Page.php:200
 msgid "Add new poll"
 msgstr "Добавить новый опрос"
 
+#: classes/Admin/Admin_Page.php:196
+#: classes/System/Plugin_Initor.php:135
 msgid "Polls List"
 msgstr "Список опросов"
 
+#: classes/Admin/Admin_Page.php:191
 msgid "Back"
 msgstr "Назад"
 
+#: classes/Admin/Admin_Page_Other_Migrations.php:90
 msgid "Delete all data about WP Polls migration"
 msgstr "Удалить все данные о миграции WP Polls"
 
+#: classes/Admin/Admin_Page_Other_Migrations.php:82
 msgid "Cancel the shortcode replace and reset changes"
 msgstr "Отменить замену шорткодов и вернуть все обратно"
 
+#: classes/Admin/Admin_Page_Other_Migrations.php:78
 msgid "Replace WP Polls shortcodes in posts"
 msgstr "Заменить шорткоды WP Polls в записях"
 
+#: classes/Admin/Admin_Page_Other_Migrations.php:73
 #, php-format
 msgid "Polls copied: %d. Answers copied: %d. Logs copied: %d"
 msgstr "Перенесено опросов: %d. Перенесено вопросов: %d. Создано логов: %d"
 
+#: classes/Admin/Admin_Page_Other_Migrations.php:72
 msgid "Migration from WP Polls done"
 msgstr "Миграция с WP Polls произведена"
 
+#: classes/Admin/Admin_Page_Other_Migrations.php:38
 msgid "Data of migration deleted"
 msgstr "Данные о миграции удалены"
 
+#: classes/Admin/Admin_Page_Other_Migrations.php:132
 #, php-format
 msgid "Shortcodes replaced: %s"
 msgstr "Обработано шорткодов: %s"
 
+#: classes/Admin/tpl/l10n.php:52
 msgid "Save Text"
 msgstr "Сохранить тексты"
 
+#: classes/Admin/tpl/l10n.php:23
 msgid "Your variant"
 msgstr "Ваш вариант"
 
+#: classes/Admin/tpl/l10n.php:22
 msgid "Original"
 msgstr "Оригинал"
 
-msgid "Minified version (uses to include it in HTML)"
+#: classes/Admin/tpl/design.php:410
+msgid "Minified version (used to include it in HTML)"
 msgstr "Сжатая версия (используется при подключении в HTML)"
 
-msgid "It's all collected css styles: theme, button, options. You can copy this styles to the \"Custom/Additional CSS styles:\" field, disable theme and change copied styles by itself."
+#: classes/Admin/tpl/design.php:401
+msgid "These are all collected CSS styles: theme, button, options. You can copy these styles to the \"Custom/Additional CSS styles:\" field, disable theme and edit them manually."
 msgstr "Здесь все собранные css стили: тема, кнопка и настройки. Вы можете скопировать эти стили в поле \"Произвольные/Дополнительные CSS стили:\", отключить шаблон (тему) и изменить стили как вам нужно."
 
-msgid "All CSS styles that uses now"
+#: classes/Admin/tpl/design.php:392
+msgid "All CSS styles currently in use"
 msgstr "Все CSS стили, которые используются сейчас"
 
+#: classes/Admin/tpl/design.php:366
 msgid "Custom/Additional CSS styles"
 msgstr "Произвольные/Дополнительные CSS стили"
 
-msgid "AJAX Loader. If choose \"NO\", loader replaces by dots \"...\" which appends to a link/button text. SVG images animation don't work in IE 11 or lower, other browsers are supported at  90% (according to caniuse.com statistics)."
+#: classes/Admin/tpl/design.php:355
+msgid "AJAX Loader. If you choose \"NO\", loader is replaced by dots \"...\" which are appended to a link/button text. SVG images animations don't work in IE 11 or lower, other browsers are supported at 90% (according to caniuse.com statistics)."
 msgstr "Картинка при AJAX загрузке. Если выбрать \"Нет\", то вместо картинки к ссылке будет добавлятся \"...\". SVG картинки не анимируются в IE 11 и ниже, остальные браузеры поддерживаются примерно на 90% (по статистике caniuse.com)."
 
-msgid "AJAX loader"
-msgstr "AJAX загрузчик"
-
-msgid "An additional css class for all buttons in the poll. When the template has a special class for buttons, for example <code>btn btn-info</code>"
-msgstr "Дополнительный css класс для всех кнопок опроса. Когда в шаблоне есть специальный класс для кнопок например <code>btn btn-info</code>"
-
-msgid "The colors correctly affects NOT for all buttons. You can change styles completely in \"additional styles\" field bellow."
-msgstr "Цвета корректно влияют не на все кнопки. Можете попробовать изменить стили кнопки ниже в поле дополнительных стилей."
-
+#: classes/Admin/tpl/design.php:266
+#: classes/Admin/tpl/design.php:288
 msgid "Border Color"
 msgstr "Цвет границы"
 
+#: classes/Admin/tpl/design.php:260
+#: classes/Admin/tpl/design.php:282
 msgid "Text Color"
 msgstr "Цвет текста"
 
+#: classes/Admin/tpl/design.php:254
+#: classes/Admin/tpl/design.php:276
+#: classes/Admin/Admin_Page_Design.php:121
 msgid "Bg color"
 msgstr "Цвет Фона"
 
-msgid "Button"
-msgstr "Кнопка"
-
-msgid "Line height"
-msgstr "Высота линии"
-
+#: classes/Admin/tpl/design.php:161
 msgid "Background color"
 msgstr "Цвет фона"
 
+#: classes/Admin/tpl/design.php:155
 msgid "Line color (for voted user)"
 msgstr "Цвет линии (для голосовавшего)"
 
+#: classes/Admin/tpl/design.php:149
 msgid "Line Color"
 msgstr "Цвет линии"
 
-msgid "How to fill (paint) the progress of each answer?"
-msgstr "Как закрашивать прогресс каждого ответа?"
-
+#: classes/Admin/tpl/design.php:142
 msgid "as percent of all votes"
 msgstr "как процент от всех голосов"
 
+#: classes/Admin/tpl/design.php:136
 msgid "winner - 100%, others as % of the winner"
 msgstr "победитель - 100%, остальные в % от него"
 
+#: classes/Admin/tpl/design.php:130
 msgid "Progress line"
 msgstr "Линия прогресса"
 
-msgid "Animation speed in milliseconds."
-msgstr "Скорость анимации в миллисекундах."
-
-msgid "Max height of the poll in px. When poll has very many answers, it's better to collapse it. Set '-1', in order to disable this option. Default 500."
-msgstr "Максимальная высота опроса в пикселях. Нужно, когда в опросе много вариантов ответа и его лучше сворачивать. Укажите -1, чтобы отключить эту опцию. По умолчанию 500."
-
+#: classes/Admin/tpl/design.php:117
 msgid "Other settings"
 msgstr "Другие настроки"
 
+#: classes/Admin/tpl/design.php:30
 msgid "Choose Theme"
 msgstr "Выберете тему"
 
+#: classes/Admin/tpl/settings.php:257
 msgid "Force plugin versions update (debug)"
 msgstr "Принудительное обновление версий плагина. (Дебаг)"
 
+#: classes/Admin/tpl/settings.php:192
 msgid "Check to activate the widget."
 msgstr "Поставьте галочку, чтобы активировать виджет."
 
+#: classes/Admin/tpl/settings.php:190
 msgid "Widget"
 msgstr "Виджет"
 
-msgid "Link to plugin page is shown on front page only as a &copy; icon. It helps visitors to learn about the plugin and install it for themselves. Please don't disable this option without urgent needs. Thanks!"
-msgstr "Ссылка на страницу плагина выводиться только на главной в виде значка &copy;. И помогает другим людям узнать что это за плагин и установить его себе. Прошу не убирать эту галку без острой необходимости. Спасибо!"
-
-msgid "Show copyright"
-msgstr "Показывать ссылку на страницу плагина"
-
-msgid "If checked, the plugin's .js file will NOT be connected to front end. Enable this option to test the plugin's work without JavaScript."
-msgstr "Если включить, то .js файлы плагина НЕ будут подключены. Опция нужнда для Дебага работы плагина без JavaScript."
-
-msgid "Don't connect JS files. (Debug)"
-msgstr "НЕ подключать JS файлы. (Дебаг)"
-
+#: classes/Admin/tpl/design.php:385
+#: classes/Admin/tpl/settings.php:246
+#: classes/Admin/tpl/l10n.php:54
 msgid "Reset Options"
 msgstr "Сбросить настройки на начальные"
 
+#: classes/Admin/tpl/settings.php:244
 msgid "Save Options"
 msgstr "Сохранить настройки"
 
+#: classes/Admin/tpl/settings.php:236
 msgid "All polls, answers and logs of WP Polls will be added to Democracy Poll"
 msgstr "В Democracy poll будут добавлены все опросы и логи WP Polls."
 
+#: classes/Admin/tpl/settings.php:234
 msgid "Migrate from WP Polls plugin"
 msgstr "Мигрировать с плагина WP Polls"
 
+#: classes/Admin/tpl/settings.php:228
 msgid "Migration"
 msgstr "Миграция"
 
+#: classes/Admin/tpl/settings.php:223
 msgid "Role names, except 'administrator' which will have access to manage plugin."
 msgstr "Название ролей, кроме администратора, которым доступно упраление плагином."
 
-msgid "Useful when your server does not work correctly with server variable REMOTE_ADDR. NOTE: this option give possibility to cheat voice."
-msgstr "Полезно, когда ваш сервер не умеет работать с переменной REMOTE_ADDR. Заметка: включение даст возможность накручивать голоса."
+#: classes/Admin/tpl/settings.php:201
+msgid "Use this if your server does not detect the visitor IP correctly from REMOTE_ADDR. Note: this option may make vote cheating easier."
+msgstr "Используйте это, если сервер неправильно определяет IP посетителя через REMOTE_ADDR. Внимание: эта опция может упростить накрутку голосов."
 
+#: classes/Admin/tpl/settings.php:198
 msgid "Check if you see something like \"no_IP__123\" in IP column on logs page. (not recommended)"
 msgstr "Выберите, если увидите что-то подобное \"no_IP__123\" в колонке IP в логах. (не рекомендуется)"
 
+#: classes/Admin/tpl/settings.php:184
 msgid "Uncheck to disable button in visual editor."
 msgstr "Уберите галочку, чтобы убрать кнопку из визуального редактора."
 
+#: classes/Admin/tpl/settings.php:182
 msgid "Add fast Poll insert button to WordPress visual editor (TinyMCE)?"
 msgstr "Добавить кнопку быстрой вставки опросов в редактор WordPress (TinyMCE)?"
 
+#: classes/Admin/tpl/settings.php:176
 msgid "Uncheck to remove the plugin menu from the toolbar."
 msgstr "Уберите галочку, чтобы убрать меню плагина из панели инструментов."
 
+#: classes/Admin/tpl/settings.php:174
 msgid "Add plugin menu on the toolbar?"
 msgstr "Пункт меню в панели инструментов?"
 
-msgid "Democracy has smart mechanism for working with page cache plugins like \"WP Total Cache\". It is ON automatically if such plugin is enabled on your site. But if you use unusual page caching plugin you can force enable this option."
-msgstr "Democracy умеет работать с плагинами страничного кэширования и автоматически включается, если такой плагин установлен и активен на вашем сайте. Активируйте эту опцию, чтобы насильно включить механизм работы со страничным кэшем."
-
-#, php-format
-msgid "Force enable gear to working with cache plugins. The condition: %s"
-msgstr "Включить механихм работы с плагинами кэширования? Текущее состояние: %s"
-
+#: classes/Admin/tpl/settings.php:160
 msgid "OFF"
 msgstr "Выключен"
 
+#: classes/Admin/tpl/settings.php:159
 msgid "ON"
 msgstr "Включён"
 
+#: classes/Admin/tpl/settings.php:152
+#: classes/Admin/tpl/settings.php:251
 msgid "Others"
 msgstr "Остальное"
 
-msgid "Hide vote button if it is NOT multiple poll with revote option. User will vote by clicking on answer itself."
-msgstr "Для НЕ мульти опросов с возможностью переголосовать можно спрятать кнопку голосовать. А голосование будет происходить при клике на ответ."
+#: classes/Admin/tpl/settings.php:140
+msgid "Users can vote with one click on an answer. Works only for non-multiple polls with the revote option enabled."
+msgstr "Пользователи смогут голосовать одним кликом по ответу. Работает только для не мульти-опросов с возможностью переголосования."
 
+#: classes/Admin/tpl/settings.php:138
 msgid "Hide vote button."
 msgstr "Прятать кнопку голосования."
 
+#: classes/Admin/tpl/settings.php:131
 msgid "Users can see results after vote."
 msgstr "Результаты можно увидеть после голосования."
 
+#: classes/Admin/tpl/settings.php:129
 msgid "Don't show poll results link (global option)."
 msgstr "Не показывать ссылку результатов голосования (глобальная опция)"
 
+#: classes/Admin/tpl/settings.php:122
 msgid "If checked, user can't see poll results if voting is open."
 msgstr "Если поставить галку, то посмотреть результаты до закрытия опроса будет невозможно."
 
+#: classes/Admin/tpl/settings.php:120
 msgid "Don't show poll results (global option)."
 msgstr "Не показывать результаты опросов (глобальная опция)."
 
+#: classes/Admin/tpl/settings.php:111
 msgid "Remove the Revote possibility (global option)."
 msgstr "Удалить возможность переголосовать (глобальная опция)."
 
-msgid "This option  is available for each poll separately, but if you heed you can turn OFF the option for all polls at once, just tick."
-msgstr "Эта опция доступна для каждого опроса отдельно, но если вы хотите отключить эту опцию для всех опросов сразу, поставьте галочку."
-
-msgid "Prohibit users to add new answers (global Democracy option)."
-msgstr "Запретить пользователям добавлять свои ответы (глобальная опция Democracy)."
-
-msgid "This option  is available for each poll separately, but if you heed you can turn ON the option for all polls at once, just tick."
-msgstr "Эта опция доступна для каждого опроса отдельно, но если вы хотите включить эту опцию для всех опросов сразу, поставьте галочку."
-
+#: classes/Admin/tpl/settings.php:93
 msgid "Only registered users allowed to vote (global option)"
 msgstr "Голосовать могут только зарегистрированные пользователи (глобальная опция)."
 
-msgid "This is the default value. Option can be changed for each poll separately."
-msgstr "Это значение по умолчанию. Опцию можно изменить для каждого опроса отдельно."
-
-msgid "How to sort the answers during voting, if they don't have order? (default option)"
-msgstr "Как сортировать ответы при голосовании, если для них не установлен порядок? (опция по умолчанию)"
-
+#: classes/Admin/tpl/settings.php:71
 msgid "Global Polls options"
 msgstr "Общие настройки опросов"
 
-msgid "Specify the poll archive link to be in the poll legend. Example: <code>25</code>"
-msgstr "Укажите, чтобы в подписи опроса была ссылка на страницу с архивом опросов. Пр. <code>25</code>"
-
+#: classes/Admin/tpl/settings.php:64
 msgid "Create/find archive page"
 msgstr "Создать/найти страницу архива"
 
+#: classes/Admin/tpl/settings.php:58
 msgid "Go to archive page"
 msgstr "Перейти на страницу архива"
 
+#: classes/Admin/tpl/settings.php:53
 msgid "Polls archive page ID."
 msgstr "ID архива опросов."
 
-msgid "Example: <code>&lt;h2&gt;</code> и <code>&lt;/h2&gt;</code>. Default: <code>&lt;strong class=&quot;dem-poll-title&quot;&gt;</code> & <code>&lt;/strong&gt;</code>."
-msgstr "Например: <code>&lt;h2&gt;</code> и <code>&lt;/h2&gt;</code>. По умолчанию: <code>&lt;strong class=&quot;dem-poll-title&quot;&gt;</code> и <code>&lt;/strong&gt;</code>."
-
-msgid "poll's question"
-msgstr "вопрос опроса"
-
-msgid "HTML tags to wrap the poll title."
-msgstr "Обёртка заголовка опроса HTML тегами."
-
+#: classes/Admin/tpl/settings.php:35
 msgid "How many days to keep Cookies alive?"
 msgstr "Сколько дней сохранять Сookies?"
 
-msgid "Saves data into Data Base. Forbids to vote several times from a single IP or to same WordPress user. If a user is logged in, then his voting is checked by WP account. If a user is not logged in, then checks the IP address. The negative side of IP checks is that a site may be visited from an enterprise network (with a common IP), so all users from this network are allowed to vote only once. If this option is disabled the voting is checked by Cookies only. Default enabled."
-msgstr "Сохраняет данные в Базу Данных. Запрещает голосовать несколько раз с одного IP или одному пользователю WordPress. Если пользователь авторизован, то голосование проверяется по его аккаунту в WordPress. Если не авторизован, то проверяется IP голосующего. Минус лога по IP — если сайт посещается с корпоративных сетей (с единым IP), то голосовать можно будет всего 1 раз для всей сети. Если не включить эту опцию, то голосование будет учитываться только по кукам. По умолчанию: включена."
-
-msgid "Log data & take visitor IP into consideration? (recommended)"
-msgstr "Вести лог и учитывать IP? (рекомендуется)"
-
+#: classes/Admin/Admin_Page_Logs.php:194
 msgid "Delete all logs"
 msgstr "Удалить все логи"
 
+#: classes/Admin/Admin_Page_Logs.php:187
 #, php-format
-msgid "Delete logs of closed pols - %d"
+msgid "Delete logs of closed polls - %d"
 msgstr "Удалить логи закрытых опросов - %d"
 
+#: classes/Admin/Admin_Page_Logs.php:177
 msgid "Delete all NEW marks"
 msgstr "Удалить все метки NEW"
 
-msgid "Logs records turned off in the settings - logs are not recorded."
-msgstr "Запись логов выключена в настройках - логи не записываются."
-
-msgid "Mix"
-msgstr "Перемешать"
-
-msgid "Winners at the top"
-msgstr "Выигрывающие вверху"
-
-msgid "As it was added (by ID)"
-msgstr "В порядке добавления (по ID)"
-
+#: classes/Admin/tpl/edit-poll.php:266
 msgid "Posts where the poll shortcode used:"
 msgstr "Записи, где используется шорткод опроса:"
 
+#: classes/Admin/tpl/edit-poll.php:247
+#: classes/System/Plugin_Initor.php:136
 msgid "Add Poll"
 msgstr "Добавить опрос"
 
+#: classes/Admin/tpl/edit-poll.php:247
 msgid "Save Changes"
 msgstr "Внести изменения"
 
+#: classes/Admin/tpl/edit-poll.php:232
 msgid "Create date."
 msgstr "Дата создания."
 
+#: classes/Admin/tpl/edit-poll.php:238
 msgid "Note: This text will be added under poll."
 msgstr "Заметка: текст будет добавлен под опросом."
 
+#: classes/Admin/tpl/edit-poll.php:211
 msgid "How to sort the answers during the vote?"
 msgstr "Как сортировать ответы при голосовании?"
 
+#: classes/Admin/tpl/edit-poll.php:206
 msgid "as in settings"
 msgstr "как в настройках"
 
+#: classes/Admin/tpl/edit-poll.php:173
 msgid "Only registered users allowed to vote."
 msgstr "Голосовать могут только зарегистрированные пользователи."
 
+#: classes/Admin/tpl/edit-poll.php:162
 msgid "Allow to change mind (revote)."
 msgstr "Разрешить изменять мнение (переголосование)."
 
+#: classes/Admin/tpl/edit-poll.php:219
 msgid "Date, when poll was/will be closed. Format: dd-mm-yyyy."
 msgstr "Дата, когда опрос был/будет закрыт. Формат: dd-mm-yyyy."
 
+#: classes/Admin/tpl/edit-poll.php:198
 msgid "Allow to choose multiple answers."
 msgstr "Разрешить выбирать несколько ответов (множественный)."
 
+#: classes/Admin/tpl/edit-poll.php:140
 msgid "Activate this poll."
 msgstr "Сделать этот опрос активным."
 
+#: classes/Admin/tpl/edit-poll.php:151
 msgid "Allow users to add answers (democracy)."
 msgstr "Разрешить пользователям добавлять свои ответы (democracy)."
 
-msgid "Voices"
-msgstr "Сумма всех голосов"
+#: classes/Admin/tpl/edit-poll.php:123
+msgid "Votes"
+msgstr "Голосов"
 
+#: classes/Admin/tpl/edit-poll.php:122
 msgid "leave blank to update from logs"
 msgstr "оставьте пустым, чтобы обновить из логов"
 
+#: classes/Admin/tpl/edit-poll.php:124
 msgid "Users vote:"
 msgstr "Пользователей голосовало:"
 
+#: classes/Admin/tpl/edit-poll.php:119
 msgid "Sum of votes:"
 msgstr "Сумма голосов:"
 
+#: classes/Admin/tpl/edit-poll.php:105
 msgid "reset order"
 msgstr "cбросить порядок"
 
+#: classes/Admin/tpl/edit-poll.php:42
 msgid "Answers:"
 msgstr "Варианты ответов:"
 
+#: classes/Admin/tpl/edit-poll.php:37
 msgid "Question:"
 msgstr "Вопрос:"
 
+#: classes/Admin/tpl/edit-poll.php:23
 msgid "shortcode for use in post content"
 msgstr "шоткод для использования в записи"
 
+#: classes/Admin/Admin_Page_Polls.php:39
 msgid "Search"
 msgstr "Найти"
 
+#: classes/Admin/Tinymce_Button.php:41
 msgid "Insert Poll ID"
 msgstr "Введите ID опроса"
 
+#: classes/Admin/Tinymce_Button.php:40
 msgid "Insert Poll of Democracy"
 msgstr "Вставка Опроса Democracy"
 
+#: classes/Admin/List_Table_Polls.php:177
 msgid "voters / votes"
 msgstr "пользователи / голоса"
 
+#: classes/Admin/Admin_Page_Edit_Poll.php:441
+#: classes/Admin/List_Table_Polls.php:165
 msgid "Delete"
 msgstr "Удалить"
 
+#: classes/Admin/Admin_Page_Edit_Poll.php:440
+#: classes/Admin/Admin_Page_Other_Migrations.php:89
+#: classes/Admin/Admin_Page_Logs.php:185
+#: classes/Admin/Admin_Page_Logs.php:192
+#: classes/Admin/List_Table_Polls.php:165
 msgid "Are you sure?"
 msgstr "Точно удалить?"
 
+#: classes/Admin/Admin_Page.php:204
+#: classes/Admin/List_Table_Polls.php:160
+#: classes/System/Plugin_Initor.php:137
 msgid "Logs"
 msgstr "Логи"
 
+#: classes/Admin/List_Table_Polls.php:151
 msgid "Edit"
 msgstr "Редактировать"
 
+#: classes/Admin/tpl/edit-poll.php:185
+#: classes/Admin/List_Table_Polls.php:140
 msgid "Allow to watch the results of the poll."
 msgstr "Разрешить смотреть результаты опроса."
 
+#: classes/Admin/List_Table_Polls.php:139
 msgid "Users can choose many answers (multiple)."
 msgstr "Можно выбирать несколько ответов (множественный)."
 
+#: classes/Admin/List_Table_Polls.php:138
 msgid "Only for registered user."
 msgstr "Только для зарегистрированных."
 
+#: classes/Admin/List_Table_Polls.php:137
 msgid "Users can revote"
 msgstr "Можно переголосовать"
 
+#: classes/Admin/List_Table_Polls.php:136
 msgid "Users can add answers (democracy)."
 msgstr "Можно добавить свои ответы (democracy)."
 
+#: classes/Admin/List_Table_Polls.php:81
 msgid "Added"
 msgstr "Добавлен"
 
+#: classes/Admin/List_Table_Polls.php:80
 msgid "In posts"
 msgstr "Из записей"
 
+#: classes/Admin/List_Table_Polls.php:79
 msgid "Answers"
 msgstr "Ответы"
 
+#: classes/Admin/List_Table_Polls.php:78
 msgid "Users vote"
 msgstr "Пользователей проголосовало"
 
+#: classes/Admin/List_Table_Polls.php:77
 msgid "Active polls"
 msgstr "Опрос активен"
 
+#: classes/Admin/Admin_Page_Edit_Poll.php:506
+#: classes/Admin/List_Table_Polls.php:76
 msgid "Poll Opened"
 msgstr "Опрос открыт"
 
+#: classes/Admin/List_Table_Polls.php:75
 msgid "Question"
 msgstr "Вопрос"
 
+#: classes/Admin/List_Table_Polls.php:74
 msgid "ID"
 msgstr "ID"
 
+#: classes/Admin/tpl/edit-poll.php:21
+#: classes/Admin/List_Table_Logs.php:287
 msgid "Poll logs"
 msgstr "Логи опроса"
 
+#: classes/Admin/List_Table_Logs.php:264
 msgid "Search by IP"
 msgstr "Поиск по IP"
 
+#: classes/Admin/List_Table_Logs.php:200
 msgid "NEW answers logs"
 msgstr "Логи \"NEW\" ответов"
 
+#: classes/Poll_Renderer.php:117
+#: classes/Admin/List_Table_Logs.php:185
+#: classes/Admin/List_Table_Logs.php:285
 msgid "Edit poll"
 msgstr "Редак. опрос"
 
-msgid "Poll's logs: "
-msgstr "Логи опроса: "
+#: classes/Admin/List_Table_Logs.php:182
+msgid "Poll's logs:"
+msgstr "Логи опроса:"
 
+#: classes/Admin/List_Table_Logs.php:167
 msgid "Delete logs and votes"
 msgstr "Удалить логи и голоса"
 
+#: classes/Admin/List_Table_Logs.php:166
 msgid "Delete logs only"
 msgstr "Удалить только логи"
 
+#: classes/Admin/List_Table_Logs.php:139
 msgid "Date"
 msgstr "Дата"
 
+#: classes/Admin/List_Table_Logs.php:138
 msgid "User"
 msgstr "Юзер"
 
+#: classes/Admin/List_Table_Logs.php:137
 msgid "Answer"
 msgstr "Ответ"
 
+#: classes/Poll_Widget.php:68
+#: classes/Admin/List_Table_Logs.php:136
 msgid "Poll"
 msgstr "Опрос"
 
+#: classes/Admin/List_Table_Logs.php:135
 msgid "IP info"
 msgstr "IP инфо"
 
+#: classes/System/Activator.php:51
 msgid "What is the capital city of France?"
 msgstr "Какова столица Франции?"
 
+#: classes/System/Activator.php:63
 msgid "Paris"
 msgstr "Париж"
 
+#: classes/System/Activator.php:64
 msgid "Rome"
 msgstr "Рим"
 
+#: classes/System/Activator.php:65
 msgid "Madrid"
 msgstr "Мадрид"
 
+#: classes/System/Activator.php:66
 msgid "Berlin"
 msgstr "Берлин"
 
+#: classes/System/Activator.php:67
 msgid "London"
 msgstr "Лондон"
 
+#: classes/Admin/Admin_Page_Edit_Poll.php:507
 msgid "Poll Closed"
 msgstr "Опрос закрыт"
 
+#: classes/Admin/Admin_Page_Logs.php:217
 #, php-format
 msgid "Lines deleted: %s"
 msgstr "Удалено строк: %s"
 
+#: classes/Admin/Admin_Page_Logs.php:260
 #, php-format
 msgid "Removed logs: %d. Removed answers:%d. Removed users %d."
 msgstr "Удалено логов: %d. Удалено ответов: %d. Удалено пользователей: %d."
 
+#: classes/Admin/List_Table_Logs.php:41
+#: classes/Admin/List_Table_Polls.php:33
 msgid "Show on page"
 msgstr "Показать на странице"
 
-msgid "How many days the user's browser remembers the votes. Default: 365. Note: works together with IP log."
-msgstr "Сколько дней браузер пользователя запоминает голоса. По умолчанию: 365. Примечание: работает вместе с логом по IP."
-
+#: classes/Admin/tpl/settings.php:147
 msgid "Disable post metabox."
 msgstr "Отключить метабокс записи."
 
-msgid "Check this to disable polls metabox functionality for posts where you can attached poll to a post..."
+#: classes/Admin/tpl/settings.php:149
+msgid "Check this to disable polls metabox functionality for posts where you can attach a poll to a post."
 msgstr "Отметьте, чтобы отключить функциональность метабокса опросов для записей, к которым можно прикрепить опрос..."
 
-msgid "Inline script code directly in the HTML"
-msgstr "Встраивать код скрипта прямо в HTML"
-
-msgid "Enable to add plugin scripts directly into HTML instead of loading separate .js files. This reduces server requests and speeds up page loading."
-msgstr "Включите, чтобы добавлять скрипты плагина прямо в HTML вместо загрузки отдельных .js файлов. Это уменьшает количество запросов к серверу и ускоряет загрузку страницы."
-
-msgid "Alphabetically"
-msgstr "В алфавитном порядке"
-
+#: classes/Admin/List_Table_Logs.php:62
 msgid "Nothing was selected."
 msgstr "Ничего не выбрано."
+
+#: classes/Admin/tpl/design.php:124
+msgid "Animation speed (in milliseconds)."
+msgstr "Скорость анимации (в миллисекундах)."
+
+#: classes/Admin/tpl/design.php:132
+msgid "How to fill (paint) the progress of each answer:"
+msgstr "Как заполнять (закрашивать) прогресс каждого ответа:"
+
+#: classes/Admin/tpl/design.php:171
+msgid "Line height (in px if unit not set)"
+msgstr "Высота линии (в пикселях, если единица измерения не указана)"
+
+#: classes/Admin/tpl/design.php:298
+msgid "An additional css class for all buttons in the poll. When the template has a special class for buttons, for example:"
+msgstr "Дополнительный CSS-класс для всех кнопок опроса. Когда в шаблоне предусмотрен специальный класс для кнопок, например:"
+
+#: classes/Admin/tpl/settings.php:168
+msgid "Democracy Poll has a built-in mechanism for working with page cache plugins such as W3 Total Cache. It is enabled automatically when a supported plugin is active. If you use a different page cache plugin, you can force-enable this option."
+msgstr "Democracy Poll умеет работать с плагинами страничного кэширования, такими как W3 Total Cache. Этот механизм включается автоматически, если активен поддерживаемый плагин. Для другого плагина кэширования можно принудительно включить эту опцию."
+
+#: classes/Admin/tpl/design.php:120
+msgid "Max poll height (in em, rem, px, ...). Leave empty to disable."
+msgstr "Максимальная высота опроса (em, rem, px, ...). Оставьте пустым, чтобы отключить."
+
+#: classes/Admin/tpl/settings.php:77
+msgid "Answer order on vote screen (global option)"
+msgstr "Порядок ответов на экране голосования (глобальная опция)"
+
+#: classes/Admin/tpl/settings.php:79
+msgid "Option can be changed for each poll separately."
+msgstr "Опцию можно изменить отдельно для каждого опроса."
+
+#: classes/Admin/tpl/settings.php:86
+msgid "Answer order on results screen (global option)"
+msgstr "Порядок ответов на экране результатов (глобальная опция)"
+
+#: classes/Admin/Post_Metabox.php:46
+msgid "default"
+msgstr "по умолчанию"
+
+#: classes/Admin/Post_Metabox.php:47
+msgid "Random (default)"
+msgstr "Случайно (по умолчанию)"
+
+#: classes/Admin/Post_Metabox.php:48
+msgid "Last"
+msgstr "Последний"
+
+#: classes/Admin/Post_Metabox.php:60
+msgid "Use shortcode:"
+msgstr "Использовать шорткод:"
+
+#: classes/Admin/tpl/design.php:245
+msgid "These colors may not affect all button styles. You can fully customize button styles in the \"Additional CSS styles\" field below."
+msgstr "Эти цвета могут влиять не на все стили кнопок. Полностью настроить стили кнопок можно в поле \"Дополнительные CSS-стили\" ниже."
+
+#: classes/Admin/tpl/settings.php:95
+#: classes/Admin/tpl/settings.php:104
+#: classes/Admin/tpl/settings.php:113
+msgid "Can be changed for each poll separately."
+msgstr "Можно изменить отдельно для каждого опроса."
+
+#: classes/Admin/tpl/settings.php:102
+msgid "Prohibit users to add new answers (global option)."
+msgstr "Запретить пользователям добавлять новые ответы (глобальная опция)."
+
+#: classes/Admin/tpl/settings.php:163
+#, php-format
+msgid "Force-enable compatibility mode for page cache plugins. Current status: %s"
+msgstr "Принудительно включить режим совместимости с плагинами кеширования страниц. Текущий статус: %s"
+
+#: classes/Support/Helpers.php:12
+msgid "By winner"
+msgstr "По победителю"
+
+#: classes/Support/Helpers.php:13
+msgid "Alphabetically (a-z)"
+msgstr "По алфавиту (а-я)"
+
+#: classes/Support/Helpers.php:14
+msgid "By ID (added order)"
+msgstr "По ID (порядок добавления)"
+
+#: classes/Support/Helpers.php:15
+msgid "Mixed (shuffled)"
+msgstr "Перемешано"
+
+#: classes/Poll_Renderer.php:419
+msgctxt "front"
+msgid "{votes} - {percent}% of all votes"
+msgstr "{votes} - {percent}% из всех голосов"
+
+#: classes/Poll_Renderer.php:634
+msgctxt "front"
+msgid "Close"
+msgstr "Закрыть"
+
+#: classes/Admin/tpl/settings.php:45
+msgid "Poll title HTML template."
+msgstr ""
+
+#: classes/Admin/tpl/settings.php:47
+msgid "Use <code>{question}</code> where the poll question should appear. Default: <code>&lt;strong class=&quot;dem-poll-title&quot;&gt;{question}&lt;/strong&gt;</code>."
+msgstr ""
+
+#: classes/Admin/tpl/settings.php:26
+msgid "Allow multiple votes from the same IP address."
+msgstr ""
+
+#: classes/Admin/tpl/settings.php:28
+msgid "When enabled, guests sharing an IP address are distinguished by a browser fingerprint. Each browser can still vote only once. Logged-in users are always identified by their WordPress account."
+msgstr ""
+
+#: classes/Admin/tpl/settings.php:38
+msgid "How many days the browser and server remember votes. Default: 365."
+msgstr ""

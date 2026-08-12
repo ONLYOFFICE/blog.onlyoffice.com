@@ -2,6 +2,8 @@
 
 namespace FluentForm\App\Models;
 
+use FluentForm\App\Helpers\Helper;
+
 class Subscription extends Model
 {
     /**
@@ -43,12 +45,12 @@ class Subscription extends Model
 
     public function getOriginalPlanAttribute($value)
     {
-        return maybe_unserialize($value);
+        return Helper::safeUnserialize($value);
     }
 
     public function getVendorResponseAttribute($value)
     {
-        return maybe_unserialize($value);
+        return Helper::safeUnserialize($value);
     }
 
     public function scopeBySubmission($query, $submissionId)

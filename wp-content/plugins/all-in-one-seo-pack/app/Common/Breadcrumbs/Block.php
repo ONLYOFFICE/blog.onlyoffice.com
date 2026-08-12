@@ -134,7 +134,13 @@ class Block {
 			return $breadcrumbs;
 		}
 
-		return aioseo()->breadcrumbs->frontend->display( false );
+		$breadcrumbs = aioseo()->breadcrumbs->frontend->display( false );
+		if ( empty( $breadcrumbs ) ) {
+			return $breadcrumbs;
+		}
+
+		// The editor wraps the rendered block in this class, so we need to mirror it on the frontend.
+		return '<div class="' . esc_attr( aioseo()->blocks->getBlockDefaultClassName( 'breadcrumbs' ) ) . '">' . $breadcrumbs . '</div>';
 	}
 
 	/**

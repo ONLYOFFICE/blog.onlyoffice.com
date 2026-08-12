@@ -250,11 +250,17 @@ class FormIntegrationService
     
     public function delete($id, $formId = null)
     {
-        $query = FormMeta::where('id', $id);
-        if ($formId) {
-            $query->where('form_id', $formId);
+        // SECURITY (FINDING-10): a non-numeric route form id (e.g. /integrations/abc) made
+        // the caller-supplied $formId falsy, which previously dropped the form_id predicate
+        // and deleted an arbitrary fluentform_form_meta row cross-form. Fail closed: require
+        // a positive form id and always scope the delete to it, so a meta row is only ever
+        // removed when it belongs to the authorized form.
+        $id = (int) $id;
+        $formId = (int) $formId;
+        if ($id < 1 || $formId < 1) {
+            return;
         }
-        $query->delete();
+        FormMeta::where('id', $id)->where('form_id', $formId)->delete();
     }
     
 }

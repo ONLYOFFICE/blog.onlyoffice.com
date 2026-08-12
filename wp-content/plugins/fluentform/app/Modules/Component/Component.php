@@ -338,7 +338,7 @@ class Component
             ];
             $disabled['phone'] = [
                 'disabled'    => true,
-                'title'       => 'Phone Field',
+                'title'       => __('Phone Field', 'fluentform'),
                 'description' => __('Phone Field is not available with the free version. Please upgrade to pro to get all the advanced features.', 'fluentform'),
                 'image'       => fluentformMix('img/pro-fields/phone-field.png'),
                 'video'       => '',
@@ -398,6 +398,13 @@ class Component
                 'description' => __('Range Slider is not available with the free version. Please upgrade to pro to get all the advanced features.', 'fluentform'),
                 'image'       => '',
                 'video'       => 'https://www.youtube.com/embed/RaY2VcPWk6I',
+            ];
+            $disabled['input_ranking'] = [
+                'disabled'    => true,
+                'title'       => __('Ranking Field', 'fluentform'),
+                'description' => __('Ranking Field is not available with the free version. Please upgrade to pro to get all the advanced features.', 'fluentform'),
+                'image'       => '',
+                'video'       => '',
             ];
             $disabled['color-picker'] = [
                 'disabled'    => true,
@@ -510,7 +517,7 @@ class Component
 
         if (!empty($atts['permission'])) {
             if (!current_user_can($atts['permission'])) {
-                return "<div id='ff_form_{$form->id}' class='ff_form_not_render'>{$atts['permission_message']}</div>";
+                return $this->getNotRenderableHtml($form->id, $atts['permission_message']);
             }
         }
 
@@ -565,7 +572,7 @@ class Component
         $isRenderable = $this->app->applyFilters('fluentform/is_form_renderable', $isRenderable, $form);
 
         if (is_array($isRenderable) && !$isRenderable['status']) {
-            return "<div id='ff_form_{$form->id}' class='ff_form_not_render'>{$isRenderable['message']}</div>";
+            return $this->getNotRenderableHtml($form->id, $isRenderable['message']);
         }
 
         $instanceCssClass = Helper::getFormInstaceClass($form->id);
@@ -636,6 +643,7 @@ class Component
             'ajaxUrl'                       => admin_url('admin-ajax.php'),
             'forms'                         => [],
             'step_text'                     => $stepText,
+            'step_completed_text'          => __('Completed', 'fluentform'),
             'is_rtl'                        => is_rtl(),
             'date_i18n'                     => self::getDatei18n(),
             'pro_version'                   => (defined('FLUENTFORMPRO_VERSION')) ? FLUENTFORMPRO_VERSION : false,
@@ -724,6 +732,7 @@ class Component
 
         $form_vars = [
             'id'               => $form->id,
+            'ajaxUrl'          => admin_url('admin-ajax.php'),
             'settings'         => $formSettings,
             'form_instance'    => $instanceCssClass,
             'form_id_selector' => 'fluentform_' . $form->id,
@@ -734,6 +743,12 @@ class Component
         if ($conditionals = $formBuilder->conditions) {
             $form_vars['conditionals'] = $conditionals;
         }
+
+        $form_vars['file_upload_settings'] = apply_filters(
+            'fluentform/file_upload_settings_for_js',
+            [],
+            $form
+        );
 
         $form_vars = apply_filters('fluentform/form_vars_for_JS', $form_vars, $form);
 
@@ -802,6 +817,13 @@ class Component
         }
 
         return $output . $otherScripts;
+    }
+
+    protected function getNotRenderableHtml($formId, $message)
+    {
+        return "<div id='ff_form_" . esc_attr($formId) . "' class='ff_form_not_render'>"
+            . wp_kses_post($message)
+            . "</div>";
     }
 
     /**
@@ -946,10 +968,17 @@ class Component
     public function addIsRenderableFilter()
     {
         $this->app->addFilter('fluentform/is_form_renderable', function ($isRenderable, $form) {
+            if (
+                $this->app->request->get('design_mode')
+                && Acl::hasAnyFormPermission()
+            ) {
+                return $isRenderable;
+            }
+
             $checkables = ['limitNumberOfEntries', 'scheduleForm', 'requireLogin'];
 
             // Ensure settings is an array
-            if (!is_array($form->settings)) {
+            if (!isset($form->settings) || !is_array($form->settings)) {
                 $form->settings = [];
             }
 
@@ -986,7 +1015,7 @@ class Component
     private function limitNumberOfEntries($restrictions, $form, &$isRenderable)
     {
 
-        if (!$restrictions['enabled'] || !isset($restrictions['period']) || !isset($restrictions['numberOfEntries'])) {
+        if (!Arr::isTrue($restrictions, 'enabled') || !isset($restrictions['period']) || !isset($restrictions['numberOfEntries'])) {
             return true;
         }
 
@@ -1048,7 +1077,7 @@ class Component
      */
     private function scheduleForm($restrictions, $form, &$isRenderable)
     {
-        if (!$restrictions['enabled']) {
+        if (!Arr::isTrue($restrictions, 'enabled')) {
             return true;
         }
 
@@ -1087,7 +1116,7 @@ class Component
      */
     private function requireLogin($restrictions, $form, &$isRenderable)
     {
-        if (!$restrictions['enabled']) {
+        if (!Arr::isTrue($restrictions, 'enabled')) {
             return true;
         }
 
@@ -1420,15 +1449,17 @@ class Component
                 'param' => '',
             ], $atts);
             
+            if ('' === $atts['param']) {
+                return '';
+            }
+
             $value = $this->app->request->get($atts['param']);
 
-            if ($atts['param'] && $value) {
-                if (is_array($value)) {
-                    return implode(', ', $value);
-                }
-                return esc_html($value);
+            if (null === $value || '' === $value) {
+                return '';
             }
-            return '';
+
+            return esc_html(Helper::flattenRequestValue($value));
         });
 
         $this->app->addShortcode('ff_entry',function($atts){

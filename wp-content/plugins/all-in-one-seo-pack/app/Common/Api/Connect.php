@@ -88,7 +88,7 @@ class Connect {
 		$success = true;
 		$message = 'token-saved';
 
-		aioseo()->internalOptions->internal->siteAnalysis->connectToken = $token;
+		aioseo()->sensitiveOptions->set( 'siteAnalysisConnectToken', $token );
 
 		return new \WP_REST_Response( [
 			'success' => $success,

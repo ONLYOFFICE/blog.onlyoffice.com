@@ -319,7 +319,7 @@ class FormValidationService
     private function handleDenyEmptySubmission($settings, &$fields)
     {
         // Determine whether empty form submission is allowed or not.
-        if (Arr::get($settings, 'enabled')) {
+        if (Arr::isTrue($settings, 'enabled')) {
             // confirm this form has no required fields.
             if (!FormFieldsParser::hasRequiredFields($this->form, $fields)) {
                 // Filter out the form data which doesn't have values.
@@ -355,7 +355,7 @@ class FormValidationService
     protected function handleRestrictedSubmission($settings, &$fields)
     {
         // Determine this restriction is enabled ot not
-        if (!Arr::get($settings, 'enabled')) {
+        if (!Arr::isTrue($settings, 'enabled')) {
             return;
         }
 
@@ -368,7 +368,7 @@ class FormValidationService
             $this->checkIpRestriction($settings, $ip);
         }
 
-        $isCountryRestrictionEnabled = Arr::get($settings, 'fields.country.status');
+        $isCountryRestrictionEnabled = Arr::isTrue($settings, 'fields.country.status');
         if ($isCountryRestrictionEnabled) {
             if ($ipInfo = $this->getIpInfo($ip)) {
                 $country = Arr::get($ipInfo, 'country');
@@ -743,7 +743,7 @@ class FormValidationService
             $status = Arr::get($body, 'status', false) === 'success';
             
             if (!$status) {
-                return Helper::getCountryCodeFromHeaders();
+                return Helper::getCountryCodeFromHeaders(true);
             }
 
             if ($country = Arr::get($body,'CountryCode')) {
@@ -752,10 +752,11 @@ class FormValidationService
                 self::throwValidationException($message);
             }
         } else {
-            if ($country = Helper::getCountryCodeFromHeaders()) {
-                return $country;
-            }
-            self::throwValidationException($message);
+            // FINDING-26: geo provider unreachable. Return the CDN header only if the site opted
+            // into trusting it for enforcement; otherwise null. A null country makes
+            // checkCountryRestriction() skip rather than hard-block every submission during a
+            // third-party outage (a country restriction is only meaningful with a known country).
+            return Helper::getCountryCodeFromHeaders(true);
         }
     }
 
@@ -771,8 +772,8 @@ class FormValidationService
         foreach ($providedKeywords as $keyword) {
             foreach ($words as $word) {
                 if (
-                    strtoupper($word) === strtoupper($keyword) ||
-                    preg_match('/\b' . strtoupper($keyword) . '\b/', strtoupper($word))
+                    mb_strtoupper($word, 'UTF-8') === mb_strtoupper($keyword, 'UTF-8') ||
+                    preg_match('/(*UCP)\b' . preg_quote($keyword, '/') . '\b/ui', $word)
                 ) {
                     return true;
                 }
@@ -788,8 +789,8 @@ class FormValidationService
      */
     private function checkIpRestriction($settings, $ip)
     {
-        if (Arr::get($settings, 'fields.ip.status') && $ip) {
-            $providedIp = array_map('trim', explode(',', Arr::get($settings, 'fields.ip.values')));
+        if (Arr::isTrue($settings, 'fields.ip.status') && $ip) {
+            $providedIp = array_map('trim', explode(',', (string) Arr::get($settings, 'fields.ip.values', '')));
 
             $isFailed = Arr::get($settings, 'fields.ip.validation_type') === 'fail_on_condition_met';
 
@@ -809,8 +810,8 @@ class FormValidationService
      */
     private function checkCountryRestriction($settings, $country)
     {
-        if ($country) {
-            $providedCountry = Arr::get($settings, 'fields.country.values');
+        if (Arr::isTrue($settings, 'fields.country.status') && $country) {
+            $providedCountry = (array) Arr::get($settings, 'fields.country.values', []);
 
             $isFailed = Arr::get($settings, 'fields.country.validation_type') === 'fail_on_condition_met';
 
@@ -827,7 +828,7 @@ class FormValidationService
 
     private function checkKeyWordRestriction($settings)
     {
-        if (!Arr::get($settings, 'fields.keywords.status')) {
+        if (!Arr::isTrue($settings, 'fields.keywords.status')) {
             return;
         }
 

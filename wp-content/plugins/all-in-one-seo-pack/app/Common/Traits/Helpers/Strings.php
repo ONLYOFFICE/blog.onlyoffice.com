@@ -292,12 +292,17 @@ trait Strings {
 	/**
 	 * Returns the string after all HTML entities have been decoded.
 	 *
-	 * @since 4.0.0
+	 * @since   4.0.0
+	 * @version 4.9.10 Coerce non-string input to an empty string before using it as the static cache key (PHP 8.5 deprecates null offsets).
 	 *
 	 * @param  string $string The string to decode.
 	 * @return string         The decoded string.
 	 */
 	public function decodeHtmlEntities( $string ) {
+		if ( ! is_string( $string ) ) {
+			return '';
+		}
+
 		static $decodeHtmlEntities = [];
 		if ( isset( $decodeHtmlEntities[ $string ] ) ) {
 			return $decodeHtmlEntities[ $string ];
@@ -305,7 +310,7 @@ trait Strings {
 
 		// We must manually decode non-breaking spaces since html_entity_decode doesn't do this.
 		$string                        = $this->pregReplace( '/&nbsp;/', ' ', $string );
-		$decodeHtmlEntities[ $string ] = html_entity_decode( (string) $string, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401 );
+		$decodeHtmlEntities[ $string ] = html_entity_decode( $string, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401 );
 
 		return $decodeHtmlEntities[ $string ];
 	}
@@ -381,17 +386,34 @@ trait Strings {
 	/**
 	 * Returns the given JSON formatted data tags as a comma separated list with their values instead.
 	 *
-	 * @since 4.1.0
+	 * @since   4.1.0
+	 * @version 4.9.8 Tolerate scalar tags and invalid JSON instead of throwing a TypeError.
 	 *
 	 * @param  string|array $tags The Array or JSON formatted data tags.
 	 * @return string             The comma separated values.
 	 */
 	public function jsonTagsToCommaSeparatedList( $tags ) {
-		$tags = is_string( $tags ) ? json_decode( $tags ) : $tags;
+		if ( is_string( $tags ) ) {
+			$decoded = json_decode( $tags );
+
+			// If the string isn't valid JSON, it's likely already a plain (comma separated) list.
+			if ( null === $decoded && 'null' !== strtolower( trim( $tags ) ) ) {
+				return $tags;
+			}
+
+			$tags = $decoded;
+		}
 
 		$values = [];
-		foreach ( $tags as $k => $tag ) {
-			$values[ $k ] = is_object( $tag ) ? $tag->value : $tag['value'];
+		foreach ( (array) $tags as $k => $tag ) {
+			if ( is_object( $tag ) ) {
+				$values[ $k ] = $tag->value ?? '';
+			} elseif ( is_array( $tag ) ) {
+				$values[ $k ] = $tag['value'] ?? '';
+			} else {
+				// Plain scalar tags (e.g. a JSON array of strings) are used as-is.
+				$values[ $k ] = (string) $tag;
+			}
 		}
 
 		return implode( ',', $values );

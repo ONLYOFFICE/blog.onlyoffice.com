@@ -110,7 +110,8 @@ class SeoPreview {
 	/**
 	 * Returns the data for Vue.
 	 *
-	 * @since 4.2.8
+	 * @since   4.2.8
+	 * @version 5.0.0.1 Keyword columns fall back to the legacy keyphrases column.
 	 *
 	 * @return array The data.
 	 */
@@ -121,16 +122,20 @@ class SeoPreview {
 			'editTwitterSnippetUrl'  => '',
 			'editObjectBtnText'      => '',
 			'editObjectUrl'          => '',
-			'keyphrases'             => '',
-			'page_analysis'          => '',
+			'truseo'                 => '',
+			'focus_keyword'          => '',
+			'additional_keywords'    => '',
+			'headlineScore'          => null,
 			'urls'                   => [
 				'home'        => home_url(),
 				'domain'      => aioseo()->helpers->getSiteDomain(),
 				'mainSiteUrl' => aioseo()->helpers->getSiteUrl(),
+				'siteFavicon' => get_site_icon_url(),
 			],
 			'mainAssetCssQueue'      => aioseo()->core->assets->getJsAssetCssQueue( $this->mainAssetRelativeFilename ),
 			'data'                   => [
 				'isDev'           => aioseo()->helpers->isDev(),
+				'isLocal'         => aioseo()->helpers->isLocalUrl( site_url() ),
 				'siteName'        => aioseo()->helpers->getWebsiteName(),
 				'usingPermalinks' => aioseo()->helpers->usingPermalinks()
 			]
@@ -164,11 +169,16 @@ class SeoPreview {
 
 					if (
 						! aioseo()->helpers->isSpecialPage( $wpObject->ID ) &&
-						'attachment' !== $templateType
+						'attachment' !== $templateType &&
+						current_user_can( 'edit_post', $wpObject->ID ) &&
+						! post_password_required( $wpObject )
 					) {
-						$aioseoPost            = Models\Post::getPost( $wpObject->ID );
-						$data['page_analysis'] = Models\Post::getPageAnalysisDefaults( $aioseoPost->page_analysis );
-						$data['keyphrases']    = Models\Post::getKeyphrasesDefaults( $aioseoPost->keyphrases );
+						$aioseoPost                  = Models\Post::getPost( $wpObject->ID );
+						$keywordColumns              = Models\Post::getKeywordColumnsWithLegacyFallback( $aioseoPost );
+						$data['truseo']              = Models\Post::getTruseoDefaults( $aioseoPost->truseo );
+						$data['focus_keyword']       = $keywordColumns['focus_keyword'];
+						$data['additional_keywords'] = $keywordColumns['additional_keywords'];
+						$data['headlineScore']       = aioseo()->standalone->headlineAnalyzer->getScoreForPost( $wpObject->ID, $aioseoPost );
 					}
 				}
 			}
@@ -209,6 +219,11 @@ class SeoPreview {
 			$data['editTwitterSnippetUrl']  = $this->getEditSnippetUrl( $templateType, 'twitter' );
 		}
 
+		// Pass the capabilities to the Vue component because we don't have access to user object in the standalone.
+		$data['aioseoPageGeneralSettings'] = aioseo()->access->hasCapability( 'aioseo_page_general_settings' );
+		$data['aioseoPageSocialSettings']  = aioseo()->access->hasCapability( 'aioseo_page_social_settings' );
+		$data['aioseoPageAnalysis']        = aioseo()->access->hasCapability( 'aioseo_page_analysis' );
+
 		return $data;
 	}
 
@@ -236,12 +251,34 @@ class SeoPreview {
 				? get_edit_term_link( $object, $object->taxonomy ) . '#aioseo-term-settings-field'
 				: get_edit_post_link( $object, 'url' ) . '#aioseo-settings';
 
-			$queryArgs = [ 'aioseo-tab' => 'general' ];
-			if ( in_array( $snippet, [ 'facebook', 'twitter' ], true ) ) {
-				$queryArgs = [
-					'aioseo-tab' => 'social',
-					'social-tab' => $snippet
-				];
+			// Attachments keep the legacy behavior; they don't get the section scroll/highlight.
+			if ( 'attachment' === $templateType ) {
+				$queryArgs = [ 'aioseo-tab' => 'general' ];
+				if ( in_array( $snippet, [ 'facebook', 'twitter' ], true ) ) {
+					$queryArgs = [
+						'aioseo-tab' => 'social',
+						'social-tab' => $snippet
+					];
+				}
+
+				return add_query_arg( $queryArgs, $url );
+			}
+
+			$isSocial = in_array( $snippet, [ 'facebook', 'twitter' ], true );
+
+			// Both social snippets live in the Social Appearance section; Google in Search Appearance.
+			$cardId = $isSocial
+				? 'aioseo-card-postSettingsSocialAppearance'
+				: 'aioseo-card-postSettingsSearchAppearance';
+
+			$queryArgs = [
+				'aioseo-tab'       => 'general',
+				'aioseo-scroll'    => $cardId,
+				'aioseo-highlight' => $cardId
+			];
+
+			if ( $isSocial ) {
+				$queryArgs['social-tab'] = $snippet;
 			}
 
 			return add_query_arg( $queryArgs, $url );

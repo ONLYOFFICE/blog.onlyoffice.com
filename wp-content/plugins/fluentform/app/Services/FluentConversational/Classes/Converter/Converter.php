@@ -6,10 +6,11 @@ defined('ABSPATH') or die;
 
 use FluentForm\App\Helpers\Helper;
 use FluentForm\App\Modules\Payments\PaymentHelper;
-use FluentForm\Framework\Helpers\ArrayHelper;
 use FluentForm\App\Modules\Component\Component;
+use FluentForm\App\Services\FormBuilder\RatingIcon;
 use FluentForm\App\Services\FormBuilder\Components\DateTime;
 use FluentForm\App\Modules\Form\FormFieldsParser;
+use FluentForm\Framework\Helpers\ArrayHelper;
 
 class Converter
 {
@@ -317,6 +318,16 @@ class Converter
                 $question['nextStepOnAnswer'] = true;
                 $question = static::hasPictureMode($field, $question);
                 $question = static::maybeAddOtherOption($field, $question);
+            } elseif ('input_ranking' === $field['element']) {
+                $question['options'] = self::getAdvancedOptions($field, $form);
+                $question['type'] = 'FlowFormRankingType';
+                $question['multiple'] = true;
+                $question['allowImages'] = (bool) ArrayHelper::get($field, 'settings.enable_image_input');
+                $question['rankingDisplayType'] = ArrayHelper::get($field, 'settings.ranking_display_type', 'list');
+                $question['rankingGridColumns'] = ArrayHelper::get($field, 'settings.ranking_grid_columns', '3');
+                $question['showResetIcon'] = ArrayHelper::get($field, 'settings.show_reset_icon', 'no') === 'yes';
+                $question['showPositionSerial'] = ArrayHelper::get($field, 'settings.show_position_serial', 'yes');
+                $question['accentColor'] = ArrayHelper::get($field, 'settings.accent_color', '');
             } elseif ('custom_html' === $field['element']) {
                 $question['content'] = self::getComponent()->replaceEditorSmartCodes(ArrayHelper::get($field, 'settings.html_codes', ''), $form);
             } elseif ('section_break' === $field['element']) {
@@ -388,8 +399,17 @@ class Converter
                     $question['required'] = true;
                 }
             } elseif ('ratings' === $field['element']) {
+                $iconSettings = RatingIcon::resolveSettings($field);
                 $question['show_text'] = ArrayHelper::get($field, 'settings.show_text');
                 $question['rateOptions'] = ArrayHelper::get($field, 'options', []);
+                $question['iconSource'] = $iconSettings['icon_source'];
+                $question['iconType'] = $iconSettings['icon_type'];
+                $question['customIconSvg'] = $iconSettings['custom_icon_svg'];
+                $question['inactiveColor'] = $iconSettings['inactive_color'];
+                $question['activeColor'] = $iconSettings['active_color'];
+                $question['iconSvg'] = RatingIcon::getResolvedIconSvg($field, [
+                    'class' => 'ff-rating-icon-svg',
+                ]);
                 $question['nextStepOnAnswer'] = true;
             } elseif ('input_date' === $field['element']) {
                 $app = wpFluentForm();
@@ -402,6 +422,7 @@ class Converter
                 $question['dateCustomConfig'] = $dateField->getCustomConfig($field['settings']);
             } elseif (in_array($field['element'], ['input_image', 'input_file'])) {
                 $question['multiple'] = true;
+                $question['btn_text'] = ArrayHelper::get($field, 'settings.btn_text', __('Choose File', 'fluentform'));
                 
                 $maxFileCount = ArrayHelper::get($field, 'settings.validation_rules.max_file_count');
                 $maxFileSize = ArrayHelper::get($field, 'settings.validation_rules.max_file_size');
@@ -851,7 +872,7 @@ class Converter
     public static function convertExistingForm($form)
     {
         $formFields = json_decode($form->form_fields, true);
-        $fields = $formFields['fields'];
+        $fields = static::flattenLayoutContainers(ArrayHelper::get($formFields, 'fields', []));
         $formattedFields = [];
         
         if (is_array($fields) && ! empty($fields)) {
@@ -879,6 +900,56 @@ class Converter
         $formFields['fields'] = $formattedFields;
         
         return json_encode($formFields);
+    }
+
+    /**
+     * Lift fields out of layout containers so they survive conversion.
+     *
+     * A conversational form is a flat sequence of questions, so `container` has
+     * no equivalent and is not in fieldTypes(). Dropping it wholesale used to
+     * take every input nested inside it as well — silent, irreversible data loss
+     * on a one-click action, and column layouts are common.
+     *
+     * Only `columns` is unwrapped. Composite fields (input_name, address) keep
+     * their sub-inputs under `fields` and have their own conversational type, so
+     * they must stay whole. Nested containers are handled recursively.
+     *
+     * @param  array $fields
+     * @return array
+     */
+    protected static function flattenLayoutContainers($fields)
+    {
+        if (! is_array($fields)) {
+            return [];
+        }
+
+        $flattened = [];
+
+        foreach ($fields as $field) {
+            if (! is_array($field)) {
+                continue;
+            }
+
+            $columns = ArrayHelper::get($field, 'columns');
+
+            if ('container' !== ArrayHelper::get($field, 'element') || ! is_array($columns)) {
+                $flattened[] = $field;
+
+                continue;
+            }
+
+            foreach ($columns as $column) {
+                $columnFields = static::flattenLayoutContainers(
+                    ArrayHelper::get($column, 'fields', [])
+                );
+
+                foreach ($columnFields as $columnField) {
+                    $flattened[] = $columnField;
+                }
+            }
+        }
+
+        return $flattened;
     }
     
     private static function buildBaseQuestion($field, $validationsRules, $form)
@@ -963,6 +1034,7 @@ class Converter
             $fieldTypes['save_progress_button'] = 'FlowFormSaveAndResumeType';
             $fieldTypes['dynamic_field'] = 'FlowFormDynamicFieldType';
             $fieldTypes['net_promoter_score'] = 'FlowFormNetPromoterScoreType';
+            $fieldTypes['input_ranking'] = 'FlowFormRankingType';
         }
         
         return apply_filters('fluentform/conversational_field_types', $fieldTypes);
@@ -1216,10 +1288,20 @@ class Converter
     private static function getAdvancedOptions($field, $form)
     {
         $options = ArrayHelper::get($field, 'settings.advanced_options', []);
-        
+
         foreach ($options as &$option) {
+            if (\FluentForm\App\Helpers\Helper::isOptionGroup($option)) {
+                foreach ($option['options'] as &$groupOption) {
+                    $groupOption['label'] = self::getComponent()->replaceEditorSmartCodes($groupOption['label'], $form);
+                }
+                unset($groupOption);
+                $option['label'] = self::getComponent()->replaceEditorSmartCodes($option['label'], $form);
+                continue;
+            }
+
             $option['label'] = self::getComponent()->replaceEditorSmartCodes($option['label'], $form);
         }
+        unset($option);
         
         if ($options && 'yes' == ArrayHelper::get($field, 'settings.randomize_options')) {
             shuffle($options);
@@ -1274,6 +1356,8 @@ class Converter
             $saveAndResume = false;
             $hash = '';
             $form->save_state = false;
+            $userId = (int)get_current_user_id();
+            $viaLink = false;
 
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Public form state parameter for save & resume functionality, verified by hash comparison in database
             $key = isset($_GET['fluent_state']) ? sanitize_text_field(wp_unslash($_GET['fluent_state'])) : false;
@@ -1281,14 +1365,44 @@ class Converter
             if ($key) {
                 $hash = base64_decode($key);
                 $form->save_state = true;
+                $viaLink = true;
             } else {
                 $cookieName = 'fluentform_step_form_hash_' . $form->id;
-                $hash = ArrayHelper::get($_COOKIE, $cookieName, wp_generate_uuid4());
+                $hash = isset($_COOKIE[$cookieName])
+                    ? sanitize_text_field(wp_unslash($_COOKIE[$cookieName]))
+                    : wp_generate_uuid4();
             }
 
             \FluentFormPro\classes\DraftSubmissionsManager::migrate();
 
-            $draftForm = \FluentFormPro\classes\DraftSubmissionsManager::get($hash);
+            $draftForm = null;
+
+            // Logged-in users: prefer their own latest draft for this form so
+            // cross-device restore works and a stale cookie can't pin them to
+            // an older row. Link-share path is explicit and skips this.
+            if (!$viaLink && $userId) {
+                $draftForm = wpFluent()->table('fluentform_draft_submissions')
+                    ->where('user_id', $userId)
+                    ->where('form_id', $form->id)
+                    ->orderBy('updated_at', 'desc')
+                    ->first();
+            }
+
+            if (!$draftForm) {
+                $candidate = \FluentFormPro\classes\DraftSubmissionsManager::get($hash);
+                // Privacy guard: a draft owned by a real user (user_id > 0)
+                // may only be loaded by that same user. Link-share path is
+                // explicit sharing and is exempt.
+                if ($candidate && !$viaLink) {
+                    $entryUserId = (int)$candidate->user_id;
+                    if ($entryUserId > 0 && $entryUserId !== $userId) {
+                        $candidate = null;
+                    }
+                }
+                if ($candidate) {
+                    $draftForm = $candidate;
+                }
+            }
 
             if ($draftForm) {
                 $saveAndResume = true;
@@ -1333,23 +1447,46 @@ class Converter
         $draftForm = null;
         $data = [];
         $formId = $form->id;
+        $userId = (int)get_current_user_id();
+        $viaLink = false;
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Public form state parameter for save & resume functionality, verified by hash comparison in database
         $key = isset($_GET['fluent_state']) ? sanitize_text_field(wp_unslash($_GET['fluent_state'])) : false;
         if ($key) {
             $hash = base64_decode($key);
+            $viaLink = true;
         } else {
             $cookieName = 'fluentform_step_form_hash_' . $formId;
-            $hash = ArrayHelper::get($_COOKIE, $cookieName, wp_generate_uuid4());
+            $hash = isset($_COOKIE[$cookieName])
+                ? sanitize_text_field(wp_unslash($_COOKIE[$cookieName]))
+                : wp_generate_uuid4();
         }
 
-        if ($hash) {
-            $draftForm = \FluentFormPro\classes\DraftSubmissionsManager::get($hash, $formId);
-        } elseif (!$draftForm && $userId = get_current_user_id()) {
+        // Logged-in users: prefer their own latest draft (cross-device sync).
+        // Link-share path stays explicit and skips this.
+        if (!$viaLink && $userId) {
             $draftForm = wpFluent()->table('fluentform_draft_submissions')
                 ->where('user_id', $userId)
                 ->where('form_id', $formId)
+                ->orderBy('updated_at', 'desc')
                 ->first();
-        } else {
+        }
+
+        if (!$draftForm && $hash) {
+            $candidate = \FluentFormPro\classes\DraftSubmissionsManager::get($hash, $formId);
+            // Privacy guard: a draft owned by a real user (user_id > 0) may
+            // only be loaded by that same user. Link-share path is exempt.
+            if ($candidate && !$viaLink) {
+                $entryUserId = (int)$candidate->user_id;
+                if ($entryUserId > 0 && $entryUserId !== $userId) {
+                    $candidate = null;
+                }
+            }
+            if ($candidate) {
+                $draftForm = $candidate;
+            }
+        }
+
+        if (!$draftForm) {
             return $data;
         }
         

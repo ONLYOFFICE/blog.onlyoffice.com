@@ -2,22 +2,24 @@
 
 namespace DemocracyPoll\Admin;
 
-use function DemocracyPoll\plugin;
-use function DemocracyPoll\options;
+use DemocracyPoll\Support\Messages;
+use DemocracyPoll\System\Migrator__WP_Polls;
 
 class Admin_Page_Other_Migrations implements Admin_Subpage_Interface {
 
-	/** @var Admin_Page */
-	private $admpage;
+	private Admin_Page $admpage;
 
-	public function __construct( Admin_Page $admin_page ) {
+	private Messages $messages;
+
+	public function __construct( Admin_Page $admin_page, Messages $messages ) {
 		$this->admpage = $admin_page;
+		$this->messages = $messages;
 	}
 
-	public function load() {
+	public function load(): void {
 	}
 
-	public function request_handler() {
+	public function request_handler(): void {
 
 		$migration = get_option( 'democracy_migrated' );
 
@@ -33,25 +35,24 @@ class Admin_Page_Other_Migrations implements Admin_Subpage_Interface {
 			if( $more_action === 'delete_wp_polls_info' ){
 				delete_option( 'democracy_migrated' );
 
-				plugin()->msg->add_ok( __( 'Data of migration deleted', 'democracy-poll' ) );
+				$this->messages->add_ok( __( 'Data of migration deleted', 'democracy-poll' ) );
 
 				return; // important!
 			}
 		}
 
 		if( ( $_GET['from'] ?? '' ) === 'wp-polls' ){
-			( new \DemocracyPoll\Utils\Migrator__WP_Polls() )->migrate();
+			( new Migrator__WP_Polls( $this->messages ) )->migrate();
 		}
 
 	}
 
-	public function render() {
-
+	public function render(): void {
 		echo $this->admpage->subpages_menu();
 
 		$migration = get_option( 'democracy_migrated' );
 		?>
-		<div class="democr_options">
+		<div class="demoptions dempage-migrations">
 			<?php
 			$wp_polls = $migration['wp-polls'] ?? '';
 			if( $wp_polls ){
@@ -128,7 +129,7 @@ class Admin_Page_Other_Migrations implements Admin_Subpage_Interface {
 			}
 		}
 
-		plugin()->msg->add_ok( sprintf( __( 'Shortcodes replaced: %s', 'democracy-poll' ), $count ) );
+		$this->messages->add_ok( sprintf( __( 'Shortcodes replaced: %s', 'democracy-poll' ), $count ) );
 	}
 
 }

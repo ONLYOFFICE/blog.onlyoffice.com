@@ -270,6 +270,32 @@ trait Arrays {
 	}
 
 	/**
+	 * Gets a nested value from an array using a path of keys.
+	 *
+	 * @since 4.9.6
+	 *
+	 * @param  array $array The array to search.
+	 * @param  array $path  The path of keys.
+	 * @return mixed        The value, or null if not found.
+	 */
+	public function getNestedValue( $array, $path ) {
+		foreach ( $path as $key ) {
+			if ( ! is_array( $array ) || ! array_key_exists( $key, $array ) ) {
+				return null;
+			}
+
+			// Handle the Options trait value wrapper format.
+			if ( isset( $array[ $key ]['value'] ) ) {
+				$array = $array[ $key ]['value'];
+			} else {
+				$array = $array[ $key ];
+			}
+		}
+
+		return $array;
+	}
+
+	/**
 	 * Flattens a multidimensional array.
 	 *
 	 * @since 4.7.6

@@ -1,0 +1,1 @@
+import{w as u,y as a}from"./index-BLbn1ZeL.js";function i(e,o,s=[]){const r=u(e).map(n=>n.toLowerCase()),t=r.indexOf(o.toLowerCase());if(1>t)return!1;for(let n=0;n<t;n++)if(a(s,r[n]))return!0;return!1}export{i as p};

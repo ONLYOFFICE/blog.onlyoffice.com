@@ -2,9 +2,9 @@
 Contributors: deliciousbrains, wpengine, elliotcondon, mattshaw, lgladdy, antpb, johnstonphilip, dalewilliams, polevaultweb
 Tags: acf, fields, custom fields, meta, repeater
 Requires at least: 6.2
-Tested up to: 6.9.4
+Tested up to: 7.0.2
 Requires PHP: 7.4
-Stable tag: 6.8.0
+Stable tag: 6.8.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,13 @@ From your WordPress dashboard
 
 **Support Forums.** Our ACF Community Forums provide a great resource for searching and finding previously answered and asked support questions. You may create a new thread on these forums, however, it is not guaranteed that you will receive an answer from our support team. This is more of an area for ACF developers to talk to one another, post ideas, plugins and provide basic help. [View the Support Forum](https://support.advancedcustomfields.com/)
 
+= Looking for non-minified files? =
+
+Our plugin's non-minified JS and CSS files are available on [GitHub](https://github.com/advancedcustomfields/acf).
+
+= Does ACF collect any data? =
+
+ACF includes an optional email signup to receive plugin updates and news. No data is collected unless you choose to subscribe. Your email is stored in accordance with [WP Engine's Privacy Policy](https://wpengine.com/legal/privacy/).
 
 == Screenshots ==
 
@@ -93,6 +100,78 @@ From your WordPress dashboard
 
 
 == Changelog ==
+
+= 6.8.7 =
+*Release Date 4th August 2026*
+
+* Security - ACF Image and Gallery fields now enforce server-side validation to accept only image files
+* Security - The `path` attribute of registered ACF Blocks is now protected from being overridden by client-supplied block data
+* Security - ACF's `acf_encrypt()` and `acf_decrypt()` helpers now authenticate encrypted values with an HMAC and no longer fall back to base64 encoding when OpenSSL is unavailable
+* Security - ACF's comment, user, and options page form save handlers now only save values for fields whose field groups are assigned to the current save context
+* Security - The Post Object, Page Link, and Relationship field AJAX search queries now enforce WordPress read permissions, preventing unauthenticated visitors from seeing non-public post statuses or post types
+* Security - The User field now returns only user IDs in REST API responses to requesters without the `list_users` capability, preventing unauthenticated visitors from seeing user email addresses
+
+= 6.8.6 =
+*Release Date 14th July 2026*
+
+* Fix - Google Maps field values are no longer double-encoded when saved in an ACF block
+* Fix - Inserting a Link field value in the Classic Editor no longer triggers validation for other required fields before the post is saved
+* Fix - Auto Inline Editing blocks no longer return truthy placeholder strings for empty field values fetched from a different post inside the block render template
+* Fix - ACF Blocks (V2 and V3) no longer crash when rendering an oEmbed field whose title begins with `[` or `{`
+* Fix - Field group location rules without a location value no longer cause PHP warnings on page load
+* Fix - The appearance of the URL, Number, and Select fields has been improved on WordPress 7.0+
+* Fix - ACF fields now save on WooCommerce orders when using HPOS in compatibility mode
+
+= 6.8.5 =
+*Release Date 30th June 2026*
+
+* Security - ACF PRO's save handler for WooCommerce order fields now verifies security nonces and only attaches on the order edit screen, preventing unauthenticated field value updates for stores utilizing HPOS
+* Security - The Flexible Content "Rename Layout" modal no longer allows for the execution of a potential stored XSS vulnerability
+* Security - A default limit of 1000 has been applied to user-contributed choices for Checkbox, Radio, and Select fields to improve security, with a new `acf/fields/max_appended_choices` filter available for customization
+* Security - Special characters within LIKE patterns are now fully escaped in `wp_options` queries via `$wpdb->esc_like()`
+
+= 6.8.4 =
+*Release Date 10th June 2026*
+
+* Security - ACF AJAX field handlers now validate that the request nonce was created for the expected field type
+* Enhancement - ACF PRO now satisfies plugin dependencies declared against `advanced-custom-fields`, so plugins requiring ACF can activate when only ACF PRO is installed
+* Enhancement - `acf_inline_toolbar_editing_attrs()` now accepts a `return_array` argument that returns the attributes as an escaped array suitable for use with `wp_get_attachment_image()`
+* Fix - `acf_form()` with `'post_id' => 'new_post'` and a `fields` list of field names no longer fatal errors when `acf_form_head()` runs before WordPress's main query is built
+* Fix - Multiple `acf_form()` calls wrapped inside a single outer `<form>` tag with one submit button no longer silently drop field values, `post_title`, or `post_content` from the non-last forms
+* Fix - Duplicating a V3 block with identical attributes no longer displays corrupted preview content in the duplicate
+* Fix - Switching between tabs containing WYSIWYG fields no longer leaves the admin menu pinned against a shorter page, which could lock page scroll
+
+= 6.8.3 =
+*Release Date 2nd June 2026*
+
+* Security - The oEmbed field's AJAX preview no longer performs URL discovery for users without the `edit_posts` capability.
+
+= 6.8.2 =
+*Release Date 26th May 2026*
+
+* Security - ACF frontend forms (`acf_form()`) now respect the `post_title` and `post_content` form configuration options when processing submissions, ensuring those values are only saved when the form is configured to accept them. Thanks to Sarawut Poolkhet (MisterHelloz) for the responsible disclosure.
+* Security - ACF frontend forms (`acf_form()`) now only save values for fields assigned to the form via the `fields` or `field_groups` parameters, or via the form's location rules
+
+= 6.8.1 =
+*Release Date 13th May 2026*
+
+* Security - ACF now correctly checks user permissions before running database upgrades on a specific site in a multisite network
+* New - A `wp.data` store (`acf/fields`) is now available in ACF PRO for reading and writing ACF field values from JavaScript, which can be enabled via a new `acf/settings/enable_datastore` filter (requires WordPress 6.7 or later).
+* New - ACF PRO block bindings now support live preview and editing in the block editor, when both the datastore and the `enable_block_bindings` setting are enabled.
+* New - ACF PRO can now save metabox field values via Gutenberg's native REST flow with full revision and autosave support when using the datastore.
+* New - ACF PRO Blocks can now define their field group inline via an `acf.fields` array in `block.json`, or via a `fields` argument in `acf_register_block_type()`, with field keys auto-generated and scoped to the block
+* Fix - Repeater and Flexible Content row helpers no longer trigger a PHP 8.x `TypeError` when `row_index_offset` or the active loop index is non-numeric
+* Fix - V3 Blocks with `hideFieldsInSidebar` enabled no longer show fields in the sidebar after the inline toolbar popover is closed
+* Fix - Scrollbars no longer appear under the tabs in field groups containing many tabs
+* Fix - The `acf/delete-{taxonomy}` ability no longer returns a 501 error when called without an explicit `force` argument, as terms cannot be trashed
+* Fix - The `prepare_field_for_ability_import` filter is now correctly removed after each Abilities field group import, preventing subsequent imports in the same request from having values corrupted
+
+= 6.8.0.1 =
+*Release Date 31st March 2026*
+*PRO Only Release*
+
+* Fix - V3 blocks with WYSIWYG fields no longer enqueue TinyMCE editor assets on the frontend
+* Fix - V3 blocks with identical attributes and different InnerBlocks content no longer return cached output from the first block on the frontend
 
 = 6.8.0 =
 *Release Date 30th March 2026*

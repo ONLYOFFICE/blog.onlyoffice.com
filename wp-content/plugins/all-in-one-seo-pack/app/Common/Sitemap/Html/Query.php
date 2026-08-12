@@ -15,7 +15,8 @@ class Query {
 	/**
 	 * Returns all eligible sitemap entries for a given post type.
 	 *
-	 * @since 4.1.3
+	 * @since   4.1.3
+	 * @version 4.9.10 Exclude password-protected posts to match the XML/image/archive sitemap queries.
 	 *
 	 * @param  string $postType   The post type.
 	 * @param  array  $attributes The attributes.
@@ -54,7 +55,8 @@ class Query {
 			->start( 'posts' )
 			->select( $fields )
 			->where( 'post_status', 'publish' )
-			->where( 'post_type', $postType );
+			->where( 'post_type', $postType )
+			->where( 'post_password', '' );
 
 		$excludedPosts = $this->getExcludedObjects( $attributes );
 		if ( $excludedPosts ) {

@@ -21,10 +21,27 @@ class StripeListener
 
     public function verifyIPN()
     {
-        // $signature = $_SERVER['HTTP_STRIPE_SIGNATURE'];
+        // SECURITY (FINDING-19): verify the Stripe webhook signature against the configured
+        // signing secret before trusting the payload. Previously the signature check was
+        // commented out and verifySignature() used a shared hardcoded whsec_, so the handler
+        // relied solely on the event re-fetch — an attacker who knew a valid event id could
+        // steer processing. Mirror the pro listener: reject forged/unsigned events up front.
+        $signature = isset($_SERVER['HTTP_STRIPE_SIGNATURE']) ? $_SERVER['HTTP_STRIPE_SIGNATURE'] : '';
 
         // retrieve the request's body and parse it as JSON
         $body = @file_get_contents('php://input');
+
+        $webhookSecret = get_option('fluentform_stripe_webhook_secret', '');
+        if ($webhookSecret) {
+            if (!$signature) {
+                status_header(401);
+                exit('Missing Stripe signature header');
+            }
+            if (!$this->verifySignature($body, $signature, $webhookSecret)) {
+                status_header(403);
+                exit('Invalid Stripe signature');
+            }
+        }
 
         $event = json_decode($body);
 
@@ -282,8 +299,14 @@ class StripeListener
         return $api::request([], 'events/' . $eventId, 'GET');
     }
 
-    public function verifySignature($payload, $signature)
+    public function verifySignature($payload, $signature, $secret = '')
     {
+        // SECURITY (FINDING-19): the signing secret is now supplied by the caller from the
+        // fluentform_stripe_webhook_secret option instead of a shared hardcoded whsec_.
+        if (!$secret) {
+            return false;
+        }
+
         // Extract timestamp and signatures from header
         $timestamp = self::getTimestamp($signature);
         $signatures = self::getSignatures($signature);
@@ -301,9 +324,8 @@ class StripeListener
             return false;
         }
 
-        $secret = 'whsec_NsNZNMSnWVPLt8GErz3SVZ97pWu8eb6D';
-
-        $expectedSignature = \hash_hmac('sha256', $payload, $secret);
+        // Stripe signs "{timestamp}.{payload}", not the bare payload.
+        $expectedSignature = \hash_hmac('sha256', $signedPayload, $secret);
 
         // Reject events older than 5 minutes to prevent replay attacks
         if (abs(time() - $timestamp) > 300) {
@@ -393,7 +415,7 @@ class StripeListener
         $data = [
             'subscription_id' => $subscription->id,
             'form_id' => $subscription->form_id,
-            'transaction_hash' => md5('subscription_trans_'.wp_generate_uuid4().time()),
+            'transaction_hash' => wp_generate_password(32, false),
             'user_id' => $submission->user_id,
             'submission_id' => $submission->id,
             'transaction_type' => 'subscription',

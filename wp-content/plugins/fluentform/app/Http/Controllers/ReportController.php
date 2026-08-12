@@ -3,33 +3,46 @@
 namespace FluentForm\App\Http\Controllers;
 
 use Exception;
+use FluentForm\App\Modules\Acl\Acl;
 use FluentForm\App\Services\Report\ReportService;
 
 class ReportController extends Controller
 {
-    private function sanitizeReportAttributes()
+    private function sanitizeReportAttributes($formId = null)
     {
         $sanitizeMap = [
-            'form_id'  => 'intval',
             'period'   => 'sanitize_text_field',
             'group_by' => 'sanitize_text_field',
             'status'   => 'sanitize_text_field',
         ];
 
         $attributes = fluentform_backend_sanitizer($this->request->all(), $sanitizeMap);
+        $requestFormId = $this->request->get('form_id');
 
         if (isset($attributes['date_range']) && is_array($attributes['date_range'])) {
             $attributes['date_range'] = array_map('sanitize_text_field', $attributes['date_range']);
         }
 
+        $resolvedFormId = Acl::normalizeFormId($formId);
+
+        if (!$resolvedFormId) {
+            $resolvedFormId = Acl::normalizeFormId($requestFormId);
+        }
+
+        if ($resolvedFormId) {
+            $attributes['form_id'] = $resolvedFormId;
+        } else {
+            unset($attributes['form_id']);
+        }
+
         return $attributes;
     }
 
-    public function form(ReportService $reportService)
+    public function form(ReportService $reportService, $formId)
     {
         try {
             return $this->sendSuccess(
-                $reportService->form($this->sanitizeReportAttributes())
+                $reportService->form($this->sanitizeReportAttributes($formId))
             );
         } catch (Exception $e) {
             return $this->sendError([
@@ -80,7 +93,7 @@ class ReportController extends Controller
     public function netRevenue(ReportService $reportService)
     {
         try {
-            $data = apply_filters('fluentform/reports/revenue_analysis', [], $this->request->all());
+            $data = apply_filters('fluentform/reports/revenue_analysis', [], $this->sanitizeReportAttributes());
             return $this->sendSuccess($data);
             
         } catch (Exception $e) {
@@ -97,7 +110,7 @@ class ReportController extends Controller
     public function submissionsAnalysis()
     {
         try {
-            $data = apply_filters('fluentform/reports/submissions_analysis', [], $this->request->all());
+            $data = apply_filters('fluentform/reports/submissions_analysis', [], $this->sanitizeReportAttributes());
             return $this->sendSuccess($data);
         } catch (Exception $e) {
             return $this->sendError([
@@ -147,7 +160,7 @@ class ReportController extends Controller
     public function getCompletionRate()
     {
         try {
-            $data = apply_filters('fluentform/reports/completion_rate', [], $this->request->all());
+            $data = apply_filters('fluentform/reports/completion_rate', [], $this->sanitizeReportAttributes());
             return $this->sendSuccess($data);
         } catch (Exception $e) {
             return $this->sendError([
@@ -180,7 +193,7 @@ class ReportController extends Controller
     public function getHeatmapData()
     {
         try {
-            $data = apply_filters('fluentform/reports/heatmap_data', [], $this->request->all());
+            $data = apply_filters('fluentform/reports/heatmap_data', [], $this->sanitizeReportAttributes());
             return $this->sendSuccess($data);
         } catch (Exception $e) {
             return $this->sendError([
@@ -196,7 +209,7 @@ class ReportController extends Controller
     public function getCountryHeatmap(ReportService $reportService)
     {
         try {
-            $data = apply_filters('fluentform/reports/country_heatmap', [], $this->request->all());
+            $data = apply_filters('fluentform/reports/country_heatmap', [], $this->sanitizeReportAttributes());
             return $this->sendSuccess($data);
         } catch (Exception $e) {
             return $this->sendError([
@@ -246,7 +259,7 @@ class ReportController extends Controller
     public function getSubscriptions()
     {
         try {
-            $data = apply_filters('fluentform/reports/subscriptions', [], $this->request->all());
+            $data = apply_filters('fluentform/reports/subscriptions', [], $this->sanitizeReportAttributes());
             return $this->sendSuccess($data);
         } catch (Exception $e) {
             return $this->sendError([

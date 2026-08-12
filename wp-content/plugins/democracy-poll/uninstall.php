@@ -24,11 +24,11 @@ function democr_delete_plugin() {
 	delete_option( 'widget_democracy' );
 	delete_option( 'democracy_options' );
 	delete_option( 'democracy_version' );
+	delete_option( 'democracy_upgrade_lock' );
 	delete_option( 'democracy_css' );
 	delete_option( 'democracy_l10n' );
 	delete_option( 'democracy_migrated' );
 
 	delete_transient( 'democracy_referer' );
 }
-
 

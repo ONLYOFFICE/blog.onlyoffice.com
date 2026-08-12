@@ -395,16 +395,68 @@ class PaymentHandler
     public function handleAjaxEndpoints()
     {
         // phpcs:disable WordPress.Security.NonceVerification.Recommended -- Nonce verified by Acl::verify()
-        if (isset($_REQUEST['form_id'])) {
-            Acl::verify('fluentform_forms_manager');
+        $route = isset($_REQUEST['route']) ? sanitize_text_field(wp_unslash($_REQUEST['route'])) : '';
+        $paymentMutationRoutes = [
+            'update_transaction',
+            'cancel_subscription'
+        ];
+        $formSettingRoutes = [
+            'get_form_settings',
+            'save_form_settings'
+        ];
+
+        if (in_array($route, $paymentMutationRoutes, true)) {
+            Acl::verify('fluentform_manage_payments', $this->resolveRouteFormId($route));
+        } elseif (in_array($route, $formSettingRoutes, true)) {
+            Acl::verify('fluentform_forms_manager', $this->resolveRouteFormId($route));
         } else {
             Acl::verify('fluentform_settings_manager');
         }
-
-        $route = isset($_REQUEST['route']) ? sanitize_text_field(wp_unslash($_REQUEST['route'])) : '';
         // phpcs:enable WordPress.Security.NonceVerification.Recommended -- End of AJAX endpoint nonce verification by Acl::verify()
 
         (new AjaxEndpoints())->handleEndpoint($route);
+    }
+
+    private function resolveRouteFormId($route)
+    {
+        switch ($route) {
+            case 'get_form_settings':
+            case 'save_form_settings':
+                return Acl::verifyFormId(wpFluentForm()->request->get('form_id'));
+            case 'update_transaction':
+                return $this->resolveTransactionFormId();
+            case 'cancel_subscription':
+                return $this->resolveSubscriptionFormId();
+            default:
+                return null;
+        }
+    }
+
+    private function resolveTransactionFormId()
+    {
+        $transactionData = wpFluentForm()->request->get('transaction', []);
+        $transactionId = absint(ArrayHelper::get($transactionData, 'id'));
+
+        if (!$transactionId) {
+            return -1;
+        }
+
+        $transaction = \FluentForm\App\Models\Transaction::select('form_id')->find($transactionId);
+
+        return $transaction ? (int) $transaction->form_id : -1;
+    }
+
+    private function resolveSubscriptionFormId()
+    {
+        $subscriptionId = absint(wpFluentForm()->request->get('subscription_id'));
+
+        if (!$subscriptionId) {
+            return -1;
+        }
+
+        $subscription = \FluentForm\App\Models\Subscription::select('form_id')->find($subscriptionId);
+
+        return $subscription ? (int) $subscription->form_id : -1;
     }
     
     public function maybeHandlePayment($insertData, $data, $form)

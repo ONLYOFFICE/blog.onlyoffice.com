@@ -282,6 +282,11 @@ class Admin {
 				'parent'              => 'aioseo-seo-revisions',
 				'hide_admin_bar_menu' => true
 			],
+			'aioseo-ai-bulk-generate'  => [
+				'menu_title'          => esc_html__( 'AI Bulk Generate', 'all-in-one-seo-pack' ),
+				'parent'              => 'aioseo-ai-bulk-generate',
+				'hide_admin_bar_menu' => true
+			],
 		];
 	}
 
@@ -421,7 +426,6 @@ class Admin {
 				'wp-element',
 				'wp-plugins',
 				'wp-components',
-				'wp-edit-post',
 				'wp-api',
 				'wp-editor',
 				'wp-hooks',
@@ -858,7 +862,8 @@ class Admin {
 			'feature-manager',
 			'monsterinsights',
 			'about',
-			'seo-revisions'
+			'seo-revisions',
+			'ai-bulk-generate'
 		];
 
 		foreach ( $pages as $page ) {
@@ -1145,6 +1150,9 @@ class Admin {
 			'keywords',
 			'keyphrases',
 			'page_analysis',
+			'truseo',
+			'focus_keyword',
+			'additional_keywords',
 			'canonical_url',
 			'og_title',
 			'og_description',
@@ -1202,6 +1210,13 @@ class Admin {
 		}
 
 		if ( ! empty( aioseo()->redirects->options ) && aioseo()->redirects->options->monitor->trash ) {
+			return $messages;
+		}
+
+		if (
+			! current_user_can( 'aioseo_redirects_manage' ) &&
+			! current_user_can( 'aioseo_page_redirects_manage' )
+		) {
 			return $messages;
 		}
 

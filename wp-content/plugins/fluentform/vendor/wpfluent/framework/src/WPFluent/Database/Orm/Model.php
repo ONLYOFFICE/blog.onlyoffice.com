@@ -23,6 +23,12 @@ use FluentForm\Framework\Database\Orm\Relations\Concerns\AsPivot;
 use FluentForm\Framework\Database\Orm\Collection as OrmCollection;
 use FluentForm\Framework\Database\ConnectionResolverInterface as Resolver;
 
+/**
+ * Model forwards unknown instance/static calls to a new Orm Builder
+ * (see __call/__callStatic), which itself proxies to the Query Builder.
+ *
+ * @mixin \FluentForm\Framework\Database\Orm\Builder
+ */
 abstract class Model implements ArrayableInterface, ArrayAccess, CanBeEscapedWhenCastToString, JsonableInterface, JsonSerializable, UrlRoutable
 {
     use HelperFunctionsTrait;

@@ -7,35 +7,50 @@
 
 namespace DemocracyPoll\Admin;
 
-use function DemocracyPoll\plugin;
-use function DemocracyPoll\options;
+use DemocracyPoll\Options;
+use DemocracyPoll\Plugin;
 
 class Admin {
 
-	public function __construct() {
+	private Options $options;
+	private Plugin $plugin;
+	private Admin_Page $admin_page;
+	private Tinymce_Button $tinymce_button;
+
+	public function __construct(
+		Plugin $plugin,
+		Options $options,
+		/** @see Admin_Page::__construct() */
+		Admin_Page $admin_page,
+		Tinymce_Button $tinymce_button
+	) {
+		$this->plugin = $plugin;
+		$this->options = $options;
+		$this->admin_page = $admin_page;
+		$this->tinymce_button = $tinymce_button;
 	}
 
 	public function init(): void {
-		( new Admin_Page() )->init();
+		$this->admin_page->init();
 
 		add_filter( 'plugin_action_links', [ $this, '_plugin_action_setting_page_link' ], 10, 2 );
 
 		// TinyMCE button WP 2.5+
-		if( options()->tinymce_button ){
-			Tinymce_Button::init();
+		if( $this->options->tinymce_button ){
+			$this->tinymce_button->register();
 		}
 
-		if( ! options()->post_metabox_off ){
+		if( ! $this->options->post_metabox_off ){
 			Post_Metabox::init();
 		}
 	}
 
 	public function _plugin_action_setting_page_link( $actions, $plugin_file ) {
-		if( false === strpos( $plugin_file, basename( plugin()->dir ) ) ){
+		if( false === strpos( $plugin_file, basename( $this->plugin->dir ) ) ){
 			return $actions;
 		}
 
-		$settings_link = sprintf( '<a href="%s">%s</a>', plugin()->admin_page_url, __( 'Settings', 'democracy-poll' ) );
+		$settings_link = sprintf( '<a href="%s">%s</a>', $this->plugin->admin_page_url, __( 'Settings', 'democracy-poll' ) );
 		array_unshift( $actions, $settings_link );
 
 		return $actions;

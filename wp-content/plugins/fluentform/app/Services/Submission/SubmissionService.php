@@ -191,6 +191,17 @@ class SubmissionService
         $formId = Arr::get($attributes, 'form_id');
         $submissionId = Arr::get($attributes, 'entry_id');
 
+        // When an entry is targeted, the authoritative form is the one stored on
+        // that submission — never a separately supplied request form_id, which
+        // could point counts/labels/fields/metadata reads at another form the
+        // caller was not authorized for (authorization resolved from the entry).
+        if ($submissionId) {
+            $submission = $this->model->find($submissionId);
+            if ($submission) {
+                $formId = (int) $submission->form_id;
+            }
+        }
+
         if (Arr::get($attributes, 'counts')) {
             $resources['counts'] = $this->model->countByGroup($formId);
         }
@@ -355,7 +366,14 @@ class SubmissionService
 
             $message = 'Selected entries successfully marked as ' . $statuses[$actionType];
         } elseif ('other.delete_permanently' == $actionType) {
-            $this->deleteEntries($submissionIds, $formId);
+            $ownedIds = $this->model->where('form_id', $formId)
+                ->whereIn('id', $submissionIds)
+                ->pluck('id')
+                ->all();
+
+            if ($ownedIds) {
+                $this->deleteEntries($ownedIds, $formId);
+            }
 
             $message = __('Selected entries successfully deleted', 'fluentform');
         } elseif ('other.make_favorite' == $actionType) {
@@ -392,7 +410,7 @@ class SubmissionService
 
         $this->deleteFiles($submissionIds, $formId);
 
-        Submission::remove($submissionIds);
+        Submission::remove($submissionIds, $formId);
 
         do_action('fluentform/after_deleting_submissions', $submissionIds, $formId);
 
@@ -547,7 +565,12 @@ class SubmissionService
 
     public function storeNote($submissionId, $attributes = [])
     {
-        $formId = intval(Arr::get($attributes, 'form_id'));
+        // SECURITY (FINDING-20): derive form_id from the route-authorized submission, not the
+        // request body. Authorization is computed from the entry_id, but the note row's form_id
+        // came straight from the body — letting a manager scoped to one form write a note row into
+        // another form's meta namespace (cross-form integrity pollution).
+        $submission = Submission::find($submissionId);
+        $formId = $submission ? intval($submission->form_id) : intval(Arr::get($attributes, 'form_id'));
 
         $content = sanitize_textarea_field($attributes['note']['content']);
         $status = sanitize_text_field($attributes['note']['status']);

@@ -578,9 +578,14 @@ class FormBuilder
     {
         $atts = '';
         foreach ($attributes as $key => $value) {
+            // SECURITY (FINDING-06): drop event-handler attribute keys and escape the key name
+            // (author-controlled attribute keys are not allowlisted at save).
+            if (preg_match('/^on[a-z]/i', (string) $key)) {
+                continue;
+            }
             if ($value || 0 === $value || '0' === $value) {
                 $value = htmlspecialchars($value);
-                $atts .= $key . '="' . $value . '" ';
+                $atts .= esc_attr($key) . '="' . $value . '" ';
             }
         }
         return $atts;

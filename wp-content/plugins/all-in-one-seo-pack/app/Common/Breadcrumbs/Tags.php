@@ -135,13 +135,13 @@ class Tags {
 			[
 				'id'          => 'breadcrumb_post_title',
 				// Translators: 1 - The type of page (Post, Page, Category, Tag, etc.).
-				'name'        => sprintf( __( '%1$s Title', 'all-in-one-seo-pack' ), 'Post' ),
+				'name'        => sprintf( _x( '%1$s Title', 'SEO template tag', 'all-in-one-seo-pack' ), 'Post' ),
 				'description' => __( 'The original title of the current post.', 'all-in-one-seo-pack' )
 			],
 			[
 				'id'          => 'breadcrumb_taxonomy_title',
 				// Translators: 1 - The type of page (Post, Page, Category, Tag, etc.).
-				'name'        => sprintf( __( '%1$s Title', 'all-in-one-seo-pack' ), 'Category' ),
+				'name'        => sprintf( _x( '%1$s Title', 'SEO template tag', 'all-in-one-seo-pack' ), 'Category' ),
 				// Translators: 1 - The name of a taxonomy.
 				'description' => sprintf( __( 'The %1$s title.', 'all-in-one-seo-pack' ), 'Category' )
 			],

@@ -6,6 +6,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AIOSEO\Plugin\Common\Models;
+use AIOSEO\Plugin\Common\SpellChecker\Dictionary;
+
 /**
  * Abstract class that Pro and Lite both extend.
  *
@@ -74,8 +77,66 @@ class Activate {
 		}
 
 		aioseo()->core->cache->clear();
+		wp_cache_flush();
 
 		$this->maybeRunSetupWizard();
+		$this->maybeDownloadSpellCheckerDictionary();
+	}
+
+	/**
+	 * Downloads the spell checker dictionary for the current locale if needed.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @return void
+	 */
+	private function maybeDownloadSpellCheckerDictionary() {
+		if ( ! aioseo()->options->advanced->spellChecker ) {
+			return;
+		}
+
+		$dictionary       = new Dictionary();
+		$supportedLocales = $dictionary->getSpellCheckableLocales();
+		$locale           = get_locale();
+
+		if ( ! in_array( $locale, $supportedLocales, true ) ) {
+			return;
+		}
+
+		if ( ! $dictionary->needsDownload( $locale ) ) {
+			return;
+		}
+
+		$result = $dictionary->downloadForLocale( $locale );
+		if ( is_wp_error( $result ) ) {
+			$this->addSpellCheckerDictionaryFailedNotification();
+		}
+	}
+
+	/**
+	 * Adds a notification informing the user that the spell checker dictionary download failed.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @return void
+	 */
+	private function addSpellCheckerDictionaryFailedNotification() {
+		$notification = Models\Notification::getNotificationByName( 'spell-checker-dictionary-download-failed' );
+		if ( $notification->exists() ) {
+			return;
+		}
+
+		Models\Notification::addNotification( [
+			'slug'              => uniqid(),
+			'notification_name' => 'spell-checker-dictionary-download-failed',
+			'title'             => __( 'Spell Checker Dictionary Download Failed', 'all-in-one-seo-pack' ),
+			'content'           => __( 'We were unable to download the spell checker dictionary for your language. You can try again from the Settings page.', 'all-in-one-seo-pack' ),
+			'type'              => 'warning',
+			'level'             => [ 'all' ],
+			'button1_label'     => __( 'Go to Settings', 'all-in-one-seo-pack' ),
+			'button1_action'    => 'http://route#aioseo-settings:advanced',
+			'start'             => gmdate( 'Y-m-d H:i:s' )
+		] );
 	}
 
 	/**
@@ -92,6 +153,7 @@ class Activate {
 		// now we store as string and have a is_object column to differentiate between array and objects.
 		// This will prevent errors when deactivating the PRO plugin but keeping an old version of the LITE plugin.
 		aioseo()->core->cache->clear();
+		wp_cache_flush();
 	}
 
 	/**
@@ -115,12 +177,10 @@ class Activate {
 			return;
 		}
 
-		if ( isset( $_GET['activate-multi'] ) ) { // phpcs:ignore HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
-			return;
-		}
-
-		// Sets 30 second transient for welcome screen redirect on activation.
-		aioseo()->core->cache->update( 'activation_redirect', true, 30 );
+		// Sets activation redirect flag.
+		// We use HOUR_IN_SECONDS to ensure the redirect still works after bulk activation,
+		// where the redirect is deferred to the next admin page load.
+		aioseo()->core->cache->update( 'activation_redirect', true, HOUR_IN_SECONDS );
 	}
 
 	/**

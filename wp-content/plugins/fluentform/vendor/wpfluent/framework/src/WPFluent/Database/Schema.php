@@ -565,6 +565,54 @@ class Schema
 	}
 
 	/**
+	 * Add a FULLTEXT index to the given columns, required by the query
+	 * builder's relevance ranking (selectRelevance/orderByRelevance and the
+	 * Searchable relevanceSearch scope). No-ops on SQLite, which has no
+	 * native FULLTEXT support and degrades to LIKE-based matching.
+	 *
+	 * @param  string  $table   Table name without prefix
+	 * @param  string|array  $columns
+	 * @param  string|null  $name  Optional index name
+	 * @return mixed
+	 */
+	public static function fullText($table, $columns, $name = null)
+	{
+		if (static::isSqlite()) {
+			return false;
+		}
+
+		$columns = is_array($columns)
+			? $columns
+			: array_map('trim', explode(',', $columns));
+
+		$tbl = static::table($table);
+		$name = $name ?: ('ft_' . implode('_', $columns));
+		$list = implode(', ', $columns);
+
+		return static::db()->query(
+			"ALTER TABLE {$tbl} ADD FULLTEXT {$name} ({$list})"
+		);
+	}
+
+	/**
+	 * Drop a FULLTEXT index by name.
+	 *
+	 * @param  string  $table  Table name without prefix
+	 * @param  string  $name   Index name
+	 * @return mixed
+	 */
+	public static function dropFullText($table, $name)
+	{
+		if (static::isSqlite()) {
+			return false;
+		}
+
+		$tbl = static::table($table);
+
+		return static::db()->query("ALTER TABLE {$tbl} DROP INDEX {$name}");
+	}
+
+	/**
 	 * Makes raw query and can resolve the table name from the query
 	 * and can form a full table name including the table prefix if
 	 * the table name is wrapped like: %table_name% in the query.

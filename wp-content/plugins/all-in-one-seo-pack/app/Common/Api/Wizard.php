@@ -313,7 +313,7 @@ class Wizard {
 		// Save the smart recommendations section.
 		if ( 'smartRecommendations' === $section && ! empty( $wizard['smartRecommendations'] ) ) {
 			$smartRecommendations = $wizard['smartRecommendations'];
-			if ( ! empty( $smartRecommendations['accountInfo'] ) && ! aioseo()->internalOptions->internal->siteAnalysis->connectToken ) {
+			if ( ! empty( $smartRecommendations['accountInfo'] ) && ! aioseo()->sensitiveOptions->hasValue( 'siteAnalysisConnectToken' ) ) {
 				$url      = defined( 'AIOSEO_CONNECT_DIRECT_URL' ) ? AIOSEO_CONNECT_DIRECT_URL : 'https://aioseo.com/wp-json/aioseo-lite-connect/v1/connect/';
 				$response = wp_remote_post( $url, [
 					'timeout'    => 10,
@@ -329,7 +329,7 @@ class Wizard {
 
 				$token = json_decode( wp_remote_retrieve_body( $response ) );
 				if ( ! empty( $token->token ) ) {
-					aioseo()->internalOptions->internal->siteAnalysis->connectToken = $token->token;
+					aioseo()->sensitiveOptions->set( 'siteAnalysisConnectToken', $token->token );
 				}
 			}
 		}
@@ -367,6 +367,10 @@ class Wizard {
 
 		if ( in_array( 'broken-link-checker', $features, true ) && ! $pluginData['brokenLinkChecker']['activated'] ) {
 			self::installBlc( $network );
+		}
+
+		if ( in_array( 'translation', $features, true ) && ! $pluginData['universally']['activated'] ) {
+			self::installUniversally( $network );
 		}
 	}
 
@@ -442,6 +446,24 @@ class Wizard {
 		if ( self::installPlugin( $args, $network ) && function_exists( 'aioseoBrokenLinkChecker' ) ) {
 			aioseoBrokenLinkChecker()->core->cache->delete( 'activation_redirect' );
 		}
+	}
+
+	/**
+	 * Installs the Universally plugin.
+	 *
+	 * @since 4.9.8
+	 *
+	 * @param  bool $network Whether to install the plugin on the network.
+	 * @return void
+	 */
+	private static function installUniversally( $network ) {
+		$args = [
+			'id'                => 'universally',
+			'pluginName'        => 'Universally',
+			'notification-name' => 'install-universally'
+		];
+
+		self::installPlugin( $args, $network );
 	}
 
 	/**

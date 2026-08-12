@@ -2,22 +2,32 @@
 
 namespace DemocracyPoll\Admin;
 
-use DemocracyPoll\Helpers\Kses;
+use DemocracyPoll\Support\Kses;
+use DemocracyPoll\Support\Messages;
+use DemocracyPoll\Options;
+use DemocracyPoll\Poll_Storage;
 use DemocracyPoll\Poll_Utils;
-use DemPoll;
-use function DemocracyPoll\plugin;
-use function DemocracyPoll\options;
+use DemocracyPoll\Poll;
+use WP_List_Table;
 
-class List_Table_Logs extends \WP_List_Table {
+class List_Table_Logs extends WP_List_Table {
 
 	private static array $cache;
 
 	public int $poll_id;
 
 	private Admin_Page_Logs $logs_page;
+	private Messages $messages;
+	private Options $options;
 
-	public function __construct( Admin_Page_Logs $logs_page ) {
+	public function __construct(
+		Admin_Page_Logs $logs_page,
+		Messages $messages,
+		Options $options
+	) {
 		$this->logs_page = $logs_page;
+		$this->messages = $messages;
+		$this->options = $options;
 
 		parent::__construct( [
 			'singular' => 'demlog',
@@ -28,7 +38,7 @@ class List_Table_Logs extends \WP_List_Table {
 		$this->bulk_action_handler();
 
 		add_screen_option( 'per_page', [
-			'label'   => 'Показывать на странице',
+			'label'   => __( 'Show on page', 'democracy-poll' ),
 			'default' => 20,
 			'option'  => 'dem_logs_per_page',
 		] );
@@ -39,7 +49,6 @@ class List_Table_Logs extends \WP_List_Table {
 	}
 
 	private function bulk_action_handler(): void {
-
 		$nonce = $_POST['_wpnonce'] ?? '';
 		if( ! $nonce || ! ( $action = $this->current_action() ) ){
 			return;
@@ -50,7 +59,7 @@ class List_Table_Logs extends \WP_List_Table {
 		}
 
 		if( ! $log_ids = array_filter( array_map( 'intval', $_POST['logids'] ) ) ){
-			plugin()->msg->add_error( __( 'Nothing was selected.', 'democracy-poll' ) );
+			$this->messages->add_error( __( 'Nothing was selected.', 'democracy-poll' ) );
 
 			return;
 		}
@@ -60,7 +69,7 @@ class List_Table_Logs extends \WP_List_Table {
 			$this->logs_page->del_only_logs( $log_ids );
 		}
 
-		// delete with votes
+		// delete (with votes)
 		if( 'delete_logs_votes' === $action ){
 			$this->logs_page->del_logs_and_votes( $log_ids );
 		}
@@ -120,7 +129,6 @@ class List_Table_Logs extends \WP_List_Table {
 	}
 
 	public function get_columns(): array {
-
 		$columns = [
 			'cb'      => '<input type="checkbox" />',
 			'ip'      => 'IP',
@@ -161,36 +169,43 @@ class List_Table_Logs extends \WP_List_Table {
 	}
 
 	public function table_title(): void {
-		if( $this->poll_id ){
-			if( ! $poll = $this->cache( 'polls', $this->poll_id ) ){
-				$poll = new DemPoll( $this->poll_id );
-				$this->cache( 'polls', $this->poll_id, $poll );
-			}
-
-			echo sprintf( '<h2><small>%s</small>%s <small><a href="%s">%s</a></small></h2>',
-				__( 'Poll\'s logs: ', 'democracy-poll' ),
-				Kses::kses_html( $poll->question ),
-				Poll_Utils::edit_poll_url( $this->poll_id ),
-				__( 'Edit poll', 'democracy-poll' )
-			);
+		if( ! $this->poll_id ){
+			return;
 		}
+
+		if( ! $poll = $this->cache( 'polls', $this->poll_id ) ){
+			$poll = new Poll( $this->poll_id );
+			$this->cache( 'polls', $this->poll_id, $poll );
+		}
+
+		echo strtr( '<h2>{title} {question} <a href="{url}" class="button button-small">{link_text}</a></h2>', [
+			'{title}'     => __( 'Poll\'s logs:', 'democracy-poll' ),
+			'{question}'  => Kses::kses_html( $poll->question ),
+			'{url}'       => Poll_Utils::edit_poll_url( $this->poll_id ),
+			'{link_text}' => __( 'Edit poll', 'democracy-poll' ),
+		] );
 	}
 
-	## Extra controls to be displayed between bulk actions and pagination
+	/**
+	 * Extra controls to be displayed between bulk actions and pagination.
+	 */
 	public function extra_tablenav( $which ) {
-
 		if( $which === 'top' ){
 			$newfilter = ( $_GET['filter'] ?? '' ) === 'new_answers';
 
-			echo '
+			$a = '';
+			if( ! $this->options->democracy_off ){
+				$a = strtr( '<a class="button button-small" href="{URL}">{TITLE}</a>', [
+					'{URL}' => esc_url( add_query_arg( [ 'filter' => $newfilter ? null : 'new_answers' ] ) ),
+					'{TITLE}' => ( $newfilter ? ' &#215; ' : '' ) . __( 'NEW answers logs', 'democracy-poll' ),
+				] );
+			}
+
+			echo <<<HTML
 			<div class="alignleft actions" style="margin-top:.3em;">
-				' . ( options()->democracy_off ? '' :
-					'<a class="button button-small" href="' . esc_url( add_query_arg( [ 'filter' => $newfilter ? null : 'new_answers' ] ) ) . '">' .
-					( $newfilter ? ' &#215; ' : '' ) . __( 'NEW answers logs', 'democracy-poll' )
-					. '</a>'
-				) . '
+				{$a}
 			</div>
-			';
+			HTML;
 		}
 	}
 
@@ -205,7 +220,6 @@ class List_Table_Logs extends \WP_List_Table {
 	 */
 	private function cache( string $type, $key, $val = null ) {
 		$cache = & self::$cache[ $type ][ $key ];
-
 		if( ! isset( $cache ) && $val !== null ){
 			$cache = $val;
 		}
@@ -214,12 +228,35 @@ class List_Table_Logs extends \WP_List_Table {
 	}
 
 	/**
+	 * Render the checkbox column.
+	 *
+	 * @param \stdClass $item The log item.
+	 */
+	protected function column_cb( $item ): void {
+		$logid = (int) $item->logid;
+		echo '<input id="cb-select-' . $logid . '" type="checkbox" name="logids[]" value="' . $logid . '" />';
+	}
+
+	protected function column_ip_info( $log ) {
+		$needs_update = Admin_Page_Logs::ip_info_needs_update( $log );
+		$classes = 'dem-ip-info ' . ( $needs_update ? 'dem_ip_info_pending_js' : '' );
+		$html = $needs_update ? '' : Admin_Page_Logs::ip_info_html( (string) $log->ip_info );
+
+		return sprintf(
+			'<div class="%s" data-log-id="%d">%s</div>',
+			esc_attr( $classes ),
+			(int) $log->logid,
+			$html
+		);
+	}
+
+	/**
 	 * Fill columns.
 	 *
 	 * @param \stdClass $log     The log object form DB {@see $wpdb->democracy_log} table.
 	 * @param string    $column  The column name.
 	 */
-	function column_default( $log, $column ) {
+	protected function column_default( $log, $column ) {
 		global $wpdb;
 
 		if( 'ip' === $column ){
@@ -230,41 +267,9 @@ class List_Table_Logs extends \WP_List_Table {
 			);
 		}
 
-		if( 'ip_info' === $column ){
-			$country_img = '';
-			$country_name = '';
-			$city = '';
-
-			// обновим данные IP если их нет и прошло больше суток с последней попытки
-			if( $log->ip ){
-				if( ! $log->ip_info || ( is_numeric( $log->ip_info ) && ( time() - DAY_IN_SECONDS ) > $log->ip_info ) ){
-					$log->ip_info = \DemocracyPoll\Helpers\IP::prepared_ip_info( $log->ip );
-
-					$wpdb->update( $wpdb->democracy_log, [ 'ip_info' => $log->ip_info ], [ 'logid' => $log->logid ] );
-				}
-
-				if( $log->ip_info && ! is_numeric( $log->ip_info ) ){
-					[ $country_name, $county_code, $city ] = explode( ',', $log->ip_info );
-
-					// css background position
-					if( ! $flagcss = $this->cache( 'flagcss', 'flagcss' ) ){
-						$flagcss = $this->cache( 'flagcss', 'flagcss', file_get_contents( plugin()->dir . '/admin/country_flags/flags.css' ) );
-					}
-					preg_match( "~flag-" . strtolower( $county_code ) . " \{([^}]+)\}~", $flagcss, $mm );
-					$bg_pos = $mm[1] ?? '';
-
-					$country_img = $bg_pos ? '<span title="' . $country_name . ( $city ? ", $city" : '' ) . '" style="cursor:help; display:inline-block; width:16px; height:11px; background:url(' . plugin()->url . '/admin/country_flags/flags.png) no-repeat; ' . $bg_pos . '"></span> ' : '';
-				}
-			}
-
-			return $country_img
-				? $country_img . ' <span style="opacity:0.7">' . $country_name . ( $city ? ", $city" : '' ) . '</span>'
-				: '';
-		}
-
 		if( 'qid' === $column ){
 			if( ! $poll = $this->cache( 'polls', $log->qid ) ){
-				$poll = $this->cache( 'polls', $log->qid, \DemPoll::get_db_data( $log->qid ) );
+				$poll = $this->cache( 'polls', $log->qid, Poll_Storage::get_db_data( $log->qid ) );
 			}
 
 			$actions = '';
@@ -306,28 +311,22 @@ class List_Table_Logs extends \WP_List_Table {
 					$answ = $this->cache( 'answs', $aid, $wpdb->get_row( "SELECT * FROM $wpdb->democracy_a WHERE aid = " . (int) $aid ) );
 				}
 
-				$new = Admin_Page_Logs::is_new_answer( $answ )
-					? sprintf( ' <a href="%s"><span style="color:red;">NEW</span></a>', Poll_Utils::edit_poll_url( $log->qid ) )
-					: '';
+				if( $answ ){
+					$new = Admin_Page_Logs::is_new_answer( $answ )
+						? sprintf( ' <a href="%s"><span style="color:red;">NEW</span></a>', Poll_Utils::edit_poll_url( $log->qid ) )
+						: '';
+					$out[] = '• ' . esc_html( $answ->answer ) . $new;
+				}
+				else {
+					$out[] = "<span style=\"color:tomato\">Answer not found. ID: $aid</span>";
+				}
 
-				$out[] = '- ' . esc_html( $answ->answer ) . $new;
 			}
 
 			return implode( '<br>', $out );
 		}
 
-
 		return $log->$column ?? print_r( $log, true );
-	}
-
-	/**
-	 * Render the checkbox column.
-	 *
-	 * @param \stdClass $item The log item.
-	 */
-	public function column_cb( $item ): void {
-		$logid = (int) $item->logid;
-		echo '<label><input id="cb-select-' . $logid . '" type="checkbox" name="logids[]" value="' . $logid . '" /></label>';
 	}
 
 }

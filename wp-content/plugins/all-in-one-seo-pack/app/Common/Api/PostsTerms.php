@@ -15,6 +15,15 @@ use AIOSEO\Plugin\Common\Models;
  */
 class PostsTerms {
 	/**
+	 * MySQL DATETIME format used when stamping `updated` columns.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @var string
+	 */
+	const MYSQL_DATETIME_FORMAT = 'Y-m-d H:i:s';
+
+	/**
 	 * Searches for posts or terms by ID/name.
 	 *
 	 * @since 4.0.0
@@ -103,12 +112,18 @@ class PostsTerms {
 					'link'  => get_permalink( $object->ID )
 				];
 			} elseif ( 'terms' === $body['type'] ) {
+				// Always pass the taxonomy so get_term_link() can resolve the term, and coerce
+				// the result to a string — get_term_link() can return WP_Error and the
+				// term_link filter may also return false/null. Without this, the non-string
+				// gets JSON-serialized and the frontend coerces it to "[object Object]" in
+				// the href. See issue #8094.
+				$termLink = get_term_link( (int) $object->term_id, $object->taxonomy );
 				$parsed[] = [
 					'type'  => $object->taxonomy,
 					'value' => (int) $object->term_id,
 					'slug'  => $object->slug,
 					'label' => $object->name,
-					'link'  => get_term_link( $object->term_id )
+					'link'  => is_wp_error( $termLink ) ? '' : (string) $termLink
 				];
 			}
 		}
@@ -286,7 +301,12 @@ class PostsTerms {
 
 		$posts = [];
 		foreach ( $ids as $postId ) {
-			if ( ! current_user_can( 'read_post', $postId ) || post_password_required( $postId ) ) {
+			// read_post is true for any logged-in user on a published post — WordPress enforces the
+			// password separately — so protected content needs an explicit edit_post check.
+			if (
+				! current_user_can( 'read_post', $postId ) ||
+				( post_password_required( $postId ) && ! current_user_can( 'edit_post', $postId ) )
+			) {
 				$posts[] = [
 					'id'                => $postId,
 					'titleParsed'       => '',
@@ -297,22 +317,62 @@ class PostsTerms {
 				continue;
 			}
 
-			$postTitle      = get_the_title( $postId );
-			$headline       = ! empty( $postTitle ) ? sanitize_text_field( $postTitle ) : ''; // We need this to achieve consistency for the score when using special characters in titles
-			$headlineResult = aioseo()->standalone->headlineAnalyzer->getResult( $headline );
+			$thePost       = Models\Post::getPost( $postId );
+			$hasTruseoData = ! empty( $thePost->truseo );
 
-			$posts[] = [
+			$data = [
 				'id'                => $postId,
 				'titleParsed'       => aioseo()->meta->title->getPostTitle( $postId ),
 				'descriptionParsed' => aioseo()->meta->description->getPostDescription( $postId ),
-				'headlineScore'     => ! empty( $headlineResult['score'] ) ? (int) $headlineResult['score'] : 0,
+				'headlineScore'     => aioseo()->standalone->headlineAnalyzer->getScoreForPost( $postId, $thePost ),
+				'hasTruseoData'     => $hasTruseoData,
 			];
+
+			if ( ! $hasTruseoData ) {
+				$wpPost = get_post( $postId );
+				$data['truseoData'] = self::getPostDataForTruseo( $wpPost, $thePost );
+			}
+
+			$posts[] = $data;
 		}
 
 		return new \WP_REST_Response( [
 			'success' => true,
 			'posts'   => $posts
 		], 200 );
+	}
+
+	/**
+	 * Determines the custom analysis type based on post type and context.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @param  string $postType The post type.
+	 * @param  int    $postId   The post ID.
+	 * @return string           The custom analysis type.
+	 */
+	protected static function getCustomAnalysisType( $postType, $postId ) {
+		// No custom type if WooCommerce is not active
+		if ( ! aioseo()->helpers->isWooCommerceActive() ) {
+			return '';
+		}
+
+		// Product pages
+		if ( 'product' === $postType ) {
+			return 'productPage';
+		}
+
+		// Store posts and pages
+		if ( 'post' === $postType || 'page' === $postType ) {
+			// Check if it's the WooCommerce shop page
+			if ( function_exists( 'wc_get_page_id' ) && wc_get_page_id( 'shop' ) === $postId ) {
+				return 'storeBlog';
+			}
+
+			return 'storePostsAndPages';
+		}
+
+		return '';
 	}
 
 	/**
@@ -354,9 +414,14 @@ class PostsTerms {
 			update_post_meta( $postId, '_wp_attachment_image_alt', sanitize_text_field( $body['imageAltTag'] ) );
 		}
 
-		$aioseoPost->title       = ! empty( $body['title'] ) ? sanitize_text_field( $body['title'] ) : null;
-		$aioseoPost->description = ! empty( $body['description'] ) ? sanitize_textarea_field( $body['description'] ) : null;
-		$aioseoPost->updated     = gmdate( 'Y-m-d H:i:s' );
+		if ( array_key_exists( 'title', $body ) ) {
+			$aioseoPost->title = ! empty( $body['title'] ) ? sanitize_text_field( $body['title'] ) : null;
+		}
+
+		if ( array_key_exists( 'description', $body ) ) {
+			$aioseoPost->description = ! empty( $body['description'] ) ? sanitize_textarea_field( $body['description'] ) : null;
+		}
+
 		$aioseoPost->save();
 
 		// Trigger the action hook so we can create a revision.
@@ -381,7 +446,8 @@ class PostsTerms {
 	/**
 	 * Update post keyphrases.
 	 *
-	 * @since 4.0.0
+	 * @since   4.0.0
+	 * @version 5.0.0.1 Mirrors keywords into the focus_keyword/additional_keywords columns.
 	 *
 	 * @param  \WP_REST_Request  $request The REST Request
 	 * @return \WP_REST_Response          The response.
@@ -409,14 +475,23 @@ class PostsTerms {
 		$thePost->post_id = $postId;
 		if ( ! empty( $body['keyphrases'] ) ) {
 			$thePost->keyphrases = wp_json_encode( $body['keyphrases'] );
+
+			// The editor and every keyword feature read the dedicated columns, so a legacy-only
+			// write here would be invisible to them.
+			$columns                      = Models\Post::getKeywordColumnsFromKeyphrases( $body['keyphrases'] );
+			$thePost->focus_keyword       = $columns['focus_keyword'];
+			$thePost->additional_keywords = $columns['additional_keywords'];
 		}
+
 		if ( ! empty( $body['page_analysis'] ) ) {
 			$thePost->page_analysis = wp_json_encode( $body['page_analysis'] );
 		}
+
 		if ( ! empty( $body['seo_score'] ) ) {
 			$thePost->seo_score = sanitize_text_field( $body['seo_score'] );
 		}
-		$thePost->updated = gmdate( 'Y-m-d H:i:s' );
+
+		$thePost->updated = gmdate( self::MYSQL_DATETIME_FORMAT );
 		$thePost->save();
 
 		$lastError = aioseo()->core->db->lastError();
@@ -430,6 +505,93 @@ class PostsTerms {
 		return new \WP_REST_Response( [
 			'success' => true,
 			'post'    => $postId
+		], 200 );
+	}
+
+	/**
+	 * Updates post TruSEO data from batch scanning.
+	 * Streamlined endpoint for batch scan operations.
+	 *
+	 * @since   5.0.0
+	 * @version 5.0.0.1 Mirrors keywords into the legacy keyphrases column.
+	 *
+	 * @param  \WP_REST_Request  $request The REST Request.
+	 * @return \WP_REST_Response          The response.
+	 */
+	public static function updatePostTruseo( $request ) {
+		$body   = $request->get_json_params();
+		$postId = ! empty( $request->get_param( 'postId' ) ) ? intval( $request->get_param( 'postId' ) ) : null;
+
+		if ( ! $postId ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'Post ID is missing.'
+			], 400 );
+		}
+
+		if ( ! aioseo()->access->hasCapability( 'aioseo_page_analysis' ) || ! current_user_can( 'edit_post', $postId ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'You are not allowed to update the post settings.'
+			], 403 );
+		}
+
+		$thePost = Models\Post::getPost( $postId );
+		$thePost->post_id = $postId;
+
+		// Update TruSEO fields
+		if ( ! empty( $body['truseo'] ) ) {
+			$thePost->truseo = wp_json_encode( Models\Post::sanitizeTruseo( $body['truseo'] ) );
+		}
+
+		if ( isset( $body['seo_score'] ) ) {
+			$thePost->seo_score = sanitize_text_field( $body['seo_score'] );
+		}
+
+		if ( array_key_exists( 'focus_keyword', $body ) ) {
+			$focusKeyword           = is_string( $body['focus_keyword'] ) ? sanitize_text_field( $body['focus_keyword'] ) : '';
+			$thePost->focus_keyword = '' !== $focusKeyword ? $focusKeyword : null;
+		}
+
+		// Keyed on presence, not truthiness: the editor sends an empty array when the user removes
+		// every additional keyword, and `! empty()` would leave the deleted set in place.
+		if ( array_key_exists( 'additional_keywords', $body ) ) {
+			$additionalKeywords           = is_array( $body['additional_keywords'] )
+				? Models\Post::sanitizeAdditionalKeywords( $body['additional_keywords'] )
+				: [];
+			$thePost->additional_keywords = ! empty( $additionalKeywords ) ? wp_json_encode( $additionalKeywords ) : null;
+		}
+
+		if ( isset( $body['truseo_locale'] ) ) {
+			$thePost->truseo_locale = ! empty( $body['truseo_locale'] ) ? sanitize_text_field( $body['truseo_locale'] ) : null;
+		}
+
+		// Mirror into the legacy column, which SEO Revisions, Keyword Rank Tracker and the SEO
+		// Analysis checkers still read. Guarded so a score-only save can't wipe keywords it never
+		// sent.
+		if ( array_key_exists( 'focus_keyword', $body ) || array_key_exists( 'additional_keywords', $body ) ) {
+			$thePost->keyphrases = Models\Post::getKeyphrasesFromKeywordColumns(
+				$thePost->focus_keyword,
+				$thePost->additional_keywords,
+				$thePost->keyphrases,
+				$thePost->truseo
+			);
+		}
+
+		$thePost->updated = gmdate( self::MYSQL_DATETIME_FORMAT );
+		$thePost->save();
+
+		$lastError = aioseo()->core->db->lastError();
+		if ( ! empty( $lastError ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'Failed update query: ' . $lastError
+			], 500 );
+		}
+
+		return new \WP_REST_Response( [
+			'success' => true,
+			'post'    => $thePost
 		], 200 );
 	}
 
@@ -538,6 +700,41 @@ class PostsTerms {
 	}
 
 	/**
+	 * Persists the per-post TruSEO highlighter on/off preference.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @param  \WP_REST_Request  $request The REST Request
+	 * @return \WP_REST_Response          The response.
+	 */
+	public static function updateTruSeoHighlighting( $request ) {
+		$args = $request->get_params();
+		$body = $request->get_json_params();
+
+		if ( empty( $args['postId'] ) || ! isset( $body['enabled'] ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'No post ID or enabled state was provided.'
+			], 400 );
+		}
+
+		if ( ! current_user_can( 'edit_post', $args['postId'] ) ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => 'Unauthorized.'
+			], 401 );
+		}
+
+		$thePost = Models\Post::getPost( $args['postId'] );
+		$thePost->options->truSeo->highlightingEnabled = (bool) $body['enabled'];
+		$thePost->save();
+
+		return new \WP_REST_Response( [
+			'success' => true
+		], 200 );
+	}
+
+	/**
 	 * Get the processed content by the given raw content.
 	 *
 	 * @since 4.5.2
@@ -579,5 +776,85 @@ class PostsTerms {
 			'success' => true,
 			'content' => apply_filters( 'the_content', $content ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		], 200 );
+	}
+
+	/**
+	 * Load post content and metadata for TruSEO batch scanning.
+	 * Returns all fields required for TruSEO analysis including focus keywords, content, titles, etc.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @param  \WP_Post     $wpPost     The WordPress post.
+	 * @param  \AIOSEO\Plugin\Common\Models\Post $aioseoPost The AIOSEO post.
+	 * @return array                       The post data for TruSEO analysis.
+	 */
+	private static function getPostDataForTruseo( $wpPost, $aioseoPost ) {
+		$postId = $wpPost->ID;
+
+		// Focus keyword is a plain string in the column; pull from keyphrases as a legacy fallback.
+		$focusKeyword         = Models\Post::getFocusKeywordDefaults( $aioseoPost->focus_keyword ?? null );
+		$focusKeywordSynonyms = '';
+
+		$keyphrasesFocus = ! empty( $aioseoPost->keyphrases->focus ) ? $aioseoPost->keyphrases->focus : null;
+		if ( $keyphrasesFocus && ! empty( $keyphrasesFocus->keyphrase ) ) {
+			if ( '' === $focusKeyword ) {
+				$focusKeyword = (string) $keyphrasesFocus->keyphrase;
+			}
+			$focusKeywordSynonyms = ! empty( $keyphrasesFocus->synonyms )
+				? (string) $keyphrasesFocus->synonyms
+				: '';
+		}
+
+		// Get additional keywords data
+		$additionalKeywords = $aioseoPost->additional_keywords;
+		if ( empty( $additionalKeywords ) ) {
+			// Fallback to old keyphrases structure if new fields are empty
+			if ( ! empty( $aioseoPost->keyphrases ) ) {
+				$keyphrases = $aioseoPost->keyphrases;
+				if ( ! empty( $keyphrases->additional ) && is_array( $keyphrases->additional ) ) {
+					// Convert old format to new format
+					$additionalKeywords = [];
+					foreach ( $keyphrases->additional as $keyphrase ) {
+						if ( ! empty( $keyphrase->keyphrase ) ) {
+							$additionalKeywords[] = [
+								'word'     => $keyphrase->keyphrase,
+								'synonyms' => ''
+							];
+						}
+					}
+				}
+			}
+		}
+
+		// Ensure we have a valid structure
+		if ( empty( $additionalKeywords ) ) {
+			$additionalKeywords = [];
+		}
+
+		// Determine custom analysis type based on context
+		$customAnalysisType = self::getCustomAnalysisType( $wpPost->post_type, $postId );
+
+		return [
+			'postType'             => $wpPost->post_type,
+			'content'              => self::getAnalysisContent( $wpPost ),
+			'excerpt'              => $wpPost->post_excerpt,
+			'wpTitle'              => get_the_title( $postId ),  // WordPress title (fallback)
+			// Analyze the fully-rendered meta title/description (smart tags parsed, separator and
+			// site title applied, content-based fallback for an empty description) — the same values
+			// the post editor analyzes — so the list score matches the editor score. Sending the raw
+			// title template or an empty description here would score differently from the editor.
+			'aioseoTitle'          => aioseo()->meta->title->getPostTitle( $postId ),
+			'description'          => aioseo()->meta->description->getPostDescription( $postId ),
+			// Raw visible post title — SingleH1Assessment counts it as the page's H1.
+			'postTitle'            => get_the_title( $postId ),
+			'slug'                 => $wpPost->post_name,
+			'permalink'            => get_permalink( $postId ),
+			'focusKeyword'         => $focusKeyword,
+			'focusKeywordSynonyms' => $focusKeywordSynonyms,
+			'additionalKeywords'   => $additionalKeywords,
+			'cornerstone'          => ! empty( $aioseoPost->pillar_content ) ? (bool) $aioseoPost->pillar_content : false,
+			'customAnalysisType'   => $customAnalysisType,
+			'locale'               => get_locale()
+		];
 	}
 }

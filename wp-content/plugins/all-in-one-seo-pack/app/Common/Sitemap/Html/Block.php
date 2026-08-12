@@ -126,7 +126,13 @@ class Block {
 
 		$attributes = aioseo()->htmlSitemap->frontend->getAttributes( $attributes );
 
-		return aioseo()->htmlSitemap->frontend->output( false, $attributes );
+		$sitemap = aioseo()->htmlSitemap->frontend->output( false, $attributes );
+		if ( empty( $sitemap ) ) {
+			return $sitemap;
+		}
+
+		// The editor wraps the rendered block in this class, so we need to mirror it on the frontend.
+		return '<div class="' . esc_attr( aioseo()->blocks->getBlockDefaultClassName( 'html-sitemap' ) ) . '">' . $sitemap . '</div>';
 	}
 
 	/**

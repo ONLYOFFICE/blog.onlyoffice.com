@@ -2,3 +2,9 @@
 \wp-config.php
 wp-content/cache/
 wp-content/uploads/
+
+# WordPress runtime scratch dirs. upgrade-temp-backup holds rollback copies of the
+# PREVIOUS plugin versions, so committing it would ship two copies of every plugin
+# it touched.
+wp-content/upgrade/
+wp-content/upgrade-temp-backup/

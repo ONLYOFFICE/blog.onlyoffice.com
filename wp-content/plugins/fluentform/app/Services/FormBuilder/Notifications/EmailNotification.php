@@ -2,7 +2,7 @@
 
 namespace FluentForm\App\Services\FormBuilder\Notifications;
 
-defined('ABSPATH') or die;
+defined('ABSPATH') || die;
 
 use FluentForm\Framework\Helpers\ArrayHelper;
 use FluentForm\Framework\Foundation\Application;
@@ -42,13 +42,13 @@ class EmailNotification
     public function notify($notification, $submittedData, $form, $entryId = false)
     {
         $isSendAsPlain = 'yes' == ArrayHelper::get($notification, 'asPlainText');
-    
+
         $isSendAsPlain= apply_filters_deprecated(
             'fluentform_send_plain_html_email',
             [
                 $isSendAsPlain,
                 $form,
-                $notification
+                $notification,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/send_plain_html_email',
@@ -58,14 +58,14 @@ class EmailNotification
         $isSendAsPlain = apply_filters('fluentform/send_plain_html_email', $isSendAsPlain, $form, $notification);
 
         $emailBody = $notification['message'];
-    
+
         $emailBody = apply_filters_deprecated(
             'fluentform_submission_message_parse',
             [
                 $emailBody,
                 $entryId,
                 $submittedData,
-                $form
+                $form,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/submission_message_parse',
@@ -87,7 +87,7 @@ class EmailNotification
                 $notification['subject'],
                 $notification,
                 $submittedData,
-                $form
+                $form,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/email_subject',
@@ -119,7 +119,7 @@ class EmailNotification
                 $notificationAttachments,
                 $notification,
                 $form,
-                $submittedData
+                $submittedData,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/filter_email_attachments',
@@ -132,14 +132,14 @@ class EmailNotification
             $form,
             $submittedData
         );
-    
+
         $emailBody = apply_filters_deprecated(
             'fluentform_email_body',
             [
                 $emailBody,
                 $notification,
                 $submittedData,
-                $form
+                $form,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/email_body',
@@ -175,7 +175,7 @@ class EmailNotification
                 $sendAddresses,
                 $notification,
                 $submittedData,
-                $form
+                $form,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/email_to',
@@ -248,12 +248,12 @@ class EmailNotification
         $validAddresses = [];
         foreach ($routings as $routing) {
             $emailAddresses = ArrayHelper::get($routing, 'input_value');
-    
+
             if (!$emailAddresses || trim($emailAddresses) === '') {
                 continue;
             }
             $emailAddresses = array_map('trim', explode(',', $emailAddresses));
-            $emailAddresses = array_filter($emailAddresses, function($email) {
+            $emailAddresses = array_filter($emailAddresses, function ($email) {
                 return is_email($email);
             });
             $condition = [
@@ -273,6 +273,8 @@ class EmailNotification
     }
 
     /**
+     * Resolve a form's input keys and their admin labels.
+     *
      * @param $formId
      *
      * @return array
@@ -294,27 +296,27 @@ class EmailNotification
     public function getEmailWithTemplate($emailBody, $form, $notification)
     {
         $originalEmailBody = $emailBody;
-        $emailHeader = "";
+        $emailHeader = '';
         $emailHeader = apply_filters_deprecated(
             'fluentform_email_header',
             [
                 $emailHeader,
                 $form,
-                $notification
+                $notification,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/email_header',
             'Use fluentform/email_header instead of fluentform_email_header.'
         );
         $emailHeader = apply_filters('fluentform/email_header', $emailHeader, $form, $notification);
-    
+
         $emailFooter = '';
         $emailFooter = apply_filters_deprecated(
             'fluentform_email_footer',
             [
                 $emailFooter,
                 $form,
-                $notification
+                $notification,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/email_footer',
@@ -343,7 +345,7 @@ class EmailNotification
             [
                 $css,
                 $form,
-                $notification
+                $notification,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/email_styles',
@@ -357,7 +359,7 @@ class EmailNotification
             // apply CSS styles inline for picky email clients
             $emogrifier = new Emogrifier($emailBody, $css);
             $emailBody = $emogrifier->emogrify();
-        } catch (\Exception $e) {
+        } catch (\Exception $e) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement -- Emogrifier failed (malformed HTML/CSS); keep the un-inlined body.
         }
         $maybeError = ob_get_clean();
 
@@ -376,13 +378,13 @@ class EmailNotification
         } else {
             $footerText = '&copy; ' . get_bloginfo('name', 'display') . '.';
         }
-    
+
         $footerText = apply_filters_deprecated(
             'fluentform_email_template_footer_text',
             [
                 $footerText,
                 $form,
-                $notification
+                $notification,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/email_template_footer_text',
@@ -422,12 +424,12 @@ class EmailNotification
         if ($notification['replyTo'] && is_email($notification['replyTo'])) {
             $headers[] = 'Reply-To: <' . $notification['replyTo'] . '>';
         }
-    
+
         $headers = apply_filters_deprecated(
             'fluenttform_email_header',
             [
                 $headers,
-                $notification
+                $notification,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/email_template_header',

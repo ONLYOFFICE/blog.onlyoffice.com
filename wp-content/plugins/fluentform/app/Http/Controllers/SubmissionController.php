@@ -4,6 +4,7 @@ namespace FluentForm\App\Http\Controllers;
 
 use Exception;
 use FluentForm\App\Models\Submission;
+use FluentForm\App\Modules\Acl\Acl;
 use FluentForm\App\Services\Submission\SubmissionService;
 use FluentForm\Framework\Support\Arr;
 
@@ -41,12 +42,24 @@ class SubmissionController extends Controller
     {
         try {
             $attributes = $this->request->all();
-            
+
             $sanitizeMap = [
                 'form_id' => 'intval',
             ];
             $attributes = fluentform_backend_sanitizer($attributes, $sanitizeMap);
-            
+
+            // SECURITY (FINDING-02): this route has no {entry_id} placeholder, so SubmissionPolicy
+            // authorizes the form owning the *request* entry_id, while resources() then reads a
+            // separate form_id — letting a form-scoped user read another form's counts/labels/
+            // fields and (via next/previous) submission rows. Re-verify the caller may view
+            // entries of the form actually being queried.
+            $formId = (int) Arr::get($attributes, 'form_id');
+            if (!$formId || !Acl::hasPermission('fluentform_entries_viewer', $formId)) {
+                return $this->sendError([
+                    'message' => __('You do not have permission to view this form\'s entries.', 'fluentform'),
+                ], 403);
+            }
+
             return $this->sendSuccess(
                 $submissionService->resources($attributes)
             );
@@ -57,10 +70,12 @@ class SubmissionController extends Controller
         }
     }
 
-    public function updateStatus(SubmissionService $submissionService)
+    public function updateStatus(SubmissionService $submissionService, $submissionId)
     {
         try {
-            $status = $submissionService->updateStatus($this->request->all());
+            $attributes = $this->request->all();
+            $attributes['entry_id'] = intval($submissionId);
+            $status = $submissionService->updateStatus($attributes);
 
             /* translators: %s is the submission status */
             $message = sprintf(__('The submission has been marked as %s', 'fluentform'), $status);
@@ -76,11 +91,11 @@ class SubmissionController extends Controller
         }
     }
 
-    public function toggleIsFavorite(SubmissionService $submissionService)
+    public function toggleIsFavorite(SubmissionService $submissionService, $submissionId)
     {
         try {
             [$message, $isFavourite] = $submissionService->toggleIsFavorite(
-                $this->request->get('entry_id')
+                intval($submissionId)
             );
 
             return $this->sendSuccess([
@@ -106,7 +121,7 @@ class SubmissionController extends Controller
             ]);
         }
     }
-    
+
     public function remove(SubmissionService $submissionService, $submissionId)
     {
         try {
@@ -124,19 +139,27 @@ class SubmissionController extends Controller
             ]);
         }
     }
-    
+
     /**
      * Get user list for submission page
+     *
      * @return \WP_REST_Response
      */
     public function submissionUsers()
     {
+        // SECURITY (FINDING-21): don't let a lower-tier user enumerate the whole WP roster here.
+        // Require WP's list_users OR the FF entries-manager permission this feature is built for —
+        // a delegated non-admin manager holds fluentform_manage_entries (and the assign-user UI is
+        // shown only to them) but NOT core list_users, so gating on list_users alone broke them.
+        if (!current_user_can('list_users') && !current_user_can('fluentform_manage_entries')) {
+            return $this->sendError(['message' => __('You do not have permission to list users.', 'fluentform')], 403);
+        }
         $search = sanitize_text_field($this->request->get('search'));
         $users = get_users([
             'search' => "*{$search}*",
             'number' => 50,
         ]);
-    
+
         $formattedUsers = [];
         foreach ($users as $user) {
             $formattedUsers[] = [
@@ -144,7 +167,7 @@ class SubmissionController extends Controller
                 'label' => $user->display_name . ' - ' . $user->user_email,
             ];
         }
-    
+
         return $this->sendSuccess([
             'users' => $formattedUsers,
         ]);
@@ -152,16 +175,16 @@ class SubmissionController extends Controller
 
     /**
      * Update User of a submission
+     *
      * @param SubmissionService $submissionService
+     * @param int $submissionId
      * @return \WP_REST_Response
      */
-    public function updateSubmissionUser(SubmissionService $submissionService)
+    public function updateSubmissionUser(SubmissionService $submissionService, $submissionId)
     {
         try {
             $userId = intval($this->request->get('user_id'));
-            // Use entry_id from route parameter — not submission_id from body —
-            // to ensure authorization target matches the mutation target.
-            $submissionId = intval($this->request->get('entry_id'));
+            $submissionId = intval($submissionId);
             $response = $submissionService->updateSubmissionUser($userId, $submissionId);
             return $this->sendSuccess($response);
         } catch (Exception $e) {
@@ -170,9 +193,10 @@ class SubmissionController extends Controller
             ]);
         }
     }
-    
+
     /**
      * Get All Submissions
+     *
      * @param Submission $submission
      * @return \WP_REST_Response
      */
@@ -192,6 +216,7 @@ class SubmissionController extends Controller
     }
     /**
      * Get printable content
+     *
      * @param SubmissionService $submissionService
      * @return \WP_REST_Response
      */
@@ -199,9 +224,9 @@ class SubmissionController extends Controller
     {
         try {
             $attributes = $this->request->all();
-            
+
             $sanitizeMap = [
-                'entry_ids' => function($value) {
+                'submission_ids' => function ($value) {
                     if (is_array($value)) {
                         return array_map('intval', $value);
                     }
@@ -210,13 +235,22 @@ class SubmissionController extends Controller
                 'form_id' => 'intval',
             ];
             $attributes = fluentform_backend_sanitizer($attributes, $sanitizeMap);
-            
+
+            // Preserve backward compatibility with any legacy callers that still
+            // send entry_ids, while normalizing to the current submission_ids key.
+            if (empty($attributes['submission_ids']) && isset($attributes['entry_ids'])) {
+                $entryIds = $attributes['entry_ids'];
+                $attributes['submission_ids'] = is_array($entryIds)
+                    ? array_map('intval', $entryIds)
+                    : [];
+            }
+
             return $this->sendSuccess(
                 $submissionService->getPrintContent($attributes)
             );
         } catch (Exception $e) {
             return $this->sendError([
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ]);
         }
     }

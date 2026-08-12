@@ -26,6 +26,9 @@ class Fields
     public function supportedConditionalFields()
     {
         $supportedConditionalFields = [
+            'input_hidden',
+            'address',
+            'input_name',
             'select',
             'ratings',
             'net_promoter',
@@ -42,9 +45,22 @@ class Fields
             'input_password',
             'terms_and_condition',
             'gdpr_agreement',
-            'input_hidden',
-            'input_file',
+            'phone',
+            'rangeslider',
+            'net_promoter_score',
+            'post_title',
+            'post_content',
+            'post_excerpt',
+            'taxonomy',
             'input_image',
+            'input_file',
+            'chained_select',
+            'payment_method',
+            'custom_payment_component',
+            'multi_payment_component',
+            'item_quantity_component',
+            'cpt_selection',
+            'dynamic_field',
             'subscription_payment_component',
         ];
     

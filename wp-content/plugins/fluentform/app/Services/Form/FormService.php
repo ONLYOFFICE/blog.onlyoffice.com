@@ -97,7 +97,8 @@ class FormService
             
             return $form;
         } catch (Exception $e) {
-            throw new Exception(esc_html($e->getMessage()));
+            // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- surfaced as JSON by the REST layer, never echoed as HTML
+            throw new Exception($e->getMessage());
         }
     }
     
@@ -469,6 +470,13 @@ class FormService
                 'image'       => '',
                 'video'       => 'https://www.youtube.com/embed/RaY2VcPWk6I',
             ];
+            $disabled['input_ranking'] = [
+                'disabled'    => true,
+                'title'       => __('Ranking Field', 'fluentform'),
+                'description' => __('Ranking Field is not available with the free version. Please upgrade to pro to get all the advanced features.', 'fluentform'),
+                'image'       => '',
+                'video'       => '',
+            ];
             $disabled['color-picker'] = [
                 'disabled'    => true,
                 'title'       => __('Color Picker', 'fluentform'),
@@ -583,25 +591,60 @@ class FormService
     
     public function findShortCodePage($formId)
     {
-        $excluded = ['attachment'];
-        $post_types = get_post_types(['show_in_menu' => true], 'objects', 'or');
-        $postTypes = [];
-        foreach ($post_types as $post_type) {
-            $postTypeName = $post_type->name;
-            if (in_array($postTypeName, $excluded)) {
-                continue;
-            }
-            $postTypes[] = $postTypeName;
+        $excluded = ['attachment', 'revision', 'nav_menu_item', 'custom_css', 'customize_changeset', 'oembed_cache', 'user_request', 'wp_navigation', 'wp_template', 'wp_template_part', 'wp_global_styles', 'wp_font_family', 'wp_font_face'];
+        $excluded = apply_filters('fluentform/find_shortcode_excluded_post_types', $excluded);
+        if (!is_array($excluded)) {
+            $excluded = [];
+        }
+
+        $publicTypes = get_post_types(['public' => true], 'names');
+        $builderTypes = get_post_types(['_builtin' => false], 'names');
+        $postTypes = array_values(array_diff(array_unique(array_merge($publicTypes, $builderTypes)), $excluded));
+
+        if (empty($postTypes)) {
+            return [
+                'locations' => [],
+                'status'    => false,
+            ];
         }
         
         global $wpdb;
         $placeholders = implode(', ', array_fill(0, count($postTypes), '%s'));
-        $args = array_merge($postTypes, ['%fluentform%']);
+        // "fluentfo" prefix matches both the [fluentform] shortcode/rendered HTML and the Gutenberg block "fluentfom/guten-block" (note the missing "r" in the block name).
+        $args = array_merge($postTypes, ['%fluentfo%']);
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $placeholders is safe: generated from array_fill with %s format strings
         $matchingIds = $wpdb->get_col($wpdb->prepare(
             "SELECT ID FROM {$wpdb->posts} WHERE post_type IN ({$placeholders}) AND post_status != 'trash' AND post_content LIKE %s",
             $args
         ));
+
+        // Page builders that store layout data in postmeta (Elementor popups, Bricks, Beaver Builder, etc.)
+        // are not reachable via post_content. Scan known builder meta keys so forms embedded inside those
+        // builders' templates and popups are also detected.
+        $builderMetaKeys = apply_filters('fluentform/find_shortcode_builder_meta_keys', [
+            '_elementor_data',          // Elementor (templates, popups, pages)
+            '_fl_builder_data',         // Beaver Builder
+            '_bricks_page_content_2',   // Bricks Builder
+        ]);
+        if (!is_array($builderMetaKeys)) {
+            $builderMetaKeys = [];
+        }
+
+        if (!empty($builderMetaKeys)) {
+            $metaPlaceholders = implode(', ', array_fill(0, count($builderMetaKeys), '%s'));
+            $metaArgs = array_merge($postTypes, $builderMetaKeys, ['%fluentfo%']);
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- placeholders generated from array_fill
+            $builderIds = $wpdb->get_col($wpdb->prepare(
+                "SELECT DISTINCT p.ID FROM {$wpdb->posts} p
+                 INNER JOIN {$wpdb->postmeta} pm ON pm.post_id = p.ID
+                 WHERE p.post_type IN ({$placeholders})
+                   AND p.post_status != 'trash'
+                   AND pm.meta_key IN ({$metaPlaceholders})
+                   AND pm.meta_value LIKE %s",
+                $metaArgs
+            ));
+            $matchingIds = array_values(array_unique(array_merge($matchingIds, $builderIds)));
+        }
 
         if (empty($matchingIds)) {
             return [
@@ -612,6 +655,7 @@ class FormService
 
         $params = array(
             'post_type'      => $postTypes,
+            'post_status'    => ['publish', 'draft', 'private', 'pending', 'future'],
             'posts_per_page' => -1,
             'post__in'       => $matchingIds,
         );
@@ -631,13 +675,33 @@ class FormService
         $posts = get_posts($params);
         foreach ($posts as $post) {
             $formIds = self::getShortCodeId($post->post_content);
+
+            foreach ($builderMetaKeys as $metaKey) {
+                $metaValue = get_post_meta($post->ID, $metaKey, true);
+                if (!is_string($metaValue) || '' === $metaValue) {
+                    continue;
+                }
+                // Builder payloads (e.g. _elementor_data) are JSON with escaped quotes — normalize so the shortcode regex matches.
+                $metaValue = str_replace('\\"', '"', $metaValue);
+                $metaFormIds = self::getShortCodeId($metaValue);
+                if (!empty($metaFormIds)) {
+                    $formIds = array_merge($formIds, $metaFormIds);
+                }
+            }
+
+            $formIds = array_unique($formIds);
+
             if (!empty($formIds) && in_array($formId, $formIds)) {
                 $postType = get_post_type_object($post->post_type);
+                $editLink = get_edit_post_link($post->ID, 'raw');
+                if (!$editLink) {
+                    $editLink = sprintf("%spost.php?post=%s&action=edit", admin_url(), $post->ID);
+                }
                 $formLocations[] = [
                     'id'        => $post->ID,
-                    'name'      => $postType->labels->singular_name,
+                    'name'      => $postType ? $postType->labels->singular_name : $post->post_type,
                     'title'     => (empty($post->post_title) ? $post->ID : $post->post_title),
-                    'edit_link' => sprintf("%spost.php?post=%s&action=edit", admin_url(), $post->ID),
+                    'edit_link' => $editLink,
                 ];
             }
         }
@@ -647,6 +711,18 @@ class FormService
         ];
     }
     
+    protected static function flattenBlocks($blocks)
+    {
+        $flat = [];
+        foreach ($blocks as $block) {
+            $flat[] = $block;
+            if (!empty($block['innerBlocks']) && is_array($block['innerBlocks'])) {
+                $flat = array_merge($flat, self::flattenBlocks($block['innerBlocks']));
+            }
+        }
+        return $flat;
+    }
+
     public static function getShortCodeId($content, $shortcodeTag = 'fluentform')
     {
         $ids = [];
@@ -655,8 +731,8 @@ class FormService
         if (!function_exists('parse_blocks')) {
             return $ids;
         }
-        $parsedBlocks = parse_blocks($content);
-        
+        $parsedBlocks = self::flattenBlocks(parse_blocks($content));
+
         foreach ($parsedBlocks as $block) {
             if (!array_key_exists('blockName', $block) || !array_key_exists('attrs',
                     $block) || !array_key_exists('formId', $block['attrs'])) {

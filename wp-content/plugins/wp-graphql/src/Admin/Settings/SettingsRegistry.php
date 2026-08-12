@@ -32,6 +32,16 @@ class SettingsRegistry {
 	protected $settings_fields = [];
 
 	/**
+	 * Whether init_registry() has been run for this instance.
+	 *
+	 * Used to make registry initialization idempotent within a single request
+	 * regardless of whether it is reached via the `init` hook or `admin_init`.
+	 *
+	 * @var bool
+	 */
+	protected $registry_initialized = false;
+
+	/**
 	 * Returns the settings sections.
 	 *
 	 * @return array<string,array<string,mixed>>
@@ -68,7 +78,12 @@ class SettingsRegistry {
 		wp_enqueue_script( 'wp-color-picker' );
 		wp_enqueue_script( 'jquery' );
 
-		// Action to enqueue scripts on the WPGraphQL Settings page.
+		/**
+		 * Fires when WPGraphQL settings assets should be enqueued.
+		 *
+		 * @hookGroup settings
+		 * @since 0.13.0
+		 */
 		do_action( 'graphql_settings_enqueue_scripts' );
 	}
 
@@ -133,6 +148,8 @@ class SettingsRegistry {
 		 * @param array<string,mixed>  $field_config The field config for the setting
 		 * @param string               $field_name   The name of the field (unfilterable in the config)
 		 * @param string               $section      The slug of the section the field is registered to
+		 * @hookGroup settings
+		 * @since 0.13.0
 		 */
 		$field = apply_filters( 'graphql_setting_field_config', $field_config, $field_name, $section );
 
@@ -146,6 +163,55 @@ class SettingsRegistry {
 	}
 
 	/**
+	 * Initialize the settings registry on every request.
+	 *
+	 * Fires the `graphql_init_settings` action so registered settings are
+	 * available outside admin contexts (e.g. during a /graphql request),
+	 * and ensures each section's option exists in the wp_options table.
+	 *
+	 * Idempotent: guarded by `did_action('graphql_init_settings')` so the
+	 * action can't fire twice when both `init` and `admin_init` paths run
+	 * during the same request.
+	 *
+	 * @return void
+	 */
+	public function init_registry() {
+		if ( $this->registry_initialized ) {
+			return;
+		}
+		$this->registry_initialized = true;
+
+		/**
+		 * Fires before WPGraphQL settings sections and fields are registered.
+		 *
+		 * @param self $settings_registry Settings registry instance.
+		 * @hookGroup settings
+		 * @since 0.13.0
+		 */
+		do_action( 'graphql_init_settings', $this );
+
+		/**
+		 * Filters the WPGraphQL settings sections.
+		 *
+		 * @param array<string,array<string,mixed>> $setting_sections The registered settings sections
+		 * @hookGroup settings
+		 * @since 0.13.0
+		 */
+		$setting_sections = apply_filters( 'graphql_settings_sections', $this->settings_sections );
+
+		// Register each section's setting so it resolves outside admin (e.g.
+		// during a /graphql request). Deliberately does NOT create the option
+		// row — that's done lazily in admin_init(). Pre-creating it here would
+		// run on every request and flip get_option() from `false` to a stored
+		// value in non-admin contexts, which breaks callers that array-write
+		// onto a not-yet-saved option (e.g. `$opt['key'] = 'x'`). Reads stay
+		// safe regardless: get_graphql_setting() defaults a missing option to [].
+		foreach ( $setting_sections as $id => $section ) {
+			register_setting( $id, $id, [ $this, 'sanitize_options' ] );
+		}
+	}
+
+	/**
 	 * Initialize and registers the settings sections and fields to WordPress
 	 *
 	 * Usually this should be called at `admin_init` hook.
@@ -156,17 +222,22 @@ class SettingsRegistry {
 	 * @return void
 	 */
 	public function admin_init() {
-		// Action that fires when settings are being initialized
-		do_action( 'graphql_init_settings', $this );
+		// Make sure registration has happened (idempotent — see init_registry).
+		$this->init_registry();
 
 		/**
-		 * Filter the settings sections
+		 * Filters the WPGraphQL settings sections.
 		 *
 		 * @param array<string,array<string,mixed>> $setting_sections The registered settings sections
+		 * @hookGroup settings
+		 * @since 0.13.0
 		 */
 		$setting_sections = apply_filters( 'graphql_settings_sections', $this->settings_sections );
 
 		foreach ( $setting_sections as $id => $section ) {
+			// Create the option row for the Settings API form (admin only).
+			// WordPress's empty-string default keeps it editable on
+			// /wp-admin/options.php (an array value would serialize + disable it).
 			if ( false === get_option( $id ) ) {
 				add_option( $id );
 			}
@@ -218,11 +289,6 @@ class SettingsRegistry {
 
 				add_settings_field( "{$section}[{$name}]", $label, $callback, $section, $section, $args );
 			}
-		}
-
-		// creates our settings in the options table
-		foreach ( $this->settings_sections as $id => $section ) {
-			register_setting( $id, $id, [ $this, 'sanitize_options' ] );
 		}
 	}
 
@@ -663,9 +729,23 @@ class SettingsRegistry {
 				<div id="<?php echo esc_attr( $id ); ?>" class="group" style="display: none;">
 					<form method="post" action="options.php">
 						<?php
+						/**
+						 * Fires before rendering a WPGraphQL settings form section.
+						 *
+						 * @param array<string,mixed> $form Settings form section configuration.
+						 * @hookGroup settings
+						 * @since 0.13.0
+						 */
 						do_action( 'graphql_settings_form_top', $form );
 						settings_fields( $id );
 						do_settings_sections( $id );
+						/**
+						 * Fires after rendering a WPGraphQL settings form section.
+						 *
+						 * @param array<string,mixed> $form Settings form section configuration.
+						 * @hookGroup settings
+						 * @since 0.13.0
+						 */
 						do_action( 'graphql_settings_form_bottom', $form );
 						if ( isset( $this->settings_fields[ $id ] ) ) :
 							?>

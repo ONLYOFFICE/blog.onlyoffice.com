@@ -2,9 +2,9 @@
 Contributors: techjewel,adreastrian,heera,wpmanageninja
 Tags: contact form, wp forms, forms, form builder, custom form
 Requires at least: 6.4
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 6.2.0
+Stable tag: 6.2.12
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -188,6 +188,8 @@ Fluent Forms Pro offers advanced conversational forms. Users can navigate questi
 
 == AI Form Builder ==
 Say hello to Free AI Form Builder! Fluent Forms AI Form Builder simplifies and speeds up form creation. Just describe your needs to generate effective forms with all necessary fields.
+
+**Data & Privacy:** The AI Form Builder relies on a hosted external service (ai.fluentforms.com) to generate your form. When you use this feature, the form description you enter along with your site URL and site title are sent to that service to build the form structure. Anonymous, aggregated usage data — such as the resulting form type and the field types generated — may be retained to help us improve the feature. Your visitors' form submissions are never sent. By using the AI Form Builder you consent to this data transfer. Learn more in our [Privacy Policy](https://fluentforms.com/privacy-policy/).
 
 == Accept Payments with Stripe ==
 Fluent Forms 6.0 now offers payment fields to free users, allowing Stripe payments for events, donations, or sales with a 1.9% transaction fee. Recurring payments are also included via the Subscription field. Pro removes the 1.9% fee, leaving only Stripe's charges.
@@ -437,6 +439,130 @@ You can get support from our official support thread at <a href="https://wpmanag
 12. Asset Loading Comparison with Other Plugins
 
 == Changelog ==
+
+= 6.2.12 (Date: August 10, 2026) =
+- Adds an optional MCP server that lets AI assistants work with your forms, entries, and reports, turned off by default
+- Adds a Spam option to the entry status filter on the entries list
+- Adds a notice when global captcha auto load is enabled but the keys are missing
+- Improves the Steps progress indicator so you can click it to move between steps, like Tabs
+- Improves how cookie smartcode values are handled and displayed
+- Fixes a fatal error during Stripe checkout when pushing metadata
+- Fixes Keyword-Based Restriction not blocking keywords in other alphabets, such as Cyrillic
+- Fixes http:// being added to smartcode URLs in the email editor
+- Fixes captcha fields not being added back to the form
+- Fixes the bulk action bar showing when no entries are selected
+- Fixes pagination alignment on the forms, entries, and payments lists
+- Hardens output escaping and authorization across entries, reports, integrations, and payments
+- Restricts payment bulk actions to the Manage Payments permission and revenue and payment type reports to the View Payments permission
+- Restricts Slack integration requests to Slack hosts
+
+= 6.2.11 (Date: August 03, 2026) =
+- Added safeguards for outdated Fluent Forms Pro installations.
+
+= 6.2.9 (Date: July 28, 2026) =
+- Hardens output escaping in the ff_get shortcode
+- Strengthens payment transaction reference generation for improved privacy
+- On block themes, loads public form styles only on pages that contain a form
+
+= 6.2.8 (Date: July 23, 2026) =
+- Fixes a stored XSS vulnerability in form submission handling
+
+= 6.2.7 (Date: July 16, 2026) =
+- Fixes date field restrictions configurations
+- Improves Advanced Date Configuration to support more restriction patterns: comparison operators, combined conditions, month/day/year rules, and fixed calendar dates
+- Improve Stripe API keys encryption to prevent being unusable after the site WordPress security salts change
+- Hardens the date field's inline script output against script-context injection
+
+= 6.2.6 (Date: July 10, 2026) =
+- Improves the Other option in conversational forms to be keyboard-activatable
+- Fixes a manager privilege escalation via a delegated WordPress role
+- Fixes a payment permission bypass letting form managers update transactions and cancel subscriptions
+- Fixes an oEmbed JSONP path-traversal XSS vulnerability
+- Fixes checkbox and radio Other option values not saving the translated label on multilingual sites
+- Fixes the Other option requiring a double-click to select in conversational radio and checkbox questions
+
+= 6.2.5 (Date: June 09, 2026) =
+- Improved the authorization scope for entry deletion so bulk and single deletes stay within the authorized request
+- Adds missing integrations to the addons list and global search
+- Fixes a conditional logic for empty fields could evaluate incorrectly restoring the v6.2.2 behavior
+- Fixes quiz question scores being lost on save when the settings start empty
+- Fixes a fatal error when opening the editor for a deleted form
+- Fixes duplicate field keys and broken drag-and-drop reorder in the editor advanced options
+- Fixes coupon not clearing when conditional logic hides the coupon field
+- Fixes overly long entry export URLs
+- Fixes full-URL smartcodes being double-encoded by the shortcode parser
+- Fixes submission and payment smartcodes not resolving on email/notification resend
+- Fixes scheduler temporary-file cleanup to honor the temp_file_delete_time filter
+
+= 6.2.4 (Date: May 25, 2026) =
+- Fixes conversational form pretty URLs rendering
+- Fixes Pretty URL toggle not persisting when disabled
+- Fixes multi-step form submit visibility and step-skip logic
+- Adds a notice when the Fluent Forms REST endpoints are unreachable so the empty form and entry lists after an upgrade are easier to diagnose
+
+= 6.2.3 (Date: May 21, 2026) =
+- Adds option group support for Dropdown and Multi-select fields
+- Adds pinned column support in the entries table
+- Adds new icon presets, SVG icon support, and active/inactive color options for the Ratings field
+- Adds search to the form switcher in entries
+- Improves keyboard navigation in the entries table
+- Improves accessibility for fixed columns and action buttons in entries
+- Fixes conditional logic settings not showing for custom fields in the editor
+- Fixes conditional logic not-equal check when the target field has no value
+- Fixes Name field layout when a sub-field has no label
+- Fixes text and list formatting differences between the editor and preview
+- Fixes AI form builder losing field hints for non-English prompts
+- Fixes missing submission date in Excel exports
+- Fixes garbled export filenames for forms with non-Latin titles
+- Fixes form import breaking confirmation and notification settings
+- Fixes the Find feature missing forms inside page builder popups
+- Fixes entries not sorting by actual submission date
+- Fixes form import corrupting custom CSS and JavaScript code
+- Fixes visual artifacts in the collapsed form settings sidebar
+- Fixes Global Settings sidebar collapse toggle not working on desktop
+- Fixes the Excel export option incorrectly labeled as xlsv
+- Fixes entry Next and Previous navigation breaking on sites that use a custom database table prefix
+- Fixes fatal error when a Textarea field receives an array value during submission processing
+- Fixes multi-word Google Fonts not loading in conversational forms
+- Fixes textdomain_just_in_time notice on WordPress 6.7 and later, including WP Staging staging environments
+- Fixes several strings that could not be translated on non-English admin sites
+- Fixes the Entries page label showing garbled text on German-language sites
+- Fixes confirmation redirect URL losing query-string values with encoded characters
+
+= 6.2.2 (Date: April 23, 2026) =
+- Adds subscription field support in payment calculations
+- Fix raw cookie values for smartcodes
+- Hardens email attachment path resolution to keep notification attachments inside allowed paths
+- Hardens predefined form payload handling and confirmation validation
+- Improves compatibility for legacy predefined field option validation
+- Improves form-scoped access for submission collection and print endpoints
+- Tightens allowed-forms scope handling for form managers
+- Ensures form settings are normalized before use
+- Fix integration activecampaign issue
+- Preserves post feed draft values on resume
+- Respects user locale in the form editor
+- Improves ACL permission checks and helper coverage for delegated and full-access flows
+- Hardens form HTML sanitization by blocking event handlers and escaping permission message shortcode output
+- Improve global integration settings access restriction and protects payment filters AJAX metadata endpoint
+- Sanitizes form step settings while preserving safe HTML in step button text
+- Improves entry export to honor submission info selection
+- Improves multisite site setup until initialization
+- Improves long entry content previews
+
+= 6.2.1 (Date: April 15, 2026) =
+- Hardens form-scoped permissions across legacy AJAX and REST actions
+- Adds opt-in legacy HMAC fallback for pre-6.2.0 encrypted tokens to ease upgrade compatibility
+- Adds filter hooks for honeypot, Akismet, and CAPTCHA spam/failed messages
+- Adds database indexes to the form_analytics table for faster reporting queries
+- Adds mbstring fallback for server without the extension
+- Improves frontend submission reliability by falling back to the form instance AJAX URL when global vars are missing
+- Fixes public PDF download support for legacy links
+- Fixes draft submissions table support in entry export
+- Fixes entries search ACL issue
+- Fixes All Entries page localStorage persistence
+- Fixes character-limit validation showing the configured message instead of a raw field name
+- Fixes numeric validation so numeric-looking text is no longer treated as a number
+- Fixes WPML addon activation failing with an Invalid plugin error
 
 = 6.2.0 (Date: April 01, 2026) =
 - Upgrades internal framework for better performance and PHP 8.4 support

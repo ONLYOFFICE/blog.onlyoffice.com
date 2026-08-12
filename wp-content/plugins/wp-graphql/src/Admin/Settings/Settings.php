@@ -32,8 +32,26 @@ class Settings {
 
 		add_action( 'admin_menu', [ $this, 'add_options_page' ] );
 		add_action( 'init', [ $this, 'register_settings' ] );
+
+		// Initialize the registry on every request (priority 11 — after
+		// register_settings runs at priority 10) so registered settings are
+		// available in non-admin contexts such as the /graphql endpoint.
+		add_action( 'init', [ $this, 'init_registry' ], 11 );
+
 		add_action( 'admin_init', [ $this, 'initialize_settings_page' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'initialize_settings_page_scripts' ] );
+	}
+
+	/**
+	 * Fire the settings registry initialization (registration-only work).
+	 *
+	 * Admin UI scaffolding (add_settings_section / add_settings_field) still
+	 * runs from `initialize_settings_page` on `admin_init`.
+	 *
+	 * @return void
+	 */
+	public function init_registry() {
+		$this->settings_api->init_registry();
 	}
 
 	/**
@@ -91,6 +109,13 @@ class Settings {
 			]
 		);
 
+		/**
+		 * Filter the configured endpoint path for WPGraphQL.
+		 *
+		 * @param ?string $endpoint A custom endpoint path.
+		 * @hookGroup settings
+		 * @since 0.0.6
+		 */
 		$custom_endpoint = apply_filters( 'graphql_endpoint', null );
 		$this->settings_api->register_field(
 			'graphql_general_settings',
@@ -294,7 +319,13 @@ class Settings {
 			]
 		);
 
-		// Action to hook into to register settings
+		/**
+		 * Fires after core WPGraphQL settings have been registered.
+		 *
+		 * @param self $settings Settings manager instance.
+		 * @hookGroup settings
+		 * @since 0.13.0
+		 */
 		do_action( 'graphql_register_settings', $this );
 	}
 

@@ -5,6 +5,7 @@ namespace FluentForm\App\Modules\Form;
 use FluentForm\App\Helpers\Helper;
 use FluentForm\App\Modules\Acl\Acl;
 use FluentForm\App\Modules\Payments\PaymentHelper;
+use FluentForm\App\Services\FormBuilder\RatingIcon;
 use FluentForm\Framework\Foundation\Application;
 use FluentForm\Framework\Helpers\ArrayHelper;
 
@@ -443,9 +444,20 @@ class Form
             'admin_field_label'         => 'sanitize_text_field',
             'prefix_label'              => 'sanitize_text_field',
             'suffix_label'              => 'sanitize_text_field',
+            'icon_source'               => 'sanitize_key',
+            'icon_type'                 => 'sanitize_key',
+            'custom_icon_svg'           => [RatingIcon::class, 'sanitizeCustomSvg'],
+            'inactive_color'            => [RatingIcon::class, 'sanitizeColor'],
+            'active_color'              => [RatingIcon::class, 'sanitizeColor'],
             'unique_validation_message' => 'sanitize_text_field',
             'advanced_options'          => 'fluentform_options_sanitize',
             'html_codes'                => 'fluentform_sanitize_html',
+            'enable_crop'               => 'sanitize_text_field',
+            'crop_mode'                 => 'sanitize_text_field',
+            'crop_ratio'                => 'sanitize_text_field',
+            'crop_width'                => 'absint',
+            'crop_height'               => 'absint',
+            'enforce_image_dimensions'  => 'sanitize_text_field',
         ];
         $settingsKeys = array_keys($settingsMap);
         $stylePrefMap = [
@@ -656,6 +668,17 @@ class Form
                 $duplicateString = implode(', ', $duplicates);
                 wp_send_json([
                     'title' => sprintf('Name attribute %s has duplicate value.', $duplicateString),
+                ], 422);
+            }
+
+            $duplicateRankingFields = Helper::getRankingFieldsWithDuplicateOptionValues($fields);
+            if ($duplicateRankingFields) {
+                $duplicateRankingFields = implode(', ', array_unique($duplicateRankingFields));
+                wp_send_json([
+                    'title' => sprintf(
+                        __('Ranking field %s has duplicate option values. Please make each option value unique.', 'fluentform'),
+                        $duplicateRankingFields
+                    ),
                 ], 422);
             }
         }

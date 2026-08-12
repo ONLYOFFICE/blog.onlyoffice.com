@@ -101,14 +101,15 @@ class Listener {
 			return;
 		}
 
-		$existingProfile = aioseo()->searchStatistics->api->auth->getProfile( true );
-		if ( empty( $existingProfile['key'] ) || empty( $existingProfile['token'] ) ) {
+		$key   = aioseo()->sensitiveOptions->get( 'searchStatisticsProfileKey' );
+		$token = aioseo()->sensitiveOptions->get( 'searchStatisticsProfileToken' );
+		if ( empty( $key ) || empty( $token ) ) {
 			return;
 		}
 
 		$profile = [
-			'key'        => $existingProfile['key'],
-			'token'      => $existingProfile['token'],
+			'key'        => $key,
+			'token'      => $token,
 			'siteurl'    => site_url(),
 			'authedsite' => esc_url_raw( wp_unslash( $this->getAuthenticatedDomain() ) )
 		];

@@ -73,10 +73,20 @@ class Protector
 
         $ciphertext_raw = substr($c, $ivlen + $sha2len);
 
+        // Verify with current HMAC (IV + ciphertext)
         $calcmac = hash_hmac('sha256', $iv . $ciphertext_raw, $key, $as_binary = true);
 
         if (!hash_equals($hmac, $calcmac)) {
-            return null;
+            // Fallback: verify with legacy HMAC (ciphertext only) for tokens generated before v6.2.0 IV authentication fix.
+            if (!apply_filters('fluentform/allow_legacy_token_decrypt', false)) {
+                return null;
+            }
+
+            $legacymac = hash_hmac('sha256', $ciphertext_raw, $key, $as_binary = true);
+
+            if (!hash_equals($hmac, $legacymac)) {
+                return null;
+            }
         }
 
         $original_plaintext = openssl_decrypt($ciphertext_raw, $cipher, $key, $options = OPENSSL_RAW_DATA, $iv);

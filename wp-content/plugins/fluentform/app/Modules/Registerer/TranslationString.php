@@ -72,6 +72,12 @@ class TranslationString
             'Amount' => __('Amount', 'fluentform'),
             'Actions' => __('Actions', 'fluentform'),
             'Submitted at' => __('Submitted at', 'fluentform'),
+            'Pin column:' => __('Pin column:', 'fluentform'),
+            'None' => __('None', 'fluentform'),
+            'Entry #' => __('Entry #', 'fluentform'),
+            'View entry' => __('View entry', 'fluentform'),
+            'Delete entry' => __('Delete entry', 'fluentform'),
+            'No matching forms' => __('No matching forms', 'fluentform'),
             'Submission Logs' => __('Submission Logs', 'fluentform'),
             'General' => __('General', 'fluentform'),
             'API Calls' => __('API Calls', 'fluentform'),
@@ -145,8 +151,8 @@ class TranslationString
             'Shortcode for Classic Form' => __('Shortcode for Classic Form', 'fluentform'),
             'Meta' => __('Meta', 'fluentform'),
             'Set your social sharing meta texts and form messages here' => __('Set your social sharing meta texts and form messages here', 'fluentform'),
-            'Share your form by unique URL or copy and paste the %sshortcode%s to embed in your page and post' => /* translators: %1$s and %2$s are HTML tags for shortcode formatting */
-            __('Share your form by unique URL or copy and paste the %1$sshortcode%2$s to embed in your page and post', 'fluentform'),
+            'Share your form by unique URL (Pro) or copy and paste the %1$sshortcode%2$s to embed in your page and post' =>
+            __('Share your form by unique URL (Pro) or copy and paste the %1$sshortcode%2$s to embed in your page and post', 'fluentform'),
             'Loading Design... Please wait' => __('Loading Design... Please wait', 'fluentform'),
             'File Upload Text' => __('File Upload Text', 'fluentform'),
             'File Upload Size Limit Text' => __('File Upload Size Limit Text', 'fluentform'),
@@ -997,8 +1003,8 @@ class TranslationString
             'Managers' => __('Managers', 'fluentform'),
             'Enable Specific Forms Permission' => __('Enable Specific Forms Permission', 'fluentform'),
             'Access to Forms' => __('Access to Forms', 'fluentform'),
-            'Select specific forms to grant permission. Leave blank to give the manager access to all forms.' => __('Select specific forms to grant permission. Leave blank to give the manager access to all forms.', 'fluentform'),
-            'Select forms (leave blank for all)' => __('Select forms (leave blank for all)', 'fluentform'),
+            'Select forms to limit this manager\'s access. Leave blank to keep access to all forms.' => __('Select forms to limit this manager\'s access. Leave blank to keep access to all forms.', 'fluentform'),
+            'Select forms to limit access' => __('Select forms to limit access', 'fluentform'),
             'Add Manager' => __('Add Manager', 'fluentform'),
             'Global Layout Settings' => __('Global Layout Settings', 'fluentform'),
             'Administrators have full access to Fluent Forms. Add other managers giving specific permissions.' => __('Administrators have full access to Fluent Forms. Add other managers giving specific permissions.', 'fluentform'),
@@ -1721,7 +1727,7 @@ class TranslationString
             'Bulk Actions' => __('Bulk Actions', 'fluentform'),
             'Export ' => __('Export ', 'fluentform'),
             'Export as CSV' => __('Export as CSV', 'fluentform'),
-            'Export as Excel(xlsv)' => __('Export as Excel(xlsv)', 'fluentform'),
+            'Export as Excel(xlsx)' => __('Export as Excel(xlsx)', 'fluentform'),
             'Export as ODS' => __('Export as ODS', 'fluentform'),
             'Step Completed' => __('Step Completed', 'fluentform'),
             'Back to All' => __('Back to All', 'fluentform'),
@@ -1976,6 +1982,10 @@ class TranslationString
             'Default Currency' => __('Default Currency', 'fluentform'),
             'Provide your default currency.You can also change your currency to each form in form\'s payment settings' => __('Provide your default currency.You can also change your currency to each form in form\'s payment settings', 'fluentform'),
             'Currency Sign Position' => __('Currency Sign Position', 'fluentform'),
+            'Left ($100)' => __('Left ($100)', 'fluentform'),
+            'Right (100$)' => __('Right (100$)', 'fluentform'),
+            'Left Space ($ 100)' => __('Left Space ($ 100)', 'fluentform'),
+            'Right Space (100 $)' => __('Right Space (100 $)', 'fluentform'),
             'Currency Separators' => __('Currency Separators', 'fluentform'),
             'Comma as Thousand and Dot as Decimal (EG: 12,000.00)' => __('Comma as Thousand and Dot as Decimal (EG: 12,000.00)', 'fluentform'),
             'Dot as Thousand and Comma as Decimal ( EG: 12.000,00 )' => __('Dot as Thousand and Comma as Decimal ( EG: 12.000,00 )', 'fluentform'),
@@ -1995,9 +2005,9 @@ class TranslationString
             'PayPal IPN Settings(Recommended for Subscription Payment)' => __('PayPal IPN Settings(Recommended for Subscription Payment)', 'fluentform'),
             'In order to function completely for subscription / recurring payments, you must configure your PayPal IPN.' => __('In order to function completely for subscription / recurring payments, you must configure your PayPal IPN.', 'fluentform'),
             /* translators: 1-2: HTML tags for label formatting, 3: the IPN URL */
-            '%1$sIPN URL:%2$s %3$s' => __('%1$sIPN URL:%2$s %3$s', 'fluentform'),
+            '%sIPN URL:%s %s' => __('%sIPN URL:%s %s', 'fluentform'),
             /* translators: 1-2: HTML tags for documentation link, 3-4: HTML tags for PayPal IPN link */
-            '%1$sPlease read the documentation%2$s to learn how to setup %3$sPayPal IPN%4$s' => __('%1$sPlease read the documentation%2$s to learn how to setup %3$sPayPal IPN%4$s', 'fluentform'),
+            '%sPlease read the documentation%s to learn how to setup %sPayPal IPN%s' => __('%sPlease read the documentation%s to learn how to setup %sPayPal IPN%s', 'fluentform'),
             'Enable Stripe Payment Method' => __('Enable Stripe Payment Method', 'fluentform'),
             'Stripe Test API Keys' => __('Stripe Test API Keys', 'fluentform'),
             'Test Publishable key' => __('Test Publishable key', 'fluentform'),
@@ -2010,7 +2020,7 @@ class TranslationString
             'account dashboard' => __('account dashboard', 'fluentform'),
             'to configure them.Please add a webhook endpoint for the URL below.' => __('to configure them.Please add a webhook endpoint for the URL below.', 'fluentform'),
             /* translators: 1-2: HTML tags for label formatting, 3: the webhook URL */
-            '%1$sWebhook URL:%2$s %3$s' => __('%1$sWebhook URL:%2$s %3$s', 'fluentform'),
+            '%sWebhook URL:%s %s' => __('%sWebhook URL:%s %s', 'fluentform'),
             'Stripe IPN' => __('Stripe IPN', 'fluentform'),
             'Please enable the following Webhook events for this URL: ' => __('Please enable the following Webhook events for this URL:', 'fluentform'),
             'Sorry! No settings found.Maybe your payment module is disabled!' => __('Sorry! No settings found.Maybe your payment module is disabled!', 'fluentform'),
@@ -2040,9 +2050,15 @@ class TranslationString
             'Status' => __('Status', 'fluentform'),
             'refund' => __('refund', 'fluentform'),
             'paid' => __('paid', 'fluentform'),
+            'pending' => __('pending', 'fluentform'),
             'failed' => __('failed', 'fluentform'),
             'processing' => __('processing', 'fluentform'),
             'cancelled' => __('cancelled', 'fluentform'),
+            'refunded' => __('refunded', 'fluentform'),
+            'partially-refunded' => __('partially-refunded', 'fluentform'),
+            'active' => __('active', 'fluentform'),
+            'trialling' => __('trialling', 'fluentform'),
+            'failing' => __('failing', 'fluentform'),
             'Time' => __('Time', 'fluentform'),
             'Select Status' => __('Select Status', 'fluentform'),
             /* translators: 1: opening link tag, 2: closing link tag */
@@ -2103,7 +2119,7 @@ class TranslationString
             'Currency' => __('Currency', 'fluentform'),
             'Enable Debug Log (Recommended for debug purpose only)' => __('Enable Debug Log (Recommended for debug purpose only)', 'fluentform'),
             /* translators: 1-2: HTML tags for documentation link, 3-4: HTML tags for Stripe IPN link */
-            '%1$sPlease read the documentation%2$s to learn how to setup %3$sStripe IPN%4$s' => __('%1$sPlease read the documentation%2$s to learn how to setup %3$sStripe IPN%4$s', 'fluentform'),
+            '%sPlease read the documentation%s to learn how to setup %sStripe IPN%s' => __('%sPlease read the documentation%s to learn how to setup %sStripe IPN%s', 'fluentform'),
         );
 
         return apply_filters('fluentform/payments_i18n', $i18n);
@@ -2288,5 +2304,3 @@ class TranslationString
         ];
     }
 }
-
-

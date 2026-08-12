@@ -22,7 +22,7 @@ class Transactions
         $table = $wpdb->prefix . 'fluentform_transactions';
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Migration file, direct query needed
-        if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table)) != $table) {
+        if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $table)) != $table) {
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange -- Migration file, schema change is the purpose
             $sql = "CREATE TABLE $table (
 			    id int(11) NOT NULL AUTO_INCREMENT,
@@ -47,14 +47,46 @@ class Transactions
 				payment_note longtext,
 				created_at timestamp NULL,
 				updated_at timestamp NULL,
-				PRIMARY  KEY  (id)
+				PRIMARY  KEY  (id),
+				KEY  ff_txn_created_at  (created_at),
+				KEY  ff_txn_form_created  (form_id, created_at)
 			  ) $charsetCollate;";
 
-            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+            require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
             dbDelta($sql);
         } else {
             self::maybeAlterColumns();
+        }
+
+        self::maybeAddIndexes();
+    }
+
+    public static function maybeAddIndexes()
+    {
+        global $wpdb;
+        $table = $wpdb->prefix . 'fluentform_transactions';
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder -- Migration file, reading index metadata, %1s is for identifier
+        $indexes = $wpdb->get_results($wpdb->prepare('SHOW INDEX FROM %1s', $table));
+        $existing = [];
+        if (is_array($indexes)) {
+            foreach ($indexes as $index) {
+                $existing[$index->Key_name] = true;
+            }
+        }
+
+        // Reports and the MCP payment/trend tools filter transactions by created_at
+        // (cross-form) and by (form_id, created_at) (form-scoped); neither had an
+        // index, so every summary scanned the whole table. Additive + idempotent.
+        if (!isset($existing['ff_txn_created_at'])) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder -- Migration file, schema change is the purpose, %1s is for identifier
+            $wpdb->query($wpdb->prepare('ALTER TABLE %1s ADD INDEX ff_txn_created_at (created_at)', $table));
+        }
+
+        if (!isset($existing['ff_txn_form_created'])) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder -- Migration file, schema change is the purpose, %1s is for identifier
+            $wpdb->query($wpdb->prepare('ALTER TABLE %1s ADD INDEX ff_txn_form_created (form_id, created_at)', $table));
         }
     }
 
@@ -65,7 +97,7 @@ class Transactions
 
         // find the data types of each column
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder -- Migration file, checking table structure, %1s is for identifier
-        $results = $wpdb->get_results($wpdb->prepare("DESCRIBE %1s", $table));
+        $results = $wpdb->get_results($wpdb->prepare('DESCRIBE %1s', $table));
         $items = [];
         foreach ($results as $result) {
             $items[$result->Field] = $result->Type;
@@ -74,8 +106,7 @@ class Transactions
         $paymentTotalMigrated = strpos($items['payment_total'], 'bigint') !== false;
         if (!$paymentTotalMigrated) {
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder -- Migration file, schema change is the purpose, %1s is for identifier
-            $wpdb->query($wpdb->prepare("ALTER TABLE %1s MODIFY payment_total BIGINT UNSIGNED DEFAULT 1", $table));
+            $wpdb->query($wpdb->prepare('ALTER TABLE %1s MODIFY payment_total BIGINT UNSIGNED DEFAULT 1', $table));
         }
-        
     }
 }

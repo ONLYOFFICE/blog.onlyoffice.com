@@ -47,6 +47,24 @@ abstract class AIOSEOAbstract {
 	public $internalOptions = null;
 
 	/**
+	 * SensitiveOptions class instance.
+	 *
+	 * @since 4.9.6
+	 *
+	 * @var \AIOSEO\Plugin\Lite\Options\SensitiveOptions|\AIOSEO\Plugin\Pro\Options\SensitiveOptions
+	 */
+	public $sensitiveOptions = null;
+
+	/**
+	 * NetworkSensitiveOptions class instance.
+	 *
+	 * @since 4.9.6
+	 *
+	 * @var null|\AIOSEO\Plugin\Pro\Options\NetworkSensitiveOptions
+	 */
+	public $networkSensitiveOptions = null;
+
+	/**
 	 * PreUpdates class instance.
 	 *
 	 * @since 4.2.7
@@ -54,6 +72,15 @@ abstract class AIOSEOAbstract {
 	 * @var \AIOSEO\Plugin\Common\Main\PreUpdates|\AIOSEO\Plugin\Pro\Main\PreUpdates
 	 */
 	public $preUpdates = null;
+
+	/**
+	 * MigrationRunner class instance.
+	 *
+	 * @since 4.9.7.2
+	 *
+	 * @var \AIOSEO\Plugin\Common\Main\Migrations\MigrationRunner
+	 */
+	public $migrationRunner = null;
 
 	/**
 	 * Db class instance.
@@ -600,6 +627,24 @@ abstract class AIOSEOAbstract {
 	public $writingAssistant = null;
 
 	/**
+	 * SeoAlerts class instance.
+	 *
+	 * @since 4.9.9
+	 *
+	 * @var \AIOSEO\Plugin\Common\SeoAlerts\SeoAlerts
+	 */
+	public $seoAlerts = null;
+
+	/**
+	 * Newsroom class instance.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @var \AIOSEO\Plugin\Common\Newsroom\Newsroom
+	 */
+	public $newsroom = null;
+
+	/**
 	 * Llms class instance.
 	 *
 	 * @since 4.8.4
@@ -625,4 +670,22 @@ abstract class AIOSEOAbstract {
 	 * @var \AIOSEO\Plugin\Common\SeoChecklist\SeoChecklist|\AIOSEO\Plugin\Pro\SeoChecklist\SeoChecklist
 	 */
 	public $seoChecklist = null;
+
+	/**
+	 * Abilities class instance.
+	 *
+	 * @since 4.9.8
+	 *
+	 * @var \AIOSEO\Plugin\Common\Abilities\Abilities|\AIOSEO\Plugin\Pro\Abilities\Abilities
+	 */
+	public $abilities = null;
+
+	/**
+	 * RestApi class instance.
+	 *
+	 * @since 4.9.8
+	 *
+	 * @var \AIOSEO\Plugin\Common\RestApi\RestApi|\AIOSEO\Plugin\Pro\RestApi\RestApi
+	 */
+	public $restApi = null;
 }

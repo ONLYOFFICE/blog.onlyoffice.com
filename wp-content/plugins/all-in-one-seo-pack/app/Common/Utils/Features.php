@@ -13,6 +13,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Features {
 	/**
+	 * The Action Scheduler action name for refreshing the features cache.
+	 *
+	 * @since 4.9.5.2
+	 *
+	 * @var string
+	 */
+	private $actionName = 'aioseo_features_refresh';
+
+	/**
 	 * The features URL.
 	 *
 	 * @since 4.3.0
@@ -22,31 +31,79 @@ class Features {
 	protected $featuresUrl = 'https://licensing-cdn.aioseo.com/keys/lite/all-in-one-seo-pack-pro-features.json';
 
 	/**
+	 * Class constructor.
+	 *
+	 * @since 4.9.5.2
+	 */
+	public function __construct() {
+		add_action( 'admin_init', [ $this, 'scheduleRefresh' ] );
+		add_action( $this->actionName, [ $this, 'refresh' ] );
+	}
+
+	/**
+	 * Schedules the daily recurring features cache refresh.
+	 * Hooked into `admin_init` action hook.
+	 *
+	 * @since 4.9.5.2
+	 *
+	 * @return void
+	 */
+	public function scheduleRefresh() {
+		if ( aioseo()->actionScheduler->isScheduled( $this->actionName ) ) {
+			return;
+		}
+
+		aioseo()->actionScheduler->scheduleRecurrent( $this->actionName, 0, DAY_IN_SECONDS );
+	}
+
+	/**
+	 * Refreshes the features cache.
+	 * Hooked into `aioseo_features_refresh` action hook.
+	 *
+	 * @since 4.9.5.2
+	 *
+	 * @return void
+	 */
+	public function refresh() {
+		$this->getFeatures( true );
+	}
+
+	/**
 	 * Returns our features.
 	 *
-	 * @since 4.3.0
+	 * @since   4.3.0
+	 * @version 4.9.7.2 Always cache the fetch result (real data or {@see self::getDefaultFeatures()}); a failed fetch previously left the cache empty and re-hit the CDN on every page load.
+	 * @version 4.9.7.2 Cache-miss check restored to strict null compare so cached defaults are not treated as a miss. Return value guarded to always be an array.
 	 *
 	 * @param  boolean $flushCache Whether or not to flush the cache.
 	 * @return array               An array of addon data.
 	 */
 	public function getFeatures( $flushCache = false ) {
 		$features = aioseo()->core->networkCache->get( 'license_features' );
+
 		if ( null === $features || $flushCache ) {
+			$remote   = null;
 			$response = aioseo()->helpers->wpRemoteGet( $this->getFeaturesUrl() );
 			if ( 200 === wp_remote_retrieve_response_code( $response ) ) {
-				$features = json_decode( wp_remote_retrieve_body( $response ), true );
+				$decoded = json_decode( wp_remote_retrieve_body( $response ), true );
+				if ( ! empty( $decoded ) && ( ! is_object( $decoded ) || empty( $decoded->error ) ) ) {
+					$remote = $decoded;
+				}
 			}
 
-			if ( ! $features || ! empty( $features->error ) ) {
-				$features = $this->getDefaultFeatures();
-			}
-
+			// Always cache something — real data on success, defaults on failure — so a flaky CDN can't trigger a refetch on every page load. The daily refresh cron overwrites this with fresh data.
+			$features = null !== $remote ? $remote : $this->getDefaultFeatures();
 			aioseo()->core->networkCache->update( 'license_features', $features );
 		}
 
 		// Convert the features array to objects using JSON. This is essential because we have lots of features that rely on this to be an object, and changing it to an array would break them.
 
 		$features = json_decode( wp_json_encode( $features ) );
+
+		// Guard the return so downstream foreach/array_* calls cannot fatal on PHP 8+ if the round-trip yielded null (e.g., wp_json_encode failure on malformed cached data).
+		if ( ! is_array( $features ) ) {
+			$features = $this->getDefaultFeatures();
+		}
 
 		return $features;
 	}

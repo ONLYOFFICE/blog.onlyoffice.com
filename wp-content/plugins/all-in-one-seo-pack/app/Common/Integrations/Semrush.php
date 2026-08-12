@@ -77,7 +77,7 @@ class Semrush {
 	 * @return bool Whether the tokens were successfully renewed.
 	 */
 	public static function refreshTokens() {
-		$refreshToken = aioseo()->internalOptions->integrations->semrush->refreshToken;
+		$refreshToken = aioseo()->sensitiveOptions->get( 'semrushRefreshToken' );
 		if ( empty( $refreshToken ) ) {
 			self::reset();
 
@@ -112,10 +112,10 @@ class Semrush {
 	 * @return void
 	 */
 	private static function reset() {
-		aioseo()->internalOptions->integrations->semrush->accessToken  = '';
+		aioseo()->sensitiveOptions->set( 'semrushAccessToken', '' );
 		aioseo()->internalOptions->integrations->semrush->tokenType    = '';
 		aioseo()->internalOptions->integrations->semrush->expires      = '';
-		aioseo()->internalOptions->integrations->semrush->refreshToken = '';
+		aioseo()->sensitiveOptions->set( 'semrushRefreshToken', '' );
 	}
 
 	/**
@@ -167,10 +167,10 @@ class Semrush {
 		}
 
 		// Save the options.
-		aioseo()->internalOptions->integrations->semrush->accessToken  = $tokens->access_token;
 		aioseo()->internalOptions->integrations->semrush->tokenType    = $tokens->token_type;
 		aioseo()->internalOptions->integrations->semrush->expires      = $time + $tokens->expires_in;
-		aioseo()->internalOptions->integrations->semrush->refreshToken = $tokens->refresh_token;
+		aioseo()->sensitiveOptions->set( 'semrushAccessToken', $tokens->access_token );
+		aioseo()->sensitiveOptions->set( 'semrushRefreshToken', $tokens->refresh_token );
 
 		return true;
 	}
@@ -202,7 +202,7 @@ class Semrush {
 			return $results;
 		}
 
-		$accessToken = aioseo()->internalOptions->integrations->semrush->accessToken;
+		$accessToken = aioseo()->sensitiveOptions->get( 'semrushAccessToken' );
 		if ( empty( $accessToken ) ) {
 			return false;
 		}

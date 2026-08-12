@@ -35,6 +35,7 @@ class SubmissionHandlerService
 
     /**
      * Form Submission
+     *
      * @param $formDataRaw
      * @param $formId
      * @return array
@@ -53,6 +54,8 @@ class SubmissionHandlerService
     }
 
     /**
+     * Prepare the form and validated form data for submission handling.
+     *
      * @throws ValidationException
      */
     protected function prepareHandler($formId, $formDataRaw)
@@ -72,13 +75,16 @@ class SubmissionHandlerService
         foreach ($formDataRaw as $name => $input) {
             if (is_array($input)) {
                 $formDataRaw[$name] = array_filter($input, function ($value) {
-                    return $value !== null && $value !== false && $value !== '';
+                    return null !== $value && false !== $value && '' !== $value;
                 });
             }
 
             // Process "Other" options for checkboxes and radio fields
             if (strpos($name, '__ff_other_input__') !== false && !empty($input)) {
                 $fieldName = str_replace('__ff_other_input__', '', $name);
+                // Store with the field's own (translated) "Other" label as prefix
+                $rawField = Arr::get(FormFieldsParser::getInputs($this->form, ['raw']), $fieldName . '.raw', []);
+                $otherPrefix = Helper::getOtherOptionValuePrefix($rawField, $this->form);
 
                 // Handle checkbox fields (array values)
                 if (isset($formDataRaw[$fieldName]) && is_array($formDataRaw[$fieldName])) {
@@ -89,13 +95,13 @@ class SubmissionHandlerService
 
                     $key = array_search($otherValue, $selectedValues);
 
-                    if ($key !== false) {
-                        $selectedValues[$key] = 'Other: ' . sanitize_text_field($input);
+                    if (false !== $key) {
+                        $selectedValues[$key] = $otherPrefix . sanitize_text_field($input);
                         $formDataRaw[$fieldName] = $selectedValues;
                     }
-                } // Handle radio fields (single value)
-                elseif (isset($formDataRaw[$fieldName]) && $formDataRaw[$fieldName] === '__ff_other_' . $fieldName . '__') {
-                    $formDataRaw[$fieldName] = 'Other: ' . sanitize_text_field($input);
+                } elseif (isset($formDataRaw[$fieldName]) && '__ff_other_' . $fieldName . '__' === $formDataRaw[$fieldName]) {
+                    // Handle radio fields (single value)
+                    $formDataRaw[$fieldName] = $otherPrefix . sanitize_text_field($input);
                 }
 
                 unset($formDataRaw[$name]);
@@ -124,6 +130,7 @@ class SubmissionHandlerService
 
     /**
      * Prepare the data to be inserted to the database.
+     *
      * @param boolean $formData
      * @return array
      */
@@ -146,7 +153,7 @@ class SubmissionHandlerService
             [
                 $formData,
                 $formId,
-                $inputConfigs
+                $inputConfigs,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/insert_response_data',
@@ -160,7 +167,7 @@ class SubmissionHandlerService
             'fluentform_disable_ip_logging',
             [
                 false,
-                $formId
+                $formId,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/disable_ip_logging',
@@ -175,7 +182,7 @@ class SubmissionHandlerService
         $response = [
             'form_id'       => $formId,
             'serial_number' => $serialNumber,
-            'response'      => json_encode($this->formData, JSON_UNESCAPED_UNICODE),
+            'response'      => wp_json_encode($this->formData, JSON_UNESCAPED_UNICODE),
             'source_url'    => site_url(Arr::get($formData, '_wp_http_referer')),
             'user_id'       => get_current_user_id(),
             'browser'       => $browser->getBrowser(),
@@ -189,7 +196,7 @@ class SubmissionHandlerService
         $response = apply_filters_deprecated(
             'fluentform_filter_insert_data',
             [
-                $response
+                $response,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/filter_insert_data',
@@ -205,10 +212,10 @@ class SubmissionHandlerService
         $formData = isset($this->formData) ? $this->formData : $formData;
         do_action_deprecated(
             'fluentform_before_form_actions_processing', [
-            $insertId,
-            $this->formData,
-            $form
-        ],
+                $insertId,
+                $this->formData,
+                $form,
+            ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/before_form_actions_processing',
             'Use fluentform/before_form_actions_processing instead of fluentform_before_form_actions_processing.'
@@ -237,10 +244,10 @@ class SubmissionHandlerService
 
             do_action_deprecated(
                 'fluentform_submission_inserted_' . $form->type . '_form', [
-                $insertId,
-                $formData,
-                $form
-            ],
+                    $insertId,
+                    $formData,
+                    $form,
+                ],
                 FLUENTFORM_FRAMEWORK_UPGRADE,
                 'fluentform/submission_inserted_' . $form->type . '_form',
                 'Use fluentform/submission_inserted_' . $form->type . '_form instead of fluentform_submission_inserted_' . $form->type . '_form'
@@ -261,10 +268,10 @@ class SubmissionHandlerService
 
         do_action_deprecated(
             'fluentform_before_submission_confirmation', [
-            $insertId,
-            $formData,
-            $form
-        ],
+                $insertId,
+                $formData,
+                $form,
+            ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/before_submission_confirmation',
             'Use fluentform/before_submission_confirmation instead of fluentform_before_submission_confirmation.'
@@ -281,6 +288,7 @@ class SubmissionHandlerService
 
     /**
      * Return Formatted Response Data
+     *
      * @param $insertId
      * @param $form
      * @param $formData
@@ -298,7 +306,7 @@ class SubmissionHandlerService
             [
                 $confirmation,
                 $formData,
-                $form
+                $form,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/form_submission_confirmation',
@@ -321,7 +329,7 @@ class SubmissionHandlerService
                     $confirmation['messageToShow'],
                     $insertId,
                     $formData,
-                    $form
+                    $form,
                 ],
                 FLUENTFORM_FRAMEWORK_UPGRADE,
                 'fluentform/submission_message_parse',
@@ -361,7 +369,7 @@ class SubmissionHandlerService
             }
             $parseUrl = apply_filters_deprecated('fluentform_will_parse_url_value', [
                 true,
-                $form
+                $form,
             ],
                 FLUENTFORM_FRAMEWORK_UPGRADE,
                 'fluentform/will_parse_url_value',
@@ -419,7 +427,7 @@ class SubmissionHandlerService
                 true
             );
 
-            $redirectUrl = apply_filters('fluentform/redirect_url_value', wp_sanitize_redirect(rawurldecode($redirectUrl)), $insertId, $form, $formData);
+            $redirectUrl = apply_filters('fluentform/redirect_url_value', wp_sanitize_redirect($redirectUrl), $insertId, $form, $formData);
             $returnData = [
                 'redirectUrl' => esc_url_raw($redirectUrl),
                 'message'     => fluentform_sanitize_html($message),
@@ -431,7 +439,7 @@ class SubmissionHandlerService
             $form,
             $confirmation,
             $insertId,
-            $formData
+            $formData,
         ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/submission_confirmation',
@@ -512,6 +520,7 @@ class SubmissionHandlerService
 
     /**
      * Validates Submission
+     *
      * @throws ValidationException
      */
     private function handleValidation()
@@ -559,7 +568,7 @@ class SubmissionHandlerService
             [
                 $insertData,
                 $formDataRaw,
-                $this->form
+                $this->form,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/before_insert_submission',
@@ -574,7 +583,7 @@ class SubmissionHandlerService
                 [
                     $insertData,
                     $formDataRaw,
-                    $this->form
+                    $this->form,
                 ],
                 FLUENTFORM_FRAMEWORK_UPGRADE,
                 'fluentform/before_insert_payment_form',
@@ -616,8 +625,7 @@ class SubmissionHandlerService
             'component'        => $type . ' Integration',
             'status'           => 'info',
             'title'            => __('Skip Submission Processing', 'fluentform'),
-            'description'      => __('Submission marked as spammed. And skip all actions processing', 'fluentform')
+            'description'      => __('Submission marked as spammed. And skip all actions processing', 'fluentform'),
         ]);
     }
 }
-

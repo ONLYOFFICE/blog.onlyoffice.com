@@ -44,7 +44,7 @@ class TermsAndConditions extends BaseComponent
         $data['attributes']['id'] = $uniqueId;
         $data['attributes']['class'] = trim(
             'ff-el-form-check-input ' .
-            $data['attributes']['class']
+            ArrayHelper::get($data, 'attributes.class', '')
         );
 
         if ($tabIndex = Helper::getNextTabIndex()) {

@@ -6,6 +6,7 @@ use FluentForm\App\Models\Submission;
 use FluentForm\App\Modules\Acl\Acl;
 use FluentForm\Framework\Http\Request\Request;
 use FluentForm\Framework\Foundation\Policy;
+use FluentForm\Framework\Support\Arr;
 
 class SubmissionPolicy extends Policy
 {
@@ -60,14 +61,27 @@ class SubmissionPolicy extends Policy
         return Acl::hasPermission('fluentform_manage_entries', $formId);
     }
 
+    public function submissionUsers(Request $request)
+    {
+        return $this->updateSubmissionUser($request);
+    }
+
     /**
      * Resolve the form_id for authorization.
-     * For entry-scoped routes, always derive from the entry record to prevent
-     * attackers from passing an allowed form_id while targeting another form's entry.
+     *
+     * entry_id is read from the URL route parameter first so that a JSON body
+     * {"entry_id": X} cannot shadow the URL placeholder and cause the policy to
+     * authorize against a different record than the controller acts on (IDOR).
      */
     private function resolveFormId(Request $request)
     {
-        $entryId = $request->get('entry_id');
+        $route   = $request->route();
+        $entryId = $route ? Arr::get($route->getParameter(), 'entry_id') : null;
+
+        if (!$entryId) {
+            $entryId = $request->get('entry_id');
+        }
+
         if ($entryId) {
             $submission = Submission::select('form_id')->find(intval($entryId));
             if ($submission) {
@@ -75,7 +89,11 @@ class SubmissionPolicy extends Policy
             }
         }
 
-        $formId = $request->get('form_id');
+        $formId = $route ? Arr::get($route->getParameter(), 'form_id') : null;
+        if (!$formId) {
+            $formId = $request->get('form_id');
+        }
+
         return $formId ? intval($formId) : null;
     }
 }

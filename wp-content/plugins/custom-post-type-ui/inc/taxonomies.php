@@ -734,6 +734,23 @@ function cptui_manage_taxonomies() {
 							echo $ui->get_text_input( // phpcs:ignore.
 								[
 									'namearray' => 'cpt_tax_labels',
+									'name'      => 'filter_by_item',
+									'textvalue' => isset( $current['labels']['filter_by_item'] ) ? esc_attr( $current['labels']['filter_by_item'] ) : null,
+									// phpcs:ignore.
+									'aftertext' => esc_html__( '(e.g. Filter by actor)', 'custom-post-type-ui' ),
+									'labeltext' => esc_html__( 'Filter by Category', 'custom-post-type-ui' ),
+									'helptext'  => esc_attr__( 'This label is only used for hierarchical taxonomies.', 'custom-post-type-ui' ),
+									'data'      => [
+										/* translators: Used for autofill */
+										'label'     => sprintf( esc_attr__( 'Filter by %s', 'custom-post-type-ui' ), 'item' ),
+										'plurality' => 'singular',
+									],
+								]
+							);
+
+							echo $ui->get_text_input( // phpcs:ignore.
+								[
+									'namearray' => 'cpt_tax_labels',
 									'name'      => 'items_list_navigation',
 									'textvalue' => isset( $current['labels']['items_list_navigation'] ) ? esc_attr( $current['labels']['items_list_navigation'] ) : null, // phpcs:ignore.
 									'aftertext' => esc_html__( '(e.g. Actors list navigation)', 'custom-post-type-ui' ),
@@ -1594,6 +1611,27 @@ function cptui_update_taxonomy( $data = [] ) {
 		return cptui_admin_notices( 'error', '', false, esc_html__( 'Please provide a taxonomy name', 'custom-post-type-ui' ) );
 	}
 
+	// Force the slug to lowercase. Taxonomy slugs must be lowercase per
+	// WordPress conventions; uppercase characters break URL routing,
+	// $screen->taxonomy matching, and HTML id generation. The JS field
+	// handler also lowercases on input, but it doesn't catch paste/autofill
+	// — this is the authoritative enforcement.
+	$data['cpt_custom_tax']['name'] = strtolower( $data['cpt_custom_tax']['name'] );
+
+	// If the original slug differed only in case from the new (now lowercased)
+	// slug, this is a case-only normalization, not a real rename. Track the
+	// legacy key so we can remove it from the saved option below, and align
+	// tax_original with the new slug so the rename-detection comparison
+	// doesn't fire spuriously.
+	$cptui_legacy_slug_to_remove = null;
+	if ( ! empty( $data['tax_original'] ) ) {
+		$original_lower = strtolower( $data['tax_original'] );
+		if ( $original_lower !== $data['tax_original'] && $original_lower === $data['cpt_custom_tax']['name'] ) {
+			$cptui_legacy_slug_to_remove = $data['tax_original'];
+			$data['tax_original']        = $original_lower;
+		}
+	}
+
 	// Maybe a little harsh, but we shouldn't be saving THAT frequently.
 	delete_option( "default_term_{$data['cpt_custom_tax']['name']}" );
 
@@ -1626,6 +1664,12 @@ function cptui_update_taxonomy( $data = [] ) {
 	}
 
 	$taxonomies = cptui_get_taxonomy_data();
+
+	// Drop any legacy capitalized slug so we don't end up with both the old
+	// and the lowercased entry in the saved option after this save.
+	if ( null !== $cptui_legacy_slug_to_remove && isset( $taxonomies[ $cptui_legacy_slug_to_remove ] ) ) {
+		unset( $taxonomies[ $cptui_legacy_slug_to_remove ] );
+	}
 
 	/**
 	 * Check if we already have a post type of that name.

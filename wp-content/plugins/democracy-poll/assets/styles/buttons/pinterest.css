@@ -1,0 +1,33 @@
+/* button */
+.dem-button[class]{
+	border-radius: 3px;
+	font-size:90%;
+	font-weight: bold;
+	padding:0.7em 1.2em;
+	background-color: var(--dem-button-bg, #ab171e);
+	background-image: linear-gradient(#e3262e, #ab171e);
+	border: 1px solid var(--dem-button-border-color, #9a1015);
+	border-bottom-color: var(--dem-button-border-color, #820a0f);
+	border-top-color: var(--dem-button-border-color, #af151b);
+	box-shadow: 0 1px 0 0 rgba(255,255,255,0.34);
+	color: var(--dem-button-color, #fff);
+	text-shadow: 0 -1px rgba(0,0,0,0.11);
+}
+
+.dem-button[class]:is(:hover, :focus){
+	background-color: var(--dem-button-hover-bg, #c11a22);
+	background-image: linear-gradient(#e63d44, #c11a22);
+	box-shadow: 0 1px 2px 0 rgba(0,0,0,0.22);
+	border-color: var(--dem-button-hover-border-color, #920c12);
+	color: var(--dem-button-hover-color, var(--dem-button-color, #fff));
+}
+
+.dem-button[class]:visited{ color:var(--dem-button-color, #fff); }
+
+.dem-button[class]:active{
+	background-color: var(--dem-button-hover-bg, #e22123);
+	background-image: linear-gradient(#bb1618, #e22123);
+	box-shadow: 0 1px 7px 0 rgba(0,0,0,0.5) inset;
+	border-color: var(--dem-button-hover-border-color, #99161b);
+	text-shadow: 0 1px rgba(0,0,0,0.6);
+}

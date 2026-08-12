@@ -31,36 +31,45 @@ class Api {
 	protected $routes = [
 		// phpcs:disable WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound
 		'GET'    => [
-			'options'                                     => [ 'callback' => [ 'Settings', 'getOptions' ], 'access' => 'any' ],
+			'options'                                     => [ 'callback' => [ 'Settings', 'getOptions' ], 'access' => 'options' ],
 			'ping'                                        => [ 'callback' => [ 'Ping', 'ping' ], 'access' => 'any' ],
 			'post'                                        => [ 'callback' => [ 'PostsTerms', 'getPostData' ], 'access' => 'any' ],
 			'post/(?P<postId>[\d]+)/first-attached-image' => [ 'callback' => [ 'PostsTerms', 'getFirstAttachedImage' ], 'access' => 'aioseo_page_social_settings' ],
 			'user/(?P<userId>[\d]+)/image'                => [ 'callback' => [ 'User', 'getUserImage' ], 'access' => 'aioseo_page_social_settings' ],
 			'tags'                                        => [ 'callback' => [ 'Tags', 'getTags' ], 'access' => 'any' ],
-			'search-statistics/url/auth'                  => [ 'callback' => [ 'SearchStatistics', 'getAuthUrl' ], 'access' => [ 'aioseo_search_statistics_settings', 'aioseo_general_settings', 'aioseo_setup_wizard' ] ], // phpcs:ignore Generic.Files.LineLength.MaxExceeded
-			'search-statistics/url/reauth'                => [ 'callback' => [ 'SearchStatistics', 'getReauthUrl' ], 'access' => [ 'aioseo_search_statistics_settings', 'aioseo_general_settings' ] ],
+			'search-statistics/url/auth'                  => [ 'callback' => [ 'SearchStatistics', 'getAuthUrl' ], 'access' => [ 'aioseo_search_statistics_settings', 'aioseo_setup_wizard' ] ], // phpcs:ignore Generic.Files.LineLength.MaxExceeded
+			'search-statistics/url/reauth'                => [ 'callback' => [ 'SearchStatistics', 'getReauthUrl' ], 'access' => [ 'aioseo_search_statistics_settings' ] ],
 			'writing-assistant/keyword/(?P<postId>[\d]+)' => [ 'callback' => [ 'WritingAssistant', 'getPostKeyword' ], 'access' => 'aioseo_page_writing_assistant_settings' ],
 			'writing-assistant/user-info'                 => [ 'callback' => [ 'WritingAssistant', 'getUserInfo' ], 'access' => 'aioseo_page_writing_assistant_settings' ],
 			'writing-assistant/user-options'              => [ 'callback' => [ 'WritingAssistant', 'getUserOptions' ], 'access' => 'aioseo_page_writing_assistant_settings' ],
 			'writing-assistant/report-history'            => [ 'callback' => [ 'WritingAssistant', 'getReportHistory' ], 'access' => 'aioseo_page_writing_assistant_settings' ],
 			'seo-analysis/competitors'                    => [ 'callback' => [ 'Analyze', 'getCompetitorsResults' ], 'access' => 'aioseo_seo_analysis_settings' ],
+			'spell-checker/safe-words'                    => [ 'callback' => [ 'SpellChecker', 'getSafeWords' ], 'access' => 'aioseo_page_analysis' ],
 			'ai/image-generator'                          => [ 'callback' => [ 'Ai', 'fetchImages' ], 'access' => 'aioseo_page_ai_content_settings' ],
 			'ai/insights/reports'                         => [ 'callback' => [ 'AiInsights', 'getReports' ], 'access' => 'aioseo_ai_insights_settings' ],
 			'ai/insights/reports/(?P<uuid>[a-zA-Z0-9-]+)' => [ 'callback' => [ 'AiInsights', 'getReport' ], 'access' => 'aioseo_ai_insights_settings' ],
 			'seo-checklist/'                              => [ 'callback' => [ 'SeoChecklist', 'getChecks' ], 'access' => [ 'aioseo_general_settings', 'aioseo_setup_wizard' ] ],
 			'seo-checklist/completed'                     => [ 'callback' => [ 'SeoChecklist', 'getCompletedChecks' ], 'access' => [ 'aioseo_general_settings', 'aioseo_setup_wizard' ] ],
+			'ai-agents/mcp-adapter/release'               => [ 'callback' => [ 'AiAgents', 'getMcpAdapterRelease' ], 'access' => 'aioseo_ai_insights_settings' ],
 		],
 		'POST'   => [
-			'ai/auth'                                                => [ 'callback' => [ 'Ai', 'storeAccessToken' ], 'access' => 'aioseo_page_ai_content_settings' ],
+			'seo-alerts/test-email'                                  => [ 'callback' => [ 'SeoAlerts', 'sendTestEmail' ], 'access' => 'aioseo_tools_settings' ],
+			'seo-alerts/test-slack'                                  => [ 'callback' => [ 'SeoAlerts', 'sendTestSlack' ], 'access' => 'aioseo_tools_settings' ],
+			'ai/auth'                                                => [ 'callback' => [ 'Ai', 'storeAccessToken' ], 'access' => 'aioseo_general_settings' ],
 			'ai/credits'                                             => [ 'callback' => [ 'Ai', 'getCredits' ], 'access' => 'aioseo_page_ai_content_settings' ],
 			'ai/meta/title'                                          => [ 'callback' => [ 'Ai', 'generateTitles' ], 'access' => 'aioseo_page_ai_content_settings' ],
 			'ai/meta/description'                                    => [ 'callback' => [ 'Ai', 'generateDescriptions' ], 'access' => 'aioseo_page_ai_content_settings' ],
 			'ai/faqs'                                                => [ 'callback' => [ 'Ai', 'generateFaqs' ], 'access' => 'aioseo_page_ai_content_settings' ],
+			'ai/schema'                                              => [ 'callback' => [ 'Ai', 'generateSchemas' ], 'access' => 'aioseo_page_ai_content_settings' ],
 			'ai/key-points'                                          => [ 'callback' => [ 'Ai', 'generateKeyPoints' ], 'access' => 'aioseo_page_ai_content_settings' ],
 			'ai/social-posts'                                        => [ 'callback' => [ 'Ai', 'generateSocialPosts' ], 'access' => 'aioseo_page_ai_content_settings' ],
 			'ai/assistant'                                           => [ 'callback' => [ 'Ai', 'generateAssistantCompletion' ], 'access' => 'aioseo_page_ai_content_settings' ],
+			'ai/image/alt'                                           => [ 'callback' => [ 'Ai', 'generateImageAlt' ], 'access' => 'aioseo_page_ai_content_settings' ],
 			'ai/image-generator'                                     => [ 'callback' => [ 'Ai', 'generateImage' ], 'access' => 'aioseo_page_ai_content_settings' ],
-			'ai/deactivate'                                          => [ 'callback' => [ 'Ai', 'deactivate' ], 'access' => 'aioseo_page_ai_content_settings' ],
+			'ai/truseo/suggest'                                      => [ 'callback' => [ 'Ai', 'generateTruSeoSuggestion' ], 'access' => 'aioseo_page_ai_content_settings' ],
+			'ai/truseo/optimize-post'                                => [ 'callback' => [ 'Ai', 'generateTruSeoOptimizePost' ], 'access' => 'aioseo_page_ai_content_settings' ],
+			'ai/truseo/spelling'                                     => [ 'callback' => [ 'Ai', 'generateTruSeoSpelling' ], 'access' => 'aioseo_page_ai_content_settings' ],
+			'ai/deactivate'                                          => [ 'callback' => [ 'Ai', 'deactivate' ], 'access' => 'aioseo_general_settings' ],
 			'htaccess'                                               => [ 'callback' => [ 'Tools', 'saveHtaccess' ], 'access' => 'aioseo_tools_settings' ],
 			'post'                                                   => [
 				'callback' => [ 'PostsTerms', 'updatePosts' ],
@@ -75,6 +84,7 @@ class Api {
 			'post/(?P<postId>[\d]+)/disable-primary-term-education'  => [ 'callback' => [ 'PostsTerms', 'disablePrimaryTermEducation' ], 'access' => 'aioseo_page_general_settings' ],
 			'post/(?P<postId>[\d]+)/disable-link-format-education'   => [ 'callback' => [ 'PostsTerms', 'disableLinkFormatEducation' ], 'access' => 'aioseo_page_general_settings' ],
 			'post/(?P<postId>[\d]+)/update-internal-link-count'      => [ 'callback' => [ 'PostsTerms', 'updateInternalLinkCount' ], 'access' => 'aioseo_page_general_settings' ],
+			'post/(?P<postId>[\d]+)/tru-seo-highlighting'            => [ 'callback' => [ 'PostsTerms', 'updateTruSeoHighlighting' ], 'access' => 'aioseo_page_general_settings' ],
 			'post/(?P<postId>[\d]+)/process-content'                 => [ 'callback' => [ 'PostsTerms', 'processContent' ], 'access' => 'aioseo_page_general_settings' ],
 			'posts-list/load-details-column'                         => [ 'callback' => [ 'PostsTerms', 'loadPostDetailsColumn' ], 'access' => 'aioseo_page_general_settings' ],
 			'posts-list/update-details-column'                       => [ 'callback' => [ 'PostsTerms', 'updatePostDetailsColumn' ], 'access' => 'aioseo_page_general_settings' ],
@@ -86,9 +96,9 @@ class Api {
 			'analyze-headline/delete'                                => [ 'callback' => [ 'Analyze', 'deleteHeadline' ], 'access' => 'aioseo_seo_analysis_settings' ],
 			'analyze/delete-site'                                    => [ 'callback' => [ 'Analyze', 'deleteSite' ], 'access' => 'aioseo_seo_analysis_settings' ],
 			'clear-log'                                              => [ 'callback' => [ 'Tools', 'clearLog' ], 'access' => 'aioseo_tools_settings' ],
-			'connect'                                                => [ 'callback' => [ 'Connect', 'saveConnectToken' ], 'access' => [ 'aioseo_general_settings', 'aioseo_setup_wizard' ] ],
-			'connect-pro'                                            => [ 'callback' => [ 'Connect', 'processConnect' ], 'access' => [ 'aioseo_general_settings', 'aioseo_setup_wizard' ] ],
-			'connect-url'                                            => [ 'callback' => [ 'Connect', 'getConnectUrl' ], 'access' => [ 'aioseo_general_settings', 'aioseo_setup_wizard' ] ],
+			'connect'                                                => [ 'callback' => [ 'Connect', 'saveConnectToken' ], 'access' => [ 'aioseo_setup_wizard' ] ],
+			'connect-pro'                                            => [ 'callback' => [ 'Connect', 'processConnect' ], 'access' => [ 'aioseo_setup_wizard' ] ],
+			'connect-url'                                            => [ 'callback' => [ 'Connect', 'getConnectUrl' ], 'access' => [ 'aioseo_setup_wizard' ] ],
 			'backup'                                                 => [ 'callback' => [ 'Tools', 'createBackup' ], 'access' => 'aioseo_tools_settings' ],
 			'backup/restore'                                         => [ 'callback' => [ 'Tools', 'restoreBackup' ], 'access' => 'aioseo_tools_settings' ],
 			'email-debug-info'                                       => [ 'callback' => [ 'Tools', 'emailDebugInfo' ], 'access' => 'aioseo_tools_settings' ],
@@ -132,18 +142,22 @@ class Api {
 			'sitemap/validate-html-sitemap-slug'                     => [ 'callback' => [ 'Sitemaps', 'validateHtmlSitemapSlug' ], 'access' => 'aioseo_sitemap_settings' ],
 			'tools/delete-robots-txt'                                => [ 'callback' => [ 'Tools', 'deleteRobotsTxt' ], 'access' => 'aioseo_tools_settings' ],
 			'tools/import-robots-txt'                                => [ 'callback' => [ 'Tools', 'importRobotsTxt' ], 'access' => 'aioseo_tools_settings' ],
+			'spell-checker/download-dictionary'                      => [ 'callback' => [ 'SpellChecker', 'downloadDictionary' ], 'access' => 'aioseo_page_analysis' ],
+			'spell-checker/safe-words/add'                           => [ 'callback' => [ 'SpellChecker', 'addSafeWord' ], 'access' => 'aioseo_page_analysis' ],
+			'spell-checker/safe-words/remove'                        => [ 'callback' => [ 'SpellChecker', 'removeSafeWord' ], 'access' => 'aioseo_page_analysis' ],
+			'spell-checker/safe-words/match-case'                    => [ 'callback' => [ 'SpellChecker', 'setSafeWordMatchCase' ], 'access' => 'aioseo_page_analysis' ],
 			'wizard'                                                 => [ 'callback' => [ 'Wizard', 'saveWizard' ], 'access' => 'aioseo_setup_wizard' ],
 			'integration/semrush/authenticate'                       => [
 				'callback' => [ 'Semrush', 'semrushAuthenticate', 'AIOSEO\\Plugin\\Common\\Api\\Integrations' ],
-				'access'   => 'aioseo_page_analysis'
+				'access'   => 'aioseo_general_settings'
 			],
 			'integration/semrush/refresh'                            => [
 				'callback' => [ 'Semrush', 'semrushRefresh', 'AIOSEO\\Plugin\\Common\\Api\\Integrations' ],
-				'access'   => 'aioseo_page_analysis'
+				'access'   => 'aioseo_general_settings'
 			],
 			'integration/semrush/keyphrases'                         => [
 				'callback' => [ 'Semrush', 'semrushGetKeyphrases', 'AIOSEO\\Plugin\\Common\\Api\\Integrations' ],
-				'access'   => 'aioseo_page_analysis'
+				'access'   => 'aioseo_general_settings'
 			],
 			'integration/wpcode/snippets'                            => [
 				'callback' => [ 'WpCode', 'getSnippets', 'AIOSEO\\Plugin\\Common\\Api\\Integrations' ],
@@ -193,12 +207,15 @@ class Api {
 			'ai/insights/reports/(?P<uuid>[a-zA-Z0-9-]+)/process'    => [ 'callback' => [ 'AiInsights', 'processReport' ], 'access' => 'aioseo_ai_insights_settings' ],
 			'ai/insights/reports/(?P<uuid>[a-zA-Z0-9-]+)/regenerate' => [ 'callback' => [ 'AiInsights', 'regenerateReport' ], 'access' => 'aioseo_ai_insights_settings' ],
 			'ai/insights/brand-tracker/subscribe'                    => [ 'callback' => [ 'AiInsights', 'subscribeBrandTracker' ], 'access' => 'aioseo_ai_insights_settings' ],
+			'truseo/posts/(?P<postId>[\d]+)'                         => [ 'callback' => [ 'PostsTerms', 'updatePostTruseo' ], 'access' => 'aioseo_page_analysis' ],
 			'seo-checklist/complete'                                 => [ 'callback' => [ 'SeoChecklist', 'completeCheck' ], 'access' => [ 'aioseo_general_settings', 'aioseo_setup_wizard' ] ],
 			'seo-checklist/uncomplete'                               => [ 'callback' => [ 'SeoChecklist', 'uncompleteCheck' ], 'access' => [ 'aioseo_general_settings', 'aioseo_setup_wizard' ] ],
 			'seo-checklist/bulk-complete'                            => [ 'callback' => [ 'SeoChecklist', 'bulkCompleteChecks' ], 'access' => [ 'aioseo_general_settings', 'aioseo_setup_wizard' ] ],
 			'seo-checklist/bulk-uncomplete'                          => [ 'callback' => [ 'SeoChecklist', 'bulkUncompleteChecks' ], 'access' => [ 'aioseo_general_settings', 'aioseo_setup_wizard' ] ],
 			'seo-checklist/action'                                   => [ 'callback' => [ 'SeoChecklist', 'doAction' ], 'access' => [ 'aioseo_general_settings', 'aioseo_setup_wizard' ] ],
-			'seo-checklist/fetch'                                    => [ 'callback' => [ 'SeoChecklist', 'fetchChecks' ], 'access' => [ 'aioseo_general_settings', 'aioseo_setup_wizard' ] ]
+			'seo-checklist/fetch'                                    => [ 'callback' => [ 'SeoChecklist', 'fetchChecks' ], 'access' => [ 'aioseo_general_settings', 'aioseo_setup_wizard' ] ],
+			'ai-agents/install-mcp-adapter'                          => [ 'callback' => [ 'AiAgents', 'installMcpAdapter' ], 'access' => [ 'install_plugins', 'aioseo_ai_insights_settings' ] ],
+			'ai-agents/generate-app-password'                        => [ 'callback' => [ 'AiAgents', 'generateAppPassword' ], 'access' => 'aioseo_ai_insights_settings' ]
 		],
 		'DELETE' => [
 			'backup'                                      => [ 'callback' => [ 'Tools', 'deleteBackup' ], 'access' => 'aioseo_tools_settings' ],

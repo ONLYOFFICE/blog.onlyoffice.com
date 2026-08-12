@@ -1,0 +1,25 @@
+/* button */
+.dem-button[class]{
+	color: var(--dem-button-color, rgba(255,255,255,.9));
+	text-shadow: #2e7ebd 0 1px 2px;
+	text-align: center;
+	padding: .6em 1em;
+	border: 1px solid;
+	border-color: var(--dem-button-border-color, #60a3d8 #2970a9 #2970a9 #60a3d8);
+	border-radius: 6px;
+	background: var(--dem-button-bg, #60a3d8) linear-gradient(#89bbe2, #60a3d8 50%, #378bce);
+	box-shadow: inset rgba(255,255,255,.5) 1px 1px;
+}
+.dem-button[class]:visited{ color:var(--dem-button-color, rgba(255,255,255,.9)); }
+
+.dem-button[class]:hover {
+	color: var(--dem-button-hover-color, rgb(255,255,255));
+	background: var(--dem-button-hover-bg, #74afdd) linear-gradient(#9dc7e7, #74afdd 50%, #378bce);
+}
+
+.dem-button[class]:active {
+	color: var(--dem-button-hover-color, #ffffff);
+	border-color: var(--dem-button-hover-border-color, #2970a9);
+	background: var(--dem-button-hover-bg, #5796c8) linear-gradient(#5796c8, #6aa2ce);
+	box-shadow: none;
+}

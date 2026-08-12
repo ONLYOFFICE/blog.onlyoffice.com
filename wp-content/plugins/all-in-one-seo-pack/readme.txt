@@ -1,215 +1,176 @@
-=== All in One SEO – Powerful SEO Plugin to Boost SEO Rankings & Increase Traffic ===
+=== All in One SEO – AI SEO Plugin to Boost SEO Rankings & Traffic (Schema, Local SEO, Sitemap & SEO Insights) ===
 Contributors: aioseo, smub, benjaminprojas
-Tags: SEO, Google Search Console, XML Sitemap, meta description, schema
-Tested up to: 6.9
+Tags: SEO, AI, schema, XML Sitemap, redirect
+Tested up to: 7.0.2
 Requires at least: 5.7
 Requires PHP: 7.2
-Stable tag: 4.9.5.1
+Stable tag: 5.0.0.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
-AIOSEO is the most powerful WordPress SEO plugin. Improve SEO rankings and traffic with comprehensive SEO tools and smart AI SEO optimizations!
+AIOSEO is the WordPress SEO plugin. Boost SEO rankings with AI SEO tools, schema, meta descriptions, XML sitemaps & rank tracking.
 
 == Description ==
 
-### AIOSEO - The Best WordPress SEO Plugin & Toolkit ###
+### AIOSEO - The Original AI SEO Plugin for WordPress ###
 
-All in One SEO is the original WordPress SEO plugin started in 2007. Today, over 3 million website owners and SEO experts use AIOSEO for higher SEO rankings.
+All in One SEO is the original WordPress SEO plugin, founded in 2007 and trusted by over 3 million website owners and SEO experts.
 
-Our users consistently rate [AIOSEO](https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'All in One SEO for WordPress') as the most comprehensive WordPress SEO plugin and marketing toolkit. It's the fastest way to optimize WordPress SEO settings, add schema markup, create XML sitemap, add local SEO, track SEO keyword rankings, automate internal linking, perform SEO audits, add Author SEO (EEAT), monitor SEO revisions, connect Google search console, and basically everything a SEO Pro would use to rank higher in search engines.
+[AIOSEO](https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'All in One SEO for WordPress') is a complete AI SEO plugin and marketing toolkit. Use it to optimize WordPress SEO settings, write and optimize content with AI, add schema markup, create XML sitemaps, add local SEO, track keyword rankings, automate internal linking, manage redirects, perform SEO audits, add Author SEO (EEAT), monitor SEO revisions, connect Google Search Console, and everything else an SEO Pro needs to rank higher in search engines.
 
-We have AI SEO features that help you optimize your posts for SEO by automatically generating SEO titles, meta descriptions, FAQs, key points, social media posts, and more.
+AIOSEO brings AI into every step of your SEO workflow. Generate SEO titles, meta descriptions, FAQs, images, and full articles with the built-in AI Content Generator, create schema markup with AI, and let AI agents like Claude and Gemini connect to your site to read and update its SEO through our built-in MCP server and WordPress Abilities API. AIOSEO is the AI SEO plugin built for how search works today, including AI search engines like ChatGPT, Google AI Overviews, and Perplexity.
 
 > <strong>AIOSEO Pro</strong><br />
-> This is the lite version of the All in One WordPress SEO Pro plugin that comes with all the powerful SEO features you will ever need to rank higher in search engines including **smart SEO schema markup, advanced SEO modules, powerful SEO sitemap suite, local SEO module, SEO keyword ranking tracking, automatic internal linking, WooCommerce SEO**, and tons more. [Click here to purchase the best premium WordPress SEO plugin now!](https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'All in One SEO for WordPress')
-
-Here's why smart business owners, SEO experts, marketers, and developers love AIOSEO, and you will too!
+> This is the lite version of the All in One SEO Pro plugin that comes with all the SEO features you need to rank higher in search engines, including **AI content and image generation, smart SEO schema markup, advanced SEO modules, the XML sitemap suite, local SEO module, keyword rank tracking, automatic internal linking, redirection manager, WooCommerce SEO**, and tons more. [Click here to get AIOSEO Pro and unlock all premium WordPress SEO features!](https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'All in One SEO for WordPress')
 
 [youtube https://youtu.be/UbOYEEIvXvY]
 
-### What Makes AIOSEO Better than Other WordPress SEO Plugins ###
+### Trusted by Over 3 Million Websites ###
 
-AIOSEO is leading the innovation in WordPress SEO space, and our SEO features will give you a competitive advantage.
+From bloggers to agencies to large eCommerce stores, AIOSEO holds a 4.7 out of 5 star rating from over 5,000 reviews and is built by the team behind WPForms, MonsterInsights, and OptinMonster.
 
-* **Easy SEO Setup Wizard**
-Our SEO setup wizard optimizes your website's SEO settings based on your unique industry needs in less than 5 minutes.
+### AI SEO: Write and Optimize Content with AI ###
 
-* **Smart Schema Markup (aka Rich Snippets)**
-Get better click through rate (CTR) and Google rich featured snippets using advanced SEO schema markups like FAQ schema, product schema, recipe schema markup, and dozens more using our custom [Schema Generator](https://aioseo.com/features/rich-snippets-schema/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'Schema Generator').
+AIOSEO puts a complete AI SEO toolkit inside WordPress, so you can create optimized content faster and win at both traditional SEO and generative engine optimization (GEO) for AI search engines like ChatGPT.
 
-* **AI Content**
-Create anything you need, such as blog articles and tables, with our AI Assistant block. Generate stunning visuals instantly with the built-in AI Image Generator. Save time by automatically generating SEO titles, meta descriptions, FAQs, key points, social media posts, and more with our [AI Content Generator](https://aioseo.com/features/ai-content/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'AI Content').
+* **AI Content Generator**
+Break through writer's block and publish faster. Generate SEO titles, meta descriptions, FAQs, image alt text, and full articles in seconds with the built-in [AI Content Generator](https://aioseo.com/features/ai-content/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'AI Content'), and write or rewrite content right inside the editor with the AI Assistant block. Bulk AI actions handle titles, descriptions, and alt text across many posts at once.
 
-* **Unlimited SEO Keywords**
-Optimize for unlimited SEO keywords using our SEO content analyzer. Our TruSEO score gives you detailed content & readability analysis, so you can get higher SEO rankings.
+* **AI Image Generator**
+Create unique, on-brand images for your posts on demand with the built-in AI Image Generator, so you never have to pay for stock photos or open a design tool.
 
-* **Google Keyword Rank Tracking**
-Easily track how your website is ranking for different keywords in Google from your [WordPress dashboard](https://aioseo.com/features/search-statistics/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'Google Keyword Rank Tracker').
+* **AI Schema Generator**
+Generate accurate structured data with AI using smart analysis and custom prompts, so you win rich snippets without learning schema or writing a line of code.
 
-* **Automatic Link Assistant**
-Automate internal links between your pages using our smart [internal linking algorithm](https://aioseo.com/features/internal-link-assistant/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'Link Assistant') that will help improve on-page SEO.
+* **AI Agents & Built-in MCP Server**
+Manage your SEO just by chatting with AI. AIOSEO includes an MCP server and WordPress Abilities API support, so agents like Claude and Cursor can connect to your site and read, audit, and update its SEO data directly.
+
+* **Generative Engine Optimization (GEO)**
+Get found in AI search, not just Google. Generative engine optimization (GEO) is the new frontier of SEO, and AIOSEO generates an llms.txt file so AI engines like ChatGPT, Google AI Overviews, and Perplexity can discover your content and surface it in their answers.
+
+* **AI Search Rank Tracking**
+Track how your brand and content show up across AI search (ChatGPT, Google AI Overviews, and other engines) with our AI Insights keyword report, so you can see whether AI is putting you in front of customers and improve it.
+
+### What Makes AIOSEO Better than Yoast, Rank Math and SEOPress? ###
+
+Our SEO features give you a competitive advantage over other WordPress SEO plugins like Yoast, Rank Math and SEOPress.
+
+* **Redirection Manager**
+Stop broken links and dead pages from quietly costing you traffic and rankings. Our [Redirection Manager](https://aioseo.com/features/redirection-manager/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'Redirection Manager') automatically monitors and logs 404 errors, fixes them, and safely redirects old or changed URLs (or your whole site when you move domains) so you keep the SEO value you have already earned.
 
 * **Local Business SEO**
-Improve your local SEO presence with local business schema, support for multiple local store locations, business opening hours, Google Maps integration, contact info (business email, business phone, business address, etc), and more with our [Local SEO module](https://aioseo.com/features/local-seo/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'Local SEO').
+Rank higher on Google Maps and win customers away from your local competitors. Add your business hours, multiple locations, and contact details so Google can surface your phone number, email, and address in its Knowledge Panel and customers can reach you, all with our [Local SEO module](https://aioseo.com/features/local-seo/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'Local SEO').
 
-* **Site Audit**
-Get a detailed report of SEO issues for all posts and terms on your site, discover why these issues are important and how you can fix them.
+* **Smart Schema Markup (aka Rich Snippets)**
+Stand out in the search results and win more clicks with eye-catching rich snippets like star ratings, FAQs, prices, and recipes. Add FAQ, product, recipe, WooCommerce product, and dozens more schema types without touching code, plus the Organization and Person schema that power your Google Knowledge Graph panel, using our custom [Schema Generator](https://aioseo.com/features/rich-snippets-schema/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'Schema Generator').
 
-* **SEO Revisions**
-Keep a [historical record of SEO changes](https://aioseo.com/seo-revisions/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'SEO Revisions'), monitor the impact of changes, and restore previous versions in one click.
+* **Google Keyword Rank Tracking**
+Know exactly where you rank and what to work on next. Track your Google keyword positions over time right inside your [WordPress dashboard](https://aioseo.com/features/search-statistics/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'Google Keyword Rank Tracker'), import keywords from Google Search Console, and uncover related keywords and new ranking opportunities with our Search Statistics module.
 
-* **Content Decay Tracking**
-Never lose traffic to competitors. Quickly detect which content is losing traffic / SEO rankings, so you can optimize it to regain your rankings with our [Search Statistics module](https://aioseo.com/features/search-statistics/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'Search Statistics').
+* **Author SEO (Google E-E-A-T)**
+Build the author authority that Google rewards. Add [author profile pages, bio boxes, and author schema](https://aioseo.com/features/author-seo-google-e-e-a-t/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'Author SEO (E-E-A-T)') that strengthen your E-E-A-T signals, a trust factor that helps you rank and stay resilient through Google's Helpful Content updates.
+
+* **AI Link Assistant**
+Keep visitors on your site longer and send ranking power to the pages that matter most. Get smart internal link suggestions automatically and add them in a couple of clicks with our [internal linking algorithm](https://aioseo.com/features/internal-link-assistant/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'Link Assistant').
+
+* **Unlimited Keywords**
+Write content that actually ranks. Optimize for unlimited focus keywords with our TruSEO content analysis, which scores your on-page SEO and content readability and shows you exactly what to fix to climb the rankings.
 
 * **Smart XML Sitemap**
-Advanced XML sitemaps to boost your SEO rankings (with easy setup inside Google Search Console). Also includes Video SEO XML sitemap, News SEO XML sitemap, RSS sitemap, and HTML sitemap.
+Get your content discovered and indexed faster. Advanced XML sitemaps hand search engines a clear roadmap of your site (with one-click Google Search Console setup), plus a Video sitemap, News sitemap, RSS sitemap, and HTML sitemap.
 
-* **404 Error Monitor**
-Automatic 404 error monitor helps you track and redirect 404 errors, so you don't lose SEO rankings.
+* **Site Audit & SEO Checklist**
+Find out exactly what is holding your rankings back. Get a full audit of every post and term, plus a step-by-step SEO checklist, with clear, prioritized fixes you can act on right away.
 
-* **Author SEO**
-Add [custom author profile pages, author bio box, and relevant author schema](https://aioseo.com/features/author-seo-google-e-e-a-t/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'Author SEO (E-E-A-T)') to boost Google EEAT score to help with Google's Helpful Content Update (HCU).
+* **SEO Revisions**
+Never wonder whether an SEO change helped or hurt. Keep a [full history of your SEO changes](https://aioseo.com/seo-revisions/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'SEO Revisions'), see their impact over time, and roll back to any previous version in one click.
 
-* **LLMs.txt Generator**
-Generate an llms.txt file to help AI engines discover your site's content more easily so your content can rank in AI search results.
-
-* **SEO Audit Checklist**
-Improve your SEO ranking with our comprehensive SEO audit checklist.
-
-* **Knowledge Graph Support**
-Improve your website's search appearance with SEO Knowledge panel.
-
-* **Table of Contents**
-Automatically generate a table of content, customize headings, anchors, and you can also hide or reorder the headings.
-
-### Advanced SEO Plugin Features ###
-
-* **User Access Control**
-Control who can manage your SEO settings with our advanced SEO access control.
-
-* **WordPress REST API**
-Manage your SEO metadata with WordPress REST API. Great for headless WordPress installations.
-
-* **Advanced Robots Meta SEO Settings**
-Granular controls for no index, no follow, no archive, no snippet, max snippet, max video, etc.
-
-* **RSS Content for SEO**
-Stop content scraping from hurting your SEO rankings.
-
-* **Full Site Redirects**
-Merging websites or switching domains? Full site redirect makes it easy to switch domains without losing SEO rankings.
-
-* **Smart Meta Title & Description**
-Automatic SEO generation, dynamic SEO smart tags, include Emoji, add shortcodes, and more features to stand out in search results.
-
-* **Smart Breadcrumbs**
-Add Breadcrumb navigation to improve user experience and boost your SEO rankings. Comes with full SEO JSON+LD support.
+* **Content Decay Tracking**
+Catch declining content before it costs you traffic. Spot which pages are losing rankings and visits so you can refresh them and win that traffic back, with our [Search Statistics module](https://aioseo.com/features/search-statistics/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin 'Search Statistics').
 
 * **Automatic Image SEO**
-Helps your images rank higher by autogenerating image title, clean SEO image filenames, and more.
+Get more traffic from Google Images with zero manual work. Generate image alt text with AI, plus automatic image titles and clean SEO filenames.
 
-* **Advanced SEO Canonical URLs**
-Prevent duplicate content in SEO with automatic canonical URLs.
+* **Smart Breadcrumbs**
+Give visitors and Google an easy path through your site, and earn breadcrumb links in search results, with full JSON-LD schema support.
 
-* **SEO Cleanup / Manual SEO Penalty Removal**
-Domains Report feature in Link Assistant automatically removes all links for specific domains with just one click. Huge time saver when doing SEO cleanups.
+* **Robots.txt Editor & Robots Meta**
+Control what search engines crawl and index, right from WordPress: edit your robots.txt and set per-page robots meta tags (noindex, nofollow, no archive, max snippet, and more), with no FTP or code needed.
 
-* **Link Opportunities Report**
-See better internal link opportunities with our smart algorithm. Easily add internal links with just a few clicks.
+* **Table of Contents**
+Help readers and Google navigate your content, and earn jump-to links in the search results. Automatically generate a table of contents with our redesigned block (with multi-block and accordion layouts), and customize, hide, or reorder headings.
 
-* **Robots.txt Editor**
-Manage and customize SEO robots.txt files in WordPress.
+### Who Is AIOSEO For? ###
 
-* **Crawl Quota Management**
-Crawl Cleanup feature manages your search engine crawl quota and index your important content faster.
+SEO matters for every website, and AIOSEO is built for all of them:
 
-* **Title and Nofollow for SEO**
-Easily add title and nofollow to external links.
+* **Business owners & bloggers** who want higher rankings without hiring an SEO expert.
+* **eCommerce & WooCommerce stores** optimizing product pages and categories for more sales.
+* **Marketers & SEO agencies** managing SEO across one site or hundreds of client sites.
+* **Local businesses** that want to show up in local search and Google Maps.
+* **Developers** who want REST API access, headless support, and granular SEO control.
 
-* **Headline Analyzer**
-Analyze your page / posts headlines to improve CTR and SEO rankings.
+### Multilingual SEO ###
 
-* **Competitor Site SEO Analysis**
-Use competitor SEO analysis to outrank them with better SEO optimization.
-
-* **SEO Code Snippets**
-Integration with [WPCode plugin](https://wordpress.org/plugins/insert-headers-and-footers/) for SEO code snippets to further customize every aspect of your SEO.
-
+Running a multilingual website? AIOSEO is built for it. Generate a multilingual XML sitemap so Google indexes every language of your content, and keep your titles, meta descriptions, and schema correct across every translation. AIOSEO works with WPML, Weglot, and other multilingual plugins so each translated page is fully optimized for search.
 
 ### WordPress SEO Integrations ###
 
-* **Google Search Console Integration**
-Connect with Google webmaster tools and Google Search Console to see SEO insights (like content rankings, keyword rankings, page speed insights, post index status, etc) directly in your WordPress dashboard.
+* **Google Search Console** — keywords, clicks, rankings, and index status inside your WordPress dashboard.
+* **WooCommerce SEO** — optimize WooCommerce product pages and categories to rank in Google and convert.
+* **Social Media & Open Graph** — Facebook, Twitter, and Pinterest previews, Open Graph data, and a Google Knowledge Panel from your profiles.
+* **Webmaster Tools** — Google Search Console, Bing, Yandex, Baidu, Google Analytics, and Pinterest verification.
+* **Google AMP SEO** — better mobile SEO for your AMP pages.
+* **Semrush** — pull additional SEO keyword data into AIOSEO.
+* **SEOBoost Writing Assistant** — content briefs and recommendations to help you outrank competitors.
+* **Microsoft Clarity** — heatmaps and session recordings of visitor behavior.
+* **IndexNow** — instantly notify Bing and Yandex for faster indexing.
+* **Page Builder SEO** — Elementor, Bricks, Oxygen, Divi, Avada, WP Bakery, SeedProd, and SiteOrigin.
+* **Block & Classic Editor** — full SEO controls in the Gutenberg block editor and the Classic Editor metabox.
+* **ACF & Custom Fields** — pull Advanced Custom Fields content into your SEO analysis, smart tags, and schema.
 
-* **WooCommerce SEO**
-Improves your WooCommerce SEO rankings. Easily optimize WooCommerce product pages, product categories, and more for best eCommerce SEO results.
+### Switch from Yoast, Rank Math or SEOPress in Minutes ###
 
-* **Knowledge Panel SEO**
-Improve website SEO appearance by adding social media profile links for Facebook, Twitter, Wikipedia, Instagram, LinkedIn, Yelp, YouTube, and more.
+Moving from another SEO plugin? Users switch to AIOSEO for its built-in AI SEO tools, easy setup wizard, and features like the Redirection Manager, Link Assistant, and keyword rank tracking. Our point-and-click importer brings your titles, meta descriptions, and settings over intact, so you can switch in minutes. It imports from:
 
-* **Webmaster Tool Integrations**
-Connect with all webmaster tools including Google Search Console, Bing SEO, Yandex SEO, Baidu SEO, Google Analytics, Pinterest site verification, and more.
-
-* **Social Media Integration**
-Facebook SEO, Twitter SEO, and Pinterest SEO with better website previews.
-
-* **Google AMP SEO Integration**
-Improve your mobile SEO rankings with Google AMP SEO.
-
-* **Semrush SEO integration**
-See additional SEO keywords with Semrush SEO integration.
-
-* **Microsoft Clarity Integration**
-See visitor interactions with heatmaps and session recordings.
-
-* **IndexNow Integration**
-Instantly notify Bing and Yandex for faster SEO indexing.
-
-* **Elementor SEO**
-Better Elementor SEO for landing pages.
-
-* **Divi SEO**
-Better Divi SEO for landing pages.
-
-* **Avada SEO**
-Better Avada SEO for landing pages.
-
-* **WP Bakery SEO**
-Better WP Bakery SEO for landing pages.
-
-* **SeedProd SEO**
-Optimize SeedProd landing pages for SEO.
-
-* **SiteOrigin SEO**
-Better SiteOrigin SEO for landing pages.
-
-* **Open Graph Support**
-Improve SEO rankings with open graph meta data.
-
-### WordPress SEO Plugin Importer ###
-
-Not happy with your current SEO plugin? We make SEO migration easy with our point-and-click automated SEO data transfer tool. We currently support SEO migration from following SEO tools:
-
-* Yoast SEO Importer
-* Yoast SEO Premium Importer
-* RankMath SEO Importer
+* Yoast SEO & Yoast SEO Premium
+* Rank Math (RankMath)
 * SEOPress
 
-We also support importing SEO redirects from the following plugins:
+It also imports redirects from the Redirection, Simple 301 Redirects, Safe Redirect Manager, and 301 Redirects plugins, and lets you import/export AIOSEO settings, create a backup, and bulk-import pages to your XML sitemap via CSV.
 
-* Redirection Plugin
-* Simple 301 Redirects Importer
-* Safe Redirect Manager
-* 301 Redirects Importer
+### Full All in One SEO Feature List ###
 
-Aside from that, our SEO migration tool also helps you with:
+* [SEO Setup Wizard](https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - configure your WordPress SEO settings in under 5 minutes.
+* [TruSEO On-Page Analysis](https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - real-time content analysis and readability scoring for unlimited focus keywords.
+* [AI Content Generator](https://aioseo.com/features/ai-content/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - generate SEO titles, meta descriptions, FAQs, and full articles with AI content tools.
+* [AI Image Generator](https://aioseo.com/features/ai-content/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - create optimized images for your posts on demand.
+* [Smart Schema Markup](https://aioseo.com/features/rich-snippets-schema/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - add schema markup and rich snippets (FAQ, product, recipe, and more) without code.
+* [Headline Analyzer](https://aioseo.com/headline-analyzer/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - the Headline Analyzer scores your post headlines to improve CTR and SEO rankings.
+* [Keyword Rank Tracker](https://aioseo.com/features/search-statistics/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - track Google keyword rankings and import keywords from Google Search Console.
+* [Local SEO](https://aioseo.com/features/local-seo/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - local business schema, multiple locations, opening hours, and Google Maps for local SEO.
+* [Smart XML Sitemap](https://aioseo.com/features/smart-xml-sitemaps/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - advanced XML sitemap with Video sitemap, News sitemap, RSS sitemap, and HTML sitemap.
+* [Link Assistant](https://aioseo.com/features/internal-link-assistant/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - automatic internal linking suggestions to improve on-page SEO.
+* [Redirection Manager](https://aioseo.com/features/redirection-manager/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - manage redirects, fix 404 errors, and set up 301 redirect rules or full-site redirects.
+* [Smart Breadcrumbs](https://aioseo.com/features/breadcrumbs/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - breadcrumb navigation with full JSON-LD breadcrumb schema for better SEO.
+* [Robots.txt Editor](https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - edit your robots.txt file and per-page robots meta tags from WordPress.
+* [SEO Canonical URLs](https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - automatic canonical URLs and per-post canonical tags to prevent duplicate content.
+* [Image SEO](https://aioseo.com/features/image-seo/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - automatic image alt text, image titles, and clean SEO filenames.
+* [Author SEO (E-E-A-T)](https://aioseo.com/features/author-seo-google-e-e-a-t/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - author profile pages, bio boxes, and author schema to strengthen E-E-A-T.
+* [SEO Revisions](https://aioseo.com/seo-revisions/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - track your SEO changes over time and roll back in one click.
+* [Site Audit Checklist](https://aioseo.com/features/seo-audit-checklist/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - full site audit and SEO audit with prioritized, actionable fixes.
+* [Open Graph & Social](https://aioseo.com/features/social-media-integration/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - Open Graph data and social previews for Facebook, Twitter, and Pinterest.
+* [WooCommerce SEO](https://aioseo.com/features/woocommerce-seo/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - optimize WooCommerce product pages and categories for eCommerce SEO.
+* [Google Search Console](https://aioseo.com/features/search-statistics/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - see Google Search Console keywords, clicks, and index status in your dashboard.
+* [Elementor SEO](https://aioseo.com/features/page-builder-integration/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - Elementor SEO controls and TruSEO analysis inside the Elementor page builder.
+* [Gutenberg & Classic Editor](https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - full SEO controls in the Gutenberg block editor and the Classic Editor.
+* [ACF & Custom Fields](https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - pull ACF and custom fields content into your SEO analysis, smart tags, and schema.
+* [WPML & Multilingual SEO](https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - multilingual SEO with WPML support and a multilingual XML sitemap.
+* [llms.txt Generator](https://aioseo.com/features/llms-txt-generator/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - generate an llms.txt file for generative engine optimization in AI search.
+* [IndexNow](https://aioseo.com/features/indexnow/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - instantly notify Bing and Yandex for faster indexing.
+* [Table of Contents](https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) - automatic table of contents block with customizable headings.
 
-* Import / Export AIOSEO settings from one site to another
-* Create SEO Settings Backup
-* CSV Sitemap Import to Import additional pages to your XML Sitemaps
-
-
-**Now you can see why AIOSEO is often rated the best SEO plugin in WordPress.**
+**Now you can see why over 3 million website owners trust AIOSEO to grow their search traffic.**
 
 Give AIOSEO a try.
 
@@ -231,143 +192,61 @@ AIOSEO&reg; is a registered trademark of Semper Plugins LLC. When writing about 
 
 == Changelog ==
 
-**New in Version 4.9.5.1**
+**New in Version 5.0.0.1**
 
-* Fixed: Improved title output buffering compatibility with themes that don't declare title-tag support.
-* Fixed: AI credits refresh button now preserves the connection state for manually connected Lite users.
+- Updated: Made Search Appearance and Social Appearance cards in metabox collapsible.
+- Fixed: Focus keyword and additional keywords sometimes not appearing in TruSEO after 5.0.0 update.
+- Fixed: Resurfaced missing product ID, SKU and image alt text checks in TruSEO.
 
-**New in Version 4.9.5**
+**New in Version 5.0.0**
 
-* Updated: TruSEO analysis content parser for better compatibility.
-* Updated: Added custom field smart tag support to the Schema Review Author field.
-* Updated: Restored the "Download Sample CSV File" link and import instructions on the Redirects Import/Export screen.
-* Updated: Database table information is now included in the System Status tool and system information exports.
-* Updated: Added a size-based log cleanup mechanism to prevent performance issues with large Redirects and 404 log tables.
-* Fixed: SEO Checklist's "Delete Hello World" task no longer suggests deleting repurposed WordPress sample posts.
-* Fixed: Post archive sitemap returning empty content when sitemap indexes are enabled.
-* Fixed: Import/Export now list all sites instead of only 20 on Multisite Networks.
-* Fixed: LLMs.txt button URLs pointing to wrong location on non-standard WordPress installations.
-* Fixed: Bricks Builder ACF Relationship query loops returning no results when AIOSEO is active.
-* Fixed: Improved performance of sitemap taxonomy queries for sites with large numbers of terms.
-* Fixed: Posts with different or external Canonical URLs are now excluded from the sitemap.
-* Fixed: Posts and terms with custom canonical URLs are now excluded from XML sitemaps.
-* Fixed: TOC block triggering "unsaved changes" warning even without any changes.
-* Fixed: Warnings in ProfilePage schema.
-* Fixed: URL count mismatch between root sitemap index and date sitemap.
-* Fixed: Fatal error when editing posts with corrupt breadcrumb settings.
-* Fixed: Local SEO Opening Hours time dropdowns not updating to 24h format when toggling "Use 24h Format".
-* Fixed: Console warning about navigation throttling when using SiteOrigin Page Builder.
-* Fixed: SEO Analyzer database error when focus keywords contain double quotes.
-* Fixed: Rare cases where scheduled actions were duplicated.
-* Fixed: AI access token sometimes failing to be fetched.
-* Fixed: PHP warning when analyzing a one-word title starting with the question word in Headline Analyzer.
+- New: TruSEO just got a major revamp — it's smarter, faster, supports 10+ new languages and has a new modern UI.
+- New: TruSEO Highlighter revamp — an improved editor highlighter that flags issues TruSEO found, working seamlessly across the Block Editor and Classic Editor (page builder support coming soon!).
+- New: Spell checker - automatically detect spelling mistakes directly in the editor as you write and fix them instantly.
+- New: Optimize posts with AI - let our smart AI assistant automatically optimize your post for SEO by improving your SEO title, meta description, headline, keyword checks and spelling mistakes in just one click!
+- New: Actionable AI-powered fixes for TruSEO — let AI help you rewrite sentences or paragraphs to fix readability and SEO issues in your content.
+- Updated: AIOSEO blocks to add support for WordPress 6.3+ iFrame editor.
+- Fixed: MCP setup snippets for Claude Desktop, Cursor, and Gemini CLI so the connection no longer fails.
 
-**New in Version 4.9.4.2**
+**New in Version 4.9.10**
 
-* Updated: Improved scheduled action scheduling to prevent duplicate actions.
-* Updated: Improved request handling with concurrency guards and caching to reduce outbound request volume.
-* Updated: Added transient fallback mechanism for caching in case aioseo_cache table doesn't exist.
+- New: Added a new ability to list terms that are missing SEO data.
+- Fixed: PHP 8.5 deprecation notice when decoding HTML entities from empty content.
+- Fixed: High CPU usage caused by the translations check on sites with large user tables.
+- Fixed: Fatal error in breadcrumbs on PHP 8 when a third-party plugin added an invalid entry to the breadcrumb trail.
+- Fixed: PHP error in redirects when a request URL contained array-style (bracketed) query parameters.
+- Fixed: Keyword density displaying "Infinity%" in the TruSEO analysis when the content had no readable text (e.g. some Divi pages in the block editor).
+- Fixed: Various security hardening improvements across the plugin.
 
-**New in Version 4.9.4.1**
+**New in Version 4.9.9**
 
-* Fixed: Smart tags sometimes not inserting into attached text area.
-
-**New in Version 4.9.4**
-
-* New: SEO Checklist - Our new checklist helps you get your site's SEO properly configured, with prioritized tasks that automatically complete as you configure settings and fix issues.
-* Updated: Menu pages and many other libraries are now lazy-loaded, significantly reducing the initial page load time.
-* Fixed: PHP warning in SEO Analyzer when URL does not have a valid path.
-
-**New in Version 4.9.3**
-
-* Updated: Added a new filter to disable the AI Assistant block and extensions.
-* Updated: Added new filters to customize the LLMs title and description.
-* Updated: Added review support to Book and Event schema types for rich search results.
-* Updated: Hardened API routes to prevent AI access token from being exposed.
-* Updated: Removed the "New feature" alert for Keyword Rank Tracker.
-* Updated: Incorrect link in the Add Focus Keyword button of Site Audit.
-* Updated: Refactored WPBakery page builder integration for improved maintainability.
-* Updated: Table of Contents script now only loads if the TOC block is present on the page.
-* Updated: Added input sanitization for editable fields in the post details column.
-* Fixed: Console errors when trying to edit a template with Site Editor.
-* Fixed: Duplicate entries in the Search Statistics objects table caused by inconsistent path hashing.
-* Fixed: Improved sitemap generation for custom post types and custom taxonomies.
-* Fixed: Javascript TypeError when expanding certain Site Audit issue rows in SEO Analysis.
-* Fixed: AI Image Generator now correctly detects aspect ratio when editing portrait or square images.
-* Fixed: Console errors that occurred when users without proper permissions attempted to publish or update posts.
-* Fixed: PHP fatal error when accessing sitemaps for Custom Post Types with slugs matching internal method names.
-* Fixed: SEO plugin imports (Yoast, Rank Math, SEOPress) now only process posts and terms with existing data, improving performance and preventing unnecessary database growth.
-
-**New in Version 4.9.2**
-
-* New: Page Builder Integrations for Bricks & Oxygen - You can now seamlessly control your SEO settings directly within the visual builders of Bricks and Oxygen and analyze their content with TruSEO.
-* Fixed: Browser alert incorrectly appearing in Classic Editor after page reload when Focus Keyword is set.
-
-**New in Version 4.9.1.1**
-
-* New: Users using AIOSEO, Broken Link Checker and Link Assistant now see their broken links count in the AIOSEO Details post column.
-* Updated: Compatibility with WordPress 6.9.
-* Updated: Various database performance improvements.
-* Updated: Hardened database queries against SQL attacks.
-* Fixed: Redirects would no longer work for AIOSEO Pro users on discontinued plans.
-* Fixed: AI Assistant shortcut no longer shown for paragraph blocks that are nested under a parent block.
-
-**New in Version 4.9.1**
-
-* New: AI Insights - Our new AI-powered Keyword Report tool lets you see which brands are ranking for search queries in AI search results. Now 100% free for a limited time only!
-* New: Basic & Plus plan AIOSEO Pro users can now create redirects and control HTTP headers!
-* Updated: Switched from PHP serialization to JSON for caching to prevent cache misses due to charset mismatches.
-* Updated: Translations are no longer fetched when the site and all users are using the English locale.
-* Updated: Latest available date for Google Search Console data is now fetched in the background.
-* Updated: Improved error handling and performance for Semrush integration.
-* Updated: Added a filter to customize the Site Audit scan interval.
-* Updated: Added new shortcuts to the AI Assistant block to tweak content length, structure and tone.
-* Updated: Improved HTML parsing for Site Audit.
-* Fixed: Smart tag names now correctly refer to the current post type.
-* Fixed: Some multisite network admins were unable to analyze competitor URLs in SEO Analysis.
-* Fixed: Browser "unsaved changes" alert now properly triggers when SEO settings are modified in post editor.
-* Fixed: Styling for breadcrumb separator settings in Thrive Architect page builder.
-* Fixed: Incorrect character count calculation for the Product Short Description smart tag.
-* Fixed: PHP warnings triggered when Search Statistics processed incomplete or malformed data from Google Search Console.
-* Fixed: Conflict with the Pro Mail SMTP plugin causing some AIOSEO fields to be inaccessible.
-* Fixed: TruSEO was not detecting links present in the FAQ Block.
-* Fixed: Video sitemap scan now properly handles numeric post IDs when triggered by WP Cron, preventing posts from being skipped during automated scans.
-* Fixed: PHP warning shown on the custom login page of Theme My Login plugin when AIOSEO was active.
-* Fixed: Scheduled actions for clearing redirect logs failing due to unregistered callbacks.
-* Fixed: Some users not being able to access Redirect menu in Lite.
-
-**New in Version 4.9.0**
-
-* New: Table of Contents Block 2.0 - Our revamped Table of Contents block now supports multiple blocks on the same page, with a standalone or synced mode. We also added accordion support so you can collapse or expand it.
-* New: Recipe Block - Highlight your best recipes with a new block that also comes with schema markup to get your recipes featured in search results.
-* New: Products Block - Showcase your products with granular controls and Product schema markup to drive more organic traffic to your page.
-* Fixed: Rare PHP error when action scheduler arguments are not a JSON object.
-* Fixed: DB lock issue when checking table schema in MariaDB.
-
-**New in Version 4.8.9**
-
-* Updated: Improved user permission checks to display Site Audit action buttons.
-* Updated: Added filter to disable AI Image Generator buttons in the block editor.
-* Fixed: Conflict with Avada theme where post content was disappearing in backend editor.
-* Fixed: Elementor Side Cart automatically opening even when the cart is empty on single product pages.
-* Fixed: Category title missing from meta descriptions on new sites.
-* Fixed: Redundant schema queries when database schema cache fails to update.
-* Fixed: JS error when accessing string offsets in SEO revisions data processing.
-* Fixed: Keyword Rank Tracker button broke in the Post editor if the Spectra or Starter Templates plugin was activated.
-* Fixed: Homepage meta description character counter breaks when the site is set as an Organization.
-* Fixed: New feature popups rendering outside the viewport on smaller screens.
-
-**New in Version 4.8.8**
-
-* New: AI Assistant Block - Generate any type of content right inside the post editor: blog articles, summaries, comparison tables, and more. Whatever you need, the AI Assistant block makes it happen.
-* New: AI Image Generator - Instantly create eye-catching visuals for your posts and use them anywhere—from featured images to inline content. You can even edit existing images to give them a unique twist.
-* New: LLMs.txt Improvements – The new llms-full.txt file makes it easy for AI engines to index your site without overloading your server. We’ve also added post-to-Markdown conversion and new settings to control exactly what content gets included.
-* Updated: All existing AI Content features have been made compatible with all our supported page builders. You can now auto-generate SEO titles, meta descriptions, FAQs, keypoints and social posts directly inside Elementor, Divi, SeedProd, Avada, WPBakery, SiteOrigin and Thrive Architect!
-* Updated: The llms.txt file is now generated as a static file, removing the need for rewrite rules (e.g. on WP Engine).
-* Updated: Moved llms.txt under Sitemaps menu.
-* Fixed: Site Audit sometimes not showing results when all content types are included.
-* Fixed: PHP error when Site Audit cannot scan post due to uninstantiated social class.
-* Fixed: PHP error when dashboard widget failed to fetch RSS news feed.
+* New: SEO Alerts feature to notify site owners of critical SEO issues via email and Slack.
+* New: New `#event_start_date` and `#event_end_date` smart tags for events when The Events Calendar plugin is active.
+* Updated: Sitemap hreflang alternates when using the Universally translation plugin.
+* Updated: .htaccess editor error messages are now clearer and more actionable.
+* Updated: Setup wizard now triggers after bulk plugin activation instead of being skipped.
+* Updated: Improved the posts-list URL Inspection status with clearer messages and a Refresh Status action.
+* Fixed: PHP 8.2+ dynamic property creation deprecation notice when loading addons.
+* Fixed: PHP 8.5 deprecation notice when generating descriptions from classic or freeform post content.
+* Fixed: Elementor's internal post type was included in LLMs.txt by default.
+* Fixed: Primary Category dropdown was clipped when WooCommerce was active.
+* Fixed: PHP warnings on taxonomy archives when get_queried_object() returned a WP_Post_Type.
+* Fixed: Fatal error on the WordPress dashboard when the SEO News widget returned an unexpected response.
+* Fixed: Divi 5+ layouts displaying stray borders, padding, or alignment issues when AIOSEO Pro is active.
+* Fixed: PHP warning in sitemap generation for sitemap types that don't support taxonomies.
+* Fixed: Multisite sub-sites with "Discourage search engines from indexing this site" enabled were missing from the Domain Activation list in Network Admin.
+* Fixed: Console errors in the Avada Frontend Editor during initialization.
+* Fixed: PHP warning in Social Networks image handling on non-singular pages.
+* Fixed: REST API clients can now update the custom canonical using the snake_case field name in addition to the camelCase version.
+* Fixed: WooCommerce Product schema's valueAddedTaxIncluded now reflects the store's actual tax configuration, and is omitted when taxes are disabled.
+* Fixed: Editing a page via the Classic Editor could show another post's content when a third-party page builder ran a post loop on the same page.
+* Fixed: Site Audit scan fatal error on servers where the PHP intl extension is not installed.
+* Fixed: A conflict where third-party plugins filtering could rename the generated llms.txt or llms-full.txt files.
+* Fixed: Opening the redirect modal from the side panel when the Metabox Redirects tab is active.
+* Fixed: Regex redirects no longer produce double slashes mid-path when a capture group matches an empty string.
+* Fixed: Regex redirects for media files.
+* Fixed: Regex redirects producing a double trailing slash when the target URL contains a capture group placeholder.
+* Fixed: Keyword Cannibalization checker was displaying private posts in the results list.
 
 **See our [changelog on aioseo.com](https://aioseo.com/changelog/?utm_source=wprepo&utm_medium=link&utm_campaign=aioseo) for previous releases.**
 
@@ -375,21 +254,29 @@ AIOSEO&reg; is a registered trademark of Semper Plugins LLC. When writing about 
 
 Please visit our [complete AIOSEO documentation](https://aioseo.com/docs/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) before requesting support for SEO from the AIOSEO team.
 
-= Who should use AIOSEO? =
+= Does AIOSEO use AI for SEO? =
 
-SEO is essential for all websites. AIOSEO is perfect for business owners, bloggers, marketers, designers, developers, photographers, and basically everyone else. If you want to rank higher in search, then you need to use AIOSEO WordPress SEO plugin.
+Yes. AIOSEO is an AI SEO plugin. You can generate SEO titles, meta descriptions, FAQs, and full articles with the AI Content Generator, create images with the AI Image Generator, and build schema markup with AI. AIOSEO also includes an MCP server and WordPress Abilities API support, so AI agents like Claude can connect to your site and manage its SEO directly. With our llms.txt generator, you can also help your content rank in AI search results like ChatGPT and Google AI Overviews.
+
+= Is AIOSEO free? =
+
+Yes. AIOSEO has a free version that covers the SEO essentials — SEO titles and meta descriptions, an XML sitemap, schema markup, Google Search Console integration, and TruSEO content analysis — everything most sites need to start ranking. [AIOSEO Pro](https://aioseo.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteplugin) adds advanced features like the redirection manager, local SEO, keyword rank tracking, automatic internal linking, and WooCommerce SEO. You can start free and upgrade anytime.
+
+= Can I switch from Yoast or Rank Math to AIOSEO? =
+
+Yes, and it takes just a few clicks. AIOSEO's built-in importer migrates your SEO titles, meta descriptions, and settings from Yoast SEO, Rank Math, and SEOPress so your metadata carries over intact, with no re-optimization needed. It also imports redirects from popular redirect plugins, so most sites complete the switch in minutes.
+
+= Does AIOSEO work with WooCommerce, Elementor, and other page builders? =
+
+Yes. AIOSEO includes WooCommerce SEO for optimizing product pages and categories, and it integrates with Elementor, Divi, Bricks, Oxygen, WP Bakery, and SeedProd so you can edit your SEO settings and run TruSEO analysis right inside the builder. It also works in both the Gutenberg block editor and the Classic Editor.
+
+= Does AIOSEO support multilingual and WPML sites? =
+
+Yes. AIOSEO works with WPML, Weglot, and other multilingual plugins, and it generates a multilingual XML sitemap so search engines index every language version of your content. Your titles, meta descriptions, and schema stay correct across all your translated pages.
 
 = Which themes does AIOSEO support? =
 
 AIOSEO works with all WordPress themes. Simply enable AIOSEO to make your WordPress theme SEO friendly.
-
-= Will AIOSEO slow down my website? =
-
-Nope, AIOSEO will NOT slow down your website. We understand that speed is important for SEO, that's why our code is properly optimized for maximum performance. Remember, faster websites rank higher in search. Use AIOSEO for fast SEO improvements.
-
-= Can I use AIOSEO on client sites? =
-
-Yes, you can use AIOSEO on client websites.
 
 = Are AIOSEO sitemaps better than default WordPress sitemaps? =
 
@@ -399,23 +286,15 @@ We also offer advanced SEO sitemaps such as News Sitemap, Video Sitemap, and RSS
 
 Our SEO sitemaps come with granular control such as links per sitemap, enable / disable post types or taxonomies, include / exclude specific links from sitemap, add additional non-WordPress pages to sitemaps, customize sitemap priority & frequency for each section of your site, and more.
 
-This is why experts rate AIOSEO as the best WordPress SEO plugin.
+= Will AIOSEO slow down my website? =
 
-= Does AIOSEO help with SEO Verification? =
-
-Yes. AIOSEO can help you with website SEO verification with various webmaster tools such as Google Search Console, Bing Webmaster Tools, Yandex, Baidu, Pinterest, and just about every other site verification you need.
-
-= Why is AIOSEO better than other SEO plugins? =
-
-There are many WordPress SEO plugins out there. Unlike others, AIOSEO WordPress SEO plugin is always reliable. Our SEO features are results focused (no bloat), and we offer exceptional customer support.
-
-AIOSEO is the original WordPress SEO plugin, and it's trusted by over 3 million website owners.
+No. AIOSEO is built for performance — its code is optimized and menu pages and libraries are lazy-loaded so they only load when needed, keeping both your dashboard and your front end fast. Since page speed is itself a ranking factor, a fast, well-coded SEO plugin helps your rankings rather than hurting them.
 
 = Do I really need an XML Sitemap? =
 
 **Yes! XML Sitemaps help Google and other search engines to find all the pages of your website.**
 
-An XML sitemap is a list of all the content on your website. The sitemap helps search engine bots to easily see all the content on your site in one place, The XML sitemap file is hidden from your human visitors, however search engines like Google can see it.
+An XML sitemap is a list of all the content on your website. The sitemap helps search engine bots to easily see all the content on your site in one place. The XML sitemap file is hidden from your human visitors, but search engines like Google can see it.
 
 Without an XML sitemap, some of your web pages may never be included in Google search results, and won't get any traffic.
 
@@ -424,12 +303,6 @@ XML Sitemaps also help you tell Google which pages you DON'T want included in se
 As part of your SEO strategy, **an XML sitemap can help you to improve your domain authority and unlock more traffic from Google, Bing and other search engines**.
 
 AIOSEO can easily help you get your sitemaps listed inside Google Search Console so your content can start to get indexed today!
-
-= Does AIOSEO integrate directly with Google Search Console? =
-
-Absolutely! Our integration with Google Search Console allows you to monitor and maintain your website's presence on Google. With our direct integration, you can easily view important information about your website, such as the number of clicks, impressions, and the average position for each keyword that your website's content appears for in Google search results. You can also track your contents page speed using Google's Page Speed Insights directly inside your WordPress dashboard.
-
-Additionally, AIOSEO can also provide you with data on the most frequently used keywords, the most popular pages on your website, and any crawl errors or security issues that may arise. By integrating with Google Search Console, AIOSEO provides website owners with valuable insights that can help to improve SEO and overall online visibility. With this integration, you can track your site's progress over time and make data-driven decisions that will help you achieve your SEO goals.
 
 == Screenshots ==
 
@@ -450,6 +323,6 @@ Additionally, AIOSEO can also provide you with data on the most frequently used 
 
 == Upgrade Notice ==
 
-= 4.9.5.1 =
+= 5.0.0.1 =
 
 This update adds major improvements and bug fixes.

@@ -6,6 +6,7 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
+use FluentForm\App\Helpers\Helper;
 use FluentForm\App\Modules\Payments\Orders\OrderData;
 use FluentForm\App\Modules\Payments\PaymentHelper;
 
@@ -63,7 +64,8 @@ class PaymentReceipt
         }
 
         $value = '';
-        if(property_exists($this->entry, $property)) {
+        $columns = Helper::getEntryColumns($this->entry);
+        if(array_key_exists($property, $columns)) {
             $value = $this->entry->{$property};
         }
 

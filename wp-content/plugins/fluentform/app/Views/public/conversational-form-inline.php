@@ -6,9 +6,13 @@ defined('ABSPATH') or die;
 <style>
     <?php
     // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CSS is sanitized via fluentformSanitizeCSS()
-    echo $generated_css;
+    echo fluentformSanitizeCSS($generated_css);
+    // SECURITY (FINDING-13): $submit_css interpolates the top-level submitButton colours raw
+    // (never covered by Updater::sanitizeCustomSubmit), so a background_color of
+    // "red}</style><script>..." would break out here. The standalone view already sanitizes;
+    // this inline view did not. fluentformSanitizeCSS() blanks any CSS containing a tag pattern.
     // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CSS is sanitized via fluentformSanitizeCSS()
-    echo $submit_css;
+    echo fluentformSanitizeCSS($submit_css);
     ?>
 </style>
 <div class="ffc_conv_wrapper ffc_inline_form">

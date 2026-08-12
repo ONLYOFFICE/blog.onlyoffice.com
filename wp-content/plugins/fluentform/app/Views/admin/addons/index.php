@@ -32,7 +32,7 @@ do_action('fluentform/global_menu'); ?>
                 <div class="ff-update-action">
                     <a
                             target="_blank"
-                            href="https://fluentforms.com/pricing/?utm_source=plugin&utm_medium=wp_install&utm_campaign=ff_upgrade"
+                            href="<?php echo esc_url(fluentform_upgrade_url('settings_addons')); ?>"
                             class="el-button el-button--primary"
                     >
                         <?php esc_html_e('Upgrade to Pro', 'fluentform'); ?>

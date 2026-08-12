@@ -104,16 +104,59 @@ defined('ABSPATH') or die;
             // for setting sidebar
             let formSettingSidebarElem = jQuery('.ff_settings_sidebar_wrap');
             let formSettingOverlayElem = jQuery('#form-setting-overlay');
-    
-            jQuery('.ff_sidebar_toggle').on('click', function() {
+            let formSettingSidebarStateKey = 'fluentform_settings_sidebar_collapsed';
+            let formSettingSidebarToggle = jQuery('.ff_settings_wrapper .ff_sidebar_toggle');
+            let isFormSettingDesktop = function() {
+                return window.matchMedia('(min-width: 769px)').matches;
+            };
+            let syncFormSettingSidebarMode = function() {
+                if (isFormSettingDesktop() && window.localStorage.getItem(formSettingSidebarStateKey) === 'yes') {
+                    formSettingSidebarElem.addClass('ff_settings_sidebar_collapsed');
+                } else if (!isFormSettingDesktop()) {
+                    formSettingSidebarElem.removeClass('ff_settings_sidebar_collapsed');
+                }
+            };
+            let updateFormSettingToggleState = function() {
+                let collapseLabel = formSettingSidebarToggle.data('collapse-label') || 'Collapse settings menu';
+                let expandLabel = formSettingSidebarToggle.data('expand-label') || 'Expand settings menu';
+                let isExpanded = isFormSettingDesktop()
+                    ? !formSettingSidebarElem.hasClass('ff_settings_sidebar_collapsed')
+                    : formSettingSidebarElem.hasClass('active');
+
+                formSettingSidebarToggle
+                    .attr('aria-expanded', isExpanded ? 'true' : 'false')
+                    .attr('aria-label', isExpanded ? collapseLabel : expandLabel)
+                    .attr('title', isExpanded ? collapseLabel : expandLabel);
+            };
+
+            syncFormSettingSidebarMode();
+
+            formSettingSidebarToggle.on('click', function() {
+                if (isFormSettingDesktop()) {
+                    formSettingSidebarElem.toggleClass('ff_settings_sidebar_collapsed');
+                    window.localStorage.setItem(
+                        formSettingSidebarStateKey,
+                        formSettingSidebarElem.hasClass('ff_settings_sidebar_collapsed') ? 'yes' : 'no'
+                    );
+                    updateFormSettingToggleState();
+                    return;
+                }
+
                 jQuery(formSettingSidebarElem).add(formSettingOverlayElem).toggleClass('active');
+                updateFormSettingToggleState();
             });
             
             jQuery(formSettingOverlayElem).on('click', function() {
                 jQuery(formSettingOverlayElem).add(formSettingSidebarElem).removeClass('active');
+                updateFormSettingToggleState();
             });
 
-            
+            jQuery(window).on('resize', function() {
+                syncFormSettingSidebarMode();
+                updateFormSettingToggleState();
+            });
+            updateFormSettingToggleState();
+
         ");
     ?>
 

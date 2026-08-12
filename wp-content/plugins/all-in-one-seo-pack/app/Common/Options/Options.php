@@ -44,7 +44,8 @@ class Options {
 			'audience'         => [ 'type' => 'string', 'default' => 'general' ],
 			'imageQuality'     => [ 'type' => 'string', 'default' => 'medium' ],
 			'imageStyle'       => [ 'type' => 'string', 'default' => 'auto' ],
-			'imageAspectRatio' => [ 'type' => 'string', 'default' => 'landscape' ]
+			'imageAspectRatio' => [ 'type' => 'string', 'default' => 'landscape' ],
+			'imageModel'       => [ 'type' => 'string', 'default' => 'gemini-3.1-flash-image' ]
 		],
 		'breadcrumbs'      => [
 			'separator'             => [ 'type' => 'string', 'default' => '&raquo;' ],
@@ -70,6 +71,9 @@ class Options {
 			'truSeo'           => [ 'type' => 'boolean', 'default' => true ],
 			'headlineAnalyzer' => [ 'type' => 'boolean', 'default' => true ],
 			'seoAnalysis'      => [ 'type' => 'boolean', 'default' => true ],
+			'spellChecker'     => [ 'type' => 'boolean', 'default' => true ],
+			'highlighter'      => [ 'type' => 'boolean', 'default' => true ],
+			'highlighterStyle' => [ 'type' => 'string', 'default' => 'underline' ],
 			'dashboardWidgets' => [ 'type' => 'array', 'default' => [ 'seoSetup', 'seoChecklist', 'seoOverview', 'seoNews' ] ],
 			'announcements'    => [ 'type' => 'boolean', 'default' => true ],
 			'postTypes'        => [
@@ -460,6 +464,16 @@ class Options {
 					'lastTime' => [ 'type' => 'string' ],
 					'data'     => [ 'type' => 'string' ],
 				]
+			],
+			'seoAlerts'    => [
+				'enable'         => [ 'type' => 'boolean', 'default' => true ],
+				'alerts'         => [
+					'noindexHomepage' => [ 'type' => 'boolean', 'default' => true ],
+					'robotsTxtError'  => [ 'type' => 'boolean', 'default' => true ],
+					'xmlSitemapError' => [ 'type' => 'boolean', 'default' => true ]
+				],
+				'recipients'     => [ 'type' => 'array', 'default' => [] ],
+				'slackMemberIds' => [ 'type' => 'array', 'default' => [] ]
 			]
 		],
 		'deprecated'       => [
@@ -573,7 +587,10 @@ class Options {
 
 		$hasInitialized = true;
 
-		$this->defaults['searchAppearance']['global']['schema']['organizationLogo']['default'] = aioseo()->helpers->getSiteLogoUrl() ? aioseo()->helpers->getSiteLogoUrl() : '';
+		$siteLogoUrl = aioseo()->helpers->getSiteLogoUrl();
+
+		$this->defaults['searchAppearance']['global']['schema']['organizationLogo']['default'] = $siteLogoUrl ? $siteLogoUrl : '';
+		$this->defaults['searchAppearance']['global']['schema']['personLogo']['default']       = $siteLogoUrl ? $siteLogoUrl : '';
 
 		$this->defaults['advanced']['emailSummary']['recipients']['default'] = [
 			[
@@ -653,6 +670,7 @@ class Options {
 		}
 
 		$this->sanitizeEmailSummary( $options );
+		$this->sanitizeSeoAlerts( $options );
 
 		// First, recursively replace the new options into the cached state.
 		// It's important we use the helper method since we want to replace populated arrays with empty ones if needed (when a setting was cleared out).
@@ -797,6 +815,49 @@ class Options {
 					break;
 				}
 			}
+		}
+	}
+
+	/**
+	 * Sanitizes the SEO Alerts options.
+	 *
+	 * NOTE: Drops empty email recipients, and routes the Slack webhook URL to sensitive options
+	 * so it isn't exposed through the readable options endpoint. The webhook is only touched when
+	 * the key is present (the user changed it); a non-empty but invalid URL is left unchanged.
+	 *
+	 * @since 4.9.9
+	 *
+	 * @param  array $options All options, passed by reference.
+	 * @return void
+	 */
+	private function sanitizeSeoAlerts( &$options ) {
+		if ( ! isset( $options['tools']['seoAlerts'] ) ) {
+			return;
+		}
+
+		// Remove empty email recipients before saving.
+		if ( isset( $options['tools']['seoAlerts']['recipients'] ) && is_array( $options['tools']['seoAlerts']['recipients'] ) ) {
+			$options['tools']['seoAlerts']['recipients'] = array_values( array_filter(
+				$options['tools']['seoAlerts']['recipients'],
+				function( $recipient ) {
+					return is_array( $recipient ) && '' !== trim( (string) ( $recipient['email'] ?? '' ) );
+				}
+			) );
+		}
+
+		if ( ! isset( $options['tools']['seoAlerts']['slackWebhookUrl'] ) ) {
+			return;
+		}
+
+		$webhookUrl = esc_url_raw( trim( (string) $options['tools']['seoAlerts']['slackWebhookUrl'] ) );
+
+		// Never keep the webhook URL in the regular (publicly-readable) options.
+		unset( $options['tools']['seoAlerts']['slackWebhookUrl'] );
+
+		if ( '' === $webhookUrl ) {
+			aioseo()->sensitiveOptions->set( 'seoAlertsSlackWebhookUrl', '' );
+		} elseif ( aioseo()->seoAlerts->slack->isValidWebhookUrl( $webhookUrl ) ) {
+			aioseo()->sensitiveOptions->set( 'seoAlertsSlackWebhookUrl', $webhookUrl );
 		}
 	}
 

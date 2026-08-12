@@ -1,4 +1,41 @@
 ﻿# Changelog
+
+## 1.3.0
+### New
+* AI Translate: "Stop" button cancels queued and running translations
+* AI Translate: a language that is already running can be re-queued to force a restart
+* AI Translate: configurable request timeout and stuck-job timeout in the settings page
+* AI Translate: Greek translation rules — gender agreement, verb tense consistency, punctuation,
+  idioms, acronym plurals and untranslated UI labels
+
+### Updated plugins
+* WPGraphQL 2.10.1 to 2.19.0 (includes the 2.15.1 security fix, GHSA-jhh7-832h-f8hv)
+* WPGraphQL Smart Cache 2.0.1 to 2.3.0
+* All in One SEO Pack 4.9.5.1 to 5.0.0.1
+* WP-PostViews 1.78 to 2.0.0
+* WP-Polls 2.77.3 to 3.0.0
+* Classic Editor 1.6.7 to 1.7.0
+* Redis Object Cache 2.7.0 to 2.8.0 (tracked object-cache.php drop-in refreshed to match)
+* Search with Algolia 2.11.3 to 2.13.1
+* Advanced Custom Fields 6.8.0 to 6.8.7
+* WP Offload Media 3.3.0 to 3.3.1
+* Fluent Forms 6.2.0 to 6.2.12
+* Democracy Poll 6.1.1 to 6.5.0
+* Custom Post Type UI 1.18.3 to 1.19.3
+* WP Discourse 2.6.1 to 2.6.3
+* Akismet 5.6 to 5.7
+* Cyr-To-Lat 3.7.3 to 3.7.4
+* Urvanov Syntax Highlighter
+
+### Fixes
+* AI Translate: translations no longer get stuck on "translating..." forever — per-language
+  job state replaced the two shared post-meta rows that concurrent workers overwrote
+* AI Translate: a job that never reports back is released automatically after the stuck-job
+  timeout and can be re-run
+* AI Translate: the translation status now refreshes when the post editor is opened, instead
+  of only after clicking "Translate"
+* AI Translate: a reply cut off at the model output limit is reported as an error instead of
+  being saved as a truncated translation
  
  
  ## 1.2.9

@@ -65,7 +65,9 @@ class TabularGrid extends BaseComponent
                     $ariaRequired = 'true';
                 }
 
-                $input = '<input aria-label="'. $row['name'] .'-'. $column['label'] . '" ' . $attributes . " {$isChecked} aria-invalid='false' aria-required={$ariaRequired}>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $attributes is escaped before being passed in.
+                // SECURITY (FINDING-12): esc_attr the row/column labels before interpolating them
+                // into the double-quoted aria-label; save-time sanitizers do not encode quotes.
+                $input = '<input aria-label="'. esc_attr($row['name']) .'-'. esc_attr($column['label']) . '" ' . $attributes . " {$isChecked} aria-invalid='false' aria-required={$ariaRequired}>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $attributes is escaped before being passed in.
                 $elMarkup .= "<td data-label='" . fluentform_sanitize_html($column['label']) . "'>{$input}</td>";
             }
             $elMarkup .= '</tr>';
@@ -75,11 +77,13 @@ class TabularGrid extends BaseComponent
 
         $elMarkup = "<div class='ff-el-input--content'>{$elMarkup}" . fluentform_sanitize_html($elementHelpMessage) . '</div>';
 
+        // SECURITY (FINDING-12): esc_attr the attribute values interpolated into the single-quoted
+        // data-type / data-name / class attributes; sanitize_text_field at save does not encode quotes.
         $html = sprintf(
             "<div data-type='%s' data-name='%s' class='%s'>%s",
-            $data['attributes']['data-type'],
-            $data['attributes']['name'],
-            $data['attributes']['class'],
+            esc_attr($data['attributes']['data-type']),
+            esc_attr($data['attributes']['name']),
+            esc_attr($data['attributes']['class']),
             $elementLabel
         ) . $elMarkup . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $elementLabel is escaped before being passed in.
             

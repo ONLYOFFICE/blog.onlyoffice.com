@@ -36,7 +36,7 @@ class EntryViewRenderer
         }
 
         $form = wpFluent()->table('fluentform_forms')->find($form_id);
-        $submissionShortcodes = \FluentForm\App\Services\FormBuilder\EditorShortCode::getSubmissionShortcodes();
+        $submissionShortcodes = \FluentForm\App\Services\FormBuilder\EditorShortCode::getSubmissionShortcodes($form);
         $submissionShortcodes['shortcodes']['{submission.ip}'] = __('Submitter IP', 'fluentform');
         if ($form->has_payment) {
             $submissionShortcodes['shortcodes']['{payment.payment_status}'] = __('Payment Status','fluentform');

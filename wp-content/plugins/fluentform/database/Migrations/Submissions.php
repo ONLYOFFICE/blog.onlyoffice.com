@@ -43,7 +43,8 @@ class Submissions
 			  KEY `form_id_status` (`form_id`, `status`),
 			  KEY `form_id_created_at` (`form_id`, `created_at`),
 			  KEY `user_id` (`user_id`),
-			  KEY `serial_number` (`serial_number`)) $charsetCollate;";
+			  KEY `serial_number` (`serial_number`),
+			  KEY `created_at` (`created_at`)) $charsetCollate;";
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Migration file, direct query needed
         if ($force || $wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table)) != $table) {
@@ -85,6 +86,14 @@ class Submissions
         if (!in_array('form_id_created_at', $existingIndexes)) {
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder -- Migration file, adding composite index for performance, %1s is for identifier
             $wpdb->query($wpdb->prepare("ALTER TABLE %1s ADD KEY `form_id_created_at` (`form_id`, `created_at`)", $table));
+        }
+
+        // Add a standalone created_at index for cross-form, date-only reports —
+        // form_id_created_at leads with form_id, so it can't serve a query that
+        // filters on created_at with no form_id (e.g. the unrestricted analytics).
+        if (!in_array('created_at', $existingIndexes)) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQLPlaceholders.UnquotedComplexPlaceholder -- Migration file, adding index for performance, %1s is for identifier
+            $wpdb->query($wpdb->prepare("ALTER TABLE %1s ADD KEY `created_at` (`created_at`)", $table));
         }
 
         // Add user_id index if it doesn't exist

@@ -5,6 +5,8 @@ namespace FluentForm\App\Services\Report;
 use Exception;
 use FluentForm\App\Models\Form;
 use FluentForm\App\Models\Submission;
+use FluentForm\App\Modules\Acl\Acl;
+use FluentForm\App\Services\Manager\FormManagerService;
 use FluentForm\Framework\Helpers\ArrayHelper as Arr;
 use FluentForm\Framework\Support\Sanitizer;
 
@@ -53,8 +55,11 @@ class ReportService
     public function getFormsDropdown()
     {
         $forms = Form::select(['id', 'title', 'has_payment'])
-                     ->orderBy('id', 'DESC')
-                     ->get();
+            ->when(false !== ($allowFormIds = FormManagerService::getUserAllowedFormsScope()), function ($query) use ($allowFormIds) {
+                return $query->whereIn('id', $allowFormIds ?: [0]);
+            })
+            ->orderBy('id', 'DESC')
+            ->get();
 
         return [
             'forms' => $forms
@@ -147,12 +152,21 @@ class ReportService
         $startDate = $data['start_date'];
         $endDate = $data['end_date'];
         $metric = Arr::get($data, 'metric', 'entries');
+        $allowedFormIds = FormManagerService::getUserAllowedFormsScope();
+        $requestedFormId = Arr::get($data, 'form_id');
+        $scopedFormIds = $allowedFormIds;
+
+        if (false === $allowedFormIds) {
+            $scopedFormIds = $requestedFormId ? [$requestedFormId] : false;
+        } elseif ($requestedFormId) {
+            $scopedFormIds = in_array($requestedFormId, $allowedFormIds, true) ? [$requestedFormId] : [];
+        }
 
         if (!in_array($metric, ['entries', 'payments', 'views'])) {
             $metric = 'entries';
         }
 
-        $result = ReportHelper::getTopPerformingForms($startDate, $endDate, $metric);
+        $result = ReportHelper::getTopPerformingForms($startDate, $endDate, $metric, $scopedFormIds);
         return [
             'top_performing_forms' => Arr::get($result, 'data', []),
             'disable_message'      => Arr::get($result, 'disable_message', '')
@@ -167,9 +181,10 @@ class ReportService
         $startDate = $data['start_date'];
         $endDate = $data['end_date'];
         $formId = $data['form_id'];
+        $breakdown = ReportHelper::getPaymentBreakdown($startDate, $endDate, $formId);
         $data['payment_types'] = [
-            'subscription' => ReportHelper::getPaymentsByType($startDate, $endDate, 'subscription', $formId),
-            'onetime'      => ReportHelper::getPaymentsByType($startDate, $endDate, 'onetime', $formId),
+            'subscription' => $breakdown['subscription'] ?? [],
+            'onetime'      => $breakdown['onetime'] ?? [],
         ];
         return $data;
     }
@@ -190,7 +205,7 @@ class ReportService
 
         $startDate = Arr::get($data, 'start_date');
         $endDate = Arr::get($data, 'end_date');
-        $formId = intval(Arr::get($data, 'form_id'));
+        $formId = Acl::normalizeFormId(Arr::get($data, 'form_id'));
 
         // Set default date range if not provided
         if (!$startDate || !$endDate) {

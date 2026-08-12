@@ -2,21 +2,20 @@
 
 namespace DemocracyPoll;
 
-use DemocracyPoll\Helpers\Kses;
+use DemocracyPoll\Admin\Post_Metabox;
+use DemocracyPoll\Support\Kses;
+use WP_Widget;
 
-class Poll_Widget extends \WP_Widget {
+class Poll_Widget extends WP_Widget {
 
 	public function __construct() {
 		// Instantiate the parent object. Creates option 'Poll_Widget'
-		parent::__construct( 'democracy',
-			__( 'Democracy Poll', 'democracy-poll' ),
-			[
-				'description' => __( 'Democracy Poll Widget', 'democracy-poll' )
-			]
-		);
+		parent::__construct( 'democracy', 'Democracy Poll', [
+			'description' => __( 'Democracy Poll Widget', 'democracy-poll' )
+		] );
 	}
 
-	// front end
+	// front
 	public function widget( $args, $instance ) {
 		global $post;
 
@@ -29,22 +28,25 @@ class Poll_Widget extends \WP_Widget {
 		$poll_id = $instance['show_poll'] ?? 0;
 
 		if( $post && is_singular()
-		    && ! options()->post_metabox_off
-		    && ( $post_pid = \DemocracyPoll\Admin\Post_Metabox::get_post_poll_id( $post->ID ) )
+		    && ! container()->get( Options::class )->post_metabox_off
+		    && ( $post_pid = Post_Metabox::get_post_poll_id( $post->ID ) )
 		){
-			$poll_id = $post_pid;
+			$poll_id = $post_pid; // $poll_id may be: int, 'last', 'rand'
 		}
 
-		$poll_object = \DemPoll::get_db_data( $poll_id ?: 'rand' ); // $poll_id may be: int, 'last', 'rand'
+		$poll_object = Poll_Storage::get_db_data( $poll_id ?: 'rand' ); // $poll_id may be: int, 'last', 'rand'
 
 		if( isset( $instance['questionIsTitle'] ) ){
 			echo $before_widget;
-			echo get_democracy_poll( $poll_object, $before_title, $after_title );
+			echo get_democracy_poll( [
+				'poll'         => $poll_object,
+				'title_markup' => $before_title ? "$before_title{question}$after_title" : '',
+			] );
 			echo $after_widget;
 		}
 		else{
 			echo $before_widget . $before_title . $title . $after_title;
-			echo get_democracy_poll( $poll_object );
+			echo get_democracy_poll( [ 'poll' => $poll_object ] );
 			echo $after_widget;
 		}
 	}
@@ -110,16 +112,15 @@ class Poll_Widget extends \WP_Widget {
 		</p>';
 	}
 
-	public function dem_widget_footer_js() {
+	public function dem_widget_footer_js(): void {
 		?>
-		<script type="text/javascript">
-			let getTitleObj = function( that ){
-				return jQuery( that ).closest( '.widget-content' ).find( '.demTitleWrap' );
-			}
-
+		<script id="democracy-poll-wg-js">
 			window.demHideTitle = function( that ){
-				if( that.checked ) getTitleObj( that ).slideUp( 300 );
-				else               getTitleObj( that ).slideDown( 300 );
+				let getTitleObj = ( that ) => jQuery( that ).closest( '.widget-content' ).find( '.demTitleWrap' );
+
+				that.checked
+					? getTitleObj( that ).slideUp( 300 )
+					: getTitleObj( that ).slideDown( 300 );
 			}
 		</script>
 		<?php

@@ -55,7 +55,7 @@ class Dashboard {
 		if (
 			$this->canShowWidget( 'seoChecklist' ) &&
 			apply_filters( 'aioseo_show_seo_checklist', true ) &&
-			( aioseo()->access->isAdmin() || aioseo()->access->hasCapability( 'aioseo_setup_wizard' ) ) &&
+			( aioseo()->access->isAdmin() || aioseo()->access->hasCapability( 'aioseo_setup_wizard' ) || aioseo()->access->hasCapability( 'aioseo_general_settings' ) ) &&
 			aioseo()->standalone->setupWizard->isCompleted()
 		) {
 			wp_add_dashboard_widget(
@@ -99,7 +99,7 @@ class Dashboard {
 		) {
 			wp_add_dashboard_widget(
 				'aioseo-rss-feed',
-				esc_html__( 'SEO News', 'all-in-one-seo-pack' ),
+				esc_html__( "What's New in AIOSEO", 'all-in-one-seo-pack' ),
 				[
 					$this,
 					'displayRssDashboardWidget',
@@ -206,31 +206,91 @@ class Dashboard {
 			return;
 		}
 
-		$rssItems = aioseo()->helpers->fetchAioseoArticles();
-		if ( ! $rssItems ) {
+		$items = array_slice( aioseo()->newsroom->getItems(), 0, 4 );
+		if ( ! $items ) {
 			esc_html_e( 'Temporarily unable to load feed.', 'all-in-one-seo-pack' );
 
 			return;
 		}
-		?>
-		<ul>
-			<?php
-			foreach ( $rssItems as $item ) {
-				?>
-				<li>
-					<a target="_blank" href="<?php echo esc_url( $item['url'] ); ?>" rel="noopener noreferrer">
-						<?php echo esc_html( $item['title'] ); ?>
-					</a>
-					<span><?php echo esc_html( $item['date'] ); ?></span>
-					<div>
-						<?php echo esc_html( wp_strip_all_tags( $item['content'] ) ) . '...'; ?>
-					</div>
-				</li>
-				<?php
-			}
 
-			?>
-		</ul>
+		$archiveUrl = aioseo()->newsroom->getArchiveUrl( 'newsroom-dashboard-widget' );
+
+		// This widget is plain PHP with no stylesheet in its path — the other dashboard
+		// widgets are Vue apps. Four rows don't justify pulling that pipeline in, so the
+		// handful of rules it needs are printed with it.
+		?>
+		<style>
+			.aioseo-newsroom-widget { margin: -12px 0 -12px; }
+			.aioseo-newsroom-widget__item { position: relative; padding: 10px 8px; margin: 0 -8px;
+				border-bottom: 1px solid #f0f0f1; transition: background-color .15s ease; }
+			.aioseo-newsroom-widget__item:hover { background-color: #f6f7f7; }
+			.aioseo-newsroom-widget__item:last-of-type { border-bottom: 0; margin-bottom: 4px; }
+			.aioseo-newsroom-widget__meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 4px; }
+			.aioseo-newsroom-widget__badge { padding: 2px 6px; border-radius: 3px; background: #eceff5; color: #434960;
+				font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; line-height: 1.4; }
+			.aioseo-newsroom-widget__badge--aioseo { background: #e5efff; color: #0046b0; }
+			.aioseo-newsroom-widget__badge--blc { background: #efe9fd; color: #5326bd; }
+			.aioseo-newsroom-widget__version { padding: 1px 5px; border: 1px solid #e8e8eb; border-radius: 3px;
+				color: #434960; font-size: 10px; font-variant-numeric: tabular-nums; }
+			/* Pushed to the far edge so the dates form a column down the list, matching the
+			drawer. */
+			.aioseo-newsroom-widget__date { margin-left: auto; color: #8c8f9a; font-size: 11px;
+				white-space: nowrap; }
+			/* Dark at rest, blue on hover — matching the drawer and update modal rather than
+			taking WP's default link blue, which reads as a different palette. */
+			.aioseo-newsroom-widget__title { display: block; color: #141b38; font-weight: 600; line-height: 1.35;
+				text-decoration: none; }
+			/* Stretched over the row, so anywhere on it is clickable while the link's
+			accessible name stays the article title. */
+			.aioseo-newsroom-widget__title::after { content: ""; position: absolute; inset: 0; }
+			.aioseo-newsroom-widget__item:hover .aioseo-newsroom-widget__title { color: #005ae0;
+				text-decoration: underline; }
+			/* Clamped rather than truncated server-side, so translations aren't cut mid-word. */
+			.aioseo-newsroom-widget__excerpt { margin: 3px 0 0; color: #50575e; font-size: 12px; line-height: 1.45;
+				display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+			.aioseo-newsroom-widget__all { display: block; margin: 0 -12px -12px; padding: 12px;
+				border-top: 1px solid #dcdcde; background: #f6f7f7; color: #005ae0; font-weight: 600;
+				text-decoration: none; }
+			.aioseo-newsroom-widget__all:hover { background: #f0f0f1; }
+		</style>
+		<div class="aioseo-newsroom-widget">
+			<?php foreach ( $items as $item ) : ?>
+				<div class="aioseo-newsroom-widget__item">
+					<div class="aioseo-newsroom-widget__meta">
+						<?php if ( ! empty( $item['label'] ) ) : ?>
+							<span class="aioseo-newsroom-widget__badge aioseo-newsroom-widget__badge--<?php echo esc_attr( $item['badge'] ); ?>">
+								<?php echo esc_html( $item['label'] ); ?>
+							</span>
+						<?php endif; ?>
+
+						<?php if ( ! empty( $item['version'] ) ) : ?>
+							<span class="aioseo-newsroom-widget__version">v<?php echo esc_html( $item['version'] ); ?></span>
+						<?php endif; ?>
+
+						<?php if ( ! empty( $item['date'] ) ) : ?>
+							<span class="aioseo-newsroom-widget__date">
+								<?php echo esc_html( aioseo()->newsroom->formatDate( $item['date'] ) ); ?>
+							</span>
+						<?php endif; ?>
+					</div>
+
+					<a
+						class="aioseo-newsroom-widget__title"
+						target="_blank"
+						rel="noopener noreferrer"
+						href="<?php echo esc_url( aioseo()->helpers->utmUrl( $item['url'], 'newsroom-dashboard-widget', null, false ) ); ?>"
+					><?php echo esc_html( $item['title'] ); ?></a>
+
+					<?php if ( ! empty( $item['excerpt'] ) ) : ?>
+						<p class="aioseo-newsroom-widget__excerpt"><?php echo esc_html( $item['excerpt'] ); ?></p>
+					<?php endif; ?>
+				</div>
+			<?php endforeach; ?>
+
+			<a class="aioseo-newsroom-widget__all" target="_blank" rel="noopener noreferrer" href="<?php echo esc_url( $archiveUrl ); ?>">
+				<?php esc_html_e( 'View all updates', 'all-in-one-seo-pack' ); ?> &rarr;
+			</a>
+		</div>
 		<?php
 	}
 }

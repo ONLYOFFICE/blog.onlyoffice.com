@@ -21,7 +21,7 @@
         }
     ],
     "require": {
-        "wpfluent/framework": "^2.11.4",
+        "wpfluent/framework": "^2.12.6",
         "openspout/openspout": "^3.7"
     },
     "autoload": {

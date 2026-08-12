@@ -2,7 +2,7 @@
 
 namespace FluentForm\App\Services\FormBuilder\Components;
 
-defined('ABSPATH') or die;
+defined('ABSPATH') || die;
 
 use FluentForm\App\Helpers\Helper;
 use FluentForm\Framework\Helpers\ArrayHelper;
@@ -24,7 +24,7 @@ class DateTime extends BaseComponent
             'fluentform_rendering_field_data_' . $elementName,
             [
                 $data,
-                $form
+                $form,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/rendering_field_data_' . $elementName,
@@ -54,11 +54,14 @@ class DateTime extends BaseComponent
         }
         $id = $data['attributes']['id'];
 
-        $ariaLabel = esc_html__(' Use arrow keys to navigate dates. Press enter to select a date.', 'fluentform') ;
-        $label = ArrayHelper::get($data,'settings.label');
-        $elMarkup = "<input  aria-label='".$label.$ariaLabel."'  aria-haspopup='dialog' data-type-datepicker data-format='" . esc_attr($dateFormat) . "' " . $atts . " aria-invalid='false' aria-required={$ariaRequired}>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
+        $ariaLabel = esc_html__(' Use arrow keys to navigate dates. Press enter to select a date.', 'fluentform');
+        $label = ArrayHelper::get($data, 'settings.label');
+        // SECURITY (FINDING-12): esc_attr the settings.label before interpolating it into the
+        // single-quoted aria-label; the save-time wp_kses does not encode quotes, so an unescaped
+        // label allows an attribute breakout (stored XSS).
+        $elMarkup = "<input  aria-label='" . esc_attr($label) . $ariaLabel . "'  aria-haspopup='dialog' data-type-datepicker data-format='" . esc_attr($dateFormat) . "' " . $atts . " aria-invalid='false' aria-required={$ariaRequired}>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
         $config = $this->getDateFormatConfigJSON($data['settings'], $form);
-        $customConfig = $this->getCustomConfig($data['settings']);
+        $customConfig = $this->getCustomConfig($data['settings'], $form);
         $this->loadToFooter($config, $customConfig, $form, $id);
         $html = $this->buildElementMarkup($elMarkup, $data, $form);
 
@@ -67,7 +70,7 @@ class DateTime extends BaseComponent
             [
                 $html,
                 $data,
-                $form
+                $form,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/rendering_field_html_' . $elementName,
@@ -126,7 +129,7 @@ class DateTime extends BaseComponent
 
         $config = apply_filters('fluentform/frontend_date_format', [
             'dateFormat'    => $dateFormat,
-            'ariaDateFormat'    =>"F j, Y",
+            'ariaDateFormat'    =>'F j, Y',
             'enableTime'    => $hasTime,
             'noCalendar'    => ! $this->hasDate($dateFormat),
             'disableMobile' => true,
@@ -136,15 +139,18 @@ class DateTime extends BaseComponent
         return json_encode($config, JSON_FORCE_OBJECT);
     }
 
-    public function getCustomConfig($settings)
+    public function getCustomConfig($settings, $form = null)
     {
-        $customConfigObject = trim(ArrayHelper::get($settings, 'date_config'));
+        $customConfigObject = fluentform_sanitize_json_object(
+            (string) ArrayHelper::get($settings, 'date_config')
+        );
 
-        if (! $customConfigObject || '{' != substr($customConfigObject, 0, 1) || '}' != substr($customConfigObject, -1)) {
-            $customConfigObject = '{}';
-        }
+        // Emitted JS is rebuilt from validated data tokens (ints only) — the raw setting never reaches the script sink.
+        $customConfigObject = fluentform_date_config_to_js($customConfigObject);
 
-        return $customConfigObject;
+        $customConfigObject = '' !== $customConfigObject ? $customConfigObject : '{}';
+
+        return apply_filters('fluentform/date_time_custom_config', $customConfigObject, $settings, $form);
     }
 
     private function loadToFooter($config, $customConfigObject, $form, $id)

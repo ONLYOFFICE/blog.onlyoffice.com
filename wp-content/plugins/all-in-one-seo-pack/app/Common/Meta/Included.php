@@ -15,12 +15,17 @@ class Included {
 	/**
 	 * Checks whether the queried object is included.
 	 *
-	 * @since 4.0.0
+	 * @since   4.0.0
+	 * @version 4.9.10 Exclude password-protected singular posts so their meta/schema is not disclosed.
 	 *
 	 * @return bool
 	 */
 	public function isIncluded() {
 		if ( is_admin() || is_feed() ) {
+			return false;
+		}
+
+		if ( is_singular() && post_password_required( get_queried_object_id() ) ) {
 			return false;
 		}
 

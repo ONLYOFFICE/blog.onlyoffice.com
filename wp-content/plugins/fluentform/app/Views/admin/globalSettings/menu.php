@@ -35,17 +35,17 @@ use FluentForm\Framework\Helpers\ArrayHelper;
                 );
                 do_action('fluentform/before_global_settings_wrapper');
             ?>
-            <div class="ff_settings_sidebar_wrap">
-                <span class="ff_sidebar_toggle" title="Toggle Setting">
-                    <i class="ff-icon ff-icon-arrow-right"></i>
-                </span>
+            <div class="ff_settings_sidebar_wrap" id="ff_global_settings_sidebar">
                 <div class="ff_settings_sidebar ff_layout_section_sidebar">
                     <ul class="ff_settings_list ff_list_button">
                         <li class="ff_list_button_item has_sub_menu ">
                             <a
                                 class="ff_list_button_link"
+                                title="<?php echo esc_attr(__('General', 'fluentform')); ?>"
+                                aria-label="<?php echo esc_attr(__('General', 'fluentform')); ?>"
                                 href="#">
-                                <?php esc_html_e('General','fluentform'); ?>
+                                <i class="ff_settings_menu_icon ff-icon ff-icon-setting" aria-hidden="true"></i>
+                                <span class="ff_settings_menu_label"><?php esc_html_e('General','fluentform'); ?></span>
                             </a>
                             <ul class="ff_list_submenu" >
                                 <li >
@@ -114,8 +114,12 @@ use FluentForm\Framework\Helpers\ArrayHelper;
                         <?php if (ArrayHelper::exists($components, 'payment_settings')) : ?>
                             <?php if (Helper::isPaymentCompatible()) : ?>
                                 <li class="ff_list_button_item has_sub_menu">
-                                    <a class="ff_list_button_link" href="#">
-                                        <?php echo esc_html(ArrayHelper::get($components, 'payment_settings.title', '')); ?>
+                                    <a class="ff_list_button_link"
+                                        title="<?php echo esc_attr(ArrayHelper::get($components, 'payment_settings.title', '')); ?>"
+                                        aria-label="<?php echo esc_attr(ArrayHelper::get($components, 'payment_settings.title', '')); ?>"
+                                        href="#">
+                                        <i class="ff_settings_menu_icon ff-icon ff-icon-payment" aria-hidden="true"></i>
+                                        <span class="ff_settings_menu_label"><?php echo esc_html(ArrayHelper::get($components, 'payment_settings.title', '')); ?></span>
                                     </a>
                                     <?php if (ArrayHelper::get($components, 'payment_settings.sub_menu')) : ?>
                                         <ul class="ff_list_submenu">
@@ -142,8 +146,11 @@ use FluentForm\Framework\Helpers\ArrayHelper;
                                     <a
                                             class="ff_list_button_link ff-payment-settings-root"
                                             data-hash="payment_settings"
+                                            title="<?php echo esc_attr(__('Payment', 'fluentform')); ?>"
+                                            aria-label="<?php echo esc_attr(__('Payment', 'fluentform')); ?>"
                                             href="#">
-                                        <?php esc_html_e('Payment', 'fluentform'); ?>
+                                        <i class="ff_settings_menu_icon ff-icon ff-icon-payment" aria-hidden="true"></i>
+                                        <span class="ff_settings_menu_label"><?php esc_html_e('Payment', 'fluentform'); ?></span>
                                     </a>
                                     <?php if (ArrayHelper::get($components, 'payment_settings.sub_menu')) : ?>
                                         <ul class="ff_list_submenu">
@@ -173,8 +180,12 @@ use FluentForm\Framework\Helpers\ArrayHelper;
                         <?php endif; ?>
 
                         <li class="ff_list_button_item has_sub_menu">
-                            <a class="ff_list_button_link" href="#">
-                                <?php esc_html_e('Security', 'fluentform'); ?>
+                            <a class="ff_list_button_link"
+                                title="<?php echo esc_attr(__('Security', 'fluentform')); ?>"
+                                aria-label="<?php echo esc_attr(__('Security', 'fluentform')); ?>"
+                                href="#">
+                                <i class="ff_settings_menu_icon ff-icon ff-icon-lock" aria-hidden="true"></i>
+                                <span class="ff_settings_menu_label"><?php esc_html_e('Security', 'fluentform'); ?></span>
                             </a>
                             <ul class="ff_list_submenu">
                                 <?php foreach ($components as $componentName => $component): ?>
@@ -206,10 +217,13 @@ use FluentForm\Framework\Helpers\ArrayHelper;
                             <a
                                     class="ff_list_button_link"
                                     data-hash="managers"
+                                    title="<?php echo esc_attr(__('Permissions', 'fluentform')); ?>"
+                                    aria-label="<?php echo esc_attr(__('Permissions', 'fluentform')); ?>"
                                     href="<?php echo esc_url(Helper::makeMenuUrl('fluent_forms_settings', [
                                         'hash' => 'permissions'
                                     ])); ?>">
-                                <?php esc_html_e('Permissions','fluentform'); ?>
+                                <i class="ff_settings_menu_icon ff-icon ff-icon-user" aria-hidden="true"></i>
+                                <span class="ff_settings_menu_label"><?php esc_html_e('Permissions','fluentform'); ?></span>
                             </a>
                         </li>
                         <?php if ( ArrayHelper::get($components, 'admin_approval')) :?>
@@ -220,10 +234,13 @@ use FluentForm\Framework\Helpers\ArrayHelper;
                                         data-hash="admin_approval"
                                         data-settings_key="ff_admin_approval"
                                         data-component="general-integration-settings"
+                                        title="<?php echo esc_attr(__('Admin approval', 'fluentform')); ?>"
+                                        aria-label="<?php echo esc_attr(__('Admin approval', 'fluentform')); ?>"
                                         href="<?php echo esc_url(Helper::makeMenuUrl('fluent_forms_settings', [
                                             'hash' => 'admin_approval'
                                         ])); ?>">
-                                    <?php esc_html_e('Admin approval', 'fluentform'); ?>
+                                    <i class="ff_settings_menu_icon ff-icon ff-icon-checkmark-square" aria-hidden="true"></i>
+                                    <span class="ff_settings_menu_label"><?php esc_html_e('Admin approval', 'fluentform'); ?></span>
                                 </a>
                             </li>
                         <?php endif; ?>
@@ -231,31 +248,60 @@ use FluentForm\Framework\Helpers\ArrayHelper;
                             <a
                                     class="ff_list_button_link"
                                     data-hash="double_optin_settings"
+                                    title="<?php echo esc_attr(__('Double Opt-in', 'fluentform')); ?>"
+                                    aria-label="<?php echo esc_attr(__('Double Opt-in', 'fluentform')); ?>"
                                     href="<?php echo esc_url(Helper::makeMenuUrl('fluent_forms_settings', [
                                         'hash' => 'double_optin_settings'
                                     ])); ?>">
-                                <?php esc_html_e('Double Opt-in', 'fluentform'); ?>
+                                <i class="ff_settings_menu_icon ff-icon ff-icon-email" aria-hidden="true"></i>
+                                <span class="ff_settings_menu_label"><?php esc_html_e('Double Opt-in', 'fluentform'); ?></span>
                             </a>
                         </li>
+                        <?php
+                        // Every control on this card (the enable toggle, the
+                        // adapter install) requires manage_options, so showing it
+                        // to a settings manager would only offer them a switch
+                        // that always errors.
+                        if (current_user_can('manage_options')) { ?>
+                        <li class="<?php echo esc_attr(Helper::getHtmlElementClass('mcp_settings', $currentComponent)); ?> ff_list_button_item">
+                            <a
+                                    class="ff_list_button_link"
+                                    data-hash="mcp_settings"
+                                    title="<?php echo esc_attr(__('MCP for AI Agents', 'fluentform')); ?>"
+                                    aria-label="<?php echo esc_attr(__('MCP for AI Agents', 'fluentform')); ?>"
+                                    href="<?php echo esc_url(Helper::makeMenuUrl('fluent_forms_settings', [
+                                        'hash' => 'mcp_settings'
+                                    ])); ?>">
+                                <i class="ff_settings_menu_icon ff-icon ff-icon-code" aria-hidden="true"></i>
+                                <span class="ff_settings_menu_label"><?php esc_html_e('MCP for AI Agents', 'fluentform'); ?></span>
+                            </a>
+                        </li>
+                        <?php } ?>
                         <?php
                         if (ArrayHelper::exists($components, 'InventoryManager')) { ?>
                             <li class="<?php echo esc_attr(Helper::getHtmlElementClass('inventory', $currentComponent)); ?> ff_list_button_item">
                                 <a
                                         class="ff_list_button_link"
                                         data-hash="inventory_manager"
+                                        title="<?php echo esc_attr(__('Inventory Manager', 'fluentform')); ?>"
+                                        aria-label="<?php echo esc_attr(__('Inventory Manager', 'fluentform')); ?>"
                                         href="<?php
                                         echo esc_url(Helper::makeMenuUrl('fluent_forms_settings', [
                                             'hash' => 'inventory_manager'
                                         ])); ?>">
-                                    <?php
-                                    esc_html_e('Inventory Manager', 'fluentform'); ?>
+                                    <i class="ff_settings_menu_icon ff-icon ff-icon-layers" aria-hidden="true"></i>
+                                    <span class="ff_settings_menu_label"><?php esc_html_e('Inventory Manager', 'fluentform'); ?></span>
                                 </a>
                             </li>
                         <?php } ?>
 
                         <li class="ff_list_button_item has_sub_menu">
-                            <a class="ff_list_button_link" href="#">
-                                <?php esc_html_e('Configure Integrations', 'fluentform'); ?>
+                            <a class="ff_list_button_link"
+                                title="<?php echo esc_attr(__('Configure Integrations', 'fluentform')); ?>"
+                                aria-label="<?php echo esc_attr(__('Configure Integrations', 'fluentform')); ?>"
+                                href="#">
+                                <i class="ff_settings_menu_icon ff-icon ff-icon-puzzle" aria-hidden="true"></i>
+                                <span class="ff_settings_menu_label"><?php esc_html_e('Configure Integrations', 'fluentform'); ?></span>
                             </a>
                             <ul class="ff_list_submenu">
                                 <?php foreach ($components as $componentName => $component): ?>
@@ -264,8 +310,8 @@ use FluentForm\Framework\Helpers\ArrayHelper;
                                             && ArrayHelper::get($component, 'hash') != 'h_captcha'
                                             && ArrayHelper::get($component, 'hash') != 'turnstile'
                                             && ArrayHelper::get($component, 'hash') != 'cleantalk'
-                                            && ArrayHelper::get($component, 'query.component') != 'payment_settings'
-                                            && ArrayHelper::get($component, 'query.component') != 'license_page'
+                                            && $componentName != 'payment_settings'
+                                            && $componentName != 'license_page'
                                             && ArrayHelper::get($component, 'hash') != 'admin_approval'
                                             && ArrayHelper::get($component, 'hash') != 'inventory_manager'
                                         )
@@ -294,9 +340,12 @@ use FluentForm\Framework\Helpers\ArrayHelper;
                                 <a
                                         class="ff_list_button_link"
                                         data-component="<?php echo esc_attr(ArrayHelper::get($licensePage, 'query.component', '')); ?>"
+                                        title="<?php echo esc_attr($licensePage['title']); ?>"
+                                        aria-label="<?php echo esc_attr($licensePage['title']); ?>"
                                         href="<?php echo esc_url(Helper::makeMenuUrl('fluent_forms_settings', $licensePage)); ?>"
                                 >
-                                    <?php echo esc_attr($licensePage['title']); ?>
+                                    <i class="ff_settings_menu_icon ff-icon ff-icon-handshake" aria-hidden="true"></i>
+                                    <span class="ff_settings_menu_label"><?php echo esc_attr($licensePage['title']); ?></span>
                                 </a>
                             </li>
                         <?php endif ?>
@@ -306,8 +355,12 @@ use FluentForm\Framework\Helpers\ArrayHelper;
                             <?php foreach ($customLinks as $customLink): ?>
                                 <?php if($subLinks = ArrayHelper::get($customLink, 'sub_links')) :?>
                                     <li class="ff_list_button_item has_sub_menu">
-                                        <a class="ff_list_button_link" href="#">
-                                            <?php echo esc_html(ArrayHelper::get($customLink, 'title', '')); ?>
+                                        <a class="ff_list_button_link"
+                                            title="<?php echo esc_attr(ArrayHelper::get($customLink, 'title', '')); ?>"
+                                            aria-label="<?php echo esc_attr(ArrayHelper::get($customLink, 'title', '')); ?>"
+                                            href="#">
+                                            <i class="ff_settings_menu_icon ff-icon <?php echo esc_attr(ArrayHelper::get($customLink, 'icon', 'ff-icon-link')); ?>" aria-hidden="true"></i>
+                                            <span class="ff_settings_menu_label"><?php echo esc_html(ArrayHelper::get($customLink, 'title', '')); ?></span>
                                         </a>
                                         <ul class="ff_list_submenu">
                                             <?php foreach ($subLinks as $customSubLink): ?>
@@ -339,11 +392,14 @@ use FluentForm\Framework\Helpers\ArrayHelper;
                                                 data-settings_key="custom_component"
                                                 data-component="custom_component"
                                                 data-component_name="<?php echo esc_attr(ArrayHelper::get($customLink, 'component', '')); ?>"
+                                                title="<?php echo esc_attr(ArrayHelper::get($customLink, 'title', '')); ?>"
+                                                aria-label="<?php echo esc_attr(ArrayHelper::get($customLink, 'title', '')); ?>"
                                                 href="<?php echo esc_url(Helper::makeMenuUrl('fluent_forms_settings', [
                                                     'hash' => esc_attr(ArrayHelper::get($customLink, 'hash', 'custom_component')),
                                                 ])); ?>"
                                         >
-                                            <?php echo esc_attr(ArrayHelper::get($customLink, 'title', '')); ?>
+                                            <i class="ff_settings_menu_icon ff-icon <?php echo esc_attr(ArrayHelper::get($customLink, 'icon', 'ff-icon-link')); ?>" aria-hidden="true"></i>
+                                            <span class="ff_settings_menu_label"><?php echo esc_attr(ArrayHelper::get($customLink, 'title', '')); ?></span>
                                         </a>
                                     </li>
                                 <?php endif ?>
@@ -353,6 +409,10 @@ use FluentForm\Framework\Helpers\ArrayHelper;
 
                     </ul>
                 </div>
+                <button type="button" class="ff_sidebar_toggle" title="<?php echo esc_attr(__('Collapse settings menu', 'fluentform')); ?>" aria-label="<?php echo esc_attr(__('Collapse settings menu', 'fluentform')); ?>" aria-controls="ff_global_settings_sidebar" aria-expanded="true" data-collapse-label="<?php echo esc_attr(__('Collapse settings menu', 'fluentform')); ?>" data-expand-label="<?php echo esc_attr(__('Expand settings menu', 'fluentform')); ?>">
+                    <i class="ff-icon ff-icon-arrow-right" aria-hidden="true"></i>
+                    <span class="ff_sidebar_toggle_text"><?php echo esc_html(__('Collapse menu', 'fluentform')); ?></span>
+                </button>
             </div>
 
             <div class="ff_settings_container ff_layout_section_container" id="ff_settings_container">

@@ -33,13 +33,13 @@ class Slack
         $inputs = FormFieldsParser::getEntryInputs($form);
 
         $labels = FormFieldsParser::getAdminLabels($form, $inputs);
-    
+
         $labels = apply_filters_deprecated(
             'fluentform_slack_field_label_selection',
             [
                 $labels,
                 $settings,
-                $form
+                $form,
             ],
             FLUENTFORM_FRAMEWORK_UPGRADE,
             'fluentform/slack_field_label_selection',
@@ -68,7 +68,7 @@ class Slack
 
         $footerText = ArrayHelper::get($settings, 'footerText');
         if ($footerText === '') {
-            $footerText = "fluentform";
+            $footerText = 'fluentform';
         }
 
         $fields = [];
@@ -106,13 +106,46 @@ class Slack
                         'title_link' => $titleLink,
                         'fields'     => $fields,
                         'footer'     => $footerText,
-                        'ts'         => round(microtime(true) * 1000)
-                    ]
-                ]
-            ])
+                        'ts'         => round(microtime(true) * 1000),
+                    ],
+                ],
+            ]),
         ];
 
-        $result = wp_remote_post($slackHook, [
+        // SECURITY (FINDING-15): the webhook URL is admin-supplied and was fetched with no egress
+        // restriction — an SSRF with a logged status/error oracle (the response is written into the
+        // feed log). wp_safe_remote_post (below) blocks private/loopback ranges; additionally pin
+        // the host, since Slack incoming webhooks are always https://hooks.slack.com/... , so an
+        // arbitrary external host cannot be used as the oracle target either.
+        // COMPAT: filterable so a site using a Slack-compatible endpoint (Mattermost, Rocket.Chat,
+        // an internal relay) can keep an existing feed working without patching. Site PHP only —
+        // a form manager cannot reach it, so the default-deny posture is preserved.
+        $defaultHookHosts = ['hooks.slack.com'];
+        $allowedHookHosts = (array) apply_filters('fluentform/slack_allowed_webhook_hosts', $defaultHookHosts, $feed);
+        $allowedHookHosts = array_map('strtolower', array_filter($allowedHookHosts, 'is_string'));
+        // A filter returning nothing usable must not silently break every Slack feed — fall back
+        // to the official host so the default keeps working no matter what the filter returns.
+        if (!$allowedHookHosts) {
+            $allowedHookHosts = $defaultHookHosts;
+        }
+
+        $parsedHook = wp_parse_url($slackHook);
+        $hookHost = isset($parsedHook['host']) ? strtolower($parsedHook['host']) : '';
+        $hookScheme = isset($parsedHook['scheme']) ? strtolower($parsedHook['scheme']) : '';
+        if ('https' !== $hookScheme || !in_array($hookHost, $allowedHookHosts, true)) {
+            $message = sprintf(
+                // translators: %s is a comma-separated list of allowed webhook hosts.
+                __('Invalid Slack webhook URL. It must be an https:// URL on: %s', 'fluentform'),
+                implode(', ', $allowedHookHosts)
+            );
+            do_action('fluentform/integration_action_result', $feed, 'failed', $message);
+            return [
+                'status'  => 'failed',
+                'message' => $message,
+            ];
+        }
+
+        $result = wp_safe_remote_post($slackHook, [
             'method'      => 'POST',
             'timeout'     => 30,
             'redirection' => 5,

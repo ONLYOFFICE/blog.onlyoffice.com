@@ -141,7 +141,7 @@ defined('ABSPATH') or die;
                             <li><i class="el-icon el-icon-check"></i> <?php esc_html_e('Visual Data Reporting', 'fluentform'); ?></li>
                         </ul>
                         <div style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
-                            <a target="_blank" rel="nofollow" class="el-button el-button--primary" href="<?php echo esc_url(fluentform_upgrade_url()); ?>"><?php esc_html_e('Upgrade to Pro', 'fluentform'); ?></a>
+                            <a target="_blank" rel="nofollow" class="el-button el-button--primary" href="<?php echo esc_url(fluentform_upgrade_url('feature_lock_advanced_form_styler')); ?>"><?php esc_html_e('Upgrade to Pro', 'fluentform'); ?></a>
                         </div>
                         <?php $addOns = (new \FluentForm\App\Modules\AddOnModule())->getPremiumAddOns(); ?>
 
@@ -155,7 +155,7 @@ defined('ABSPATH') or die;
                         </ul>
 
                         <div style="text-align: center; margin-top: 40px; margin-bottom: 30px;">
-                            <a target="_blank" rel="nofollow" class="el-button el-button--primary" href="<?php echo esc_url(fluentform_upgrade_url()); ?>"><?php esc_html_e('Upgrade to Pro', 'fluentform'); ?></a>
+                            <a target="_blank" rel="nofollow" class="el-button el-button--primary" href="<?php echo esc_url(fluentform_upgrade_url('feature_lock_advanced_form_styler')); ?>"><?php esc_html_e('Upgrade to Pro', 'fluentform'); ?></a>
                         </div>
                     </div>
                 </div>

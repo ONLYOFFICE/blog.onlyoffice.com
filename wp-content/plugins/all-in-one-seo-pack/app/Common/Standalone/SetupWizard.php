@@ -44,16 +44,22 @@ class SetupWizard {
 			return;
 		}
 
-		// If we are redirecting, clear the transient so it only happens once.
+		// Only do this for single site installs.
+		if ( is_network_admin() ) {
+			return;
+		}
+
+		// If this is a bulk activation, don't redirect immediately.
+		// The activation redirect flag is preserved so the redirect happens on the next admin page load.
+		if ( isset( $_GET['activate-multi'] ) ) { // phpcs:ignore HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
+			return;
+		}
+
+		// If we are redirecting, clear the flag so it only happens once.
 		aioseo()->core->cache->delete( 'activation_redirect' );
 
 		// Check option to disable welcome redirect.
 		if ( get_option( 'aioseo_activation_redirect', false ) ) {
-			return;
-		}
-
-		// Only do this for single site installs.
-		if ( isset( $_GET['activate-multi'] ) || is_network_admin() ) { // phpcs:ignore HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
 			return;
 		}
 
@@ -217,6 +223,23 @@ class SetupWizard {
 	}
 
 	/**
+	 * Checks whether the decoded wizard state carries a usable stage list.
+	 *
+	 * NOTE: The wizard option is a verbatim dump of the Vue store, so its shape is not guaranteed here.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @param  mixed $wizard The decoded wizard state.
+	 * @return bool          Whether the stages can be read.
+	 */
+	private function hasStages( $wizard ) {
+		return is_object( $wizard ) &&
+			! empty( $wizard->stages ) &&
+			is_array( $wizard->stages ) &&
+			! empty( $wizard->currentStage );
+	}
+
+	/**
 	 * Check whether or not the Setup Wizard is completed.
 	 *
 	 * @since 4.2.0
@@ -226,7 +249,7 @@ class SetupWizard {
 	public function isCompleted() {
 		$wizard = (string) aioseo()->internalOptions->internal->wizard;
 		$wizard = json_decode( $wizard );
-		if ( ! $wizard ) {
+		if ( ! $this->hasStages( $wizard ) ) {
 			return false;
 		}
 
@@ -251,7 +274,7 @@ class SetupWizard {
 	public function getNextStage() {
 		$wizard    = (string) aioseo()->internalOptions->internal->wizard;
 		$wizard    = json_decode( $wizard );
-		if ( ! $wizard ) {
+		if ( ! $this->hasStages( $wizard ) ) {
 			return '';
 		}
 

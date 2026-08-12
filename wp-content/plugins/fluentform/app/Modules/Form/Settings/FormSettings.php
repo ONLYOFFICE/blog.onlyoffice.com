@@ -127,7 +127,7 @@ class FormSettings
             'customUrl'                       => 'sanitize_url',
             'enabled'                         => 'rest_sanitize_boolean',
             'numberOfEntries'                 => 'intval',
-            'period'                          => 'intval',
+            'period'                          => 'sanitize_text_field',
             'limitReachedMsg'                 => 'sanitize_text_field',
             'start'                           => 'sanitize_text_field',
             'end'                             => 'sanitize_text_field',

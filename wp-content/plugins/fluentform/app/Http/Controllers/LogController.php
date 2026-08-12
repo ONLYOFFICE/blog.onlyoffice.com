@@ -62,6 +62,14 @@ class LogController extends Controller
             
             $sanitizeMap = [
                 'log_id' => 'intval',
+                'log_ids' => function ($value) {
+                    if (is_array($value)) {
+                        return array_map('intval', $value);
+                    }
+
+                    return [];
+                },
+                'type' => 'sanitize_text_field',
             ];
             $attributes = fluentform_backend_sanitizer($attributes, $sanitizeMap);
             

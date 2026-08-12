@@ -51,8 +51,37 @@ class StripeSettings
         $settings = wp_parse_args($data, $settings);
 
         $settings = self::encryptKeys($settings);
+        $settings = self::preserveUnreadableKeys($settings);
         update_option('fluentform_payment_settings_stripe', $settings);
         return self::getSettings();
+    }
+
+    /**
+     * A decrypt-failed stored blob is the only recoverable copy of that key
+     * (restoring the old salts revives it), and every writer works from the
+     * decrypted settings where a failed key reads as ''. Keep the stored blob
+     * unless the mode is explicitly torn down (account/publishable cleared too),
+     * so the failure flag and admin notice persist until the key really works.
+     *
+     * @param array $settings encrypted settings about to be persisted
+     * @return array
+     */
+    public static function preserveUnreadableKeys($settings)
+    {
+        if (get_option('fluentform_stripe_key_decrypt_failed') !== 'yes') {
+            return $settings;
+        }
+
+        $stored = get_option('fluentform_payment_settings_stripe', []);
+
+        foreach (['test', 'live'] as $mode) {
+            $modeConfigured = !empty($settings[$mode . '_publishable_key']) || !empty($settings[$mode . '_account_id']);
+            if (empty($settings[$mode . '_secret_key']) && $modeConfigured && !empty($stored[$mode . '_secret_key'])) {
+                $settings[$mode . '_secret_key'] = $stored[$mode . '_secret_key'];
+            }
+        }
+
+        return $settings;
     }
 
     public static function encryptKeys($settings)
@@ -67,12 +96,46 @@ class StripeSettings
     public static function maybeDecryptKeys($settings)
     {
         if (ArrayHelper::get($settings, 'is_encrypted') == 'yes') {
-            if (!empty($settings['live_secret_key'])) {
-                $settings['live_secret_key'] = PaymentHelper::decryptKey($settings['live_secret_key']);
+            $storedLive = ArrayHelper::get($settings, 'live_secret_key');
+            $storedTest = ArrayHelper::get($settings, 'test_secret_key');
+            $failed = false;
+            $legacyFound = false;
+
+            if (!empty($storedLive)) {
+                $decrypted = PaymentHelper::decryptKey($storedLive);
+                if ($decrypted === false) {
+                    $failed = true;
+                    $settings['live_secret_key'] = '';
+                } else {
+                    $settings['live_secret_key'] = $decrypted;
+                    $legacyFound = $legacyFound || strpos($storedLive, 'v2:') !== 0;
+                }
             }
 
-            if (!empty($settings['test_secret_key'])) {
-                $settings['test_secret_key'] = PaymentHelper::decryptKey($settings['test_secret_key']);
+            if (!empty($storedTest)) {
+                $decrypted = PaymentHelper::decryptKey($storedTest);
+                if ($decrypted === false) {
+                    $failed = true;
+                    $settings['test_secret_key'] = '';
+                } else {
+                    $settings['test_secret_key'] = $decrypted;
+                    $legacyFound = $legacyFound || strpos($storedTest, 'v2:') !== 0;
+                }
+            }
+
+            if ($failed) {
+                update_option('fluentform_stripe_key_decrypt_failed', 'yes');
+            } else {
+                if (get_option('fluentform_stripe_key_decrypt_failed')) {
+                    delete_option('fluentform_stripe_key_decrypt_failed');
+                }
+                if ($legacyFound) {
+                    $stored = get_option('fluentform_payment_settings_stripe', []);
+                    $stored['live_secret_key'] = PaymentHelper::encryptKey($settings['live_secret_key']);
+                    $stored['test_secret_key'] = PaymentHelper::encryptKey($settings['test_secret_key']);
+                    $stored['is_encrypted'] = 'yes';
+                    update_option('fluentform_payment_settings_stripe', $stored);
+                }
             }
         } else {
             $encrypted = self::encryptKeys($settings);

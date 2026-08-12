@@ -74,8 +74,8 @@ class Review {
 		$feedbackUrl = add_query_arg(
 			[
 				'wpf7528_24'   => untrailingslashit( home_url() ),
-				'wpf7528_26'   => aioseo()->options->has( 'general' ) && aioseo()->options->general->has( 'licenseKey' )
-					? aioseo()->options->general->licenseKey
+				'wpf7528_26'   => aioseo()->sensitiveOptions->hasValue( 'licenseKey' )
+					? aioseo()->sensitiveOptions->get( 'licenseKey' )
 					: '',
 				'wpf7528_27'   => aioseo()->pro ? 'pro' : 'lite',
 				'wpf7528_28'   => AIOSEO_VERSION,

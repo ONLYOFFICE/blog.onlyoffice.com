@@ -231,7 +231,7 @@ abstract class Base {
 			}
 		}
 
-		if ( aioseo()->helpers->isAjaxCronRestRequest() ) {
+		if ( aioseo()->helpers->isAjaxCronRestRequest() && ! doing_filter( 'the_content' ) ) {
 			return apply_filters( 'the_content', $content ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		}
 

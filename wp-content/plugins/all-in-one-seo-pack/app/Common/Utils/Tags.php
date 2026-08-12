@@ -537,6 +537,11 @@ class Tags {
 				'description' => __( 'The featured image of the current page/post.', 'all-in-one-seo-pack' )
 			],
 			[
+				'id'          => 'featured_image_url',
+				'name'        => __( 'Featured Image URL', 'all-in-one-seo-pack' ),
+				'description' => __( 'The URL of the featured image of the current page/post.', 'all-in-one-seo-pack' )
+			],
+			[
 				'id'          => 'page_number',
 				'name'        => __( 'Page Number', 'all-in-one-seo-pack' ),
 				'description' => __( 'The page number for the current paginated page.', 'all-in-one-seo-pack' )
@@ -562,6 +567,24 @@ class Tags {
 				// Translators: 1 - The singular name of the post type.
 				'name'        => sprintf( __( '%1$s Date', 'all-in-one-seo-pack' ), 'Post' ),
 				'description' => __( 'The date when the page/post was published, localized.', 'all-in-one-seo-pack' )
+			],
+			[
+				'id'          => 'post_date_w3c',
+				// Translators: 1 - The singular name of the post type.
+				'name'        => sprintf( __( '%1$s Date (W3C)', 'all-in-one-seo-pack' ), 'Post' ),
+				'description' => __( 'The date when the page/post was published, in W3C format.', 'all-in-one-seo-pack' )
+			],
+			[
+				'id'          => 'post_modified_date',
+				// Translators: 1 - The singular name of the post type.
+				'name'        => sprintf( __( '%1$s Modified Date', 'all-in-one-seo-pack' ), 'Post' ),
+				'description' => __( 'The date when the page/post was last modified, localized.', 'all-in-one-seo-pack' )
+			],
+			[
+				'id'          => 'post_modified_date_w3c',
+				// Translators: 1 - The singular name of the post type.
+				'name'        => sprintf( __( '%1$s Modified Date (W3C)', 'all-in-one-seo-pack' ), 'Post' ),
+				'description' => __( 'The date when the page/post was last modified, in W3C format.', 'all-in-one-seo-pack' )
 			],
 			[
 				'id'          => 'post_day',
@@ -610,7 +633,7 @@ class Tags {
 			[
 				'id'          => 'post_title',
 				// Translators: 1 - The type of page (Post, Page, Category, Tag, etc.).
-				'name'        => sprintf( __( '%1$s Title', 'all-in-one-seo-pack' ), 'Post' ),
+				'name'        => sprintf( _x( '%1$s Title', 'SEO template tag', 'all-in-one-seo-pack' ), 'Post' ),
 				'description' => __( 'The original title of the current post.', 'all-in-one-seo-pack' )
 			],
 			[
@@ -672,10 +695,25 @@ class Tags {
 			[
 				'id'          => 'taxonomy_title',
 				// Translators: 1 - The type of page (Post, Page, Category, Tag, etc.).
-				'name'        => sprintf( __( '%1$s Title', 'all-in-one-seo-pack' ), 'Category' ),
+				'name'        => sprintf( _x( '%1$s Title', 'SEO template tag', 'all-in-one-seo-pack' ), 'Category' ),
 				'description' => __( 'The title of the primary term, first assigned term or the current term.', 'all-in-one-seo-pack' )
 			]
 		] );
+
+		if ( function_exists( 'tribe_get_start_date' ) && function_exists( 'tribe_get_end_date' ) ) {
+			$this->tags = array_merge( $this->tags, [
+				[
+					'id'          => 'event_start_date',
+					'name'        => __( 'Event Start Date', 'all-in-one-seo-pack' ),
+					'description' => __( 'The start date of The Events Calendar event, localized.', 'all-in-one-seo-pack' )
+				],
+				[
+					'id'          => 'event_end_date',
+					'name'        => __( 'Event End Date', 'all-in-one-seo-pack' ),
+					'description' => __( 'The end date of The Events Calendar event, localized.', 'all-in-one-seo-pack' )
+				]
+			] );
+		}
 	}
 
 	/**
@@ -868,6 +906,18 @@ class Tags {
 			if ( $postType['hierarchical'] ) {
 				$context[ $postType['name'] . 'Title' ][] = 'parent_title';
 			}
+
+			if ( 'tribe_events' === $postType['name'] && function_exists( 'tribe_get_start_date' ) ) {
+				$context[ $postType['name'] . 'Title' ][]       = 'event_start_date';
+				$context[ $postType['name'] . 'Title' ][]       = 'event_end_date';
+				$context[ $postType['name'] . 'Description' ][] = 'event_start_date';
+				$context[ $postType['name'] . 'Description' ][] = 'event_end_date';
+
+				asort( $context[ $postType['name'] . 'Title' ] );
+				$context[ $postType['name'] . 'Title' ] = array_values( $context[ $postType['name'] . 'Title' ] );
+				asort( $context[ $postType['name'] . 'Description' ] );
+				$context[ $postType['name'] . 'Description' ] = array_values( $context[ $postType['name'] . 'Description' ] );
+			}
 		}
 
 		// Taxonomies including from CPT's.
@@ -1040,6 +1090,15 @@ class Tags {
 				$image   = isset( $image[0] ) ? '<img src="' . $image[0] . '" style="display: block; margin: 1em auto">' : ''; // phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
 
 				return $sampleData ? __( 'Sample featured image', 'all-in-one-seo-pack' ) : $image;
+			case 'featured_image_url':
+				if ( ! has_post_thumbnail( $postId ) ) {
+					return $sampleData ? __( 'Featured Image URL', 'all-in-one-seo-pack' ) : '';
+				}
+
+				$imageId  = get_post_thumbnail_id( $postId );
+				$imageSrc = (array) wp_get_attachment_image_src( $imageId, 'full' );
+
+				return isset( $imageSrc[0] ) ? esc_url( $imageSrc[0] ) : '';
 			case 'page_number':
 				return aioseo()->helpers->getPageNumber();
 			case 'parent_title':
@@ -1055,6 +1114,34 @@ class Tags {
 				$date = $this->formatDateAsI18n( get_the_date( 'U' ) );
 
 				return empty( $date ) && $sampleData ? $this->formatDateAsI18n( date_i18n( 'U' ) ) : $date;
+			case 'event_start_date':
+				if ( ! function_exists( 'tribe_get_start_date' ) || empty( $postId ) ) {
+					return $sampleData ? $this->formatDateAsI18n( date_i18n( 'U' ) ) : '';
+				}
+
+				$timestamp = tribe_get_start_date( $postId, true, 'U' );
+
+				return $timestamp ? $this->formatDateAsI18n( $timestamp ) : '';
+			case 'event_end_date':
+				if ( ! function_exists( 'tribe_get_end_date' ) || empty( $postId ) ) {
+					return $sampleData ? $this->formatDateAsI18n( date_i18n( 'U' ) ) : '';
+				}
+
+				$timestamp = tribe_get_end_date( $postId, true, 'U' );
+
+				return $timestamp ? $this->formatDateAsI18n( $timestamp ) : '';
+			case 'post_date_w3c':
+				$date = is_object( $post ) ? mysql2date( DATE_W3C, $post->post_date, false ) : '';
+
+				return empty( $date ) && $sampleData ? mysql2date( DATE_W3C, current_time( 'mysql' ), false ) : $date;
+			case 'post_modified_date':
+				$date = $this->formatDateAsI18n( get_the_modified_date( 'U', $post ) );
+
+				return empty( $date ) && $sampleData ? $this->formatDateAsI18n( date_i18n( 'U' ) ) : $date;
+			case 'post_modified_date_w3c':
+				$date = is_object( $post ) ? mysql2date( DATE_W3C, $post->post_modified, false ) : '';
+
+				return empty( $date ) && $sampleData ? mysql2date( DATE_W3C, current_time( 'mysql' ), false ) : $date;
 			case 'post_day':
 				$day = get_the_date( 'd', $post );
 
