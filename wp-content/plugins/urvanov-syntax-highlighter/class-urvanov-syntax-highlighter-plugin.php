@@ -1107,12 +1107,108 @@ class Urvanov_Syntax_Highlighter_Plugin {
         }
     }
 
+    /** How many full post objects to hold in memory at once while scanning. */
+    const URVANOV_POSTS_BATCH_SIZE = 200;
+
+    /**
+     * Yield every post, a batch at a time.
+     *
+     * LOCAL PATCH. This was a single WP_Query with posts_per_page = -1, which
+     * loaded every post of every type at once and primed the object cache with
+     * all of them. On a blog this size that reliably died with
+     *
+     *   PHP Fatal error: Allowed memory size of 536870912 bytes exhausted
+     *   (tried to allocate 123744256 bytes) in wp-content/object-cache.php:1240
+     *
+     * 27 seconds into activating the plugin — object-cache.php:1240 being the
+     * Redis drop-in batching the whole result set into one transaction. Raising
+     * memory_limit is not an option here: 512M x MaxRequestWorkers=40 already
+     * overruns the pod's 3Gi limit, see apache-mpm-prefork.conf.
+     *
+     * Two phases keep memory bounded: collect IDs only (integers, cheap), then
+     * hydrate them in batches. IDs are used instead of paged offsets because
+     * OFFSET grows more expensive with every page on a table this size.
+     *
+     * cache_results / update_post_*_cache are off because these posts are read
+     * once, matched against a regex and thrown away — caching them is what blew
+     * up in the first place. Cache addition is suspended for the same reason,
+     * and restored afterwards even if a caller throws.
+     *
+     * The two queries deliberately differ on post_status, do not "tidy" that up:
+     *
+     *   Phase 1 omits it, which is what selects the posts. Leaving it unset keeps
+     *   WP_Query's default status logic — publish plus public states, plus
+     *   draft/pending/future when is_admin(), plus private when logged in (see
+     *   WP_Query::get_posts()). That default is context dependent, and matching it
+     *   exactly is the point: passing 'any' here would widen the scan on the
+     *   front-end path (Urvanov_Syntax_Highlighter_Plugin::update() runs on
+     *   ordinary requests) and inflate the urvanov_syntax_highlighter_posts option
+     *   beyond what upstream stores.
+     *
+     *   Phase 2 passes 'any' precisely because it selects nothing — post__in has
+     *   already fixed the set. A status filter there could only drop rows phase 1
+     *   picked, never add any, so 'any' is insurance against silently losing a
+     *   post between the phases rather than a change in scope.
+     *
+     * Returns a Generator; all three `foreach (self::get_posts() as $post)`
+     * callers work unchanged.
+     */
     public static function get_posts() {
-        $query = new WP_Query(array('post_type' => 'any', 'suppress_filters' => TRUE, 'posts_per_page' => '-1'));
-        if (isset($query->posts)) {
-            return $query->posts;
-        } else {
-            return array();
+        $id_query = new WP_Query(array(
+            'post_type'              => 'any',
+            'suppress_filters'       => TRUE,
+            'posts_per_page'         => '-1',
+            'fields'                 => 'ids',
+            'orderby'                => 'ID',
+            'order'                  => 'ASC',
+            'no_found_rows'          => TRUE,
+            'cache_results'          => FALSE,
+            'ignore_sticky_posts'    => TRUE,
+            'update_post_meta_cache' => FALSE,
+            'update_post_term_cache' => FALSE,
+        ));
+
+        $ids = isset($id_query->posts) ? $id_query->posts : array();
+        unset($id_query);
+
+        if (empty($ids)) {
+            return;
+        }
+
+        $suspended = function_exists('wp_suspend_cache_addition') ? wp_suspend_cache_addition() : FALSE;
+        if (function_exists('wp_suspend_cache_addition')) {
+            wp_suspend_cache_addition(TRUE);
+        }
+
+        try {
+            foreach (array_chunk($ids, self::URVANOV_POSTS_BATCH_SIZE) as $chunk) {
+                $batch = new WP_Query(array(
+                    'post_type'              => 'any',
+                    // Not a widening of the scan — see the note above.
+                    'post_status'            => 'any',
+                    'suppress_filters'       => TRUE,
+                    'post__in'               => $chunk,
+                    'posts_per_page'         => count($chunk),
+                    'orderby'                => 'post__in',
+                    'no_found_rows'          => TRUE,
+                    'cache_results'          => FALSE,
+                    'ignore_sticky_posts'    => TRUE,
+                    'update_post_meta_cache' => FALSE,
+                    'update_post_term_cache' => FALSE,
+                ));
+
+                if (isset($batch->posts)) {
+                    foreach ($batch->posts as $post) {
+                        yield $post;
+                    }
+                }
+
+                unset($batch);
+            }
+        } finally {
+            if (function_exists('wp_suspend_cache_addition')) {
+                wp_suspend_cache_addition($suspended);
+            }
         }
     }
 
