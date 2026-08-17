@@ -113,17 +113,62 @@ class OAIT_Translator {
         // list. The wrong → right pairs are that review's actual examples and are
         // deliberately kept verbatim: naming the noun's gender is what stops the
         // model repeating them, a bare \"check agreement\" rule did not.
-        'el' => "- Article/adjective gender agreement is the most common error in Greek output — verify that the article AND every modifying adjective match the grammatical gender of the noun they refer to. Loanwords are normally neuter; nouns in -ος are usually masculine; nouns in -ι and -μα are neuter. Do not repeat these:
+        'el' => "Greek output is reviewed before publication and these ten rules are the defects the reviewers actually found, ordered by severity. Rule 1 produces unpublishable text; rule 2 is the most frequent.
+
+### 1. Script integrity — never mix alphabets inside one word
+Every Greek word must be written entirely in Greek letters. NEVER emit Cyrillic characters. Never blend Greek with Latin, or Greek with Cyrillic, inside a single word. Observed failures — do not repeat them:
+  \"μακ rosi\" → \"μακροεντολές\" (\"macros\"; this one appeared four times in a single article)
+  \"εγ dokumentων\" → \"εγγράφων\" (\"documents\")
+  \"Мюнстер\" written in Cyrillic → \"Μύνστερ\" (\"Munster\")
+If a proper name or technical term has to be transliterated, transliterate the whole word into Greek script and use the same spelling everywhere. If a term must stay in English (rule 6), leave it entirely in Latin script. Half-and-half is never correct.
+
+### 2. Gender AND case agreement
+The article, any adjective and the noun must agree in BOTH grammatical gender and case. Loanwords are normally neuter; nouns in -ος are usually masculine; nouns in -ι, -μα and -ο are neuter; nouns in -η and -ση are feminine. Do not repeat these:
   \"η πρόβλημα\" → \"το πρόβλημα\" (πρόβλημα is neuter)
   \"στην πάνελ\" → \"στο πάνελ\" (πάνελ is neuter)
   \"της σχολιασμού\" → \"του σχολιασμού\" (σχολιασμός is masculine)
   \"μια εκπληκτική αριθμό\" → \"έναν εκπληκτικό αριθμό\" (αριθμός is masculine)
   \"Αυτή τη καλοκαίρι\" → \"Αυτό το καλοκαίρι\" (καλοκαίρι is neuter)
-- When the source has a sequence of verbs in the same tense or mood (parallel actions, or a chain of subjunctives), keep every verb of that sequence in the same tense and mood — do not let one drift: \"σαρώνατε\" (past) inside a present-tense chain must be \"σαρώνετε\"; \"επαναφέρθηκε\" breaking a subjunctive chain must be \"επαναφερθεί\".
-- Never carry an English semicolon over into Greek: \";\" is the Greek question mark and silently turns the sentence into a question. Split into two sentences, or use the ano teleia \"·\".
-- Do not calque English idioms. Express the intended meaning in natural Greek even if the sentence has to be restructured completely — word-for-word renderings of phrases like \"punches above its weight\", \"quietly run the working world\" or \"no third-party cloud in the picture\" are confusing to a native reader.
-- Foreign acronyms and loanwords never take an English \"-s\" in the plural; the article alone marks number: \"τα PDF\", never \"τα PDFs\".
-- Do not translate software UI labels (button, tab and menu names) unless an official Greek localization of that exact product is confirmed — keep the English label so the instructions match what the reader sees on screen. E.g. the Zotero \"Marketplace\" tab stays \"Marketplace\", not \"Αγορά\".",
+  \"εκπαιδευτικά εκπτώσεις\" → \"εκπαιδευτικές εκπτώσεις\" (εκπτώσεις is feminine plural)
+  \"ευαίσθητοι περιεχόμενο\" → \"ευαίσθητο περιεχόμενο\" (περιεχόμενο is neuter)
+Case in particular: do not slip into the genitive when the sentence does not call for it. \"ενσωμάτωση\" stays nominative or accusative unless the structure genuinely requires the genitive — it was wrongly written \"ενσωμάτωσης\" three times in one article, once directly beside a correctly declined coordinate noun in the same phrase. Also neuter: ίδρυμα.
+
+### 3. Verb tense and mood consistency
+When the source has a sequence of verbs sharing a tense or mood (parallel actions, or a chain of subjunctives), keep every verb of that sequence in the same tense and mood — do not let one drift:
+  \"σαρώνατε\" (past) inside a present-tense chain → \"σαρώνετε\"
+  \"επαναφέρθηκε\" breaking a subjunctive chain → \"επαναφερθεί\"
+
+### 4. Punctuation is not translated literally
+Never carry an English semicolon over into Greek: \";\" is the Greek question mark, so it silently turns a statement into a question. This was most visible at the end of nearly every bullet in list-heavy sections, and also mid-sentence in running text. Use a full stop, the ano teleia \"·\" for list items, or restructure the sentence.
+
+### 5. Idioms and figurative language
+Work out the intended meaning first, then say it in natural Greek, restructuring the sentence completely if needed. Word-for-word renderings produced these:
+  \"quietly run the working world\" → became \"are quietly possessed by\"
+  \"punches above its weight\" → became \"exceeds its own expectations\"
+  \"fits right into that vision\" → became \"fits into that sustainability\" (vision and sustainability are unrelated)
+  \"no third-party cloud in the picture\" → became a roughly meaningless phrase
+
+### 6. UI labels and named product features stay in English
+Do not translate button, tab or menu names, or named product features, unless an official Greek localization of that exact product is confirmed. Keep the English label so instructions match what the reader sees on screen:
+  the \"Marketplace\" tab stays \"Marketplace\", not \"Αγορά\"
+  the \"Rooms\" feature stays \"Rooms\" — it was rendered \"Πολυμορφικό\" (\"polymorphic\"), losing the feature name entirely
+
+### 7. Established terminology, and the right word sense
+For technical, legal and product terms use the established Greek term, not a literal rendering:
+  \"data sovereignty\" → \"κυριαρχία δεδομένων\", NOT \"αυτονομία δεδομένων\" (\"data autonomy\")
+  \"Viewer\" (as in a diagram viewer) → a word meaning viewer/reader, NOT \"Περιοριστής\" (\"limiter\"), which says the opposite of what the feature does
+  \"native working formats\" → \"format\" here is a file format; do not pick the sense that means \"educated\"
+  \"The deadlines are real\" → \"real\", not \"realistic\" — the rhetorical point is that they exist, not that they are achievable
+When an English word maps to several Greek words depending on context, decide which sense applies before choosing.
+
+### 8. Consistency within one article
+Translate a given term the same way every time it appears in the same piece. \"real-time mode\" was rendered correctly once and then reduced to just \"real\" a few lines later, changing the meaning. Keep the gender you assign to a loanword such as \"cloud\" consistent throughout the text as well.
+
+### 9. Leave no English behind mid-sentence
+Translate every word. English may remain only for proper nouns, the never-translate list, UI labels under rule 6, and established loanwords. \"edge cases\" must not come out as \"περιπτώσεις edge\".
+
+### 10. Acronym plurals
+Foreign acronyms and loanwords never take an English \"-s\" in the plural; the article alone marks number: \"τα PDF\", never \"τα PDFs\".",
 
         'ar' => "- Maintain right-to-left text direction awareness.
 - Use Modern Standard Arabic for professional/technical content.",
