@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -30,10 +39,10 @@ if ( ! class_exists( 'ACF_Location_Post_Status' ) ) :
 		 * @date    9/4/20
 		 * @since   5.9.0
 		 *
-		 * @param   array $rule The location rule.
-		 * @param   array $screen The screen args.
+		 * @param   array $rule        The location rule.
+		 * @param   array $screen      The screen args.
 		 * @param   array $field_group The field group settings.
-		 * @return  bool
+		 * @return  boolean
 		 */
 		public function match( $rule, $screen, $field_group ) {
 
@@ -46,7 +55,7 @@ if ( ! class_exists( 'ACF_Location_Post_Status' ) ) :
 				return false;
 			}
 
-			 // Treat "auto-draft" as "draft".
+			// Treat "auto-draft" as "draft".
 			if ( $post_status === 'auto-draft' ) {
 				$post_status = 'draft';
 			}
@@ -80,5 +89,4 @@ if ( ! class_exists( 'ACF_Location_Post_Status' ) ) :
 
 	// initialize
 	acf_register_location_type( 'ACF_Location_Post_Status' );
-
 endif; // class_exists check

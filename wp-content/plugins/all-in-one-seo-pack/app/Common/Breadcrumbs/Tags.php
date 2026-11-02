@@ -33,20 +33,21 @@ class Tags {
 	 * @return string                    The string with tags replaced.
 	 */
 	public function replaceTags( $string, $item, $stripPunctuation = false ) {
-		if ( ! $string || ! preg_match( '/#/', $string ) ) {
+		if ( ! $string || ! preg_match( '/#/', (string) $string ) ) {
 			return $string;
 		}
 
 		// Replace separator tag so we don't strip it as punctuation.
 		$separatorTag = aioseo()->tags->denotationChar . 'separator_sa';
-		$string       = preg_replace( "/$separatorTag(?![a-zA-Z0-9_])/im", '>thisisjustarandomplaceholder<', $string );
+		$string       = preg_replace( "/$separatorTag(?![a-zA-Z0-9_])/im", '>thisisjustarandomplaceholder<', (string) $string );
 
 		// Replace custom breadcrumb tags.
 		foreach ( $this->getTags() as $tag ) {
 			$tagId   = aioseo()->tags->denotationChar . $tag['id'];
 			$pattern = "/$tagId(?![a-zA-Z0-9_])/im";
-			if ( preg_match( $pattern, $string ) ) {
-				$string = preg_replace( $pattern, $this->getTagValue( $tag, $item ), $string );
+			if ( preg_match( $pattern, (string) $string ) ) {
+				$tagValue = str_replace( '$', '\$', (string) $this->getTagValue( $tag, $item ) );
+				$string   = preg_replace( $pattern, $tagValue, (string) $string );
 			}
 		}
 
@@ -54,10 +55,17 @@ class Tags {
 			$string = aioseo()->helpers->stripPunctuation( $string );
 		}
 
+		// Remove any remaining tags from the title attribute.
+		$string = preg_replace_callback( '/title="([^"]*)"/i', function ( $matches ) {
+			$sanitizedTitle = wp_strip_all_tags( aioseo()->helpers->decodeHtmlEntities( $matches[1] ) );
+
+			return 'title="' . esc_attr( $sanitizedTitle ) . '"';
+		}, aioseo()->helpers->decodeHtmlEntities( $string ) );
+
 		return preg_replace(
 			'/>thisisjustarandomplaceholder<(?![a-zA-Z0-9_])/im',
 			aioseo()->helpers->decodeHtmlEntities( aioseo()->options->searchAppearance->global->separator ),
-			$string
+			(string) $string
 		);
 	}
 
@@ -127,13 +135,13 @@ class Tags {
 			[
 				'id'          => 'breadcrumb_post_title',
 				// Translators: 1 - The type of page (Post, Page, Category, Tag, etc.).
-				'name'        => sprintf( __( '%1$s Title', 'all-in-one-seo-pack' ), 'Post' ),
+				'name'        => sprintf( _x( '%1$s Title', 'SEO template tag', 'all-in-one-seo-pack' ), 'Post' ),
 				'description' => __( 'The original title of the current post.', 'all-in-one-seo-pack' )
 			],
 			[
 				'id'          => 'breadcrumb_taxonomy_title',
 				// Translators: 1 - The type of page (Post, Page, Category, Tag, etc.).
-				'name'        => sprintf( __( '%1$s Title', 'all-in-one-seo-pack' ), 'Category' ),
+				'name'        => sprintf( _x( '%1$s Title', 'SEO template tag', 'all-in-one-seo-pack' ), 'Category' ),
 				// Translators: 1 - The name of a taxonomy.
 				'description' => sprintf( __( 'The %1$s title.', 'all-in-one-seo-pack' ), 'Category' )
 			],

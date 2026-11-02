@@ -15,7 +15,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-$country_names = [
+$fluentformCountryNames = [
     'AF' => __('Afghanistan', 'fluentform'),
     'AX' => __('Aland Islands', 'fluentform'),
     'AL' => __('Albania', 'fluentform'),
@@ -38,7 +38,7 @@ $country_names = [
     'BB' => __('Barbados', 'fluentform'),
     'BY' => __('Belarus', 'fluentform'),
     'BE' => __('Belgium', 'fluentform'),
-    'PW' => __('Belau', 'fluentform'),
+    'PW' => __('Palau', 'fluentform'),
     'BZ' => __('Belize', 'fluentform'),
     'BJ' => __('Benin', 'fluentform'),
     'BM' => __('Bermuda', 'fluentform'),
@@ -58,7 +58,7 @@ $country_names = [
     'KH' => __('Cambodia', 'fluentform'),
     'CM' => __('Cameroon', 'fluentform'),
     'CA' => __('Canada', 'fluentform'),
-    'CV' => __('Cape Verde', 'fluentform'),
+    'CV' => __('Cabo Verde', 'fluentform'),
     'KY' => __('Cayman Islands', 'fluentform'),
     'CF' => __('Central African Republic', 'fluentform'),
     'TD' => __('Chad', 'fluentform'),
@@ -68,13 +68,13 @@ $country_names = [
     'CC' => __('Cocos (Keeling) Islands', 'fluentform'),
     'CO' => __('Colombia', 'fluentform'),
     'KM' => __('Comoros', 'fluentform'),
-    'CG' => __('Congo (Brazzaville)', 'fluentform'),
-    'CD' => __('Congo (Kinshasa)', 'fluentform'),
+    'CG' => __('Republic of the Congo (Brazzaville)', 'fluentform'),
+    'CD' => __('Democratic Republic of the Congo (Kinshasa)', 'fluentform'),
     'CK' => __('Cook Islands', 'fluentform'),
     'CR' => __('Costa Rica', 'fluentform'),
     'HR' => __('Croatia', 'fluentform'),
     'CU' => __('Cuba', 'fluentform'),
-    'CW' => __('Cura&ccedil;ao', 'fluentform'),
+    'CW' => __('Curaçao', 'fluentform'),
     'CY' => __('Cyprus', 'fluentform'),
     'CZ' => __('Czech Republic', 'fluentform'),
     'DK' => __('Denmark', 'fluentform'),
@@ -147,7 +147,7 @@ $country_names = [
     'LT' => __('Lithuania', 'fluentform'),
     'LU' => __('Luxembourg', 'fluentform'),
     'MO' => __('Macao S.A.R., China', 'fluentform'),
-    'MK' => __('Macedonia', 'fluentform'),
+    'MK' => __('North Macedonia', 'fluentform'),
     'MG' => __('Madagascar', 'fluentform'),
     'MW' => __('Malawi', 'fluentform'),
     'MY' => __('Malaysia', 'fluentform'),
@@ -196,11 +196,11 @@ $country_names = [
     'PT' => __('Portugal', 'fluentform'),
     'PR' => __('Puerto Rico', 'fluentform'),
     'QA' => __('Qatar', 'fluentform'),
-    'RE' => __('Reunion', 'fluentform'),
+    'RE' => __('Réunion', 'fluentform'),
     'RO' => __('Romania', 'fluentform'),
     'RU' => __('Russia', 'fluentform'),
     'RW' => __('Rwanda', 'fluentform'),
-    'BL' => __('Saint Barth&eacute;lemy', 'fluentform'),
+    'BL' => __('Saint Barthélemy', 'fluentform'),
     'SH' => __('Saint Helena', 'fluentform'),
     'KN' => __('Saint Kitts and Nevis', 'fluentform'),
     'LC' => __('Saint Lucia', 'fluentform'),
@@ -209,7 +209,7 @@ $country_names = [
     'PM' => __('Saint Pierre and Miquelon', 'fluentform'),
     'VC' => __('Saint Vincent and the Grenadines', 'fluentform'),
     'SM' => __('San Marino', 'fluentform'),
-    'ST' => __('S&atilde;o Tom&eacute; and Pr&iacute;ncipe', 'fluentform'),
+    'ST' => __('Sao Tome and Principe', 'fluentform'),
     'SA' => __('Saudi Arabia', 'fluentform'),
     'SN' => __('Senegal', 'fluentform'),
     'RS' => __('Serbia', 'fluentform'),
@@ -229,7 +229,7 @@ $country_names = [
     'SD' => __('Sudan', 'fluentform'),
     'SR' => __('Suriname', 'fluentform'),
     'SJ' => __('Svalbard and Jan Mayen', 'fluentform'),
-    'SZ' => __('Swaziland', 'fluentform'),
+    'SZ' => __('Eswatini', 'fluentform'),
     'SE' => __('Sweden', 'fluentform'),
     'CH' => __('Switzerland', 'fluentform'),
     'SY' => __('Syria', 'fluentform'),
@@ -243,7 +243,7 @@ $country_names = [
     'TO' => __('Tonga', 'fluentform'),
     'TT' => __('Trinidad and Tobago', 'fluentform'),
     'TN' => __('Tunisia', 'fluentform'),
-    'TR' => __('Turkey', 'fluentform'),
+    'TR' => __('Türkiye', 'fluentform'),
     'TM' => __('Turkmenistan', 'fluentform'),
     'TC' => __('Turks and Caicos Islands', 'fluentform'),
     'TV' => __('Tuvalu', 'fluentform'),
@@ -268,8 +268,18 @@ $country_names = [
     'ZW' => __('Zimbabwe', 'fluentform'),
 ];
 
-$country_names = apply_filters('fluent_editor_countries', $country_names);
+$fluentformCountryNames = apply_filters_deprecated(
+    'fluent_editor_countries',
+    [
+        $fluentformCountryNames
+    ],
+    FLUENTFORM_FRAMEWORK_UPGRADE,
+    'fluentform/editor_countries',
+    'Use fluentform/editor_countries instead of fluent_editor_countries.'
+);
 
-asort($country_names);
+$fluentformCountryNames = apply_filters('fluentform/editor_countries', $fluentformCountryNames);
 
-return $country_names;
+asort($fluentformCountryNames);
+
+return $fluentformCountryNames;

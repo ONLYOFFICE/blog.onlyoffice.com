@@ -30,64 +30,34 @@
       $checked = 'checked';
     }
 
-    echo "<input type='checkbox' name='" . esc_attr(TRINITY_AUDIO_ENABLED) . "' id='" . esc_attr(TRINITY_AUDIO_ENABLED) . "'" . checked( $checked, 'checked', false ) . '/>';
-  }
-
-  function trinity_meta_source_gender($post_id) {
-    echo "<select onchange='updateVoiceValue()' name='" . esc_attr(TRINITY_AUDIO_GENDER_ID) . "' id='" . esc_attr(TRINITY_AUDIO_GENDER_ID) . "'>";
-
-    $post_gender = get_post_meta($post_id, TRINITY_AUDIO_GENDER_ID, true);
-    $genders     = array_merge(['' => TRINITY_AUDIO_LABEL_DEFAULT], TRINITY_AUDIO_GENDER_ARRAY);
-
-    foreach ($genders as $key => $value) {
-      $selected = $post_gender === $key ? 'selected' : '';
-
-      echo "<option value='" . esc_attr($key) . "' " . esc_attr($selected) . '>' . esc_html($value) . '</option>';
-    }
-
-    echo '</select>';
+    echo "<input type='checkbox' name='" . esc_attr(TRINITY_AUDIO_ENABLED) . "' id='" . esc_attr(TRINITY_AUDIO_ENABLED) . "'" . checked($checked, 'checked', false) . '/>';
   }
 
   function trinity_meta_source_language($post_id) {
-    $languages = trinity_get_languages();
+    $post_voice_id = get_post_meta($post_id, TRINITY_AUDIO_VOICE_ID, true);
+    $voice_config_widget_url = TRINITY_DASHBOARD_SERVICE . 'backend/v1/apps/unit-configuration/wp/' . trinity_get_install_key() . '?voice_selection_only=1&voice_id=' . $post_voice_id;
+    ?>
 
-    echo "<input type='hidden' name='" . esc_attr(TRINITY_AUDIO_VOICE_ID) . "' id='" . esc_attr(TRINITY_AUDIO_VOICE_ID) . "' class='trinity-audio-metaboxes-element'/>";
-    echo "<select onchange='updateVoiceValue()' name='" . esc_attr(TRINITY_AUDIO_SOURCE_LANGUAGE) . "' id='" . esc_attr(TRINITY_AUDIO_SOURCE_LANGUAGE) . "'>";
+    <script defer src="<?= esc_url($voice_config_widget_url) ?>"></script>
+    <script>
+        jQuery(document).ready(async () => {
+          await trinityMetaVoiceConfig();
+        });
+    </script>
 
-    $post_language    = get_post_meta($post_id, TRINITY_AUDIO_SOURCE_LANGUAGE, true);
-    $result_languages = array_merge(
-      [
-        (object)[
-          'code' => '',
-          'name' => TRINITY_AUDIO_LABEL_DEFAULT,
-        ],
-      ],
-      $languages
-    );
-
-    foreach ($result_languages as $lang) {
-      $language_code = $lang->code;
-      $language_name = $lang->name;
-
-      if (isset($lang->voices)) $voicesEncoded = json_encode($lang->voices);
-      else $voicesEncoded = '';
-
-
-      $selected = $post_language === $language_code ? 'selected' : '';
-
-      echo "<option data-voices='$voicesEncoded' value='" . esc_attr($language_code) . "' " . esc_attr($selected) . '>' . esc_html($language_name) . '</option>';
-    }
-
-    echo '</select>';
+    <input type='hidden' name="<?= esc_attr(TRINITY_AUDIO_SOURCE_LANGUAGE); ?>"
+         id="<?= esc_attr(TRINITY_AUDIO_SOURCE_LANGUAGE); ?>"
+         class="trinity-audio-metaboxes-element" />
+    <input type='hidden' name="<?= esc_attr(TRINITY_AUDIO_VOICE_ID); ?>"
+         id="<?= esc_attr(TRINITY_AUDIO_VOICE_ID); ?>"
+         class="trinity-audio-metaboxes-element" />
+  <?php
   }
 
   function trinity_audio_box_content($post) {
     ?>
     <div id="trinity-metabox">
-      <?php
-        $nonce = wp_create_nonce('trinity-audio-metabox');
-        echo '<input type="hidden" name="' . esc_attr(TRINITY_AUDIO_NONCE_NAME) . '" value="' . esc_attr($nonce) . '" />';
-      ?>
+       <?php wp_nonce_field('trinity-audio-metabox', TRINITY_AUDIO_NONCE_NAME); ?>
 
       <div class="components-tab-panel__tabs">
         <button type="button" class="components-button is-active"
@@ -104,9 +74,9 @@
         <div data-id="main" class="content is-active">
           <table class="form-table">
             <tr>
-              <th style="width: 250px;">
-                <label for="<?php echo esc_attr(TRINITY_AUDIO_ENABLED); ?>">
-                  Enable Text-To-Speech (Trinity audio):
+              <th>
+                <label for="<?= esc_attr(TRINITY_AUDIO_ENABLED); ?>">
+                  Enable TTS (Trinity audio):
                 </label>
               </th>
               <td>
@@ -120,15 +90,7 @@
             </tr>
             <tr>
               <th>
-                <label for="<?php echo esc_attr(TRINITY_AUDIO_GENDER_ID); ?>">Gender:</label>
-              </th>
-              <td>
-                <?php trinity_meta_source_gender($post->ID); ?>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <label for="<?php echo esc_attr(TRINITY_AUDIO_SOURCE_LANGUAGE); ?>">Language:</label>
+                <label for="<?= esc_attr(TRINITY_AUDIO_SOURCE_LANGUAGE); ?>">Voice:</label>
               </th>
               <td>
                 <?php trinity_meta_source_language($post->ID); ?>
@@ -139,7 +101,7 @@
 
         <div data-id="advanced" class="content">
           <p>Please use this section in case you are having issues
-            with the player on this post or if instructed by <?php TRINITY_AUDIO_SUPPORT_MESSAGE; ?></p>
+            with the player on this post or if instructed by <?= wp_kses_post(TRINITY_AUDIO_SUPPORT_MESSAGE); ?></p>
 
           <h4 title="Each token represents different text version created for this post">
             <span class="dashicons dashicons-info"></span>
@@ -147,28 +109,14 @@
           </h4>
 
           <?php
-            $hashes = trinity_get_posthashes_for_post_id($post->ID);
+            $hashes = trinity_ph_get_posthashes_for_post_id($post->ID);
           ?>
 
           <ul>
             <li>
-              <label>Content:</label>
-              <span class="trinity-meta-content"><?php echo esc_html($hashes[TRINITY_AUDIO_CONTENT]); ?></span>
-            </li>
-            <li>
-              <label>Content + title:</label>
+              <label>Title + content:</label>
               <span
-                  class="trinity-meta-content-title"><?php echo esc_html($hashes[TRINITY_AUDIO_CONTENT_TITLE]); ?></span>
-            </li>
-            <li>
-              <label>Content + title + excerpt:</label>
-              <span
-                  class="trinity-meta-content-title-excerpt"><?php echo esc_html($hashes[TRINITY_AUDIO_CONTENT_EXCERPT_TITLE]); ?></span>
-            </li>
-            <li>
-              <label>Content + excerpt:</label>
-              <span
-                  class="trinity-meta-content-excerpt"><?php echo esc_html($hashes[TRINITY_AUDIO_CONTENT_EXCERPT]); ?></span>
+                  class="trinity-meta-title-content"><?php if($hashes) echo esc_html($hashes[TRINITY_AUDIO_POST_META_MAP[TRINITY_AUDIO_TITLE_CONTENT]]); ?></span>
             </li>
           </ul>
 
@@ -201,10 +149,7 @@
       'TRINITY_WP_METABOX',
       [
         'postId'                              => $post->ID,
-        'TRINITY_AUDIO_CONTENT_TITLE'         => TRINITY_AUDIO_CONTENT_TITLE,
-        'TRINITY_AUDIO_CONTENT'               => TRINITY_AUDIO_CONTENT,
-        'TRINITY_AUDIO_CONTENT_EXCERPT'       => TRINITY_AUDIO_CONTENT_EXCERPT,
-        'TRINITY_AUDIO_CONTENT_EXCERPT_TITLE' => TRINITY_AUDIO_CONTENT_EXCERPT_TITLE,
+        'TRINITY_AUDIO_POST_META_MAP'         => TRINITY_AUDIO_POST_META_MAP
       ]
     );
   }

@@ -82,14 +82,22 @@ class UrvanovSyntaxHighlighterTagEditorWP {
             wp_enqueue_script('urvanov_syntax_highlighter_js', plugins_url(URVANOV_SYNTAX_HIGHLIGHTER_JS_TE_MIN, dirname(dirname(__FILE__))), array('jquery', 'quicktags', 'wp-rich-text' , 'wp-element', 'wp-editor', 'wp-blocks', 'wp-components', 'wp-html-entities'), $URVANOV_SYNTAX_HIGHLIGHTER_VERSION);
             Urvanov_Syntax_Highlighter_Settings_WP::init_js_settings();
             wp_localize_script('urvanov_syntax_highlighter_js', 'UrvanovSyntaxHighlighterTagEditorSettings', self::$settings);
+            self::add_tag_editor_nonces('urvanov_syntax_highlighter_js');
         } else {
             wp_enqueue_script('urvanov_syntax_highlighter_colorbox_js', plugins_url(URVANOV_SYNTAX_HIGHLIGHTER_COLORBOX_JS, __FILE__), array('jquery'), $URVANOV_SYNTAX_HIGHLIGHTER_VERSION);
             wp_enqueue_style('urvanov_syntax_highlighter_colorbox_css', plugins_url(URVANOV_SYNTAX_HIGHLIGHTER_COLORBOX_CSS, __FILE__), array(), $URVANOV_SYNTAX_HIGHLIGHTER_VERSION);
             wp_enqueue_script('urvanov_syntax_highlighter_te_js', plugins_url(URVANOV_SYNTAX_HIGHLIGHTER_TAG_EDITOR_JS, __FILE__), array('urvanov_syntax_highlighter_util_js', 'urvanov_syntax_highlighter_colorbox_js', 'wpdialogs', 'wp-rich-text' , 'wp-element', 'wp-editor', 'wp-blocks', 'wp-components', 'wp-html-entities'), $URVANOV_SYNTAX_HIGHLIGHTER_VERSION);
             wp_enqueue_script('urvanov_syntax_highlighter_qt_js', plugins_url(URVANOV_SYNTAX_HIGHLIGHTER_QUICKTAGS_JS, __FILE__), array('quicktags', 'urvanov_syntax_highlighter_te_js'), $URVANOV_SYNTAX_HIGHLIGHTER_VERSION, TRUE);
             wp_localize_script('urvanov_syntax_highlighter_te_js', 'UrvanovSyntaxHighlighterTagEditorSettings', self::$settings);
+            self::add_tag_editor_nonces('urvanov_syntax_highlighter_te_js');
             Urvanov_Syntax_Highlighter_Settings_WP::other_scripts();
         }
+    }
+    
+    public static function add_tag_editor_nonces($script_name) {
+        wp_localize_script($script_name, 'urvanovSyntaxHighlighterTagEditorNonces', array(
+                'tagEditor' => wp_create_nonce( 'urvanov-syntax-highlighter-tag-editor' )
+        ));
     }
 
     public static function init_tinymce($init) {
@@ -165,6 +173,7 @@ class UrvanovSyntaxHighlighterTagEditorWP {
     }
 
     public static function content() {
+        check_ajax_referer( 'urvanov-syntax-highlighter-tag-editor');
         Urvanov_Syntax_Highlighter_Settings_WP::load_settings();
         $langs = Urvanov_Syntax_Highlighter_Langs::sort_by_name(Urvanov_Syntax_Highlighter_Parser::parse_all());
         $curr_lang = Urvanov_Syntax_Highlighter_Global_Settings::val(Urvanov_Syntax_Highlighter_Settings::FALLBACK_LANG);

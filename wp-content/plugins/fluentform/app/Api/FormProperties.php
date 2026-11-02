@@ -61,8 +61,6 @@ class FormProperties
      * Get Email Notifications as an array
      *
      * @return array
-     *
-     * @throws \WpFluent\Exception
      */
     public function emailNotifications()
     {
@@ -105,10 +103,14 @@ class FormProperties
      */
     public function renderable()
     {
-        return apply_filters('fluentform_is_form_renderable', [
+        $isRenderable = [
             'status'  => true,
             'message' => '',
-        ], $this->form);
+        ];
+        /* This filter is deprecated and will be removed soon */
+        $isRenderable = apply_filters('fluentform_is_form_renderable', $isRenderable, $this->form);
+        
+        return apply_filters('fluentform/is_form_renderable', $isRenderable, $this->form);
     }
 
     public function conversionRate()
@@ -158,10 +160,6 @@ class FormProperties
 
     public function __get($name)
     {
-        if (property_exists($this->form, $name)) {
-            return $this->form->{$name};
-        }
-
-        return false;
+        return $this->form->{$name} ?? null;
     }
 }

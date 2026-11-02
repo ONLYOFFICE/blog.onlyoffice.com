@@ -6,6 +6,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AIOSEO\Plugin\Common\Models;
+use AIOSEO\Plugin\Common\SpellChecker\Dictionary;
+
 /**
  * Abstract class that Pro and Lite both extend.
  *
@@ -27,7 +30,7 @@ class Activate {
 		}
 
 		// This needs to run on at least 1000 because we load the roles in the Access class on 999.
-		add_action( 'init', [ $this, 'init' ], 1000 );
+		add_action( 'admin_init', [ $this, 'init' ], 1000 );
 	}
 
 	/**
@@ -46,7 +49,7 @@ class Activate {
 		}
 
 		if ( $proDeactivatedLite ) {
-			aioseo()->core->cache->delete( 'pro_just_deactivated_lite', true );
+			aioseo()->core->cache->delete( 'pro_just_deactivated_lite' );
 			$this->activate( false );
 		}
 	}
@@ -74,8 +77,66 @@ class Activate {
 		}
 
 		aioseo()->core->cache->clear();
+		wp_cache_flush();
 
 		$this->maybeRunSetupWizard();
+		$this->maybeDownloadSpellCheckerDictionary();
+	}
+
+	/**
+	 * Downloads the spell checker dictionary for the current locale if needed.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @return void
+	 */
+	private function maybeDownloadSpellCheckerDictionary() {
+		if ( ! aioseo()->options->advanced->spellChecker ) {
+			return;
+		}
+
+		$dictionary       = new Dictionary();
+		$supportedLocales = $dictionary->getSpellCheckableLocales();
+		$locale           = get_locale();
+
+		if ( ! in_array( $locale, $supportedLocales, true ) ) {
+			return;
+		}
+
+		if ( ! $dictionary->needsDownload( $locale ) ) {
+			return;
+		}
+
+		$result = $dictionary->downloadForLocale( $locale );
+		if ( is_wp_error( $result ) ) {
+			$this->addSpellCheckerDictionaryFailedNotification();
+		}
+	}
+
+	/**
+	 * Adds a notification informing the user that the spell checker dictionary download failed.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @return void
+	 */
+	private function addSpellCheckerDictionaryFailedNotification() {
+		$notification = Models\Notification::getNotificationByName( 'spell-checker-dictionary-download-failed' );
+		if ( $notification->exists() ) {
+			return;
+		}
+
+		Models\Notification::addNotification( [
+			'slug'              => uniqid(),
+			'notification_name' => 'spell-checker-dictionary-download-failed',
+			'title'             => __( 'Spell Checker Dictionary Download Failed', 'all-in-one-seo-pack' ),
+			'content'           => __( 'We were unable to download the spell checker dictionary for your language. You can try again from the Settings page.', 'all-in-one-seo-pack' ),
+			'type'              => 'warning',
+			'level'             => [ 'all' ],
+			'button1_label'     => __( 'Go to Settings', 'all-in-one-seo-pack' ),
+			'button1_action'    => 'http://route#aioseo-settings:advanced',
+			'start'             => gmdate( 'Y-m-d H:i:s' )
+		] );
 	}
 
 	/**
@@ -87,6 +148,12 @@ class Activate {
 	 */
 	public function deactivate() {
 		aioseo()->access->removeCapabilities();
+
+		// Added cache clear because we changed the cache structure on version 4.9.1
+		// now we store as string and have a is_object column to differentiate between array and objects.
+		// This will prevent errors when deactivating the PRO plugin but keeping an old version of the LITE plugin.
+		aioseo()->core->cache->clear();
+		wp_cache_flush();
 	}
 
 	/**
@@ -110,17 +177,17 @@ class Activate {
 			return;
 		}
 
-		if ( isset( $_GET['activate-multi'] ) ) {
-			return;
-		}
-
-		// Sets 30 second transient for welcome screen redirect on activation.
-		aioseo()->core->cache->update( 'activation_redirect', true, 30 );
+		// Sets activation redirect flag.
+		// We use HOUR_IN_SECONDS to ensure the redirect still works after bulk activation,
+		// where the redirect is deferred to the next admin page load.
+		aioseo()->core->cache->update( 'activation_redirect', true, HOUR_IN_SECONDS );
 	}
 
 	/**
 	 * Adds our capabilities to all roles on the next request and the installing user on the current request after upgrading to Pro.
 	 *
+
+
 	 *
 	 * @since 4.1.4.4
 	 *
@@ -136,7 +203,7 @@ class Activate {
 			? get_current_user_id() // If there is a logged in user, the user is switching from Lite to Pro via the Plugins menu.
 			: aioseo()->core->cache->get( 'connect_active_user' ); // If there is no logged in user, we're upgrading via AIOSEO Connect.
 
-		$user = get_userdata( $userId );
+		$user = aioseo()->helpers->getUserData( $userId );
 		if ( is_object( $user ) ) {
 			$capabilities = aioseo()->access->getCapabilityList();
 			foreach ( $capabilities as $capability ) {

@@ -1,0 +1,967 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Democracy\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: Democracy Poll contributors\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-06-12 03:47+0500\n"
+"PO-Revision-Date: 2026-06-12 04:15+0500\n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
+"X-Poedit-SearchPathExcluded-2: assets/build\n"
+"X-Poedit-KeywordsList: __;_e;esc_html__;esc_html_e;esc_attr__;esc_attr_e;_ex:1,2c;_x:1,2c;_n:1,2;_nx:1,2,3c;_n_noop:1,2;_nx_noop:1,2,3c\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: includes/theme-functions.php:150
+msgid "Poll results hidden for now..."
+msgstr "投票结果暂时隐藏..."
+
+#: includes/theme-functions.php:378
+msgid "From posts:"
+msgstr "来自帖子："
+
+#: classes/Admin/Post_Metabox.php:30
+#: classes/Admin/Admin_Page.php:63
+msgid "Democracy Poll"
+msgstr "Democracy Poll"
+
+#: classes/Poll_Widget.php:14
+msgid "Democracy Poll Widget"
+msgstr "Democracy Poll 小工具"
+
+#: classes/Poll_Widget.php:68
+#: classes/Admin/List_Table_Logs.php:136
+msgid "Poll"
+msgstr "民意调查"
+
+#: classes/Poll_Widget.php:79
+msgid "Poll question = widget title?"
+msgstr "投票问题 = 小部件标题？"
+
+#: classes/Poll_Widget.php:84
+msgid "Poll title:"
+msgstr "投票标题："
+
+#: classes/Poll_Widget.php:93
+msgid "- Active (random all active)"
+msgstr "- 活跃（随机所有活跃）"
+
+#: classes/Poll_Widget.php:94
+msgid "- Last open poll"
+msgstr "- 最后一次公开投票"
+
+#: classes/Poll_Widget.php:109
+msgid "Which poll to show?"
+msgstr "显示哪个民意调查？"
+
+#: classes/Poll_Renderer.php:117
+#: classes/Admin/List_Table_Logs.php:185
+#: classes/Admin/List_Table_Logs.php:285
+msgid "Edit poll"
+msgstr "编辑投票"
+
+#: classes/Poll_Renderer.php:284
+msgctxt "front"
+msgid "Add your answer"
+msgstr "添加您的答案"
+
+#: classes/Poll_Renderer.php:305
+msgctxt "front"
+msgid "Already voted..."
+msgstr "已经投票了..."
+
+#: classes/Poll_Renderer.php:316
+#: classes/Poll_Renderer.php:559
+msgctxt "front"
+msgid "Vote"
+msgstr "投票"
+
+#: classes/Poll_Renderer.php:343
+msgctxt "front"
+msgid "Results"
+msgstr "结果"
+
+#: classes/Poll_Renderer.php:396
+msgctxt "front"
+msgid "This is your vote."
+msgstr "这是你的投票。"
+
+#: classes/Poll_Renderer.php:446
+msgctxt "front"
+msgid "The answer was added by a visitor"
+msgstr "答案是由访客添加的"
+
+#: classes/Poll_Renderer.php:421
+#: classes/Poll_Renderer.php:433
+msgctxt "front"
+msgid "vote,votes,votes"
+msgstr "票,票,票"
+
+#: classes/Poll_Renderer.php:479
+#, php-format,python-format
+msgctxt "front"
+msgid "Total Votes: %s"
+msgstr "总票数：%s"
+
+#: classes/Poll_Renderer.php:480
+msgctxt "front"
+msgid "Begin"
+msgstr "开始"
+
+#: classes/Poll_Renderer.php:481
+msgctxt "front"
+msgid "End"
+msgstr "结束"
+
+#: classes/Poll_Renderer.php:487
+#, php-format,python-format
+msgctxt "front"
+msgid "Voters: %s"
+msgstr "投票者：%s"
+
+#: classes/Poll_Renderer.php:492
+msgctxt "front"
+msgid " - added by visitor"
+msgstr " - 由访客添加"
+
+#: classes/Poll_Renderer.php:495
+msgctxt "front"
+msgid "Voting is closed"
+msgstr "投票已结束"
+
+#: classes/Poll_Renderer.php:498
+msgctxt "front"
+msgid "Polls Archive"
+msgstr "民意调查档案"
+
+#: classes/Poll_Renderer.php:594
+msgctxt "front"
+msgid "Revote"
+msgstr "雷沃特"
+
+#: classes/Poll_Renderer.php:596
+msgctxt "front"
+msgid "Are you sure you want to cancel the votes?"
+msgstr "您确定要取消投票吗？"
+
+#: classes/Poll_Renderer.php:630
+msgctxt "front"
+msgid "You or your IP have already voted."
+msgstr "您或您的 IP 已经投票。"
+
+#: classes/Poll_Renderer.php:620
+msgctxt "front"
+msgid "Only registered users can vote. <a>Log in</a> to vote."
+msgstr "只有注册用户才能投票。 <a>登录</a>进行投票。"
+
+#: classes/System/Activator.php:51
+msgid "What is the capital city of France?"
+msgstr "法国的首都是哪座城市？"
+
+#: classes/System/Activator.php:63
+msgid "Paris"
+msgstr "巴黎"
+
+#: classes/System/Activator.php:64
+msgid "Rome"
+msgstr "罗马"
+
+#: classes/System/Activator.php:65
+msgid "Madrid"
+msgstr "马德里"
+
+#: classes/System/Activator.php:66
+msgid "Berlin"
+msgstr "柏林"
+
+#: classes/System/Activator.php:67
+msgid "London"
+msgstr "伦敦"
+
+#: classes/Admin/tpl/edit-poll.php:21
+#: classes/Admin/List_Table_Logs.php:287
+msgid "Poll logs"
+msgstr "民意调查日志"
+
+#: classes/Admin/tpl/edit-poll.php:23
+msgid "shortcode for use in post content"
+msgstr "用于帖子内容的简码"
+
+#: classes/Admin/tpl/edit-poll.php:37
+msgid "Question:"
+msgstr "问题："
+
+#: classes/Admin/tpl/edit-poll.php:42
+msgid "Answers:"
+msgstr "答案："
+
+#: classes/Admin/tpl/edit-poll.php:105
+msgid "reset order"
+msgstr "重置订单"
+
+#: classes/Admin/tpl/edit-poll.php:119
+msgid "Sum of votes:"
+msgstr "得票总数："
+
+#: classes/Admin/tpl/edit-poll.php:122
+msgid "leave blank to update from logs"
+msgstr "留空以从日志更新"
+
+#: classes/Admin/tpl/edit-poll.php:123
+msgid "Votes"
+msgstr "票数"
+
+#: classes/Admin/tpl/edit-poll.php:124
+msgid "Users vote:"
+msgstr "用户投票："
+
+#: classes/Admin/tpl/edit-poll.php:151
+msgid "Allow users to add answers (democracy)."
+msgstr "允许用户添加答案（民主）。"
+
+#: classes/Admin/tpl/edit-poll.php:140
+msgid "Activate this poll."
+msgstr "激活此民意调查。"
+
+#: classes/Admin/tpl/edit-poll.php:198
+msgid "Allow to choose multiple answers."
+msgstr "允许选择多个答案。"
+
+#: classes/Admin/tpl/edit-poll.php:219
+msgid "Date, when poll was/will be closed. Format: dd-mm-yyyy."
+msgstr "日期，民意调查已经/将要结束的时间。格式：日-月-年。"
+
+#: classes/Admin/tpl/edit-poll.php:162
+msgid "Allow to change mind (revote)."
+msgstr "允许改变主意（投票）。"
+
+#: classes/Admin/tpl/edit-poll.php:173
+msgid "Only registered users allowed to vote."
+msgstr "只有注册用户才可以投票。"
+
+#: classes/Admin/tpl/edit-poll.php:185
+#: classes/Admin/List_Table_Polls.php:140
+msgid "Allow to watch the results of the poll."
+msgstr "允许观看投票结果。"
+
+#: classes/Admin/tpl/edit-poll.php:206
+msgid "as in settings"
+msgstr "如设置中所示"
+
+#: classes/Admin/tpl/edit-poll.php:211
+msgid "How to sort the answers during the vote?"
+msgstr "投票时如何对答案进行排序？"
+
+#: classes/Admin/tpl/edit-poll.php:238
+msgid "Note: This text will be added under poll."
+msgstr "注意：此文本将添加到投票下。"
+
+#: classes/Admin/tpl/edit-poll.php:232
+msgid "Create date."
+msgstr "创建日期。"
+
+#: classes/Admin/tpl/edit-poll.php:247
+msgid "Save Changes"
+msgstr "保存更改"
+
+#: classes/Admin/tpl/edit-poll.php:247
+#: classes/System/Plugin_Initor.php:136
+msgid "Add Poll"
+msgstr "添加投票"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:440
+#: classes/Admin/Admin_Page_Other_Migrations.php:89
+#: classes/Admin/Admin_Page_Logs.php:185
+#: classes/Admin/Admin_Page_Logs.php:192
+#: classes/Admin/List_Table_Polls.php:165
+msgid "Are you sure?"
+msgstr "你确定吗？"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:441
+#: classes/Admin/List_Table_Polls.php:165
+msgid "Delete"
+msgstr "删除"
+
+#: classes/Admin/tpl/edit-poll.php:266
+msgid "Posts where the poll shortcode used:"
+msgstr "使用民意调查短代码的帖子："
+
+#: classes/Admin/Admin_Page_Polls.php:39
+msgid "Search"
+msgstr "搜索"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:47
+msgid "New Poll Added"
+msgstr "添加了新民意调查"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:272
+msgid "Poll Updated"
+msgstr "投票更新"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:400
+msgid "Deactivate"
+msgstr "停用"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:405
+msgid "Activate"
+msgstr "激活"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:421
+msgid "Close voting"
+msgstr "关闭投票"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:426
+msgid "Open voting"
+msgstr "公开投票"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:457
+msgid "Poll Deleted"
+msgstr "投票已删除"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:506
+#: classes/Admin/List_Table_Polls.php:76
+msgid "Poll Opened"
+msgstr "投票开始"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:507
+msgid "Poll Closed"
+msgstr "投票结束"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:531
+msgid "You can not activate closed poll..."
+msgstr "您无法激活封闭式民意调查..."
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:540
+msgid "Poll Activated"
+msgstr "投票已启动"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:541
+msgid "Poll Deactivated"
+msgstr "投票已停用"
+
+#: classes/Admin/Tinymce_Button.php:40
+msgid "Insert Poll of Democracy"
+msgstr "插入民主民意调查"
+
+#: classes/Admin/Tinymce_Button.php:41
+msgid "Insert Poll ID"
+msgstr "插入投票 ID"
+
+#: classes/Admin/Admin_Page_Other_Migrations.php:38
+msgid "Data of migration deleted"
+msgstr "迁移数据已删除"
+
+#: classes/Admin/Admin_Page_Other_Migrations.php:72
+msgid "Migration from WP Polls done"
+msgstr "WP Polls 迁移完成"
+
+#: classes/Admin/Admin_Page_Other_Migrations.php:73
+#, php-format,python-format
+msgid "Polls copied: %d. Answers copied: %d. Logs copied: %d"
+msgstr "民意调查复制：%d。复制答案：%d。复制的日志：%d"
+
+#: classes/Admin/Admin_Page_Other_Migrations.php:78
+msgid "Replace WP Polls shortcodes in posts"
+msgstr "替换帖子中的 WP Polls 短代码"
+
+#: classes/Admin/Admin_Page_Other_Migrations.php:82
+msgid "Cancel the shortcode replace and reset changes"
+msgstr "取消短代码替换并重置更改"
+
+#: classes/Admin/Admin_Page_Other_Migrations.php:90
+msgid "Delete all data about WP Polls migration"
+msgstr "删除有关 WP Polls 迁移的所有数据"
+
+#: classes/Admin/Admin_Page_Other_Migrations.php:132
+#, php-format,python-format
+msgid "Shortcodes replaced: %s"
+msgstr "替换的短代码：%s"
+
+#: classes/Admin/Admin_Page_l10n.php:46
+#: classes/Admin/Admin_Page_Design.php:68
+#: classes/Admin/Admin_Page_Settings.php:46
+msgid "Updated"
+msgstr "已更新"
+
+#: classes/Admin/Admin_Page_l10n.php:47
+#: classes/Admin/Admin_Page_Design.php:69
+#: classes/Admin/Admin_Page_Settings.php:47
+msgid "Nothing was updated"
+msgstr "没有更新任何内容"
+
+#: classes/Admin/tpl/l10n.php:22
+msgid "Original"
+msgstr "原创"
+
+#: classes/Admin/tpl/l10n.php:23
+msgid "Your variant"
+msgstr "你的变体"
+
+#: classes/Admin/tpl/l10n.php:52
+msgid "Save Text"
+msgstr "保存文本"
+
+#: classes/Admin/tpl/design.php:385
+#: classes/Admin/tpl/settings.php:246
+#: classes/Admin/tpl/l10n.php:54
+msgid "Reset Options"
+msgstr "重置选项"
+
+#: classes/Admin/tpl/design.php:30
+msgid "Choose Theme"
+msgstr "选择主题"
+
+#: classes/Admin/tpl/design.php:35
+msgid "No theme"
+msgstr "无主题"
+
+#: classes/Admin/tpl/design.php:117
+msgid "Other settings"
+msgstr "其他设置"
+
+#: classes/Admin/tpl/design.php:124
+msgid "Animation speed (in milliseconds)."
+msgstr "动画速度（以毫秒为单位）。"
+
+#: classes/Admin/tpl/design.php:130
+msgid "Progress line"
+msgstr "进度线"
+
+#: classes/Admin/tpl/design.php:132
+msgid "How to fill (paint) the progress of each answer:"
+msgstr "如何填写（绘制）每个答案的进度："
+
+#: classes/Admin/tpl/design.php:136
+#, python-format
+msgid "winner - 100%, others as % of the winner"
+msgstr "获胜者 - 100%，其他为获胜者的%"
+
+#: classes/Admin/tpl/design.php:142
+msgid "as percent of all votes"
+msgstr "占所有选票的百分比"
+
+#: classes/Admin/tpl/design.php:149
+msgid "Line Color"
+msgstr "线条颜色"
+
+#: classes/Admin/tpl/design.php:155
+msgid "Line color (for voted user)"
+msgstr "线条颜色（对于投票用户）"
+
+#: classes/Admin/tpl/design.php:161
+msgid "Background color"
+msgstr "背景颜色"
+
+#: classes/Admin/tpl/design.php:171
+msgid "Line height (in px if unit not set)"
+msgstr "行高（如果未设置单位，则以 px 为单位）"
+
+#: classes/Admin/tpl/design.php:178
+msgid "Progress line animation effect speed (default 1500). Set 0 to disable animation."
+msgstr "进度线动画效果速度（默认1500）。设置 0 禁用动画。"
+
+#: classes/Admin/tpl/design.php:62
+#: classes/Admin/tpl/design.php:192
+msgid "No (default)"
+msgstr "否（默认）"
+
+#: classes/Admin/tpl/design.php:251
+msgid "Button colors"
+msgstr "按钮颜色"
+
+#: classes/Admin/tpl/design.php:254
+#: classes/Admin/tpl/design.php:276
+#: classes/Admin/Admin_Page_Design.php:121
+msgid "Bg color"
+msgstr "背景颜色"
+
+#: classes/Admin/tpl/design.php:260
+#: classes/Admin/tpl/design.php:282
+msgid "Text Color"
+msgstr "文字颜色"
+
+#: classes/Admin/tpl/design.php:266
+#: classes/Admin/tpl/design.php:288
+msgid "Border Color"
+msgstr "边框颜色"
+
+#: classes/Admin/tpl/design.php:273
+msgid "Hover button colors"
+msgstr "悬停按钮颜色"
+
+#: classes/Admin/tpl/design.php:298
+msgid "An additional css class for all buttons in the poll. When the template has a special class for buttons, for example:"
+msgstr "投票中所有按钮的附加 css 类。当模板有特殊的按钮类时，例如："
+
+#: classes/Admin/tpl/design.php:316
+msgid "No (dots...)"
+msgstr "没有（点...）"
+
+#: classes/Admin/tpl/design.php:355
+msgid "AJAX Loader. If you choose \"NO\", loader is replaced by dots \"...\" which are appended to a link/button text. SVG images animations don't work in IE 11 or lower, other browsers are supported at 90% (according to caniuse.com statistics)."
+msgstr "AJAX 加载器。如果选择“否”，加载程序将替换为附加到链接/按钮文本的点“...”。 SVG 图像动画在 IE 11 或更低版本中不工作，其他浏览器支持 90%（根据 caniuse.com 统计）。"
+
+#: classes/Admin/tpl/design.php:366
+msgid "Custom/Additional CSS styles"
+msgstr "自定义/附加 CSS 样式"
+
+#: classes/Admin/tpl/design.php:370
+msgid "In this field you can add some additional css properties or completely replace current css theme. Write here css and it will be added at the bottom of current Democracy css. To completely replace styles, check \"No theme\" and describe all styles."
+msgstr "在此字段中，您可以添加一些额外的 css 属性或完全替换当前的 css 主题。在此写入 css，它将添加到当前 Democracy css 的底部。要完成替换样式，请选中“无主题”并描述所有样式。"
+
+#: classes/Admin/tpl/design.php:371
+msgid "This field must be cleared manually, if you reset options of this page or change/set another theme, the field will not be touched."
+msgstr "该字段是手动清理的，如果您重置该页面的选项或更改/设置其他主题，该字段将不会被触及。"
+
+#: classes/Admin/tpl/design.php:381
+msgid "Save All Changes"
+msgstr "保存所有更改"
+
+#: classes/Admin/tpl/design.php:386
+msgid "are you sure?"
+msgstr "你确定吗？"
+
+#: classes/Admin/tpl/design.php:392
+msgid "All CSS styles currently in use"
+msgstr "现在使用的所有 CSS 样式"
+
+#: classes/Admin/tpl/design.php:401
+msgid "These are all collected CSS styles: theme, button, options. You can copy these styles to the \"Custom/Additional CSS styles:\" field, disable theme and edit them manually."
+msgstr "这是所有收集的 css 样式：主题、按钮、选项。您可以将此样式复制到“自定义/附加 CSS 样式：”字段，禁用主题并自行更改复制的样式。"
+
+#: classes/Admin/tpl/design.php:410
+msgid "Minified version (used to include it in HTML)"
+msgstr "缩小版本（用于将其包含在 HTML 中）"
+
+#: classes/Admin/Admin_Page_Design.php:146
+msgid "Results view:"
+msgstr "结果视图："
+
+#: classes/Admin/Admin_Page_Design.php:147
+msgid "Vote view:"
+msgstr "投票查看："
+
+#: classes/Admin/Admin_Page_Design.php:148
+msgid "AJAX loader view:"
+msgstr "AJAX 加载器视图："
+
+#: classes/Admin/List_Table_Logs.php:62
+msgid "Nothing was selected."
+msgstr "没有选择任何内容。"
+
+#: classes/Admin/List_Table_Logs.php:135
+msgid "IP info"
+msgstr "知识产权信息"
+
+#: classes/Admin/List_Table_Logs.php:137
+msgid "Answer"
+msgstr "回答"
+
+#: classes/Admin/List_Table_Logs.php:138
+msgid "User"
+msgstr "用户"
+
+#: classes/Admin/List_Table_Logs.php:139
+msgid "Date"
+msgstr "日期"
+
+#: classes/Admin/List_Table_Logs.php:140
+msgid "Expire"
+msgstr "过期"
+
+#: classes/Admin/List_Table_Logs.php:166
+msgid "Delete logs only"
+msgstr "仅删除日志"
+
+#: classes/Admin/List_Table_Logs.php:167
+msgid "Delete logs and votes"
+msgstr "删除日志和投票"
+
+#: classes/Admin/List_Table_Logs.php:182
+msgid "Poll's logs:"
+msgstr "民意调查日志："
+
+#: classes/Admin/List_Table_Logs.php:200
+msgid "NEW answers logs"
+msgstr "新答案日志"
+
+#: classes/Admin/List_Table_Logs.php:264
+msgid "Search by IP"
+msgstr "按IP搜索"
+
+#: classes/Admin/Admin_Page_Logs.php:177
+msgid "Delete all NEW marks"
+msgstr "删除所有新标记"
+
+#: classes/Admin/Admin_Page_Logs.php:187
+#, php-format,python-format
+msgid "Delete logs of closed polls - %d"
+msgstr "删除已关闭 pol 的日志 - %d"
+
+#: classes/Admin/Admin_Page_Logs.php:194
+msgid "Delete all logs"
+msgstr "删除所有日志"
+
+#: classes/Admin/Admin_Page_Logs.php:217
+#, php-format,python-format
+msgid "Lines deleted: %s"
+msgstr "删除行：%s"
+
+#: classes/Admin/Admin_Page_Logs.php:218
+#: classes/Admin/Admin_Page_Logs.php:263
+msgid "Failed to delete"
+msgstr "删除失败"
+
+#: classes/Admin/Admin_Page_Logs.php:260
+#, php-format,python-format
+msgid "Removed logs: %d. Removed answers:%d. Removed users %d."
+msgstr "已删除的日志：%d。删除答案：%d。删除了用户 %d。"
+
+#: classes/Admin/Admin.php:53
+#: classes/Admin/Admin_Page.php:210
+#: classes/System/Plugin_Initor.php:138
+msgid "Settings"
+msgstr "设置"
+
+#: classes/Admin/Admin_Page.php:191
+msgid "Back"
+msgstr "返回"
+
+#: classes/Admin/Admin_Page.php:196
+#: classes/System/Plugin_Initor.php:135
+msgid "Polls List"
+msgstr "投票列表"
+
+#: classes/Admin/Admin_Page.php:200
+msgid "Add new poll"
+msgstr "添加新的民意调查"
+
+#: classes/Admin/Admin_Page.php:204
+#: classes/Admin/List_Table_Polls.php:160
+#: classes/System/Plugin_Initor.php:137
+msgid "Logs"
+msgstr "日志"
+
+#: classes/Admin/Admin_Page.php:215
+#: classes/System/Plugin_Initor.php:139
+msgid "Theme Settings"
+msgstr "主题设置"
+
+#: classes/Admin/Admin_Page.php:220
+#: classes/System/Plugin_Initor.php:140
+msgid "Text changes"
+msgstr "文本更改"
+
+#: classes/Admin/Admin_Page.php:264
+msgid "If you like this plugin, please <a>leave your review</a>"
+msgstr "如果您喜欢这个插件，请<a>留下您的评论</a>"
+
+#: classes/Admin/List_Table_Logs.php:41
+#: classes/Admin/List_Table_Polls.php:33
+msgid "Show on page"
+msgstr "在页面上显示"
+
+#: classes/Admin/List_Table_Polls.php:74
+msgid "ID"
+msgstr "身份证号"
+
+#: classes/Admin/List_Table_Polls.php:75
+msgid "Question"
+msgstr "问题"
+
+#: classes/Admin/List_Table_Polls.php:77
+msgid "Active polls"
+msgstr "活跃民意调查"
+
+#: classes/Admin/List_Table_Polls.php:78
+msgid "Users vote"
+msgstr "用户投票"
+
+#: classes/Admin/List_Table_Polls.php:79
+msgid "Answers"
+msgstr "答案"
+
+#: classes/Admin/List_Table_Polls.php:80
+msgid "In posts"
+msgstr "在帖子中"
+
+#: classes/Admin/List_Table_Polls.php:81
+msgid "Added"
+msgstr "已添加"
+
+#: classes/Admin/List_Table_Polls.php:136
+msgid "Users can add answers (democracy)."
+msgstr "用户可以添加答案（民主）。"
+
+#: classes/Admin/List_Table_Polls.php:137
+msgid "Users can revote"
+msgstr "用户可以投票"
+
+#: classes/Admin/List_Table_Polls.php:138
+msgid "Only for registered user."
+msgstr "仅限注册用户。"
+
+#: classes/Admin/List_Table_Polls.php:139
+msgid "Users can choose many answers (multiple)."
+msgstr "用户可以选择多个答案（多个）。"
+
+#: classes/Admin/List_Table_Polls.php:151
+msgid "Edit"
+msgstr "编辑"
+
+#: classes/Admin/List_Table_Polls.php:177
+msgid "voters / votes"
+msgstr "选民/选票"
+
+#: classes/Admin/tpl/settings.php:35
+msgid "How many days to keep Cookies alive?"
+msgstr "Cookie 的有效期是多少天？"
+
+#: classes/Admin/tpl/settings.php:40
+msgid "To set hours use float number - 0.04 = 1 hour."
+msgstr "要设置小时数，请使用浮点数 - 0.04 = 1 小时。"
+
+#: classes/Admin/tpl/settings.php:53
+msgid "Polls archive page ID."
+msgstr "民意调查存档页面 ID。"
+
+#: classes/Admin/tpl/settings.php:58
+msgid "Go to archive page"
+msgstr "前往存档页面"
+
+#: classes/Admin/tpl/settings.php:64
+msgid "Create/find archive page"
+msgstr "创建/查找存档页面"
+
+#: classes/Admin/tpl/settings.php:71
+msgid "Global Polls options"
+msgstr "全球民意调查选项"
+
+#: classes/Admin/tpl/settings.php:93
+msgid "Only registered users allowed to vote (global option)"
+msgstr "仅允许注册用户投票（全局选项）"
+
+#: classes/Admin/tpl/settings.php:111
+msgid "Remove the Revote possibility (global option)."
+msgstr "删除“Revote”可能性（全局选项）。"
+
+#: classes/Admin/tpl/settings.php:120
+msgid "Don't show poll results (global option)."
+msgstr "不显示投票结果（全局选项）。"
+
+#: classes/Admin/tpl/settings.php:122
+msgid "If checked, user can't see poll results if voting is open."
+msgstr "如果选中，则在投票开放时用户将无法看到投票结果。"
+
+#: classes/Admin/tpl/settings.php:129
+msgid "Don't show poll results link (global option)."
+msgstr "不显示投票结果链接（全局选项）。"
+
+#: classes/Admin/tpl/settings.php:131
+msgid "Users can see results after vote."
+msgstr "用户投票后可以看到结果。"
+
+#: classes/Admin/tpl/settings.php:138
+msgid "Hide vote button."
+msgstr "隐藏投票按钮。"
+
+#: classes/Admin/tpl/settings.php:140
+msgid "Users can vote with one click on an answer. Works only for non-multiple polls with the revote option enabled."
+msgstr "如果不是带有重新投票选项的多重投票，则隐藏投票按钮。用户将通过点击答案本身进行投票。"
+
+#: classes/Admin/tpl/settings.php:147
+msgid "Disable post metabox."
+msgstr "禁用后元框。"
+
+#: classes/Admin/tpl/settings.php:149
+msgid "Check this to disable polls metabox functionality for posts where you can attach a poll to a post."
+msgstr "选中此选项可禁用帖子的民意调查元框功能，您可以在其中将民意调查附加到帖子..."
+
+#: classes/Admin/tpl/settings.php:152
+#: classes/Admin/tpl/settings.php:251
+msgid "Others"
+msgstr "其他"
+
+#: classes/Admin/tpl/settings.php:159
+msgid "ON"
+msgstr "开"
+
+#: classes/Admin/tpl/settings.php:160
+msgid "OFF"
+msgstr "关闭"
+
+#: classes/Admin/tpl/settings.php:174
+msgid "Add plugin menu on the toolbar?"
+msgstr "在工具栏上添加插件菜单？"
+
+#: classes/Admin/tpl/settings.php:176
+msgid "Uncheck to remove the plugin menu from the toolbar."
+msgstr "取消选中可从工具栏中删除插件菜单。"
+
+#: classes/Admin/tpl/settings.php:182
+msgid "Add fast Poll insert button to WordPress visual editor (TinyMCE)?"
+msgstr "添加快速投票插入按钮到 WordPress 可视化编辑器 (TinyMCE)？"
+
+#: classes/Admin/tpl/settings.php:184
+msgid "Uncheck to disable button in visual editor."
+msgstr "取消选中以禁用可视化编辑器中的按钮。"
+
+#: classes/Admin/tpl/settings.php:190
+msgid "Widget"
+msgstr "小工具"
+
+#: classes/Admin/tpl/settings.php:192
+msgid "Check to activate the widget."
+msgstr "检查以激活小部件。"
+
+#: classes/Admin/tpl/settings.php:198
+msgid "Check if you see something like \"no_IP__123\" in IP column on logs page. (not recommended)"
+msgstr "检查日志页面的 IP 列中是否看到类似“no_IP__123”的内容。 （不推荐）"
+
+#: classes/Admin/tpl/settings.php:199
+msgid "Or if IP detection is wrong. (for cloudflare)"
+msgstr "或者 IP 检测有误时。（适用于 Cloudflare）"
+
+#: classes/Admin/tpl/settings.php:201
+msgid "Use this if your server does not detect the visitor IP correctly from REMOTE_ADDR. Note: this option may make vote cheating easier."
+msgstr "如果服务器无法从 REMOTE_ADDR 正确检测访客 IP，请使用此选项。注意：此选项可能会使刷票更容易。"
+
+#: classes/Admin/tpl/settings.php:223
+msgid "Role names, except 'administrator' which will have access to manage plugin."
+msgstr "角色名称，“管理员”除外，它将有权管理插件。"
+
+#: classes/Admin/tpl/settings.php:228
+msgid "Migration"
+msgstr "迁移"
+
+#: classes/Admin/tpl/settings.php:234
+msgid "Migrate from WP Polls plugin"
+msgstr "从 WP Polls 插件迁移"
+
+#: classes/Admin/tpl/settings.php:236
+msgid "All polls, answers and logs of WP Polls will be added to Democracy Poll"
+msgstr "WP Polls 的所有投票、答案和日志都将添加到 Democracy Poll"
+
+#: classes/Admin/tpl/settings.php:244
+msgid "Save Options"
+msgstr "保存选项"
+
+#: classes/Admin/tpl/settings.php:257
+msgid "Force plugin versions update (debug)"
+msgstr "强制插件版本更新（调试）"
+
+#: classes/Admin/Admin_Page_Settings.php:87
+msgid "Polls Archive"
+msgstr "民意调查档案"
+
+#: classes/Poll_Voting.php:48
+msgid "ERROR: You selected more answers than allowed."
+msgstr "错误：您选择的答案数量超出了允许的数量..."
+
+#: classes/Admin/tpl/settings.php:168
+msgid "Democracy Poll has a built-in mechanism for working with page cache plugins such as W3 Total Cache. It is enabled automatically when a supported plugin is active. If you use a different page cache plugin, you can force-enable this option."
+msgstr "Democracy Poll 内置了与 W3 Total Cache 等页面缓存插件配合工作的机制。检测到兼容插件处于启用状态时会自动开启。使用其他页面缓存插件时，可以强制启用此选项。"
+
+#: classes/Admin/tpl/design.php:120
+msgid "Max poll height (in em, rem, px, ...). Leave empty to disable."
+msgstr "投票最大高度（em、rem、px 等）。留空则禁用。"
+
+#: classes/Admin/tpl/settings.php:77
+msgid "Answer order on vote screen (global option)"
+msgstr "投票屏幕的答案顺序（全局选项）"
+
+#: classes/Admin/tpl/settings.php:79
+msgid "Option can be changed for each poll separately."
+msgstr "该选项可为每个投票单独更改。"
+
+#: classes/Admin/tpl/settings.php:86
+msgid "Answer order on results screen (global option)"
+msgstr "结果屏幕的答案顺序（全局选项）"
+
+#: classes/Admin/Post_Metabox.php:46
+msgid "default"
+msgstr "默认"
+
+#: classes/Admin/Post_Metabox.php:47
+msgid "Random (default)"
+msgstr "随机（默认）"
+
+#: classes/Admin/Post_Metabox.php:48
+msgid "Last"
+msgstr "最后"
+
+#: classes/Admin/Post_Metabox.php:60
+msgid "Use shortcode:"
+msgstr "使用简码："
+
+#: classes/Admin/tpl/design.php:245
+msgid "These colors may not affect all button styles. You can fully customize button styles in the \"Additional CSS styles\" field below."
+msgstr "这些颜色可能不会影响所有按钮样式。你可以在下面的“附加 CSS 样式”字段中完全自定义按钮样式。"
+
+#: classes/Admin/tpl/settings.php:95
+#: classes/Admin/tpl/settings.php:104
+#: classes/Admin/tpl/settings.php:113
+msgid "Can be changed for each poll separately."
+msgstr "可以为每个投票单独更改。"
+
+#: classes/Admin/tpl/settings.php:102
+msgid "Prohibit users to add new answers (global option)."
+msgstr "禁止用户添加新答案（全局选项）。"
+
+#: classes/Admin/tpl/settings.php:163
+#, php-format
+msgid "Force-enable compatibility mode for page cache plugins. Current status: %s"
+msgstr "强制启用页面缓存插件兼容模式。当前状态：%s"
+
+#: classes/Support/Helpers.php:12
+msgid "By winner"
+msgstr "按获胜者"
+
+#: classes/Support/Helpers.php:13
+msgid "Alphabetically (a-z)"
+msgstr "按字母顺序 (a-z)"
+
+#: classes/Support/Helpers.php:14
+msgid "By ID (added order)"
+msgstr "按 ID（添加顺序）"
+
+#: classes/Support/Helpers.php:15
+msgid "Mixed (shuffled)"
+msgstr "混合（随机）"
+
+#: classes/Poll_Renderer.php:419
+msgctxt "front"
+msgid "{votes} - {percent}% of all votes"
+msgstr "{votes} - 所有投票的 {percent}%"
+
+#: classes/Poll_Renderer.php:634
+msgctxt "front"
+msgid "Close"
+msgstr "关闭"
+
+#: classes/Admin/tpl/settings.php:45
+msgid "Poll title HTML template."
+msgstr ""
+
+#: classes/Admin/tpl/settings.php:47
+msgid "Use <code>{question}</code> where the poll question should appear. Default: <code>&lt;strong class=&quot;dem-poll-title&quot;&gt;{question}&lt;/strong&gt;</code>."
+msgstr ""
+
+#: classes/Admin/tpl/settings.php:26
+msgid "Allow multiple votes from the same IP address."
+msgstr ""
+
+#: classes/Admin/tpl/settings.php:28
+msgid "When enabled, guests sharing an IP address are distinguished by a browser fingerprint. Each browser can still vote only once. Logged-in users are always identified by their WordPress account."
+msgstr ""
+
+#: classes/Admin/tpl/settings.php:38
+msgid "How many days the browser and server remember votes. Default: 365."
+msgstr ""

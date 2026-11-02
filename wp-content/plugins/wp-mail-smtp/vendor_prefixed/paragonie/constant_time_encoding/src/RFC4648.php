@@ -1,9 +1,11 @@
 <?php
 
+declare (strict_types=1);
 namespace WPMailSMTP\Vendor\ParagonIE\ConstantTime;
 
+use TypeError;
 /**
- *  Copyright (c) 2016 - 2017 Paragon Initiative Enterprises.
+ *  Copyright (c) 2016 - 2022 Paragon Initiative Enterprises.
  *  Copyright (c) 2014 Steve "Sc00bz" Thomas (steve at tobtu dot com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -40,10 +42,15 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
+     *
+     * @throws TypeError
      */
-    public function base64Encode($str)
+    public static function base64Encode(
+        #[\SensitiveParameter]
+        string $str
+    ) : string
     {
-        return \WPMailSMTP\Vendor\ParagonIE\ConstantTime\Base64::encode($str);
+        return Base64::encode($str);
     }
     /**
      * RFC 4648 Base64 decoding
@@ -52,10 +59,15 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
+     *
+     * @throws TypeError
      */
-    public function base64Decode($str)
+    public static function base64Decode(
+        #[\SensitiveParameter]
+        string $str
+    ) : string
     {
-        return \WPMailSMTP\Vendor\ParagonIE\ConstantTime\Base64::decode($str);
+        return Base64::decode($str, \true);
     }
     /**
      * RFC 4648 Base64 (URL Safe) encoding
@@ -64,10 +76,15 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
+     *
+     * @throws TypeError
      */
-    public function base64UrlSafeEncode($str)
+    public static function base64UrlSafeEncode(
+        #[\SensitiveParameter]
+        string $str
+    ) : string
     {
-        return \WPMailSMTP\Vendor\ParagonIE\ConstantTime\Base64UrlSafe::encode($str);
+        return Base64UrlSafe::encode($str);
     }
     /**
      * RFC 4648 Base64 (URL Safe) decoding
@@ -76,10 +93,15 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
+     *
+     * @throws TypeError
      */
-    public function base64UrlSafeDecode($str)
+    public static function base64UrlSafeDecode(
+        #[\SensitiveParameter]
+        string $str
+    ) : string
     {
-        return \WPMailSMTP\Vendor\ParagonIE\ConstantTime\Base64UrlSafe::decode($str);
+        return Base64UrlSafe::decode($str, \true);
     }
     /**
      * RFC 4648 Base32 encoding
@@ -88,10 +110,15 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
+     *
+     * @throws TypeError
      */
-    public function base32Encode($str)
+    public static function base32Encode(
+        #[\SensitiveParameter]
+        string $str
+    ) : string
     {
-        return \WPMailSMTP\Vendor\ParagonIE\ConstantTime\Base32::encodeUpper($str);
+        return Base32::encodeUpper($str);
     }
     /**
      * RFC 4648 Base32 encoding
@@ -100,10 +127,15 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
+     *
+     * @throws TypeError
      */
-    public function base32Decode($str)
+    public static function base32Decode(
+        #[\SensitiveParameter]
+        string $str
+    ) : string
     {
-        return \WPMailSMTP\Vendor\ParagonIE\ConstantTime\Base32::decodeUpper($str);
+        return Base32::decodeUpper($str, \true);
     }
     /**
      * RFC 4648 Base32-Hex encoding
@@ -112,10 +144,15 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
+     *
+     * @throws TypeError
      */
-    public function base32HexEncode($str)
+    public static function base32HexEncode(
+        #[\SensitiveParameter]
+        string $str
+    ) : string
     {
-        return \WPMailSMTP\Vendor\ParagonIE\ConstantTime\Base32::encodeUpper($str);
+        return Base32::encodeUpper($str);
     }
     /**
      * RFC 4648 Base32-Hex decoding
@@ -124,10 +161,15 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
+     *
+     * @throws TypeError
      */
-    public function base32HexDecode($str)
+    public static function base32HexDecode(
+        #[\SensitiveParameter]
+        string $str
+    ) : string
     {
-        return \WPMailSMTP\Vendor\ParagonIE\ConstantTime\Base32::decodeUpper($str);
+        return Base32::decodeUpper($str, \true);
     }
     /**
      * RFC 4648 Base16 decoding
@@ -136,10 +178,15 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
+     *
+     * @throws TypeError
      */
-    public function base16Encode($str)
+    public static function base16Encode(
+        #[\SensitiveParameter]
+        string $str
+    ) : string
     {
-        return \WPMailSMTP\Vendor\ParagonIE\ConstantTime\Hex::encodeUpper($str);
+        return Hex::encodeUpper($str);
     }
     /**
      * RFC 4648 Base16 decoding
@@ -149,8 +196,11 @@ abstract class RFC4648
      * @param string $str
      * @return string
      */
-    public function base16Decode($str)
+    public static function base16Decode(
+        #[\SensitiveParameter]
+        string $str
+    ) : string
     {
-        return \WPMailSMTP\Vendor\ParagonIE\ConstantTime\Hex::decode($str);
+        return Hex::decode($str, \true);
     }
 }

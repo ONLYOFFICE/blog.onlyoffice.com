@@ -5,6 +5,8 @@ namespace WPMailSMTP;
 use WPMailSMTP\Admin\Area;
 use WPMailSMTP\Admin\DebugEvents\DebugEvents;
 use WPMailSMTP\Admin\DebugEvents\Migration as DebugMigration;
+use WPMailSMTP\Queue\Migration as QueueMigration;
+use WPMailSMTP\Queue\Queue;
 use WPMailSMTP\Tasks\Meta;
 
 /**
@@ -37,7 +39,7 @@ class DBRepair {
 			isset( $_GET['create-missing-db-tables'] ) &&
 			$_GET['create-missing-db-tables'] === '1' &&
 			wp_mail_smtp()->get_admin()->is_admin_page() &&
-			current_user_can( 'manage_options' )
+			current_user_can( wp_mail_smtp()->get_capability_manage_options() )
 		) {
 			check_admin_referer( Area::SLUG . '-create-missing-db-tables' );
 
@@ -49,11 +51,17 @@ class DBRepair {
 				}
 
 				$redirect_page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : Area::SLUG;
+				$redirect_tab  = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : '';
+				$query_args    = [
+					'check-db-tables' => 1,
+				];
+
+				if ( ! empty( $redirect_tab ) ) {
+					$query_args['tab'] = $redirect_tab;
+				}
 
 				$redirect_url = add_query_arg(
-					[
-						'check-db-tables' => 1,
-					],
+					$query_args,
 					wp_mail_smtp()->get_admin()->get_admin_page_url( $redirect_page )
 				);
 
@@ -76,6 +84,8 @@ class DBRepair {
 			update_option( DebugMigration::OPTION_NAME, 0 );
 		} elseif ( $missing_table === Meta::get_table_name() ) {
 			update_option( Migration::OPTION_NAME, 1 );
+		} elseif ( $missing_table === Queue::get_table_name() ) {
+			update_option( QueueMigration::OPTION_NAME, 0 );
 		}
 	}
 
@@ -122,6 +132,11 @@ class DBRepair {
 				$missing_table,
 				get_option( Migration::ERROR_OPTION_NAME, $this->get_missing_table_default_error_message() )
 			);
+		} elseif ( $missing_table === Queue::get_table_name() ) {
+			$reason .= $this->get_reason_output_message(
+				$missing_table,
+				get_option( QueueMigration::ERROR_OPTION_NAME, $this->get_missing_table_default_error_message() )
+			);
 		}
 
 		$reasons[] = $reason;
@@ -141,7 +156,7 @@ class DBRepair {
 
 		return sprintf(
 			wp_kses( /* translators: %1$s - missing table name; %2$s - error message. */
-				__( '<strong>Table</strong> %1$s: <strong>Reason</strong> %2$s', 'wp-mail-smtp' ),
+				__( '<strong>Table:</strong> %1$s. <strong>Reason:</strong> %2$s', 'wp-mail-smtp' ),
 				[
 					'strong' => [],
 				]
@@ -165,7 +180,7 @@ class DBRepair {
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			isset( $_GET['check-db-tables'] ) && $_GET['check-db-tables'] === '1' &&
 			wp_mail_smtp()->get_admin()->is_admin_page() &&
-			current_user_can( 'manage_options' )
+			current_user_can( wp_mail_smtp()->get_capability_manage_options() )
 		) {
 			$missing_tables = $this->get_missing_tables();
 
@@ -188,13 +203,12 @@ class DBRepair {
 
 			if ( ! empty( $reasons ) ) {
 				$msg = sprintf(
-					wp_kses( /* translators: %1$s: Singular/Plural string, %2$s - the error messages from the migrations for the missing tables. */
-						__( 'The following DB %1$s still missing. <br />%2$s', 'wp-mail-smtp' ),
+					wp_kses(
+						_n( 'The following DB table is still missing.', 'The following DB tables are still missing.', count( $missing_tables ), 'wp-mail-smtp' ) . '<br />%s',
 						[
 							'br' => [],
 						]
 					),
-					_n( 'Table is', 'Tables are', count( $missing_tables ), 'wp-mail-smtp' ),
 					implode( '<br/>', $reasons )
 				);
 			} else {

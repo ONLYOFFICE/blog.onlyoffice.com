@@ -29,8 +29,8 @@ class Breadcrumb {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  WP_Post $post The post object.
-	 * @return array         The breadcrumb trail.
+	 * @param  \WP_Post $post The post object.
+	 * @return array          The breadcrumb trail.
 	 */
 	public function post( $post ) {
 		// Check if page is the static homepage.
@@ -50,8 +50,8 @@ class Breadcrumb {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  WP_Post $post        The post object.
-	 * @return array   $breadcrumbs The breadcrumb trail.
+	 * @param  \WP_Post $post The post object.
+	 * @return array          The breadcrumb trail.
 	 */
 	private function postHierarchical( $post ) {
 		$breadcrumbs = [];
@@ -83,14 +83,14 @@ class Breadcrumb {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  WP_Post $post        The post object.
-	 * @return array   $breadcrumbs The breadcrumb trail.
+	 * @param  \WP_Post $post The post object.
+	 * @return array          The breadcrumb trail.
 	 */
 	private function postNonHierarchical( $post ) {
-		global $wp_query;
+		global $wp_query; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
 		$homeUrl   = aioseo()->helpers->escapeRegex( home_url() );
 		$permalink = get_permalink();
-		$slug      = preg_replace( "/$homeUrl/", '', $permalink );
+		$slug      = preg_replace( "/$homeUrl/", '', (string) $permalink );
 		$tags      = array_filter( explode( '/', get_option( 'permalink_structure' ) ) ); // Permalink structure exploded into separate tag strings.
 		$objects   = array_filter( explode( '/', $slug ) ); // Permalink slug exploded into separate object slugs.
 		$postGraph = $this->getPostWebPageGraph();
@@ -108,12 +108,12 @@ class Breadcrumb {
 
 		$breadcrumbs = [];
 		$dateName    = null;
-		$timestamp   = strtotime( $post->post_date_gmt );
+		$timestamp   = strtotime( $post->post_date );
 		foreach ( $pairs as $tag => $object ) {
 			// Escape the delimiter.
 			$escObject = aioseo()->helpers->escapeRegex( $object );
 			// Determine the slug for the object.
-			preg_match( "/.*{$escObject}[\/]/", $permalink, $url );
+			preg_match( "/.*{$escObject}[\/]/", (string) $permalink, $url );
 			if ( empty( $url[0] ) ) {
 				continue;
 			}
@@ -129,7 +129,7 @@ class Breadcrumb {
 					if ( ! $term ) {
 						break;
 					}
-
+					// phpcs:disable Squiz.NamingConventions.ValidVariableName
 					$oldQueriedObject         = $wp_query->queried_object;
 					$wp_query->queried_object = $term;
 					$wp_query->is_category    = true;
@@ -143,6 +143,7 @@ class Breadcrumb {
 
 					$wp_query->queried_object = $oldQueriedObject;
 					$wp_query->is_category    = false;
+					// phpcs:enable Squiz.NamingConventions.ValidVariableName
 					break;
 				case '%author%':
 					$breadcrumb = [
@@ -162,14 +163,14 @@ class Breadcrumb {
 					];
 					break;
 				case '%year%':
-					$dateName = date( 'Y', $timestamp );
+					$dateName = gmdate( 'Y', $timestamp );
 				case '%monthnum%':
 					if ( ! $dateName ) {
-						$dateName = date( 'F', $timestamp );
+						$dateName = gmdate( 'F', $timestamp );
 					}
 				case '%day%':
 					if ( ! $dateName ) {
-						$dateName = date( 'j', $timestamp );
+						$dateName = gmdate( 'j', $timestamp );
 					}
 					$breadcrumb = [
 						'name'        => $dateName,
@@ -196,10 +197,14 @@ class Breadcrumb {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  WP_Term $term The term object.
-	 * @return array         The breadcrumb trail.
+	 * @param  \WP_Term $term The term object.
+	 * @return array          The breadcrumb trail.
 	 */
 	public function term( $term ) {
+		if ( 'product_attributes' === $term->taxonomy ) {
+			$term = get_term( $term->term_id );
+		}
+
 		$breadcrumbs = [];
 		do {
 			array_unshift(
@@ -213,7 +218,7 @@ class Breadcrumb {
 			);
 
 			if ( $term->parent ) {
-				$term = get_term( $term->parent );
+				$term = aioseo()->helpers->getTerm( $term->parent, $term->taxonomy );
 			} else {
 				$term = false;
 			}
@@ -227,9 +232,10 @@ class Breadcrumb {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return array $breadcrumbs The breadcrumb trail.
+	 * @return array The breadcrumb trail.
 	 */
 	public function date() {
+		// phpcs:disable Squiz.NamingConventions.ValidVariableName
 		global $wp_query;
 
 		$oldYear            = $wp_query->is_year;
@@ -286,6 +292,7 @@ class Breadcrumb {
 			) ),
 			'type'        => 'CollectionPage'
 		];
+		// phpcs:enable Squiz.NamingConventions.ValidVariableName
 
 		return $this->setPositions( $breadcrumbs );
 	}
@@ -298,7 +305,7 @@ class Breadcrumb {
 	 * @since 4.0.0
 	 *
 	 * @param  array $breadcrumbs The breadcrumb trail.
-	 * @return array $breadcrumbs The modified breadcrumb trail.
+	 * @return array              The modified breadcrumb trail.
 	 */
 	public function setPositions( $breadcrumbs = [] ) {
 		// If the array isn't two-dimensional, then we need to wrap it in another array before continuing.
@@ -332,7 +339,7 @@ class Breadcrumb {
 	 *
 	 * @since 4.2.5
 	 *
-	 * @return string $graph The graph name.
+	 * @return string The graph name.
 	 */
 	private function getPostWebPageGraph() {
 		foreach ( aioseo()->schema->graphs as $graphName ) {

@@ -1,19 +1,20 @@
 <?php
 /**
- * ACF Admin Taxonomy Class
+ * @package ACF
+ * @author  WP Engine
  *
- *  @class       ACF_Admin_Taxonomiy
- *
- *  @package     ACF
- *  @subpackage  Admin
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
  */
 
 if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 
 	/**
-	 *  ACF Admin Field Group Class
+	 * ACF Admin Field Group Class
 	 *
-	 *  All the logic for editing a taxonomy.
+	 * All the logic for editing a taxonomy.
 	 */
 	class ACF_Admin_Taxonomy extends ACF_Admin_Internal_Post_Type {
 
@@ -34,12 +35,12 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 		public $admin_body_class = 'acf-admin-single-taxonomy';
 
 		/**
-		 *  This function will customize the message shown when editing a field group
+		 * This function will customize the message shown when editing a field group
 		 *
-		 *  @since   5.0.0
+		 * @since   5.0.0
 		 *
-		 *  @param array $messages Post type messages.
-		 *  @return array
+		 * @param array $messages Post type messages.
+		 * @return array
 		 */
 		public function post_updated_messages( $messages ) {
 			$messages['acf-taxonomy'] = array(
@@ -64,7 +65,7 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 		 *
 		 * @since 6.1
 		 *
-		 * @param bool $created True if the post was just created.
+		 * @param boolean $created True if the post was just created.
 		 * @return string
 		 */
 		public function taxonomy_saved_message( $created = false ) {
@@ -87,7 +88,11 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 				'add-fields-' . $post_id
 			);
 
-			$create_taxonomy_link = admin_url( 'post-new.php?post_type=acf-taxonomy' );
+			$create_taxonomy_link    = admin_url( 'post-new.php?post_type=acf-taxonomy' );
+			$duplicate_taxonomy_link = wp_nonce_url(
+				admin_url( 'post-new.php?post_type=acf-taxonomy&use_taxonomy=' . $post_id ),
+				'acfduplicate-' . $post_id
+			);
 
 			$create_post_type_link = wp_nonce_url(
 				admin_url( 'post-new.php?post_type=acf-post-type&use_taxonomy=' . $post_id ),
@@ -97,10 +102,11 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 			ob_start(); ?>
 			<p class="acf-item-saved-text"><?php echo esc_html( $item_saved_text ); ?></p>
 			<div class="acf-item-saved-links">
-				<a href="<?php echo esc_url( $add_fields_link ); ?>"><?php echo esc_html( $add_fields_text ); ?></a>
-				<a class="acf-link-field-groups" href="#"><?php esc_html_e( 'Link existing field groups', 'acf' ); ?></a>
-				<a href="<?php echo esc_url( $create_taxonomy_link ); ?>"><?php esc_html_e( 'Create new taxonomy', 'acf' ); ?></a>
-				<a href="<?php echo esc_url( $create_post_type_link ); ?>"><?php esc_html_e( 'Create new post type', 'acf' ); ?></a>
+				<a href="<?php echo esc_url( $add_fields_link ); ?>"><?php esc_html_e( 'Add fields', 'acf' ); ?></a>
+				<a class="acf-link-field-groups" href="#"><?php esc_html_e( 'Link field groups', 'acf' ); ?></a>
+				<a href="<?php echo esc_url( $create_taxonomy_link ); ?>"><?php esc_html_e( 'Create taxonomy', 'acf' ); ?></a>
+				<a href="<?php echo esc_url( $duplicate_taxonomy_link ); ?>"><?php esc_html_e( 'Duplicate taxonomy', 'acf' ); ?></a>
+				<a href="<?php echo esc_url( $create_post_type_link ); ?>"><?php esc_html_e( 'Create post type', 'acf' ); ?></a>
 			</div>
 			<?php
 			return ob_get_clean();
@@ -110,8 +116,6 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 		 * Enqueues any scripts necessary for internal post type.
 		 *
 		 * @since 5.0.0
-		 *
-		 * @return void
 		 */
 		public function admin_enqueue_scripts() {
 
@@ -133,11 +137,9 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 		}
 
 		/**
-		 *  Sets up all functionality for the taxonomy edit page to work.
+		 * Sets up all functionality for the taxonomy edit page to work.
 		 *
-		 *  @since   3.1.8
-		 *
-		 *  @return  void
+		 * @since   3.1.8
 		 */
 		public function admin_head() {
 
@@ -175,8 +177,6 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 
 		/**
 		 * This action will allow ACF to render metaboxes after the title.
-		 *
-		 * @return void
 		 */
 		public function edit_form_after_title() {
 
@@ -197,10 +197,10 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 		/**
 		 * This function will add extra HTML to the acf form data element
 		 *
-		 *  @since   5.3.8
+		 * @since   5.3.8
 		 *
-		 *  @param array $args Arguments array to pass through to action.
-		 *  @return void
+		 * @param array $args Arguments array to pass through to action.
+		 * @return void
 		 */
 		public function form_data( $args ) {
 			do_action( 'acf/taxonomy/form_data', $args );
@@ -221,9 +221,7 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 		/**
 		 * Admin footer third party hook support
 		 *
-		 * @since   5.3.2
-		 *
-		 * @return void
+		 * @since 5.3.2
 		 */
 		public function admin_footer() {
 			do_action( 'acf/taxonomy/admin_footer' );
@@ -244,9 +242,8 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 		/**
 		 * Sets the "Edit Field Group" screen to use a one-column layout.
 		 *
-		 * @param int $columns Number of columns for layout.
-		 *
-		 * @return int
+		 * @param integer $columns Number of columns for layout.
+		 * @return integer
 		 */
 		public function screen_layout( $columns = 0 ) {
 			return 1;
@@ -255,8 +252,7 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 		/**
 		 * Force basic settings to always be visible
 		 *
-		 * @param array $hidden_metaboxes The metaboxes hidden on this page.
-		 *
+		 * @param  array $hidden_metaboxes The metaboxes hidden on this page.
 		 * @return array
 		 */
 		public function force_basic_settings( $hidden_metaboxes ) {
@@ -269,8 +265,7 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 		/**
 		 * Force advanced settings to be visible
 		 *
-		 * @param array $hidden_metaboxes The metaboxes hidden on this page.
-		 *
+		 * @param  array $hidden_metaboxes The metaboxes hidden on this page.
 		 * @return array
 		 */
 		public function force_advanced_settings( $hidden_metaboxes ) {
@@ -281,11 +276,9 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 		}
 
 		/**
-		 *  This function will customize the publish metabox
+		 * This function will customize the publish metabox
 		 *
-		 *  @since   5.2.9
-		 *
-		 *  @return void
+		 * @since 5.2.9
 		 */
 		public function post_submitbox_misc_actions() {
 			global $acf_taxonomy;
@@ -305,10 +298,9 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param int     $post_id The post ID.
-		 * @param WP_Post $post    The post object.
-		 *
-		 * @return int $post_id
+		 * @param  integer $post_id The post ID.
+		 * @param  WP_Post $post    The post object.
+		 * @return integer $post_id
 		 */
 		public function save_post( $post_id, $post ) {
 			if ( ! $this->verify_save_post( $post_id, $post ) ) {
@@ -323,6 +315,29 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 			$_POST['acf_taxonomy']['ID']    = $post_id;
 			$_POST['acf_taxonomy']['title'] = isset( $_POST['acf_taxonomy']['labels']['name'] ) ? $_POST['acf_taxonomy']['labels']['name'] : '';
 
+			if ( ! acf_get_setting( 'enable_meta_box_cb_edit' ) ) {
+				$_POST['acf_taxonomy']['meta_box_cb']          = '';
+				$_POST['acf_taxonomy']['meta_box_sanitize_cb'] = '';
+
+				if ( ! empty( $_POST['acf_taxonomy']['meta_box'] ) && 'custom' === $_POST['acf_taxonomy']['meta_box'] ) {
+					$_POST['acf_taxonomy']['meta_box'] = 'default';
+				}
+
+				$existing_post = acf_maybe_unserialize( $post->post_content );
+
+				if ( ! empty( $existing_post['meta_box'] ) ) {
+					$_POST['acf_taxonomy']['meta_box'] = $existing_post['meta_box'];
+				}
+
+				if ( ! empty( $existing_post['meta_box_cb'] ) ) {
+					$_POST['acf_taxonomy']['meta_box_cb'] = $existing_post['meta_box_cb'];
+				}
+
+				if ( ! empty( $existing_post['meta_box_sanitize_cb'] ) ) {
+					$_POST['acf_taxonomy']['meta_box_sanitize_cb'] = $existing_post['meta_box_sanitize_cb'];
+				}
+			}
+
 			// Save the taxonomy.
 			acf_update_internal_post_type( $_POST['acf_taxonomy'], $this->post_type ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Validated in verify_save_post
 			// phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -335,8 +350,6 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 		 * Renders HTML for the 'acf-taxonomy-fields' metabox.
 		 *
 		 * @since 5.0.0
-		 *
-		 * @return void
 		 */
 		public function mb_basic_settings() {
 			global $acf_taxonomy;
@@ -352,14 +365,11 @@ if ( ! class_exists( 'ACF_Admin_Taxonomy' ) ) :
 		/**
 		 * Renders the HTML for the 'acf-taxonomy-options' metabox.
 		 *
-		 *  @since   5.0.0
-		 *
-		 *  @return void
+		 * @since 5.0.0
 		 */
 		public function mb_advanced_settings() {
 			acf_get_view( $this->post_type . '/advanced-settings' );
 		}
-
 	}
 
 	new ACF_Admin_Taxonomy();

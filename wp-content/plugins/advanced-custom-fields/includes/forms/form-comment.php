@@ -1,33 +1,29 @@
 <?php
-
-/*
-*  ACF Comment Form Class
-*
-*  All the logic for adding fields to comments
-*
-*  @class       acf_form_comment
-*  @package     ACF
-*  @subpackage  Forms
-*/
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! class_exists( 'acf_form_comment' ) ) :
 
 	class acf_form_comment {
 
 
-		/*
-		*  __construct
-		*
-		*  This function will setup the class functionality
-		*
-		*  @type    function
-		*  @date    5/03/2014
-		*  @since   5.0.0
-		*
-		*  @param   n/a
-		*  @return  n/a
-		*/
-
+		/**
+		 * This function will setup the class functionality
+		 *
+		 * @type    function
+		 * @date    5/03/2014
+		 * @since   5.0.0
+		 *
+		 * @param   n/a
+		 * @return  n/a
+		 */
 		function __construct() {
 
 			// actions
@@ -38,27 +34,22 @@ if ( ! class_exists( 'acf_form_comment' ) ) :
 
 			// add_action( 'comment_form_logged_in_after',       array( $this, 'add_comment') );
 			// add_action( 'comment_form',                       array( $this, 'add_comment') );
-
 			// save
 			add_action( 'edit_comment', array( $this, 'save_comment' ), 10, 1 );
 			add_action( 'comment_post', array( $this, 'save_comment' ), 10, 1 );
-
 		}
 
 
-		/*
-		*  validate_page
-		*
-		*  This function will check if the current page is for a post/page edit form
-		*
-		*  @type    function
-		*  @date    23/06/12
-		*  @since   3.1.8
-		*
-		*  @param   n/a
-		*  @return  (boolean)
-		*/
-
+		/**
+		 * This function will check if the current page is for a post/page edit form
+		 *
+		 * @type    function
+		 * @date    23/06/12
+		 * @since   3.1.8
+		 *
+		 * @param   n/a
+		 * @return  (boolean)
+		 */
 		function validate_page() {
 
 			// global
@@ -66,9 +57,7 @@ if ( ! class_exists( 'acf_form_comment' ) ) :
 
 			// validate page
 			if ( $pagenow == 'comment.php' ) {
-
 				return true;
-
 			}
 
 			// return
@@ -76,27 +65,22 @@ if ( ! class_exists( 'acf_form_comment' ) ) :
 		}
 
 
-		/*
-		*  admin_enqueue_scripts
-		*
-		*  This action is run after post query but before any admin script / head actions.
-		*  It is a good place to register all actions.
-		*
-		*  @type    action (admin_enqueue_scripts)
-		*  @date    26/01/13
-		*  @since   3.6.0
-		*
-		*  @param   n/a
-		*  @return  n/a
-		*/
-
+		/**
+		 * This action is run after post query but before any admin script / head actions.
+		 * It is a good place to register all actions.
+		 *
+		 * @type    action (admin_enqueue_scripts)
+		 * @date    26/01/13
+		 * @since   3.6.0
+		 *
+		 * @param   n/a
+		 * @return  n/a
+		 */
 		function admin_enqueue_scripts() {
 
 			// validate page
 			if ( ! $this->validate_page() ) {
-
 				return;
-
 			}
 
 			// load acf scripts
@@ -105,23 +89,19 @@ if ( ! class_exists( 'acf_form_comment' ) ) :
 			// actions
 			add_action( 'admin_footer', array( $this, 'admin_footer' ), 10, 1 );
 			add_action( 'add_meta_boxes_comment', array( $this, 'edit_comment' ), 10, 1 );
-
 		}
 
 
-		/*
-		*  edit_comment
-		*
-		*  This function is run on the admin comment.php page and will render the ACF fields within custom metaboxes to look native
-		*
-		*  @type    function
-		*  @date    19/10/13
-		*  @since   5.0.0
-		*
-		*  @param   $comment (object)
-		*  @return  n/a
-		*/
-
+		/**
+		 * This function is run on the admin comment.php page and will render the ACF fields within custom metaboxes to look native
+		 *
+		 * @type    function
+		 * @date    19/10/13
+		 * @since   5.0.0
+		 *
+		 * @param   $comment (object)
+		 * @return  n/a
+		 */
 		function edit_comment( $comment ) {
 
 			// vars
@@ -147,62 +127,52 @@ if ( ! class_exists( 'acf_form_comment' ) ) :
 
 				foreach ( $field_groups as $field_group ) {
 
-						// load fields
-						$fields = acf_get_fields( $field_group );
+					// load fields
+					$fields = acf_get_fields( $field_group );
 
-						// vars
-						$o = array(
-							'id'         => 'acf-' . $field_group['ID'],
-							'key'        => $field_group['key'],
-							// 'style'           => $field_group['style'],
-							'label'      => $field_group['label_placement'],
-							'edit_url'   => '',
-							'edit_title' => __( 'Edit field group', 'acf' ),
-							// 'visibility'  => $visibility
-						);
+					// vars
+					$o = array(
+						'id'         => 'acf-' . $field_group['ID'],
+						'key'        => $field_group['key'],
+						// 'style'           => $field_group['style'],
+						'label'      => $field_group['label_placement'],
+						'edit_url'   => '',
+						'edit_title' => __( 'Edit field group', 'acf' ),
+						// 'visibility'  => $visibility
+					);
 
-						// edit_url
-						if ( $field_group['ID'] && acf_current_user_can_admin() ) {
+					// edit_url
+					if ( $field_group['ID'] && acf_current_user_can_admin() ) {
+						$o['edit_url'] = admin_url( 'post.php?post=' . $field_group['ID'] . '&action=edit' );
+					}
 
-							$o['edit_url'] = admin_url( 'post.php?post=' . $field_group['ID'] . '&action=edit' );
-
-						}
-
-						?>
-				<div id="acf-<?php echo $field_group['ID']; ?>" class="stuffbox">
-					<h3 class="hndle"><?php echo $field_group['title']; ?></h3>
-					<div class="inside">
+					?>
+					<div id="acf-<?php echo esc_attr( $field_group['ID'] ); ?>" class="stuffbox">
+						<h3 class="hndle"><?php echo acf_esc_html( acf_get_field_group_title( $field_group ) ); ?></h3>
+						<div class="inside">
 							<?php acf_render_fields( $fields, $post_id, 'div', $field_group['instruction_placement'] ); ?>
-						<script type="text/javascript">
-						if( typeof acf !== 'undefined' ) {
-								
-							acf.newPostbox(<?php echo json_encode( $o ); ?>);	
-						
-						}
-						</script>
+							<script type="text/javascript">
+							if( typeof acf !== 'undefined' ) {
+								acf.newPostbox(<?php echo json_encode( $o ); ?>);
+							}
+							</script>
+						</div>
 					</div>
-				</div>
-							<?php
-
+					<?php
 				}
 			}
-
 		}
 
-
-		/*
-		*  comment_form_field_comment
-		*
-		*  description
-		*
-		*  @type    function
-		*  @date    18/04/2016
-		*  @since   5.3.8
-		*
-		*  @param   $post_id (int)
-		*  @return  $post_id (int)
-		*/
-
+		/**
+		 * description
+		 *
+		 * @type    function
+		 * @date    18/04/2016
+		 * @since   5.3.8
+		 *
+		 * @param   $post_id (int)
+		 * @return  $post_id (int)
+		 */
 		function comment_form_field_comment( $html ) {
 
 			// global
@@ -240,11 +210,9 @@ if ( ! class_exists( 'acf_form_comment' ) ) :
 				echo '<div class="acf-comment-fields acf-fields -clear">';
 
 			foreach ( $field_groups as $field_group ) {
-
 				$fields = acf_get_fields( $field_group );
 
 				acf_render_fields( $fields, $post_id, 'p', $field_group['instruction_placement'] );
-
 			}
 
 				echo '</div>';
@@ -255,32 +223,35 @@ if ( ! class_exists( 'acf_form_comment' ) ) :
 
 			// return
 			return $html;
-
 		}
 
-
-		/*
-		*  save_comment
-		*
-		*  This function will save the comment data
-		*
-		*  @type    function
-		*  @date    19/10/13
-		*  @since   5.0.0
-		*
-		*  @param   comment_id (int)
-		*  @return  n/a
-		*/
-
-		function save_comment( $comment_id ) {
-
+		/**
+		 * Saves ACF field values to a comment.
+		 *
+		 * @since 5.0.0
+		 *
+		 * @param integer $comment_id The ID of the comment being saved to.
+		 * @return integer|void
+		 */
+		public function save_comment( $comment_id ) {
 			// bail early if not valid nonce
 			if ( ! acf_verify_nonce( 'comment' ) ) {
 				return $comment_id;
 			}
 
-			// kses
-			if ( isset( $_POST['acf'] ) ) {
+			if ( isset( $_POST['acf'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified above.
+				if ( ! is_array( $_POST['acf'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified above.
+					return $comment_id;
+				}
+
+				// Restrict $_POST['acf'] to keys of fields belonging to field groups that apply to this comment.
+				$allowed_keys = $this->get_allowed_field_keys( $comment_id );
+				$_POST['acf'] = array_intersect_key( $_POST['acf'], array_flip( $allowed_keys ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Verified above; sanitized below.
+
+				if ( empty( $_POST['acf'] ) ) {
+					return $comment_id;
+				}
+
 				$_POST['acf'] = wp_kses_post_deep( $_POST['acf'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized with wp_kses_post_deep().
 			}
 
@@ -288,23 +259,76 @@ if ( ! class_exists( 'acf_form_comment' ) ) :
 			if ( acf_validate_save_post( true ) ) {
 				acf_save_post( "comment_{$comment_id}" );
 			}
+		}
 
+		/**
+		 * Returns the top-level ACF field keys that are allowed to be saved for
+		 * the given comment. Built from the field groups whose comment location
+		 * rules match the comment's post type.
+		 *
+		 * @since 6.8.7
+		 *
+		 * @param integer $comment_id The ID of comment being saved.
+		 * @return array
+		 */
+		private function get_allowed_field_keys( $comment_id ) {
+			$keys    = array();
+			$comment = get_comment( $comment_id );
+
+			if ( $comment ) {
+				$field_groups = acf_get_field_groups(
+					array(
+						'comment' => get_post_type( $comment->comment_post_ID ),
+					)
+				);
+
+				foreach ( $field_groups as $field_group ) {
+					foreach ( acf_get_fields( $field_group ) as $field ) {
+						$prefix = $field['prefix'] ?? 'acf';
+
+						if ( $prefix === 'acf' ) {
+							if ( ! empty( $field['key'] ) ) {
+								$keys[] = $field['key'];
+							}
+						} elseif ( preg_match( '/^acf\[([^]]+)]$/', $prefix, $matches ) ) {
+							$keys[] = $matches[1];
+						}
+					}
+				}
+			}
+
+			$keys = array_values( array_unique( array_filter( $keys ) ) );
+
+			/**
+			 * Filters the list of $_POST['acf'] keys a comment submission is allowed to save.
+			 *
+			 * Use this to permit additional field keys when a developer dynamically injects
+			 * fields into the comment form via JavaScript that aren't part of a field group
+			 * whose location rules target this comment.
+			 *
+			 * @since 6.8.7
+			 *
+			 * @param array $keys       The allowed top-level $_POST['acf'] keys.
+			 * @param int   $comment_id The comment being saved.
+			 */
+			$keys = apply_filters( 'acf/form/comment/allowed_field_keys', $keys, $comment_id );
+
+			// Re-normalize after the filter so a misbehaving callback can't break array_flip().
+			$keys = array_filter( (array) $keys, 'is_scalar' );
+			return array_values( array_unique( array_filter( array_map( 'strval', $keys ) ) ) );
 		}
 
 
-		/*
-		*  admin_footer
-		*
-		*  description
-		*
-		*  @type    function
-		*  @date    27/03/2015
-		*  @since   5.1.5
-		*
-		*  @param   $post_id (int)
-		*  @return  $post_id (int)
-		*/
-
+		/**
+		 * description
+		 *
+		 * @type    function
+		 * @date    27/03/2015
+		 * @since   5.1.5
+		 *
+		 * @param   $post_id (int)
+		 * @return  $post_id (int)
+		 */
 		function admin_footer() {
 
 			?>
@@ -330,13 +354,10 @@ if ( ! class_exists( 'acf_form_comment' ) ) :
 })(jQuery);	
 </script>
 			<?php
-
 		}
-
 	}
 
 	new acf_form_comment();
-
 endif;
 
 ?>

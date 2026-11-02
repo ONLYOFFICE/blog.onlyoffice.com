@@ -1,28 +1,42 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 2,
-	"name": "onlyoffice-wordpress/onlyoffice-wordpress-block",
-	"title": "ONLYOFFICE",
+	"name": "onlyoffice-wordpress/onlyoffice",
+	"title": "ONLYOFFICE Docs",
 	"category": "media",
 	"editorScript": "file:./build/index.js",
+	"editorStyle": "file:build/index.css",
 	"keywords": ["onlyoffice"],
-	"textdomain": "onlyoffice-plugin",
+	"textdomain": "onlyoffice",
 	"attributes": {
-		"selectedAttachment": {
-			"type": "object",
-			"default": null
+		"id": {
+			"type": "number"
 		},
-		"getEditorUrl": {
-			"type": "string",
-			"default": null
+		"fileName": {
+			"type": "string"
 		},
-		"url": {
-			"type": "string",
-			"default": null
+		"documentView": {
+			"type": "string"
 		},
-		"formats": {
-			"type": "array",
-			"default": null
+		"inNewTab": {
+			"type": "boolean",
+			"default": true
+		},
+		"width":  {
+			"type": "string"
+		},
+		"height":{
+			"type": "string"
+		},
+		"showOpenButton":{
+			"type": "boolean",
+			"default": true
+		},
+		"openButtonText":{
+			"type": "string"
 		}
+	},
+	"supports": {
+		"align": true
 	}
 }

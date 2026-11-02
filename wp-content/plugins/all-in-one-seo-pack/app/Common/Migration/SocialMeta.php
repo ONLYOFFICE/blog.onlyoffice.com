@@ -305,7 +305,7 @@ class SocialMeta {
 
 		if (
 			! empty( $this->oldOptions['modules']['aiosp_opengraph_options']['aiosp_opengraph_dimg'] ) &&
-			! preg_match( '/default-user-image.png$/', $this->oldOptions['modules']['aiosp_opengraph_options']['aiosp_opengraph_dimg'] )
+			! preg_match( '/default-user-image.png$/', (string) $this->oldOptions['modules']['aiosp_opengraph_options']['aiosp_opengraph_dimg'] )
 		) {
 			$value = esc_url( wp_strip_all_tags( $this->oldOptions['modules']['aiosp_opengraph_options']['aiosp_opengraph_dimg'] ) );
 			aioseo()->options->social->facebook->general->defaultImagePosts = $value;
@@ -346,7 +346,7 @@ class SocialMeta {
 		) {
 			$username = ltrim( $this->oldOptions['modules']['aiosp_opengraph_options']['aiosp_opengraph_twitter_site'], '@' );
 			aioseo()->options->social->profiles->urls->twitterUrl =
-				esc_url( 'https://twitter.com/' . aioseo()->social->twitter->prepareUsername( aioseo()->helpers->sanitizeOption( $username ), false ) );
+				esc_url( 'https://x.com/' . aioseo()->social->twitter->prepareUsername( aioseo()->helpers->sanitizeOption( $username ), false ) );
 		}
 	}
 
@@ -453,7 +453,7 @@ class SocialMeta {
 	 */
 	private function migrateProfileSocialUrls() {
 		$records = aioseo()->core->db
-			->start( 'usermeta' )
+			->start( aioseo()->core->db->db->usermeta, true )
 			->select( '*' )
 			->where( 'meta_key', 'facebook' )
 			->run()
@@ -472,7 +472,7 @@ class SocialMeta {
 		}
 
 		$records = aioseo()->core->db
-			->start( 'usermeta' )
+			->start( aioseo()->core->db->db->usermeta, true )
 			->select( '*' )
 			->where( 'meta_key', 'twitter' )
 			->run()

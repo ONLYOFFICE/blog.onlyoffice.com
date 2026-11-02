@@ -669,4 +669,35 @@ abstract class MailerAbstract implements MailerInterface {
 
 		return $this->connection;
 	}
+
+	/**
+	 * Sanitize email header values.
+	 *
+	 * @param string $name  Name of the header.
+	 * @param string $value Value of the header.
+	 *
+	 * @since 3.11.1
+	 */
+	public function sanitize_header_value( $name, $value ) {
+
+		if (
+			in_array(
+				strtolower( $name ),
+				[
+					'cc',
+					'bcc',
+					'reply-to',
+					'message-id',
+					'list-unsubscribe',
+					'references',
+					'in-reply-to'
+				],
+				true
+			)
+		) {
+			return $value;
+		}
+
+		return WP::sanitize_value( $value );
+	}
 }

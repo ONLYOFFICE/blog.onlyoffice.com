@@ -10,9 +10,9 @@ use WPMailSMTP\Vendor\Psr\Http\Message\StreamInterface;
  */
 trait MessageTrait
 {
-    /** @var array<string, string[]> Map of all registered headers, as original name => array of values */
+    /** @var string[][] Map of all registered headers, as original name => array of values */
     private $headers = [];
-    /** @var array<string, string> Map of lowercase header name => original name at registration */
+    /** @var string[] Map of lowercase header name => original name at registration */
     private $headerNames = [];
     /** @var string */
     private $protocol = '1.1';
@@ -22,7 +22,7 @@ trait MessageTrait
     {
         return $this->protocol;
     }
-    public function withProtocolVersion($version) : \WPMailSMTP\Vendor\Psr\Http\Message\MessageInterface
+    public function withProtocolVersion($version) : MessageInterface
     {
         if ($this->protocol === $version) {
             return $this;
@@ -52,7 +52,7 @@ trait MessageTrait
     {
         return \implode(', ', $this->getHeader($header));
     }
-    public function withHeader($header, $value) : \WPMailSMTP\Vendor\Psr\Http\Message\MessageInterface
+    public function withHeader($header, $value) : MessageInterface
     {
         $this->assertHeader($header);
         $value = $this->normalizeHeaderValue($value);
@@ -65,7 +65,7 @@ trait MessageTrait
         $new->headers[$header] = $value;
         return $new;
     }
-    public function withAddedHeader($header, $value) : \WPMailSMTP\Vendor\Psr\Http\Message\MessageInterface
+    public function withAddedHeader($header, $value) : MessageInterface
     {
         $this->assertHeader($header);
         $value = $this->normalizeHeaderValue($value);
@@ -80,7 +80,7 @@ trait MessageTrait
         }
         return $new;
     }
-    public function withoutHeader($header) : \WPMailSMTP\Vendor\Psr\Http\Message\MessageInterface
+    public function withoutHeader($header) : MessageInterface
     {
         $normalized = \strtolower($header);
         if (!isset($this->headerNames[$normalized])) {
@@ -91,14 +91,14 @@ trait MessageTrait
         unset($new->headers[$header], $new->headerNames[$normalized]);
         return $new;
     }
-    public function getBody() : \WPMailSMTP\Vendor\Psr\Http\Message\StreamInterface
+    public function getBody() : StreamInterface
     {
         if (!$this->stream) {
-            $this->stream = \WPMailSMTP\Vendor\GuzzleHttp\Psr7\Utils::streamFor('');
+            $this->stream = Utils::streamFor('');
         }
         return $this->stream;
     }
-    public function withBody(\WPMailSMTP\Vendor\Psr\Http\Message\StreamInterface $body) : \WPMailSMTP\Vendor\Psr\Http\Message\MessageInterface
+    public function withBody(StreamInterface $body) : MessageInterface
     {
         if ($body === $this->stream) {
             return $this;
@@ -108,7 +108,7 @@ trait MessageTrait
         return $new;
     }
     /**
-     * @param array<string|int, string|string[]> $headers
+     * @param (string|string[])[] $headers
      */
     private function setHeaders(array $headers) : void
     {
@@ -138,9 +138,6 @@ trait MessageTrait
         if (!\is_array($value)) {
             return $this->trimAndValidateHeaderValues([$value]);
         }
-        if (\count($value) === 0) {
-            throw new \InvalidArgumentException('Header value can not be an empty array.');
-        }
         return $this->trimAndValidateHeaderValues($value);
     }
     /**
@@ -155,7 +152,7 @@ trait MessageTrait
      *
      * @return string[] Trimmed header values
      *
-     * @see https://tools.ietf.org/html/rfc7230#section-3.2.4
+     * @see https://datatracker.ietf.org/doc/html/rfc7230#section-3.2.4
      */
     private function trimAndValidateHeaderValues(array $values) : array
     {
@@ -169,7 +166,7 @@ trait MessageTrait
         }, \array_values($values));
     }
     /**
-     * @see https://tools.ietf.org/html/rfc7230#section-3.2
+     * @see https://datatracker.ietf.org/doc/html/rfc7230#section-3.2
      *
      * @param mixed $header
      */
@@ -183,7 +180,7 @@ trait MessageTrait
         }
     }
     /**
-     * @see https://tools.ietf.org/html/rfc7230#section-3.2
+     * @see https://datatracker.ietf.org/doc/html/rfc7230#section-3.2
      *
      * field-value    = *( field-content / obs-fold )
      * field-content  = field-vchar [ 1*( SP / HTAB ) field-vchar ]

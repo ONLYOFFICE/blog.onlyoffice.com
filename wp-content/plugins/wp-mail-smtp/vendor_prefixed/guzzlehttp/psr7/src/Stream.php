@@ -7,11 +7,11 @@ use WPMailSMTP\Vendor\Psr\Http\Message\StreamInterface;
 /**
  * PHP stream implementation.
  */
-class Stream implements \WPMailSMTP\Vendor\Psr\Http\Message\StreamInterface
+class Stream implements StreamInterface
 {
     /**
-     * @see http://php.net/manual/function.fopen.php
-     * @see http://php.net/manual/en/function.gzopen.php
+     * @see https://www.php.net/manual/en/function.fopen.php
+     * @see https://www.php.net/manual/en/function.gzopen.php
      */
     private const READABLE_MODES = '/r|a\\+|ab\\+|w\\+|wb\\+|x\\+|xb\\+|c\\+|cb\\+/';
     private const WRITABLE_MODES = '/a|w|r\\+|rb\\+|rw|x|c/';
@@ -89,7 +89,7 @@ class Stream implements \WPMailSMTP\Vendor\Psr\Http\Message\StreamInterface
         if (!$this->readable) {
             throw new \RuntimeException('Cannot read from non-readable stream');
         }
-        return \WPMailSMTP\Vendor\GuzzleHttp\Psr7\Utils::tryGetContents($this->stream);
+        return Utils::tryGetContents($this->stream);
     }
     public function close() : void
     {
@@ -218,8 +218,6 @@ class Stream implements \WPMailSMTP\Vendor\Psr\Http\Message\StreamInterface
         return $result;
     }
     /**
-     * {@inheritdoc}
-     *
      * @return mixed
      */
     public function getMetadata($key = null)

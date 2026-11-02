@@ -13,9 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Query {
 	/**
-	 * Returns all eligble sitemap entries for a given post type.
+	 * Returns all eligible sitemap entries for a given post type.
 	 *
-	 * @since 4.1.3
+	 * @since   4.1.3
+	 * @version 4.9.10 Exclude password-protected posts to match the XML/image/archive sitemap queries.
 	 *
 	 * @param  string $postType   The post type.
 	 * @param  array  $attributes The attributes.
@@ -35,6 +36,7 @@ class Query {
 				break;
 			case 'id':
 				$orderBy = 'ID';
+				break;
 			case 'publish_date':
 			default:
 				$orderBy = 'post_date_gmt';
@@ -53,7 +55,8 @@ class Query {
 			->start( 'posts' )
 			->select( $fields )
 			->where( 'post_status', 'publish' )
-			->where( 'post_type', $postType );
+			->where( 'post_type', $postType )
+			->where( 'post_password', '' );
 
 		$excludedPosts = $this->getExcludedObjects( $attributes );
 		if ( $excludedPosts ) {
@@ -185,8 +188,9 @@ class Query {
 			->select( 'YEAR(post_date) AS year, MONTH(post_date) AS month' )
 			->where( 'post_type', 'post' )
 			->where( 'post_status', 'publish' )
-			->whereRaw( "post_password=''" )
-			->orderBy( '`year` DESC, `month` DESC' )
+			->where( 'post_password', '' )
+			->orderBy( 'year DESC' )
+			->orderBy( 'month DESC' )
 			->run()
 			->result();
 

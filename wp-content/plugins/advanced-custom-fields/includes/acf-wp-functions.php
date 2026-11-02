@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 /**
  * Returns a WordPress object type.
@@ -6,7 +15,7 @@
  * @date    1/4/20
  * @since   5.9.0
  *
- * @param   string $object_type The object type (post, term, user, etc).
+ * @param   string $object_type    The object type (post, term, user, etc).
  * @param   string $object_subtype Optional object subtype (post type, taxonomy).
  * @return  object
  */
@@ -33,7 +42,10 @@ function acf_get_object_type( $object_type, $object_subtype = '' ) {
 				$post_type = get_post_type_object( $object_subtype );
 				if ( $post_type ) {
 					$props['label'] = $post_type->labels->name;
-					$props['icon']  = acf_with_default( $post_type->menu_icon, 'dashicons-admin-post' );
+					if ( is_string( $post_type->menu_icon ) && ! preg_match( '/^[\w\-]+$/', $post_type->menu_icon ) ) {
+						$post_type->menu_icon = false;
+					}
+					$props['icon'] = acf_with_default( $post_type->menu_icon, 'dashicons-admin-post' );
 				} else {
 					return false;
 				}
@@ -85,7 +97,7 @@ function acf_get_object_type( $object_type, $object_subtype = '' ) {
 			break;
 		case 'block':
 			$props['label'] = __( 'Blocks', 'acf' );
-			$props['icon']  = acf_version_compare( 'wp', '>=', '5.5' ) ? 'dashicons-block-default' : 'dashicons-layout';
+			$props['icon']  = 'dashicons-block-default';
 			break;
 		default:
 			return false;
@@ -192,6 +204,10 @@ function acf_decode_post_id( $post_id = 0 ) {
 			$type = taxonomy_exists( $type ) ? 'term' : 'blog';
 			$id   = absint( $id );
 			break;
+		case 'woo_order_%d':
+			$type = 'woo_order';
+			$id   = absint( $id );
+			break;
 		default:
 			// Check for taxonomy name.
 			if ( taxonomy_exists( $type ) && is_numeric( $id ) ) {
@@ -239,7 +255,7 @@ function acf_get_object_type_rest_base( $type_object ) {
  * load_fields() callbacks.
  *
  * @param WP_Post|WP_User|WP_Term|WP_Comment|array $object
- * @return int|mixed|null
+ * @return integer|mixed|null
  */
 function acf_get_object_id( $object ) {
 	if ( is_object( $object ) ) {
@@ -254,7 +270,6 @@ function acf_get_object_id( $object ) {
 		}
 	} elseif ( isset( $object['id'] ) ) {
 		return (int) $object['id'];
-
 	} elseif ( isset( $object['ID'] ) ) {
 		return (int) $object['ID'];
 	}

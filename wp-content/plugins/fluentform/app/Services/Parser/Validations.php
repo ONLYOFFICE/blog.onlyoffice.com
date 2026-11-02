@@ -2,7 +2,6 @@
 
 namespace FluentForm\App\Services\Parser;
 
-use FluentForm\App\Services\ConditionAssesor;
 use FluentForm\Framework\Helpers\ArrayHelper as Arr;
 
 class Validations
@@ -75,28 +74,24 @@ class Validations
     public function get()
     {
         foreach ($this->fields as $fieldName => $field) {
-            /*
-             * todo: isApplicable has some issue for radio / checkbox $applicable getting false
-             * even it's required!
-             */
-            $applicable = $this->setFieldAccessor($fieldName)->isApplicable($field);
+            $this->setFieldAccessor($fieldName);
 
-            if ($applicable) {
-                $fieldValue = $this->getFieldValue();
+            $fieldValue = $this->getFieldValue();
 
-                $rules = (array) $field['rules'];
+            $rules = (array) $field['rules'];
 
-                $hasRequiredRule = Arr::get($rules, 'required.value');
+            $hasRequiredRule = Arr::get($rules, 'required.value');
 
-                // If the field is a repeater we'll set some settings here.
-                $this->setRepeater($fieldName, $field);
+            // If the field is a repeater we'll set some settings here.
+            $this->setRepeater($fieldName, $field);
 
-                foreach ($rules as $ruleName => $rule) {
-                    if ($this->shouldNotSkipThisRule($rule, $fieldValue, $hasRequiredRule)) {
-                        $this->prepareValidations($fieldName, $ruleName, $rule);
-                    }
+            foreach ($rules as $ruleName => $rule) {
+                if ($this->shouldNotSkipThisRule($rule, $fieldValue, $hasRequiredRule)) {
+                    $this->prepareValidations($fieldName, $ruleName, $rule);
                 }
             }
+
+            $this->ensureStringTypeForSizeRules($fieldName, $rules);
         }
 
 
@@ -115,27 +110,6 @@ class Validations
         $this->accessor = rtrim(str_replace(['[', ']', '*'], ['.'], $fieldName), '.');
 
         return $this;
-    }
-
-    /**
-     * Determines if the field is applicable for extracting validations.
-     *
-     * @param  array   $field
-     * @return boolean
-     */
-    protected function isApplicable($field)
-    {
-        // We need to evaluate if this field should be used to validate
-        // the form data because it's possible that this field ain't
-        // even present in the form data or it has conditional
-        // logics that dictates it's presence in the rules.
-        
-        // NOTE: Previous code by Arif
-         return Arr::has(
-             $this->inputs, $this->accessor
-         ) && ConditionAssesor::evaluate(
-             $field, $this->inputs
-         );
     }
 
     /**
@@ -164,13 +138,13 @@ class Validations
 	        $attribute = Arr::get($field, 'attributes.name');
 	        $length = isset($attribute[0]) ? count($attribute[0]) : 0;
             $this->repeater = [
-                'status'    => $isRepeater,
+                'status'    => true,
                 'attribute' => $attribute,
                 'length'    => $length,
                 'rule'      => rtrim($fieldName, '.*')
             ];
         } else {
-            $this->repeater['status'] = $isRepeater;
+            $this->repeater['status'] = false;
         }
 
         return $this;
@@ -249,5 +223,30 @@ class Validations
                      $rule['value'];
 
         return $ruleName.':'.$ruleValue;
+    }
+
+    /**
+     * Ensure fields with max/min rules but no numeric rule
+     * are treated as strings for character-length validation.
+     *
+     * Without this, the WPFluent validator treats numeric-looking
+     * input (e.g. phone "123456") as a number and compares the
+     * numeric value against max/min instead of string length.
+     *
+     * @param string $fieldName
+     * @param array  $rules
+     */
+    protected function ensureStringTypeForSizeRules($fieldName, $rules)
+    {
+        if (!isset($this->rules[$fieldName])) {
+            return;
+        }
+
+        $hasSizeRule = !empty($rules['max']['value']) || !empty($rules['min']['value']);
+        $hasNumericRule = !empty($rules['numeric']['value']);
+
+        if ($hasSizeRule && !$hasNumericRule && !is_array($this->getFieldValue())) {
+            $this->rules[$fieldName] = 'string|' . $this->rules[$fieldName];
+        }
     }
 }

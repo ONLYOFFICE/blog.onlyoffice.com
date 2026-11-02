@@ -43,10 +43,10 @@ class Article extends Graphs\Graph {
 			'image'            => ! empty( $graphData->properties->image ) ? $this->image( $graphData->properties->image ) : $this->postImage( $post ),
 			'datePublished'    => ! empty( $graphData->properties->dates->datePublished )
 				? mysql2date( DATE_W3C, $graphData->properties->dates->datePublished, false )
-				: mysql2date( DATE_W3C, $post->post_date_gmt, false ),
+				: mysql2date( DATE_W3C, $post->post_date, false ),
 			'dateModified'     => ! empty( $graphData->properties->dates->dateModified )
 				? mysql2date( DATE_W3C, $graphData->properties->dates->dateModified, false )
-				: mysql2date( DATE_W3C, $post->post_modified_gmt, false ),
+				: mysql2date( DATE_W3C, $post->post_modified, false ),
 			'inLanguage'       => aioseo()->helpers->currentLanguageCodeBCP47(),
 			'commentCount'     => get_comment_count( $post->ID )['approved'],
 			'mainEntityOfPage' => empty( $graphData ) ? [ '@id' => aioseo()->schema->context['url'] . '#webpage' ] : '',
@@ -68,7 +68,7 @@ class Article extends Graphs\Graph {
 			$keywords = array_map( function ( $keywordObject ) {
 				return $keywordObject['value'];
 			}, $keywords );
-			$data['keywords'] = implode( ',', $keywords );
+			$data['keywords'] = implode( ', ', $keywords );
 		}
 
 		if ( isset( $graphData->properties->dates->include ) && ! $graphData->properties->dates->include ) {
@@ -102,8 +102,8 @@ class Article extends Graphs\Graph {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  WP_Post $post The post object.
-	 * @return array         The image graph data.
+	 * @param  \WP_Post $post The post object.
+	 * @return array          The image graph data.
 	 */
 	private function postImage( $post ) {
 		$featuredImage = $this->getFeaturedImage();
@@ -111,7 +111,7 @@ class Article extends Graphs\Graph {
 			return $featuredImage;
 		}
 
-		preg_match_all( '#<img[^>]+src="([^">]+)"#', $post->post_content, $matches );
+		preg_match_all( '#<img[^>]+src="([^">]+)"#', (string) $post->post_content, $matches );
 		if ( isset( $matches[1] ) && isset( $matches[1][0] ) ) {
 			$url     = aioseo()->helpers->removeImageDimensions( $matches[1][0] );
 			$imageId = aioseo()->helpers->attachmentUrlToPostId( $url );

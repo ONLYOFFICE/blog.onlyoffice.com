@@ -1,22 +1,40 @@
-FROM bitnamilegacy/wordpress:6.2.2-debian-11-r82
+FROM wordpress:7.1.3-php8.4-apache
 
-# Install php-redis extension for Redis Object Cache
-USER root
-RUN mkdir -p /var/lib/apt/lists/partial && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends build-essential autoconf && \
-    printf 'no\nno\nno\nno\nno\nno\n' | /opt/bitnami/php/bin/pecl install redis && \
-    echo 'extension=redis.so' >> /opt/bitnami/php/etc/php.ini && \
-    apt-get purge -y build-essential autoconf && \
-    apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/* /tmp/pear
-USER 1001
+# The official entrypoint copies /usr/src/wordpress/ → /var/www/html/ on startup,
+# so wp-content must be placed in the source dir to survive the copy.
+COPY wp-content/ /usr/src/wordpress/wp-content/
 
-RUN rm -rf /opt/bitnami/wordpress/wp-content/*
-COPY wp-content/ /opt/bitnami/wordpress/wp-content/
+# Probe/health endpoint (plain PHP, no WordPress bootstrap, no DB) for
+# Kubernetes probes and the ALB health check. Must also go through
+# /usr/src/wordpress to end up in the docroot.
+COPY health.php /usr/src/wordpress/health.php
 
-# Move object-cache.php drop-in aside during build.
-# It will be activated by post-init script after wp-config.php is ready.
-# This prevents RedisException during entrypoint wp-cli calls.
-RUN mv /opt/bitnami/wordpress/wp-content/object-cache.php \
-       /opt/bitnami/wordpress/wp-content/object-cache.php.disabled
+# See apache-mpm-prefork.conf for rationale.
+COPY apache-mpm-prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
+
+# Apache main config:
+#   Timeout 60   — default 300s exceeds ALB idle timeout (180s).
+#   KeepAlive Off — ALB reuses backend connections; keepalive ties up
+#                   workers on idle sockets, costly with MaxRequestWorkers=40.
+#
+# Remove opcache-recommended.ini: PHP loads conf.d/*.ini alphabetically, so
+# this upstream file overrides our chart-mounted custom.ini. All values it
+# sets (memory_consumption, max_accelerated_files, interned_strings_buffer,
+# revalidate_freq) are explicitly defined in custom.ini.
+#
+# php-redis: required by the Redis Object Cache plugin.
+#
+# object-cache.php drop-in: must match the installed plugin version,
+# otherwise the plugin disables itself on activation.
+RUN set -eux; \
+    sed -i 's/^Timeout .*/Timeout 60/' /etc/apache2/apache2.conf; \
+    sed -i 's/^KeepAlive .*/KeepAlive Off/' /etc/apache2/apache2.conf; \
+    rm /usr/local/etc/php/conf.d/opcache-recommended.ini; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends $PHPIZE_DEPS; \
+    pecl install redis; \
+    docker-php-ext-enable redis; \
+    apt-get purge -y --auto-remove $PHPIZE_DEPS; \
+    rm -rf /var/lib/apt/lists/* /tmp/pear; \
+    cp /usr/src/wordpress/wp-content/plugins/redis-cache/includes/object-cache.php \
+    /usr/src/wordpress/wp-content/object-cache.php

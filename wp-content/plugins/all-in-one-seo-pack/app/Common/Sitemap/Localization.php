@@ -1,6 +1,8 @@
 <?php
 namespace AIOSEO\Plugin\Common\Sitemap;
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -22,37 +24,264 @@ class Localization {
 	private static $wpml = null;
 
 	/**
+	 * Cached Universally context for the current request (languages, source hreflang, prefixes, home URL).
+	 *
+	 * @since 4.9.9
+	 *
+	 * @var array|false|null
+	 */
+	private $universallyContext = null;
+
+	/**
 	 * Class constructor.
 	 *
 	 * @since 4.2.1
 	 */
 	public function __construct() {
+		add_action( 'init', [ $this, 'init' ] );
+	}
+
+	/**
+	 * Registers our hooks.
+	 *
+	 * @since 4.8.8
+	 */
+	public function init() {
+		if ( apply_filters( 'aioseo_sitemap_localization_disable', false ) ) {
+			return;
+		}
+
 		if ( aioseo()->helpers->isWpmlActive() ) {
 			self::$wpml = [
 				'defaultLanguage' => apply_filters( 'wpml_default_language', null ),
 				'activeLanguages' => apply_filters( 'wpml_active_languages', null )
 			];
 
-			add_filter( 'aioseo_sitemap_term', [ $this, 'localizeEntry' ], 10, 4 );
-			add_filter( 'aioseo_sitemap_post', [ $this, 'localizeEntry' ], 10, 4 );
+			add_filter( 'aioseo_sitemap_term', [ $this, 'localizeWpml' ], 10, 4 );
+			add_filter( 'aioseo_sitemap_post', [ $this, 'localizeWpml' ], 10, 4 );
+		}
+
+		if ( aioseo()->helpers->isPluginActive( 'weglot' ) ) {
+			add_filter( 'aioseo_sitemap_term', [ $this, 'localizeWeglot' ], 10, 4 );
+			add_filter( 'aioseo_sitemap_post', [ $this, 'localizeWeglot' ], 10, 4 );
+			add_filter( 'aioseo_sitemap_author_entry', [ $this, 'localizeWeglot' ], 10, 4 );
+			add_filter( 'aioseo_sitemap_archive_entry', [ $this, 'localizeWeglot' ], 10, 4 );
+			add_filter( 'aioseo_sitemap_date_entry', [ $this, 'localizeWeglot' ], 10, 4 );
+			add_filter( 'aioseo_sitemap_product_attributes', [ $this, 'localizeWeglot' ], 10, 4 );
+		}
+
+		if ( aioseo()->helpers->isPluginActive( 'universally' ) && function_exists( 'universally_get_all_languages' ) ) {
+			add_filter( 'aioseo_sitemap_term', [ $this, 'localizeUniversally' ], 10, 4 );
+			add_filter( 'aioseo_sitemap_post', [ $this, 'localizeUniversally' ], 10, 4 );
+			add_filter( 'aioseo_sitemap_author_entry', [ $this, 'localizeUniversally' ], 10, 4 );
+			add_filter( 'aioseo_sitemap_archive_entry', [ $this, 'localizeUniversally' ], 10, 4 );
+			add_filter( 'aioseo_sitemap_date_entry', [ $this, 'localizeUniversally' ], 10, 4 );
+			add_filter( 'aioseo_sitemap_product_attributes', [ $this, 'localizeUniversally' ], 10, 4 );
 		}
 	}
 
 	/**
-	 * Localize the entries if WPML (or others in the future) are active.
+	 * Localize the entries for Weglot.
 	 *
-	 * @since 4.0.0
+	 * @since 4.8.3
 	 *
-	 * @param  array  $entry       The entry.
-	 * @param  int    $entryId     The post/term ID.
-	 * @param  string $objectName  The post type or taxonomy name.
-	 * @param  string $objectType  Whether the entry is a post or term.
-	 * @param  bool   $rss         Whether or not we are localizing for the RSS sitemap.
-	 * @return array               The entry.
+	 * @param  array       $entry      The entry.
+	 * @param  mixed       $entryId    The object ID, null or a date object.
+	 * @param  string      $objectName The post type, taxonomy name or date type ('year' or 'month').
+	 * @param  string|null $entryType  Whether the entry represents a post, term, author, archive or date.
+	 * @return array                   The entry.
 	 */
-	public function localizeEntry( $entry, $entryId, $objectName, $objectType ) {
-		$translationGroupId = apply_filters( 'wpml_element_trid', null, $entryId );
-		$translations       = apply_filters( 'wpml_get_element_translations', null, $translationGroupId, $objectName );
+	public function localizeWeglot( $entry, $entryId, $objectName, $entryType = null ) {
+		try {
+			$originalLang = function_exists( 'weglot_get_original_language' ) ? weglot_get_original_language() : '';
+			$translations = function_exists( 'weglot_get_destination_languages' ) ? weglot_get_destination_languages() : [];
+			if ( empty( $originalLang ) || empty( $translations ) ) {
+				return $entry;
+			}
+
+			switch ( $entryType ) {
+				case 'post':
+					$permalink = get_permalink( $entryId );
+					break;
+				case 'term':
+					$permalink = get_term_link( $entryId, $objectName );
+					break;
+				case 'author':
+					$permalink = get_author_posts_url( $entryId, $objectName );
+					break;
+				case 'archive':
+					$permalink = get_post_type_archive_link( $objectName );
+					break;
+				case 'date':
+					$permalink = 'year' === $objectName ? get_year_link( $entryId->year ) : get_month_link( $entryId->year, $entryId->month );
+					break;
+				default:
+					$permalink = '';
+			}
+
+			$entry['languages'] = [];
+			foreach ( $translations as $translation ) {
+				// If the translation is not public we skip it.
+				if ( empty( $translation['public'] ) ) {
+					continue;
+				}
+
+				$l10nPermalink = $this->weglotGetLocalizedUrl( $permalink, $translation['language_to'] );
+				if ( ! empty( $l10nPermalink ) ) {
+					$entry['languages'][] = [
+						'language' => $translation['language_to'],
+						'location' => $l10nPermalink
+					];
+				}
+			}
+
+			// Also include the main page as a translated variant, per Google's specifications, but only if we found at least one other language.
+			if ( ! empty( $entry['languages'] ) ) {
+				$entry['languages'][] = [
+					'language' => $originalLang,
+					'location' => aioseo()->helpers->decodeUrl( $entry['loc'] )
+				];
+			} else {
+				unset( $entry['languages'] );
+			}
+
+			return $this->validateSubentries( $entry );
+		} catch ( \Exception $e ) {
+			// Do nothing. It only exists because some "weglot" functions above throw exceptions.
+		}
+
+		return $entry;
+	}
+
+	/**
+	 * Localize the entries for Universally.
+	 *
+	 * @link https://developers.google.com/search/docs/specialty/international/localized-versions#sitemap
+	 *
+	 * @since 4.9.9
+	 *
+	 * @param  array       $entry      The entry.
+	 * @param  mixed       $entryId    The object ID, null or a date object.
+	 * @param  string      $objectName The post type, taxonomy name or date type ('year' or 'month').
+	 * @param  string|null $entryType  Whether the entry represents a post, term, author, archive or date.
+	 * @return array                   The entry.
+	 */
+	public function localizeUniversally( $entry, $entryId, $objectName, $entryType = null ) {
+		if ( ! function_exists( 'universally_get_all_languages' ) ) {
+			return $entry;
+		}
+
+		$context = $this->universallyGetContext();
+		if ( false === $context ) {
+			return $entry;
+		}
+
+		switch ( $entryType ) {
+			case 'post':
+				$permalink = get_permalink( $entryId );
+				break;
+			case 'term':
+				$permalink = get_term_link( $entryId, $objectName );
+				break;
+			case 'author':
+				$permalink = get_author_posts_url( $entryId, $objectName );
+				break;
+			case 'archive':
+				$permalink = get_post_type_archive_link( $objectName );
+				break;
+			case 'date':
+				$permalink = 'year' === $objectName ? get_year_link( $entryId->year ) : get_month_link( $entryId->year, $entryId->month );
+				break;
+			default:
+				$permalink = '';
+		}
+
+		if ( empty( $permalink ) || is_wp_error( $permalink ) ) {
+			return $entry;
+		}
+
+		$path = wp_parse_url( $permalink, PHP_URL_PATH );
+		if ( empty( $path ) ) {
+			return $entry;
+		}
+
+		$basePath = $this->universallyStripLanguagePrefixFromPath( $path, $context['validPrefixes'] );
+
+		// Strip the WP install's subdirectory so `$homeUrl . $basePath` doesn't repeat it (e.g. `/blog/fr/blog/post`).
+		if ( '' !== $context['homePath'] && 0 === strpos( $basePath, $context['homePath'] . '/' ) ) {
+			$basePath = substr( $basePath, strlen( $context['homePath'] ) );
+		} elseif ( '' !== $context['homePath'] && $basePath === $context['homePath'] ) {
+			$basePath = '/';
+		}
+
+		$entry['languages'] = [];
+		foreach ( $context['languages'] as $lang ) {
+			if ( ! is_array( $lang ) ) {
+				continue;
+			}
+
+			if ( ! empty( $lang['isSource'] ) ) {
+				continue;
+			}
+
+			if ( ! empty( $lang['isDisabled'] ) ) {
+				continue;
+			}
+
+			$urlPrefix = ! empty( $lang['urlPrefix'] ) ? (string) $lang['urlPrefix'] : '';
+			if ( '' === $urlPrefix ) {
+				continue;
+			}
+
+			$hreflang = ! empty( $lang['region'] ) ? $lang['region'] : ( $lang['variant'] ?? '' );
+			if ( '' === $hreflang ) {
+				continue;
+			}
+
+			$l10nPermalink = aioseo()->helpers->decodeUrl( $context['homeUrl'] . '/' . $urlPrefix . $basePath );
+			if ( ! empty( $l10nPermalink ) ) {
+				$entry['languages'][] = [
+					'language' => $hreflang,
+					'location' => $l10nPermalink
+				];
+			}
+		}
+
+		if ( ! empty( $entry['languages'] ) ) {
+			$entry['languages'][] = [
+				'language' => $context['sourceHreflang'],
+				'location' => aioseo()->helpers->decodeUrl( $entry['loc'] )
+			];
+		} else {
+			unset( $entry['languages'] );
+		}
+
+		return $this->validateSubentries( $entry );
+	}
+
+	/**
+	 * Localize the entries for WPML.
+	 *
+	 * @since   4.0.0
+	 * @version 4.8.3 Rename from localizeEntry to localizeWpml.
+	 *
+	 * @param  array  $entry      The entry.
+	 * @param  int    $entryId    The post/term ID.
+	 * @param  string $objectName The post type or taxonomy name.
+	 * @param  string $objectType Whether the entry is a post or term.
+	 * @return array              The entry.
+	 */
+	public function localizeWpml( $entry, $entryId, $objectName, $objectType ) {
+		$elementId   = $entryId;
+		$elementType = 'post_' . $objectName;
+		if ( 'term' === $objectType ) {
+			$term        = aioseo()->helpers->getTerm( $entryId, $objectName );
+			$elementId   = $term->term_taxonomy_id;
+			$elementType = 'tax_' . $objectName;
+		}
+
+		$translationGroupId = apply_filters( 'wpml_element_trid', null, $elementId, $elementType );
+		$translations       = apply_filters( 'wpml_get_element_translations', null, $translationGroupId, $elementType );
 		if ( empty( $translations ) ) {
 			return $entry;
 		}
@@ -68,8 +297,11 @@ class Localization {
 				continue;
 			}
 
-			if ( (int) $entryId === (int) $translation->element_id ) {
-				$entry['language'] = $translation->language_code;
+			$currentLanguage = ! empty( self::$wpml['activeLanguages'][ $translation->language_code ] ) ? self::$wpml['activeLanguages'][ $translation->language_code ] : null;
+			$languageCode    = ! empty( $currentLanguage['tag'] ) ? $currentLanguage['tag'] : $translation->language_code;
+
+			if ( (int) $elementId === (int) $translation->element_id ) {
+				$entry['language'] = $languageCode;
 				continue;
 			}
 
@@ -81,20 +313,21 @@ class Localization {
 				continue;
 			}
 
-			$permalink = get_permalink( $translatedObjectId );
+			if ( 'post' === $objectType ) {
+				$permalink = get_permalink( $translatedObjectId );
 
-			// Special treatment for the home page translations.
-			if ( 'page' === get_option( 'show_on_front' ) && aioseo()->helpers->wpmlIsHomePage( $entryId ) ) {
-				$permalink = aioseo()->helpers->wpmlHomeUrl( $translation->language_code );
+				// Special treatment for the home page translations.
+				if ( 'page' === get_option( 'show_on_front' ) && aioseo()->helpers->wpmlIsHomePage( $entryId ) ) {
+					$permalink = aioseo()->helpers->wpmlHomeUrl( $translation->language_code );
+				}
+			} else {
+				$permalink = get_term_link( $translatedObjectId, $objectName );
 			}
 
-			$currentLanguage = ! empty( self::$wpml['activeLanguages'][ $translation->language_code ] ) ? self::$wpml['activeLanguages'][ $translation->language_code ] : null;
-			$languageCode    = ! empty( $currentLanguage['tag'] ) ? $currentLanguage['tag'] : $translation->language_code;
-
-			if ( $languageCode && $permalink ) {
+			if ( ! empty( $languageCode ) && ! empty( $permalink ) ) {
 				$entry['languages'][] = [
 					'language' => $languageCode,
-					'location' => $permalink
+					'location' => aioseo()->helpers->decodeUrl( $permalink )
 				];
 			}
 		}
@@ -103,15 +336,13 @@ class Localization {
 		if ( ! empty( $entry['language'] ) && ! empty( $entry['languages'] ) ) {
 			$entry['languages'][] = [
 				'language' => $entry['language'],
-				'location' => $entry['loc']
+				'location' => aioseo()->helpers->decodeUrl( $entry['loc'] )
 			];
 		} else {
 			unset( $entry['languages'] );
 		}
 
-		$entry = $this->validateSubentries( $entry );
-
-		return $entry;
+		return $this->validateSubentries( $entry );
 	}
 
 	/**
@@ -197,21 +428,21 @@ class Localization {
 			return true;
 		}
 
+		// Now, we must also check for noindex.
+		$term = aioseo()->helpers->getTerm( $termId );
+		if ( ! is_a( $term, 'WP_Term' ) ) {
+			return true;
+		}
+
 		// At least one post must be assigned to the term.
 		$posts = aioseo()->core->db->start( 'term_relationships' )
 			->select( 'object_id' )
-			->where( 'term_taxonomy_id =', $termId )
+			->where( 'term_taxonomy_id =', $term->term_taxonomy_id )
 			->limit( 1 )
 			->run()
 			->result();
 
 		if ( empty( $posts ) ) {
-			return true;
-		}
-
-		// Now, we must also check for noindex.
-		$term = get_term( $termId );
-		if ( ! is_a( $term, 'WP_Term' ) ) {
 			return true;
 		}
 
@@ -221,5 +452,116 @@ class Localization {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Retrieves the localized URL.
+	 *
+	 * @since 4.8.3
+	 *
+	 * @param  string       $url  The page URL to localize.
+	 * @param  string       $code The language code (e.g. 'br', 'en').
+	 * @return string|false       The localized URL or false if it fails.
+	 */
+	private function weglotGetLocalizedUrl( $url, $code ) {
+		try {
+			if (
+				! $url ||
+				! function_exists( 'weglot_get_service' )
+			) {
+				return false;
+			}
+
+			$languageService   = weglot_get_service( 'Language_Service_Weglot' );
+			$requestUrlService = weglot_get_service( 'Request_Url_Service_Weglot' );
+			$wgUrl             = $requestUrlService->create_url_object( $url );
+			$language          = $languageService->get_language_from_internal( $code );
+
+			return $wgUrl->getForLanguage( $language );
+		} catch ( \Exception $e ) {
+			// Do nothing. It only exists because some "weglot" functions above throw exceptions.
+		}
+
+		return false;
+	}
+
+	/**
+	 * Strips a leading Universally URL prefix from a path (same rules as universally_get_switcher_urls).
+	 *
+	 * @since 4.9.9
+	 *
+	 * @param  string $path          URL path (e.g. from wp_parse_url).
+	 * @param  array  $validPrefixes Non-empty language URL prefixes.
+	 * @return string                Path with at most one prefix removed.
+	 */
+	private function universallyStripLanguagePrefixFromPath( $path, $validPrefixes ) {
+		foreach ( $validPrefixes as $prefix ) {
+			// Replacement collapses the prefix + optional trailing slash to a single '/' so we never emit '//base'.
+			$pattern = '#^/' . preg_quote( $prefix, '#' ) . '(/|$)#';
+			if ( preg_match( $pattern, $path ) ) {
+				return preg_replace( '#^/' . preg_quote( $prefix, '#' ) . '/?#', '/', $path );
+			}
+		}
+
+		return $path;
+	}
+
+	/**
+	 * Returns the per-request Universally context (languages, source hreflang, valid prefixes, home URL).
+	 *
+	 * Cached on the instance so sitemap renders with thousands of entries don't re-read the transient
+	 * or rebuild the prefix list for each entry.
+	 *
+	 * @since 4.9.9
+	 *
+	 * @return array|false The context array, or false when Universally returned no usable data.
+	 */
+	private function universallyGetContext() {
+		if ( null !== $this->universallyContext ) {
+			return $this->universallyContext;
+		}
+
+		$languages = universally_get_all_languages();
+		if ( empty( $languages ) || ! is_array( $languages ) ) {
+			$this->universallyContext = false;
+
+			return false;
+		}
+
+		$sourceHreflang = '';
+		$validPrefixes  = [];
+		foreach ( $languages as $lang ) {
+			if ( ! is_array( $lang ) ) {
+				continue;
+			}
+
+			if ( ! empty( $lang['isSource'] ) ) {
+				$sourceHreflang = ! empty( $lang['region'] ) ? $lang['region'] : ( $lang['variant'] ?? '' );
+			}
+
+			if ( ! empty( $lang['urlPrefix'] ) ) {
+				$validPrefixes[] = (string) $lang['urlPrefix'];
+			}
+		}
+
+		if ( '' === $sourceHreflang ) {
+			$this->universallyContext = false;
+
+			return false;
+		}
+
+		$homeUrl  = home_url();
+		$homePath = wp_parse_url( $homeUrl, PHP_URL_PATH );
+		$homePath = is_string( $homePath ) ? rtrim( $homePath, '/' ) : '';
+
+		$this->universallyContext = [
+			'languages'      => $languages,
+			'sourceHreflang' => $sourceHreflang,
+			'validPrefixes'  => $validPrefixes,
+			'homeUrl'        => $homeUrl,
+			'homePath'       => $homePath
+		];
+
+		return $this->universallyContext;
 	}
 }

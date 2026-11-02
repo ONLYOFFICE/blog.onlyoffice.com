@@ -112,16 +112,16 @@ function cptui_footer( $original = '' ) {
 		esc_attr__( '%1$s version %2$s by %3$s', 'custom-post-type-ui' ),
 		esc_attr__( 'Custom Post Type UI', 'custom-post-type-ui' ),
 		CPTUI_VERSION,
-		'<a href="https://webdevstudios.com" target="_blank" rel="noopener">WebDevStudios</a>'
+		'<a href="https://webdevstudios.com">WebDevStudios</a>'
 	) . ' - ' .
 	sprintf(
 		// translators: Placeholders are just for HTML markup that doesn't need translated.
-		'<a href="http://wordpress.org/support/plugin/custom-post-type-ui" target="_blank" rel="noopener">%s</a>',
+		'<a href="https://wordpress.org/support/plugin/custom-post-type-ui">%s</a>',
 		esc_attr__( 'Support forums', 'custom-post-type-ui' )
 	) . ' - ' .
 	sprintf(
 		// translators: Placeholders are just for HTML markup that doesn't need translated.
-		'<a href="https://wordpress.org/plugins/custom-post-type-ui/reviews/" target="_blank" rel="noopener">%s</a>',
+		'<a href="https://wordpress.org/plugins/custom-post-type-ui/reviews/">%s</a>',
 		sprintf(
 			// translators: Placeholder will hold `<abbr>` tag for CPTUI.
 			esc_attr__( 'Review %s', 'custom-post-type-ui' ),
@@ -133,11 +133,11 @@ function cptui_footer( $original = '' ) {
 			)
 		)
 	) . ' - ' .
-	esc_attr__( 'Follow on Twitter:', 'custom-post-type-ui' ) .
+	esc_attr__( 'Follow on X:', 'custom-post-type-ui' ) .
 	sprintf(
 		// translators: Placeholders are just for HTML markup that doesn't need translated.
 		' %s',
-		'<a href="https://twitter.com/webdevstudios" target="_blank" rel="noopener">WebDevStudios</a>'
+		'<a href="https://x.com/webdevstudios">WebDevStudios</a>'
 	);
 }
 add_filter( 'admin_footer_text', 'cptui_footer' );
@@ -340,32 +340,48 @@ function cptui_products_sidebar() {
 
 	echo '<div class="wdspromos">';
 
+	$ads = cptui_get_ads();
+
+	if ( ! empty( $ads ) ) {
+
+		// Hero ads (CPT UI Pro) first — most prominent.
+		foreach ( $ads as $ad ) {
+			if ( ! empty( $ad['format'] ) && 'hero' === $ad['format'] ) {
+				cptui_render_ad_hero( $ad, 'sidebar' );
+			}
+		}
+
+		// Compact secondary ads.
+		$compact_ads = array_filter(
+			$ads,
+			static function ( $ad ) {
+				return empty( $ad['format'] ) || 'compact' === $ad['format'];
+			}
+		);
+
+		if ( ! empty( $compact_ads ) ) {
+			echo '<div class="cptui-promo-secondary">';
+			echo '<h4 class="cptui-promo-secondary__heading">' . esc_html__( 'More from WebDevStudios', 'custom-post-type-ui' ) . '</h4>';
+			echo '<div class="cptui-promo-secondary__list">';
+			foreach ( $compact_ads as $ad ) {
+				cptui_render_ad_compact( $ad, 'sidebar' );
+			}
+			echo '</div>';
+			echo '</div>';
+		}
+	}
+
 	cptui_newsletter_form();
 
-	$ads = cptui_get_ads();
 	if ( ! empty( $ads ) ) {
-		foreach ( $ads as $ad ) {
-			$the_ad = sprintf(
-				'<img src="%s" alt="%s">',
-				esc_attr( $ad['image'] ),
-				esc_attr( $ad['text'] )
-			);
-
-			// Escaping $the_ad breaks the html.
-			printf(
-				'<p><a href="%s">%s</a></p>',
-				esc_url( $ad['url'] ),
-				$the_ad // phpcs:ignore WordPress.Security.EscapeOutput
-			);
-		}
 		printf(
-			'<p><a href="%s">%s</a></p>',
-			'https://pluginize.com/plugins/custom-post-type-ui-extended/ref/pluginizeaff/?campaign=cptui-sidebar-remove',
+			'<p class="cptui-promo-remove-ads"><a href="%1$s">%2$s</a></p>',
+			esc_url( 'https://pluginize.com/plugins/custom-post-type-ui-pro/?utm_source=cptui-remove-ads&utm_medium=plugin&utm_campaign=cptui' ),
 			esc_html__( 'Remove these ads?', 'custom-post-type-ui' )
 		);
 	}
-	echo '</div>';
 
+	echo '</div>';
 }
 add_action( 'cptui_below_post_type_tab_menu', 'cptui_products_sidebar' );
 add_action( 'cptui_below_taxonomy_tab_menu', 'cptui_products_sidebar' );
@@ -429,15 +445,9 @@ function cptui_newsletter_form() {
  * Add our Email Octopus scripts and stylesheet.
  *
  * @author Scott Anderson <scott.anderson@webdevstudios.com>
- * @since  NEXT
+ * @since  1.7.3
  */
-function enqueue_email_octopus_assets() {
-
-	$current_screen = get_current_screen();
-
-	if ( ! is_object( $current_screen ) ) {
-		return;
-	}
+function enqueue_email_octopus_assets( $hook ) {
 
 	$screens = [
 		'toplevel_page_cptui_main_menu',
@@ -445,7 +455,7 @@ function enqueue_email_octopus_assets() {
 		'cpt-ui_page_cptui_manage_taxonomies',
 	];
 
-	if ( ! in_array( $current_screen->base, $screens, true ) ) {
+	if ( ! in_array( $hook, $screens, true ) ) {
 		return;
 	}
 
@@ -495,27 +505,50 @@ function cptui_get_ads() {
  */
 function cptui_default_ads( $ads = [] ) {
 	$ads[] = [
-		'url'   => 'https://pluginize.com/plugins/custom-post-type-ui-extended/?utm_source=cptui-sidebar&utm_medium=text&utm_campaign=cptui',
-		'image' => plugin_dir_url( __DIR__ ) . 'images/wds_ads/cptui-extended.png',
-		'text'  => 'Custom Post Type UI Extended product ad',
+		'format'    => 'hero',
+		'name'      => 'Custom Post Type UI Pro',
+		'features'  => [
+			[
+				'title'  => esc_html__( 'Gutenberg blocks for displaying CPT content', 'custom-post-type-ui' ),
+				'detail' => esc_html__( 'Query Loop, Taxonomy Filter, Single Post templates, Shortcode Builder', 'custom-post-type-ui' ),
+			],
+			[
+				'title' => esc_html__( 'Column Builder with drag-and-drop admin tables', 'custom-post-type-ui' ),
+			],
+			[
+				'title' => esc_html__( 'Advanced Filters: taxonomy, meta, date, author, status', 'custom-post-type-ui' ),
+			],
+			[
+				'title' => esc_html__( 'Multisite & Network admin support', 'custom-post-type-ui' ),
+			],
+		],
+		'guarantee' => esc_html__( '30-day money-back guarantee', 'custom-post-type-ui' ),
+		'url'       => 'https://pluginize.com/plugins/custom-post-type-ui-pro/?utm_source=cptui-sidebar&utm_medium=text&utm_campaign=cptui',
+		'cta_label' => esc_html__( 'Get CPT UI Pro', 'custom-post-type-ui' ),
 	];
 
 	$ads[] = [
-		'url'   => 'https://pluginize.com/plugins/instago/?utm_source=cptui-sidebar&utm_medium=text&utm_campaign=instago',
-		'image' => plugin_dir_url( __DIR__ ) . 'images/wds_ads/instago.png',
-		'text'  => 'InstaGo product ad',
+		'format'    => 'compact',
+		'name'      => 'ThemeSwitcher Pro',
+		'tagline'   => esc_html__( 'Run multiple themes on one WordPress site. Start creating new content with the Gutenberg block editor on your legacy WordPress site without replacing your active theme.', 'custom-post-type-ui' ),
+		'url'       => 'https://themeswitcher.com/?utm_source=cptui-sidebar&utm_medium=text&utm_campaign=themeswitcher-pro',
+		'cta_label' => esc_html__( 'Learn more', 'custom-post-type-ui' ),
 	];
 
 	$ads[] = [
-		'url'   => 'https://pluginize.com/plugins/buddypages/?utm_source=cptui-sidebar&utm_medium=text&utm_campaign=buddypages',
-		'image' => plugin_dir_url( __DIR__ ) . 'images/wds_ads/buddypages.png',
-		'text'  => 'BuddyPages product ad',
+		'format'    => 'compact',
+		'name'      => 'WP Search with Algolia Pro',
+		'tagline'   => esc_html__( 'AI-powered, lightning-fast search for WordPress. Full WooCommerce support — indexes product SKU and pricing data for both simple and variable products.', 'custom-post-type-ui' ),
+		'url'       => 'https://pluginize.com/plugins/wp-search-with-algolia-pro/?utm_source=cptui-sidebar&utm_medium=text&utm_campaign=wp-search-with-algolia-pro',
+		'cta_label' => esc_html__( 'Learn more', 'custom-post-type-ui' ),
 	];
 
 	$ads[] = [
-		'url'   => 'https://maintainn.com/?utm_source=Pluginize-v2&utm_medium=Plugin-Sidebar&utm_campaign=CPTUI',
-		'image' => plugin_dir_url( __DIR__ ) . 'images/wds_ads/maintainn.png',
-		'text'  => 'Maintainn product ad',
+		'format'    => 'compact',
+		'name'      => 'WDS YouTube Video Sync for WP',
+		'tagline'   => esc_html__( 'Connect your YouTube channel and import videos as native WordPress posts — titles, descriptions, featured images, and embed-ready, with daily auto-sync or manual triggers.', 'custom-post-type-ui' ),
+		'url'       => 'https://pluginize.com/plugins/youtube-video-sync-for-wp/?utm_source=cptui-sidebar&utm_medium=text&utm_campaign=youtube-video-sync-for-wp',
+		'cta_label' => esc_html__( 'Learn more', 'custom-post-type-ui' ),
 	];
 
 	return $ads;
@@ -523,27 +556,110 @@ function cptui_default_ads( $ads = [] ) {
 add_filter( 'cptui_ads', 'cptui_default_ads' );
 
 /**
- * Randomize our array order.
- * Preserves CPTUI-Extended as the first index. Self promotion, yo.
+ * Adjust an ad URL's utm_source for the placement it's being rendered in.
  *
- * @since 1.3.0
+ * @since 1.20.0
  *
- * @param array $ads Array of ads to show.
- * @return array
+ * @param string $url       Original ad URL.
+ * @param string $placement Placement key. Either 'sidebar' or 'about'.
+ * @return string
  */
-function cptui_randomize_ads( $ads = [] ) {
-	$new_order = [];
-	foreach ( $ads as $key => $ad ) {
-		if ( false !== strpos( $ad['url'], 'custom-post-type-ui-extended' ) ) {
-			$new_order[] = $ad;
-			unset( $ads[ $key ] );
-		}
+function cptui_promo_url_for_placement( $url, $placement ) {
+	if ( 'about' !== $placement ) {
+		return $url;
 	}
-	shuffle( $ads );
-
-	return array_merge( $new_order, $ads );
+	return add_query_arg( 'utm_source', 'cptui-about', remove_query_arg( 'utm_source', $url ) );
 }
-add_filter( 'cptui_ads', 'cptui_randomize_ads', 11 );
+
+/**
+ * Render the large CPT UI Pro hero promo card.
+ *
+ * @since 1.20.0
+ *
+ * @param array  $ad        Ad data.
+ * @param string $placement Placement context. Either 'sidebar' or 'about'.
+ */
+function cptui_render_ad_hero( $ad, $placement = 'sidebar' ) {
+	if ( empty( $ad['name'] ) || empty( $ad['url'] ) ) {
+		return;
+	}
+
+	$url       = cptui_promo_url_for_placement( $ad['url'], $placement );
+	$cta_label = isset( $ad['cta_label'] ) ? $ad['cta_label'] : __( 'Learn more', 'custom-post-type-ui' );
+	?>
+	<div class="cptui-promo-hero">
+		<span class="cptui-promo-hero__badge"><?php esc_html_e( 'Pro', 'custom-post-type-ui' ); ?></span>
+		<h3 class="cptui-promo-hero__title"><?php echo esc_html( $ad['name'] ); ?></h3>
+		<?php if ( ! empty( $ad['tagline'] ) ) : ?>
+			<p class="cptui-promo-hero__tagline"><?php echo esc_html( $ad['tagline'] ); ?></p>
+		<?php endif; ?>
+		<?php if ( ! empty( $ad['features'] ) && is_array( $ad['features'] ) ) : ?>
+			<ul class="cptui-promo-hero__features">
+				<?php foreach ( $ad['features'] as $feature ) : ?>
+					<?php if ( is_array( $feature ) ) : ?>
+						<li>
+							<span class="cptui-promo-hero__feature-title"><?php echo esc_html( $feature['title'] ); ?></span>
+							<?php if ( ! empty( $feature['detail'] ) ) : ?>
+								<span class="cptui-promo-hero__feature-detail"><?php echo esc_html( $feature['detail'] ); ?></span>
+							<?php endif; ?>
+						</li>
+					<?php else : ?>
+						<li><span class="cptui-promo-hero__feature-title"><?php echo esc_html( $feature ); ?></span></li>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</ul>
+		<?php endif; ?>
+		<?php if ( ! empty( $ad['guarantee'] ) ) : ?>
+			<p class="cptui-promo-hero__guarantee"><?php echo esc_html( $ad['guarantee'] ); ?></p>
+		<?php endif; ?>
+		<a class="cptui-promo-hero__cta" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="noopener">
+			<?php echo esc_html( $cta_label ); ?>
+		</a>
+	</div>
+	<?php
+}
+
+/**
+ * Render a compact secondary product promo card.
+ *
+ * Falls back to legacy image rendering for any third-party-filtered ads
+ * that still use the old [ url, image, text ] shape.
+ *
+ * @since 1.20.0
+ *
+ * @param array  $ad        Ad data.
+ * @param string $placement Placement context. Either 'sidebar' or 'about'.
+ */
+function cptui_render_ad_compact( $ad, $placement = 'sidebar' ) {
+	// Legacy image fallback for third-party filter additions to cptui_ads.
+	if ( empty( $ad['name'] ) && ! empty( $ad['image'] ) ) {
+		printf(
+			'<p><a href="%1$s" target="_blank" rel="noopener"><img src="%2$s" alt="%3$s"></a></p>',
+			esc_url( isset( $ad['url'] ) ? $ad['url'] : '' ),
+			esc_attr( $ad['image'] ),
+			esc_attr( isset( $ad['text'] ) ? $ad['text'] : '' )
+		);
+		return;
+	}
+
+	if ( empty( $ad['name'] ) || empty( $ad['url'] ) ) {
+		return;
+	}
+
+	$url       = cptui_promo_url_for_placement( $ad['url'], $placement );
+	$cta_label = isset( $ad['cta_label'] ) ? $ad['cta_label'] : __( 'Learn more', 'custom-post-type-ui' );
+	?>
+	<div class="cptui-promo-card">
+		<h4 class="cptui-promo-card__title"><?php echo esc_html( $ad['name'] ); ?></h4>
+		<?php if ( ! empty( $ad['tagline'] ) ) : ?>
+			<p class="cptui-promo-card__tagline"><?php echo esc_html( $ad['tagline'] ); ?></p>
+		<?php endif; ?>
+		<a class="cptui-promo-card__cta" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="noopener">
+			<?php echo esc_html( $cta_label ); ?> <span aria-hidden="true">&rarr;</span>
+		</a>
+	</div>
+	<?php
+}
 
 /**
  * Secondary admin notices function for use with admin_notices hook.
@@ -554,32 +670,49 @@ add_filter( 'cptui_ads', 'cptui_randomize_ads', 11 );
  *
  * @param string $message Message to use in admin notice. Optional. Default empty string.
  * @param bool   $success Whether or not a success. Optional. Default true.
- * @return mixed
  */
-function cptui_admin_notices_helper( $message = '', $success = true ) {
+function cptui_admin_notices_helper( $message = '', $success = true, $success_override_type = false ) {
 
 	$class   = [];
 	$class[] = $success ? 'updated' : 'error';
-	$class[] = 'notice is-dismissible';
 
 	$messagewrapstart = '<div id="message" class="' . implode( ' ', $class ) . '"><p>';
-
 	$messagewrapend = '</p></div>';
-
-	$action = '';
 
 	/**
 	 * Filters the custom admin notice for CPTUI.
 	 *
-	 * @since 1.0.0
+	 * @deprecated
 	 *
 	 * @param string $value            Complete HTML output for notice.
 	 * @param string $action           Action whose message is being generated.
 	 * @param string $message          The message to be displayed.
 	 * @param string $messagewrapstart Beginning wrap HTML.
 	 * @param string $messagewrapend   Ending wrap HTML.
+	 *
+	 * @since 1.0.0
 	 */
-	return apply_filters( 'cptui_admin_notice', $messagewrapstart . $message . $messagewrapend, $action, $message, $messagewrapstart, $messagewrapend );
+	$notice = apply_filters_deprecated(
+		'cptui_admin_notice',
+		[ $messagewrapstart . $message . $messagewrapend, '', $message, $messagewrapstart, $messagewrapend ],
+		'1.18.3',
+		'',
+		esc_html__( 'No filter replacement. Deprecated', 'custom-post-type-ui' )
+	);
+
+	$type = $success ? 'success' : 'error';
+	if ( ! empty( $success_override_type ) ) {
+		$type = $success_override_type;
+	}
+
+	wp_admin_notice(
+		$message,
+		[
+			'id'          => 'cptui-message',
+			'type'        => $type,
+			'dismissible' => true,
+		]
+	);
 }
 
 /**
@@ -615,7 +748,7 @@ function cptui_get_object_from_post_global() {
  * @since 1.4.0
  */
 function cptui_add_success_admin_notice() {
-	echo cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
+	cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
 		sprintf(
 			/* translators: Placeholders are just for HTML markup that doesn't need translated */
 			esc_html__( '%s has been successfully added', 'custom-post-type-ui' ),
@@ -630,7 +763,7 @@ function cptui_add_success_admin_notice() {
  * @since 1.4.0
  */
 function cptui_add_fail_admin_notice() {
-	echo cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
+	cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
 		sprintf(
 			/* translators: Placeholders are just for HTML markup that doesn't need translated */
 			esc_html__( '%s has failed to be added', 'custom-post-type-ui' ),
@@ -646,7 +779,7 @@ function cptui_add_fail_admin_notice() {
  * @since 1.4.0
  */
 function cptui_update_success_admin_notice() {
-	echo cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
+	cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
 		sprintf(
 			/* translators: Placeholders are just for HTML markup that doesn't need translated */
 			esc_html__( '%s has been successfully updated', 'custom-post-type-ui' ),
@@ -661,7 +794,7 @@ function cptui_update_success_admin_notice() {
  * @since 1.4.0
  */
 function cptui_update_fail_admin_notice() {
-	echo cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
+	cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
 		sprintf(
 			/* translators: Placeholders are just for HTML markup that doesn't need translated */
 			esc_html__( '%s has failed to be updated', 'custom-post-type-ui' ),
@@ -677,7 +810,7 @@ function cptui_update_fail_admin_notice() {
  * @since 1.4.0
  */
 function cptui_delete_success_admin_notice() {
-	echo cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
+	cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
 		sprintf(
 			/* translators: Placeholders are just for HTML markup that doesn't need translated */
 			esc_html__( '%s has been successfully deleted', 'custom-post-type-ui' ),
@@ -692,7 +825,7 @@ function cptui_delete_success_admin_notice() {
  * @since 1.4.0
  */
 function cptui_delete_fail_admin_notice() {
-	echo cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
+	cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
 		sprintf(
 			/* translators: Placeholders are just for HTML markup that doesn't need translated */
 			esc_html__( '%s has failed to be deleted', 'custom-post-type-ui' ),
@@ -708,7 +841,7 @@ function cptui_delete_fail_admin_notice() {
  * @since 1.5.0
  */
 function cptui_import_success_admin_notice() {
-	echo cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
+	cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
 		esc_html__( 'Successfully imported data.', 'custom-post-type-ui' )
 	);
 }
@@ -719,7 +852,7 @@ function cptui_import_success_admin_notice() {
  * @since 1.5.0
  */
 function cptui_import_fail_admin_notice() {
-	echo cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
+	cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
 		esc_html__( 'Invalid data provided', 'custom-post-type-ui' ),
 		false
 	);
@@ -731,7 +864,7 @@ function cptui_import_fail_admin_notice() {
  * @since 1.7.4
  */
 function cptui_nonce_fail_admin_notice() {
-	echo cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
+	cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
 		esc_html__( 'Nonce failed verification', 'custom-post-type-ui' ),
 		false
 	);
@@ -826,7 +959,7 @@ function cptui_slug_has_quotes() {
  * @since 1.4.0
  */
 function cptui_error_admin_notice() {
-	echo cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
+	cptui_admin_notices_helper( // phpcs:ignore WordPress.Security.EscapeOutput
 		apply_filters( 'cptui_custom_error_message', '' ),
 		false
 	);
@@ -1002,3 +1135,323 @@ function cptui_get_add_new_link( $content_type = '' ) {
 
 	return cptui_admin_url( 'admin.php?page=cptui_manage_' . $content_type );
 }
+
+/**
+ * Register theme support for CPTUI based content types, for extra assurance.
+ *
+ * @since 1.14.0
+ */
+function cptui_post_thumbnail_theme_support() {
+	$post_types = cptui_get_post_type_data();
+
+	if ( empty( $post_types ) || ! is_array( $post_types ) ) {
+		return;
+	}
+
+	$supported = [];
+	foreach ( $post_types as $post_type ) {
+		if ( empty( $post_type['supports'] ) ) {
+			continue;
+		}
+		if (
+			// Some way, somehow, null can end up saved in the supports spot.
+			// Lets check for an array first.
+			is_array( $post_type['supports'] ) &&
+			in_array( 'thumbnail', $post_type['supports'] )
+		) {
+			$supported[] = $post_type['name'];
+		}
+	}
+	if ( ! empty( $supported ) ) {
+		add_theme_support( 'post-thumbnails', $supported );
+	}
+}
+add_action( 'after_setup_theme', 'cptui_post_thumbnail_theme_support' );
+
+function cptui_add_dialog_missing_post_type_confirm() {
+?>
+	<dialog id="cptui-select-post-type-confirm">
+		<p><?php esc_html_e( 'Please select a post type to associate with.', 'custom-post-type-ui' ); ?></p>
+		<button id="cptui-select-post-type-confirm-close" class="confirm button-secondary" type="button"><?php esc_html_e( 'OK', 'custom-post-type-ui' ); ?></button>
+	</dialog>
+<?php
+}
+add_action( 'cptui_taxonomy_after_fieldsets', 'cptui_add_dialog_missing_post_type_confirm' );
+
+function cptui_add_dialog_delete_content_type_confirm() {
+	?>
+	<dialog id="cptui-content-type-delete" class="wp-core-ui">
+		<p><?php esc_html_e( 'Are you sure you want to delete this? Deleting will NOT remove created content.', 'custom-post-type-ui' ); ?></p>
+		<div class="cptui-confirm-deny-delete">
+			<button id="cptui-content-type-confirm-delete" class="confirm button-secondary" type="button"><?php esc_html_e( 'OK', 'custom-post-type-ui' ); ?></button>
+			<button id="cptui-content-type-deny-delete" class="confirm button-secondary" type="button"><?php esc_html_e( 'Cancel', 'custom-post-type-ui' ); ?></button>
+		</div>
+	</dialog>
+	<?php
+}
+#add_action( 'cptui_post_type_after_fieldsets', 'cptui_add_dialog_delete_content_type_confirm' );
+#add_action( 'cptui_taxonomy_after_fieldsets', 'cptui_add_dialog_delete_content_type_confirm' );
+
+/**
+ * Output a CPT UI Pro upsell message for use with admin notifications in "Add new ..." tab.
+ *
+ * @since 1.20.0
+ *
+ * @return string
+ */
+function cptui_add_new_pro_upsell_messaging() {
+	return sprintf(
+		// translators: Placeholder will hold the name of the plugin and a link to Pluginize.
+		esc_attr__( '%1$s adds a Column Builder and Advanced Filters to every post type list screen — visually customize columns and filters without writing code. Explore %2$s', 'custom-post-type-ui' ),
+		'CPT UI Pro',
+		'<a href="https://pluginize.com/plugins/custom-post-type-ui-pro/?utm_source=cptui-admin-notice&utm_medium=plugin&utm_campaign=cptui" target="_blank">CPT UI Pro</a>'
+	);
+}
+
+/**
+ * Output a CPT UI Pro upsell message for use with admin notifications in WP_List_Table views.
+ *
+ * @since 1.20.0
+ *
+ * @param string $post_type_slug
+ *
+ * @return string;
+ */
+function cptui_post_type_list_pro_upsell_messaging( $post_type_slug ) {
+	return sprintf(
+		// translators: Placeholder will hold the name of the plugin, a link to Pluginize, and a dismiss link.
+		esc_attr__( '%1$s lets you display this post type anywhere with a visual Shortcode Builder and a dedicated Gutenberg block. Display with %2$s &mdash; %3$s', 'custom-post-type-ui' ),
+		'CPT UI Pro',
+		'<a href="https://pluginize.com/plugins/custom-post-type-ui-pro/?utm_source=cptui-list-notice&utm_medium=plugin&utm_campaign=cptui" target="_blank">CPT UI Pro</a>',
+		sprintf(
+			'<a href="%1$s">%2$s</a>',
+			esc_url( add_query_arg( [ 'cptui-action' => 'cptui-dismiss', 'cptui-dismiss-nonce' => wp_create_nonce( 'cptui-dismiss-nonce' ) ], admin_url( 'edit.php?post_type=' . $post_type_slug ) ) ),
+			esc_html__( 'Dismiss', 'custom-post-type-ui' )
+		)
+	);
+}
+
+/**
+ * Conditionally output an admin notification for our CPT UI Pro upsell.
+ *
+ * @since 1.20.0
+ */
+function cptui_pro_upsell_notification() {
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	if ( wp_doing_ajax() ) {
+		return;
+	}
+
+	// If CPT UI Pro already exists and is active.
+	if ( class_exists( 'CPTUI_Pro' ) ) {
+		return;
+	}
+
+	$screen = get_current_screen();
+	// our Add new content type tabs.
+	if (
+		is_object( $screen ) &&
+		(
+			in_array(
+				$screen->base,
+				[ 'cpt-ui_page_cptui_manage_post_types', 'cpt-ui_page_cptui_manage_taxonomies' ],
+				true
+			) &&
+			empty( $_GET['action'] )
+		)
+	) {
+		cptui_admin_notices_helper(
+			cptui_add_new_pro_upsell_messaging(),
+			false,
+			'warning'
+		);
+	}
+
+	$public = get_post_types(
+		[
+			'_builtin' => false,
+			'public'   => true,
+		]
+	);
+
+	if ( $screen->base === 'edit' && ! empty( $_GET['post_type'] ) && in_array( $_GET['post_type'], $public, true ) ) {
+		if ( cptui_user_dismissed_pro_upsell() ) {
+			return;
+		}
+		cptui_admin_notices_helper(
+			cptui_post_type_list_pro_upsell_messaging( sanitize_text_field( $_GET['post_type'] ) ),
+			false,
+			'warning'
+		);
+	}
+}
+
+/**
+ * Whether the current user has dismissed the CPT UI Pro upsell notice.
+ *
+ * @since 1.20.0
+ *
+ * @return bool
+ */
+function cptui_user_dismissed_pro_upsell() {
+	$dismissals = get_option( 'cptui-user-dismissed-pro-upsell', [] );
+	if ( empty( $dismissals ) ) {
+		return false;
+	}
+	$user_id = get_current_user_id();
+	return ! empty( $dismissals[ 'user_id_' . $user_id ] ) && 'true' === $dismissals[ 'user_id_' . $user_id ];
+}
+add_action( 'admin_notices', 'cptui_pro_upsell_notification', 11 );
+
+/**
+ * Enqueue the CPT UI Pro sidebar panel for the block editor.
+ *
+ * Renders a PluginDocumentSettingPanel pitching the Pro Gutenberg display
+ * block in the right-hand Document Settings sidebar. Only loads on the post
+ * editor screens for CPTUI-registered post types and only when CPT UI Pro is
+ * not already active.
+ *
+ * @since 1.20.0
+ */
+function cptui_enqueue_pro_panel_assets() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	if ( class_exists( 'CPTUI_Pro' ) ) {
+		return;
+	}
+
+	if ( cptui_user_dismissed_pro_upsell() ) {
+		return;
+	}
+
+	$screen = get_current_screen();
+	if ( ! is_object( $screen ) || empty( $screen->post_type ) ) {
+		return;
+	}
+
+	$cptui_post_types = cptui_get_post_type_slugs();
+	if ( ! in_array( $screen->post_type, $cptui_post_types, true ) ) {
+		return;
+	}
+
+	$asset_file = plugin_dir_path( __DIR__ ) . 'build/cptui-editor.asset.php';
+	if ( ! file_exists( $asset_file ) ) {
+		return;
+	}
+
+	$asset = include $asset_file;
+
+	wp_enqueue_script(
+		'cptui-pro-panel',
+		plugin_dir_url( __DIR__ ) . 'build/cptui-editor.js',
+		$asset['dependencies'],
+		$asset['version'],
+		true
+	);
+
+	wp_localize_script(
+		'cptui-pro-panel',
+		'cptuiProPanel',
+		[
+			'postTypes' => $cptui_post_types,
+			'proUrl'    => 'https://pluginize.com/plugins/custom-post-type-ui-pro/?utm_source=cptui-editor-panel&utm_medium=plugin&utm_campaign=cptui',
+		]
+	);
+}
+add_action( 'enqueue_block_editor_assets', 'cptui_enqueue_pro_panel_assets' );
+
+/**
+ * Register REST route used by the block editor panel to dismiss the Pro upsell.
+ *
+ * @since 1.20.0
+ */
+function cptui_register_pro_panel_rest_route() {
+	register_rest_route(
+		'cptui/v1',
+		'/dismiss-pro-upsell',
+		[
+			'methods'             => 'POST',
+			'callback'            => 'cptui_rest_dismiss_pro_upsell',
+			'permission_callback' => function () {
+				return current_user_can( 'manage_options' );
+			},
+		]
+	);
+}
+add_action( 'rest_api_init', 'cptui_register_pro_panel_rest_route' );
+
+/**
+ * REST callback that marks the Pro upsell as dismissed for the current user.
+ *
+ * @since 1.20.0
+ *
+ * @return WP_REST_Response
+ */
+function cptui_rest_dismiss_pro_upsell() {
+	$dismissed                          = get_option( 'cptui-user-dismissed-pro-upsell', [] );
+	$user_id                            = get_current_user_id();
+	$dismissed[ 'user_id_' . $user_id ] = 'true';
+	update_option( 'cptui-user-dismissed-pro-upsell', $dismissed );
+
+	return new WP_REST_Response( [ 'dismissed' => true ], 200 );
+}
+
+/**
+ * Mark upsell as dismissed for current user.
+ *
+ * @since 1.18.3
+ */
+function cptui_handle_upsell_dismissal() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	if ( wp_doing_ajax() ) {
+		return;
+	}
+
+	if ( empty( $_GET['cptui-dismiss-nonce'] ) ) {
+		return;
+	}
+
+	if ( ! wp_verify_nonce( $_GET['cptui-dismiss-nonce'], 'cptui-dismiss-nonce' ) ) {
+		return;
+	}
+
+	$dismissed                          = get_option( 'cptui-user-dismissed-pro-upsell', [] );
+	$user_id                            = get_current_user_id();
+	$dismissed[ 'user_id_' . $user_id ] = 'true';
+	update_option( 'cptui-user-dismissed-pro-upsell', $dismissed );
+}
+add_action( 'admin_init', 'cptui_handle_upsell_dismissal' );
+
+/**
+ * Clear our upsell option dismissal upon plugin upgrade.
+ *
+ * @since 1.18.3
+ *
+ * @param $upgrader_object
+ * @param $options
+ */
+function cptui_clear_upsell_dismissed_cache( $upgrader_object, $options ) {
+	// If an update has taken place and the updated type is plugins and the plugins element exists
+	if (
+		'update' === $options['action'] &&
+		'plugin' === $options['type'] &&
+		! empty( $options['plugins'] )
+	) {
+		foreach ( $options['plugins'] as $plugin ) {
+			if ( $plugin === 'custom-post-type-ui/custom-post-type-ui.php' ) {
+				delete_option( 'cptui-user-dismissed-pro-upsell' );
+				delete_option( 'cptui-user-dismissed-extended-upsell' );
+			}
+		}
+	}
+}
+add_action( 'upgrader_process_complete', 'cptui_clear_upsell_dismissed_cache', 10, 2 );

@@ -2,11 +2,7 @@
 
 namespace FluentForm\App\Modules;
 
-use FluentForm\App;
-use FluentForm\Config;
 use FluentForm\Framework\Helpers\ArrayHelper;
-use FluentForm\Request;
-use FluentForm\View;
 
 class EditorButtonModule
 {
@@ -18,9 +14,9 @@ class EditorButtonModule
 
         $this->addMceButtonAssets();
 
-        $url = App::publicUrl('img/icon_black_small.png');
-        
-        echo "<button id='fluent_form_insert_button' class='button'><span style='background-image: url(" . esc_url($url) . "); width: 16px;height: 16px;background-repeat: no-repeat;display: inline-block;background-size: contain;opacity: 0.4;margin-right: 5px;vertical-align: middle;'></span>" . __('Add Form', 'fluentform') . '</button>';
+        $url = fluentformMix('img/icon_black_small.png');
+
+        echo "<button id='fluent_form_insert_button' class='button'><span style='background-image: url(" . esc_url($url) . "); width: 16px;height: 16px;background-repeat: no-repeat;display: inline-block;background-size: contain;opacity: 0.4;margin-right: 5px;vertical-align: middle;'></span>" . esc_html__('Add Form', 'fluentform') . '</button>';
     }
 
     private function addMceButtonAssets()
@@ -29,16 +25,17 @@ class EditorButtonModule
             'fluentform_editor_script',
             fluentformMix('js/fluentform_editor_script.js'),
             ['jquery'],
-            FLUENTFORM_VERSION
+            FLUENTFORM_VERSION,
+            false
         );
 
         $forms = wpFluent()->table('fluentform_forms')
                     ->select(['id', 'title'])
                     ->get();
 
-        $forms = array_map(function ($item) {
+        $forms = $forms->map(function ($item) {
             return ['value' => $item->id, 'text' => $item->title];
-        }, $forms);
+        })->all();
 
         wp_localize_script('fluentform_editor_script', 'fluentform_editor_vars', [
             'forms' => $forms,
@@ -60,8 +57,18 @@ class EditorButtonModule
             $option = get_option('_fluentform_global_form_settings');
             $isEligiblePage = 'yes' == ArrayHelper::get($option, 'misc.classicEditorButton');
         }
+    
+        $isEligiblePage = apply_filters_deprecated(
+            'fluentform_display_add_form_button',
+            [
+                $isEligiblePage
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/display_add_form_button',
+            'Use fluentform/display_add_form_button instead of fluentform_display_add_form_button'
+        );
 
-        return apply_filters('fluentform_display_add_form_button', $isEligiblePage);
+        return apply_filters('fluentform/display_add_form_button', $isEligiblePage);
     }
 
     private function getMenuIcon()

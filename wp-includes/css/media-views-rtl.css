@@ -46,12 +46,10 @@
 }
 
 .media-frame a:focus {
-	box-shadow:
-		0 0 0 1px #4f94d4,
-		0 0 2px 1px rgba(79, 148, 212, 0.8);
+	box-shadow: 0 0 0 2px #2271b1;
 	color: #043959;
 	/* Only visible in Windows High Contrast mode */
-	outline: 1px solid transparent;
+	outline: 2px solid transparent;
 }
 
 .media-frame a.button {
@@ -158,11 +156,6 @@
 
 .media-frame ::-moz-placeholder {
 	color: #646970;
-	opacity: 1;
-}
-
-.media-frame :-ms-input-placeholder {
-	color: #646970;
 }
 
 /*
@@ -255,8 +248,8 @@
 
 .media-modal-close .media-modal-icon:before {
 	content: "\f158";
+	content: "\f158" / '';
 	font: normal 20px/1 dashicons;
-	speak: never;
 	vertical-align: middle;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -280,10 +273,6 @@
 	margin-left: 2%;
 	width: 42%;
 	width: calc(48% - 12px);
-}
-
-.media-modal-content .attachments-browser .search {
-	width: 100%;
 }
 
 /* higher specificity */
@@ -372,7 +361,7 @@
 }
 
 .media-sidebar h2,
-.image-details h2:not(.media-attachments-filter-heading) {
+.image-details .media-embed h2 {
 	position: relative;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -387,6 +376,11 @@
 	float: right;
 	width: 100%;
 	margin: 0 0 10px;
+}
+
+.attachment-details h2 {
+	display: grid;
+	grid-template-columns: auto 5em;
 }
 
 .media-sidebar .collection-settings .setting {
@@ -478,7 +472,7 @@
 	min-height: 0;
 	line-height: 2.18181818;
 	text-align: right;
-	color: #008a20;
+	color: #007017;
 }
 
 .compat-item label span {
@@ -654,12 +648,10 @@
 }
 
 .media-menu .media-menu-item:focus {
-	box-shadow:
-		0 0 0 1px #4f94d4,
-		0 0 2px 1px rgba(79, 148, 212, 0.8);
+	box-shadow: 0 0 0 2px #2271b1;
 	color: #043959;
 	/* Only visible in Windows High Contrast mode */
-	outline: 1px solid transparent;
+	outline: 2px solid transparent;
 }
 
 .media-menu .separator {
@@ -709,12 +701,11 @@
 }
 
 .media-router .media-menu-item:focus {
-	box-shadow:
-		0 0 0 1px #4f94d4,
-		0 0 2px 1px rgba(79, 148, 212, 0.8);
+	box-shadow: 0 0 0 2px #2271b1;
 	color: #043959;
 	/* Only visible in Windows High Contrast mode */
-	outline: 1px solid transparent;
+	outline: 2px solid transparent;
+	z-index: 1;
 }
 
 .media-router .active,
@@ -860,6 +851,7 @@
 	height: 100%;
 }
 
+.options-general-php .crop-content.site-icon,
 .wp-customizer:not(.mobile) .media-frame-content .crop-content.site-icon {
 	margin-left: 300px;
 }
@@ -907,8 +899,6 @@
 
 .media-frame select.attachment-filters:last-of-type {
 	margin-left: 0;
-	width: auto;
-	max-width: 100%;
 }
 
 /**
@@ -927,7 +917,7 @@
 	max-width: 100%;
 }
 
-.media-frame .media-search-input-label {
+.media-modal .media-frame .media-search-input-label {
 	position: absolute;
 	right: 0;
 	top: 10px;
@@ -1088,14 +1078,20 @@
 	width: 22px;
 	padding: 0;
 	background-color: #fff;
-	background-position: -96px 4px;
 	border-radius: 3px;
 	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
 	transition: none;
 }
 
-.wp-core-ui .attachment-close:hover,
-.wp-core-ui .attachment-close:focus {
+.wp-core-ui .attachment-close .media-modal-icon {
+	display: inline-block;
+	background-position: -96px 4px;
+	height: 22px;
+	width: 22px;
+}
+
+.wp-core-ui .attachment-close:hover .media-modal-icon,
+.wp-core-ui .attachment-close:focus .media-modal-icon {
 	background-position: -36px 4px;
 }
 
@@ -1220,6 +1216,8 @@
 .mode-grid .attachments-browser .media-toolbar-primary {
 	display: flex;
 	align-items: center;
+	column-gap: .5rem;
+	margin: 11px 0;
 }
 
 .mode-grid .attachments-browser .media-toolbar-mode-select .media-toolbar-primary {
@@ -1250,6 +1248,7 @@
 	color: #50575e;
 	display: inline-block;
 	content: "\f335";
+	content: "\f335" / '';
 	font-weight: 300;
 	margin-top: 1px;
 }
@@ -1324,47 +1323,6 @@
 
 .attachment.new-media {
 	outline: 2px dotted #c3c4c7;
-}
-
-.load-more-wrapper {
-	clear: both;
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: center;
-	padding: 1em 0;
-}
-
-.load-more-wrapper .load-more-count {
-	min-width: 100%;
-	margin: 0 0 1em;
-	text-align: center;
-}
-
-.load-more-wrapper .load-more {
-	margin: 0;
-}
-
-/* Needs high specificity. */
-.media-frame .load-more-wrapper .load-more + .spinner {
-	float: none;
-	margin: 0 10px 0 -30px;
-}
-
-/* Reset spinner margin when the button is hidden to avoid horizontal scrollbar. */
-.media-frame .load-more-wrapper .load-more.hidden + .spinner {
-	margin: 0;
-}
-
-/* Force a new row within the flex container. */
-.load-more-wrapper::after {
-	content: "";
-	min-width: 100%;
-	order: 1;
-}
-
-.load-more-wrapper .load-more-jump {
-	margin: 0 12px 0 0;
 }
 
 /**
@@ -1774,6 +1732,12 @@
 	vertical-align: middle;
 }
 
+.media-frame .media-sidebar .settings-save-status .spinner {
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
 .media-frame.mode-grid .spinner {
 	margin: 0;
 	float: none;
@@ -1803,7 +1767,7 @@
 }
 
 .attachment-details .settings-save-status {
-	float: left;
+	text-align: left;
 	text-transform: none;
 	font-weight: 400;
 }
@@ -1960,32 +1924,7 @@
 
 .media-modal .imgedit-wrap .imgedit-panel-content {
 	padding: 16px 16px 0;
-	position: absolute;
-	top: 0;
-	left: 282px;
-	bottom: 0;
-	right: 0;
-	overflow: auto;
-}
-
-/*
- * Implementation of bottom padding in overflow content differs across browsers.
- * We need a different method. See https://github.com/w3c/csswg-drafts/issues/129
- */
-.media-modal .imgedit-wrap .imgedit-submit {
-	margin-bottom: 16px;
-}
-
-.media-modal .imgedit-wrap .imgedit-settings {
-	background: #f6f7f7;
-	border-right: 1px solid #dcdcde;
-	padding: 20px 16px 0;
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	width: 250px;
-	overflow: auto;
+	overflow: visible;
 }
 
 /*
@@ -1999,19 +1938,15 @@
 .media-modal .imgedit-group {
 	background: none;
 	border: none;
-	border-bottom: 1px solid #dcdcde;
 	box-shadow: none;
 	margin: 0;
-	margin-bottom: 16px;
 	padding: 0;
-	padding-bottom: 16px;
 	position: relative; /* RTL fix, #WP29352 */
 }
 
-.media-modal .imgedit-group:last-of-type {
-	border: none;
-	margin: 0;
-	padding: 0;
+.media-modal .imgedit-group.imgedit-panel-active {
+	margin-bottom: 16px;
+	padding-bottom: 16px;
 }
 
 .media-modal .imgedit-group-top {
@@ -2052,8 +1987,8 @@
 
 .wp-core-ui.media-modal .image-editor .imgedit-help-toggle:focus {
 	color: #2271b1;
-	border-color: #4f94d4;
-	box-shadow: 0 0 3px rgba(34, 113, 177, 0.8);
+	border-color: #2271b1;
+	box-shadow: 0 0 0 1px #2271b1;
 	/* Only visible in Windows High Contrast mode */
 	outline: 2px solid transparent;
 }
@@ -2068,6 +2003,7 @@
 
 .media-modal .imgedit-help-toggled span.dashicons:before {
 	content: "\f142";
+	content: "\f142" / '';
 }
 
 .media-modal .imgedit-thumbnail-preview {
@@ -2080,8 +2016,7 @@
 
 .media-modal .imgedit-wrap div.updated, /* Back-compat for pre-5.5 */
 .media-modal .imgedit-wrap .notice {
-	margin: 0;
-	margin-bottom: 16px;
+	margin: 0 16px;
 }
 
 /**
@@ -2170,8 +2105,8 @@
 }
 
 .mejs-container:focus {
-	outline: 1px solid #4f94d4;
-	box-shadow: 0 0 2px 1px rgba(79, 148, 212, 0.8);
+	outline: 1px solid #2271b1;
+	box-shadow: 0 0 0 2px #2271b1;
 }
 
 .image-details .media-modal {
@@ -2247,17 +2182,18 @@
 
 .image-details .advanced-toggle:after {
 	font: normal 20px/1 dashicons;
-	speak: never;
 	vertical-align: top;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	content: "\f140";
+	content: "\f140" / '';
 	display: inline-block;
 	margin-top: -2px;
 }
 
 .image-details .advanced-visible .advanced-toggle:after {
 	content: "\f142";
+	content: "\f142" / '';
 }
 
 .image-details .custom-size label, /* Back-compat for pre-5.3 */
@@ -2557,13 +2493,13 @@
 
 	/* Visually hide the menu heading keeping it available to assistive technologies. */
 	.media-frame-menu-heading {
-		clip: rect(1px, 1px, 1px, 1px);
-		-webkit-clip-path: inset(50%);
 		clip-path: inset(50%);
 		height: 1px;
 		overflow: hidden;
 		padding: 0;
 		width: 1px;
+		border: 0;
+		margin: -1px;
 		word-wrap: normal !important;
 	}
 
@@ -2602,12 +2538,27 @@
 		width: 230px;
 	}
 
+	.options-general-php .crop-content.site-icon,
+	.wp-customizer:not(.mobile) .media-frame-content .crop-content.site-icon {
+		margin-left: 262px;
+	}
+
 	.attachments-browser .attachments,
 	.attachments-browser .uploader-inline,
 	.attachments-browser .media-toolbar,
 	.attachments-browser .attachments-wrapper,
 	.attachments-browser.has-load-more .attachments-wrapper {
 		left: 262px;
+	}
+
+	.attachments-browser .media-toolbar {
+		height: 82px;
+	}
+
+	.attachments-browser .attachments,
+	.attachments-browser .uploader-inline,
+	.media-frame-content .attachments-browser .attachments-wrapper {
+		top: 82px;
 	}
 
 	.media-sidebar .setting,
@@ -2820,13 +2771,8 @@
 }
 
 @media screen and (max-width: 782px) {
-	.attachments-browser .media-toolbar {
-		height: 82px;
-	}
-
-	.attachments-browser .attachments,
-	.attachments-browser .uploader-inline {
-		top: 82px;
+	.imgedit-panel-content {
+		grid-template-columns: auto;
 	}
 
 	.media-frame-toolbar .media-toolbar {
@@ -2834,13 +2780,46 @@
 	}
 
 	.mode-grid .attachments-browser .media-toolbar-primary {
-		display: block;
+		display: grid;
+		grid-template-columns: auto 1fr;
+	}
+
+	.mode-grid .attachments-browser .media-toolbar-primary input[type="search"] {
+		width: 100%;
 	}
 
 	.media-sidebar .copy-to-clipboard-container .success,
 	.attachment-details .copy-to-clipboard-container .success {
 		font-size: 14px;
 		line-height: 2.71428571;
+	}
+
+	.media-frame .wp-filter .media-toolbar-secondary {
+		position: unset;
+	}
+
+	.media-frame .media-toolbar-secondary .spinner {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		margin: auto;
+		right: 0;
+		left: 0;
+		z-index: 9;
+	}
+
+	.media-bg-overlay {
+		content: '';
+		background: #ffffff;
+		width: 100%;
+		height: 100%;
+		display: none;
+		position: absolute;
+		right: 0;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		opacity: 0.6;
 	}
 }
 
@@ -2860,6 +2839,11 @@
 		position: fixed;
 	}
 
+	.options-general-php .crop-content.site-icon,
+	.wp-customizer:not(.mobile) .media-frame-content .crop-content.site-icon {
+		margin-left: 0;
+	}
+
 	.media-sidebar {
 		z-index: 1900;
 		max-width: 70%;
@@ -2877,10 +2861,6 @@
 	.attachments-browser .media-toolbar,
 	.media-frame-content .attachments-browser .attachments-wrapper {
 		left: 0;
-	}
-
-	.attachments-browser .attachments-wrapper {
-		padding-top: 12px;
 	}
 
 	.image-details .media-frame-title {
@@ -2936,7 +2916,6 @@
  * HiDPI Displays
  */
 @media print,
-  (-webkit-min-device-pixel-ratio: 1.25),
   (min-resolution: 120dpi) {
 
 	.wp-core-ui .media-modal-icon {

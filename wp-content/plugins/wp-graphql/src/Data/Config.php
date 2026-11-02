@@ -2,12 +2,12 @@
 
 namespace WPGraphQL\Data;
 
-use WP_Comment_Query;
-use WP_Query;
 use WPGraphQL\Data\Cursor\CommentObjectCursor;
 use WPGraphQL\Data\Cursor\PostObjectCursor;
 use WPGraphQL\Data\Cursor\TermObjectCursor;
 use WPGraphQL\Data\Cursor\UserCursor;
+use WP_Comment_Query;
+use WP_Query;
 
 /**
  * Class Config
@@ -43,6 +43,12 @@ class Config {
 		 * as a point of comparison when slicing the results to return.
 		 */
 		add_filter( 'posts_where', [ $this, 'graphql_wp_query_cursor_pagination_support' ], 10, 2 );
+
+		/**
+		 * Filter the search relevance ORDER BY expression so backward (last) pagination
+		 * reads the tail of the result set, mirroring how the date ordering is inverted.
+		 */
+		add_filter( 'posts_search_orderby', [ $this, 'graphql_wp_query_cursor_pagination_search_orderby' ], 10, 2 );
 
 		/**
 		 * Filter the term_clauses in the WP_Term_Query to allow for cursor pagination support where a Term ID
@@ -83,8 +89,7 @@ class Config {
 		 */
 		add_filter(
 			'pre_user_query',
-			function ( $query ) {
-
+			static function ( $query ) {
 				if ( ! $query->get( 'suppress_filters' ) ) {
 					$query->set( 'suppress_filters', 0 );
 				}
@@ -100,10 +105,13 @@ class Config {
 					 * @param string        $where The WHERE clause of the query.
 					 * @param \WPGraphQL\Data\WP_User_Query $query The WP_User_Query instance (passed by reference).
 					 */
-					$query->query_where = apply_filters_ref_array( 'graphql_users_where', [
-						$query->query_where,
-						&$query,
-					] );
+					$query->query_where = apply_filters_ref_array(
+						'graphql_users_where',
+						[
+							$query->query_where,
+							&$query,
+						]
+					);
 
 					/**
 					 * Filters the ORDER BY clause of the query.
@@ -111,15 +119,16 @@ class Config {
 					 * @param string        $orderby The ORDER BY clause of the query.
 					 * @param \WPGraphQL\Data\WP_User_Query $query The WP_User_Query instance (passed by reference).
 					 */
-					$query->query_orderby = apply_filters_ref_array( 'graphql_users_orderby', [
-						$query->query_orderby,
-						&$query,
-					] );
-
+					$query->query_orderby = apply_filters_ref_array(
+						'graphql_users_orderby',
+						[
+							$query->query_orderby,
+							&$query,
+						]
+					);
 				}
 
 				return $query;
-
 			}
 		);
 
@@ -147,9 +156,8 @@ class Config {
 				'graphql_wp_user_query_cursor_pagination_stability',
 			],
 			10,
-			1
+			2
 		);
-
 	}
 
 	/**
@@ -160,55 +168,144 @@ class Config {
 	 * and for their cursors to properly go forward/backward to the proper place in the database.
 	 *
 	 * @param string    $orderby  The ORDER BY clause of the query.
-	 * @param \WP_Query $wp_query The WP_Query instance executing
+	 * @param \WP_Query $query    The WP_Query instance executing.
 	 *
 	 * @return string
 	 */
-	public function graphql_wp_query_cursor_pagination_stability( string $orderby, WP_Query $wp_query ) {
-
+	public function graphql_wp_query_cursor_pagination_stability( string $orderby, WP_Query $query ) {
+		// Bail early if it's not a GraphQL Request.
 		if ( true !== is_graphql_request() ) {
 			return $orderby;
 		}
 
-		global $wpdb;
+		/**
+		 * If pre-filter hooked, return $pre_orderby.
+		 *
+		 * @param string|null $pre_orderby The pre-filtered ORDER BY clause of the query.
+		 * @param string      $orderby     The ORDER BY clause of the query.
+		 * @param \WP_Query   $query       The WP_Query instance (passed by reference).
+		 *
+		 * @return string|null
+		 * @hookGroup connections
+		 * @since 0.0.5
+		 */
+		$pre_orderby = apply_filters( 'graphql_pre_wp_query_cursor_pagination_stability', null, $orderby, $query );
+		if ( null !== $pre_orderby ) {
+			return $pre_orderby;
+		}
 
-		// If the cursor "graphql_cursor_compare" arg is not in the query,
-		// default to using ID DESC as the stabilizer
-		if ( ! isset( $wp_query->query['graphql_cursor_compare'] ) ) {
-			return "{$orderby}, {$wpdb->posts}.ID DESC ";
+		// Bail early if disabled by connection.
+		if ( isset( $query->query_vars['graphql_apply_cursor_pagination_orderby'] )
+			&& false === $query->query_vars['graphql_apply_cursor_pagination_orderby'] ) {
+			return $orderby;
+		}
+
+		// Bail early if the cursor "graphql_cursor_compare" arg is not in the query,
+		if ( ! isset( $query->query_vars['graphql_cursor_compare'] ) ) {
+			return $orderby;
 		}
 
 		// Check the cursor compare order
-		$order = '>' === $wp_query->query['graphql_cursor_compare'] ? 'ASC' : 'DESC';
+		$order = '>' === $query->query_vars['graphql_cursor_compare'] ? 'ASC' : 'DESC';
+
+		// Get Cursor ID key.
+		$cursor = new PostObjectCursor( $query->query_vars );
+		$key    = $cursor->get_cursor_id_key();
 
 		// If there is a cursor compare in the arguments, use it as the stablizer for cursors.
-		return "{$orderby}, {$wpdb->posts}.ID {$order} ";
+		return ( $orderby ? "{$orderby}, " : '' ) . "{$key} {$order}";
+	}
 
+	/**
+	 * When a searched query is paginated backward (`last`), the rest of the ordering is
+	 * inverted (e.g. post_date ASC instead of DESC), but WP_Query never inverts the search
+	 * relevance expression it prepends via parse_search_order(). Invert it here so the SQL
+	 * window reads the tail of the relevance-ordered result set.
+	 *
+	 * The multi-term expression is a CASE that sorts ascending by default; the single-term
+	 * expression is a boolean LIKE sorted DESC. Inverting means appending DESC to the former
+	 * and swapping DESC for ASC on the latter.
+	 *
+	 * @since 2.17.0
+	 *
+	 * @param string    $search_orderby The ORDER BY clause for search relevance.
+	 * @param \WP_Query $query          The WP_Query instance (passed by reference).
+	 *
+	 * @return string
+	 */
+	public function graphql_wp_query_cursor_pagination_search_orderby( string $search_orderby, WP_Query $query ) {
+		// Bail early if it's not a GraphQL Request.
+		if ( true !== is_graphql_request() ) {
+			return $search_orderby;
+		}
+
+		// Bail early if there is nothing to invert.
+		if ( empty( $search_orderby ) ) {
+			return $search_orderby;
+		}
+
+		// Bail early if disabled by connection.
+		if ( isset( $query->query_vars['graphql_apply_cursor_pagination_orderby'] )
+			&& false === $query->query_vars['graphql_apply_cursor_pagination_orderby'] ) {
+			return $search_orderby;
+		}
+
+		// Only invert for backward (`last`) pagination.
+		if ( ! isset( $query->query_vars['graphql_cursor_compare'] ) || '>' !== $query->query_vars['graphql_cursor_compare'] ) {
+			return $search_orderby;
+		}
+
+		if ( ' DESC' === substr( $search_orderby, -5 ) ) {
+			return substr( $search_orderby, 0, -5 ) . ' ASC';
+		}
+
+		return $search_orderby . ' DESC';
 	}
 
 	/**
 	 * This filters the WPQuery 'where' $args, enforcing the query to return results before or
 	 * after the referenced cursor
 	 *
-	 * @param string   $where The WHERE clause of the query.
+	 * @param string    $where The WHERE clause of the query.
 	 * @param \WP_Query $query The WP_Query instance (passed by reference).
 	 *
 	 * @return string
 	 */
 	public function graphql_wp_query_cursor_pagination_support( string $where, WP_Query $query ) {
-
-		// if it's not a graphql request, return early
+		// Bail early if it's not a GraphQL Request.
 		if ( true !== is_graphql_request() ) {
 			return $where;
 		}
 
-		// apply the after cursor to the query
+		/**
+		 * If pre-filter hooked, return $pre_where.
+		 *
+		 * @param string|null $pre_where The pre-filtered WHERE clause of the query.
+		 * @param string     $where     The WHERE clause of the query.
+		 * @param \WP_Query  $query     The WP_Query instance (passed by reference).
+		 *
+		 * @return string|null
+		 * @hookGroup connections
+		 * @since 0.0.5
+		 */
+		$pre_where = apply_filters( 'graphql_pre_wp_query_cursor_pagination_support', null, $where, $query );
+		if ( null !== $pre_where ) {
+			return $pre_where;
+		}
+
+		// Bail early if disabled by connection.
+		if ( isset( $query->query_vars['graphql_apply_cursor_pagination_where'] )
+			&& false === $query->query_vars['graphql_apply_cursor_pagination_where'] ) {
+			return $where;
+		}
+
+		// Apply the after cursor, moving forward through results
 		if ( ! empty( $query->query_vars['graphql_after_cursor'] ) ) {
 			$after_cursor = new PostObjectCursor( $query->query_vars, 'after' );
 			$where       .= $after_cursor->get_where();
 		}
 
-		// apply the before cursor to the query
+		// Apply the after cursor, moving backward through results.
 		if ( ! empty( $query->query_vars['graphql_before_cursor'] ) ) {
 			$before_cursor = new PostObjectCursor( $query->query_vars, 'before' );
 			$where        .= $before_cursor->get_where();
@@ -222,20 +319,53 @@ class Config {
 	 * the meta values have same values multiple times. This filter adds a
 	 * secondary ordering by the post ID which forces stable order in such cases.
 	 *
-	 * @param string $orderby The ORDER BY clause of the query.
+	 * @param string         $orderby The ORDER BY clause of the query.
+	 * @param \WP_User_Query $query The WP_User_Query instance (passed by reference).
 	 *
 	 * @return string
 	 */
-	public function graphql_wp_user_query_cursor_pagination_stability( $orderby ) {
+	public function graphql_wp_user_query_cursor_pagination_stability( $orderby, \WP_User_Query $query ) {
 
-		if ( true === is_graphql_request() ) {
-			global $wpdb;
-
-			// phpcs:ignore
-			return "{$orderby}, {$wpdb->users}.ID DESC ";
+		// Bail early if it's not a GraphQL Request.
+		if ( true !== is_graphql_request() ) {
+			return $orderby;
 		}
 
-		return $orderby;
+		/**
+		 * If pre-filter hooked, return $pre_orderby.
+		 *
+		 * @param string|null     $pre_orderby The pre-filtered ORDER BY clause of the query.
+		 * @param string          $orderby     The ORDER BY clause of the query.
+		 * @param \WP_User_Query  $query       The WP_User_Query instance (passed by reference).
+		 *
+		 * @return string|null
+		 * @hookGroup connections
+		 * @since 0.0.5
+		 */
+		$pre_orderby = apply_filters( 'graphql_pre_wp_user_query_cursor_pagination_stability', null, $orderby, $query );
+		if ( null !== $pre_orderby ) {
+			return $pre_orderby;
+		}
+
+		// Bail early if disabled by connection.
+		if ( isset( $query->query_vars['graphql_apply_cursor_pagination_orderby'] )
+			&& false === $query->query_vars['graphql_apply_cursor_pagination_orderby'] ) {
+			return $orderby;
+		}
+
+		// Bail early if the cursor "graphql_cursor_compare" arg is not in the query,
+		if ( ! isset( $query->query_vars['graphql_cursor_compare'] ) ) {
+			return $orderby;
+		}
+
+		// Check the cursor compare order
+		$order = '>' === $query->query_vars['graphql_cursor_compare'] ? 'ASC' : 'DESC';
+
+		// Get Cursor ID key.
+		$cursor = new UserCursor( $query->query_vars );
+		$key    = $cursor->get_cursor_id_key();
+
+		return ( $orderby ? "{$orderby}, " : '' ) . "{$key} {$order}";
 	}
 
 	/**
@@ -249,18 +379,40 @@ class Config {
 	 */
 	public function graphql_wp_user_query_cursor_pagination_support( $where, \WP_User_Query $query ) {
 
-		// if it's not a graphql request, return early
+		// Bail early if it's not a GraphQL Request.
 		if ( true !== is_graphql_request() ) {
 			return $where;
 		}
 
-		// apply the after cursor to the query
+		/**
+		 * If pre-filter hooked, return $pre_where.
+		 *
+		 * @param string|null    $pre_where The pre-filtered WHERE clause of the query.
+		 * @param string         $where     The WHERE clause of the query.
+		 * @param \WP_User_Query $query     The WP_Query instance (passed by reference).
+		 *
+		 * @return string|null
+		 * @hookGroup connections
+		 * @since 0.0.5
+		 */
+		$pre_where = apply_filters( 'graphql_pre_wp_user_query_cursor_pagination_support', null, $where, $query );
+		if ( null !== $pre_where ) {
+			return $pre_where;
+		}
+
+		// Bail early if disabled by connection.
+		if ( isset( $query->query_vars['graphql_apply_cursor_pagination_where'] )
+			&& false === $query->query_vars['graphql_apply_cursor_pagination_where'] ) {
+			return $where;
+		}
+
+		// Apply the after cursor.
 		if ( ! empty( $query->query_vars['graphql_after_cursor'] ) ) {
 			$after_cursor = new UserCursor( $query->query_vars, 'after' );
 			$where        = $where . $after_cursor->get_where();
 		}
 
-		// apply the before cursor to the query
+		// Apply the after cursor.
 		if ( ! empty( $query->query_vars['graphql_before_cursor'] ) ) {
 			$before_cursor = new UserCursor( $query->query_vars, 'before' );
 			$where         = $where . $before_cursor->get_where();
@@ -274,70 +426,138 @@ class Config {
 	 * we can move forward or backward from a particular record, instead of typical offset
 	 * pagination which can be much more expensive and less accurate.
 	 *
-	 * @param array $pieces     Terms query SQL clauses.
-	 * @param array $taxonomies An array of taxonomies.
-	 * @param array $args       An array of terms query arguments.
+	 * @param array<string,mixed> $pieces     Terms query SQL clauses.
+	 * @param string[]            $taxonomies An array of taxonomies.
+	 * @param array<string,mixed> $args       An array of terms query arguments.
 	 *
-	 * @return array $pieces
+	 * @return array<string,mixed> $pieces
 	 */
 	public function graphql_wp_term_query_cursor_pagination_support( array $pieces, array $taxonomies, array $args ) {
 
-		// if it's not a graphql request, return early
+		// Bail early if it's not a GraphQL Request.
 		if ( true !== is_graphql_request() ) {
 			return $pieces;
 		}
 
-		// determine the limit for the query
-		if ( isset( $args['number'] ) && absint( $args['number'] ) ) {
+		/**
+		 * If pre-filter hooked, return $pre_pieces.
+		 *
+		 * @param ?array<string,mixed> $pre_pieces The pre-filtered term query SQL clauses.
+		 * @param array<string,mixed>  $pieces     Terms query SQL clauses.
+		 * @param string[]             $taxonomies An array of taxonomies.
+		 * @param array<string,mixed>  $args       An array of terms query arguments.
+		 *
+		 * @hookGroup connections
+		 * @since 0.0.5
+		 */
+		$pre_pieces = apply_filters( 'graphql_pre_wp_term_query_cursor_pagination_support', null, $pieces, $taxonomies, $args );
+		if ( null !== $pre_pieces ) {
+			return $pre_pieces;
+		}
+
+		// Bail early if disabled by connection.
+		if ( isset( $args['graphql_apply_cursor_pagination_where'] )
+			&& false === $args['graphql_apply_cursor_pagination_where'] ) {
+			return $pieces;
+		}
+
+		// Bail early if the cursor "graphql_cursor_compare" arg is not in the query,
+		if ( ! isset( $args['graphql_cursor_compare'] ) ) {
+			return $pieces;
+		}
+
+		// Determine the limit for the query.
+		//
+		// WP_Term_Query intentionally omits the SQL LIMIT when it has to descend the
+		// term hierarchy (e.g. a `child_of` query): it queries the full set, filters
+		// the descendants in PHP, then applies `number`/`offset` in PHP. Forcing a
+		// SQL LIMIT here would truncate the result set before that descendant
+		// filtering runs, dropping children that fall outside the LIMIT window. In
+		// that case we defer to WP's PHP-side pagination. See #2739.
+		if ( empty( $args['child_of'] ) && isset( $args['number'] ) && absint( $args['number'] ) ) {
 			$pieces['limits'] = sprintf( ' LIMIT 0, %d', absint( $args['number'] ) );
 		}
 
-		// apply the after cursor
+		// Apply the after cursor.
 		if ( ! empty( $args['graphql_after_cursor'] ) ) {
 			$after_cursor    = new TermObjectCursor( $args, 'after' );
 			$pieces['where'] = $pieces['where'] . $after_cursor->get_where();
 		}
 
-		// apply the before cursor
+		// Apply the before cursor.
 		if ( ! empty( $args['graphql_before_cursor'] ) ) {
 			$before_cursor   = new TermObjectCursor( $args, 'before' );
 			$pieces['where'] = $pieces['where'] . $before_cursor->get_where();
 		}
 
-		return $pieces;
+		// Check the cursor compare order.
+		$order = '>' === $args['graphql_cursor_compare'] ? 'ASC' : 'DESC';
 
+		// Get Cursor ID key.
+		$cursor = new TermObjectCursor( $args );
+		$key    = $cursor->get_cursor_id_key();
+
+		// If there is a cursor compare in the arguments, use it as the stabilizer for cursors.
+		if ( ! empty( $pieces['orderby'] ) ) {
+			$pieces['orderby'] = "{$pieces['orderby']} {$pieces['order']}, {$key} {$order}";
+		} else {
+			$pieces['orderby'] = "ORDER BY {$key} {$order}";
+		}
+
+		$pieces['order'] = '';
+
+		return $pieces;
 	}
 
 	/**
 	 * This returns a modified version of the $pieces of the comment query clauses if the request
 	 * is a GraphQL Request and before or after cursors are passed to the query
 	 *
-	 * @param array            $pieces A compacted array of comment query clauses.
-	 * @param \WP_Comment_Query $query Current instance of WP_Comment_Query, passed by reference.
+	 * @param array<string,mixed> $pieces A compacted array of comment query clauses.
+	 * @param \WP_Comment_Query   $query Current instance of WP_Comment_Query, passed by reference.
 	 *
-	 * @return array $pieces
+	 * @return array<string,mixed> $pieces
 	 */
 	public function graphql_wp_comments_query_cursor_pagination_support( array $pieces, WP_Comment_Query $query ) {
 
-		/**
-		 * Access the global $wpdb object
-		 */
+		// Bail early if it's not a GraphQL Request.
 		if ( true !== is_graphql_request() ) {
 			return $pieces;
 		}
 
+		/**
+		 * If pre-filter hooked, return $pre_pieces.
+		 *
+		 * @param ?array<string,mixed> $pre_pieces The pre-filtered comment query clauses.
+		 * @param array<string,mixed>  $pieces     A compacted array of comment query clauses.
+		 * @param \WP_Comment_Query    $query      Current instance of WP_Comment_Query, passed by reference.
+		 *
+		 * @hookGroup connections
+		 * @since 0.0.5
+		 */
+		$pre_pieces = apply_filters( 'graphql_pre_wp_comments_query_cursor_pagination_support', null, $pieces, $query );
+		if ( null !== $pre_pieces ) {
+			return $pre_pieces;
+		}
+
+		// Bail early if disabled by connection.
+		if ( isset( $query->query_vars['graphql_apply_cursor_pagination_where'] )
+			&& false === $query->query_vars['graphql_apply_cursor_pagination_where'] ) {
+			return $pieces;
+		}
+
+		// Apply the after cursor, moving forward through results.
 		if ( ! empty( $query->query_vars['graphql_after_cursor'] ) ) {
 			$after_cursor     = new CommentObjectCursor( $query->query_vars, 'after' );
 			$pieces['where'] .= $after_cursor->get_where();
 		}
 
+		// Apply the after cursor, moving backward through results.
 		if ( ! empty( $query->query_vars['graphql_before_cursor'] ) ) {
 			$before_cursor    = new CommentObjectCursor( $query->query_vars, 'before' );
 			$pieces['where'] .= $before_cursor->get_where();
 		}
 
 		return $pieces;
-
 	}
-
 }

@@ -2,19 +2,27 @@
 
 namespace FluentForm\App\Modules\Track;
 
-use FluentForm\AdminNotice;
-use FluentForm\App;
-use FluentForm\Framework\Helpers\ArrayHelper;
+use FluentForm\App\Http\Controllers\AdminNoticeController;
+
+//Could not Find any Usage any where
 
 class TrackModule
 {
     private $apiUrl = 'https://fluentform.com';
     private $initialConsentKey = '_fluentform_notice_pref';
     private $newsletterDelayTimeStamp = 172800; // 7 days
+    
+
+    private $adminNotice;
+
+    public function __construct()
+    {
+        $this->adminNotice = new AdminNoticeController();
+    }
 
     public function initTrack()
     {
-        if (AdminNotice::shouldShowNotice('track_data_notice') && $this->isLocalhost()) {
+        if ($this->adminNotice->shouldShowNotice('track_data_notice') && $this->isLocalhost()) {
             $this->showInitialConsent();
         }
     }
@@ -22,7 +30,7 @@ class TrackModule
     public function showInitialConsent()
     {
         $notice = $this->getInitialNotice();
-        AdminNotice::addNotice($notice);
+        $this->adminNotice->addNotice($notice);
     }
 
     public function rejectTrack()
@@ -123,7 +131,7 @@ class TrackModule
         }
 
         $data = [
-            'version'            => App::getVersion(),
+            'version'            => FLUENTFORM_VERSION,
             'wp_version'         => get_bloginfo('version'),
             'multisite_enabled'  => is_multisite(),
             'server_type'        => sanitize_text_field($server['SERVER_SOFTWARE']),

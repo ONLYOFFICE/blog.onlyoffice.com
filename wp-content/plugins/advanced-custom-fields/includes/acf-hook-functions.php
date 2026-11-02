@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 // Register store.
 acf_register_store( 'hook-variations' );
@@ -11,9 +20,9 @@ acf_register_store( 'hook-variations' );
  * @date    26/1/19
  * @since   5.7.11
  *
- * @param   string $filter The filter name.
- * @param   array  $variations An array variation keys.
- * @param   int    $index The param index to find variation values.
+ * @param   string  $filter     The filter name.
+ * @param   array   $variations An array variation keys.
+ * @param   integer $index      The param index to find variation values.
  * @return  void
  */
 function acf_add_filter_variations( $filter = '', $variations = array(), $index = 0 ) {
@@ -41,9 +50,9 @@ function acf_add_filter_variations( $filter = '', $variations = array(), $index 
  * @date    26/1/19
  * @since   5.7.11
  *
- * @param   string $action The action name.
- * @param   array  $variations An array variation keys.
- * @param   int    $index The param index to find variation values.
+ * @param   string  $action     The action name.
+ * @param   array   $variations An array variation keys.
+ * @param   integer $index      The param index to find variation values.
  * @return  void
  */
 function acf_add_action_variations( $action = '', $variations = array(), $index = 0 ) {
@@ -129,8 +138,8 @@ acf_register_store( 'deprecated-hooks' );
  * @date    25/1/19
  * @since   5.7.11
  *
- * @param   string $deprecated The deprecated hook.
- * @param   string $version The version this hook was deprecated.
+ * @param   string $deprecated  The deprecated hook.
+ * @param   string $version     The version this hook was deprecated.
  * @param   string $replacement The replacement hook.
  * @return  void
  */
@@ -159,8 +168,8 @@ function acf_add_deprecated_filter( $deprecated, $version, $replacement ) {
  * @date    25/1/19
  * @since   5.7.11
  *
- * @param   string $deprecated The deprecated hook.
- * @param   string $version The version this hook was deprecated.
+ * @param   string $deprecated  The deprecated hook.
+ * @param   string $version     The version this hook was deprecated.
  * @param   string $replacement The replacement hook.
  * @return  void
  */
@@ -207,7 +216,6 @@ function _acf_apply_deprecated_hook() {
 
 			// Log warning.
 			// _deprecated_hook( $deprecated, $version, $hook );
-
 			// Apply the item/do the action.
 			if ( $hook['type'] === 'filter' ) {
 				$args[0] = apply_filters_ref_array( $hook['deprecated'], $args );
@@ -220,4 +228,3 @@ function _acf_apply_deprecated_hook() {
 	// Return first arg.
 	return $args[0];
 }
-

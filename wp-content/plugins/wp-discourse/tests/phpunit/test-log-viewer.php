@@ -7,17 +7,19 @@
 
 namespace WPDiscourse\Test;
 
-use \WPDiscourse\Logs\FileManager;
-use \WPDiscourse\Logs\FileHandler;
-use \WPDiscourse\Logs\Logger;
-use \WPDiscourse\Admin\LogViewer;
-use \WPDiscourse\Admin\FormHelper;
-use \WPDiscourse\Test\UnitTest;
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
+use WPDiscourse\Logs\FileManager;
+use WPDiscourse\Logs\FileHandler;
+use WPDiscourse\Logs\Logger;
+use WPDiscourse\Admin\LogViewer;
+use WPDiscourse\Admin\FormHelper;
+use WPDiscourse\Test\UnitTest;
 
 /**
  * Logger test case.
  */
 class LogViewerTest extends UnitTest {
+    use ArraySubsetAsserts;
 
     /**
      * Instance of LogViewer.
@@ -30,7 +32,7 @@ class LogViewerTest extends UnitTest {
     /**
      * Setup each test.
      */
-    public function setUp() {
+    public function setUp(): void {
         parent::setUp();
 
         $this->viewer = new LogViewer( FormHelper::get_instance() );
@@ -40,11 +42,11 @@ class LogViewerTest extends UnitTest {
     /**
      * Teardown each test.
      */
-    public function tearDown() {
-      parent::tearDown();
+    public function tearDown(): void {
+        parent::tearDown();
 
-      self::$plugin_options['logs-enabled'] = 1;
-      $this->viewer->setup_options( self::$plugin_options );
+        self::$plugin_options['logs-enabled'] = 1;
+        $this->viewer->setup_options( self::$plugin_options );
     }
 
     /**

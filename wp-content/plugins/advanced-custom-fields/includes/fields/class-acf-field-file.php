@@ -1,23 +1,29 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! class_exists( 'acf_field_file' ) ) :
 
 	class acf_field_file extends acf_field {
 
 
-		/*
-		*  __construct
-		*
-		*  This function will setup the field type data
-		*
-		*  @type    function
-		*  @date    5/03/2014
-		*  @since   5.0.0
-		*
-		*  @param   n/a
-		*  @return  n/a
-		*/
-
+		/**
+		 * This function will setup the field type data
+		 *
+		 * @type    function
+		 * @date    5/03/2014
+		 * @since   5.0.0
+		 *
+		 * @param   n/a
+		 * @return  n/a
+		 */
 		function initialize() {
 
 			// vars
@@ -40,19 +46,16 @@ if ( ! class_exists( 'acf_field_file' ) ) :
 		}
 
 
-		/*
-		*  input_admin_enqueue_scripts
-		*
-		*  description
-		*
-		*  @type    function
-		*  @date    16/12/2015
-		*  @since   5.3.2
-		*
-		*  @param   $post_id (int)
-		*  @return  $post_id (int)
-		*/
-
+		/**
+		 * description
+		 *
+		 * @type    function
+		 * @date    16/12/2015
+		 * @since   5.3.2
+		 *
+		 * @param   $post_id (int)
+		 * @return  $post_id (int)
+		 */
 		function input_admin_enqueue_scripts() {
 
 			// localize
@@ -66,18 +69,15 @@ if ( ! class_exists( 'acf_field_file' ) ) :
 		}
 
 
-		/*
-		*  render_field()
-		*
-		*  Create the HTML interface for your field
-		*
-		*  @param   $field - an array holding all the field's data
-		*
-		*  @type    action
-		*  @since   3.6
-		*  @date    23/01/13
-		*/
-
+		/**
+		 * Create the HTML interface for your field
+		 *
+		 * @param   $field - an array holding all the field's data
+		 *
+		 * @type    action
+		 * @since   3.6
+		 * @date    23/01/13
+		 */
 		function render_field( $field ) {
 
 			// vars
@@ -109,7 +109,6 @@ if ( ! class_exists( 'acf_field_file' ) ) :
 
 			// has value?
 			if ( $field['value'] ) {
-
 				$attachment = acf_get_attachment( $field['value'] );
 				if ( $attachment ) {
 
@@ -138,7 +137,7 @@ if ( ! class_exists( 'acf_field_file' ) ) :
 				)
 			);
 			?>
-	<div class="show-if-value file-wrap">
+	<div class="show-if-value file-wrap" tabindex="0" role="button" aria-label="<?php esc_attr_e( 'Selected file. Press tab to access file options.', 'acf' ); ?>">
 		<div class="file-icon">
 			<img data-name="icon" src="<?php echo esc_url( $o['icon'] ); ?>" alt=""/>
 		</div>
@@ -147,19 +146,19 @@ if ( ! class_exists( 'acf_field_file' ) ) :
 				<strong data-name="title"><?php echo esc_html( $o['title'] ); ?></strong>
 			</p>
 			<p>
-				<strong><?php _e( 'File name', 'acf' ); ?>:</strong>
+				<strong><?php esc_html_e( 'File name', 'acf' ); ?>:</strong>
 				<a data-name="filename" href="<?php echo esc_url( $o['url'] ); ?>" target="_blank"><?php echo esc_html( $o['filename'] ); ?></a>
 			</p>
 			<p>
-				<strong><?php _e( 'File size', 'acf' ); ?>:</strong>
+				<strong><?php esc_html_e( 'File size', 'acf' ); ?>:</strong>
 				<span data-name="filesize"><?php echo esc_html( $o['filesize'] ); ?></span>
 			</p>
 		</div>
 		<div class="acf-actions -hover">
 			<?php if ( $uploader != 'basic' ) : ?>
-			<a class="acf-icon -pencil dark" data-name="edit" href="#" title="<?php _e( 'Edit', 'acf' ); ?>"></a>
+			<a class="acf-icon -pencil dark" data-name="edit" href="#" title="<?php esc_attr_e( 'Edit', 'acf' ); ?>" aria-label="<?php esc_attr_e( 'Edit file', 'acf' ); ?>"></a>
 			<?php endif; ?>
-			<a class="acf-icon -cancel dark" data-name="remove" href="#" title="<?php _e( 'Remove', 'acf' ); ?>"></a>
+			<a class="acf-icon -cancel dark" data-name="remove" href="#" title="<?php esc_attr_e( 'Remove', 'acf' ); ?>" aria-label="<?php esc_attr_e( 'Remove file', 'acf' ); ?>"></a>
 		</div>
 	</div>
 	<div class="hide-if-value">
@@ -171,40 +170,41 @@ if ( ! class_exists( 'acf_field_file' ) ) :
 			
 			<label class="acf-basic-uploader">
 				<?php
-				acf_file_input(
-					array(
-						'name' => $field['name'],
-						'id'   => $field['id'],
-						'key'  => $field['key'],
-					)
+				$args = array(
+					'name' => $field['name'],
+					'id'   => $field['id'],
+					'key'  => $field['key'],
 				);
+
+				if ( ! empty( $field['mime_types'] ) ) {
+					$args['accept'] = $field['mime_types'];
+				}
+
+				acf_file_input( $args );
 				?>
 			</label>
 			
 		<?php else : ?>
 			
-			<p><?php _e( 'No file selected', 'acf' ); ?> <a data-name="add" class="acf-button button" href="#"><?php _e( 'Add File', 'acf' ); ?></a></p>
+			<p><?php esc_html_e( 'No file selected', 'acf' ); ?> <a data-name="add" class="acf-button button" href="#"><?php esc_html_e( 'Add File', 'acf' ); ?></a></p>
 			
 		<?php endif; ?>
 		
 	</div>
 </div>
 			<?php
-
 		}
 
-		/*
-		*  render_field_settings()
-		*
-		*  Create extra options for your field. This is rendered when editing a field.
-		*  The value of $field['name'] can be used (like bellow) to save extra data to the $field
-		*
-		*  @type    action
-		*  @since   3.6
-		*  @date    23/01/13
-		*
-		*  @param   $field  - an array holding all the field's data
-		*/
+		/**
+		 * Create extra options for your field. This is rendered when editing a field.
+		 * The value of $field['name'] can be used (like bellow) to save extra data to the $field
+		 *
+		 * @type    action
+		 * @since   3.6
+		 * @date    23/01/13
+		 *
+		 * @param   $field  - an array holding all the field's data
+		 */
 		function render_field_settings( $field ) {
 			acf_render_field_setting(
 				$field,
@@ -254,7 +254,6 @@ if ( ! class_exists( 'acf_field_file' ) ) :
 			);
 
 			foreach ( $clear as $k ) {
-
 				if ( empty( $field[ $k ] ) ) {
 					$field[ $k ] = '';
 				}
@@ -287,7 +286,7 @@ if ( ! class_exists( 'acf_field_file' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label' => __( 'Allowed file types', 'acf' ),
+					'label' => __( 'Allowed File Types', 'acf' ),
 					'hint'  => __( 'Comma separated list. Leave blank for all types', 'acf' ),
 					'type'  => 'text',
 					'name'  => 'mime_types',
@@ -295,22 +294,19 @@ if ( ! class_exists( 'acf_field_file' ) ) :
 			);
 		}
 
-		/*
-		*  format_value()
-		*
-		*  This filter is appied to the $value after it is loaded from the db and before it is returned to the template
-		*
-		*  @type    filter
-		*  @since   3.6
-		*  @date    23/01/13
-		*
-		*  @param   $value (mixed) the value which was loaded from the database
-		*  @param   $post_id (mixed) the $post_id from which the value was loaded
-		*  @param   $field (array) the field array holding all the field options
-		*
-		*  @return  $value (mixed) the modified value
-		*/
-
+		/**
+		 * This filter is appied to the $value after it is loaded from the db and before it is returned to the template
+		 *
+		 * @type    filter
+		 * @since   3.6
+		 * @date    23/01/13
+		 *
+		 * @param   $value (mixed) the value which was loaded from the database
+		 * @param   $post_id (mixed) the post_id from which the value was loaded
+		 * @param   $field (array) the field array holding all the field options
+		 *
+		 * @return  $value (mixed) the modified value
+		 */
 		function format_value( $value, $post_id, $field ) {
 
 			// bail early if no value
@@ -328,11 +324,8 @@ if ( ! class_exists( 'acf_field_file' ) ) :
 
 			// format
 			if ( $field['return_format'] == 'url' ) {
-
 				return wp_get_attachment_url( $value );
-
 			} elseif ( $field['return_format'] == 'array' ) {
-
 				return acf_get_attachment( $value );
 			}
 
@@ -341,43 +334,36 @@ if ( ! class_exists( 'acf_field_file' ) ) :
 		}
 
 
-		/*
-		*  get_media_item_args
-		*
-		*  description
-		*
-		*  @type    function
-		*  @date    27/01/13
-		*  @since   3.6.0
-		*
-		*  @param   $vars (array)
-		*  @return  $vars
-		*/
-
+		/**
+		 * description
+		 *
+		 * @type    function
+		 * @date    27/01/13
+		 * @since   3.6.0
+		 *
+		 * @param   $vars (array)
+		 * @return  $vars
+		 */
 		function get_media_item_args( $vars ) {
 
 			$vars['send'] = true;
 			return( $vars );
-
 		}
 
 
-		/*
-		*  update_value()
-		*
-		*  This filter is appied to the $value before it is updated in the db
-		*
-		*  @type    filter
-		*  @since   3.6
-		*  @date    23/01/13
-		*
-		*  @param   $value - the value which will be saved in the database
-		*  @param   $post_id - the $post_id of which the value will be saved
-		*  @param   $field - the field array holding all the field options
-		*
-		*  @return  $value - the modified value
-		*/
-
+		/**
+		 * This filter is appied to the $value before it is updated in the db
+		 *
+		 * @type    filter
+		 * @since   3.6
+		 * @date    23/01/13
+		 *
+		 * @param   $value - the value which will be saved in the database
+		 * @param   $post_id - the post_id of which the value will be saved
+		 * @param   $field - the field array holding all the field options
+		 *
+		 * @return  $value - the modified value
+		 */
 		function update_value( $value, $post_id, $field ) {
 
 			// Bail early if no value.
@@ -396,16 +382,16 @@ if ( ! class_exists( 'acf_field_file' ) ) :
 		}
 
 		/**
-		 *  validate_value
+		 * validate_value
 		 *
-		 *  This function will validate a basic file input
+		 * This function will validate a basic file input
 		 *
-		 *  @type    function
-		 *  @date    11/02/2014
-		 *  @since   5.0.0
+		 * @type    function
+		 * @date    11/02/2014
+		 * @since   5.0.0
 		 *
-		 *  @param   $post_id (int)
-		 *  @return  $post_id (int)
+		 * @param   $post_id (int)
+		 * @return  $post_id (int)
 		 */
 		function validate_value( $valid, $value, $field, $input ) {
 
@@ -448,11 +434,10 @@ if ( ! class_exists( 'acf_field_file' ) ) :
 		/**
 		 * Validates file fields updated via the REST API.
 		 *
-		 * @param bool  $valid
-		 * @param int   $value
-		 * @param array $field
-		 *
-		 * @return bool|WP_Error
+		 * @param  boolean $valid The current validity booleean
+		 * @param  integer $value The value of the field
+		 * @param  array   $field The field array
+		 * @return boolean|WP_Error
 		 */
 		public function validate_rest_value( $valid, $value, $field ) {
 			if ( is_null( $value ) && empty( $field['required'] ) ) {
@@ -532,21 +517,100 @@ if ( ! class_exists( 'acf_field_file' ) ) :
 		/**
 		 * Apply basic formatting to prepare the value for default REST output.
 		 *
-		 * @param mixed      $value
-		 * @param string|int $post_id
-		 * @param array      $field
+		 * @param mixed          $value
+		 * @param string|integer $post_id
+		 * @param array          $field
 		 * @return mixed
 		 */
 		public function format_value_for_rest( $value, $post_id, array $field ) {
 			return acf_format_numerics( $value );
 		}
 
+		/**
+		 * Formats the field value for JSON-LD output.
+		 *
+		 * @since 6.8.0
+		 *
+		 * @param mixed          $value   The value of the field.
+		 * @param integer|string $post_id The ID of the post.
+		 * @param array          $field   The field array.
+		 * @return mixed
+		 */
+		public function format_value_for_jsonld( $value, $post_id, $field ) {
+			if ( empty( $value ) ) {
+				return null;
+			}
+
+			// Get output format with fallback.
+			$output_format = $field['schema_output_format'] ?? '';
+			if ( empty( $output_format ) ) {
+				$property      = $field['schema_property'] ?? '';
+				$output_format = \ACF\AI\GEO\Schema::get_default_output_format( $this->name, $property );
+			}
+
+			// Get attachment ID.
+			$attachment_id = is_array( $value ) ? ( $value['ID'] ?? 0 ) : (int) $value;
+			if ( ! $attachment_id ) {
+				return null;
+			}
+
+			$url = wp_get_attachment_url( $attachment_id );
+			if ( ! $url ) {
+				return null;
+			}
+
+			// URL format - just return the URL string.
+			if ( 'URL' === $output_format ) {
+				return $url;
+			}
+
+			// MediaObject or DataDownload format.
+			$file_object = array(
+				'@type'      => $output_format ?: 'MediaObject',
+				'contentUrl' => $url,
+			);
+
+			// Add name from attachment title.
+			$attachment = get_post( $attachment_id );
+			if ( $attachment && $attachment->post_title ) {
+				$file_object['name'] = $attachment->post_title;
+			}
+
+			// Add description if available.
+			if ( $attachment && $attachment->post_content ) {
+				$file_object['description'] = $attachment->post_content;
+			}
+
+			// Add file metadata.
+			$file_path = get_attached_file( $attachment_id );
+			if ( $file_path && file_exists( $file_path ) ) {
+				$file_object['contentSize'] = size_format( filesize( $file_path ) );
+			}
+
+			// Add MIME type.
+			$mime_type = get_post_mime_type( $attachment_id );
+			if ( $mime_type ) {
+				$file_object['encodingFormat'] = $mime_type;
+			}
+
+			return $file_object;
+		}
+
+		/**
+		 * Returns an array of JSON-LD Property output types that are supported by this field type.
+		 *
+		 * @since 6.8
+		 *
+		 * @return string[]
+		 */
+		public function get_jsonld_output_types(): array {
+			return array( 'MediaObject', 'DataDownload', 'URL' );
+		}
 	}
 
 
 	// initialize
 	acf_register_field_type( 'acf_field_file' );
-
 endif; // class_exists check
 
 ?>

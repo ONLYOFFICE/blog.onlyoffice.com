@@ -3,6 +3,7 @@
 namespace FluentForm\App\Services\Migrator\Classes;
 
 use FluentForm\App\Modules\Form\FormFieldsParser;
+use FluentForm\App\Services\Submission\SubmissionService;
 use FluentForm\Framework\Helpers\ArrayHelper;
 
 abstract class BaseMigrator
@@ -20,7 +21,10 @@ abstract class BaseMigrator
     {
         if (!$this->exist()) {
             wp_send_json_error([
-                'message' => sprintf(__('%s is not installed.', 'fluentform'), $this->title),
+                'message' => sprintf(
+                    /* translators: %s Target Plugin Name */
+                    __('%s is not installed.', 'fluentform'),
+                    $this->title),
             ]);
         }
     
@@ -589,7 +593,7 @@ abstract class BaseMigrator
                     'layout_class'       => $args['layout_class']
                 ],
                 'editor_options' => [
-                    'title'      => __('Check Box', 'fluentform'),
+                    'title'      => __('Checkbox', 'fluentform'),
                     'icon_class' => 'ff-edit-checkbox-1',
                     'template'   => 'inputCheckable'
                 ],
@@ -1378,7 +1382,7 @@ abstract class BaseMigrator
                     'validation_rules'   => [
                         'required'           => [
                             'value'   => ArrayHelper::isTrue($args,'required'),
-                            'message' => __('This field is required', 'fluentformpro'),
+                            'message' => __('This field is required', 'fluentform'),
                         ]
                     ],
                     'conditional_logics' => []
@@ -1414,7 +1418,7 @@ abstract class BaseMigrator
                 'button_style'     => 'default',
                 'button_size'      => 'md',
                 'color'            => '#ffffff',
-                'background_color' => '#409EFF',
+                'background_color' => '#1a7efb',
                 'button_ui'        => [
                     'type'    => ArrayHelper::get($args, 'type', 'default'),
                     'text'    => $args['label'],
@@ -1469,6 +1473,19 @@ abstract class BaseMigrator
                 }
                 unset($metas['confirmations']);
             }
+
+            //when have webhooks
+            if ($webhooks = ArrayHelper::get($metas, 'webhooks')) {
+                \FluentForm\App\Models\FormMeta::remove($formId, 'fluentform_webhook_feed');
+                foreach ($webhooks as $webhook) {
+                    \FluentForm\App\Models\FormMeta::create([
+                        'form_id'  => $formId,
+                        'meta_key' => 'fluentform_webhook_feed',
+                        'value'    => json_encode($webhook)
+                    ]);
+                }
+                unset($metas['webhooks']);
+            }
             foreach ($metas as $metaKey => $metaData) {
                 (new \FluentForm\App\Modules\Form\Form(wpFluentForm()))->updateMeta($formId, $metaKey, $metaData);
             }
@@ -1484,14 +1501,23 @@ abstract class BaseMigrator
      */
     public function insertForm($form, $insertedForms, $formItem)
     {
-        $formId = wpFluent()->table('fluentform_forms')->insert($form);
+        $formId = wpFluent()->table('fluentform_forms')->insertGetId($form);
         $insertedForms[$formId] = [
             'title'    => $form['title'],
             'edit_url' => admin_url('admin.php?page=fluent_forms&route=editor&form_id=' . $formId)
         ];
 
+        do_action_deprecated(
+            'fluentform_form_imported',
+            [
+                $formId
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/form_imported',
+            'Use fluentform/form_imported instead of fluentform_form_imported.'
+        );
+        do_action('fluentform/form_imported', $formId);
 
-        do_action('fluentform_form_imported', $formId);
         return array($insertedForms, $formId);
     }
 
@@ -1627,14 +1653,23 @@ abstract class BaseMigrator
                 'created_at'    => $created_at ?: current_time('mysql'),
                 'updated_at'    => $updated_at ?: current_time('mysql')
             ];
-            $insertId = wpFluent()->table('fluentform_submissions')->insert($insertData);
+
+            if ($is_favourite = ArrayHelper::get($entry, 'is_favourite')) {
+                $insertData['is_favourite'] = $is_favourite;
+                ArrayHelper::forget($entry, 'is_favourite');
+            }
+            if ($status = ArrayHelper::get($entry, 'status')) {
+                $insertData['status'] = $status;
+                ArrayHelper::forget($entry, 'status');
+            }
+
+            $insertId = wpFluent()->table('fluentform_submissions')->insertGetId($insertData);
 
             $uidHash = md5(wp_generate_uuid4() . $insertId);
 
             \FluentForm\App\Helpers\Helper::setSubmissionMeta($insertId, '_entry_uid_hash', $uidHash, $fluentFormId);
-            $entries = new \FluentForm\App\Modules\Entries\Entries();
-            $entries->recordEntryDetails($insertId, $fluentFormId, $entry);
-
+            $submissionService = new SubmissionService();
+            $submissionService->recordEntryDetails($insertId, $fluentFormId, $entry);
         }
         wp_send_json([
             'message'          => __("Entries Imported Successfully", 'fluentform'),
@@ -1684,7 +1719,7 @@ abstract class BaseMigrator
             $baseurl = wp_upload_dir()['baseurl'] . '/fluentform/';
 
             if (!file_exists($basDir) || (file_exists($basDir) && !is_dir($basDir))) {
-                mkdir($basDir);
+                wp_mkdir_p($basDir);
             }
 
             $destination = $basDir . $file_name;
@@ -1696,6 +1731,36 @@ abstract class BaseMigrator
             }
         }
         return $values;
+    }
+
+    protected function getResolveOperator($key)
+    {
+        return ArrayHelper::get([
+            'equal'            => '=',
+            'is'               => '=',
+            '=='               => '=',
+            'e'                => '=',
+            'not_equal'        => '!=',
+            'isnot'            => '!=',
+            '!='               => '!=',
+            '!e'               => '!=',
+            'greater_than'     => '>',
+            '>'                => '>',
+            'greater_or_equal' => '>=',
+            '>='               => '>=',
+            'less_than'        => '<',
+            '<'                => '<',
+            'less_or_equal'    => '<=',
+            '<='               => '<=',
+            'starts_with'      => 'startsWith',
+            '^'                => 'startsWith',
+            'ends_with'        => 'endsWith',
+            '~'                => 'endsWith',
+            'contains'         => 'contains',
+            'c'                => 'contains',
+            '!c'               => 'doNotContains',
+            'not_contains'     => 'doNotContains'
+        ], $key);
     }
 
 }

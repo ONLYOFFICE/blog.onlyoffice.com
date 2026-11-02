@@ -148,9 +148,9 @@ class Helpers {
 			'%[^%]*_author_lastname%'  => '#author_last_name',
 		];
 
-		if ( preg_match_all( '#%cf_([^%]*)%#', $string, $matches ) && ! empty( $matches[1] ) ) {
+		if ( preg_match_all( '#%cf_([^%]*)%#', (string) $string, $matches ) && ! empty( $matches[1] ) ) {
 			foreach ( $matches[1] as $name ) {
-				if ( preg_match( '#\s#', $name ) ) {
+				if ( preg_match( '#\s#', (string) $name ) ) {
 					$notification = Models\Notification::getNotificationByName( 'v3-migration-custom-field' );
 					if ( ! $notification->notification_name ) {
 						Models\Notification::addNotification( [
@@ -177,9 +177,9 @@ class Helpers {
 			}
 		}
 
-		if ( preg_match_all( '#%tax_([^%]*)%#', $string, $matches ) && ! empty( $matches[1] ) ) {
+		if ( preg_match_all( '#%tax_([^%]*)%#', (string) $string, $matches ) && ! empty( $matches[1] ) ) {
 			foreach ( $matches[1] as $name ) {
-				if ( ! preg_match( '#\s#', $name ) ) {
+				if ( ! preg_match( '#\s#', (string) $name ) ) {
 					$string = aioseo()->helpers->pregReplace( "#%tax_$name%#", "#tax_name-$name", $string );
 				}
 			}
@@ -189,7 +189,7 @@ class Helpers {
 			$string = aioseo()->helpers->pregReplace( "#$macro(?![a-zA-Z0-9_])#im", $tag, $string );
 		}
 
-		$string = preg_replace( '/%([a-f0-9]{2}[^%]*)%/i', '#$1#', $string );
+		$string = preg_replace( '/%([a-f0-9]{2}[^%]*)%/i', '#$1#', (string) $string );
 
 		return $string;
 	}
@@ -223,7 +223,7 @@ class Helpers {
 			$keywords[] = $keyword;
 		}
 
-		return wp_json_encode( $keywords );
+		return $keywords;
 	}
 
 	/**
@@ -235,7 +235,7 @@ class Helpers {
 	 */
 	public static function redoMigration() {
 		aioseo()->core->db->delete( 'options' )
-			->whereRaw( "`option_name` LIKE 'aioseo_options_internal%'" )
+			->whereLike( 'option_name', 'aioseo_options_internal%', true )
 			->run();
 
 		aioseo()->core->cache->delete( 'v3_migration_in_progress_posts' );

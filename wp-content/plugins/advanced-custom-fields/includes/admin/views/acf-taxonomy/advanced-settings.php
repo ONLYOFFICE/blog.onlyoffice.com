@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 global $acf_taxonomy;
 
@@ -10,6 +19,10 @@ foreach ( acf_get_combined_taxonomy_settings_tabs() as $tab_key => $tab_label ) 
 			'key'   => 'acf_taxonomy_tabs',
 		)
 	);
+
+	$wrapper_class = str_replace( '_', '-', $tab_key );
+
+	echo '<div class="acf-taxonomy-advanced-settings acf-taxonomy-' . esc_attr( $wrapper_class ) . '-settings">';
 
 	switch ( $tab_key ) {
 		case 'general':
@@ -133,8 +146,8 @@ foreach ( acf_get_combined_taxonomy_settings_tabs() as $tab_key => $tab_label ) 
 			break;
 		case 'labels':
 			echo '<div class="acf-field acf-regenerate-labels-bar">';
-			echo '<span class="acf-btn acf-btn-sm acf-btn-clear acf-regenerate-labels"><i class="acf-icon acf-icon-regenerate"></i>' . __( 'Regenerate', 'acf' ) . '</span>';
-			echo '<span class="acf-btn acf-btn-sm acf-btn-clear acf-clear-labels"><i class="acf-icon acf-icon-trash"></i>' . __( 'Clear', 'acf' ) . '</span>';
+			echo '<span class="acf-btn acf-btn-sm acf-btn-clear acf-regenerate-labels"><i class="acf-icon acf-icon-regenerate"></i>' . esc_html__( 'Regenerate', 'acf' ) . '</span>';
+			echo '<span class="acf-btn acf-btn-sm acf-btn-clear acf-clear-labels"><i class="acf-icon acf-icon-trash"></i>' . esc_html__( 'Clear', 'acf' ) . '</span>';
 			echo '<span class="acf-tip acf-labels-tip"><i class="acf-icon acf-icon-help acf-js-tooltip" title="' . esc_attr__( 'Regenerate all labels using the Singular and Plural labels', 'acf' ) . '"></i></span>';
 			echo '</div>';
 
@@ -741,6 +754,16 @@ foreach ( acf_get_combined_taxonomy_settings_tabs() as $tab_key => $tab_label ) 
 			$acf_tags_meta_box_text       = __( 'Tags Meta Box', 'acf' );
 			$acf_categories_meta_box_text = __( 'Categories Meta Box', 'acf' );
 			$acf_default_meta_box_text    = empty( $acf_taxonomy['hierarchical'] ) ? $acf_tags_meta_box_text : $acf_categories_meta_box_text;
+			$acf_enable_meta_box_cb_edit  = acf_get_setting( 'enable_meta_box_cb_edit' );
+			$acf_meta_box_choices         = array(
+				'default'  => $acf_default_meta_box_text,
+				'custom'   => __( 'Custom Meta Box', 'acf' ),
+				'disabled' => __( 'No Meta Box', 'acf' ),
+			);
+
+			if ( ! $acf_enable_meta_box_cb_edit && 'custom' !== $acf_taxonomy['meta_box'] ) {
+				unset( $acf_meta_box_choices['custom'] );
+			}
 
 			acf_render_field_wrap(
 				array(
@@ -753,11 +776,7 @@ foreach ( acf_get_combined_taxonomy_settings_tabs() as $tab_key => $tab_label ) 
 					'label'        => __( 'Meta Box', 'acf' ),
 					'instructions' => __( 'Controls the meta box on the content editor screen. By default, the Categories meta box is shown for hierarchical taxonomies, and the Tags meta box is shown for non-hierarchical taxonomies.', 'acf' ),
 					'hide_search'  => true,
-					'choices'      => array(
-						'default'  => $acf_default_meta_box_text,
-						'custom'   => __( 'Custom Meta Box', 'acf' ),
-						'disabled' => __( 'No Meta Box', 'acf' ),
-					),
+					'choices'      => $acf_meta_box_choices,
 					'data'         => array(
 						'tags_meta_box'       => __( 'Tags Meta Box', 'acf' ),
 						'categories_meta_box' => __( 'Categories Meta Box', 'acf' ),
@@ -790,54 +809,68 @@ foreach ( acf_get_combined_taxonomy_settings_tabs() as $tab_key => $tab_label ) 
 				)
 			);
 
-			acf_render_field_wrap(
-				array(
-					'type'         => 'text',
-					'name'         => 'meta_box_cb',
-					'key'          => 'meta_box_cb',
-					'prefix'       => 'acf_taxonomy',
-					'value'        => $acf_taxonomy['meta_box_cb'],
-					'label'        => __( 'Register Meta Box Callback', 'acf' ),
-					'instructions' => __( 'A PHP function name to be called to handle the content of a meta box on your taxonomy.', 'acf' ),
-					'conditions'   => array(
-						'field'    => 'meta_box',
-						'operator' => '==',
-						'value'    => 'custom',
-					),
-				),
-				'div',
-				'field'
-			);
+			if ( $acf_enable_meta_box_cb_edit || 'custom' === $acf_taxonomy['meta_box'] ) {
+				$acf_meta_box_cb_instructions = __( 'A PHP function name to be called to handle the content of a meta box on your taxonomy. For security, this callback will be executed in a special context without access to any superglobals like $_POST or $_GET.', 'acf' );
 
-			acf_render_field_wrap(
-				array(
-					'type'         => 'text',
-					'name'         => 'meta_box_sanitize_cb',
-					'key'          => 'meta_box_sanitize_cb',
-					'prefix'       => 'acf_taxonomy',
-					'value'        => $acf_taxonomy['meta_box_sanitize_cb'],
-					'label'        => __( 'Meta Box Sanitization Callback', 'acf' ),
-					'instructions' => __( 'A PHP function name to be called tor sanitizing taxonomy data saved from a meta box.', 'acf' ),
-					'conditions'   => array(
-						'field'    => 'meta_box',
-						'operator' => '==',
-						'value'    => 'custom',
-					),
-				),
-				'div',
-				'field'
-			);
+				if ( ! $acf_enable_meta_box_cb_edit ) {
+					if ( is_multisite() ) {
+						$acf_meta_box_cb_instructions .= ' ' . __( 'By default only super admin users can edit this setting.', 'acf' );
+					} else {
+						$acf_meta_box_cb_instructions .= ' ' . __( 'By default only admin users can edit this setting.', 'acf' );
+					}
+				}
 
-			acf_render_field_wrap(
-				array(
-					'type'       => 'seperator',
-					'conditions' => array(
-						'field'    => 'meta_box',
-						'operator' => '==',
-						'value'    => 'custom',
+				acf_render_field_wrap(
+					array(
+						'type'         => 'text',
+						'name'         => 'meta_box_cb',
+						'key'          => 'meta_box_cb',
+						'prefix'       => 'acf_taxonomy',
+						'value'        => $acf_taxonomy['meta_box_cb'],
+						'label'        => __( 'Register Meta Box Callback', 'acf' ),
+						'instructions' => $acf_meta_box_cb_instructions,
+						'readonly'     => ! $acf_enable_meta_box_cb_edit,
+						'conditions'   => array(
+							'field'    => 'meta_box',
+							'operator' => '==',
+							'value'    => 'custom',
+						),
 					),
-				)
-			);
+					'div',
+					'field'
+				);
+
+				acf_render_field_wrap(
+					array(
+						'type'         => 'text',
+						'name'         => 'meta_box_sanitize_cb',
+						'key'          => 'meta_box_sanitize_cb',
+						'prefix'       => 'acf_taxonomy',
+						'value'        => $acf_taxonomy['meta_box_sanitize_cb'],
+						'label'        => __( 'Meta Box Sanitization Callback', 'acf' ),
+						'instructions' => __( 'A PHP function name to be called for sanitizing taxonomy data saved from a meta box.', 'acf' ),
+						'readonly'     => ! $acf_enable_meta_box_cb_edit,
+						'conditions'   => array(
+							'field'    => 'meta_box',
+							'operator' => '==',
+							'value'    => 'custom',
+						),
+					),
+					'div',
+					'field'
+				);
+
+				acf_render_field_wrap(
+					array(
+						'type'       => 'seperator',
+						'conditions' => array(
+							'field'    => 'meta_box',
+							'operator' => '==',
+							'value'    => 'custom',
+						),
+					)
+				);
+			}
 
 			acf_render_field_wrap(
 				array(
@@ -1030,7 +1063,7 @@ foreach ( acf_get_combined_taxonomy_settings_tabs() as $tab_key => $tab_label ) 
 					'default'      => 1,
 					'hide_search'  => true,
 					'class'        => 'query_var',
-					'conditions' => array(
+					'conditions'   => array(
 						'field'    => 'publicly_queryable',
 						'operator' => '==',
 						'value'    => 1,
@@ -1055,6 +1088,84 @@ foreach ( acf_get_combined_taxonomy_settings_tabs() as $tab_key => $tab_label ) 
 						'operator' => '==',
 						'value'    => 'custom_query_var',
 					),
+				),
+				'div',
+				'field'
+			);
+
+			break;
+		case 'permissions':
+			$acf_all_caps = array();
+
+			foreach ( wp_roles()->roles as $acf_role ) {
+				$acf_all_caps = array_merge( $acf_all_caps, $acf_role['capabilities'] );
+			}
+			$acf_all_caps = array_unique( array_keys( $acf_all_caps ) );
+			$acf_all_caps = array_combine( $acf_all_caps, $acf_all_caps );
+
+			acf_render_field_wrap(
+				array(
+					'type'         => 'select',
+					'name'         => 'manage_terms',
+					'key'          => 'manage_terms',
+					'prefix'       => 'acf_taxonomy[capabilities]',
+					'value'        => $acf_taxonomy['capabilities']['manage_terms'],
+					'label'        => __( 'Manage Terms Capability', 'acf' ),
+					'instructions' => __( 'The capability name for managing terms of this taxonomy.', 'acf' ),
+					'choices'      => $acf_all_caps,
+					'default'      => 'manage_categories',
+					'class'        => 'acf-taxonomy-manage_terms',
+				),
+				'div',
+				'field'
+			);
+
+			acf_render_field_wrap(
+				array(
+					'type'         => 'select',
+					'name'         => 'edit_terms',
+					'key'          => 'edit_terms',
+					'prefix'       => 'acf_taxonomy[capabilities]',
+					'value'        => $acf_taxonomy['capabilities']['edit_terms'],
+					'label'        => __( 'Edit Terms Capability', 'acf' ),
+					'instructions' => __( 'The capability name for editing terms of this taxonomy.', 'acf' ),
+					'choices'      => $acf_all_caps,
+					'default'      => 'manage_categories',
+					'class'        => 'acf-taxonomy-edit_terms',
+				),
+				'div',
+				'field'
+			);
+
+			acf_render_field_wrap(
+				array(
+					'type'         => 'select',
+					'name'         => 'delete_terms',
+					'key'          => 'delete_terms',
+					'prefix'       => 'acf_taxonomy[capabilities]',
+					'value'        => $acf_taxonomy['capabilities']['delete_terms'],
+					'label'        => __( 'Delete Terms Capability', 'acf' ),
+					'instructions' => __( 'The capability name for deleting terms of this taxonomy.', 'acf' ),
+					'choices'      => $acf_all_caps,
+					'default'      => 'manage_categories',
+					'class'        => 'acf-taxonomy-delete_terms',
+				),
+				'div',
+				'field'
+			);
+
+			acf_render_field_wrap(
+				array(
+					'type'         => 'select',
+					'name'         => 'assign_terms',
+					'key'          => 'assign_terms',
+					'prefix'       => 'acf_taxonomy[capabilities]',
+					'value'        => $acf_taxonomy['capabilities']['assign_terms'],
+					'label'        => __( 'Assign Terms Capability', 'acf' ),
+					'instructions' => __( 'The capability name for assigning terms of this taxonomy.', 'acf' ),
+					'choices'      => $acf_all_caps,
+					'default'      => 'edit_posts',
+					'class'        => 'acf-taxonomy-assign_terms',
 				),
 				'div',
 				'field'
@@ -1141,4 +1252,6 @@ foreach ( acf_get_combined_taxonomy_settings_tabs() as $tab_key => $tab_label ) 
 	}
 
 	do_action( "acf/taxonomy/render_settings_tab/{$tab_key}", $acf_taxonomy );
+
+	echo '</div>';
 }

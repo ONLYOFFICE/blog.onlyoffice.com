@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AIOSEO\Plugin\Common\Models\SeoAnalyzerResult;
+
 /**
  * Route class for the API.
  *
@@ -27,6 +29,7 @@ class Analyze {
 		$analyzeOrHomeUrl = ! empty( $analyzeUrl ) ? $analyzeUrl : home_url();
 		$responseCode     = null === aioseo()->core->cache->get( 'analyze_site_code' ) ? [] : aioseo()->core->cache->get( 'analyze_site_code' );
 		$responseBody     = null === aioseo()->core->cache->get( 'analyze_site_body' ) ? [] : aioseo()->core->cache->get( 'analyze_site_body' );
+
 		if (
 			empty( $responseCode ) ||
 			empty( $responseCode[ $analyzeOrHomeUrl ] ) ||
@@ -34,9 +37,9 @@ class Analyze {
 			empty( $responseBody[ $analyzeOrHomeUrl ] ) ||
 			$refreshResults
 		) {
-			$token      = aioseo()->internalOptions->internal->siteAnalysis->connectToken;
+			$token      = aioseo()->sensitiveOptions->get( 'siteAnalysisConnectToken' );
 			$url        = defined( 'AIOSEO_ANALYZE_URL' ) ? AIOSEO_ANALYZE_URL : 'https://analyze.aioseo.com';
-			$response   = aioseo()->helpers->wpRemotePost( $url . '/v1/analyze/', [
+			$response   = aioseo()->helpers->wpRemotePost( $url . '/v3/analyze/', [
 				'timeout' => 60,
 				'headers' => [
 					'X-AIOSEO-Key' => $token,
@@ -48,17 +51,13 @@ class Analyze {
 			] );
 
 			$responseCode[ $analyzeOrHomeUrl ] = wp_remote_retrieve_response_code( $response );
-			$responseBody[ $analyzeOrHomeUrl ] = json_decode( wp_remote_retrieve_body( $response ) );
+			$responseBody[ $analyzeOrHomeUrl ] = json_decode( wp_remote_retrieve_body( $response ), true );
 
 			aioseo()->core->cache->update( 'analyze_site_code', $responseCode, 10 * MINUTE_IN_SECONDS );
 			aioseo()->core->cache->update( 'analyze_site_body', $responseBody, 10 * MINUTE_IN_SECONDS );
 		}
 
-		if ( 200 !== $responseCode[ $analyzeOrHomeUrl ] || empty( $responseBody[ $analyzeOrHomeUrl ]->success ) || ! empty( $responseBody[ $analyzeOrHomeUrl ]->error ) ) {
-			if ( ! empty( $responseBody[ $analyzeOrHomeUrl ]->error ) && 'invalid-token' === $responseBody[ $analyzeOrHomeUrl ]->error ) {
-				aioseo()->internalOptions->internal->siteAnalysis->reset();
-			}
-
+		if ( 200 !== $responseCode[ $analyzeOrHomeUrl ] || empty( $responseBody[ $analyzeOrHomeUrl ]['success'] ) || ! empty( $responseBody[ $analyzeOrHomeUrl ]['error'] ) ) {
 			return new \WP_REST_Response( [
 				'success'  => false,
 				'response' => $responseBody[ $analyzeOrHomeUrl ]
@@ -66,30 +65,32 @@ class Analyze {
 		}
 
 		if ( $analyzeUrl ) {
-			$competitors = aioseo()->internalOptions->internal->siteAnalysis->competitors;
-			$competitors = array_reverse( $competitors, true );
+			$results = $responseBody[ $analyzeOrHomeUrl ]['results'];
+			SeoAnalyzerResult::addResults( [
+				'results' => $results,
+				'score'   => $responseBody[ $analyzeOrHomeUrl ]['score']
+			], $analyzeUrl );
 
-			$competitors[ $analyzeUrl ] = wp_json_encode( $responseBody[ $analyzeOrHomeUrl ] );
+			// Get all competitors results parsed and sanitized.
+			$result = SeoAnalyzerResult::getCompetitorsResults();
 
-			$competitors = array_reverse( $competitors, true );
-
-			// Reset the competitors.
-			aioseo()->internalOptions->internal->siteAnalysis->competitors = $competitors;
-
-			return new \WP_REST_Response( $competitors, 200 );
+			return new \WP_REST_Response( $result, 200 );
 		}
 
-		$results = $responseBody[ $analyzeOrHomeUrl ]->results;
+		$results = $responseBody[ $analyzeOrHomeUrl ]['results'];
 
-		// Image alt attributes get stripped by sanitize_text_field, so we need to adjust the way they are stored to keep them intact.
-		if ( ! empty( $results->basic->noImgAltAtts->value ) ) {
-			$results->basic->noImgAltAtts->value = array_map( 'htmlentities', $results->basic->noImgAltAtts->value );
-		}
+		SeoAnalyzerResult::addResults( [
+			'results' => $results,
+			'score'   => $responseBody[ $analyzeOrHomeUrl ]['score']
+		] );
 
-		aioseo()->internalOptions->internal->siteAnalysis->results = wp_json_encode( $results );
-		aioseo()->internalOptions->internal->siteAnalysis->score   = $responseBody[ $analyzeOrHomeUrl ]->score;
+		// Mark SEO Checklist item as completed.
+		aioseo()->seoChecklist->completeCheck( 'runHomepageAudit' );
 
-		return new \WP_REST_Response( $responseBody[ $analyzeOrHomeUrl ], 200 );
+		// Get all results parsed and sanitized.
+		$allResults = SeoAnalyzerResult::getResults();
+
+		return new \WP_REST_Response( $allResults, 200 );
 	}
 
 	/**
@@ -104,14 +105,9 @@ class Analyze {
 		$body       = $request->get_json_params();
 		$analyzeUrl = ! empty( $body['url'] ) ? esc_url_raw( urldecode( $body['url'] ) ) : null;
 
-		$competitors = aioseo()->internalOptions->internal->siteAnalysis->competitors;
+		SeoAnalyzerResult::deleteByUrl( $analyzeUrl );
 
-		unset( $competitors[ $analyzeUrl ] );
-
-		// Reset the competitors.
-		aioseo()->internalOptions->internal->siteAnalysis->competitors = $competitors;
-
-		return new \WP_REST_Response( $competitors, 200 );
+		return new \WP_REST_Response( SeoAnalyzerResult::getCompetitorsResults(), 200 );
 	}
 
 	/**
@@ -135,6 +131,13 @@ class Analyze {
 		}
 
 		$result = aioseo()->standalone->headlineAnalyzer->getResult( $headline );
+
+		if ( ! $result['analysed'] ) {
+			return new \WP_REST_Response( [
+				'success' => false,
+				'message' => $result['result']->msg
+			], 400 );
+		}
 
 		$headlines = aioseo()->internalOptions->internal->headlineAnalysis->headlines;
 		$headlines = array_reverse( $headlines, true );
@@ -177,5 +180,21 @@ class Analyze {
 		aioseo()->internalOptions->internal->headlineAnalysis->headlines = $headlines;
 
 		return new \WP_REST_Response( $headlines, 200 );
+	}
+
+	/**
+	 * Get competitors results.
+	 *
+	 * @since 4.8.3
+	 *
+	 * @return \WP_REST_Response The response.
+	 */
+	public static function getCompetitorsResults() {
+		$results = SeoAnalyzerResult::getCompetitorsResults();
+
+		return new \WP_REST_Response( [
+			'success' => true,
+			'result'  => $results,
+		], 200 );
 	}
 }

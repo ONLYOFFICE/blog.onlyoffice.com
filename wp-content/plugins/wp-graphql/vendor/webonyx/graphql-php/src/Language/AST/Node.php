@@ -1,15 +1,9 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace GraphQL\Language\AST;
 
+use GraphQL\Error\InvariantViolation;
 use GraphQL\Utils\Utils;
-use function count;
-use function get_object_vars;
-use function is_array;
-use function is_scalar;
-use function json_encode;
 
 /**
  * type Node = NameNode
@@ -33,127 +27,117 @@ use function json_encode;
  * | ObjectFieldNode
  * | DirectiveNode
  * | ListTypeNode
- * | NonNullTypeNode
+ * | NonNullTypeNode.
+ *
+ * @see \GraphQL\Tests\Language\AST\NodeTest
  */
-abstract class Node
+abstract class Node implements \JsonSerializable
 {
-    /** @var Location|null */
-    public $loc;
+    public ?Location $loc = null;
 
-    /** @var string */
-    public $kind;
+    public string $kind;
 
-    /**
-     * @param (NameNode|NodeList|SelectionSetNode|Location|string|int|bool|float|null)[] $vars
-     */
+    /** @param array<string, mixed> $vars */
     public function __construct(array $vars)
     {
-        if (count($vars) === 0) {
-            return;
-        }
-
         Utils::assign($this, $vars);
     }
 
     /**
-     * @return self
+     * Returns a clone of this instance and all its children, except Location $loc.
+     *
+     * @throws \JsonException
+     * @throws InvariantViolation
+     *
+     * @return static
      */
-    public function cloneDeep()
+    public function cloneDeep(): self
     {
-        return $this->cloneValue($this);
+        return static::cloneValue($this);
     }
 
     /**
-     * @param string|NodeList|Location|Node|(Node|NodeList|Location)[] $value
+     * @template TNode of Node
+     * @template TCloneable of TNode|NodeList<TNode>|Location|string
      *
-     * @return string|NodeList|Location|Node
+     * @phpstan-param TCloneable $value
+     *
+     * @throws \JsonException
+     * @throws InvariantViolation
+     *
+     * @phpstan-return TCloneable
      */
-    private function cloneValue($value)
+    protected static function cloneValue($value)
     {
-        if (is_array($value)) {
-            $cloned = [];
-            foreach ($value as $key => $arrValue) {
-                $cloned[$key] = $this->cloneValue($arrValue);
-            }
-        } elseif ($value instanceof self) {
+        if ($value instanceof self) {
             $cloned = clone $value;
             foreach (get_object_vars($cloned) as $prop => $propValue) {
-                $cloned->{$prop} = $this->cloneValue($propValue);
+                $cloned->{$prop} = static::cloneValue($propValue); // @phpstan-ignore argument.templateType
             }
-        } else {
-            $cloned = $value;
+
+            return $cloned;
         }
 
-        return $cloned;
+        if ($value instanceof NodeList) {
+            /**
+             * @phpstan-var TCloneable
+             *
+             * @phpstan-ignore varTag.nativeType (PHPStan is strict about template types and sees NodeList<TNode> as potentially different from TCloneable)
+             */
+            return $value->cloneDeep();
+        }
+
+        return $value;
     }
 
-    public function __toString() : string
+    /** @throws \JsonException */
+    public function __toString(): string
     {
-        $tmp = $this->toArray(true);
-
-        return (string) json_encode($tmp);
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function toArray(bool $recursive = false) : array
-    {
-        if ($recursive) {
-            return $this->recursiveToArray($this);
-        }
-
-        $tmp = (array) $this;
-
-        if ($this->loc !== null) {
-            $tmp['loc'] = [
-                'start' => $this->loc->start,
-                'end'   => $this->loc->end,
-            ];
-        }
-
-        return $tmp;
+        return json_encode($this, JSON_THROW_ON_ERROR);
     }
 
     /**
-     * @return mixed[]
+     * Improves upon the default serialization by:
+     * - excluding null values
+     * - excluding large reference values such as @see Location::$source.
+     *
+     * @return array<string, mixed>
      */
-    private function recursiveToArray(Node $node)
+    public function jsonSerialize(): array
     {
-        $result = [
-            'kind' => $node->kind,
-        ];
+        return $this->toArray();
+    }
 
-        if ($node->loc !== null) {
-            $result['loc'] = [
-                'start' => $node->loc->start,
-                'end'   => $node->loc->end,
-            ];
-        }
+    /** @return array<string, mixed> */
+    public function toArray(): array
+    {
+        return self::recursiveToArray($this);
+    }
+
+    /** @return array<string, mixed> */
+    private static function recursiveToArray(Node $node): array
+    {
+        $result = [];
 
         foreach (get_object_vars($node) as $prop => $propValue) {
-            if (isset($result[$prop])) {
-                continue;
-            }
-
             if ($propValue === null) {
                 continue;
             }
 
-            if (is_array($propValue) || $propValue instanceof NodeList) {
-                $tmp = [];
-                foreach ($propValue as $tmp1) {
-                    $tmp[] = $tmp1 instanceof Node ? $this->recursiveToArray($tmp1) : (array) $tmp1;
+            if ($propValue instanceof NodeList) {
+                $converted = [];
+                foreach ($propValue as $item) {
+                    $converted[] = self::recursiveToArray($item);
                 }
             } elseif ($propValue instanceof Node) {
-                $tmp = $this->recursiveToArray($propValue);
-            } elseif (is_scalar($propValue) || $propValue === null) {
-                $tmp = $propValue;
+                $converted = self::recursiveToArray($propValue);
+            } elseif ($propValue instanceof Location) {
+                $converted = $propValue->toArray();
             } else {
-                $tmp = null;
+                $converted = $propValue;
             }
 
-            $result[$prop] = $tmp;
+            $result[$prop] = $converted;
         }
 
         return $result;

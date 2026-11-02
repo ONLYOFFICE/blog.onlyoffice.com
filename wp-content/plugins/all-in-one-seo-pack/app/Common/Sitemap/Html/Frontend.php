@@ -288,7 +288,7 @@ class Frontend {
 		$labelTag = ! empty( $this->attributes['label_tag'] ) ? $this->attributes['label_tag'] : 'h4';
 
 		return $this->attributes['show_label']
-			? sprintf( '<%2$s>%1$s</%2$s>', esc_attr( $label ), wp_kses_post( $labelTag ) )
+			? wp_kses_post( sprintf( '<%2$s>%1$s</%2$s>', $label, $labelTag ) )
 			: '';
 	}
 
@@ -315,8 +315,8 @@ class Frontend {
 	 *
 	 * @since 4.1.3
 	 *
-	 * @param  array  $objects The object.
-	 * @return string          The HTML code.
+	 * @param  array  $object The object.
+	 * @return string         The HTML code.
 	 */
 	private function generateListItem( $object ) {
 		$li = '';

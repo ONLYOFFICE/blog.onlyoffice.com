@@ -1,0 +1,69 @@
+'use strict';
+(function($) {
+
+	/* global algoliaPushSettingsButton */
+
+	$(
+		function() {
+			const buttons = document.querySelectorAll('.algolia-push-settings-button');
+			if (buttons) {
+				Array.from(buttons).forEach((button) => {
+					button.addEventListener('click', handleButtonClick);
+				});
+			}
+		}
+	);
+
+	function handleButtonClick(e) {
+		let $clickedButton = $(e.currentTarget);
+		const index = $clickedButton.data('index');
+		if (!index) {
+			throw new Error(algoliaPushSettingsButton.noDataIndex);
+		}
+
+		if (!window.confirm(algoliaPushSettingsButton.pushBtnAlert)) {
+			return;
+		}
+
+		disableButton($clickedButton);
+
+		pushSettings($clickedButton, index);
+	}
+
+	function disableButton($button) {
+		$button.prop( 'disabled', true );
+	}
+
+	function enableButton($button) {
+		$button.prop( 'disabled', false );
+	}
+
+	function pushSettings($clickedButton, index) {
+
+		const data = {
+			'action': 'algolia_push_settings',
+			'index_id': index
+		};
+
+		$.post(
+			ajaxurl, data, function(response) {
+				if (typeof response.success !== 'undefined' && response.success === false) {
+					if (typeof response.data.message !== 'undefined') {
+						alert(algoliaPushReindexButton.genericError);
+						enableButton($clickedButton);
+						return;
+					}
+				}
+
+				alert(algoliaPushSettingsButton.successfullyPushed + ' ' + index );
+				enableButton( $clickedButton );
+			}
+		).fail(
+			function(response) {
+				alert(algoliaPushReindexButton.exceptionErrorPrefix + ' ' + response.responseJSON.data.message );
+				enableButton( $clickedButton );
+			}
+		);
+	}
+
+})( jQuery );

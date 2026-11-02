@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Don't allow pagination for now.
 return;
 
-// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
+// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
 // Check if requires pagination.
 if ( $data['showing'] === $data['total'] ) {
@@ -30,8 +30,8 @@ $end           = ( ( $currentPage - 1 ) * $linksPerIndex ) + $showing;
 
 $hasNextPage = $totalPages > $currentPage;
 $hasPrevPage = $currentPage > 1;
-$nextPageUri = $hasNextPage ? preg_replace( '/sitemap([0-9]*)\.xml/', 'sitemap' . ( $currentPage + 1 ) . '.xml', $data['sitemapUrl'] ) : '#';
-$prevPageUri = $hasPrevPage ? preg_replace( '/sitemap([0-9]*)\.xml/', 'sitemap' . ( $currentPage - 1 ) . '.xml', $data['sitemapUrl'] ) : '#';
+$nextPageUri = $hasNextPage ? preg_replace( '/sitemap([0-9]*)\.xml/', 'sitemap' . ( $currentPage + 1 ) . '.xml', (string) $data['sitemapUrl'] ) : '#';
+$prevPageUri = $hasPrevPage ? preg_replace( '/sitemap([0-9]*)\.xml/', 'sitemap' . ( $currentPage - 1 ) . '.xml', (string) $data['sitemapUrl'] ) : '#';
 ?>
 <div class="pagination">
 	<div class="label">

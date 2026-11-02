@@ -1,11 +1,12 @@
 <?php
 /**
- * ACF Admin Notices
+ * @package ACF
+ * @author  WP Engine
  *
- * Functions and classes to manage admin notices.
- *
- * @date    10/1/19
- * @since   5.7.10
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
  */
 
 // Exit if accessed directly.
@@ -45,15 +46,15 @@ if ( ! class_exists( 'ACF_Admin_Notice' ) ) :
 		);
 
 		/**
-		 *  render
+		 * render
 		 *
-		 *  Renders the notice HTML.
+		 * Renders the notice HTML.
 		 *
-		 *  @date    27/12/18
-		 *  @since   5.8.0
+		 * @date    27/12/18
+		 * @since   5.8.0
 		 *
-		 *  @param   void
-		 *  @return  void
+		 * @param   void
+		 * @return  void
 		 */
 		function render() {
 			$notice_text    = $this->get( 'text' );
@@ -75,15 +76,15 @@ if ( ! class_exists( 'ACF_Admin_Notice' ) ) :
 endif; // class_exists check
 
 /**
- *  acf_new_admin_notice
+ * acf_new_admin_notice
  *
- *  Instantiates and returns a new model.
+ * Instantiates and returns a new model.
  *
- *  @date    23/12/18
- *  @since   5.8.0
+ * @date    23/12/18
+ * @since   5.8.0
  *
- *  @param   array $data Optional data to set.
- *  @return  ACF_Admin_Notice
+ * @param   array $data Optional data to set.
+ * @return  ACF_Admin_Notice
  */
 function acf_new_admin_notice( $data = false ) {
 
@@ -132,10 +133,10 @@ add_action( 'admin_notices', 'acf_render_admin_notices', 99 );
  * @date        17/10/13
  * @since       5.0.0
  *
- * @param   string  $text The admin notice text.
- * @param   string  $class The type of notice (warning, error, success, info).
+ * @param   string  $text        The admin notice text.
+ * @param   string  $class       The type of notice (warning, error, success, info).
  * @param   boolean $dismissable Is this notification dismissible (default true) (since 5.11.0)
- * @param   boolean $persisted Store once a notice has been dismissed per user and prevent showing it again. (since 6.1.0)
+ * @param   boolean $persisted   Store once a notice has been dismissed per user and prevent showing it again. (since 6.1.0)
  * @return  ACF_Admin_Notice
  */
 function acf_add_admin_notice( $text = '', $type = 'info', $dismissible = true, $persisted = false ) {

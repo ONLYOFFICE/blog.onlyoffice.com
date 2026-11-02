@@ -2,6 +2,11 @@
 
 namespace FluentForm\App\Services\Integrations;
 
+/**
+ * @deprecated deprecated use FluentForm\App\Http\Controllers\IntegrationManagerHelper;
+ */
+
+
 class BaseIntegration
 {
     private $setting_key = '';
@@ -39,7 +44,7 @@ class BaseIntegration
     public function save($settings)
     {
         return wpFluent()->table('fluentform_form_meta')
-                         ->insert([
+                         ->insertGetId([
                              'meta_key' => $this->setting_key,
                              'form_id'  => $this->formId,
                              'value'    => json_encode($settings),
@@ -101,7 +106,7 @@ class BaseIntegration
         ], [
             'name.required'              => __('Feed Name is required', 'fluentform'),
             'list.required'              => __(' List is required', 'fluentform'),
-            'fieldEmailAddress.required' => __('Email Address is required'),
+            'fieldEmailAddress.required'  => __('Email Address is required', 'fluentform')
         ])->validate();
 
         if ($validate->fails()) {

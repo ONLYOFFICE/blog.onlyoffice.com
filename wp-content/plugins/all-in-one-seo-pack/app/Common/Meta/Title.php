@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use AIOSEO\Plugin\Common\Integrations\BuddyPress as BuddyPressIntegration;
+
 /**
  * Handles the title.
  *
@@ -59,7 +61,15 @@ class Title {
 			return $title ? $title : aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'name' ) );
 		}
 
-		$title = $this->helpers->prepare( aioseo()->options->searchAppearance->global->siteTitle );
+		$title = aioseo()->options->searchAppearance->global->siteTitle;
+		if ( aioseo()->helpers->isWpmlActive() ) {
+			// Allow WPML to translate the title if the homepage is not static.
+			// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			$title = apply_filters( 'wpml_translate_single_string', $title, 'admin_texts_aioseo_options_localized', '[aioseo_options_localized]searchAppearance_global_siteTitle' );
+			// phpcs:enable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		}
+
+		$title = $this->helpers->prepare( $title );
 
 		return $title ? $title : aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'name' ) );
 	}
@@ -69,11 +79,15 @@ class Title {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  WP_Post $post    The post object (optional).
-	 * @param  boolean $default Whether we want the default value, not the post one.
-	 * @return string           The page title.
+	 * @param  \WP_Post $post    The post object (optional).
+	 * @param  boolean  $default Whether we want the default value, not the post one.
+	 * @return string            The page title.
 	 */
 	public function getTitle( $post = null, $default = false ) {
+		if ( BuddyPressIntegration::isComponentPage() ) {
+			return aioseo()->standalone->buddyPress->component->getMeta( 'title' );
+		}
+
 		if ( is_home() ) {
 			return $this->getHomePageTitle();
 		}
@@ -83,7 +97,7 @@ class Title {
 		}
 
 		if ( is_category() || is_tag() || is_tax() ) {
-			$term = $post ? $post : get_queried_object();
+			$term = $post ? $post : aioseo()->helpers->getTerm();
 
 			return $this->getTermTitle( $term, $default );
 		}
@@ -103,10 +117,7 @@ class Title {
 		if ( is_post_type_archive() ) {
 			$postType = get_queried_object();
 			if ( is_a( $postType, 'WP_Post_Type' ) ) {
-				$dynamicOptions = aioseo()->dynamicOptions->noConflict();
-				if ( $dynamicOptions->searchAppearance->archives->has( $postType->name ) ) {
-					return $this->helpers->prepare( aioseo()->dynamicOptions->searchAppearance->archives->{ $postType->name }->title );
-				}
+				return $this->helpers->prepare( $this->getArchiveTitle( $postType->name ) );
 			}
 		}
 
@@ -118,9 +129,9 @@ class Title {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  WP_Post|int $post    The post object or ID.
-	 * @param  boolean     $default Whether we want the default value, not the post one.
-	 * @return string               The post title.
+	 * @param  \WP_Post|int $post    The post object or ID.
+	 * @param  boolean      $default Whether we want the default value, not the post one.
+	 * @return string                The post title.
 	 */
 	public function getPostTitle( $post, $default = false ) {
 		$post = $post && is_object( $post ) ? $post : aioseo()->helpers->getPost( $post );
@@ -135,6 +146,7 @@ class Title {
 
 		$title    = '';
 		$metaData = aioseo()->meta->metaData->getMetaData( $post );
+
 		if ( ! empty( $metaData->title ) && ! $default ) {
 			$title = $this->helpers->prepare( $metaData->title, $post->ID );
 		}
@@ -148,9 +160,39 @@ class Title {
 			$title = aioseo()->helpers->decodeHtmlEntities( get_bloginfo( 'name' ) );
 		}
 
+		if ( empty( $title ) ) {
+			// Just return the WP default.
+			$title = get_the_title( $post->ID ) . ' - ' . get_bloginfo( 'name' );
+			$title = aioseo()->helpers->decodeHtmlEntities( $title );
+		}
+
 		$posts[ $post->ID ] = $title;
 
 		return $posts[ $post->ID ];
+	}
+
+	/**
+	 * Retrieve the default title for the archive template.
+	 *
+	 * @since 4.7.6
+	 *
+	 * @param  string $postType The custom post type.
+	 * @return string           The title.
+	 */
+	public function getArchiveTitle( $postType ) {
+		static $archiveTitle = [];
+		if ( isset( $archiveTitle[ $postType ] ) ) {
+			return $archiveTitle[ $postType ];
+		}
+
+		$dynamicOptions = aioseo()->dynamicOptions->noConflict();
+		if ( $dynamicOptions->searchAppearance->archives->has( $postType ) ) {
+			$title = aioseo()->dynamicOptions->searchAppearance->archives->{ $postType }->title;
+		}
+
+		$archiveTitle[ $postType ] = empty( $title ) ? '' : $title;
+
+		return $archiveTitle[ $postType ];
 	}
 
 	/**
@@ -181,9 +223,9 @@ class Title {
 	 *
 	 * @since 4.0.6
 	 *
-	 * @param  WP_Term $term    The term object.
-	 * @param  boolean $default Whether we want the default value, not the post one.
-	 * @return string           The term title.
+	 * @param  \WP_Term $term    The term object.
+	 * @param  boolean  $default Whether we want the default value, not the post one.
+	 * @return string            The term title.
 	 */
 	public function getTermTitle( $term, $default = false ) {
 		if ( ! is_a( $term, 'WP_Term' ) ) {
@@ -199,8 +241,8 @@ class Title {
 		$dynamicOptions = aioseo()->dynamicOptions->noConflict();
 		if ( ! $title && $dynamicOptions->searchAppearance->taxonomies->has( $term->taxonomy ) ) {
 			$newTitle = aioseo()->dynamicOptions->searchAppearance->taxonomies->{$term->taxonomy}->title;
-			$newTitle = preg_replace( '/#taxonomy_title/', aioseo()->helpers->escapeRegexReplacement( $term->name ), $newTitle );
-			$title    = $this->helpers->prepare( $newTitle, false, $default );
+			$newTitle = preg_replace( '/#taxonomy_title/', aioseo()->helpers->escapeRegexReplacement( $term->name ), (string) $newTitle );
+			$title    = $this->helpers->prepare( $newTitle, $term->term_id, $default );
 		}
 
 		$terms[ $term->term_id ] = $title;

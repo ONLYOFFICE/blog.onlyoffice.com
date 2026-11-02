@@ -18,7 +18,6 @@
 namespace WPMailSMTP\Vendor\Google\Auth;
 
 use DateTime;
-use Exception;
 use WPMailSMTP\Vendor\Firebase\JWT\ExpiredException;
 use WPMailSMTP\Vendor\Firebase\JWT\JWT;
 use WPMailSMTP\Vendor\Firebase\JWT\Key;
@@ -29,16 +28,16 @@ use WPMailSMTP\Vendor\Google\Auth\HttpHandler\HttpHandlerFactory;
 use WPMailSMTP\Vendor\GuzzleHttp\Psr7\Request;
 use WPMailSMTP\Vendor\GuzzleHttp\Psr7\Utils;
 use InvalidArgumentException;
-use WPMailSMTP\Vendor\phpseclib\Crypt\RSA;
-use WPMailSMTP\Vendor\phpseclib\Math\BigInteger as BigInteger2;
 use WPMailSMTP\Vendor\phpseclib3\Crypt\PublicKeyLoader;
-use WPMailSMTP\Vendor\phpseclib3\Math\BigInteger as BigInteger3;
+use WPMailSMTP\Vendor\phpseclib3\Crypt\RSA;
+use WPMailSMTP\Vendor\phpseclib3\Math\BigInteger;
 use WPMailSMTP\Vendor\Psr\Cache\CacheItemPoolInterface;
 use RuntimeException;
 use WPMailSMTP\Vendor\SimpleJWT\InvalidTokenException;
 use WPMailSMTP\Vendor\SimpleJWT\JWT as SimpleJWT;
 use WPMailSMTP\Vendor\SimpleJWT\Keys\KeyFactory;
 use WPMailSMTP\Vendor\SimpleJWT\Keys\KeySet;
+use TypeError;
 use UnexpectedValueException;
 /**
  * Wrapper around Google Access Tokens which provides convenience functions.
@@ -65,10 +64,10 @@ class AccessToken
      * @param callable $httpHandler [optional] An HTTP Handler to deliver PSR-7 requests.
      * @param CacheItemPoolInterface $cache [optional] A PSR-6 compatible cache implementation.
      */
-    public function __construct(callable $httpHandler = null, \WPMailSMTP\Vendor\Psr\Cache\CacheItemPoolInterface $cache = null)
+    public function __construct(?callable $httpHandler = null, ?CacheItemPoolInterface $cache = null)
     {
-        $this->httpHandler = $httpHandler ?: \WPMailSMTP\Vendor\Google\Auth\HttpHandler\HttpHandlerFactory::build(\WPMailSMTP\Vendor\Google\Auth\HttpHandler\HttpClientCache::getHttpClient());
-        $this->cache = $cache ?: new \WPMailSMTP\Vendor\Google\Auth\Cache\MemoryCacheItemPool();
+        $this->httpHandler = $httpHandler ?: HttpHandlerFactory::build(HttpClientCache::getHttpClient());
+        $this->cache = $cache ?: new MemoryCacheItemPool();
     }
     /**
      * Verifies an id token and returns the authenticated apiLoginTicket.
@@ -102,31 +101,31 @@ class AccessToken
      */
     public function verify($token, array $options = [])
     {
-        $audience = isset($options['audience']) ? $options['audience'] : null;
-        $issuer = isset($options['issuer']) ? $options['issuer'] : null;
-        $certsLocation = isset($options['certsLocation']) ? $options['certsLocation'] : self::FEDERATED_SIGNON_CERT_URL;
-        $cacheKey = isset($options['cacheKey']) ? $options['cacheKey'] : $this->getCacheKeyFromCertLocation($certsLocation);
-        $throwException = isset($options['throwException']) ? $options['throwException'] : \false;
+        $audience = $options['audience'] ?? null;
+        $issuer = $options['issuer'] ?? null;
+        $certsLocation = $options['certsLocation'] ?? self::FEDERATED_SIGNON_CERT_URL;
+        $cacheKey = $options['cacheKey'] ?? $this->getCacheKeyFromCertLocation($certsLocation);
+        $throwException = $options['throwException'] ?? \false;
         // for backwards compatibility
         // Check signature against each available cert.
         $certs = $this->getCerts($certsLocation, $cacheKey, $options);
         $alg = $this->determineAlg($certs);
         if (!\in_array($alg, ['RS256', 'ES256'])) {
-            throw new \InvalidArgumentException('unrecognized "alg" in certs, expected ES256 or RS256');
+            throw new InvalidArgumentException('unrecognized "alg" in certs, expected ES256 or RS256');
         }
         try {
             if ($alg == 'RS256') {
                 return $this->verifyRs256($token, $certs, $audience, $issuer);
             }
             return $this->verifyEs256($token, $certs, $audience, $issuer);
-        } catch (\WPMailSMTP\Vendor\Firebase\JWT\ExpiredException $e) {
+        } catch (ExpiredException $e) {
             // firebase/php-jwt 5+
-        } catch (\WPMailSMTP\Vendor\Firebase\JWT\SignatureInvalidException $e) {
+        } catch (SignatureInvalidException $e) {
             // firebase/php-jwt 5+
-        } catch (\WPMailSMTP\Vendor\SimpleJWT\InvalidTokenException $e) {
+        } catch (InvalidTokenException $e) {
             // simplejwt
-        } catch (\InvalidArgumentException $e) {
-        } catch (\UnexpectedValueException $e) {
+        } catch (InvalidArgumentException $e) {
+        } catch (UnexpectedValueException $e) {
         }
         if ($throwException) {
             throw $e;
@@ -146,11 +145,11 @@ class AccessToken
         $alg = null;
         foreach ($certs as $cert) {
             if (empty($cert['alg'])) {
-                throw new \InvalidArgumentException('certs expects "alg" to be set');
+                throw new InvalidArgumentException('certs expects "alg" to be set');
             }
             $alg = $alg ?: $cert['alg'];
             if ($alg != $cert['alg']) {
-                throw new \InvalidArgumentException('More than one alg detected in certs');
+                throw new InvalidArgumentException('More than one alg detected in certs');
             }
         }
         return $alg;
@@ -170,22 +169,22 @@ class AccessToken
     private function verifyEs256($token, array $certs, $audience = null, $issuer = null)
     {
         $this->checkSimpleJwt();
-        $jwkset = new \WPMailSMTP\Vendor\SimpleJWT\Keys\KeySet();
+        $jwkset = new KeySet();
         foreach ($certs as $cert) {
-            $jwkset->add(\WPMailSMTP\Vendor\SimpleJWT\Keys\KeyFactory::create($cert, 'php'));
+            $jwkset->add(KeyFactory::create($cert, 'php'));
         }
         // Validate the signature using the key set and ES256 algorithm.
         $jwt = $this->callSimpleJwtDecode([$token, $jwkset, 'ES256']);
         $payload = $jwt->getClaims();
         if ($audience) {
             if (!isset($payload['aud']) || $payload['aud'] != $audience) {
-                throw new \UnexpectedValueException('Audience does not match');
+                throw new UnexpectedValueException('Audience does not match');
             }
         }
         // @see https://cloud.google.com/iap/docs/signed-headers-howto#verifying_the_jwt_payload
         $issuer = $issuer ?: self::IAP_ISSUER;
         if (!isset($payload['iss']) || $payload['iss'] !== $issuer) {
-            throw new \UnexpectedValueException('Issuer does not match');
+            throw new UnexpectedValueException('Issuer does not match');
         }
         return $payload;
     }
@@ -207,26 +206,26 @@ class AccessToken
         $keys = [];
         foreach ($certs as $cert) {
             if (empty($cert['kid'])) {
-                throw new \InvalidArgumentException('certs expects "kid" to be set');
+                throw new InvalidArgumentException('certs expects "kid" to be set');
             }
             if (empty($cert['n']) || empty($cert['e'])) {
-                throw new \InvalidArgumentException('RSA certs expects "n" and "e" to be set');
+                throw new InvalidArgumentException('RSA certs expects "n" and "e" to be set');
             }
             $publicKey = $this->loadPhpsecPublicKey($cert['n'], $cert['e']);
             // create an array of key IDs to certs for the JWT library
-            $keys[$cert['kid']] = new \WPMailSMTP\Vendor\Firebase\JWT\Key($publicKey, 'RS256');
+            $keys[$cert['kid']] = new Key($publicKey, 'RS256');
         }
         $payload = $this->callJwtStatic('decode', [$token, $keys]);
         if ($audience) {
             if (!\property_exists($payload, 'aud') || $payload->aud != $audience) {
-                throw new \UnexpectedValueException('Audience does not match');
+                throw new UnexpectedValueException('Audience does not match');
             }
         }
         // support HTTP and HTTPS issuers
         // @see https://developers.google.com/identity/sign-in/web/backend-auth
         $issuers = $issuer ? [$issuer] : [self::OAUTH2_ISSUER, self::OAUTH2_ISSUER_HTTPS];
         if (!isset($payload->iss) || !\in_array($payload->iss, $issuers)) {
-            throw new \UnexpectedValueException('Issuer does not match');
+            throw new UnexpectedValueException('Issuer does not match');
         }
         return (array) $payload;
     }
@@ -247,8 +246,8 @@ class AccessToken
                 $token = $token['access_token'];
             }
         }
-        $body = \WPMailSMTP\Vendor\GuzzleHttp\Psr7\Utils::streamFor(\http_build_query(['token' => $token]));
-        $request = new \WPMailSMTP\Vendor\GuzzleHttp\Psr7\Request('POST', self::OAUTH2_REVOKE_URI, ['Cache-Control' => 'no-store', 'Content-Type' => 'application/x-www-form-urlencoded'], $body);
+        $body = Utils::streamFor(\http_build_query(['token' => $token]));
+        $request = new Request('POST', self::OAUTH2_REVOKE_URI, ['Cache-Control' => 'no-store', 'Content-Type' => 'application/x-www-form-urlencoded'], $body);
         $httpHandler = $this->httpHandler;
         $response = $httpHandler($request, $options);
         return $response->getStatusCode() == 200;
@@ -268,21 +267,20 @@ class AccessToken
     {
         $cacheItem = $this->cache->getItem($cacheKey);
         $certs = $cacheItem ? $cacheItem->get() : null;
-        $gotNewCerts = \false;
+        $expireTime = null;
         if (!$certs) {
-            $certs = $this->retrieveCertsFromLocation($location, $options);
-            $gotNewCerts = \true;
+            list($certs, $expireTime) = $this->retrieveCertsFromLocation($location, $options);
         }
         if (!isset($certs['keys'])) {
             if ($location !== self::IAP_CERT_URL) {
-                throw new \InvalidArgumentException('federated sign-on certs expects "keys" to be set');
+                throw new InvalidArgumentException('federated sign-on certs expects "keys" to be set');
             }
-            throw new \InvalidArgumentException('certs expects "keys" to be set');
+            throw new InvalidArgumentException('certs expects "keys" to be set');
         }
         // Push caching off until after verifying certs are in a valid format.
         // Don't want to cache bad data.
-        if ($gotNewCerts) {
-            $cacheItem->expiresAt(new \DateTime('+1 hour'));
+        if ($expireTime) {
+            $cacheItem->expiresAt(new DateTime($expireTime));
             $cacheItem->set($certs);
             $this->cache->save($cacheItem);
         }
@@ -293,78 +291,56 @@ class AccessToken
      *
      * @param string $url location
      * @param array<mixed> $options [optional] Configuration options.
-     * @return array<mixed> certificates
+     * @return array{array<mixed>, string}
      * @throws InvalidArgumentException If certs could not be retrieved from a local file.
      * @throws RuntimeException If certs could not be retrieved from a remote location.
      */
     private function retrieveCertsFromLocation($url, array $options = [])
     {
         // If we're retrieving a local file, just grab it.
+        $expireTime = '+1 hour';
         if (\strpos($url, 'http') !== 0) {
             if (!\file_exists($url)) {
-                throw new \InvalidArgumentException(\sprintf('Failed to retrieve verification certificates from path: %s.', $url));
+                throw new InvalidArgumentException(\sprintf('Failed to retrieve verification certificates from path: %s.', $url));
             }
-            return \json_decode((string) \file_get_contents($url), \true);
+            return [\json_decode((string) \file_get_contents($url), \true), $expireTime];
         }
         $httpHandler = $this->httpHandler;
-        $response = $httpHandler(new \WPMailSMTP\Vendor\GuzzleHttp\Psr7\Request('GET', $url), $options);
+        $response = $httpHandler(new Request('GET', $url), $options);
         if ($response->getStatusCode() == 200) {
-            return \json_decode((string) $response->getBody(), \true);
+            if ($cacheControl = $response->getHeaderLine('Cache-Control')) {
+                \array_map(function ($value) use(&$expireTime) {
+                    list($key, $value) = \explode('=', $value) + [null, null];
+                    if (\trim($key) == 'max-age') {
+                        $expireTime = '+' . $value . ' seconds';
+                    }
+                }, \explode(',', $cacheControl));
+            }
+            return [\json_decode((string) $response->getBody(), \true), $expireTime];
         }
-        throw new \RuntimeException(\sprintf('Failed to retrieve verification certificates: "%s".', $response->getBody()->getContents()), $response->getStatusCode());
+        throw new RuntimeException(\sprintf('Failed to retrieve verification certificates: "%s".', $response->getBody()->getContents()), $response->getStatusCode());
     }
     /**
      * @return void
      */
     private function checkAndInitializePhpsec()
     {
-        if (!$this->checkAndInitializePhpsec2() && !$this->checkPhpsec3()) {
-            throw new \RuntimeException('Please require phpseclib/phpseclib v2 or v3 to use this utility.');
+        if (!\class_exists(RSA::class)) {
+            throw new RuntimeException('Please require phpseclib/phpseclib v3 to use this utility.');
         }
     }
+    /**
+     * @return string
+     * @throws TypeError If the key cannot be initialized to a string.
+     */
     private function loadPhpsecPublicKey(string $modulus, string $exponent) : string
     {
-        if (\class_exists(\WPMailSMTP\Vendor\phpseclib\Crypt\RSA::class) && \class_exists(\WPMailSMTP\Vendor\phpseclib\Math\BigInteger::class)) {
-            $key = new \WPMailSMTP\Vendor\phpseclib\Crypt\RSA();
-            $key->loadKey(['n' => new \WPMailSMTP\Vendor\phpseclib\Math\BigInteger($this->callJwtStatic('urlsafeB64Decode', [$modulus]), 256), 'e' => new \WPMailSMTP\Vendor\phpseclib\Math\BigInteger($this->callJwtStatic('urlsafeB64Decode', [$exponent]), 256)]);
-            return $key->getPublicKey();
+        $key = PublicKeyLoader::load(['n' => new BigInteger($this->callJwtStatic('urlsafeB64Decode', [$modulus]), 256), 'e' => new BigInteger($this->callJwtStatic('urlsafeB64Decode', [$exponent]), 256)]);
+        $formattedPublicKey = $key->toString('PKCS8');
+        if (!\is_string($formattedPublicKey)) {
+            throw new TypeError('Failed to initialize the key');
         }
-        $key = \WPMailSMTP\Vendor\phpseclib3\Crypt\PublicKeyLoader::load(['n' => new \WPMailSMTP\Vendor\phpseclib3\Math\BigInteger($this->callJwtStatic('urlsafeB64Decode', [$modulus]), 256), 'e' => new \WPMailSMTP\Vendor\phpseclib3\Math\BigInteger($this->callJwtStatic('urlsafeB64Decode', [$exponent]), 256)]);
-        return $key->toString('PKCS1');
-    }
-    /**
-     * @return bool
-     */
-    private function checkAndInitializePhpsec2() : bool
-    {
-        if (!\class_exists('WPMailSMTP\\Vendor\\phpseclib\\Crypt\\RSA')) {
-            return \false;
-        }
-        /**
-         * phpseclib calls "phpinfo" by default, which requires special
-         * whitelisting in the AppEngine VM environment. This function
-         * sets constants to bypass the need for phpseclib to check phpinfo
-         *
-         * @see phpseclib/Math/BigInteger
-         * @see https://github.com/GoogleCloudPlatform/getting-started-php/issues/85
-         * @codeCoverageIgnore
-         */
-        if (\filter_var(\getenv('GAE_VM'), \FILTER_VALIDATE_BOOLEAN)) {
-            if (!\defined('WPMailSMTP\\Vendor\\MATH_BIGINTEGER_OPENSSL_ENABLED')) {
-                \define('WPMailSMTP\\Vendor\\MATH_BIGINTEGER_OPENSSL_ENABLED', \true);
-            }
-            if (!\defined('WPMailSMTP\\Vendor\\CRYPT_RSA_MODE')) {
-                \define('WPMailSMTP\\Vendor\\CRYPT_RSA_MODE', \WPMailSMTP\Vendor\phpseclib\Crypt\RSA::MODE_OPENSSL);
-            }
-        }
-        return \true;
-    }
-    /**
-     * @return bool
-     */
-    private function checkPhpsec3() : bool
-    {
-        return \class_exists('WPMailSMTP\\Vendor\\phpseclib3\\Crypt\\RSA');
+        return $formattedPublicKey;
     }
     /**
      * @return void
@@ -372,8 +348,8 @@ class AccessToken
     private function checkSimpleJwt()
     {
         // @codeCoverageIgnoreStart
-        if (!\class_exists(\WPMailSMTP\Vendor\SimpleJWT\JWT::class)) {
-            throw new \RuntimeException('Please require kelvinmo/simplejwt ^0.2 to use this utility.');
+        if (!\class_exists(SimpleJwt::class)) {
+            throw new RuntimeException('Please require kelvinmo/simplejwt ^0.2 to use this utility.');
         }
         // @codeCoverageIgnoreEnd
     }
@@ -386,7 +362,7 @@ class AccessToken
      */
     protected function callJwtStatic($method, array $args = [])
     {
-        return \call_user_func_array([\WPMailSMTP\Vendor\Firebase\JWT\JWT::class, $method], $args);
+        return \call_user_func_array([JWT::class, $method], $args);
         // @phpstan-ignore-line
     }
     /**
@@ -397,7 +373,7 @@ class AccessToken
      */
     protected function callSimpleJwtDecode(array $args = [])
     {
-        return \call_user_func_array([\WPMailSMTP\Vendor\SimpleJWT\JWT::class, 'decode'], $args);
+        return \call_user_func_array([SimpleJwt::class, 'decode'], $args);
     }
     /**
      * Generate a cache key based on the cert location using sha1 with the

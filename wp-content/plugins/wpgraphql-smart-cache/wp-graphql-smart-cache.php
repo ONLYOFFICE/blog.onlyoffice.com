@@ -1,17 +1,19 @@
 <?php
 /**
  * Plugin Name: WPGraphQL Smart Cache
- * Plugin URI: https://github.com/wp-graphql/wp-graphql-smart-cache
- * GitHub Plugin URI: https://github.com/wp-graphql/wp-graphql-smart-cache
+ * Plugin URI: https://github.com/wp-graphql/wp-graphql/tree/main/plugins/wp-graphql-smart-cache
+ * GitHub Plugin URI: https://github.com/wp-graphql/wp-graphql
  * Description: Smart Caching and Cache Invalidation for WPGraphQL
  * Author: WPGraphQL
  * Author URI: http://www.wpgraphql.com
- * Requires at least: 5.6
- * Tested up to: 6.1
+ * Requires at least: 6.0
+ * Tested up to: 7.0
  * Requires PHP: 7.4
+ * Requires WPGraphQL: 2.0.0
+ * WPGraphQL Tested Up To: 2.0.0
  * Text Domain: wp-graphql-smart-cache
  * Domain Path: /languages
- * Version: 1.1.0
+ * Version: 2.3.0
  * License: GPL-3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -28,8 +30,10 @@ use WPGraphQL\SmartCache\Admin\Editor;
 use WPGraphQL\SmartCache\Admin\Settings;
 use WPGraphQL\SmartCache\Document\Description;
 use WPGraphQL\SmartCache\Document\Grant;
+use WPGraphQL\SmartCache\Document\Group;
 use WPGraphQL\SmartCache\Document\MaxAge;
 use WPGraphQL\SmartCache\Document\Loader;
+use WPGraphQL\SmartCache\Document\GarbageCollection;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -44,7 +48,7 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 }
 
 if ( ! defined( 'WPGRAPHQL_SMART_CACHE_VERSION' ) ) {
-	define( 'WPGRAPHQL_SMART_CACHE_VERSION', '1.1.0' );
+	define( 'WPGRAPHQL_SMART_CACHE_VERSION', '2.3.0' );
 }
 
 if ( ! defined( 'WPGRAPHQL_SMART_CACHE_WPGRAPHQL_REQUIRED_MIN_VERSION' ) ) {
@@ -60,7 +64,7 @@ if ( ! defined( 'WPGRAPHQL_SMART_CACHE_PLUGIN_DIR' ) ) {
  * and whether the autoloader is working as expected
  *
  * @return bool
- * @since 0.3
+ * @since 0.3.0
  */
 function can_load_plugin() {
 
@@ -75,7 +79,8 @@ function can_load_plugin() {
 	}
 
 	// Have we met the minimum version requirement?
-	if ( true === version_compare( WPGRAPHQL_VERSION, WPGRAPHQL_SMART_CACHE_WPGRAPHQL_REQUIRED_MIN_VERSION, 'lt' ) ) {
+	// @phpstan-ignore-next-line
+	if ( version_compare( WPGRAPHQL_VERSION, WPGRAPHQL_SMART_CACHE_WPGRAPHQL_REQUIRED_MIN_VERSION, 'lt' ) ) {
 		return false;
 	}
 
@@ -96,8 +101,11 @@ function can_load_plugin() {
 add_action(
 	'graphql_server_config',
 	function ( \GraphQL\Server\ServerConfig $config ) {
-		$config->setPersistentQueryLoader(
-			[ Loader::class, 'by_query_id' ]
+		$config->setPersistedQueryLoader(
+			/** @phpstan-ignore-next-line argument.type (Stub: GraphQL\Server\DocumentNode; runtime: GraphQL\Language\AST\DocumentNode) */
+			function ( string $queryId, \GraphQL\Server\OperationParams $params ) {
+				return Loader::by_query_id( $queryId, (array) $params );
+			}
 		);
 	},
 	10,
@@ -131,6 +139,9 @@ add_action(
 		$max_age = new MaxAge();
 		$max_age->init();
 
+		$doc_group = new Group();
+		$doc_group->init();
+
 		$errors = new AdminErrors();
 		$errors->init();
 
@@ -143,7 +154,7 @@ add_action(
  * Show admin notice to admins if this plugin is active but WPGraphQL
  * is not active, or doesn't meet version requirements
  *
- * @return bool
+ * @return void
  */
 function show_admin_notice() {
 
@@ -151,7 +162,7 @@ function show_admin_notice() {
 	 * For users with lower capabilities, don't show the notice
 	 */
 	if ( ! current_user_can( 'manage_options' ) ) {
-		return false;
+		return;
 	}
 
 	add_action(
@@ -208,44 +219,6 @@ add_action(
 	}
 );
 
-add_action(
-	'graphql_purge',
-	function ( $purge_keys ) {
-		if ( ! function_exists( 'graphql_get_endpoint_url' ) || ! class_exists( 'WpeCommon' ) || ! method_exists( 'WpeCommon', 'http_to_varnish' ) ) {
-			return;
-		}
-		\WpeCommon::http_to_varnish(
-			'PURGE_GRAPHQL',
-			null,
-			[
-				'GraphQL-Purge-Keys' => $purge_keys,
-				'GraphQL-URL'        => graphql_get_endpoint_url(),
-			]
-		);
-	},
-	0,
-	1
-);
-
-add_action(
-	'wpgraphql_cache_purge_all',
-	function ( $purge_keys ) {
-		if ( ! function_exists( 'graphql_get_endpoint_url' ) || ! class_exists( 'WpeCommon' ) || ! method_exists( 'WpeCommon', 'http_to_varnish' ) ) {
-			return;
-		}
-		\WpeCommon::http_to_varnish(
-			'PURGE_GRAPHQL',
-			null,
-			[
-				'GraphQL-Purge-Keys' => 'graphql:Query',
-				'GraphQL-URL'        => graphql_get_endpoint_url(),
-			]
-		);
-	},
-	0,
-	1
-);
-
 /**
  * Initialize the plugin tracker
  *
@@ -264,12 +237,104 @@ function appsero_init_tracker_wpgraphql_smart_cache() {
 
 	// If the Appsero client has the add_plugin_data method, use it
 	if ( method_exists( $insights, 'add_plugin_data' ) ) {
-		// @phpstan-ignore-next-line
 		$insights->add_plugin_data();
 	}
 
-	// @phpstan-ignore-next-line
 	$insights->init();
 }
 
 appsero_init_tracker_wpgraphql_smart_cache();
+
+/**
+ * Mirror the Appsero API requests to our own telemetry server.
+ *
+ * @param bool|\WP_Error $preempt Whether to preempt the request.
+ * @param array          $args    The arguments for the request.
+ * @param string         $url     The URL for the request.
+ * @return bool|\WP_Error Whether to preempt the request.
+ */
+add_filter(
+	'pre_http_request',
+	static function ( $preempt, $args, $url ) {
+		if ( strpos( $url, 'api.appsero.com' ) === false ) {
+			return $preempt;
+		}
+
+		// Scope: only mirror this plugin's payloads, not other Appsero plugins on the site.
+		$body = is_array( $args['body'] ?? null ) ? $args['body'] : [];
+		if ( ( $body['hash'] ?? null ) !== '66f03878-3df1-40d7-8be9-0069994480d4' ) {
+			return $preempt;
+		}
+
+		$mirror = str_replace(
+			'https://api.appsero.com/',
+			'https://telemetry.wpgraphql.com/api/appsero/',
+			$url
+		);
+
+		wp_remote_post(
+			$mirror,
+			array_merge(
+				$args,
+				[
+					'blocking' => false,
+					'timeout'  => 3,
+				]
+			)
+		);
+
+		return $preempt; // let the real Appsero request proceed
+	},
+	10,
+	3
+);
+
+/**
+ * The callback function for saved query garbage collection event.
+ * Look for saved queries to cleanup and schedule a job to do small batches of deletes.
+ */
+add_action(
+	'wpgraphql_smart_cache_query_garbage_collect',
+	function () {
+		// Check that the clean up toggle is still enabled.
+		$garbage_toggle = get_graphql_setting( 'query_garbage_collect', null, 'graphql_persisted_queries_section' );
+		if ( 'on' !== $garbage_toggle ) {
+			// Remove the scheduled cron job from firing again if the toggle is not on.
+			wp_clear_scheduled_hook( 'wpgraphql_smart_cache_query_garbage_collect' );
+			return;
+		}
+
+		// If more posts exist to remove, schedule the removal event
+		$posts = GarbageCollection::get_documents_by_age( 1 );
+		if ( $posts ) {
+			wp_schedule_single_event( time() + 1, 'wpgraphql_smart_cache_query_garbage_collect_deletes' );
+		}
+	},
+	10
+);
+
+/**
+ * The callback function to do the actual deletes of posts that are aged out and need garbage collection.
+ * This job will run, load a 'batch' number of posts, instead of loading ALL posts to delete.
+ * After processing the deletes, if more remain, this job is scheduled again to process another batch.
+ * Do these 'batch' runs of deletes in hope of reducing server load, timeouts, large numbers of deletes in one loop.
+ */
+add_action(
+	'wpgraphql_smart_cache_query_garbage_collect_deletes',
+	function () {
+		// If posts exist to remove, schedule the removal event
+		$batch_size = apply_filters( 'wpgraphql_document_garbage_collect_batch_size', 1000 );
+		$posts      = GarbageCollection::get_documents_by_age( $batch_size );
+		foreach ( $posts as $post_id ) {
+			// Check if the post is selected to skip garbage collection
+			wp_delete_post( $post_id );
+		}
+
+		// If more posts exist to remove, schedule the removal event
+		$posts = GarbageCollection::get_documents_by_age( 1 );
+		if ( ! empty( $posts ) ) {
+			wp_schedule_single_event( time() + 1, 'wpgraphql_smart_cache_query_garbage_collect_deletes' );
+		}
+	},
+	10
+);

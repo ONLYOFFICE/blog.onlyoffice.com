@@ -25,6 +25,13 @@ class Form
     protected $parsed;
 
     /**
+     * The parsed essential form fields.
+     *
+     * @var array
+     */
+    protected $essentials;
+
+    /**
      * The parsed validations
      *
      * @var array
@@ -77,9 +84,18 @@ class Form
             'gdpr_agreement',
             'taxonomy'
         ];
-
+    
+        $types = apply_filters_deprecated(
+            'fluentform_form_input_types',
+            [
+                $types
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/form_input_types',
+            'Use fluentform/form_input_types instead of fluentform_form_input_types'
+        );
         // Firing an event so that others can hook into it and add other input types.
-        $this->inputTypes = apply_filters('fluentform_form_input_types', $types);
+        $this->inputTypes = apply_filters('fluentform/form_input_types', $types);
 
         return $this;
     }
@@ -92,9 +108,14 @@ class Form
      */
     public function getFields($asArray = false)
     {
-        $fields = json_decode($this->form->form_fields, $asArray);
-
         $default = $asArray ? [] : null;
+
+        // Return default if form_fields is null or empty
+        if (!$this->form || !isset($this->form->form_fields) || $this->form->form_fields === null) {
+            return $default;
+        }
+
+        $fields = json_decode($this->form->form_fields, $asArray);
 
         return Arr::get((array)$fields, 'fields', $default);
     }
@@ -277,20 +298,34 @@ class Form
      * @param array $with array
      * @return array
      */
-    public function getPaymentFields($with = ['element'])
+    public function getPaymentFields($with = ['element', 'settings'])
     {
         $fields = $this->getInputs($with);
-        $paymentElements = apply_filters('fluentform_form_payment_fields',
-            [
+
+        $data = [
                 'custom_payment_component',
                 'multi_payment_component',
                 'payment_method',
                 'item_quantity_component',
+                'rangeslider',
                 'payment_coupon',
-	            'subscription_payment_component'
-            ]);
+	            'subscription_payment_component',
+        ];
+    
+        $data = apply_filters_deprecated('fluentform_form_payment_fields', [
+                $data
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/form_payment_fields',
+            'Use fluentform/form_payment_fields instead of fluentform_form_payment_fields'
+        );
+
+        $paymentElements = apply_filters('fluentform/form_payment_fields', $data);
 
         return array_filter($fields, function ($field) use ($paymentElements) {
+            if ($field['element'] === 'rangeslider') {
+                return Arr::get($field, 'settings.enable_target_product', 'no') === 'yes';
+            }
             return in_array($field['element'], $paymentElements);
         });
     }
@@ -304,10 +339,22 @@ class Form
     {
         $fields = $this->getInputs($with);
 
-        $paymentElements = apply_filters('fluentform_form_payment_inputs', [
+        $data = [
             'custom_payment_component',
             'multi_payment_component'
-        ]);
+        ];
+    
+        $data = apply_filters_deprecated(
+            'fluentform_form_payment_inputs',
+            [
+                $data
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/form_payment_inputs',
+            'Use fluentform/form_payment_inputs instead of fluentform_form_payment_inputs'
+        );
+
+        $paymentElements = apply_filters('fluentform/form_payment_inputs', $data);
 
         return array_filter($fields, function ($field) use ($paymentElements) {
             return in_array($field['element'], $paymentElements);
@@ -323,15 +370,26 @@ class Form
     {
         $fields = $this->getInputs(['element']);
 
-        $paymentElements = apply_filters('fluentform_form_payment_fields',
+        $data = [
+            'custom_payment_component',
+            'multi_payment_component',
+            'payment_method',
+            'item_quantity_component',
+            'payment_coupon',
+            'subscription_payment_component'
+        ];
+    
+        $data = apply_filters_deprecated(
+            'fluentform_form_payment_fields',
             [
-                'custom_payment_component',
-                'multi_payment_component',
-                'payment_method',
-                'item_quantity_component',
-                'payment_coupon',
-	            'subscription_payment_component'
-            ]);
+                $data
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/form_payment_fields',
+            'Use fluentform/form_payment_fields instead of fluentform_form_payment_fields'
+        );
+
+        $paymentElements = apply_filters('fluentform/form_payment_fields', $data);
 
         foreach ($fields as $field) {
             if (in_array($field['element'], $paymentElements)) {
@@ -408,5 +466,20 @@ class Form
         return array_filter($fields, function ($field) use ($addressElements) {
             return in_array($field['element'], $addressElements);
         });
+    }
+
+    public function getEssentialInputs($formData, $with = [])
+    {
+        // If the form is already parsed we'll return it. Otherwise,
+        // we'll parse the form and return the data after saving it.
+        if (!$this->essentials) {
+            $fields = $this->getFields(true);
+
+            $with = $with ?: ['rules', 'raw'];
+
+            $this->essentials = (new Extractor($fields, $with, $this->inputTypes))->extractEssentials($formData);
+        }
+
+        return $this->essentials;
     }
 }

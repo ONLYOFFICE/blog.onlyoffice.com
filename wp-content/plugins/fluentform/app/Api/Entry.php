@@ -2,9 +2,11 @@
 
 namespace FluentForm\App\Api;
 
-use FluentForm\App\Modules\Entries\Report;
+defined('ABSPATH') or die;
+
 use FluentForm\App\Modules\Form\FormDataParser;
 use FluentForm\App\Modules\Form\FormFieldsParser;
+use FluentForm\App\Services\Report\ReportHelper;
 
 class Entry
 {
@@ -32,12 +34,11 @@ class Entry
         ]);
 
         $offset = $atts['per_page'] * ($atts['page'] - 1);
-
-        $entryQuery = wpFluent()->table('fluentform_submissions')
-                        ->where('form_id', $this->form->id)
-                        ->orderBy('id', \FluentForm\App\Helpers\Helper::sanitizeOrderValue($atts['sort_type']))
-                        ->limit($atts['per_page'])
-                        ->offset($offset);
+    
+        $entryQuery = \FluentForm\App\Models\Submission::where('form_id', $this->form->id)
+            ->orderBy('id', \FluentForm\App\Helpers\Helper::sanitizeOrderValue($atts['sort_type']))
+            ->limit($atts['per_page'])
+            ->offset($offset);
 
         $type = $atts['entry_type'];
 
@@ -86,11 +87,22 @@ class Entry
 
     public function entry($entryId, $includeFormats = false)
     {
-        $submission = wpFluent()->table('fluentform_submissions')
-                    ->where('form_id', $this->form->id)
+        $submission = \FluentForm\App\Models\Submission::where('form_id', $this->form->id)
                     ->where('id', $entryId)
                     ->first();
+                    return $this->getFormattedEntry($submission,$includeFormats);
+    }
 
+    public function entryBySerial($serialNumber, $includeFormats = false){
+        
+        $submission = \FluentForm\App\Models\Submission::where('form_id', $this->form->id)
+        ->where('serial_number', $serialNumber)
+        ->first();
+
+       return $this->getFormattedEntry($submission,$includeFormats);
+    }
+
+    public function getFormattedEntry($submission,$includeFormats = false){
         if (!$submission) {
             return null;
         }
@@ -115,8 +127,19 @@ class Entry
             ];
             $submission->user = $user_data;
         }
+    
+        $submission= apply_filters_deprecated(
+            'fluentform_single_response_data',
+            [
+                $submission,
+                $this->form->id
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/find_submission',
+            'Use fluentform/find_submission instead of fluentform_single_response_data.'
+        );
 
-        $submission = apply_filters('fluentform_single_response_data', $submission, $this->form->id);
+        $submission = apply_filters('fluentform/find_submission', $submission, $this->form->id);
 
         $submission->response = json_decode($submission->response);
 
@@ -128,9 +151,8 @@ class Entry
         ];
     }
 
-    public function report($statuses = [])
+    public function report($statuses = ['read', 'unread', 'unapproved', 'approved', 'declined', 'unconfirmed', 'confirmed'])
     {
-        $reportClass = new Report(wpFluentForm());
-        return $reportClass->generateReport($this->form, $statuses);
+        return ReportHelper::generateReport($this->form, $statuses);
     }
 }

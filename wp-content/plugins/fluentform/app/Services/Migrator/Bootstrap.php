@@ -2,10 +2,13 @@
 
 namespace FluentForm\App\Services\Migrator;
 
+defined('ABSPATH') or die;
+
 use FluentForm\App\Services\Migrator\Classes\NinjaFormsMigrator;
 use FluentForm\App\Services\Migrator\Classes\CalderaMigrator;
 use FluentForm\App\Services\Migrator\Classes\GravityFormsMigrator;
 use FluentForm\App\Services\Migrator\Classes\WpFormsMigrator;
+use FluentForm\App\Services\Migrator\Classes\ContactForm7Migrator;
 class Bootstrap
 {
     protected $importer;
@@ -16,7 +19,6 @@ class Bootstrap
         add_action('wp_ajax_fluentform-migrator-get-forms-by-key', [$this, 'getFormsByKey']);
         add_action('wp_ajax_fluentform-migrator-import-forms', [$this, 'importForms']);
         add_action('wp_ajax_fluentform-migrator-import-entries', [$this, 'importEntries']);
-
     }
 
     public function availableMigrations()
@@ -47,8 +49,13 @@ class Bootstrap
                 'key'  => 'wpforms',
             ];
         }
+        if ((new ContactForm7Migrator())->exist()) {
+            $migratorLinks[] = [
+                'name' => 'Contact Form 7',
+                'key'  => 'contactform7',
+            ];
+        }
         return $migratorLinks;
-
     }
 
     public function setImporterType()
@@ -68,14 +75,15 @@ class Bootstrap
             case 'wpforms':
                 $this->importer = new WpFormsMigrator();
                 break;
+            case 'contactform7':
+                $this->importer = new ContactForm7Migrator();
+                break;
             default:
                 wp_send_json([
-                    'message' => __('Unsupported Form Type!'),
+                    'message' => __('Unsupported Form Type!', 'fluentform'),
                     'success' => false,
                 ]);
         }
-
-
     }
 
     public function getMigratorData()
@@ -84,28 +92,33 @@ class Bootstrap
 
         wp_send_json([
             'status'        => true,
-            'migrator_data' => $this->availableMigrations()
+            'migrator_data' => $this->availableMigrations(),
         ], 200);
     }
 
     public function importForms()
     {
         \FluentForm\App\Modules\Acl\Acl::verify(['fluentform_settings_manager', 'fluentform_forms_manager']);
-        
+
         $formIds = wpFluentForm('request')->get('form_ids');
-        $formIds = array_map('intval', $formIds);
+        if (!is_array($formIds)) {
+            $formIds = [];
+        }
+        $formIds = array_map('sanitize_text_field', $formIds);
 
         $this->setImporterType();
         $this->importer->import_forms($formIds);
-
     }
 
     public function importEntries()
     {
-        \FluentForm\App\Modules\Acl\Acl::verify(['fluentform_settings_manager', 'fluentform_forms_manager']);
-
-
-        $fluentFormId = intval(wpFluentForm('request')->get('imported_fluent_form_id'));
+        $fluentFormId = \FluentForm\App\Modules\Acl\Acl::verifyFormId(
+            wpFluentForm('request')->get('imported_fluent_form_id')
+        );
+        \FluentForm\App\Modules\Acl\Acl::verify(
+            ['fluentform_settings_manager', 'fluentform_forms_manager'],
+            $fluentFormId
+        );
         $importFormId = sanitize_text_field(wpFluentForm('request')->get('source_form_id'));
         $this->setImporterType();
         $this->importer->insertEntries($fluentFormId, $importFormId);
@@ -134,6 +147,4 @@ class Bootstrap
             'success' => true,
         ]);
     }
-
-
 }

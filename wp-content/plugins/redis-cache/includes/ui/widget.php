@@ -5,7 +5,7 @@
  * @package Rhubarb\RedisCache
  */
 
-defined( '\\ABSPATH' ) || exit;
+defined( 'ABSPATH' ) || exit;
 
 /** @var \Rhubarb\RedisCache\Plugin $this */
 
@@ -34,7 +34,7 @@ defined( '\\ABSPATH' ) || exit;
             </a>
         </li>
         <li style="margin-left: auto;">
-            <a href="<?php echo network_admin_url( $this->page ); ?>">
+            <a href="<?php echo esc_url( network_admin_url( $this->page ) ); ?>">
                 <?php esc_html_e( 'Settings', 'redis-cache' ); ?>
             </a>
         </li>

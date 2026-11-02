@@ -1,18 +1,27 @@
-function updateVoiceValue() {
-  const voiceField = document.querySelector('#trinity_audio_voice_id.trinity-audio-metaboxes-element');
-  const languageField = document.querySelector('#trinity_audio_source_language');
-  const genderField = document.querySelector('#trinity_audio_gender_id');
+async function trinityMetaVoiceConfig() {
+  // WP Save button will save our data since we already update the form, so the voice post-lvel new data will just be sent to backend
+  const updateForm = async (formData) => {
+    if (!originalConfig) return;
+    if (JSON.stringify(originalConfig) === JSON.stringify(formData)) return;
 
-  if (!voiceField || !languageField || !genderField) return;
+    const {voiceId, code} = formData;
 
-  let languageVoices = languageField.selectedOptions?.[0].attributes['data-voices']?.value;
+    const voiceIdInputEl = document.getElementById('trinity_audio_voice_id');
+    voiceIdInputEl.value = voiceId; // set public voiceId
 
-  if (!languageVoices) return voiceField.value = '';
-  else languageVoices = JSON.parse(languageVoices);
+    // Good to save locale and not only voiceId, since if voiceId get removed, we have locale which we can rely on
+    const languageInputEl = document.getElementById('trinity_audio_source_language');
+    languageInputEl.value = code;
 
-  const currentGender = genderField.value;
+    console.debug(`Updating post-level voice config to voiceId: ${voiceId} and locale: ${code}`);
+  };
 
-  voiceField.value = languageVoices[currentGender] || languageVoices[Object.keys(languageVoices)[0]];
+  // keep the original config to avoid updating post-level config with the same data which is on unit's one, avoid spamming
+  let originalConfig;
+  waitForExpression(() => window.TRINITY_UNIT_CONFIGURATION?.getFormData).then(async () => {
+    originalConfig = await window.TRINITY_UNIT_CONFIGURATION.getFormData();
+    window.TRINITY_UNIT_CONFIGURATION.on('change', updateForm);
+  });
 }
 
 function trinitySendMetricMeta(metric, additionalData) {
@@ -22,8 +31,20 @@ function trinitySendMetricMeta(metric, additionalData) {
     data: {
       metric,
       additionalData,
-      action: window.TRINITY_WP_ADMIN.TRINITY_AUDIO_SEND_METRIC
+      action: window.TRINITY_WP_ADMIN.TRINITY_AUDIO_SEND_METRIC,
+      [window.TRINITY_WP_ADMIN.TRINITY_AUDIO_AJAX_NONCE_NAME]: window.TRINITY_WP_ADMIN.TRINITY_AUDIO_NONCES.send_metric
     }
+  });
+}
+
+function waitForExpression(expressionFn) {
+  return new Promise((resolve) => {
+    const t = setInterval(() => {
+      if (!!expressionFn()) {
+        resolve();
+        clearInterval(t);
+      }
+    }, 1000);
   });
 }
 
@@ -60,7 +81,8 @@ function trinitySendMetricMeta(metric, additionalData) {
       url: ajaxurl,
       data: {
         action: window.TRINITY_WP_ADMIN.TRINITY_AUDIO_REGENERATE_TOKENS,
-        post_id: postId
+        post_id: postId,
+        [window.TRINITY_WP_ADMIN.TRINITY_AUDIO_AJAX_NONCE_NAME]: window.TRINITY_WP_ADMIN.TRINITY_AUDIO_NONCES.regenerate_tokens
       },
       dataType: 'json',
       beforeSend: function () {
@@ -74,17 +96,12 @@ function trinitySendMetricMeta(metric, additionalData) {
         if (!response || response.error) return trinityShowStatus(id, 'error');
 
         // update token labels
-        const contentTitle = response[window.TRINITY_WP_METABOX.TRINITY_AUDIO_CONTENT_TITLE];
-        const content = response[window.TRINITY_WP_METABOX.TRINITY_AUDIO_CONTENT];
-        const contentTitleExcerpt = response[window.TRINITY_WP_METABOX.TRINITY_AUDIO_CONTENT_EXCERPT_TITLE];
-        const contentExcerpt = response[window.TRINITY_WP_METABOX.TRINITY_AUDIO_CONTENT_EXCERPT];
+        const postMetaMap = window.TRINITY_WP_METABOX.TRINITY_AUDIO_POST_META_MAP;
+        const titleContent = response[postMetaMap.title_content];
 
-        $('.trinity-meta-content-title').text(contentTitle || ERROR_GET_VALUE);
-        $('.trinity-meta-content').text(content || ERROR_GET_VALUE);
-        $('.trinity-meta-content-title-excerpt').text(contentTitleExcerpt || ERROR_GET_VALUE);
-        $('.trinity-meta-content-excerpt').text(contentExcerpt || ERROR_GET_VALUE);
+        $('.trinity-meta-title-content').text(titleContent || ERROR_GET_VALUE);
 
-        if (!contentTitle || !content || !contentTitleExcerpt || !contentExcerpt) return trinityShowStatus(id, 'error');
+        if (!titleContent) return trinityShowStatus(id, 'error');
 
         trinityShowStatus(id, 'success');
       }
@@ -95,5 +112,4 @@ function trinitySendMetricMeta(metric, additionalData) {
   }
 
   initTabPanel();
-  updateVoiceValue($);
 })(jQuery);

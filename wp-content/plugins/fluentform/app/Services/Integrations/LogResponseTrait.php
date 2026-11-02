@@ -2,6 +2,12 @@
 
 namespace FluentForm\App\Services\Integrations;
 
+
+/**
+ * @deprecated deprecated use FluentForm\App\Http\Controllers\GlobalIntegrationController;
+ */
+
+
 trait LogResponseTrait
 {
     protected function logResponse($response, $feed, $data, $form, $entryId, $status)
@@ -10,11 +16,27 @@ trait LogResponseTrait
             return;
         }
 
-        $prefix = 'fluentform_after_submission_api_response_';
+        $prefix = 'fluentform/after_submission_api_response_';
         $action = $prefix . $status;
 
-        do_action(
+        do_action_deprecated(
+            'fluentform_after_submission_api_response_'. $status,
+            [
+                $form,
+                $entryId,
+                $data,
+                $feed,
+                $response,
+                $this->getApiResponseMessage($response, $status)
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
             $action,
+            'Use ' . $action . ' instead of fluentform_after_submission_api_response_'. $status
+        );
+
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- Dynamic hook name constructed from deprecated hook
+        do_action(
+            $action, // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- Dynamic hook name constructed from deprecated hook
             $form,
             $entryId,
             $data,

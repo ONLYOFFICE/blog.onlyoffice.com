@@ -7,7 +7,11 @@ use WPGraphQL\SmartCache\Document\Grant;
 
 class Settings {
 
-	// set this to true to see these in wp-admin
+	/**
+	 * Set this to true to see these in wp-admin
+	 *
+	 * @return bool
+	 */
 	public static function show_in_admin() {
 		$display_admin = function_exists( 'get_graphql_setting' ) ? \get_graphql_setting( 'editor_display', false, 'graphql_persisted_queries_section' ) : false;
 		return ( 'on' === $display_admin );
@@ -23,8 +27,29 @@ class Settings {
 		// get the cache_toggle setting
 		$option = function_exists( 'get_graphql_setting' ) ? \get_graphql_setting( 'cache_toggle', false, 'graphql_cache_section' ) : false;
 
+		$enabled = ( 'on' === $option );
+
+		$enabled = apply_filters( 'wpgraphql_cache_wordpress_cache_enabled', (bool) $enabled );
+
 		// if there's no user logged in, and GraphQL Caching is enabled
-		return ( 'on' === $option );
+		return (bool) $enabled;
+	}
+
+	/**
+	 * Whether cache maps are enabled.
+	 *
+	 * Cache maps are used to track which nodes and list keys are associated with which queries,
+	 * and can be referenced to purge specific queries.
+	 *
+	 * Default behavior is to only enable building and storage of the cache maps if "WordPress Cache" (non-network cache) is enabled, but this can be filtered to be enabled without WordPress cache being enabled.
+	 *
+	 * @return bool
+	 */
+	public static function cache_maps_enabled() {
+
+		// Whether "WordPress Cache" (object/transient) cache is enabled
+		$enabled = self::caching_enabled();
+		return (bool) apply_filters( 'wpgraphql_cache_enable_cache_maps', (bool) $enabled );
 	}
 
 	/**
@@ -39,17 +64,34 @@ class Settings {
 		return ( 'on' === $option );
 	}
 
-	// Date/Time of the last time purge all happened through admin.
+	/**
+	 * Date/Time of the last time purge all happened through admin.
+	 *
+	 * @return string|false
+	 */
 	public static function caching_purge_timestamp() {
 		return function_exists( 'get_graphql_setting' ) ? \get_graphql_setting( 'purge_all_timestamp', false, 'graphql_cache_section' ) : false;
 	}
 
+	/**
+	 * The graphql url endpoint with leading slash.
+	 *
+	 * @return string
+	 */
 	public static function graphql_endpoint() {
 		$path = function_exists( 'get_graphql_setting' ) ? \get_graphql_setting( 'graphql_endpoint', 'graphql', 'graphql_general_settings' ) : 'graphql';
 		return '/' . $path;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function init() {
+
+		// Filter the graphql_query_analyzer setting to be on if WPGraphQL Smart Cache is active
+		add_filter( 'graphql_setting_field_config', [ $this, 'filter_graphql_query_analyzer_enabled_field' ], 10, 3 );
+		add_filter( 'graphql_get_setting_section_field_value', [ $this, 'filter_graphql_query_analyzer_enabled_value' ], 10, 5 );
+
 		// Add to the wp-graphql admin settings page
 		add_action(
 			'graphql_register_settings',
@@ -102,23 +144,71 @@ class Settings {
 					]
 				);
 
+				register_graphql_settings_field(
+					'graphql_persisted_queries_section',
+					[
+						'name'              => 'query_garbage_collect',
+						'label'             => __( 'Delete Old Queries', 'wp-graphql-smart-cache' ),
+						'desc'              => __( 'Toggle on to enable garbage collection (delete) of saved queries older than number of days specified below. Queries that are tagged in a "Group" will be excluded from garbage collection.', 'wp-graphql-smart-cache' ),
+						'type'              => 'checkbox',
+						'default'           => 'off',
+						'sanitize_callback' => function ( $value ) {
+							/**
+							 * When enable garbage collection,
+							 * schedule the garbage collection action/event to run once daily.
+							 * Otherwise remove it.
+							 */
+							if ( 'on' === $value ) {
+								if ( ! wp_next_scheduled( 'wpgraphql_smart_cache_query_garbage_collect' ) ) {
+									// Add scheduled job to run
+									$event_recurrence = apply_filters( 'wpgraphql_smart_cache_query_garbage_collect_recurrence', 'daily' );
+									wp_schedule_event( time() + 60, $event_recurrence, 'wpgraphql_smart_cache_query_garbage_collect' );
+								}
+							} else {
+								wp_clear_scheduled_hook( 'wpgraphql_smart_cache_query_garbage_collect' );
+							}
+							return $value;
+						},
+					]
+				);
+
+				register_graphql_settings_field(
+					'graphql_persisted_queries_section',
+					[
+						'name'              => 'query_garbage_collect_age',
+						'desc'              => __( 'Age, in number of days, of saved query when it will be removed', 'wp-graphql-smart-cache' ),
+						'type'              => 'number',
+						'default'           => '30',
+						'sanitize_callback' => function ( $value ) {
+							if ( 1 > $value || ! is_numeric( $value ) ) {
+								return function_exists( 'get_graphql_setting' ) ? \get_graphql_setting( 'query_garbage_collect_age', false, 'graphql_persisted_queries_section' ) : null;
+							}
+							return (int) $value;
+						},
+					]
+				);
+
 				// Add a tab section to the graphql admin settings page
 				register_graphql_settings_section(
 					'graphql_cache_section',
 					[
 						'title' => __( 'Cache', 'wp-graphql-smart-cache' ),
-						'desc'  => __( 'Caching and other settings related to improved performance of GraphQL queries.', 'wp-graphql-smart-cache' ),
 					]
 				);
 
 				register_graphql_settings_field(
 					'graphql_cache_section',
 					[
-						'name'    => 'log_purge_events',
-						'label'   => __( 'Log Purge Events', 'wp-graphql-smart-cache' ),
-						'desc'    => __( 'Enabling this option will log purge events to the error log. This can be helpful when debugging what events are leading to specific purge events.', 'wp-graphql-smart-cache' ),
-						'type'    => 'checkbox',
-						'default' => 'off',
+						'name'     => 'network_cache_notice',
+						'type'     => 'custom',
+						'callback' => static function ( array $args ) {
+							echo '
+							<h2>' . esc_html( __( 'Network Cache Settings', 'wp-graphql-smart-cache' ) ) . '</h2>
+							<p>' . esc_html( __( 'Below are settings that will modify behavior of the headers used by network cache clients such as varnish.', 'wp-graphql-smart-cache' ) ) . '</p>
+							<p>' . esc_html( __( 'Our recommendation is to use HTTP GET requests for queries and take advantage of the network cache (varnish, etc) and only enable and use Object Cache if GET requests are, for some reason, not an option.', 'wp-graphql-smart-cache' ) ) . '</p>
+
+							';
+						},
 					]
 				);
 
@@ -127,7 +217,7 @@ class Settings {
 					[
 						'name'              => 'global_max_age',
 						'label'             => __( 'Cache-Control max-age', 'wp-graphql-smart-cache' ),
-						'desc'              => __( 'If set, a Cache-Control header with max-age directive will be set for all GraphQL responses. Value should be an integer, greater or equal to zero, or blank to disable. A value of 0 indicates that requests should not be cached (use with caution).', 'wp-graphql-smart-cache' ),
+						'desc'              => __( 'Value, in seconds. (i.e. 600 = 10 minutes) If set, a Cache-Control header with max-age directive will be added to the responses GraphQL queries made by via non-authenticated HTTP GET request. Value should be an integer, greater or equal to zero. A value of 0 indicates that requests should not be cached (use with caution).', 'wp-graphql-smart-cache' ),
 						'type'              => 'number',
 						'sanitize_callback' => function ( $value ) {
 							if ( ! is_numeric( $value ) ) {
@@ -139,6 +229,23 @@ class Settings {
 							}
 
 							return (int) $value;
+						},
+					]
+				);
+
+				register_graphql_settings_field(
+					'graphql_cache_section',
+					[
+						'name'     => 'object_cache_notice',
+						'type'     => 'custom',
+						'callback' => static function ( array $args ) {
+							echo '
+							<hr>
+							<h2>' . esc_html( __( 'Object Cache Settings', 'wp-graphql-smart-cache' ) ) . '</h2>
+							<p>' . esc_html( __( 'Below are settings that will impact object cache behavior.', 'wp-graphql-smart-cache' ) ) . '</p>
+							<p><strong>' . esc_html( __( 'NOTE', 'wp-graphql-smart-cache' ) ) . ':</strong> ' . esc_html( __( 'GraphQL Object Cache is only recommended if network cache cannot be used. When possible, we recommend using HTTP GET requests and network caching layers such as varnish.', 'wp-graphql-smart-cache' ) ) . '</p>
+
+							';
 						},
 					]
 				);
@@ -174,9 +281,36 @@ class Settings {
 				register_graphql_settings_field(
 					'graphql_cache_section',
 					[
+						'name'     => 'debugging_notice',
+						'type'     => 'custom',
+						'callback' => static function ( array $args ) {
+							echo '
+							<hr>
+							<h2>' . esc_html( __( 'Debugging', 'wp-graphql-smart-cache' ) ) . '</h2>
+							<p>' . esc_html( __( 'Below are settings you can use to help debug', 'wp-graphql-smart-cache' ) ) . '</p>
+
+							';
+						},
+					]
+				);
+
+				register_graphql_settings_field(
+					'graphql_cache_section',
+					[
+						'name'    => 'log_purge_events',
+						'label'   => __( 'Log Purge Events', 'wp-graphql-smart-cache' ),
+						'desc'    => __( 'Enabling this option will log purge events to the error log. This can be helpful when debugging what events are leading to specific purge events.', 'wp-graphql-smart-cache' ),
+						'type'    => 'checkbox',
+						'default' => 'off',
+					]
+				);
+
+				register_graphql_settings_field(
+					'graphql_cache_section',
+					[
 						'name'              => 'purge_all',
 						'label'             => __( 'Purge Now!', 'wp-graphql-smart-cache' ),
-						'desc'              => __( 'Purge GraphQL Cache. Select this box and click the save button to purge all responses stored in the GraphQL Cache.', 'wp-graphql-smart-cache' ),
+						'desc'              => __( 'Purge GraphQL Cache. Select this box and click the save button to purge all responses stored in the GraphQL Cache. This should purge network caches and object caches (if enabled) for GraphQL Queries.', 'wp-graphql-smart-cache' ),
 						'type'              => 'checkbox',
 						'default'           => 'off',
 						'sanitize_callback' => function ( $value ) {
@@ -219,4 +353,48 @@ class Settings {
 		);
 	}
 
+	/**
+	 * Filter the config for the query_analyzer_enabled setting
+	 *
+	 * @param array<string,mixed>  $field_config The field config for the setting
+	 * @param string               $field_name   The name of the field (unfilterable in the config)
+	 * @param string               $section      The slug of the section the field is registered to
+	 *
+	 * @return mixed
+	 */
+	public function filter_graphql_query_analyzer_enabled_field( $field_config, $field_name, $section ) {
+		if ( 'query_analyzer_enabled' !== $field_name || 'graphql_general_settings' !== $section ) {
+			return $field_config;
+		}
+
+		$field_config['value']    = 'on';
+		$field_config['disabled'] = true;
+		$field_config['default']  = 'on';
+
+		if ( ! \WPGraphQL::debug() ) {
+			$field_config['desc'] = $field_config['desc'] . ' (<strong>' . __( 'Force enabled by WPGraphQL Smart Cache to properly support cache tagging and invalidation.', 'wp-graphql-smart-cache' ) . '</strong>)';
+		}
+
+		return $field_config;
+	}
+
+	/**
+	 * Filter the value of the query_analyzer_enabled setting
+	 *
+	 * @param mixed               $value          The value of the field
+	 * @param mixed               $default_value  The default value if there is no value set
+	 * @param string              $option_name    The name of the option
+	 * @param array<string,mixed> $section_fields The setting values within the section
+	 * @param string              $section_name   The name of the section the setting belongs to
+	 *
+	 * @return mixed|string
+	 */
+	public function filter_graphql_query_analyzer_enabled_value( $value, $default_value, string $option_name, $section_fields, $section_name ) {
+		if ( 'query_analyzer_enabled' !== $option_name ) {
+			return $value;
+		}
+
+		// graphql_query_analyzer needs to be on for WPGraphQL Smart Cache to properly tag and invalidate caches
+		return 'on';
+	}
 }

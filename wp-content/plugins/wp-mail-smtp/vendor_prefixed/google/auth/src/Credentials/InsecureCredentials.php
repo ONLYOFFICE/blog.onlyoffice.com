@@ -23,7 +23,7 @@ use WPMailSMTP\Vendor\Google\Auth\FetchAuthTokenInterface;
  * This is useful for APIs which do not require authentication, for local
  * service emulators, and for testing.
  */
-class InsecureCredentials implements \WPMailSMTP\Vendor\Google\Auth\FetchAuthTokenInterface
+class InsecureCredentials implements FetchAuthTokenInterface
 {
     /**
      * @var array{access_token:string}
@@ -35,7 +35,7 @@ class InsecureCredentials implements \WPMailSMTP\Vendor\Google\Auth\FetchAuthTok
      * @param callable $httpHandler
      * @return array{access_token:string} A set of auth related metadata
      */
-    public function fetchAuthToken(callable $httpHandler = null)
+    public function fetchAuthToken(?callable $httpHandler = null)
     {
         return $this->token;
     }

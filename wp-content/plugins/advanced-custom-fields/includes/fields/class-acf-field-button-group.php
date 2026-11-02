@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! class_exists( 'acf_field_button_group' ) ) :
 
@@ -6,17 +15,16 @@ if ( ! class_exists( 'acf_field_button_group' ) ) :
 
 
 		/**
-		 *  initialize()
+		 * initialize()
 		 *
-		 *  This function will setup the field type data
+		 * This function will setup the field type data
 		 *
-		 *  @date    18/9/17
-		 *  @since   5.6.3
+		 * @date    18/9/17
+		 * @since   5.6.3
 		 *
-		 *  @param   n/a
-		 *  @return  n/a
+		 * @param   n/a
+		 * @return  n/a
 		 */
-
 		function initialize() {
 
 			// vars
@@ -33,23 +41,17 @@ if ( ! class_exists( 'acf_field_button_group' ) ) :
 				'return_format' => 'value',
 				'layout'        => 'horizontal',
 			);
-
 		}
 
 
 		/**
-		 *  render_field()
+		 * Creates the field's input HTML
 		 *
-		 *  Creates the field's input HTML
+		 * @since   5.6.3
 		 *
-		 *  @date    18/9/17
-		 *  @since   5.6.3
-		 *
-		 *  @param   array $field The field settings array
-		 *  @return  n/a
+		 * @param   array $field The field settings array
 		 */
-
-		function render_field( $field ) {
+		public function render_field( $field ) {
 
 			// vars
 			$html     = '';
@@ -73,34 +75,51 @@ if ( ! class_exists( 'acf_field_button_group' ) ) :
 
 				// append
 				$buttons[] = array(
-					'name'    => $field['name'],
-					'value'   => $_value,
-					'label'   => $_label,
-					'checked' => $checked,
+					'name'         => $field['name'],
+					'value'        => $_value,
+					'label'        => $_label,
+					'checked'      => $checked,
+					'button_group' => true,
 				);
-
 			}
+
 
 			// maybe select initial value
 			if ( ! $field['allow_null'] && $selected === null ) {
 				$buttons[0]['checked'] = true;
 			}
 
-			// div
-			$div = array( 'class' => 'acf-button-group' );
+			// Ensure roving tabindex when allow_null is enabled and no selection yet.
+			if ( $field['allow_null'] && $selected === null && ! empty( $buttons ) ) {
+				$buttons[0]['tabindex'] = '0';
+			}
 
-			if ( $field['layout'] == 'vertical' ) {
-				$div['class'] .= ' -vertical'; }
+			// div
+			$div = array(
+				'class' => 'acf-button-group',
+				'role'  => 'radiogroup',
+			);
+
+			// Add aria-labelledby if field has an ID for proper screen reader announcement
+			if ( ! empty( $field['id'] ) ) {
+				$div['aria-labelledby'] = $field['id'] . '-label';
+			}
+
+			if ( 'vertical' === $field['layout'] ) {
+				$div['class'] .= ' -vertical';
+			}
 			if ( $field['class'] ) {
-				$div['class'] .= ' ' . $field['class']; }
+				$div['class'] .= ' ' . $field['class'];
+			}
 			if ( $field['allow_null'] ) {
-				$div['data-allow_null'] = 1; }
+				$div['data-allow_null'] = 1;
+			}
 
 			// hdden input
 			$html .= acf_get_hidden_input( array( 'name' => $field['name'] ) );
 
 			// open
-			$html .= '<div ' . acf_esc_attr( $div ) . '>';
+			$html .= '<div ' . acf_esc_attrs( $div ) . '>';
 
 			// loop
 			foreach ( $buttons as $button ) {
@@ -114,28 +133,26 @@ if ( ! class_exists( 'acf_field_button_group' ) ) :
 
 				// append
 				$html .= acf_get_radio_input( $button );
-
 			}
 
 			// close
 			$html .= '</div>';
 
 			// return
-			echo $html;
-
+			echo $html; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- safe HTML, escaped by input building functions.
 		}
 
 
 		/**
-		 *  render_field_settings()
+		 * render_field_settings()
 		 *
-		 *  Creates the field's settings HTML
+		 * Creates the field's settings HTML
 		 *
-		 *  @date    18/9/17
-		 *  @since   5.6.3
+		 * @date    18/9/17
+		 * @since   5.6.3
 		 *
-		 *  @param   array $field The field settings array
-		 *  @return  n/a
+		 * @param   array $field The field settings array
+		 * @return  n/a
 		 */
 		function render_field_settings( $field ) {
 			// Encode choices (convert from array).
@@ -176,7 +193,6 @@ if ( ! class_exists( 'acf_field_button_group' ) ) :
 					),
 				)
 			);
-
 		}
 
 		/**
@@ -191,7 +207,7 @@ if ( ! class_exists( 'acf_field_button_group' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Allow Null?', 'acf' ),
+					'label'        => __( 'Allow Null', 'acf' ),
 					'instructions' => '',
 					'name'         => 'allow_null',
 					'type'         => 'true_false',
@@ -225,82 +241,67 @@ if ( ! class_exists( 'acf_field_button_group' ) ) :
 			);
 		}
 
-		/*
-		*  update_field()
-		*
-		*  This filter is appied to the $field before it is saved to the database
-		*
-		*  @date    18/9/17
-		*  @since   5.6.3
-		*
-		*  @param   array $field The field array holding all the field options
-		*  @return  $field
-		*/
-
+		/**
+		 * This filter is appied to the $field before it is saved to the database
+		 *
+		 * @date    18/9/17
+		 * @since   5.6.3
+		 *
+		 * @param   array $field The field array holding all the field options
+		 * @return  $field
+		 */
 		function update_field( $field ) {
 
 			return acf_get_field_type( 'radio' )->update_field( $field );
 		}
 
 
-		/*
-		*  load_value()
-		*
-		*  This filter is appied to the $value after it is loaded from the db
-		*
-		*  @date    18/9/17
-		*  @since   5.6.3
-		*
-		*  @param   mixed   $value      The value found in the database
-		*  @param   mixed   $post_id    The post ID from which the value was loaded from
-		*  @param   array   $field      The field array holding all the field options
-		*  @return  $value
-		*/
-
+		/**
+		 * This filter is appied to the $value after it is loaded from the db
+		 *
+		 * @date    18/9/17
+		 * @since   5.6.3
+		 *
+		 * @param   mixed $value   The value found in the database
+		 * @param   mixed $post_id The post ID from which the value was loaded from
+		 * @param   array $field   The field array holding all the field options
+		 * @return  $value
+		 */
 		function load_value( $value, $post_id, $field ) {
 
 			return acf_get_field_type( 'radio' )->load_value( $value, $post_id, $field );
-
 		}
 
 
-		/*
-		*  translate_field
-		*
-		*  This function will translate field settings
-		*
-		*  @date    18/9/17
-		*  @since   5.6.3
-		*
-		*  @param   array $field The field array holding all the field options
-		*  @return  $field
-		*/
-
+		/**
+		 * This function will translate field settings
+		 *
+		 * @date    18/9/17
+		 * @since   5.6.3
+		 *
+		 * @param   array $field The field array holding all the field options
+		 * @return  $field
+		 */
 		function translate_field( $field ) {
 
 			return acf_get_field_type( 'radio' )->translate_field( $field );
-
 		}
 
 
-		/*
-		*  format_value()
-		*
-		*  This filter is appied to the $value after it is loaded from the db and before it is returned to the template
-		*
-		*  @date    18/9/17
-		*  @since   5.6.3
-		*
-		*  @param   mixed   $value      The value found in the database
-		*  @param   mixed   $post_id    The post ID from which the value was loaded from
-		*  @param   array   $field      The field array holding all the field options
-		*  @return  $value
-		*/
-
+		/**
+		 * This filter is appied to the $value after it is loaded from the db and before it is returned to the template
+		 *
+		 * @date    18/9/17
+		 * @since   5.6.3
+		 *
+		 * @param   mixed $value   The value found in the database
+		 * @param   mixed $post_id The post ID from which the value was loaded from
+		 * @param   array $field   The field array holding all the field options
+		 * @return  $value
+		 */
 		function format_value( $value, $post_id, $field ) {
 
 			return acf_get_field_type( 'radio' )->format_value( $value, $post_id, $field );
-
 		}
 
 		/**
@@ -316,17 +317,7 @@ if ( ! class_exists( 'acf_field_button_group' ) ) :
 				$schema['default'] = $field['default_value'];
 			}
 
-			/**
-			 * If a user has defined keys for the buttons,
-			 * we should use the keys for the available options to POST to,
-			 * since they are what is displayed in GET requests.
-			 */
-			$button_keys = array_diff(
-				array_keys( $field['choices'] ),
-				array_values( $field['choices'] )
-			);
-
-			$schema['enum']   = empty( $button_keys ) ? $field['choices'] : $button_keys;
+			$schema['enum']   = acf_get_field_type( 'select' )->format_rest_choices( $field['choices'] );
 			$schema['enum'][] = null;
 
 			// Allow null via UI will value to empty string.
@@ -337,12 +328,19 @@ if ( ! class_exists( 'acf_field_button_group' ) ) :
 			return $schema;
 		}
 
+		/**
+		 * Returns an array of JSON-LD Property output types that are supported by this field type.
+		 *
+		 * @since 6.8
+		 *
+		 * @return string[]
+		 */
+		public function get_jsonld_output_types(): array {
+			return array( 'Text' );
+		}
 	}
 
 
 	// initialize
 	acf_register_field_type( 'acf_field_button_group' );
-
 endif; // class_exists check
-
-

@@ -40,12 +40,13 @@ class UsersSettingsCseIdentities extends \WPMailSMTP\Vendor\Google\Service\Resou
      * @param CseIdentity $postBody
      * @param array $optParams Optional parameters.
      * @return CseIdentity
+     * @throws \Google\Service\Exception
      */
-    public function create($userId, \WPMailSMTP\Vendor\Google\Service\Gmail\CseIdentity $postBody, $optParams = [])
+    public function create($userId, CseIdentity $postBody, $optParams = [])
     {
         $params = ['userId' => $userId, 'postBody' => $postBody];
         $params = \array_merge($params, $optParams);
-        return $this->call('create', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\CseIdentity::class);
+        return $this->call('create', [$params], CseIdentity::class);
     }
     /**
      * Deletes a client-side encryption identity. The authenticated user can no
@@ -58,6 +59,7 @@ class UsersSettingsCseIdentities extends \WPMailSMTP\Vendor\Google\Service\Resou
      * @param string $cseEmailAddress The primary email address associated with the
      * client-side encryption identity configuration that's removed.
      * @param array $optParams Optional parameters.
+     * @throws \Google\Service\Exception
      */
     public function delete($userId, $cseEmailAddress, $optParams = [])
     {
@@ -74,12 +76,13 @@ class UsersSettingsCseIdentities extends \WPMailSMTP\Vendor\Google\Service\Resou
      * client-side encryption identity configuration that's retrieved.
      * @param array $optParams Optional parameters.
      * @return CseIdentity
+     * @throws \Google\Service\Exception
      */
     public function get($userId, $cseEmailAddress, $optParams = [])
     {
         $params = ['userId' => $userId, 'cseEmailAddress' => $cseEmailAddress];
         $params = \array_merge($params, $optParams);
-        return $this->call('get', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\CseIdentity::class);
+        return $this->call('get', [$params], CseIdentity::class);
     }
     /**
      * Lists the client-side encrypted identities for an authenticated user.
@@ -95,12 +98,13 @@ class UsersSettingsCseIdentities extends \WPMailSMTP\Vendor\Google\Service\Resou
      * identities to return. If the token is not supplied, then the API will return
      * the first page of results.
      * @return ListCseIdentitiesResponse
+     * @throws \Google\Service\Exception
      */
     public function listUsersSettingsCseIdentities($userId, $optParams = [])
     {
         $params = ['userId' => $userId];
         $params = \array_merge($params, $optParams);
-        return $this->call('list', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\ListCseIdentitiesResponse::class);
+        return $this->call('list', [$params], ListCseIdentitiesResponse::class);
     }
     /**
      * Associates a different key pair with an existing client-side encryption
@@ -115,13 +119,14 @@ class UsersSettingsCseIdentities extends \WPMailSMTP\Vendor\Google\Service\Resou
      * @param CseIdentity $postBody
      * @param array $optParams Optional parameters.
      * @return CseIdentity
+     * @throws \Google\Service\Exception
      */
-    public function patch($userId, $emailAddress, \WPMailSMTP\Vendor\Google\Service\Gmail\CseIdentity $postBody, $optParams = [])
+    public function patch($userId, $emailAddress, CseIdentity $postBody, $optParams = [])
     {
         $params = ['userId' => $userId, 'emailAddress' => $emailAddress, 'postBody' => $postBody];
         $params = \array_merge($params, $optParams);
-        return $this->call('patch', [$params], \WPMailSMTP\Vendor\Google\Service\Gmail\CseIdentity::class);
+        return $this->call('patch', [$params], CseIdentity::class);
     }
 }
 // Adding a class alias for backwards compatibility with the previous class name.
-\class_alias(\WPMailSMTP\Vendor\Google\Service\Gmail\Resource\UsersSettingsCseIdentities::class, 'WPMailSMTP\\Vendor\\Google_Service_Gmail_Resource_UsersSettingsCseIdentities');
+\class_alias(UsersSettingsCseIdentities::class, 'WPMailSMTP\\Vendor\\Google_Service_Gmail_Resource_UsersSettingsCseIdentities');

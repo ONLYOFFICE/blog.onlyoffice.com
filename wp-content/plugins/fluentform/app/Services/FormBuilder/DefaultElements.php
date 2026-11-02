@@ -1,6 +1,9 @@
 <?php
 
-$defaultElements = [
+defined('ABSPATH') or die;
+
+$fluentformDefaultGlobalMessages = \FluentForm\App\Helpers\Helper::getAllGlobalDefaultMessages();
+$fluentformDefaultElements = [
     'general' => [
         'input_name' => [
             'index'      => 0,
@@ -13,24 +16,8 @@ $defaultElements = [
                 'container_class'    => '',
                 'admin_field_label'  => 'Name',
                 'conditional_logics' => [],
-                'label_placement'    => 'top',
             ],
             'fields' => [
-                //                'title' => array(
-                //                    'attributes' => array(
-                //                    ),
-                //                    'settings' => array(
-                //                        'disabled' => false,
-                //                        'container_class' => '',
-                //                        'label' => __('Title', 'fluentform'),
-                //                        'visible' => false,
-                //                        'validation_rules' => array(),
-                //                        'calc_value_status' => false,
-                //                    ),
-                //                    'editor_options' => array(
-                //                        'template' => 'inputText'
-                //                    ),
-                //                ),
                 'first_name' => [
                     'element'    => 'input_text',
                     'attributes' => [
@@ -39,7 +26,7 @@ $defaultElements = [
                         'value'       => '',
                         'id'          => '',
                         'class'       => '',
-                        'placeholder' => __('First Name', 'fluentform'),
+                        'placeholder' => __('Enter Your First Name', 'fluentform'),
                         'maxlength'   => '',
                     ],
                     'settings' => [
@@ -47,10 +34,39 @@ $defaultElements = [
                         'label'            => __('First Name', 'fluentform'),
                         'help_message'     => '',
                         'visible'          => true,
+                        'label_placement'   => 'top',
+                        'label_placement_options'   => [
+                            [
+                                'value' => '',
+                                'label' => __('Default', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'top',
+                                'label' => __('Top', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'right',
+                                'label' => __('Right', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'bottom',
+                                'label' => __('Bottom', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'left',
+                                'label' => __('Left', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'hide_label',
+                                'label' => __('Hidden', 'fluentform'),
+                            ],
+                        ],
                         'validation_rules' => [
                             'required' => [
                                 'value'   => false,
-                                'message' => __('This field is required', 'fluentform'),
+                                'message' => $fluentformDefaultGlobalMessages['required'],
+                                'global_message' => $fluentformDefaultGlobalMessages['required'],
+                                'global'  => true,
                             ],
                         ],
                         'conditional_logics' => [],
@@ -67,7 +83,7 @@ $defaultElements = [
                         'value'       => '',
                         'id'          => '',
                         'class'       => '',
-                        'placeholder' => __('Middle Name', 'fluentform'),
+                        'placeholder' => __('Enter Your Middle Name', 'fluentform'),
                         'required'    => false,
                         'maxlength'   => '',
                     ],
@@ -76,11 +92,40 @@ $defaultElements = [
                         'label'            => __('Middle Name', 'fluentform'),
                         'help_message'     => '',
                         'error_message'    => '',
+                        'label_placement'   => 'top',
+                        'label_placement_options'   => [
+                            [
+                                'value' => '',
+                                'label' => __('Default', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'top',
+                                'label' => __('Top', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'right',
+                                'label' => __('Right', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'bottom',
+                                'label' => __('Bottom', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'left',
+                                'label' => __('Left', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'hide_label',
+                                'label' => __('Hidden', 'fluentform'),
+                            ],
+                        ],
                         'visible'          => false,
                         'validation_rules' => [
                             'required' => [
                                 'value'   => false,
-                                'message' => __('This field is required', 'fluentform'),
+                                'message' => $fluentformDefaultGlobalMessages['required'],
+                                'global_message' => $fluentformDefaultGlobalMessages['required'],
+                                'global'  => true,
                             ],
                         ],
                         'conditional_logics' => [],
@@ -97,7 +142,7 @@ $defaultElements = [
                         'value'       => '',
                         'id'          => '',
                         'class'       => '',
-                        'placeholder' => __('Last Name', 'fluentform'),
+                        'placeholder' => __('Enter Your Last Name', 'fluentform'),
                         'required'    => false,
                         'maxlength'   => '',
                     ],
@@ -106,11 +151,40 @@ $defaultElements = [
                         'label'            => __('Last Name', 'fluentform'),
                         'help_message'     => '',
                         'error_message'    => '',
+                        'label_placement'   => 'top',
+                        'label_placement_options'   => [
+                            [
+                                'value' => '',
+                                'label' => __('Default', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'top',
+                                'label' => __('Top', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'right',
+                                'label' => __('Right', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'bottom',
+                                'label' => __('Bottom', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'left',
+                                'label' => __('Left', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'hide_label',
+                                'label' => __('Hidden', 'fluentform'),
+                            ],
+                        ],
                         'visible'          => true,
                         'validation_rules' => [
                             'required' => [
                                 'value'   => false,
-                                'message' => __('This field is required', 'fluentform'),
+                                'message' => $fluentformDefaultGlobalMessages['required'],
+                                'global_message' => $fluentformDefaultGlobalMessages['required'],
+                                'global'  => true,
                             ],
                         ],
                         'conditional_logics' => [],
@@ -121,7 +195,7 @@ $defaultElements = [
                 ],
             ],
             'editor_options' => [
-                'title'      => 'Name Fields',
+                'title'      => __('Name Fields', 'fluentform'),
                 'element'    => 'name-fields',
                 'icon_class' => 'ff-edit-name',
                 'template'   => 'nameFields',
@@ -149,11 +223,15 @@ $defaultElements = [
                 'validation_rules'  => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                     'email' => [
                         'value'   => true,
-                        'message' => __('This field must contain a valid email', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['email'],
+                        'global_message' => $fluentformDefaultGlobalMessages['email'],
+                        'global'  => true
                     ],
                 ],
                 'conditional_logics'        => [],
@@ -161,7 +239,7 @@ $defaultElements = [
                 'unique_validation_message' => __('Email address need to be unique.', 'fluentform'),
             ],
             'editor_options' => [
-                'title'      => __('Email Address', 'fluentform'),
+                'title'      => __('Email', 'fluentform'),
                 'icon_class' => 'ff-edit-email',
                 'template'   => 'inputText',
             ],
@@ -188,7 +266,9 @@ $defaultElements = [
                 'validation_rules'  => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                 ],
                 'conditional_logics'        => [],
@@ -221,12 +301,15 @@ $defaultElements = [
                 'temp_mask'               => '',
                 'prefix_label'            => '',
                 'suffix_label'            => '',
+                'mobile_keyboard_type'    => '',
                 'data-mask-reverse'       => 'no',
                 'data-clear-if-not-match' => 'no',
                 'validation_rules'        => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                 ],
                 'conditional_logics' => [],
@@ -256,10 +339,14 @@ $defaultElements = [
                 'admin_field_label' => '',
                 'label_placement'   => '',
                 'help_message'      => '',
+                'prefix_label'      => '',
+                'suffix_label'      => '',
                 'validation_rules'  => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                 ],
                 'conditional_logics' => [],
@@ -282,6 +369,8 @@ $defaultElements = [
             'settings' => [
                 'label'                 => __('Address', 'fluentform'),
                 'enable_g_autocomplete' => 'no',
+                'autocomplete_provider' => 'none',
+                'enable_auto_locate'    => 'on_click',
                 'admin_field_label'     => 'Address',
                 'field_order'           => [
                     ['id' => 1, 'value' => 'address_line_1'],
@@ -307,13 +396,42 @@ $defaultElements = [
                     'settings' => [
                         'container_class'   => '',
                         'label'             => __('Address Line 1', 'fluentform'),
+                        'label_placement'   => '',
+                        'label_placement_options'   => [
+                            [
+                                'value' => '',
+                                'label' => __('Default', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'top',
+                                'label' => __('Top', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'right',
+                                'label' => __('Right', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'bottom',
+                                'label' => __('Bottom', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'left',
+                                'label' => __('Left', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'hide_label',
+                                'label' => __('Hidden', 'fluentform'),
+                            ],
+                        ],
                         'admin_field_label' => '',
                         'help_message'      => '',
                         'visible'           => true,
                         'validation_rules'  => [
                             'required' => [
                                 'value'   => false,
-                                'message' => __('This field is required', 'fluentform'),
+                                'message' => $fluentformDefaultGlobalMessages['required'],
+                                'global_message' => $fluentformDefaultGlobalMessages['required'],
+                                'global'  => true,
                             ],
                         ],
                         'conditional_logics' => [],
@@ -335,13 +453,42 @@ $defaultElements = [
                     'settings' => [
                         'container_class'   => '',
                         'label'             => __('Address Line 2', 'fluentform'),
+                        'label_placement'   => '',
+                        'label_placement_options'   => [
+                            [
+                                'value' => '',
+                                'label' => __('Default', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'top',
+                                'label' => __('Top', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'right',
+                                'label' => __('Right', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'bottom',
+                                'label' => __('Bottom', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'left',
+                                'label' => __('Left', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'hide_label',
+                                'label' => __('Hide Label', 'fluentform'),
+                            ],
+                        ],
                         'admin_field_label' => '',
                         'help_message'      => '',
                         'visible'           => true,
                         'validation_rules'  => [
                             'required' => [
                                 'value'   => false,
-                                'message' => __('This field is required', 'fluentform'),
+                                'message' => $fluentformDefaultGlobalMessages['required'],
+                                'global_message' => $fluentformDefaultGlobalMessages['required'],
+                                'global'  => true,
                             ],
                         ],
                         'conditional_logics' => [],
@@ -363,6 +510,33 @@ $defaultElements = [
                     'settings' => [
                         'container_class'   => '',
                         'label'             => __('City', 'fluentform'),
+                        'label_placement'   => '',
+                        'label_placement_options'   => [
+                            [
+                                'value' => '',
+                                'label' => __('Default', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'top',
+                                'label' => __('Top', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'right',
+                                'label' => __('Right', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'bottom',
+                                'label' => __('Bottom', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'left',
+                                'label' => __('Left', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'hide_label',
+                                'label' => __('Hide Label', 'fluentform'),
+                            ],
+                        ],
                         'admin_field_label' => '',
                         'help_message'      => '',
                         'error_message'     => '',
@@ -370,7 +544,9 @@ $defaultElements = [
                         'validation_rules'  => [
                             'required' => [
                                 'value'   => false,
-                                'message' => __('This field is required', 'fluentform'),
+                                'message' => $fluentformDefaultGlobalMessages['required'],
+                                'global_message' => $fluentformDefaultGlobalMessages['required'],
+                                'global'  => true,
                             ],
                         ],
                         'conditional_logics' => [],
@@ -392,6 +568,33 @@ $defaultElements = [
                     'settings' => [
                         'container_class'   => '',
                         'label'             => __('State', 'fluentform'),
+                        'label_placement'   => '',
+                        'label_placement_options'   => [
+                            [
+                                'value' => '',
+                                'label' => __('Default', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'top',
+                                'label' => __('Top', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'right',
+                                'label' => __('Right', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'bottom',
+                                'label' => __('Bottom', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'left',
+                                'label' => __('Left', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'hide_label',
+                                'label' => __('Hide Label', 'fluentform'),
+                            ],
+                        ],
                         'admin_field_label' => '',
                         'help_message'      => '',
                         'error_message'     => '',
@@ -399,7 +602,9 @@ $defaultElements = [
                         'validation_rules'  => [
                             'required' => [
                                 'value'   => false,
-                                'message' => __('This field is required', 'fluentform'),
+                                'message' => $fluentformDefaultGlobalMessages['required'],
+                                'global_message' => $fluentformDefaultGlobalMessages['required'],
+                                'global'  => true,
                             ],
                         ],
                         'conditional_logics' => [],
@@ -422,6 +627,33 @@ $defaultElements = [
                     'settings' => [
                         'container_class'   => '',
                         'label'             => __('Zip Code', 'fluentform'),
+                        'label_placement'   => '',
+                        'label_placement_options'   => [
+                            [
+                                'value' => '',
+                                'label' => __('Default', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'top',
+                                'label' => __('Top', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'right',
+                                'label' => __('Right', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'bottom',
+                                'label' => __('Bottom', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'left',
+                                'label' => __('Left', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'hide_label',
+                                'label' => __('Hide Label', 'fluentform'),
+                            ],
+                        ],
                         'admin_field_label' => '',
                         'help_message'      => '',
                         'error_message'     => '',
@@ -429,7 +661,9 @@ $defaultElements = [
                         'validation_rules'  => [
                             'required' => [
                                 'value'   => false,
-                                'message' => __('This field is required', 'fluentform'),
+                                'message' => $fluentformDefaultGlobalMessages['required'],
+                                'global_message' => $fluentformDefaultGlobalMessages['required'],
+                                'global'  => true,
                             ],
                         ],
                         'conditional_logics' => [],
@@ -451,6 +685,33 @@ $defaultElements = [
                     'settings' => [
                         'container_class'   => '',
                         'label'             => __('Country', 'fluentform'),
+                        'label_placement'   => '',
+                        'label_placement_options'   => [
+                            [
+                                'value' => '',
+                                'label' => __('Default', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'top',
+                                'label' => __('Top', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'right',
+                                'label' => __('Right', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'bottom',
+                                'label' => __('Bottom', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'left',
+                                'label' => __('Left', 'fluentform'),
+                            ],
+                            [
+                                'value' => 'hide_label',
+                                'label' => __('Hide Label', 'fluentform'),
+                            ],
+                        ],
                         'admin_field_label' => '',
                         'help_message'      => '',
                         'error_message'     => '',
@@ -458,7 +719,9 @@ $defaultElements = [
                         'validation_rules'  => [
                             'required' => [
                                 'value'   => false,
-                                'message' => __('This field is required', 'fluentform'),
+                                'message' => $fluentformDefaultGlobalMessages['required'],
+                                'global_message' => $fluentformDefaultGlobalMessages['required'],
+                                'global'  => true,
                             ],
                         ],
                         'country_list' => [
@@ -473,7 +736,7 @@ $defaultElements = [
                         'UK' => 'United Kingdom',
                     ],
                     'editor_options' => [
-                        'title'      => 'Country List',
+                        'title'      => __('Country List', 'fluentform'),
                         'element'    => 'country-list',
                         'icon_class' => 'icon-text-width',
                         'template'   => 'selectCountry',
@@ -492,7 +755,7 @@ $defaultElements = [
             'element'    => 'input_number',
             'attributes' => [
                 'type'        => 'number',
-                'name'        => 'numeric-field',
+                'name'        => 'numeric_field',
                 'value'       => '',
                 'id'          => '',
                 'class'       => '',
@@ -508,26 +771,37 @@ $defaultElements = [
                 'prefix_label'      => '',
                 'suffix_label'      => '',
                 'numeric_formatter' => '',
+                'mobile_keyboard_type_number' => '',
                 'validation_rules'  => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                     'numeric' => [
                         'value'   => true,
-                        'message' => __('This field must contain numeric value', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['numeric'],
+                        'global_message' => $fluentformDefaultGlobalMessages['numeric'],
+                        'global'  => true
                     ],
                     'min' => [
                         'value'   => '',
-                        'message' => __('Minimum value is ', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['min'],
+                        'global_message' => $fluentformDefaultGlobalMessages['min'],
+                        'global'  => true
                     ],
                     'max' => [
                         'value'   => '',
-                        'message' => __('Maximum value is ', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['max'],
+                        'global_message' => $fluentformDefaultGlobalMessages['max'],
+                        'global'  => true
                     ],
                     'digits' => [
                         'value'   => '',
-                        'message' => __('The number of digits has to be ', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['digits'],
+                        'global_message' => $fluentformDefaultGlobalMessages['digits'],
+                        'global'  => true
                     ],
                 ],
                 'conditional_logics'   => [],
@@ -574,11 +848,14 @@ $defaultElements = [
                 'calc_value_status'  => false,
                 'enable_image_input' => false,
                 'values_visible'     => false,
+                'enable_option_groups' => 'no',
                 'enable_select_2'    => 'no',
                 'validation_rules'   => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                 ],
                 'conditional_logics' => [],
@@ -625,10 +902,16 @@ $defaultElements = [
                 'calc_value_status'  => false,
                 'enable_image_input' => false,
                 'values_visible'     => false,
+                'randomize_options'  => 'no',
+                'enable_other_option' => 'no',
+                'other_option_label' => __('Other', 'fluentform'),
+                'other_option_placeholder' => __('Please specify...', 'fluentform'),
                 'validation_rules'   => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                 ],
                 'conditional_logics' => [],
@@ -681,17 +964,22 @@ $defaultElements = [
                 'enable_image_input' => false,
                 'values_visible'     => false,
                 'randomize_options'  => 'no',
+                'enable_other_option' => 'no',
+                'other_option_label' => __('Other', 'fluentform'),
+                'other_option_placeholder' => __('Please specify...', 'fluentform'),
                 'validation_rules'   => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                 ],
                 'conditional_logics' => [],
                 'layout_class'       => '',
             ],
             'editor_options' => [
-                'title'      => __('Check Box', 'fluentform'),
+                'title'      => __('Checkbox', 'fluentform'),
                 'icon_class' => 'ff-edit-checkbox-1',
                 'template'   => 'inputCheckable',
             ],
@@ -730,11 +1018,14 @@ $defaultElements = [
                 ],
                 'calc_value_status'  => false,
                 'enable_image_input' => false,
+                'enable_option_groups' => 'no',
                 'randomize_options'  => 'no',
                 'validation_rules'   => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                 ],
                 'conditional_logics' => [],
@@ -762,14 +1053,20 @@ $defaultElements = [
                 'admin_field_label' => '',
                 'label_placement'   => '',
                 'help_message'      => '',
+                'prefix_label'      => '',
+                'suffix_label'      => '',
                 'validation_rules'  => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                     'url' => [
                         'value'   => true,
-                        'message' => __('This field must contain a valid url', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['url'],
+                        'global_message' => $fluentformDefaultGlobalMessages['url'],
+                        'global'  => true
                     ],
                 ],
                 'conditional_logics' => [],
@@ -803,7 +1100,9 @@ $defaultElements = [
                 'validation_rules'  => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                 ],
                 'conditional_logics' => [],
@@ -834,23 +1133,38 @@ $defaultElements = [
                 'upload_file_location' => 'default',
                 'file_location_type'   => 'follow_global_settings',
                 'help_message'         => '',
+                'upload_bttn_ui'       => '',
+                'enable_crop'          => 'no',
+                'crop_mode'            => 'ratio',
+                'crop_ratio'           => 'free',
+                'enforce_image_dimensions' => 'no',
+                'crop_width'           => '',
+                'crop_height'          => '',
                 'validation_rules'     => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                     'max_file_size' => [
                         'value'      => 1048576,
                         '_valueFrom' => 'MB',
-                        'message'    => __('Maximum file size limit is 1MB', 'fluentform'),
+                        'message'    => $fluentformDefaultGlobalMessages['max_file_size'],
+                        'global_message'    => $fluentformDefaultGlobalMessages['max_file_size'],
+                        'global'     => true
                     ],
                     'max_file_count' => [
                         'value'   => 1,
-                        'message' => __('You can upload maximum 1 image', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['max_file_count'],
+                        'global_message' => $fluentformDefaultGlobalMessages['max_file_count'],
+                        'global'  => true
                     ],
                     'allowed_image_types' => [
                         'value'   => [],
-                        'message' => __('Allowed image types does not match', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['allowed_image_types'],
+                        'global_message' => $fluentformDefaultGlobalMessages['allowed_image_types'],
+                        'global'  => true
                     ],
                 ],
                 'conditional_logics' => [],
@@ -880,23 +1194,32 @@ $defaultElements = [
                 'help_message'         => '',
                 'upload_file_location' => 'default',
                 'file_location_type'   => 'follow_global_settings',
+                'upload_bttn_ui'       => '',
                 'validation_rules'     => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                     'max_file_size' => [
                         'value'      => 1048576,
                         '_valueFrom' => 'MB',
-                        'message'    => __('Maximum file size limit is 1MB', 'fluentform'),
+                        'message'    => $fluentformDefaultGlobalMessages['max_file_size'],
+                        'global_message'    => $fluentformDefaultGlobalMessages['max_file_size'],
+                        'global'     => true
                     ],
                     'max_file_count' => [
                         'value'   => 1,
-                        'message' => __('You can upload maximum 1 file', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['max_file_count'],
+                        'global_message' => $fluentformDefaultGlobalMessages['max_file_count'],
+                        'global'  => true
                     ],
                     'allowed_file_types' => [
                         'value'   => [],
-                        'message' => __('Invalid file type', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['allowed_image_types'],
+                        'global_message' => $fluentformDefaultGlobalMessages['allowed_image_types'],
+                        'global'  => true
                     ],
                 ],
                 'conditional_logics' => [],
@@ -927,7 +1250,9 @@ $defaultElements = [
                 'validation_rules'  => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                 ],
                 'country_list' => [
@@ -975,6 +1300,11 @@ $defaultElements = [
             'settings' => [
                 'label'              => __('Ratings', 'fluentform'),
                 'show_text'          => 'no',
+                'icon_source'        => 'preset',
+                'icon_type'          => 'star',
+                'custom_icon_svg'    => '',
+                'inactive_color'     => \FluentForm\App\Services\FormBuilder\RatingIcon::DEFAULT_INACTIVE_COLOR,
+                'active_color'       => \FluentForm\App\Services\FormBuilder\RatingIcon::DEFAULT_ACTIVE_COLOR,
                 'help_message'       => '',
                 'label_placement'    => '',
                 'admin_field_label'  => '',
@@ -983,7 +1313,9 @@ $defaultElements = [
                 'validation_rules'   => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                 ],
             ],
@@ -1034,7 +1366,9 @@ $defaultElements = [
                 'validation_rules'   => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                         'per_row' => false,
                     ],
                 ],
@@ -1089,16 +1423,20 @@ $defaultElements = [
                 'admin_field_label' => '',
                 'label_placement'   => '',
                 'help_message'      => '',
+                'prefix_label'      => '',
+                'suffix_label'      => '',
                 'validation_rules'  => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                 ],
                 'conditional_logics' => [],
             ],
             'editor_options' => [
-                'title'      => __('Password Field', 'fluentform'),
+                'title'      => __('Password', 'fluentform'),
                 'icon_class' => 'ff-edit-password',
                 'template'   => 'inputText',
             ],
@@ -1145,7 +1483,9 @@ $defaultElements = [
                 'validation_rules'  => [
                     'required' => [
                         'value'   => false,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                 ],
                 'conditional_logics' => [],
@@ -1174,7 +1514,9 @@ $defaultElements = [
                 'validation_rules'  => [
                     'required' => [
                         'value'   => true,
-                        'message' => __('This field is required', 'fluentform'),
+                        'message' => $fluentformDefaultGlobalMessages['required'],
+                        'global_message' => $fluentformDefaultGlobalMessages['required'],
+                        'global'  => true,
                     ],
                 ],
                 'required_field_message' => '',
@@ -1190,10 +1532,11 @@ $defaultElements = [
             'index'      => 2,
             'element'    => 'recaptcha',
             'attributes' => ['name' => 'g-recaptcha-response'],
-            'settings'   => [
-                'label'            => '',
-                'label_placement'  => '',
-                'validation_rules' => [],
+            'settings' => [
+                'label'                     => '',
+                'label_placement'           => '',
+                'validation_rules'          => [],
+                'render_recaptcha_v3_badge' => false
             ],
             'editor_options' => [
                 'title'              => __('reCaptcha', 'fluentform'),
@@ -1242,7 +1585,7 @@ $defaultElements = [
                 'class' => '',
             ],
             'settings' => [
-                'shortcode'          => '[your_shorcode_here]',
+                'shortcode'          => '[your_shortcode_here]',
                 'conditional_logics' => [],
             ],
             'editor_options' => [
@@ -1277,9 +1620,10 @@ $defaultElements = [
             'settings'   => [
                 'container_class'    => '',
                 'conditional_logics' => [],
+                'is_width_auto_calc' => true,
             ],
             'columns' => [
-                ['width' => '', 'left' => '', 'fields' => []],
+                ['width' => 100, 'left' => '', 'fields' => []],
             ],
             'editor_options' => [
                 'title'      => __('One Column Container', 'fluentform'),
@@ -1294,6 +1638,7 @@ $defaultElements = [
                 'container_class'    => '',
                 'conditional_logics' => [],
                 'container_width'    => '',
+                'is_width_auto_calc' => true,
             ],
             'columns' => [
                 ['width' => 50, 'fields' => []],
@@ -1312,6 +1657,7 @@ $defaultElements = [
                 'container_class'    => '',
                 'conditional_logics' => [],
                 'container_width'    => '',
+                'is_width_auto_calc' => true,
             ],
             'columns' => [
                 ['width' => 33.33, 'fields' => []],
@@ -1331,6 +1677,7 @@ $defaultElements = [
                 'container_class'    => '',
                 'conditional_logics' => [],
                 'container_width'    => '',
+                'is_width_auto_calc' => true,
             ],
             'columns' => [
                 ['width' => 25, 'fields' => []],
@@ -1351,6 +1698,7 @@ $defaultElements = [
                 'container_class'    => '',
                 'conditional_logics' => [],
                 'container_width'    => '',
+                'is_width_auto_calc' => true,
             ],
             'columns' => [
                 ['width' => 20, 'fields' => []],
@@ -1372,6 +1720,7 @@ $defaultElements = [
                 'container_class'    => '',
                 'conditional_logics' => [],
                 'container_width'    => '',
+                'is_width_auto_calc' => true,
             ],
             'columns' => [
                 ['width' => 16.67, 'fields' => []],
@@ -1390,18 +1739,18 @@ $defaultElements = [
 ];
 
 if (! defined('FLUENTFORMPRO')) {
-    $defaultElements['general']['phone'] = [
+    $fluentformDefaultElements['general']['phone'] = [
         'index'          => 17,
         'element'        => 'phone',
         'attributes'     => [],
         'settings'       => [],
         'editor_options' => [
-            'title'      => __('Phone Field', 'fluentform'),
+            'title'      => __('Phone', 'fluentform'),
             'icon_class' => 'el-icon-phone-outline',
             'template'   => 'inputText',
         ],
     ];
-    $defaultElements['advanced']['net_promoter_score'] = [
+    $fluentformDefaultElements['advanced']['net_promoter_score'] = [
         'index'          => 14,
         'element'        => 'net_promoter_score',
         'attributes'     => [],
@@ -1413,7 +1762,7 @@ if (! defined('FLUENTFORMPRO')) {
             'template'   => 'net_promoter',
         ],
     ];
-    $defaultElements['advanced']['quiz_score'] = [
+    $fluentformDefaultElements['advanced']['quiz_score'] = [
         'index'          => 19,
         'element'        => 'quiz_score',
         'attributes'     => [],
@@ -1425,7 +1774,19 @@ if (! defined('FLUENTFORMPRO')) {
             'template'   => 'inputHidden',
         ],
     ];
-    $defaultElements['advanced']['cpt_selection'] = [
+    $fluentformDefaultElements['advanced']['dynamic_field'] = [
+        'index'          => 19,
+        'element'        => 'dynamic_field',
+        'attributes'     => [],
+        'settings'       => [],
+        'options'        => [],
+        'editor_options' => [
+            'title'      => __('Dynamic Field', 'fluentform'),
+            'icon_class' => 'ff-edit-repeat',
+            'template'   => 'inputHidden',
+        ],
+    ];
+    $fluentformDefaultElements['advanced']['cpt_selection'] = [
         'index'          => 18,
         'element'        => 'cpt_selection',
         'attributes'     => [],
@@ -1438,7 +1799,7 @@ if (! defined('FLUENTFORMPRO')) {
             'template'   => 'select',
         ],
     ];
-    $defaultElements['advanced']['save_progress_button'] = [
+    $fluentformDefaultElements['advanced']['save_progress_button'] = [
         'index'          => 20,
         'element'        => 'save_progress_button',
         'attributes'     => [],
@@ -1450,7 +1811,7 @@ if (! defined('FLUENTFORMPRO')) {
             'template'   => 'customButton',
         ],
     ];
-    $defaultElements['advanced']['rich_text_input'] = [
+    $fluentformDefaultElements['advanced']['rich_text_input'] = [
         'index'          => 19,
         'element'        => 'rich_text_input',
         'attributes'     => [],
@@ -1462,19 +1823,19 @@ if (! defined('FLUENTFORMPRO')) {
             'template'   => 'inputTextarea',
         ],
     ];
-    $defaultElements['advanced']['chained_select'] = [
+    $fluentformDefaultElements['advanced']['chained_select'] = [
         'index'          => 15,
         'element'        => 'chained_select',
         'attributes'     => [],
         'settings'       => [],
         'options'        => [],
         'editor_options' => [
-            'title'      => __('Chained Select Field', 'fluentform'),
+            'title'      => __('Chained Select', 'fluentform'),
             'icon_class' => 'ff-edit-link',
             'template'   => 'chainedSelect',
         ],
     ];
-    $defaultElements['advanced']['repeater_field'] = [
+    $fluentformDefaultElements['advanced']['repeater_field'] = [
         'index'          => 17,
         'element'        => 'repeater_field',
         'attributes'     => [],
@@ -1486,7 +1847,7 @@ if (! defined('FLUENTFORMPRO')) {
             'template'   => 'fieldsRepeatSettings',
         ],
     ];
-    $defaultElements['advanced']['rangeslider'] = [
+    $fluentformDefaultElements['advanced']['rangeslider'] = [
         'index'          => 13,
         'element'        => 'rangeslider',
         'attributes'     => [],
@@ -1497,7 +1858,19 @@ if (! defined('FLUENTFORMPRO')) {
             'template'   => 'inputSlider',
         ],
     ];
-    $defaultElements['advanced']['color-picker'] = [
+    $fluentformDefaultElements['advanced']['input_ranking'] = [
+        'index'          => 21,
+        'element'        => 'input_ranking',
+        'attributes'     => [],
+        'settings'       => [],
+        'options'        => [],
+        'editor_options' => [
+            'title'      => __('Ranking Field', 'fluentform'),
+            'icon_class' => 'dashicons dashicons-sort',
+            'template'   => 'rankingField',
+        ],
+    ];
+    $fluentformDefaultElements['advanced']['color-picker'] = [
         'index'          => 16,
         'element'        => 'color-picker',
         'attributes'     => [],
@@ -1508,87 +1881,45 @@ if (! defined('FLUENTFORMPRO')) {
             'template'   => 'inputText',
         ],
     ];
-    $defaultElements['payments'] = [
-        'multi_payment_component' => [
-            'index'          => 6,
-            'element'        => 'multi_payment_component',
-            'attributes'     => [],
-            'settings'       => [],
-            'editor_options' => [
-                'title'      => __('Payment Field', 'fluentform'),
-                'icon_class' => 'ff-edit-shopping-cart',
-                'element'    => 'input-radio',
-                'template'   => 'inputMultiPayment',
-            ],
-        ],
-        'subscription_payment_component' => [
-            'index'          => 6,
-            'element'        => 'subscription_payment_component',
-            'attributes'     => [],
-            'settings'       => [],
-            'editor_options' => [
-                'title'      => __('Subscription Field', 'fluentform'),
-                'icon_class' => 'ff-edit-shopping-cart',
-                'element'    => 'input-radio',
-                'template'   => 'inputSubscriptionPayment',
-            ],
-        ],
-        'custom_payment_component' => [
-            'index'          => 6,
-            'element'        => 'custom_payment_component',
-            'attributes'     => [],
-            'settings'       => [],
-            'editor_options' => [
-                'title'      => __('Custom Payment Amount', 'fluentform'),
-                'icon_class' => 'ff-edit-keyboard-o',
-                'template'   => 'inputText',
-            ],
-        ],
-        'item_quantity_component' => [
-            'index'          => 6,
-            'element'        => 'item_quantity_component',
-            'attributes'     => [],
-            'settings'       => [],
-            'editor_options' => [
-                'title'      => __('Item Quantity', 'fluentform'),
-                'icon_class' => 'ff-edit-keyboard-o',
-                'template'   => 'inputText',
-            ],
-        ],
-        'payment_method' => [
-            'index'          => 6,
-            'element'        => 'payment_method',
-            'attributes'     => [],
-            'settings'       => [],
-            'editor_options' => [
-                'title'      => __('Payment Method Field', 'fluentform'),
-                'icon_class' => 'ff-edit-credit-card',
-                'template'   => 'inputPaymentMethods',
-            ],
-        ],
-        'payment_summary_component' => [
-            'index'          => 6,
-            'element'        => 'payment_summary_component',
-            'attributes'     => [],
-            'settings'       => [],
-            'editor_options' => [
-                'title'      => __('Payment Summary', 'fluentform'),
-                'icon_class' => 'ff-edit-html',
-                'template'   => 'customHTML',
-            ],
-        ],
-        'payment_coupon' => [
-            'index'          => 6,
-            'element'        => 'payment_coupon',
-            'attributes'     => [],
-            'settings'       => [],
-            'editor_options' => [
-                'title'      => __('Coupon', 'fluentform'),
-                'icon_class' => 'el-icon-postcard',
-                'template'   => 'inputText',
-            ],
+    $fluentformDefaultElements['container']['accordion'] = [
+        'index'          => 18,
+        'element'        => 'accordion',
+        'attributes'     => [],
+        'settings'       => [],
+        'options'        => [],
+        'editor_options' => [
+            'title'      => __('Accordion/Tab', 'fluentform'),
+            'icon_class' => 'ff-edit-section-break',
+            'template'   => 'CustomEditorField',
         ],
     ];
 }
 
-return $defaultElements;
+if (defined('FLUENTFORMPRO')) {
+    $fluentformDefaultElements['general']['address']['fields']['latitude'] = [
+        'element'    => 'input_hidden',
+        'attributes' => [
+            'type'  => 'hidden',
+            'name'  => 'latitude',
+            'value' => '',
+        ],
+        'settings' => [
+            'label'   => 'Latitude',
+            'visible' => false,
+        ],
+    ];
+    $fluentformDefaultElements['general']['address']['fields']['longitude'] = [
+        'element'    => 'input_hidden',
+        'attributes' => [
+            'type'  => 'hidden',
+            'name'  => 'longitude',
+            'value' => '',
+        ],
+        'settings' => [
+            'label'   => 'Longitude',
+            'visible' => false,
+        ],
+    ];
+}
+
+return $fluentformDefaultElements;

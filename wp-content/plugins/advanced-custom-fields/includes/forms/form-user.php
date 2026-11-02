@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -12,19 +21,16 @@ if ( ! class_exists( 'ACF_Form_User' ) ) :
 		var $view = '';
 
 
-		/*
-		*  __construct
-		*
-		*  This function will setup the class functionality
-		*
-		*  @type    function
-		*  @date    5/03/2014
-		*  @since   5.0.0
-		*
-		*  @param   n/a
-		*  @return  n/a
-		*/
-
+		/**
+		 * This function will setup the class functionality
+		 *
+		 * @type    function
+		 * @date    5/03/2014
+		 * @since   5.0.0
+		 *
+		 * @param   n/a
+		 * @return  n/a
+		 */
 		function __construct() {
 
 			// enqueue
@@ -47,21 +53,20 @@ if ( ! class_exists( 'ACF_Form_User' ) ) :
 
 
 		/**
-		 *  admin_enqueue_scripts
+		 * admin_enqueue_scripts
 		 *
-		 *  Checks current screen and enqueues scripts
+		 * Checks current screen and enqueues scripts
 		 *
-		 *  @date    17/4/18
-		 *  @since   5.6.9
+		 * @date    17/4/18
+		 * @since   5.6.9
 		 *
-		 *  @param   void
-		 *  @return  void
+		 * @param   void
+		 * @return  void
 		 */
-
 		function admin_enqueue_scripts() {
 
 			// bail early if not valid screen
-			if ( ! acf_is_screen( array( 'profile', 'user', 'user-edit' ) ) ) {
+			if ( ! acf_is_screen( array( 'profile', 'user', 'user-edit', 'profile-network', 'user-network', 'user-edit-network' ) ) ) {
 				return;
 			}
 
@@ -71,17 +76,16 @@ if ( ! class_exists( 'ACF_Form_User' ) ) :
 
 
 		/**
-		 *  login_form_register
+		 * login_form_register
 		 *
-		 *  Customizes and enqueues scripts
+		 * Customizes and enqueues scripts
 		 *
-		 *  @date    17/4/18
-		 *  @since   5.6.9
+		 * @date    17/4/18
+		 * @since   5.6.9
 		 *
-		 *  @param   void
-		 *  @return  void
+		 * @param   void
+		 * @return  void
 		 */
-
 		function login_form_register() {
 
 			// customize action prefix so that "admin_head" = "login_head"
@@ -93,19 +97,16 @@ if ( ! class_exists( 'ACF_Form_User' ) ) :
 		}
 
 
-		/*
-		*  register_user
-		*
-		*  Called during the user register form
-		*
-		*  @type    function
-		*  @date    8/10/13
-		*  @since   5.0.0
-		*
-		*  @param   void
-		*  @return  void
-		*/
-
+		/**
+		 * Called during the user register form
+		 *
+		 * @type    function
+		 * @date    8/10/13
+		 * @since   5.0.0
+		 *
+		 * @param   void
+		 * @return  void
+		 */
 		function render_register() {
 
 			// render
@@ -119,19 +120,16 @@ if ( ! class_exists( 'ACF_Form_User' ) ) :
 		}
 
 
-		/*
-		*  render_edit
-		*
-		*  Called during the user edit form
-		*
-		*  @type    function
-		*  @date    8/10/13
-		*  @since   5.0.0
-		*
-		*  @param   void
-		*  @return  void
-		*/
-
+		/**
+		 * Called during the user edit form
+		 *
+		 * @type    function
+		 * @date    8/10/13
+		 * @since   5.0.0
+		 *
+		 * @param   void
+		 * @return  void
+		 */
 		function render_edit( $user ) {
 
 			// add compatibility with front-end user profile edit forms such as bbPress
@@ -150,19 +148,16 @@ if ( ! class_exists( 'ACF_Form_User' ) ) :
 		}
 
 
-		/*
-		*  user_new_form
-		*
-		*  description
-		*
-		*  @type    function
-		*  @date    8/10/13
-		*  @since   5.0.0
-		*
-		*  @param   $post_id (int)
-		*  @return  $post_id (int)
-		*/
-
+		/**
+		 * description
+		 *
+		 * @type    function
+		 * @date    8/10/13
+		 * @since   5.0.0
+		 *
+		 * @param   $post_id (int)
+		 * @return  $post_id (int)
+		 */
 		function render_new() {
 
 			// Multisite uses a different 'user-new.php' form. Don't render fields here
@@ -181,21 +176,17 @@ if ( ! class_exists( 'ACF_Form_User' ) ) :
 		}
 
 
-		/*
-		*  render
-		*
-		*  This function will render ACF fields for a given $post_id parameter
-		*
-		*  @type    function
-		*  @date    7/10/13
-		*  @since   5.0.0
-		*
-		*  @param   $user_id (int) this can be set to 0 for a new user
-		*  @param   $user_form (string) used for location rule matching. edit | add | register
-		*  @param   $el (string)
-		*  @return  n/a
-		*/
-
+		/**
+		 * This function will render ACF fields for a given $post_id parameter
+		 *
+		 * @type    function
+		 * @since   5.0.0
+		 *
+		 * @param   $user_id (int) this can be set to 0 for a new user
+		 * @param   $user_form (string) used for location rule matching. edit | add | register
+		 * @param   $el (string)
+		 * @return  n/a
+		 */
 		function render( $args = array() ) {
 
 			// Allow $_POST data to persist across form submission attempts.
@@ -243,7 +234,7 @@ if ( ! class_exists( 'ACF_Form_User' ) ) :
 			$after  = '</tbody></table>';
 
 			if ( $args['el'] == 'div' ) {
-				$before = '<div class="acf-user-' . $args['view'] . '-fields acf-fields -clear">';
+				$before = '<div class="acf-user-' . esc_attr( $args['view'] ) . '-fields acf-fields -clear">';
 				$after  = '</div>';
 			}
 
@@ -255,13 +246,13 @@ if ( ! class_exists( 'ACF_Form_User' ) ) :
 
 				// title
 				if ( $field_group['style'] === 'default' ) {
-					echo '<h2>' . $field_group['title'] . '</h2>';
+					echo '<h2>' . acf_esc_html( acf_get_field_group_title( $field_group ) ) . '</h2>';
 				}
 
 				// render
-				echo $before;
+				echo $before; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- safe HTML string.
 				acf_render_fields( $fields, $post_id, $args['el'], $field_group['instruction_placement'] );
-				echo $after;
+				echo $after; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- safe HTML string.
 			}
 
 			// actions
@@ -269,19 +260,16 @@ if ( ! class_exists( 'ACF_Form_User' ) ) :
 		}
 
 
-		/*
-		*  admin_footer
-		*
-		*  description
-		*
-		*  @type    function
-		*  @date    27/03/2015
-		*  @since   5.1.5
-		*
-		*  @param   $post_id (int)
-		*  @return  $post_id (int)
-		*/
-
+		/**
+		 * description
+		 *
+		 * @type    function
+		 * @date    27/03/2015
+		 * @since   5.1.5
+		 *
+		 * @param   $post_id (int)
+		 * @return  $post_id (int)
+		 */
 		function admin_footer() {
 
 			// script
@@ -290,7 +278,7 @@ if ( ! class_exists( 'ACF_Form_User' ) ) :
 (function($) {
 	
 	// vars
-	var view = '<?php echo $this->view; ?>';
+	var view = '<?php echo esc_attr( $this->view ); ?>';
 	
 	// add missing spinners
 	var $submit = $('input.button-primary');
@@ -301,34 +289,110 @@ if ( ! class_exists( 'ACF_Form_User' ) ) :
 })(jQuery);	
 </script>
 			<?php
-
 		}
 
-
-		/*
-		*  save_user
-		*
-		*  description
-		*
-		*  @type    function
-		*  @date    8/10/13
-		*  @since   5.0.0
-		*
-		*  @param   $post_id (int)
-		*  @return  $post_id (int)
-		*/
-
-		function save_user( $user_id ) {
-
-			// verify nonce
+		/**
+		 * Saves ACF field values to a user.
+		 *
+		 * @since   5.0.0
+		 *
+		 * @param integer $user_id The ID of the user being saved.
+		 * @return integer|void
+		 */
+		public function save_user( $user_id ) {
 			if ( ! acf_verify_nonce( 'user' ) ) {
 				return $user_id;
+			}
+
+			if ( isset( $_POST['acf'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified above.
+				if ( ! is_array( $_POST['acf'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified above.
+					return $user_id;
+				}
+
+				// Restrict $_POST['acf'] to keys of fields belonging to field groups that apply to this user.
+				$allowed_keys = $this->get_allowed_field_keys( $user_id );
+				$_POST['acf'] = array_intersect_key( $_POST['acf'], array_flip( $allowed_keys ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Verified above; sanitized downstream.
+
+				if ( empty( $_POST['acf'] ) ) {
+					return $user_id;
+				}
 			}
 
 			// save
 			if ( acf_validate_save_post( true ) ) {
 				acf_save_post( "user_$user_id" );
 			}
+		}
+
+		/**
+		 * Returns the top-level ACF field keys that are allowed to be saved for
+		 * the given user in the current save context. On user_register the new
+		 * user has just been created via either the public register form or the
+		 * admin add-user form; on profile_update the user was rendered via the
+		 * edit form (self-edit or admin-edit-other).
+		 *
+		 * @since 6.8.7
+		 *
+		 * @param integer $user_id The user being saved.
+		 * @return array
+		 */
+		private function get_allowed_field_keys( $user_id ) {
+			if ( current_action() === 'user_register' ) {
+				$queries = array(
+					array(
+						'user_id'   => 'new',
+						'user_form' => 'register',
+					),
+					array(
+						'user_id'   => 'new',
+						'user_form' => 'add',
+					),
+				);
+			} else {
+				$queries = array(
+					array(
+						'user_id'   => $user_id,
+						'user_form' => 'edit',
+					),
+				);
+			}
+
+			$keys = array();
+			foreach ( $queries as $query ) {
+				foreach ( acf_get_field_groups( $query ) as $field_group ) {
+					foreach ( acf_get_fields( $field_group ) as $field ) {
+						$prefix = $field['prefix'] ?? 'acf';
+
+						if ( $prefix === 'acf' ) {
+							if ( ! empty( $field['key'] ) ) {
+								$keys[] = $field['key'];
+							}
+						} elseif ( preg_match( '/^acf\[([^]]+)]$/', $prefix, $matches ) ) {
+							$keys[] = $matches[1];
+						}
+					}
+				}
+			}
+
+			$keys = array_values( array_unique( array_filter( $keys ) ) );
+
+			/**
+			 * Filters the list of $_POST['acf'] keys a user save is allowed to persist.
+			 *
+			 * Use this to permit additional field keys when a developer dynamically
+			 * injects fields into the register/add/edit user form via JavaScript
+			 * that aren't part of a field group whose location rules target this user.
+			 *
+			 * @since 6.8.7
+			 *
+			 * @param array $keys    The allowed top-level $_POST['acf'] keys.
+			 * @param int   $user_id The user being saved.
+			 */
+			$keys = apply_filters( 'acf/form/user/allowed_field_keys', $keys, $user_id );
+
+			// Re-normalize after the filter so a misbehaving callback can't break array_flip().
+			$keys = array_filter( (array) $keys, 'is_scalar' );
+			return array_values( array_unique( array_filter( array_map( 'strval', $keys ) ) ) );
 		}
 
 		/**
@@ -339,9 +403,9 @@ if ( ! class_exists( 'ACF_Form_User' ) ) :
 		 * @date    12/7/19
 		 * @since   5.8.1
 		 *
-		 * @param   WP_Error $errors A WP_Error object containing any errors encountered during registration.
+		 * @param   WP_Error $errors               A WP_Error object containing any errors encountered during registration.
 		 * @param   string   $sanitized_user_login User's username after it has been sanitized.
-		 * @param   string   $user_email User's email.
+		 * @param   string   $user_email           User's email.
 		 * @return  WP_Error
 		 */
 		function filter_registration_errors( $errors, $sanitized_user_login, $user_email ) {
@@ -365,9 +429,9 @@ if ( ! class_exists( 'ACF_Form_User' ) ) :
 		 * @date    12/7/19
 		 * @since   5.8.2
 		 *
-		 * @param   null         $null A null placeholder.
+		 * @param   null         $null    A null placeholder.
 		 * @param   (int|string) $post_id The post id.
-		 * @param   array        $field The field array.
+		 * @param   array        $field   The field array.
 		 * @return  mixed
 		 */
 		function filter_pre_load_value( $null, $post_id, $field ) {
@@ -383,7 +447,6 @@ if ( ! class_exists( 'ACF_Form_User' ) ) :
 
 	// instantiate
 	acf_new_instance( 'ACF_Form_User' );
-
 endif; // class_exists check
 
 ?>

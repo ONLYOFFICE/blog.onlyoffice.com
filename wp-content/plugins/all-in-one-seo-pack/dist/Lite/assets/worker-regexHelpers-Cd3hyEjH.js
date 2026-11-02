@@ -1,0 +1,1 @@
+function r(e,t){return RegExp(t).test(e)}function c(e,t){for(const n of t)if(e.search(new RegExp(n[0]))!==-1)return e=e.replace(new RegExp(n[0]),n[1]),e}function o(e,t){return t.forEach(function(n){e=e.replace(new RegExp(n[0]),n[1])}),e}var a=Object.freeze({__proto__:null,applyAllReplacements:o,doesWordMatchRegex:r,searchAndReplaceWithRegex:c});export{a as r};

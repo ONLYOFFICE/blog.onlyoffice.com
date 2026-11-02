@@ -39,7 +39,7 @@ class Protector
 
         $ciphertext_raw = openssl_encrypt($text, $cipher, $key, $options = OPENSSL_RAW_DATA, $iv);
 
-        $hmac = hash_hmac('sha256', $ciphertext_raw, $key, $as_binary = true);
+        $hmac = hash_hmac('sha256', $iv . $ciphertext_raw, $key, $as_binary = true);
 
         return base64_encode($iv . $hmac . $ciphertext_raw);
     }
@@ -55,24 +55,42 @@ class Protector
     {
         $key = static::getSalt();
 
-        $c = base64_decode($text);
+        $c = base64_decode($text, true);
 
         $cipher = 'AES-128-CBC';
 
         $ivlen = openssl_cipher_iv_length($cipher);
 
+        $sha2len = 32;
+
+        if ($c === false || strlen($c) < $ivlen + $sha2len) {
+            return null;
+        }
+
         $iv = substr($c, 0, $ivlen);
 
-        $hmac = substr($c, $ivlen, $sha2len = 32);
+        $hmac = substr($c, $ivlen, $sha2len);
 
         $ciphertext_raw = substr($c, $ivlen + $sha2len);
 
+        // Verify with current HMAC (IV + ciphertext)
+        $calcmac = hash_hmac('sha256', $iv . $ciphertext_raw, $key, $as_binary = true);
+
+        if (!hash_equals($hmac, $calcmac)) {
+            // Fallback: verify with legacy HMAC (ciphertext only) for tokens generated before v6.2.0 IV authentication fix.
+            if (!apply_filters('fluentform/allow_legacy_token_decrypt', false)) {
+                return null;
+            }
+
+            $legacymac = hash_hmac('sha256', $ciphertext_raw, $key, $as_binary = true);
+
+            if (!hash_equals($hmac, $legacymac)) {
+                return null;
+            }
+        }
+
         $original_plaintext = openssl_decrypt($ciphertext_raw, $cipher, $key, $options = OPENSSL_RAW_DATA, $iv);
 
-        $calcmac = hash_hmac('sha256', $ciphertext_raw, $key, $as_binary = true);
-
-        if (hash_equals($hmac, $calcmac)) { // timing attack safe comparison
-            return $original_plaintext;
-        }
+        return $original_plaintext !== false ? $original_plaintext : null;
     }
 }

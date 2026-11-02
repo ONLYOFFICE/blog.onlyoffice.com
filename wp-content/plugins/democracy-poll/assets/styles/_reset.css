@@ -1,0 +1,28 @@
+/***** RESET *****/
+
+.democracy{ display:flow-root; }
+
+.democracy[class] {
+	:where(ul, ul li){ background:none; padding:0; margin:0; } /* reset */
+	:where(ul){ list-style:none; border:none; } /* reset */
+	:where(ul li){ list-style:none; } /* reset */
+	:where(ul li)::before{ display:none; } /* reset */
+
+	:where(input[type="radio"]),
+	:where(input[type="checkbox"]){
+		margin:0; vertical-align:middle;
+		&:focus { outline:none; }
+	}
+}
+
+.dem-button {
+	position:relative; display:inline-block;
+	line-height:1; border:0; margin:0; padding:0; text-decoration:none; /* reset */
+	cursor:pointer; white-space:nowrap; user-select:none;
+
+	&:focus{ outline:none; }
+	&:disabled{ opacity:.6; cursor:not-allowed; }
+	&:hover{ text-decoration:none !important; }
+}
+
+/***** RESET END *****/

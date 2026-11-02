@@ -1,23 +1,29 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! class_exists( 'acf_field_time_picker' ) ) :
 
 	class acf_field_time_picker extends acf_field {
 
 
-		/*
-		*  __construct
-		*
-		*  This function will setup the field type data
-		*
-		*  @type    function
-		*  @date    5/03/2014
-		*  @since   5.0.0
-		*
-		*  @param   n/a
-		*  @return  n/a
-		*/
-
+		/**
+		 * This function will setup the field type data
+		 *
+		 * @type    function
+		 * @date    5/03/2014
+		 * @since   5.0.0
+		 *
+		 * @param   n/a
+		 * @return  n/a
+		 */
 		function initialize() {
 
 			// vars
@@ -31,22 +37,18 @@ if ( ! class_exists( 'acf_field_time_picker' ) ) :
 				'display_format' => 'g:i a',
 				'return_format'  => 'g:i a',
 			);
-
 		}
 
 
-		/*
-		*  render_field()
-		*
-		*  Create the HTML interface for your field
-		*
-		*  @param   $field - an array holding all the field's data
-		*
-		*  @type    action
-		*  @since   3.6
-		*  @date    23/01/13
-		*/
-
+		/**
+		 * Create the HTML interface for your field
+		 *
+		 * @param   $field - an array holding all the field's data
+		 *
+		 * @type    action
+		 * @since   3.6
+		 * @date    23/01/13
+		 */
 		function render_field( $field ) {
 
 			// Set value.
@@ -87,22 +89,19 @@ if ( ! class_exists( 'acf_field_time_picker' ) ) :
 			<?php acf_text_input( $text_input ); ?>
 		</div>
 			<?php
-
 		}
 
 
-		/*
-		*  render_field_settings()
-		*
-		*  Create extra options for your field. This is rendered when editing a field.
-		*  The value of $field['name'] can be used (like bellow) to save extra data to the $field
-		*
-		*  @type    action
-		*  @since   3.6
-		*  @date    23/01/13
-		*
-		*  @param   $field  - an array holding all the field's data
-		*/
+		/**
+		 * Create extra options for your field. This is rendered when editing a field.
+		 * The value of $field['name'] can be used (like bellow) to save extra data to the $field
+		 *
+		 * @type    action
+		 * @since   3.6
+		 * @date    23/01/13
+		 *
+		 * @param   $field  - an array holding all the field's data
+		 */
 		function render_field_settings( $field ) {
 			$g_i_a = date_i18n( 'g:i a' );
 			$H_i_s = date_i18n( 'H:i:s' );
@@ -144,41 +143,33 @@ if ( ! class_exists( 'acf_field_time_picker' ) ) :
 			echo '</div>';
 		}
 
-		/*
-		*  format_value()
-		*
-		*  This filter is appied to the $value after it is loaded from the db and before it is returned to the template
-		*
-		*  @type    filter
-		*  @since   3.6
-		*  @date    23/01/13
-		*
-		*  @param   $value (mixed) the value which was loaded from the database
-		*  @param   $post_id (mixed) the $post_id from which the value was loaded
-		*  @param   $field (array) the field array holding all the field options
-		*
-		*  @return  $value (mixed) the modified value
-		*/
-
-		function format_value( $value, $post_id, $field ) {
-
+		/**
+		 * This filter is appied to the $value after it is loaded from the db and before it is returned to the template
+		 *
+		 * @type    filter
+		 * @since   3.6
+		 * @date    23/01/13
+		 *
+		 * @param   $value (mixed) the value which was loaded from the database
+		 * @param   $post_id (mixed) the post_id from which the value was loaded
+		 * @param   $field (array) the field array holding all the field options
+		 * @return  $value (mixed) the modified value
+		 */
+		public function format_value( $value, $post_id, $field ) {
 			return acf_format_date( $value, $field['return_format'] );
-
 		}
 
 		/**
-		 *  This filter is applied to the $field after it is loaded from the database
-		 *  and ensures the return and display values are set.
+		 * This filter is applied to the $field after it is loaded from the database
+		 * and ensures the return and display values are set.
 		 *
-		 *  @type    filter
-		 *  @since   5.11.0
-		 *  @date    28/09/21
+		 * @type  filter
+		 * @since 5.11.0
 		 *
-		 *  @param array $field The field array holding all the field options.
-		 *
-		 *  @return array
+		 * @param  array $field The field array holding all the field options.
+		 * @return array
 		 */
-		function load_field( $field ) {
+		public function load_field( $field ) {
 			if ( empty( $field['display_format'] ) ) {
 				$field['display_format'] = $this->defaults['display_format'];
 			}
@@ -193,7 +184,7 @@ if ( ! class_exists( 'acf_field_time_picker' ) ) :
 		/**
 		 * Return the schema array for the REST API.
 		 *
-		 * @param array $field
+		 * @param  array $field The field array.
 		 * @return array
 		 */
 		public function get_rest_schema( array $field ) {
@@ -203,12 +194,43 @@ if ( ! class_exists( 'acf_field_time_picker' ) ) :
 				'required'    => ! empty( $field['required'] ),
 			);
 		}
+
+		/**
+		 * Returns an array of JSON-LD Property output types that are supported by this field type.
+		 *
+		 * @since 6.8
+		 *
+		 * @return string[]
+		 */
+		public function get_jsonld_output_types(): array {
+			return array( 'Time' );
+		}
+
+		/**
+		 * Formats the field value for JSON-LD output.
+		 *
+		 * Returns the stored H:i:s format which is already ISO 8601 compliant.
+		 *
+		 * @since 6.8.0
+		 *
+		 * @param mixed          $value   The value of the field.
+		 * @param integer|string $post_id The ID of the post.
+		 * @param array          $field   The field array.
+		 * @return string|null ISO 8601 formatted time or null.
+		 */
+		public function format_value_for_jsonld( $value, $post_id, $field ) {
+			if ( empty( $value ) || ! is_string( $value ) ) {
+				return null;
+			}
+
+			// ACF stores time_picker internally as 'H:i:s' which is ISO 8601 compliant.
+			return $value;
+		}
 	}
 
 
 	// initialize
 	acf_register_field_type( 'acf_field_time_picker' );
-
 endif; // class_exists check
 
 ?>

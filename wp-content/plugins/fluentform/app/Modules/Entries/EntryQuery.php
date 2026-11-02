@@ -2,21 +2,19 @@
 
 namespace FluentForm\App\Modules\Entries;
 
-use FluentForm\App;
+use FluentForm\App\Helpers\Helper;
 
+/**
+ * @deprecated Use SubmissionService or direct wpFluent() queries instead.
+ * @todo Remove in next major version.
+ */
 class EntryQuery
 {
-    /**
-     * Request object
-     *
-     * @var \FluentForm\Framework\Request\Request $request
-     */
     protected $request;
     protected $formModel;
     protected $responseModel;
 
     protected $formId = false;
-
     protected $per_page = 10;
     protected $page_number = 1;
     protected $status = false;
@@ -24,13 +22,13 @@ class EntryQuery
     protected $sort_by = 'ASC';
     protected $search = false;
     protected $wheres = [];
-
     protected $startDate;
     protected $endDate;
 
     public function __construct()
     {
-        $this->request = App::make('request');
+        _deprecated_function(__CLASS__, '6.2.0', 'FluentForm\App\Models\Submission model or wpFluent() queries');
+        $this->request = wpFluentForm('request');
         $this->formModel = wpFluent()->table('fluentform_forms');
         $this->responseModel = wpFluent()->table('fluentform_submissions');
     }
@@ -39,7 +37,7 @@ class EntryQuery
     {
         $query = $this->responseModel
             ->where('form_id', $this->formId)
-            ->orderBy('id', \FluentForm\App\Helpers\Helper::sanitizeOrderValue($this->sort_by));
+            ->orderBy('id', Helper::sanitizeOrderValue($this->sort_by));
 
         if ($this->per_page > 0) {
             $query = $query->limit($this->per_page);
@@ -61,8 +59,7 @@ class EntryQuery
         }
 
         if ($this->startDate && $this->endDate) {
-            $endDate = $this->endDate;
-            $endDate .= ' 23:59:59';
+            $endDate = $this->endDate . ' 23:59:59';
             $query->where('created_at', '>=', $this->startDate);
             $query->where('created_at', '<=', $endDate);
         }
@@ -100,7 +97,8 @@ class EntryQuery
 
         $total = $query->count();
         $responses = $query->get();
-        $responses = apply_filters('fluentform_get_raw_responses', $responses, $this->formId);
+
+        $responses = apply_filters('fluentform/get_raw_responses', $responses, $this->formId);
 
         return [
             'data'     => $responses,
@@ -111,87 +109,5 @@ class EntryQuery
                 'last_page'    => ceil($total / $this->per_page),
             ],
         ];
-    }
-
-    public function getResponse($entryId)
-    {
-        return wpFluent()->table('fluentform_submissions')->find($entryId);
-    }
-
-    public function getNextResponse($entryId)
-    {
-        $query = $this->getNextPrevEntryQuery();
-
-        $operator = 'ASC' == $this->sort_by ? '>' : '<';
-
-        return $query->select('id')
-            ->where('id', $operator, $entryId)
-            ->orderBy('id', \FluentForm\App\Helpers\Helper::sanitizeOrderValue($this->sort_by))
-            ->first();
-    }
-
-    public function getPrevResponse($entryId)
-    {
-        $query = $this->getNextPrevEntryQuery();
-
-        $operator = 'ASC' == $this->sort_by ? '<' : '>';
-
-        $orderBy = 'ASC' == $this->sort_by ? 'DESC' : 'ASC';
-
-        return $query->select('id')
-            ->where('id', $operator, $entryId)
-            ->orderBy('id', $orderBy)
-            ->first();
-    }
-
-    protected function getNextPrevEntryQuery()
-    {
-        $query = wpFluent()->table('fluentform_submissions')->limit(1);
-
-        if ($this->is_favourite) {
-            $query->where('is_favourite', $this->is_favourite)->where('status', '!=', 'trashed');
-        } else {
-            if (!$this->status) {
-                $query->where('status', '!=', 'trashed');
-            } else {
-                $query->where('status', $this->status);
-            }
-        }
-
-        if ($this->search) {
-            $query->where('response', 'LIKE', "%{$this->search}%");
-        }
-
-        return $query->where('form_id', $this->formId);
-    }
-
-    public function groupCount($form_id)
-    {
-        $statuses = $this->responseModel
-            ->select($this->responseModel->raw('status, COUNT(*) as count'))
-            ->where('form_id', $form_id)
-            ->groupBy('status')
-            ->get();
-
-        $counts = [];
-        foreach ($statuses as $status) {
-            $counts[$status->status] = $status->count;
-        }
-
-        $counts['all'] = array_sum($counts);
-        if (isset($counts['trashed'])) {
-            $counts['all'] -= $counts['trashed'];
-        }
-
-        $favorites = wpFluent()
-            ->table('fluentform_submissions')
-            ->where('form_id', $form_id)
-            ->where('is_favourite', 1)
-            ->where('status', '!=', 'trashed')
-            ->count();
-
-        $counts['favourites'] = $favorites;
-
-        return $counts;
     }
 }

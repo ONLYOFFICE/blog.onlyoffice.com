@@ -35,7 +35,17 @@ class ReCaptcha
             $result = json_decode(wp_remote_retrieve_body($response));
             if($version == 'v3_invisible' && $result->success) {
                 $score = $result->score;
-                $checkScore = apply_filters('fluentforms_recaptcha_v3_ref_score', 0.5);
+                $value = 0.5;
+                $value = apply_filters_deprecated(
+                    'fluentforms_recaptcha_v3_ref_score',
+                    [
+                        $value
+                    ],
+                    FLUENTFORM_FRAMEWORK_UPGRADE,
+                    'fluentform/recaptcha_v3_ref_score',
+                    'Use fluentform/recaptcha_v3_ref_score instead of fluentforms_recaptcha_v3_ref_score.'
+                );
+                $checkScore = apply_filters('fluentform/recaptcha_v3_ref_score', $value);
                 $isValid = $score >= $checkScore;
             } else {
                 $isValid = $result->success;

@@ -53,7 +53,9 @@ class Widget extends \WP_Widget {
 		];
 
 		// Translators: 1 - The plugin short name ("AIOSEO").
-		parent::__construct( $widgetSlug, sprintf( esc_html__( '%1$s - HTML Sitemap', 'all-in-one-seo-pack' ), AIOSEO_PLUGIN_SHORT_NAME ), $widgetOptions, $controlOptions );
+		$name = sprintf( esc_html__( '%1$s - HTML Sitemap', 'all-in-one-seo-pack' ), AIOSEO_PLUGIN_SHORT_NAME );
+		$name .= ' ' . esc_html__( '(legacy)', 'all-in-one-seo-pack' );
+		parent::__construct( $widgetSlug, $name, $widgetOptions, $controlOptions );
 	}
 
 	/**

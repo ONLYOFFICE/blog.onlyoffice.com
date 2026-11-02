@@ -41,14 +41,17 @@ class WebPage extends Graphs\Graph {
 			'name'        => aioseo()->meta->title->getTitle(),
 			'description' => aioseo()->schema->context['description'],
 			'inLanguage'  => aioseo()->helpers->currentLanguageCodeBCP47(),
-			'isPartOf'    => [ '@id' => $homeUrl . '#website' ],
-			'breadcrumb'  => [ '@id' => aioseo()->schema->context['url'] . '#breadcrumblist' ]
+			'isPartOf'    => [ '@id' => $homeUrl . '#website' ]
 		];
 
-		if ( is_singular() && ! is_page() ) {
-			$post = aioseo()->helpers->getPost();
+		$breadcrumbs = aioseo()->breadcrumbs->frontend->getBreadcrumbs() ?? [];
+		if ( ! empty( $breadcrumbs ) ) {
+			$data['breadcrumb'] = [ '@id' => aioseo()->schema->context['url'] . '#breadcrumblist' ];
+		}
 
-			if ( is_a( $post, 'WP_Post' ) ) {
+		if ( is_singular() && 'page' !== get_post_type() ) {
+			$post = aioseo()->helpers->getPost();
+			if ( is_a( $post, 'WP_Post' ) && post_type_supports( $post->post_type, 'author' ) ) {
 				$author = get_author_posts_url( $post->post_author );
 				if ( ! empty( $author ) ) {
 					if ( ! in_array( 'PersonAuthor', aioseo()->schema->graphs, true ) ) {
@@ -67,7 +70,7 @@ class WebPage extends Graphs\Graph {
 
 		if ( is_singular() ) {
 			if ( ! isset( aioseo()->schema->context['object'] ) || ! aioseo()->schema->context['object'] ) {
-				return $data;
+				return $this->getAddonData( $data, 'webPage' );
 			}
 
 			$post = aioseo()->schema->context['object'];
@@ -81,16 +84,16 @@ class WebPage extends Graphs\Graph {
 				}
 			}
 
-			$data['datePublished'] = mysql2date( DATE_W3C, $post->post_date_gmt, false );
-			$data['dateModified']  = mysql2date( DATE_W3C, $post->post_modified_gmt, false );
+			$data['datePublished'] = mysql2date( DATE_W3C, $post->post_date, false );
+			$data['dateModified']  = mysql2date( DATE_W3C, $post->post_modified, false );
 
-			return $data;
+			return $this->getAddonData( $data, 'webPage' );
 		}
 
 		if ( is_front_page() ) {
 			$data['about'] = [ '@id' => trailingslashit( home_url() ) . '#' . aioseo()->options->searchAppearance->global->schema->siteRepresents ];
 		}
 
-		return $data;
+		return $this->getAddonData( $data, 'webPage' );
 	}
 }

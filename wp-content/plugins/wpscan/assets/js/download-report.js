@@ -484,7 +484,7 @@ jQuery(document).ready(function ($) {
   });
 
   // Download
-  $('.download-report').on('click', function () {
+  $('.download-pdf-report').on('click', function () {
     let dt = new Date().toJSON().slice(0, 10);
     // pdfMake.createPdf(wpscanReport).open();
     pdfMake.createPdf(wpscanReport).download(dt + '-wpscan-report.pdf');

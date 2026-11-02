@@ -21,7 +21,6 @@ class Preview {
 	 * @return mixed
 	 */
 	public static function filter_post_meta_for_previews( $default_value, int $object_id, ?string $meta_key = null, ?bool $single = false ) {
-
 		if ( ! is_graphql_request() ) {
 			return $default_value;
 		}
@@ -34,6 +33,9 @@ class Preview {
 		 * @param int     $object_id The ID of the object to resolve meta for
 		 * @param ?string $meta_key  The key for the meta to resolve
 		 * @param ?bool   $single    Whether a single value should be returned
+		 *
+		 * @hookGroup models
+		 * @since 0.0.5
 		 */
 		$resolve_revision_meta_from_parent = apply_filters( 'graphql_resolve_revision_meta_from_parent', true, $object_id, $meta_key, $single );
 
@@ -51,12 +53,13 @@ class Preview {
 			$parent   = get_post( $post->post_parent );
 			$meta_key = ! empty( $meta_key ) ? $meta_key : '';
 
-			return isset( $parent->ID ) && absint( $parent->ID ) ? get_post_meta( $parent->ID, $meta_key, (bool) $single ) : $default_value;
+			$parent_meta = isset( $parent->ID ) && absint( $parent->ID ) ? get_post_meta( $parent->ID, $meta_key, (bool) $single ) : $default_value;
 
+			// Wrap in array in case of single as get_post_metadata filter returns first value from array when single.
+			// Ref: https://github.com/WordPress/wordpress-develop/blob/2fe26ceb7a1f3fb57ec8726fc5f425d00a12ace9/src/wp-includes/meta.php#L666
+			return ( $single && is_array( $parent_meta ) ) ? [ $parent_meta ] : $parent_meta;
 		}
 
 		return $default_value;
-
 	}
-
 }

@@ -38,7 +38,6 @@ class Sitemap {
 		$this->migrateIncludeImages();
 		$this->migrateExcludedPosts();
 		$this->migrateExcludedTerms();
-		$this->migrateExcludedRoles();
 
 		$settings = [
 			'items_per_page' => [ 'type' => 'string', 'newOption' => [ 'sitemap', 'general', 'linksPerIndex' ] ],
@@ -62,7 +61,7 @@ class Sitemap {
 		$allowedPostTypes = array_values( array_diff( aioseo()->helpers->getPublicPostTypes( true ), aioseo()->helpers->getNoindexedPostTypes() ) );
 		foreach ( $allowedPostTypes as $postType ) {
 			foreach ( $this->options as $name => $value ) {
-				if ( preg_match( "#pt_${postType}_sitemap$#", $name, $match ) && 'on' === $this->options[ $name ] ) {
+				if ( preg_match( "#pt_{$postType}_sitemap$#", (string) $name, $match ) && 'on' === $this->options[ $name ] ) {
 					$includedPostTypes[] = $postType;
 				}
 			}
@@ -71,7 +70,7 @@ class Sitemap {
 		$allowedTaxonomies = array_values( array_diff( aioseo()->helpers->getPublicTaxonomies( true ), aioseo()->helpers->getNoindexedTaxonomies() ) );
 		foreach ( $allowedTaxonomies as $taxonomy ) {
 			foreach ( $this->options as $name => $value ) {
-				if ( preg_match( "#tax_${taxonomy}_sitemap$#", $name, $match ) && 'on' === $this->options[ $name ] ) {
+				if ( preg_match( "#tax_{$taxonomy}_sitemap$#", (string) $name, $match ) && 'on' === $this->options[ $name ] ) {
 					$includedTaxonomies[] = $taxonomy;
 				}
 			}
@@ -172,27 +171,5 @@ class Sitemap {
 			aioseo()->options->sitemap->general->advancedSettings->enable = true;
 		}
 		aioseo()->options->sitemap->general->advancedSettings->excludeTerms = $excludedTerms;
-	}
-
-	/**
-	 * Migrates the roles that are excluded from GA tracking.
-	 *
-	 * For some reason, Rank Math stores these in the sitemap settings.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @return void
-	 */
-	private function migrateExcludedRoles() {
-		if ( empty( $this->options['exclude_users'] ) ) {
-			return;
-		}
-
-		$excludedRoles = [];
-		foreach ( $this->options['exclude_users'] as $k => $v ) {
-			$excludedRoles[] = $k;
-		}
-
-		aioseo()->options->deprecated->webmasterTools->googleAnalytics->excludeUsers = $excludedRoles;
 	}
 }

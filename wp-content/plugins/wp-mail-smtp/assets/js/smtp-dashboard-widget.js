@@ -17,12 +17,13 @@ var WPMailSMTPDashboardWidget = window.WPMailSMTPDashboardWidget || ( function( 
 	 * @type {object}
 	 */
 	var el = {
-		$canvas                         : $( '#wp-mail-smtp-dash-widget-chart' ),
-		$settingsBtn                    : $( '#wp-mail-smtp-dash-widget-settings-button' ),
-		$dismissBtn                     : $( '.wp-mail-smtp-dash-widget-dismiss-chart-upgrade' ),
-		$summaryReportEmailBlock        : $( '.wp-mail-smtp-dash-widget-summary-report-email-block' ),
-		$summaryReportEmailDismissBtn   : $( '.wp-mail-smtp-dash-widget-summary-report-email-dismiss' ),
-		$summaryReportEmailEnableInput  : $( '#wp-mail-smtp-dash-widget-summary-report-email-enable' ),
+		$canvas                       : $( '#wp-mail-smtp-dash-widget-chart' ),
+		$settingsBtn                  : $( '#wp-mail-smtp-dash-widget-settings-button' ),
+		$dismissBtn                   : $( '.wp-mail-smtp-dash-widget-dismiss-chart-upgrade' ),
+		$summaryReportEmailBlock      : $( '.wp-mail-smtp-dash-widget-summary-report-email-block' ),
+		$summaryReportEmailDismissBtn : $( '.wp-mail-smtp-dash-widget-summary-report-email-dismiss' ),
+		$summaryReportEmailEnableInput: $( '#wp-mail-smtp-dash-widget-summary-report-email-enable' ),
+		$emailAlertsDismissBtn        : $( '#wp-mail-smtp-dash-widget-dismiss-email-alert-block' ),
 	};
 
 	/**
@@ -66,38 +67,34 @@ var WPMailSMTPDashboardWidget = window.WPMailSMTPDashboardWidget || ( function( 
 			options: {
 				maintainAspectRatio: false,
 				scales: {
-					xAxes: [ {
-						type: 'time',
+					x: {
+						type: 'timeseries',
 						time: {
-							unit: 'day',
 							tooltipFormat: 'MMM D',
 						},
-						distribution: 'series',
 						ticks: {
 							beginAtZero: true,
 							source: 'labels',
-							padding: 10,
+							padding: 0,
 							minRotation: 25,
 							maxRotation: 25,
 							callback: function( value, index, values ) {
-
-								// Distribute the ticks equally starting from a right side of xAxis.
-								var gap = Math.floor( values.length / 7 );
+								const gap = Math.floor( values.length / 7 );
 
 								if ( gap < 1 ) {
-									return value;
+									return moment( value ).format( 'MMM D' );
 								}
 								if ( ( values.length - index - 1 ) % gap === 0 ) {
-									return value;
+									return moment( value ).format( 'MMM D' );
 								}
 							},
 						},
-					} ],
-					yAxes: [ {
+					},
+					y: {
 						ticks: {
 							beginAtZero: true,
 							maxTicksLimit: 6,
-							padding: 20,
+							padding: 0,
 							callback: function( value ) {
 
 								// Make sure the tick value has no decimals.
@@ -106,26 +103,23 @@ var WPMailSMTPDashboardWidget = window.WPMailSMTPDashboardWidget || ( function( 
 								}
 							},
 						},
-					} ],
+					},
 				},
 				elements: {
 					line: {
 						tension: 0,
+						fill: true,
 					},
 				},
-				animation: {
-					duration: 0,
+				animation: false,
+				plugins: {
+					legend: {
+						display: false,
+					},
+					tooltip: {
+						displayColors: false,
+					},
 				},
-				hover: {
-					animationDuration: 0,
-				},
-				legend: {
-					display: false,
-				},
-				tooltips: {
-					displayColors: false,
-				},
-				responsiveAnimationDuration: 0,
 			},
 		},
 
@@ -170,7 +164,7 @@ var WPMailSMTPDashboardWidget = window.WPMailSMTPDashboardWidget || ( function( 
 
 				chart.settings.data.labels.push( date );
 				chart.settings.data.datasets[ 0 ].data.push( {
-					t: date,
+					x: date,
 					y: data[ i - 1 ],
 				} );
 			}
@@ -209,8 +203,9 @@ var WPMailSMTPDashboardWidget = window.WPMailSMTPDashboardWidget || ( function( 
 		 */
 		ready: function() {
 
-			el.$settingsBtn.on( 'click', function() {
-				$( this ).siblings( '.wp-mail-smtp-dash-widget-settings-menu' ).toggle();
+			el.$settingsBtn.on( 'click', function( e ) {
+				$( this ).toggleClass( 'open' );
+				$( this ).siblings( '.wp-mail-smtp-dash-widget-settings-menu' ).fadeToggle( 200 );
 			} );
 
 			el.$dismissBtn.on( 'click', function( event ) {
@@ -255,6 +250,14 @@ var WPMailSMTPDashboardWidget = window.WPMailSMTPDashboardWidget || ( function( 
 						$self.show();
 						$loader.hide();
 					} );
+			} );
+
+			// Hide email alerts banner on dismiss icon click.
+			el.$emailAlertsDismissBtn.on( 'click', function( event ) {
+				event.preventDefault();
+
+				$( '#wp-mail-smtp-dash-widget-email-alerts-education' ).remove();
+				app.saveWidgetMeta( 'hide_email_alerts_banner', 1 );
 			} );
 
 			chart.init();

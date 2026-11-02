@@ -2,6 +2,8 @@
 
 namespace FluentForm\App\Services\FormBuilder\Components;
 
+defined('ABSPATH') || die;
+
 use FluentForm\App\Helpers\Helper;
 use FluentForm\Framework\Helpers\ArrayHelper;
 
@@ -18,7 +20,17 @@ class DateTime extends BaseComponent
     public function compile($data, $form)
     {
         $elementName = $data['element'];
-        $data = apply_filters('fluentform_rendering_field_data_' . $elementName, $data, $form);
+        $data = apply_filters_deprecated(
+            'fluentform_rendering_field_data_' . $elementName,
+            [
+                $data,
+                $form,
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_data_' . $elementName,
+            'Use fluentform/rendering_field_data_' . $elementName . ' instead of fluentform_rendering_field_data_' . $elementName
+        );
+        $data = apply_filters('fluentform/rendering_field_data_' . $elementName, $data, $form);
 
         wp_enqueue_script('flatpickr');
         wp_enqueue_style('flatpickr');
@@ -40,16 +52,32 @@ class DateTime extends BaseComponent
         if (ArrayHelper::get($data, 'settings.validation_rules.required.value')) {
             $ariaRequired = 'true';
         }
+        $id = $data['attributes']['id'];
 
-        $elMarkup = "<input data-type-datepicker data-format='" . esc_attr($dateFormat) . "' " . $atts . " aria-invalid='false' aria-required={$ariaRequired}>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
-
+        $ariaLabel = esc_html__(' Use arrow keys to navigate dates. Press enter to select a date.', 'fluentform');
+        $label = ArrayHelper::get($data, 'settings.label');
+        // SECURITY (FINDING-12): esc_attr the settings.label before interpolating it into the
+        // single-quoted aria-label; the save-time wp_kses does not encode quotes, so an unescaped
+        // label allows an attribute breakout (stored XSS).
+        $elMarkup = "<input  aria-label='" . esc_attr($label) . $ariaLabel . "'  aria-haspopup='dialog' data-type-datepicker data-format='" . esc_attr($dateFormat) . "' " . $atts . " aria-invalid='false' aria-required={$ariaRequired}>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
         $config = $this->getDateFormatConfigJSON($data['settings'], $form);
-        $customConfig = $this->getCustomConfig($data['settings']);
-        $this->loadToFooter($config, $customConfig, $form, $data['attributes']['id']);
-
+        $customConfig = $this->getCustomConfig($data['settings'], $form);
+        $this->loadToFooter($config, $customConfig, $form, $id);
         $html = $this->buildElementMarkup($elMarkup, $data, $form);
 
-        $this->printContent('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
+        $html = apply_filters_deprecated(
+            'fluentform_rendering_field_html_' . $elementName,
+            [
+                $html,
+                $data,
+                $form,
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_html_' . $elementName,
+            'Use fluentform/rendering_field_html_' . $elementName . ' instead of fluentform_rendering_field_html_' . $elementName
+        );
+
+        $this->printContent('fluentform/rendering_field_html_' . $elementName, $html, $data, $form);
     }
 
     public function getAvailableDateFormats()
@@ -101,6 +129,7 @@ class DateTime extends BaseComponent
 
         $config = apply_filters('fluentform/frontend_date_format', [
             'dateFormat'    => $dateFormat,
+            'ariaDateFormat'    =>'F j, Y',
             'enableTime'    => $hasTime,
             'noCalendar'    => ! $this->hasDate($dateFormat),
             'disableMobile' => true,
@@ -110,15 +139,18 @@ class DateTime extends BaseComponent
         return json_encode($config, JSON_FORCE_OBJECT);
     }
 
-    public function getCustomConfig($settings)
+    public function getCustomConfig($settings, $form = null)
     {
-        $customConfigObject = trim(ArrayHelper::get($settings, 'date_config'));
+        $customConfigObject = fluentform_sanitize_json_object(
+            (string) ArrayHelper::get($settings, 'date_config')
+        );
 
-        if (! $customConfigObject || '{' != substr($customConfigObject, 0, 1) || '}' != substr($customConfigObject, -1)) {
-            $customConfigObject = '{}';
-        }
+        // Emitted JS is rebuilt from validated data tokens (ints only) — the raw setting never reaches the script sink.
+        $customConfigObject = fluentform_date_config_to_js($customConfigObject);
 
-        return $customConfigObject;
+        $customConfigObject = '' !== $customConfigObject ? $customConfigObject : '{}';
+
+        return apply_filters('fluentform/date_time_custom_config', $customConfigObject, $settings, $form);
     }
 
     private function loadToFooter($config, $customConfigObject, $form, $id)
@@ -132,9 +164,9 @@ class DateTime extends BaseComponent
                             return;
                         }
                         flatpickr.localize(window.fluentFormVars.date_i18n);
-                        var config = <?php echo fluentform_kses_js($config); ?> ;
+                        var config = <?php echo fluentform_kses_js($config); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped  -- $config is escaped using fluentform_kses_js ?> ;
                         try {
-                            var customConfig = <?php echo fluentform_kses_js($customConfigObject); ?>;
+                            var customConfig = <?php echo fluentform_kses_js($customConfigObject); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $config is escaped using fluentform_kses_js ?>;
                         } catch (e) {
                             var customConfig = {};
                         }
@@ -143,7 +175,6 @@ class DateTime extends BaseComponent
                         if (!config.locale) {
                             config.locale = 'default';
                         }
-
                         if (jQuery('#<?php echo esc_attr($id); ?>').length) {
                             flatpickr('#<?php echo esc_attr($id); ?>', config);
                         }

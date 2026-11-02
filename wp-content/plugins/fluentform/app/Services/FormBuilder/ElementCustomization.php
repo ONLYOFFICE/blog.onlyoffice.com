@@ -16,9 +16,10 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-$dateFormats = (new \FluentForm\App\Services\FormBuilder\Components\DateTime())->getAvailableDateFormats();
+$fluentformDateFormats = (new \FluentForm\App\Services\FormBuilder\Components\DateTime())->getAvailableDateFormats();
+$fluentformRatingIconOptions = \FluentForm\App\Services\FormBuilder\RatingIcon::getPresetOptions();
 
-$dateConfigSettings = [
+$fluentformDateConfigSettings = [
     'template'         => 'inputTextarea',
     'label'            => __('Advanced Date Configuration', 'fluentform'),
     'placeholder'      => __('Advanced Date Configuration', 'fluentform'),
@@ -31,10 +32,10 @@ $dateConfigSettings = [
 ];
 
 if (! defined('FLUENTFORMPRO')) {
-    $dateConfigSettings['inline_help_text'] = 'Available on Fluent Forms Pro';
+    $fluentformDateConfigSettings['inline_help_text'] = 'Available on Fluent Forms Pro';
 }
 
-$element_customization_settings = [
+$fluentformElementCustomizationSettings = [
     'name' => [
         'template'  => 'nameAttr',
         'label'     => __('Name Attribute', 'fluentform'),
@@ -112,9 +113,9 @@ $element_customization_settings = [
         'creatable'   => true,
         'placeholder' => __('Select Date Format', 'fluentform'),
         'help_text'   => __('Select any date format from the dropdown. The user will be able to choose a date in this given format.', 'fluentform'),
-        'options'     => $dateFormats,
+        'options'     => $fluentformDateFormats,
     ],
-    'date_config' => $dateConfigSettings,
+    'date_config' => $fluentformDateConfigSettings,
     'rows'        => [
         'template'  => 'inputText',
         'label'     => __('Rows', 'fluentform'),
@@ -135,10 +136,20 @@ $element_customization_settings = [
         'label'     => __('Options', 'fluentform'),
         'help_text' => __('Create visual options for the field and checkmark them for default selection.', 'fluentform'),
     ],
+    'enable_option_groups' => [
+        'template'  => 'inputYesNoCheckBox',
+        'label'     => __('Enable Option Grouping', 'fluentform'),
+        'help_text' => __('Turn this on to organize dropdown and multiselect options under group labels.', 'fluentform'),
+    ],
     'enable_select_2' => [
         'template'  => 'inputYesNoCheckBox',
         'label'     => __('Enable Searchable Smart Options', 'fluentform'),
         'help_text' => __('If you enable this then options will be searchable by select2 js library', 'fluentform'),
+        'dependency' => [
+            'depends_on' => 'parent_container',
+            'operator'   => '!=',
+            'value'      => 'repeater_container',
+        ],
     ],
     'pricing_options' => [
         'template'  => 'pricingOptions',
@@ -202,8 +213,8 @@ $element_customization_settings = [
     ],
     'button_ui' => [
         'template'  => 'prevNextButton',
-        'label'     => __('Submit Button', 'fluentform'),
-        'help_text' => __('This is form submission button.', 'fluentform'),
+        'label'     => __('Button Text', 'fluentform'),
+        'help_text' => __('Set as a default button or image icon type button', 'fluentform'),
     ],
     'align' => [
         'template'  => 'radio',
@@ -288,7 +299,64 @@ $element_customization_settings = [
                 'label' => __('Steps', 'fluentform'),
             ],
             [
+                'value' => 'tabs',
+                'label' => __('Tabs', 'fluentform'),
+            ],
+            [
                 'value' => '',
+                'label' => __('None', 'fluentform'),
+            ],
+        ],
+    ],
+    'progress_layout' => [
+        'template'  => 'radioButton',
+        'label'     => __('Tab Position', 'fluentform'),
+        'help_text' => __('Choose how step tabs should be displayed on the frontend.', 'fluentform'),
+        'options'   => [
+            [
+                'value' => 'top',
+                'label' => __('Top', 'fluentform'),
+            ],
+            [
+                'value' => 'left',
+                'label' => __('Left', 'fluentform'),
+            ],
+        ],
+        'dependency' => [
+            'depends_on' => 'settings/progress_indicator',
+            'value'      => 'tabs',
+            'operator'   => '==',
+        ],
+    ],
+    'tabs_show_progress_bar' => [
+        'template'   => 'inputYesNoCheckBox',
+        'label'      => __('Show Progress Bar Under Tabs', 'fluentform'),
+        'help_text'  => __('Enable a compact progress bar under the step tabs.', 'fluentform'),
+        'dependency' => [
+            'depends_on' => 'settings/progress_indicator',
+            'value'      => 'tabs',
+            'operator'   => '==',
+        ],
+    ],
+    'step_animation' => [
+        'template'  => 'radioButton',
+        'label'     => __('Animation type', 'fluentform'),
+        'help_text' => __('Select any of them below, steps will change according to your choice.', 'fluentform'),
+        'options'   => [
+            [
+                'value' => 'slide',
+                'label' => __('Slide Left/Right', 'fluentform'),
+            ],
+            [
+                'value' => 'fade',
+                'label' => __('Fade In/Out', 'fluentform'),
+            ],
+            [
+                'value' => 'slide_down',
+                'label' => __('Slide Down/Up', 'fluentform'),
+            ],
+            [
+                'value' => 'none',
                 'label' => __('None', 'fluentform'),
             ],
         ],
@@ -504,7 +572,8 @@ $element_customization_settings = [
     ],
     'calculation_settings' => [
         'template'      => (defined('FLUENTFORMPRO')) ? 'inputCalculationSettings' : 'infoBlock',
-        'text'          => '<b>Calculation Field Settings</b><br />Calculate the value based on other numeric field is available on pro version of Fluent Forms. Please install Fluent Forms Pro to use this feature',
+        'text'          => '<strong>Calculation Field Settings</strong><br/>Calculate the value based on other numeric field is available on pro version of Fluent Forms. Please install Fluent Forms Pro to use this feature <br /> <a target="_blank" rel="noopener" href="' . esc_url(fluentform_upgrade_url('feature_lock_calculation')) . '">
+        Upgrade to Pro                </a>',
         'label'         => 'Calculation Field Settings',
         'status_label'  => 'Enable Calculation',
         'formula_label' => 'Calculation Expression',
@@ -529,7 +598,7 @@ $element_customization_settings = [
     'number_step' => [
         'template'  => 'inputText',
         'label'     => __('Step', 'fluentform'),
-        'help_text' => __('Please provide step attribute for this field. Give value "any" for floating value', 'fluentform'),
+        'help_text' => __('Please provide step attribute for this field.', 'fluentform'),
     ],
     'prefix_label' => [
         'template'  => 'inputText',
@@ -539,7 +608,7 @@ $element_customization_settings = [
     'suffix_label' => [
         'template'  => 'inputText',
         'label'     => __('Suffix Label', 'fluentform'),
-        'help_text' => __('Provide Input Suffix Label. It will show in the input field as suffix label', 'fluentform'),
+        'help_text' => __('Provide Input Suffix Label or Icon or SVG. It will show in the input field as suffix label', 'fluentform'),
     ],
     'is_unique' => [
         'template'  => 'inputYesNoCheckBox',
@@ -561,11 +630,98 @@ $element_customization_settings = [
             ],
         ],
     ],
+    'icon_source' => [
+        'template'  => 'select',
+        'label'     => __('Icon Source', 'fluentform'),
+        'help_text' => __('Choose a preset icon or provide a custom SVG icon for this rating field.', 'fluentform'),
+        'options'   => [
+            [
+                'value' => 'preset',
+                'label' => __('Preset Icons', 'fluentform'),
+            ],
+            [
+                'value' => 'custom_svg',
+                'label' => __('Custom SVG', 'fluentform'),
+            ],
+        ],
+    ],
+    'icon_type' => [
+        'template'   => 'select',
+        'label'      => __('Preset Icon', 'fluentform'),
+        'help_text'  => __('Select which icon shape to use for this rating field.', 'fluentform'),
+        'options'    => $fluentformRatingIconOptions,
+        'dependency' => [
+            'depends_on' => 'settings/icon_source',
+            'value'      => 'preset',
+            'operator'   => '==',
+        ],
+    ],
+    'custom_icon_svg' => [
+        'template'         => 'inputTextarea',
+        'label'            => __('Custom SVG Icon', 'fluentform'),
+        'help_text'        => __('Paste a single inline SVG. Unsupported tags and attributes will be stripped on save.', 'fluentform'),
+        'placeholder'      => __('<svg viewBox="0 0 24 24">...</svg>', 'fluentform'),
+        'rows'             => 6,
+        'inline_help_text' => __('Use a simple monochrome SVG for the most predictable result across classic and conversational forms.', 'fluentform'),
+        'dependency'       => [
+            'depends_on' => 'settings/icon_source',
+            'value'      => 'custom_svg',
+            'operator'   => '==',
+        ],
+    ],
+    'inactive_color' => [
+        'template'  => 'inputColor',
+        'label'     => __('Inactive Color', 'fluentform'),
+        'help_text' => __('Color used before a rating item is selected.', 'fluentform'),
+    ],
+    'active_color' => [
+        'template'  => 'inputColor',
+        'label'     => __('Active Color', 'fluentform'),
+        'help_text' => __('Color used after a rating item becomes active or selected.', 'fluentform'),
+    ],
     'numeric_formatter' => [
         'template'  => 'select',
         'label'     => __('Number Format', 'fluentform'),
         'help_text' => __('Select the format of numbers that are allowed in this field. You have the option to use a comma or a dot as the decimal separator.', 'fluentform'),
         'options'   => \FluentForm\App\Helpers\Helper::getNumericFormatters(),
+    ],
+    'mobile_keyboard_type' => [
+        'template'  => 'select',
+        'label'     => __('Mobile Keyboard Type', 'fluentform'),
+        'help_text' => __('Select the keyboard type to display on mobile devices. This only affects the keyboard shown, not validation or accepted characters.', 'fluentform'),
+        'options'   => [
+            [
+                'value' => '',
+                'label' => __('Standard Keyboard', 'fluentform'),
+            ],
+            [
+                'value' => 'numeric',
+                'label' => __('Numeric (0-9)', 'fluentform'),
+            ],
+            [
+                'value' => 'decimal',
+                'label' => __('Decimal (0-9 with .)', 'fluentform'),
+            ],
+            [
+                'value' => 'tel',
+                'label' => __('Telephone (0-9, *, #)', 'fluentform'),
+            ],
+        ],
+    ],
+    'mobile_keyboard_type_number' => [
+        'template'  => 'select',
+        'label'     => __('Mobile Keyboard Type', 'fluentform'),
+        'help_text' => __('Select the keyboard type to display on mobile devices.', 'fluentform'),
+        'options'   => [
+            [
+                'value' => '',
+                'label' => __('Numeric (0-9)', 'fluentform'),
+            ],
+            [
+                'value' => 'decimal',
+                'label' => __('Decimal (0-9 with .)', 'fluentform'),
+            ],
+        ],
     ],
     'unique_validation_message' => [
         'template'   => 'inputText',
@@ -638,12 +794,139 @@ $element_customization_settings = [
             ],
         ],
     ],
+    'upload_bttn_ui' => [
+        'template'  => 'radio',
+        'label'     => __('Upload Button Interface', 'fluentform'),
+        'help_text' => __('Select how the upload button should work show a dropzone or a button', 'fluentform'),
+        'options'   => [
+            [
+                'value' => '',
+                'label' => __('Button', 'fluentform'),
+            ],
+            [
+                'value' => 'dropzone',
+                'label' => __('Dropzone', 'fluentform'),
+            ],
+        ],
+    ],
+    'enable_crop' => [
+        'template'  => 'inputYesNoCheckBox',
+        'label'     => __('Enable crop', 'fluentform'),
+        'help_text' => __('If enabled, users must crop the image before it is uploaded.', 'fluentform'),
+    ],
+    'crop_mode' => [
+        'template'   => 'radioButton',
+        'label'      => __('Crop Type', 'fluentform'),
+        'help_text'  => __('Choose whether users crop by ratio or by exact width and height.', 'fluentform'),
+        'options'    => [
+            [
+                'value' => 'ratio',
+                'label' => __('Crop Ratio', 'fluentform'),
+            ],
+            [
+                'value' => 'dimensions',
+                'label' => __('Width and Height', 'fluentform'),
+            ],
+        ],
+        'dependency' => [
+            'depends_on' => 'settings/enable_crop',
+            'value'      => 'yes',
+            'operator'   => '==',
+        ],
+    ],
+    'crop_ratio' => [
+        'template'   => 'select',
+        'label'      => __('Crop ratio', 'fluentform'),
+        'help_text'  => __('Choose the default crop ratio users will see before upload.', 'fluentform'),
+        'options'    => [
+            [
+                'value' => 'free',
+                'label' => __('Free', 'fluentform'),
+            ],
+            [
+                'value' => '1:1',
+                'label' => '1:1',
+            ],
+            [
+                'value' => '4:3',
+                'label' => '4:3',
+            ],
+            [
+                'value' => '16:9',
+                'label' => '16:9',
+            ],
+            [
+                'value' => '3:4',
+                'label' => '3:4',
+            ],
+        ],
+    ],
+    'crop_width' => [
+        'template'  => 'inputNumber',
+        'label'     => __('Width (px)', 'fluentform'),
+        'help_text' => __('Required crop width in pixels.', 'fluentform'),
+    ],
+    'crop_height' => [
+        'template'  => 'inputNumber',
+        'label'     => __('Height (px)', 'fluentform'),
+        'help_text' => __('Required crop height in pixels.', 'fluentform'),
+    ],
     'container_width' => [
         'template'             => 'containerWidth',
         'label'                => __('Column Width %', 'fluentform'),
         'help_text'            => __('Set the width of the columns. The minimum column width is 10%.', 'fluentform'),
         'width_limitation_msg' => __('The minimum column width is 10%', 'fluentform'),
-    ]
+    ],
+    'render_recaptcha_v3_badge' => [
+        'template'  => 'radio',
+        'label'     => __('Render ReCaptcha V3 badge', 'fluentform'),
+        'help_text' => __('Select if ReCaptcha V3 verified badge should render in the form or not', 'fluentform'),
+        'options'   => [
+            [
+                'value' => true,
+                'label' => __('Yes', 'fluentform'),
+            ],
+            [
+                'value' => false,
+                'label' => __('No', 'fluentform'),
+            ],
+        ],
+    ],
+    'enable_other_option' => [
+        'template'  => 'inputYesNoCheckBox',
+        'label'     => __('Enable "Other" Option', 'fluentform'),
+        'help_text' => __('Allow users to add a custom option by selecting "Other"', 'fluentform'),
+    ],
+    'other_option_label' => [
+        'template'   => 'inputText',
+        'label'      => __('Other Option Label', 'fluentform'),
+        'help_text'  => __('Label for the "Other" option', 'fluentform'),
+        'dependency' => [
+            'depends_on' => 'settings/enable_other_option',
+            'value'      => 'yes',
+            'operator'   => '==',
+        ],
+    ],
+    'other_option_placeholder' => [
+        'template'   => 'inputText',
+        'label'      => __('Other Option Placeholder', 'fluentform'),
+        'help_text'  => __('Placeholder text for the "Other" input field', 'fluentform'),
+        'dependency' => [
+            'depends_on' => 'settings/enable_other_option',
+            'value'      => 'yes',
+            'operator'   => '==',
+        ],
+    ],
 ];
 
-return apply_filters('fluent_editor_element_customization_settings', $element_customization_settings);
+$fluentformElementCustomizationSettings = apply_filters_deprecated(
+    'fluentform_editor_element_customization_settings',
+    [
+        $fluentformElementCustomizationSettings
+    ],
+    FLUENTFORM_FRAMEWORK_UPGRADE,
+    'fluentform/editor_element_customization_settings',
+    'Use fluentform/editor_element_customization_settings instead of fluent_editor_element_customization_settings.'
+);
+
+return apply_filters('fluentform/editor_element_customization_settings', $fluentformElementCustomizationSettings);

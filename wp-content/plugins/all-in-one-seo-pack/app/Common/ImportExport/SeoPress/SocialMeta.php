@@ -58,6 +58,9 @@ class SocialMeta {
 			'seopress_social_accounts_myspace'    => [ 'type' => 'string', 'newOption' => [ 'social', 'profiles', 'urls', 'myspaceUrl' ] ],
 			'seopress_social_accounts_soundcloud' => [ 'type' => 'string', 'newOption' => [ 'social', 'profiles', 'urls', 'soundCloudUrl' ] ],
 			'seopress_social_accounts_tumblr'     => [ 'type' => 'string', 'newOption' => [ 'social', 'profiles', 'urls', 'tumblrUrl' ] ],
+			'seopress_social_accounts_wordpress'  => [ 'type' => 'string', 'newOption' => [ 'social', 'profiles', 'urls', 'wordPressUrl' ] ],
+			'seopress_social_accounts_bluesky'    => [ 'type' => 'string', 'newOption' => [ 'social', 'profiles', 'urls', 'blueskyUrl' ] ],
+			'seopress_social_accounts_threads'    => [ 'type' => 'string', 'newOption' => [ 'social', 'profiles', 'urls', 'threadsUrl' ] ]
 		];
 
 		aioseo()->importExport->seoPress->helpers->mapOldToNew( $settings, $this->options );
@@ -80,10 +83,6 @@ class SocialMeta {
 		}
 
 		aioseo()->options->searchAppearance->global->schema->siteRepresents = $type;
-
-		if ( ! empty( $this->options['seopress_social_knowledge_contact_type'] ) ) {
-			aioseo()->options->searchAppearance->global->schema->contactType = ucwords( $this->options['seopress_social_knowledge_contact_type'] );
-		}
 
 		$settings = [
 			'seopress_social_knowledge_img'   => [ 'type' => 'string', 'newOption' => [ 'searchAppearance', 'global', 'schema', $type . 'Logo' ] ],

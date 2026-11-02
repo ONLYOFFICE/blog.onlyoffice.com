@@ -8,6 +8,7 @@ use WPMailSMTP\Admin\DebugEvents\Migration;
 use WPMailSMTP\Admin\DebugEvents\Table;
 use WPMailSMTP\Admin\PageAbstract;
 use WPMailSMTP\Admin\ParentPageAbstract;
+use WPMailSMTP\Helpers\UI;
 use WPMailSMTP\Options;
 use WPMailSMTP\WP;
 
@@ -195,7 +196,7 @@ class DebugEventsTab extends PageAbstract {
 				<?php $this->wp_nonce_field(); ?>
 
 				<!-- Debug Events Section Title -->
-				<div class="wp-mail-smtp-setting-row wp-mail-smtp-setting-row-content wp-mail-smtp-clear section-heading" id="wp-mail-smtp-setting-row-email-heading">
+				<div class="wp-mail-smtp-setting-row wp-mail-smtp-setting-row-content wp-mail-smtp-clear section-heading wp-mail-smtp-section-heading--has-divider">
 					<div class="wp-mail-smtp-setting-field">
 						<h2><?php esc_html_e( 'Debug Events', 'wp-mail-smtp' ); ?></h2>
 					</div>
@@ -205,38 +206,47 @@ class DebugEventsTab extends PageAbstract {
 				</div>
 
 				<!-- Debug Events -->
-				<div id="wp-mail-smtp-setting-row-debug_event_types" class="wp-mail-smtp-setting-row wp-mail-smtp-setting-row-checkbox wp-mail-smtp-clear">
+				<div id="wp-mail-smtp-setting-row-debug_event_types" class="wp-mail-smtp-setting-row wp-mail-smtp-clear">
 					<div class="wp-mail-smtp-setting-label">
 						<label for="wp-mail-smtp-setting-debug_event_types">
 							<?php esc_html_e( 'Event Types', 'wp-mail-smtp' ); ?>
 						</label>
 					</div>
 					<div class="wp-mail-smtp-setting-field">
-						<div>
-							<input name="wp-mail-smtp[debug_events][email_errors]" type="checkbox"
-								   value="true"
-								   checked
-								   disabled
-								   id="wp-mail-smtp-setting-debug_events_email_errors">
-							<label for="wp-mail-smtp-setting-debug_events_email_errors">
-								<?php esc_html_e( 'Email Sending Errors', 'wp-mail-smtp' ); ?>
-							</label>
-							<p class="desc">
-								<?php esc_html_e( 'This debug event is always enabled and will record any email sending errors in the table below.', 'wp-mail-smtp' ); ?>
-							</p>
-						</div>
+						<?php
+						UI::toggle(
+							[
+								'name'     => 'wp-mail-smtp[debug_events][email_errors]',
+								'id'       => 'wp-mail-smtp-setting-debug_events_email_errors',
+								'value'    => 'true',
+								'checked'  => true,
+								'disabled' => true,
+							]
+						);
+						?>
+						<p class="desc">
+							<?php esc_html_e( 'Email Sending Errors', 'wp-mail-smtp' ); ?>
+						</p>
+						<p class="desc">
+							<?php esc_html_e( 'This debug event is always enabled and will record any email sending errors in the table below.', 'wp-mail-smtp' ); ?>
+						</p>
 						<hr class="wp-mail-smtp-setting-mid-row-sep">
-						<div>
-							<input name="wp-mail-smtp[debug_events][email_debug]" type="checkbox"
-								   value="true" <?php checked( true, $this->options->get( 'debug_events', 'email_debug' ) ); ?>
-								   id="wp-mail-smtp-setting-debug_events_email_debug">
-							<label for="wp-mail-smtp-setting-debug_events_email_debug">
-								<?php esc_html_e( 'Debug Email Sending', 'wp-mail-smtp' ); ?>
-							</label>
-							<p class="desc">
-								<?php esc_html_e( 'Check this if you would like to debug the email sending process. Once enabled, all debug events will be logged in the table below. This setting should only be enabled for shorter debugging periods and disabled afterwards.', 'wp-mail-smtp' ); ?>
-							</p>
-						</div>
+						<?php
+						UI::toggle(
+							[
+								'name'    => 'wp-mail-smtp[debug_events][email_debug]',
+								'id'      => 'wp-mail-smtp-setting-debug_events_email_debug',
+								'value'   => 'true',
+								'checked' => (bool) $this->options->get( 'debug_events', 'email_debug' ),
+							]
+						);
+						?>
+						<p class="desc">
+							<?php esc_html_e( 'Debug Email Sending', 'wp-mail-smtp' ); ?>
+						</p>
+						<p class="desc">
+							<?php esc_html_e( 'Check this if you would like to debug the email sending process. Once enabled, all debug events will be logged in the table below. This setting should only be enabled for shorter debugging periods and disabled afterwards.', 'wp-mail-smtp' ); ?>
+						</p>
 					</div>
 				</div>
 
@@ -460,6 +470,24 @@ class DebugEventsTab extends PageAbstract {
 	private function display_debug_events_not_installed() {
 
 		$error_message = get_option( Migration::ERROR_OPTION_NAME );
+
+		$create_missing_tables_url = wp_nonce_url(
+			add_query_arg(
+				[
+					'create-missing-db-tables' => 1,
+				],
+				$this->get_link()
+			),
+			Area::SLUG . '-create-missing-db-tables'
+		);
+
+		$contact_support_url = wp_mail_smtp()->get_utm_url(
+			'https://wpmailsmtp.com/account/support/',
+			[
+				'medium'  => 'debug-events',
+				'content' => 'Debug Events not installed correctly',
+			]
+		);
 		?>
 
 		<div class="notice-inline notice-error">
@@ -468,11 +496,37 @@ class DebugEventsTab extends PageAbstract {
 			<p>
 				<?php
 				if ( ! empty( $error_message ) ) {
-					esc_html_e( 'The database table was not installed correctly. Please contact plugin support to diagnose and fix the issue. Provide them the error message below:', 'wp-mail-smtp' );
+					echo wp_kses(
+						sprintf( /* translators: %1$s - create missing tables link; %2$s - contact support link. */
+							__( 'WP Mail SMTP is using custom database tables for some of its features. In order to work properly, the custom tables should be created, and it seems they are missing. Please try to <a href="%1$s">create the missing DB tables by clicking on this link</a>. If this issue persists, please <a href="%2$s" target="_blank" rel="noopener noreferrer">contact our support</a> and provide the error message below:', 'wp-mail-smtp' ),
+							esc_url( $create_missing_tables_url ),
+							esc_url( $contact_support_url )
+						),
+						[
+							'a' => [
+								'href'   => [],
+								'target' => [],
+								'rel'    => [],
+							],
+						]
+					);
 					echo '<br><br>';
 					echo '<code>' . esc_html( $error_message ) . '</code>';
 				} else {
-					esc_html_e( 'For some reason the database table was not installed correctly. Please contact plugin support team to diagnose and fix the issue.', 'wp-mail-smtp' );
+					echo wp_kses(
+						sprintf( /* translators: %1$s - create missing tables link; %2$s - contact support link. */
+							__( 'WP Mail SMTP is using custom database tables for some of its features. In order to work properly, the custom tables should be created, and it seems they are missing. Please try to <a href="%1$s">create the missing DB tables by clicking on this link</a>. If this issue persists, please <a href="%2$s" target="_blank" rel="noopener noreferrer">contact our support</a>.', 'wp-mail-smtp' ),
+							esc_url( $create_missing_tables_url ),
+							esc_url( $contact_support_url )
+						),
+						[
+							'a' => [
+								'href'   => [],
+								'target' => [],
+								'rel'    => [],
+							],
+						]
+					);
 				}
 				?>
 			</p>

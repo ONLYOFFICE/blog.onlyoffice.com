@@ -20,7 +20,7 @@ class Validator
             /**
              * Validator class
              *
-             * @var $class Confirmations|MailChimps|Notifications
+             * @var $class Confirmations|MailChimps|Notifications|Pdfs
              */
             $class::validate($data);
         }

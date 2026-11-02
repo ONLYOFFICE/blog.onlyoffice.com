@@ -1,5 +1,7 @@
 <?php
 
+defined('ABSPATH') or die;
+
 spl_autoload_register(function ($class) {
     $namespace = 'FluentConversational';
     

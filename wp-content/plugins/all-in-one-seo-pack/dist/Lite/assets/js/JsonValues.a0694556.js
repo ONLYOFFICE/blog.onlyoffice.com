@@ -1,0 +1,1 @@
+const c=()=>({getJsonValue:(n,t=null)=>{if(!n)return t;if(typeof n=="object")return n;try{n=JSON.parse(n)}catch{n=t}return n},getJsonValues:n=>n.map(t=>JSON.parse(t)),setJsonValue:n=>JSON.stringify(n),setJsonValues:n=>n.map(t=>JSON.stringify(t))});export{c as u};

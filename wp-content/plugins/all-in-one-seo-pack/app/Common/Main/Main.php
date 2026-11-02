@@ -15,6 +15,15 @@ use AIOSEO\Plugin\Common\Models;
  */
 class Main {
 	/**
+	 * Holds the BulkActions instance so its hooks remain registered.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @var BulkActions|null
+	 */
+	public $bulkActions = null;
+
+	/**
 	 * Construct method.
 	 *
 	 * @since 4.0.0
@@ -22,6 +31,10 @@ class Main {
 	public function __construct() {
 		new Media();
 		new QueryArgs();
+
+		if ( aioseo()->options->advanced->truSeo ) {
+			$this->bulkActions = new BulkActions();
+		}
 
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueueTranslations' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueueFrontEndAssets' ] );
@@ -51,13 +64,13 @@ class Main {
 	public function enqueueFrontEndAssets() {
 		$canManageSeo = apply_filters( 'aioseo_manage_seo', 'aioseo_manage_seo' );
 		if (
-			! is_admin_bar_showing() ||
+			! aioseo()->helpers->isAdminBarEnabled() ||
 			! ( current_user_can( $canManageSeo ) || aioseo()->access->canManage() )
 		) {
 			return;
 		}
 
-		aioseo()->core->assets->enqueueCss( 'src/vue/assets/scss/app/admin-bar.scss', [], 'src/vue/assets/scss/app/admin-bar.scss' );
+		aioseo()->core->assets->enqueueCss( 'src/vue/assets/scss/app/admin-bar.scss' );
 	}
 
 	/**

@@ -1,9 +1,11 @@
 <?php
 
+declare (strict_types=1);
 namespace WPMailSMTP\Vendor\ParagonIE\ConstantTime;
 
+use function pack;
 /**
- *  Copyright (c) 2016 - 2017 Paragon Initiative Enterprises.
+ *  Copyright (c) 2016 - 2022 Paragon Initiative Enterprises.
  *  Copyright (c) 2014 Steve "Sc00bz" Thomas (steve at tobtu dot com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,7 +32,7 @@ namespace WPMailSMTP\Vendor\ParagonIE\ConstantTime;
  *
  * @package ParagonIE\ConstantTime
  */
-abstract class Base64DotSlashOrdered extends \WPMailSMTP\Vendor\ParagonIE\ConstantTime\Base64
+abstract class Base64DotSlashOrdered extends Base64
 {
     /**
      * Uses bitwise operators instead of table-lookups to turn 6-bit integers
@@ -43,7 +45,7 @@ abstract class Base64DotSlashOrdered extends \WPMailSMTP\Vendor\ParagonIE\Consta
      * @param int $src
      * @return int
      */
-    protected static function decode6Bits($src)
+    protected static function decode6Bits(int $src) : int
     {
         $ret = -1;
         // if ($src > 0x2d && $src < 0x3a) ret += $src - 0x2e + 1; // -45
@@ -61,13 +63,13 @@ abstract class Base64DotSlashOrdered extends \WPMailSMTP\Vendor\ParagonIE\Consta
      * @param int $src
      * @return string
      */
-    protected static function encode6Bits($src)
+    protected static function encode6Bits(int $src) : string
     {
         $src += 0x2e;
         // if ($src > 0x39) $src += 0x41 - 0x3a; // 7
         $src += 0x39 - $src >> 8 & 7;
         // if ($src > 0x5a) $src += 0x61 - 0x5b; // 6
         $src += 0x5a - $src >> 8 & 6;
-        return \pack('C', $src);
+        return pack('C', $src);
     }
 }

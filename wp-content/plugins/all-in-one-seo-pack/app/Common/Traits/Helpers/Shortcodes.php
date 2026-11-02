@@ -75,20 +75,22 @@ trait Shortcodes {
 	/**
 	 * Returns the content with only the allowed shortcodes and wildcards replaced.
 	 *
-	 * @since 4.1.2
+	 * @since   4.1.2
+	 * @version 4.6.6 Added the $allowedTags parameter.
 	 *
-	 * @param  string $content The content.
-	 * @param  int    $postId  The post ID (optional).
-	 * @return string          The content with shortcodes replaced.
+	 * @param  string $content     The content.
+	 * @param  int    $postId      The post ID (optional).
+	 * @param  array  $allowedTags The shortcode tags to allow (optional).
+	 * @return string              The content with shortcodes replaced.
 	 */
-	public function doAllowedShortcodes( $content, $postId = null ) {
+	public function doAllowedShortcodes( $content, $postId = null, $allowedTags = [] ) {
 		// Extract list of shortcodes from the post content.
 		$tags = $this->getShortcodeTags( $content );
 		if ( ! count( $tags ) ) {
 			return $content;
 		}
 
-		$allowedTags  = apply_filters( 'aioseo_allowed_shortcode_tags', [] );
+		$allowedTags  = apply_filters( 'aioseo_allowed_shortcode_tags', $allowedTags );
 		$tagsToRemove = array_diff( $tags, $allowedTags );
 
 		$content = $this->doShortcodesHelper( $content, $tagsToRemove, $postId );
@@ -107,15 +109,15 @@ trait Shortcodes {
 	 * @return string               The content with shortcodes replaced.
 	 */
 	private function doShortcodesHelper( $content, $tagsToRemove = [], $postId = 0 ) {
-		global $shortcode_tags;
+		global $shortcode_tags; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
 		$conflictingShortcodes = array_merge( $tagsToRemove, $this->conflictingShortcodes );
 		$conflictingShortcodes = apply_filters( 'aioseo_conflicting_shortcodes', $conflictingShortcodes );
 
 		$tagsToRemove = [];
 		foreach ( $conflictingShortcodes as $shortcode ) {
 			$shortcodeTag = str_replace( [ '[', ']' ], '', $shortcode );
-			if ( array_key_exists( $shortcodeTag, $shortcode_tags ) ) {
-				$tagsToRemove[ $shortcodeTag ] = $shortcode_tags[ $shortcodeTag ];
+			if ( array_key_exists( $shortcodeTag, $shortcode_tags ) ) { // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+				$tagsToRemove[ $shortcodeTag ] = $shortcode_tags[ $shortcodeTag ]; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
 			}
 		}
 
@@ -133,7 +135,14 @@ trait Shortcodes {
 			}
 		}
 
+		// Set a flag to indicate Divi that it's processing internal content.
+
+		$default = aioseo()->helpers->setDiviInternalRendering( true );
+
 		$content = do_shortcode( $content );
+
+		// Reset the Divi flag to its default value.
+		aioseo()->helpers->setDiviInternalRendering( $default );
 
 		if ( $postId ) {
 			wp_reset_postdata();
@@ -158,7 +167,7 @@ trait Shortcodes {
 	private function getShortcodeTags( $content ) {
 		$tags    = [];
 		$pattern = '\\[(\\[?)([^\s]*)(?![\\w-])([^\\]\\/]*(?:\\/(?!\\])[^\\]\\/]*)*?)(?:(\\/)\\]|\\](?:([^\\[]*+(?:\\[(?!\\/\\2\\])[^\\[]*+)*+)\\[\\/\\2\\])?)(\\]?)';
-		if ( preg_match_all( "#$pattern#s", $content, $matches ) && array_key_exists( 2, $matches ) ) {
+		if ( preg_match_all( "#$pattern#s", (string) $content, $matches ) && array_key_exists( 2, $matches ) ) {
 			$tags = array_unique( $matches[2] );
 		}
 

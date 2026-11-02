@@ -26,28 +26,35 @@ class Output {
 		}
 
 		// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		$entries       = aioseo()->sitemap->helpers->decodeSitemapEntries( $entries );
 		$charset       = aioseo()->helpers->getCharset();
 		$excludeImages = aioseo()->sitemap->helpers->excludeImages();
 		$generation    = ! isset( aioseo()->sitemap->isStatic ) || aioseo()->sitemap->isStatic ? __( 'statically', 'all-in-one-seo-pack' ) : __( 'dynamically', 'all-in-one-seo-pack' );
 		$version       = aioseo()->helpers->getAioseoVersion();
+		$showCredits   = apply_filters( 'aioseo_sitemap_show_credits', true );
 
 		if ( ! empty( $version ) ) {
 			$version = 'v' . $version;
 		}
 
+		// Clear all output buffers to avoid conflicts.
+		aioseo()->helpers->clearBuffers();
+
 		echo '<?xml version="1.0" encoding="' . esc_attr( $charset ) . "\"?>\r\n";
-		echo '<!-- ' . sprintf(
-			// Translators: 1 - "statically" or "dynamically", 2 - The date, 3 - The time, 4 - The plugin name ("All in One SEO"), 5 - Currently installed version.
-			esc_html__( 'This sitemap was %1$s generated on %2$s at %3$s by %4$s %5$s - the original SEO plugin for WordPress.', 'all-in-one-seo-pack' ),
-			esc_html( $generation ),
-			esc_html( date_i18n( get_option( 'date_format' ) ) ),
-			esc_html( date_i18n( get_option( 'time_format' ) ) ),
-			esc_html( AIOSEO_PLUGIN_NAME ),
-			esc_html( $version )
-		) . ' -->';
+		if ( $showCredits ) {
+			echo '<!-- ' . sprintf(
+				// Translators: 1 - "statically" or "dynamically", 2 - The date, 3 - The time, 4 - The plugin name ("All in One SEO"), 5 - Currently installed version.
+				esc_html__( 'This sitemap was %1$s generated on %2$s at %3$s by %4$s %5$s - the original SEO plugin for WordPress.', 'all-in-one-seo-pack' ),
+				esc_html( $generation ),
+				esc_html( date_i18n( get_option( 'date_format' ) ) ),
+				esc_html( date_i18n( get_option( 'time_format' ) ) ),
+				esc_html( AIOSEO_PLUGIN_NAME ),
+				esc_html( $version )
+			) . ' -->';
+		}
 
 		if ( 'rss' === aioseo()->sitemap->type ) {
-			$xslUrl = home_url() . '/default.xsl';
+			$xslUrl = home_url() . '/default-sitemap.xsl';
 
 			if ( ! is_multisite() ) {
 				$title       = get_bloginfo( 'name' );
@@ -61,30 +68,33 @@ class Output {
 
 			$ttl = apply_filters( 'aioseo_sitemap_rss_ttl', 60 );
 
-			// Yandex doesn't support some tags so we need to check the user agent.
-			$isYandexBot = false;
-			if ( preg_match( '#.*Yandex.*#', $_SERVER['HTTP_USER_AGENT'] ) ) {
-				$isYandexBot = true;
+			if ( $showCredits ) {
+				echo "\r\n\r\n<?xml-stylesheet type=\"text/xsl\" href=\"" . esc_url( $xslUrl ) . "\"?>\r\n";
 			}
 
-			echo "\r\n\r\n<?xml-stylesheet type=\"text/xsl\" href=\"" . esc_url( $xslUrl ) . "\"?>\r\n";
 			include_once AIOSEO_DIR . '/app/Common/Views/sitemap/xml/rss.php';
 
 			return;
 		}
 
 		if ( 'root' === aioseo()->sitemap->indexName && aioseo()->sitemap->indexes ) {
-			$xslUrl = add_query_arg( 'sitemap', aioseo()->sitemap->indexName, home_url() . '/default.xsl' );
+			$xslUrl = add_query_arg( 'sitemap', aioseo()->sitemap->indexName, home_url() . '/default-sitemap.xsl' );
 
-			echo "\r\n\r\n<?xml-stylesheet type=\"text/xsl\" href=\"" . esc_url( $xslUrl ) . "\"?>\r\n";
+			if ( $showCredits ) {
+				echo "\r\n\r\n<?xml-stylesheet type=\"text/xsl\" href=\"" . esc_url( $xslUrl ) . "\"?>\r\n";
+			}
+
 			include AIOSEO_DIR . '/app/Common/Views/sitemap/xml/root.php';
 
 			return;
 		}
 
-		$xslUrl = add_query_arg( 'sitemap', aioseo()->sitemap->indexName, home_url() . '/default.xsl' );
+		$xslUrl = add_query_arg( 'sitemap', aioseo()->sitemap->indexName, home_url() . '/default-sitemap.xsl' );
 
-		echo "\r\n\r\n<?xml-stylesheet type=\"text/xsl\" href=\"" . esc_url( $xslUrl ) . "\"?>\r\n";
+		if ( $showCredits ) {
+			echo "\r\n\r\n<?xml-stylesheet type=\"text/xsl\" href=\"" . esc_url( $xslUrl ) . "\"?>\r\n";
+		}
+
 		include AIOSEO_DIR . '/app/Common/Views/sitemap/xml/default.php';
 	}
 
@@ -94,13 +104,13 @@ class Output {
 	 * @since 4.0.0
 	 *
 	 * @param  string $value The tag value.
-	 * @param  string $wrap  Whether the value should we wrapped in a CDATA section.
+	 * @param  bool   $wrap  Whether the value should we wrapped in a CDATA section.
 	 * @return void
 	 */
 	public function escapeAndEcho( $value, $wrap = true ) {
-		$safeText = wp_check_invalid_utf8( $value, true );
-
-		if ( ! $safeText ) {
+		$safeText = is_string( $value ) ? wp_check_invalid_utf8( $value, true ) : $value;
+		$isZero   = is_numeric( $value ) ? 0 === (int) $value : false;
+		if ( ! $safeText && ! $isZero ) {
 			return;
 		}
 
@@ -125,9 +135,12 @@ class Output {
 			$safeText
 		);
 
+		$safeText = $safeText ? $safeText : ( $isZero ? $value : '' );
+
 		if ( ! $wrap ) {
 			return print( $safeText ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
+
 		printf( '<![CDATA[%1$s]]>', $safeText ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 

@@ -19,11 +19,11 @@ class WXR_Parser_Regex {
 	public $base_blog_url = '';
 	public $has_gzip;
 
-	function __construct() {
+	public function __construct() {
 		$this->has_gzip = is_callable( 'gzopen' );
 	}
 
-	function parse( $file ) {
+	public function parse( $file ) {
 		$wxr_version  = false;
 		$in_multiline = false;
 
@@ -43,18 +43,18 @@ class WXR_Parser_Regex {
 				$importline  = rtrim( $this->fgets( $fp ) );
 
 				if ( ! $wxr_version && preg_match( '|<wp:wxr_version>(\d+\.\d+)</wp:wxr_version>|', $importline, $version ) ) {
-					$wxr_version = $version[1];
+					$wxr_version = isset( $version[1] ) ? $version[1] : '';
 				}
 
 				if ( false !== strpos( $importline, '<wp:base_site_url>' ) ) {
 					preg_match( '|<wp:base_site_url>(.*?)</wp:base_site_url>|is', $importline, $url );
-					$this->base_url = $url[1];
+					$this->base_url = isset( $url[1] ) ? $url[1] : '';
 					continue;
 				}
 
 				if ( false !== strpos( $importline, '<wp:base_blog_url>' ) ) {
 					preg_match( '|<wp:base_blog_url>(.*?)</wp:base_blog_url>|is', $importline, $blog_url );
-					$this->base_blog_url = $blog_url[1];
+					$this->base_blog_url = isset( $blog_url[1] ) ? $blog_url[1] : '';
 					continue;
 				} elseif ( empty( $this->base_blog_url ) ) {
 					$this->base_blog_url = $this->base_url;
@@ -62,8 +62,10 @@ class WXR_Parser_Regex {
 
 				if ( false !== strpos( $importline, '<wp:author>' ) ) {
 					preg_match( '|<wp:author>(.*?)</wp:author>|is', $importline, $author );
-					$a                                   = $this->process_author( $author[1] );
-					$this->authors[ $a['author_login'] ] = $a;
+					if ( isset( $author[1] ) ) {
+						$a                                   = $this->process_author( $author[1] );
+						$this->authors[ $a['author_login'] ] = $a;
+					}
 					continue;
 				}
 
@@ -72,7 +74,7 @@ class WXR_Parser_Regex {
 					$pos         = strpos( $importline, "<$tag>" );
 					$pos_closing = strpos( $importline, "</$tag>" );
 					if ( preg_match( '|<' . $tag . '>(.*?)</' . $tag . '>|is', $importline, $matches ) ) {
-						$this->{$handler[0]}[] = call_user_func( $handler[1], $matches[1] );
+						$this->{$handler[0]}[] = call_user_func( $handler[1], isset( $matches[1] ) ? $matches[1] : '' );
 
 					} elseif ( false !== $pos ) {
 						// Take note of any content after the opening tag
@@ -114,15 +116,20 @@ class WXR_Parser_Regex {
 		);
 	}
 
-	function get_tag( $string, $tag ) {
-		preg_match( "|<$tag.*?>(.*?)</$tag>|is", $string, $return );
+	public function get_tag( $text, $tag ) {
+		if ( null === $text ) {
+			return '';
+		}
+		preg_match( "|<$tag.*?>(.*?)</$tag>|is", $text, $return );
 		if ( isset( $return[1] ) ) {
 			if ( substr( $return[1], 0, 9 ) == '<![CDATA[' ) {
 				if ( strpos( $return[1], ']]]]><![CDATA[>' ) !== false ) {
 					preg_match_all( '|<!\[CDATA\[(.*?)\]\]>|s', $return[1], $matches );
 					$return = '';
-					foreach ( $matches[1] as $match ) {
-						$return .= $match;
+					if ( isset( $matches[1] ) ) {
+						foreach ( $matches[1] as $match ) {
+							$return .= $match;
+						}
 					}
 				} else {
 					$return = preg_replace( '|^<!\[CDATA\[(.*)\]\]>$|s', '$1', $return[1] );
@@ -136,7 +143,7 @@ class WXR_Parser_Regex {
 		return $return;
 	}
 
-	function process_category( $c ) {
+	public function process_category( $c ) {
 		$term = array(
 			'term_id'              => $this->get_tag( $c, 'wp:term_id' ),
 			'cat_name'             => $this->get_tag( $c, 'wp:cat_name' ),
@@ -153,7 +160,7 @@ class WXR_Parser_Regex {
 		return $term;
 	}
 
-	function process_tag( $t ) {
+	public function process_tag( $t ) {
 		$term = array(
 			'term_id'         => $this->get_tag( $t, 'wp:term_id' ),
 			'tag_name'        => $this->get_tag( $t, 'wp:tag_name' ),
@@ -169,7 +176,7 @@ class WXR_Parser_Regex {
 		return $term;
 	}
 
-	function process_term( $t ) {
+	public function process_term( $t ) {
 		$term = array(
 			'term_id'          => $this->get_tag( $t, 'wp:term_id' ),
 			'term_taxonomy'    => $this->get_tag( $t, 'wp:term_taxonomy' ),
@@ -187,10 +194,10 @@ class WXR_Parser_Regex {
 		return $term;
 	}
 
-	function process_meta( $string, $tag ) {
+	public function process_meta( $text, $tag ) {
 		$parsed_meta = array();
 
-		preg_match_all( "|<$tag>(.+?)</$tag>|is", $string, $meta );
+		preg_match_all( "|<$tag>(.+?)</$tag>|is", $text, $meta );
 
 		if ( ! isset( $meta[1] ) ) {
 			return $parsed_meta;
@@ -206,7 +213,7 @@ class WXR_Parser_Regex {
 		return $parsed_meta;
 	}
 
-	function process_author( $a ) {
+	public function process_author( $a ) {
 		return array(
 			'author_id'           => $this->get_tag( $a, 'wp:author_id' ),
 			'author_login'        => $this->get_tag( $a, 'wp:author_login' ),
@@ -217,7 +224,7 @@ class WXR_Parser_Regex {
 		);
 	}
 
-	function process_post( $post ) {
+	public function process_post( $post ) {
 		$post_id        = $this->get_tag( $post, 'wp:post_id' );
 		$post_title     = $this->get_tag( $post, 'title' );
 		$post_date      = $this->get_tag( $post, 'wp:post_date' );
@@ -314,32 +321,32 @@ class WXR_Parser_Regex {
 		return $postdata;
 	}
 
-	function _normalize_tag( $matches ) {
+	public function _normalize_tag( $matches ) {
 		return '<' . strtolower( $matches[1] );
 	}
 
-	function fopen( $filename, $mode = 'r' ) {
+	public function fopen( $filename, $mode = 'r' ) {
 		if ( $this->has_gzip ) {
 			return gzopen( $filename, $mode );
 		}
 		return fopen( $filename, $mode );
 	}
 
-	function feof( $fp ) {
+	public function feof( $fp ) {
 		if ( $this->has_gzip ) {
 			return gzeof( $fp );
 		}
 		return feof( $fp );
 	}
 
-	function fgets( $fp, $len = 8192 ) {
+	public function fgets( $fp, $len = 8192 ) {
 		if ( $this->has_gzip ) {
 			return gzgets( $fp, $len );
 		}
 		return fgets( $fp, $len );
 	}
 
-	function fclose( $fp ) {
+	public function fclose( $fp ) {
 		if ( $this->has_gzip ) {
 			return gzclose( $fp );
 		}

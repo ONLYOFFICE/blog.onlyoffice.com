@@ -65,7 +65,7 @@ class EntryColumnViewSettings
 
         if (!$row) {
             return wpFluent()->table('fluentform_form_meta')
-                             ->insert([
+                             ->insertGetId([
                                  'form_id'  => $formId,
                                  'meta_key' => $metaKey,
                                  'value'    => $metaValue,

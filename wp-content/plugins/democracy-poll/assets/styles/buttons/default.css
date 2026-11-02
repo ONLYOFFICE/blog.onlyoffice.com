@@ -1,0 +1,26 @@
+/* button */
+.dem-button[class]{
+	background: var(--dem-button-bg, #f8f8f8) linear-gradient(#fff, #f0f0f0);
+	border: 1px solid var(--dem-button-border-color, #ccc);
+	border-radius: 3px;
+	color: var(--dem-button-color, #5f5f5f);
+	font-size:90%;
+	font-weight: bold;
+	text-shadow: 0 1px #fff;
+	white-space: nowrap;
+	padding:0.7em 1.2em;
+}
+
+.dem-button[class]:is(:hover, :focus){
+	background-color: var(--dem-button-hover-bg, var(--dem-button-bg, #f8f8f8));
+	border-color: var(--dem-button-hover-border-color, #ccc #c2c2c2 #b8b8b8);
+	color: var(--dem-button-hover-color, var(--dem-button-color, #5f5f5f));
+}
+
+.dem-button[class]:visited{ color:var(--dem-button-color, #5f5f5f); }
+
+.dem-button[class]:active{
+	background: var(--dem-button-hover-bg, var(--dem-button-bg, #f8f8f8)) linear-gradient(#f0f0f0, #fff);
+	border-color: var(--dem-button-hover-border-color, #b8b8b8 #c2c2c2 #ccc);
+	box-shadow: 0 0 2px rgba(0,0,0,0.33) inset;
+}

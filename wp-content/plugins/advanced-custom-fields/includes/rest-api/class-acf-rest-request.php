@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,10 +21,6 @@ if ( class_exists( 'ACF_Rest_Request' ) ) {
 
 /**
  * Class ACF_Rest_Request
- *
- * @property-read string $object_sub_type
- * @property-read string $object_type
- * @property-read string $http_method
  */
 class ACF_Rest_Request {
 
@@ -248,5 +253,4 @@ class ACF_Rest_Request {
 
 		return null;
 	}
-
 }

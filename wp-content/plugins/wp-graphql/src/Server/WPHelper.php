@@ -3,8 +3,6 @@
 namespace WPGraphQL\Server;
 
 use GraphQL\Server\Helper;
-use GraphQL\Server\OperationParams;
-use GraphQL\Server\RequestError;
 
 /**
  * Extends GraphQL\Server\Helper to apply filters and parse query extensions.
@@ -14,12 +12,14 @@ use GraphQL\Server\RequestError;
 class WPHelper extends Helper {
 
 	/**
+	 * {@inheritDoc}
 	 * Parses normalized request params and returns instance of OperationParams
 	 * or array of OperationParams in case of batch operation.
 	 *
-	 * @param string $method The method of the request (GET, POST, etc).
-	 * @param array  $bodyParams The params passed to the body of the request.
-	 * @param array  $queryParams The query params passed to the request.
+	 * @param string  $method The method of the request (GET, POST, etc).
+	 * @param mixed[] $bodyParams The params passed to the body of the request.
+	 * @param mixed[] $queryParams The query params passed to the request.
+	 *
 	 * @return \GraphQL\Server\OperationParams|\GraphQL\Server\OperationParams[]
 	 * @throws \GraphQL\Server\RequestError Throws RequestError.
 	 */
@@ -37,19 +37,18 @@ class WPHelper extends Helper {
 			'body_params'  => ! empty( $parsed_body_params ) ? $parsed_body_params : null,
 		];
 
-		/**
-		 * Allow the request data to be filtered. Previously this filter was only
-		 * applied to non-HTTP requests. Since 0.2.0, we will apply it to all
-		 * requests.
-		 *
-		 * This is a great place to hook if you are interested in implementing
-		 * persisted queries (and ends up being a bit more flexible than
-		 * graphql-php's built-in persistentQueryLoader).
-		 *
-		 * @param array $data An array containing the pieces of the data of the GraphQL request
-		 * @param array $request_context An array containing the both body and query params
-		 */
 		if ( 'GET' === $method ) {
+			/**
+			 * Filters normalized GraphQL request data before GET requests are parsed.
+			 *
+			 * This hook can be used for persisted-query workflows and other request preprocessing.
+			 *
+			 * @param mixed[]            $data            The normalized GraphQL request data.
+			 * @param array<string,mixed> $request_context The request context containing request method and parsed params.
+			 *
+			 * @hookGroup request-lifecycle
+			 * @since 0.2.0
+			 */
 			$parsed_query_params = apply_filters( 'graphql_request_data', $parsed_query_params, $request_context );
 			// In GET requests there cannot be any body params so it's empty.
 			return parent::parseRequestParams( $method, [], $parsed_query_params );
@@ -58,6 +57,17 @@ class WPHelper extends Helper {
 		// In POST requests the query params are ignored by default but users can
 		// merge them into the body params manually using the $request_context if
 		// needed.
+		/**
+		 * Filters normalized GraphQL request data before POST requests are parsed.
+		 *
+		 * This hook can be used for persisted-query workflows and other request preprocessing.
+		 *
+		 * @param mixed[]            $data            The normalized GraphQL request data.
+		 * @param array<string,mixed> $request_context The request context containing request method and parsed params.
+		 *
+		 * @hookGroup request-lifecycle
+		 * @since 0.2.0
+		 */
 		$parsed_body_params = apply_filters( 'graphql_request_data', $parsed_body_params, $request_context );
 		return parent::parseRequestParams( $method, $parsed_body_params, [] );
 	}
@@ -65,10 +75,10 @@ class WPHelper extends Helper {
 	/**
 	 * Parse parameters and proxy to parse_extensions.
 	 *
-	 * @param  array $params Request parameters.
-	 * @return array
+	 * @param array<string,mixed>|array<string,mixed>[] $params Request parameters.
+	 * @return array<string,mixed>|array<string,mixed>[]
 	 */
-	private function parse_params( $params ) {
+	private function parse_params( array $params ): array {
 		if ( isset( $params[0] ) ) {
 			return array_map( [ $this, 'parse_extensions' ], $params );
 		}
@@ -79,10 +89,15 @@ class WPHelper extends Helper {
 	/**
 	 * Parse query extensions.
 	 *
-	 * @param  array $params Request parameters.
-	 * @return array
+	 * @param  array<string,mixed> $params Request parameters.
+	 * @return array<string,mixed>
 	 */
-	private function parse_extensions( $params ) {
+	private function parse_extensions( $params ): array {
+		// Bail if no params are passed.
+		if ( empty( $params ) || ! is_array( $params ) ) {
+			return [];
+		}
+
 		if ( isset( $params['extensions'] ) && is_string( $params['extensions'] ) ) {
 			$tmp = json_decode( $params['extensions'], true );
 			if ( ! json_last_error() ) {

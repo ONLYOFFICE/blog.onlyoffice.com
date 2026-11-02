@@ -19,7 +19,7 @@ class Filesystem {
 	 *
 	 * @since 4.1.9
 	 *
-	 * @var WP_Filesystem
+	 * @var \WP_Filesystem_Base
 	 */
 	public $fs = null;
 
@@ -37,8 +37,8 @@ class Filesystem {
 	 *
 	 * @since 4.1.9
 	 *
-	 * @param Core  $core The AIOSEO Core class.
-	 * @param array $args Any arguments needed to construct the class with.
+	 * @param \AIOSEO\Plugin\Common\Core\Core $core The AIOSEO Core class.
+	 * @param array                           $args Any arguments needed to construct the class with.
 	 */
 	public function __construct( $core, $args = [] ) {
 		$this->core = $core;
@@ -57,9 +57,9 @@ class Filesystem {
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		WP_Filesystem( $args );
 
-		global $wp_filesystem;
-		if ( is_object( $wp_filesystem ) ) {
-			$this->fs = $wp_filesystem;
+		global $wp_filesystem; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+		if ( is_object( $wp_filesystem ) ) { // phpcs:ignore Squiz.NamingConventions.ValidVariableName
+			$this->fs = $wp_filesystem; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
 		}
 	}
 

@@ -9,7 +9,7 @@ class EditorShortCode
     public static function getGeneralShortCodes()
     {
         return [
-            'title'      => 'General SmartCodes',
+            'title'      => __('General SmartCodes','fluentform'),
             'shortcodes' => [
                 '{wp.admin_email}'            => __('Admin Email', 'fluentform'),
                 '{wp.site_url}'               => __('Site URL', 'fluentform'),
@@ -46,7 +46,7 @@ class EditorShortCode
 
         $formShortCodes = [
             'shortcodes' => [],
-            'title'      => 'Input Options',
+            'title'      => __('Input Options','fluentform')
         ];
 
         $formShortCodes['shortcodes']['{all_data}'] = 'All Submitted Data';
@@ -55,16 +55,33 @@ class EditorShortCode
             $formShortCodes['shortcodes']['{inputs.' . $key . '}'] = $value['admin_label'];
         }
 
+        $formShortCodes['shortcodes']['{form_title}'] = __('Form Title', 'fluentform');
+
         return $formShortCodes;
+    }
+
+    public static function getFormLabelShortCodes($form)
+    {
+        $form = static::getForm($form);
+        $formFields = FormFieldsParser::getShortCodeInputs($form, ['admin_label', 'label',]);
+        $formLabelShortCodes = [
+            'shortcodes' => [],
+            'title'      => __('Label Options','fluentform')
+        ];
+        foreach ($formFields as $key => $value) {
+            $formLabelShortCodes['shortcodes']['{labels.' . $key . '}'] = wp_strip_all_tags ($value['admin_label']);
+        }
+        return $formLabelShortCodes;
     }
 
     public static function getSubmissionShortcodes($form = false)
     {
         $submissionProperties = [
+            '{submission.serial_number}'  => __('#Submission Serial Number', 'fluentform'),
             '{submission.id}'             => __('Submission ID', 'fluentform'),
-            '{submission.serial_number}'  => __('Submission Serial Number', 'fluentform'),
-            '{submission.source_url}'     => __('Source URL', 'fluentform'),
             '{submission.user_id}'        => __('User Id', 'fluentform'),
+            '{submission.entry_uid}'      => __('Entry Unique ID', 'fluentform'),
+            '{submission.source_url}'     => __('Source URL', 'fluentform'),
             '{submission.browser}'        => __('Submitter Browser', 'fluentform'),
             '{submission.device}'         => __('Submitter Device', 'fluentform'),
             '{submission.status}'         => __('Submission Status', 'fluentform'),
@@ -83,16 +100,18 @@ class EditorShortCode
             }
         }
 
-        return [
-            'title'      => 'Entry Attributes',
+        $submissionShortcodes = [
+            'title'      => __('Entry Attributes','fluentform'),
             'shortcodes' => $submissionProperties,
         ];
+
+        return apply_filters('fluentform/submission_shortcodes', $submissionShortcodes, $form);
     }
 
     public static function getPaymentShortcodes($form)
     {
         return [
-            'title'      => 'Payment Details',
+            'title'      => __('Payment Details','fluentform'),
             'shortcodes' => [
                 '{payment.receipt}'        => __('Payment Receipt', 'fluentform'),
                 '{payment.summary}'        => __('Payment Summary', 'fluentform'),
@@ -109,6 +128,7 @@ class EditorShortCode
         $form = static::getForm($form);
         $groups = [
             static::getFormShortCodes($form),
+            static::getFormLabelShortCodes($form),
             static::getGeneralShortCodes(),
             static::getSubmissionShortcodes($form),
         ];
@@ -117,10 +137,20 @@ class EditorShortCode
             $groups[] = static::getPaymentShortcodes($form);
         }
 
-        return apply_filters('fluentform_form_settings_smartcodes', $groups, $form);
+        $groups = apply_filters_deprecated(
+            'fluentform_form_settings_smartcodes', [
+                $groups,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/form_settings_smartcodes',
+            'Use fluentform/form_settings_smartcodes instead of fluentform_form_settings_smartcodes.'
+        );
+
+        return apply_filters('fluentform/form_settings_smartcodes', $groups, $form);
     }
 
-    public static function parse($string, $data, callable $arrayFormatter = null)
+    public static function parse($string, $data, ?callable $arrayFormatter = null)
     {
         if (is_array($string)) {
             return static::parseArray($string, $data, $arrayFormatter);
@@ -142,7 +172,7 @@ class EditorShortCode
         return $string;
     }
 
-    public static function parseString($string, $data, callable $arrayFormatter = null)
+    public static function parseString($string, $data, ?callable $arrayFormatter = null)
     {
         return preg_replace_callback('/{+(.*?)}/', function ($matches) use (&$data, &$arrayFormatter) {
             if (! isset($data[$matches[1]])) {

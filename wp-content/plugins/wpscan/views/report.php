@@ -200,7 +200,11 @@
         <?php } ?>
         
           <?php if ( get_option( $this->parent->OPT_API_TOKEN ) ) { ?>
-            <a href="#" class='button button-secondary download-report'><?php _e( 'Download as PDF', 'wpscan' ) ?></a>
+            <a href="#" class='button button-secondary download-report download-pdf-report'><?php _e( 'Download as PDF', 'wpscan' ) ?></a>
+          <?php } ?>
+
+          <?php if ( get_option( $this->parent->OPT_API_TOKEN ) ) { ?>
+            <a href="data:application/json,<?php echo esc_attr( urlencode( json_encode( get_option( $this->parent->OPT_REPORT ) ) ) ) ?>" download="report.json" class='button button-secondary download-report'><?php _e( 'Download as Json', 'wpscan' ) ?></a>
           <?php } ?>
         
         </div>

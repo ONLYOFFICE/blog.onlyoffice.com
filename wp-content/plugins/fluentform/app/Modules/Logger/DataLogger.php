@@ -1,6 +1,7 @@
 <?php namespace FluentForm\App\Modules\Logger;
 
-use FluentForm\App\Databases\Migrations\FormLogs;
+use FluentForm\App\Helpers\Helper;
+use FluentForm\Database\Migrations\Logs;
 use FluentForm\App\Modules\Form\FormDataParser;
 use FluentForm\App\Modules\Form\FormFieldsParser;
 use FluentForm\Framework\Foundation\Application;
@@ -17,6 +18,8 @@ class DataLogger
 
     public function getLogFilters()
     {
+        // SECURITY (H-02): unregistered handler; guard it so it is safe if ever wired to an action.
+        \FluentForm\App\Modules\Acl\Acl::verify('fluentform_settings_manager');
         $statuses = wpFluent()->table('fluentform_logs')
             ->select('status')
             ->groupBy('status')
@@ -59,15 +62,16 @@ class DataLogger
         foreach ($forms as $form) {
             $formattedForms[] = [
                 'form_id' => $form->parent_source_id,
-                'title'   => $form->title
-            ];;
+                'title'   => $form->title,
+            ];
+
         }
 
         wp_send_json_success([
             'available_statuses'   => $formattedStatuses,
             'available_components' => $formattedComponents,
             'available_forms'      => $formattedForms,
-            'api_statuses'         => $apiStatuses
+            'api_statuses'         => $apiStatuses,
         ]);
     }
 
@@ -76,14 +80,27 @@ class DataLogger
         if (!$data) {
             return;
         }
+
+        if (isset($data['description'])) {
+            $data['description'] = wp_kses($data['description'], [
+                'br'     => [],
+                'b'      => [],
+                'strong' => [],
+                'i'      => [],
+                'em'     => [],
+                'code'   => [],
+                'p'      => [],
+                'a'      => ['href' => [], 'title' => [], 'target' => [], 'rel' => []],
+            ]);
+        }
+
         $data['created_at'] = current_time('mysql');
 
         if (!get_option('fluentform_db_fluentform_logs_added')) {
-            FormLogs::migrate();
+            Logs::migrate();
         }
 
-        return wpFluent()->table('fluentform_logs')
-            ->insert($data);
+        wpFluent()->table('fluentform_logs')->insert($data);
     }
 
     public function getLogsByEntry($entry_id, $log_type = 'logs', $sourceType = 'submission_item')
@@ -95,7 +112,18 @@ class DataLogger
                 ->orderBy('id', 'DESC')
                 ->get();
 
-            $logs = apply_filters('fluentform_entry_logs', $logs, $entry_id);
+            $logs = apply_filters_deprecated(
+                'fluentform_entry_logs',
+                [
+                    $logs,
+                    $entry_id,
+                ],
+                FLUENTFORM_FRAMEWORK_UPGRADE,
+                'fluentform/submission_logs',
+                'Use fluentform/submission_logs instead of fluentform_entry_logs.'
+            );
+
+            $logs = apply_filters('fluentform/submission_logs', $logs, $entry_id);
         } else {
             $logs = wpFluent()->table('ff_scheduled_actions')
                 ->select([
@@ -103,23 +131,35 @@ class DataLogger
                     'action',
                     'status',
                     'note',
-                    'created_at'
+                    'created_at',
                 ])
                 ->where('origin_id', $entry_id)
                 ->orderBy('id', 'DESC')
                 ->get();
 
-            $logs = apply_filters('fluentform_entry_api_logs', $logs, $entry_id);
+            $logs = apply_filters_deprecated(
+                'fluentform_entry_api_logs',
+                [
+                    $logs,
+                    $entry_id,
+                ],
+                FLUENTFORM_FRAMEWORK_UPGRADE,
+                'fluentform/submission_api_logs',
+                'Use fluentform/submission_api_logs instead of fluentform_entry_api_logs.'
+            );
+
+            $logs = apply_filters('fluentform/submission_api_logs', $logs, $entry_id);
         }
 
-
         wp_send_json_success([
-            'logs' => $logs
+            'logs' => $logs,
         ], 200);
     }
 
     public function getAllLogs()
     {
+        // SECURITY (H-02): unregistered handler; guard it so it is safe if ever wired to an action.
+        \FluentForm\App\Modules\Acl\Acl::verify('fluentform_settings_manager');
         $limit = intval($this->app->request->get('per_page'));
         $pageNumber = intval($this->app->request->get('page_number'));
 
@@ -128,15 +168,14 @@ class DataLogger
         global $wpdb;
         $logsQuery = wpFluent()->table('fluentform_logs')
             ->select([
-                'fluentform_logs.*'
+                'fluentform_logs.*',
+                wpFluent()->raw($wpdb->prefix . 'fluentform_forms.title as form_title'),
+                wpFluent()->raw($wpdb->prefix . 'fluentform_logs.parent_source_id as form_id'),
+                wpFluent()->raw($wpdb->prefix . 'fluentform_logs.source_id as entry_id'),
             ])
-            ->select(wpFluent()->raw($wpdb->prefix . 'fluentform_forms.title as form_title'))
-            ->select(wpFluent()->raw($wpdb->prefix . 'fluentform_logs.parent_source_id as form_id'))
-            ->select(wpFluent()->raw($wpdb->prefix . 'fluentform_logs.source_id as entry_id'))
             ->leftJoin('fluentform_forms', 'fluentform_forms.id', '=', 'fluentform_logs.parent_source_id')
             ->orderBy('fluentform_logs.id', 'DESC');
         // ->whereIn('fluentform_logs.source_type', ['submission_item', 'form_item']);
-
 
         if ($parentSourceId = $this->app->request->get('parent_source_id')) {
             $logsQuery = $logsQuery->where('fluentform_logs.parent_source_id', intval($parentSourceId));
@@ -161,25 +200,36 @@ class DataLogger
             ->get();
 
         foreach ($logs as $log) {
-            if($log->source_type == 'submission_item' && $log->entry_id) {
+            if ('submission_item' == $log->source_type && $log->entry_id) {
                 $log->submission_url = admin_url('admin.php?page=fluent_forms&route=entries&form_id=' . $log->form_id . '#/entries/' . $log->entry_id);
             }
         }
 
-        $logs = apply_filters('fluentform_all_logs', $logs);
+        $logs = apply_filters_deprecated(
+            'fluentform_all_logs',
+            [
+                $logs,
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/all_logs',
+            'Use fluentform/all_logs instead of fluentform_all_logs.'
+        );
+
+        $logs = apply_filters('fluentform/all_logs', $logs);
 
         $total = $logsQueryMain->count();
 
         wp_send_json_success([
             'logs'  => $logs,
-            'total' => $total
+            'total' => $total,
         ], 200);
-
     }
 
 
     public function getApiLogs()
     {
+        // SECURITY (H-02): unregistered handler; guard it so it is safe if ever wired to an action.
+        \FluentForm\App\Modules\Acl\Acl::verify('fluentform_settings_manager');
         $limit = intval($this->app->request->get('per_page'));
         $pageNumber = intval($this->app->request->get('page_number'));
 
@@ -194,11 +244,10 @@ class DataLogger
                 'ff_scheduled_actions.status',
                 'ff_scheduled_actions.note',
                 'ff_scheduled_actions.created_at',
+                wpFluent()->raw($wpdb->prefix . 'fluentform_forms.title as form_title'),
             ])
-            ->select(wpFluent()->raw($wpdb->prefix . 'fluentform_forms.title as form_title'))
             ->join('fluentform_forms', 'fluentform_forms.id', '=', 'ff_scheduled_actions.form_id')
             ->orderBy('ff_scheduled_actions.id', 'DESC');
-
 
         if ($formId = $this->app->request->get('form_id')) {
             $logsQuery = $logsQuery->where('ff_scheduled_actions.form_id', intval($formId));
@@ -218,7 +267,17 @@ class DataLogger
             ->limit($limit)
             ->get();
 
-        $logs = apply_filters('fluentform_api_all_logs', $logs);
+        $logs = apply_filters_deprecated(
+            'fluentform_api_all_logs',
+            [
+                $logs,
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/api_all_logs',
+            'Use fluentform/api_all_logs instead of fluentform_api_all_logs.'
+        );
+
+        $logs = apply_filters('fluentform/api_all_logs', $logs);
 
         foreach ($logs as $log) {
             $log->submission_url = admin_url('admin.php?page=fluent_forms&route=entries&form_id=' . $log->form_id . '#/entries/' . $log->origin_id);
@@ -228,9 +287,8 @@ class DataLogger
 
         wp_send_json_success([
             'logs'  => $logs,
-            'total' => $total
+            'total' => $total,
         ], 200);
-
     }
 
     public function deleteLogsByIds($ids = [])
@@ -241,7 +299,7 @@ class DataLogger
 
         if (!$ids) {
             wp_send_json_error([
-                'message' => 'No selections found'
+                'message' => 'No selections found',
             ], 423);
         }
 
@@ -250,7 +308,7 @@ class DataLogger
             ->delete();
 
         wp_send_json_success([
-            'message' => __('Selected log(s) successfully deleted', 'fluentform')
+            'message' => __('Selected log(s) successfully deleted', 'fluentform'),
         ], 200);
     }
 
@@ -262,7 +320,7 @@ class DataLogger
 
         if (!$ids) {
             wp_send_json_error([
-                'message' => 'No selections found'
+                'message' => 'No selections found',
             ], 423);
         }
 
@@ -271,45 +329,48 @@ class DataLogger
             ->delete();
 
         wp_send_json_success([
-            'message' => __('Selected log(s) successfully deleted', 'fluentform')
+            'message' => __('Selected log(s) successfully deleted', 'fluentform'),
         ], 200);
     }
 
     public function retryApiAction()
     {
+        // SECURITY (H-02): unregistered handler; guard it so it is safe if ever wired to an action.
+        \FluentForm\App\Modules\Acl\Acl::verify('fluentform_settings_manager');
         $logId = $this->app->request->get('log_id');
         $actionFeed = wpFluent()->table('ff_scheduled_actions')
             ->find($logId);
 
         if (!$actionFeed) {
             wp_send_json_error([
-                'message' => 'API log does not exist'
+                'message' => 'API log does not exist',
             ], 423);
         }
 
-        if (!$actionFeed->status == 'success') {
+        if ($actionFeed->status == 'success') {
             wp_send_json_error([
-                'message' => 'API log already in success mode'
+                'message' => 'API log already in success mode',
             ], 423);
         }
 
         $form = wpFluent()->table('fluentform_forms')->find($actionFeed->form_id);
 
-        $feed = maybe_unserialize($actionFeed->data);
+        $feed = Helper::safeUnserialize($actionFeed->data);
         $feed['scheduled_action_id'] = $actionFeed->id;
 
         $submission = wpFluent()->table('fluentform_submissions')->find($actionFeed->origin_id);
         $entry = $this->getEntry($submission, $form);
         $formData = json_decode($submission->response, true);
 
-        wpFluent()->table($this->table)
+        wpFluent()->table('ff_scheduled_actions')
             ->where('id', $actionFeed->id)
             ->update([
                 'status'      => 'manual_retry',
                 'retry_count' => $actionFeed->retry_count + 1,
-                'updated_at'  => current_time('mysql')
+                'updated_at'  => current_time('mysql'),
             ]);
 
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- Dynamic hook name from action feed
         do_action($actionFeed->action, $feed, $formData, $entry, $form);
 
         /*
@@ -320,7 +381,7 @@ class DataLogger
 
         wp_send_json_success([
             'message' => 'Retry completed',
-            'feed'    => $actionFeed
+            'feed'    => $actionFeed,
         ], 200);
     }
 
@@ -364,14 +425,15 @@ class DataLogger
         foreach ($forms as $form) {
             $formattedForms[] = [
                 'form_id' => $form->form_id,
-                'title'   => $form->title
-            ];;
+                'title'   => $form->title,
+            ];
+
         }
 
         wp_send_json_success([
             'available_components' => $formattedComponents,
             'available_forms'      => $formattedForms,
-            'api_statuses'         => $apiStatuses
+            'api_statuses'         => $apiStatuses,
         ]);
     }
 }

@@ -29,7 +29,7 @@ class Admin extends CommonAdmin\Admin {
 	 * @since 4.0.0
 	 */
 	public function __construct() {
-		if ( ! wp_doing_ajax() && ! wp_doing_cron() ) {
+		if ( ! wp_doing_cron() ) {
 			parent::__construct();
 		}
 
@@ -48,12 +48,9 @@ class Admin extends CommonAdmin\Admin {
 		if ( current_user_can( $this->getPageRequiredCapability( '' ) ) ) {
 			$this->adminBarMenuItems['aioseo-pro-upgrade'] = [
 				'parent' => 'aioseo-main',
-				'title'  => '<span class="aioseo-menu-highlight">' . __( 'Upgrade to Pro', 'all-in-one-seo-pack' ) . '</span>',
+				'title'  => '<span class="aioseo-menu-highlight lite">' . __( 'Upgrade to Pro', 'all-in-one-seo-pack' ) . '</span>',
 				'id'     => 'aioseo-pro-upgrade',
-				'href'   => apply_filters(
-					'aioseo_upgrade_link',
-					esc_url( admin_url( 'admin.php?page=aioseo-tools&aioseo-redirect-upgrade=1' ) )
-				),
+				'href'   => admin_url( 'admin.php?page=aioseo-tools&aioseo-redirect-upgrade-admin-bar=1' ),
 				'meta'   => [ 'target' => '_blank' ],
 			];
 		}
@@ -77,12 +74,9 @@ class Admin extends CommonAdmin\Admin {
 		if ( current_user_can( $capability ) ) {
 			global $submenu;
 			$submenu[ $this->pageSlug ][] = [
-				'<span class="aioseo-menu-highlight">' . esc_html__( 'Upgrade to Pro', 'all-in-one-seo-pack' ) . '</span>',
+				'<span class="aioseo-menu-highlight lite">' . esc_html__( 'Upgrade to Pro', 'all-in-one-seo-pack' ) . '</span>',
 				$capability,
-				apply_filters(
-					'aioseo_upgrade_link',
-					esc_url( admin_url( 'admin.php?page=aioseo-tools&aioseo-redirect-upgrade=1' ) )
-				)
+				admin_url( 'admin.php?page=aioseo-tools&aioseo-redirect-upgrade=1' )
 			];
 		}
 	}
@@ -97,16 +91,21 @@ class Admin extends CommonAdmin\Admin {
 	protected function checkForRedirects() {
 		$mappedUrls = [
 			// Added to resolve an issue with the open_basedir in the IIS.
-			// https://github.com/awesomemotive/aioseo/issues/3243
-			'aioseo-redirect-upgrade' => apply_filters(
+
+			'aioseo-redirect-upgrade'           => apply_filters(
+				'aioseo_upgrade_link',
+				aioseo()->helpers->utmUrl( AIOSEO_MARKETING_URL . 'lite-upgrade/', 'admin-menu', null, false )
+			),
+			'aioseo-redirect-upgrade-admin-bar' => apply_filters(
 				'aioseo_upgrade_link',
 				aioseo()->helpers->utmUrl( AIOSEO_MARKETING_URL . 'lite-upgrade/', 'admin-bar', null, false )
 			)
 		];
 
 		foreach ( $mappedUrls as $queryArg => $redirectUrl ) {
-			if ( isset( $_GET[ $queryArg ] ) ) {
-				wp_redirect( $redirectUrl );
+			if ( isset( $_GET[ $queryArg ] ) ) { // phpcs:ignore HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
+				wp_redirect( $redirectUrl ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+				exit;
 			}
 		}
 	}

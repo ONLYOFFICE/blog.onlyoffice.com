@@ -337,6 +337,20 @@
   padding: 5px 0 !important;
 }
 
+.guide-hints {
+  text-decoration: underline;
+  color: #2271b1;
+  padding: 0 16px 0 0;
+  cursor: pointer;
+}
+.guide-hints:after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  background: url("../assets/icons/info.svg") center;
+}
+
 #trinity-admin-contact-us .flex-grid {
   align-items: flex-start !important;
 }
@@ -394,14 +408,16 @@
   transition: all 200ms ease-out;
   box-sizing: border-box;
   text-transform: uppercase;
-  width: 100px;
-  justify-content: center;
-  align-items: center;
-  float: right;
 }
 .trinity-contact-us-button:hover {
   background: #951d51;
   transition: all 200ms ease-out;
+}
+.trinity-contact-us-button {
+  width: 100px;
+  justify-content: center;
+  align-items: center;
+  float: right;
 }
 
 .trinity-send-wrapper {
@@ -432,6 +448,12 @@
   transition: all 200ms ease-out;
   box-sizing: border-box;
   text-transform: uppercase;
+}
+.trinity-feedback-button:hover {
+  background: #951d51;
+  transition: all 200ms ease-out;
+}
+.trinity-feedback-button {
   background: #000030;
   width: 100px;
   float: right;
@@ -439,10 +461,6 @@
   margin-bottom: 15px;
   justify-content: center;
   align-items: center;
-}
-.trinity-feedback-button:hover {
-  background: #951d51;
-  transition: all 200ms ease-out;
 }
 .trinity-feedback-button:hover {
   background: #414674;
@@ -570,6 +588,13 @@
 .trinity-page .bottom-space-10 {
   margin-bottom: 10px;
 }
+.trinity-page .hl {
+  height: 2px;
+  width: 100%;
+  background: #ddd;
+  margin: 20px 0;
+  border-radius: 50%;
+}
 
 .trinity-page .register {
   align-items: flex-start;
@@ -578,7 +603,7 @@
   font-size: 16px;
   font-weight: 300;
 }
-.trinity-page .register .description .bold-text {
+.trinity-page .register .description .trinity-bold-text {
   color: #777777;
   font-weight: 500;
 }
@@ -697,23 +722,116 @@
   transition: all 200ms ease-out;
   box-sizing: border-box;
   text-transform: uppercase;
+}
+#trinity-metabox .trinity-meta-upgrade-banner .container .upgrade-button:hover {
+  background: #951d51;
+  transition: all 200ms ease-out;
+}
+#trinity-metabox .trinity-meta-upgrade-banner .container .upgrade-button {
   background: #010031;
   text-decoration: none;
   bottom: 10px;
   left: 10px;
   width: 200px;
 }
-#trinity-metabox .trinity-meta-upgrade-banner .container .upgrade-button:hover {
-  background: #951d51;
-  transition: all 200ms ease-out;
-}
 #trinity-metabox .trinity-meta-upgrade-banner .container .footnote {
   font-size: 12px;
   margin-top: 5px;
 }
 
+.wizard-progress-wrapper {
+  display: flex;
+  margin: 30px 0;
+}
+
+.wizard-progress {
+  flex: 0.66;
+  display: flex;
+}
+.wizard-progress .step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+.wizard-progress .step .name {
+  position: relative;
+  top: 30px;
+}
+.wizard-progress .step .node {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #fff;
+  position: absolute;
+  left: calc(50% - 12.5px);
+  border: 4px solid #07c;
+  box-shadow: 0 0 3px #999;
+  top: -3px;
+  box-sizing: border-box;
+}
+.wizard-progress .step .node:after {
+  font-family: dashicons;
+  font-size: 19px;
+  position: relative;
+  left: -1px;
+  content: "\f335";
+  color: rgba(202, 0, 0, 0.7215686275);
+}
+.wizard-progress .step.complete .node {
+  background: #07c;
+}
+.wizard-progress .step.complete .node:after {
+  content: "\f15e";
+  color: #fff;
+}
+.wizard-progress .step.complete:after {
+  background: #07c;
+}
+.wizard-progress .step.complete:has(+ :not(.complete)):after {
+  background: linear-gradient(to right, #07c 0%, #fff 100%) !important;
+}
+.wizard-progress .step:after {
+  content: "";
+  height: 4px;
+  width: 100%;
+  position: absolute;
+  top: 6px;
+  background: #fff;
+  margin: 2px 0 0 -30px;
+  z-index: -1;
+}
+.wizard-progress .step:last-child:after {
+  display: none;
+}
+.wizard-progress a {
+  color: #07f;
+  text-decoration: none;
+  font-size: inherit;
+}
+
+#trinity-admin-post-management .save-button {
+  float: right;
+  width: 200px;
+}
+#trinity-admin-post-management .guides .section-form-group {
+  margin: 20px 0;
+}
+
+#show-modal-activate-posts {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+#show-modal-activate-posts img {
+  border: none;
+}
+
 .trinity-page {
   font-family: Montserrat;
+}
+.trinity-page .field-error {
+  color: red;
 }
 .trinity-page .plan-banner-wrapper {
   display: flex;
@@ -726,6 +844,18 @@
 }
 .trinity-page .plan-banner-wrapper .current-plan-wrapper {
   flex: 1;
+}
+.trinity-page .plan-banner-wrapper .current-plan-wrapper a {
+  font-size: 12px;
+}
+.trinity-page .plan-banner-wrapper .current-plan-wrapper .credits-used {
+  display: inline-block;
+}
+.trinity-page .plan-banner-wrapper .current-plan-wrapper .next-refresh-at {
+  display: inline-block;
+  margin: 0 0 0 20px;
+  font-size: 13px;
+  font-weight: normal;
 }
 .trinity-page .premium-banner {
   padding: 16px;
@@ -759,13 +889,15 @@
   transition: all 200ms ease-out;
   box-sizing: border-box;
   text-transform: uppercase;
-  background: #010031;
-  width: 100%;
-  text-decoration: none;
 }
 .trinity-page .premium-banner .upgrade-button:hover {
   background: #951d51;
   transition: all 200ms ease-out;
+}
+.trinity-page .premium-banner .upgrade-button {
+  background: #010031;
+  width: 100%;
+  text-decoration: none;
 }
 .trinity-page .premium-banner .upgrade-odds {
   display: flex;
@@ -835,25 +967,19 @@
   display: none;
 }
 .trinity-page .trinity-head {
-  font-weight: 800;
-  padding: 9px 25px 4px;
+  margin: 0 0 0 25px;
   text-align: left;
   font-size: 30px;
-  font-weight: 900;
   color: #000033;
   display: flex;
   text-transform: uppercase;
-  font-weight: 800 !important;
-  font-size: 30px;
+  font-weight: 800;
 }
 .trinity-page .existing-account {
   font-weight: 400;
 }
 .trinity-page .existing-account a {
   font-weight: 700;
-}
-.trinity-page .notice {
-  margin: 5px 25px 5px 25px !important;
 }
 .trinity-page .trinity-section-body {
   padding: 17px 24px;
@@ -905,15 +1031,15 @@
   height: 31px;
   color: #7f7f97;
 }
-.trinity-page .trinity-section-body.plan-section .feature-title {
-  font-weight: 600;
-}
 .trinity-page .trinity-section-body.plan-section .feature-title.large-title {
   line-height: 50px;
 }
 .trinity-page .trinity-section-body.plan-section .feature-title.large-title span {
   font-weight: 800;
   font-size: 40px;
+}
+.trinity-page .trinity-section-body.plan-section .feature-title {
+  font-weight: 600;
 }
 .trinity-page .trinity-section-body.plan-section .feature-description {
   font-size: 14px;
@@ -928,9 +1054,6 @@
   color: #777777;
   font-size: 20px;
 }
-.trinity-page .trinity-section-body.plan-section .verified-message {
-  color: #00cc66;
-}
 .trinity-page .trinity-section-body.plan-section .verified-message:before {
   width: 20px;
   height: 20px;
@@ -943,6 +1066,9 @@
   border-radius: 50%;
   margin-right: 6px;
   background-image: url("../assets/icons/check.svg");
+}
+.trinity-page .trinity-section-body.plan-section .verified-message {
+  color: #00cc66;
 }
 .trinity-page .trinity-section-body.plan-section .verified-message ~ div, .trinity-page .trinity-section-body.plan-section .advanced-features {
   margin-top: 15px;
@@ -994,11 +1120,16 @@
   transition: all 200ms ease-out;
   box-sizing: border-box;
   text-transform: uppercase;
-  width: 100%;
 }
 .trinity-page .save-button:hover {
   background: #951d51;
   transition: all 200ms ease-out;
+}
+.trinity-page .save-button {
+  width: 100%;
+}
+.trinity-page .save-button.width-auto {
+  width: auto !important;
 }
 .trinity-page .save-button.disabled {
   opacity: 0.2;
@@ -1041,14 +1172,16 @@
   transition: all 200ms ease-out;
   box-sizing: border-box;
   text-transform: uppercase;
-  min-width: 115px;
-  background: transparent;
-  color: #FF0066 !important;
-  border: #FF0066 solid 1px;
 }
 .trinity-page .trinity-save-account .use-account-key-button:hover {
   background: #951d51;
   transition: all 200ms ease-out;
+}
+.trinity-page .trinity-save-account .use-account-key-button {
+  min-width: 115px;
+  background: transparent;
+  color: #FF0066 !important;
+  border: #FF0066 solid 1px;
 }
 .trinity-page .trinity-save-account .use-account-key-button:hover {
   color: white !important;
@@ -1070,6 +1203,40 @@
 }
 .trinity-page .underline {
   text-decoration: underline;
+}
+.trinity-page .loader-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.trinity-page .loader {
+  width: 36px;
+  height: 36px;
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #FF0066;
+  -webkit-animation: trinity-spin 2s linear infinite; /* Safari */
+  animation: trinity-spin 2s linear infinite;
+}
+.trinity-page {
+  /* Safari */
+}
+@-webkit-keyframes trinity-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes trinity-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .trinity-notification {
@@ -1115,15 +1282,20 @@
   color: red;
   font-weight: 600;
 }
-.trinity-bulk-update-wrapper .trinity-bulk-bar,
-.trinity-bulk-update-wrapper .trinity-bulk-estimate,
-.trinity-bulk-update-wrapper .trinity-bulk-count-wrapper {
+.trinity-bulk-update-wrapper .trinity-bulk-bar {
   display: inline-block;
   width: 400px;
   text-align: right;
 }
-.trinity-bulk-update-wrapper .trinity-bulk-estimate-value {
-  font-weight: 600;
+.trinity-bulk-update-wrapper .trinity-bulk-posts-numbers {
+  width: 150px;
+  display: inline-block;
+  text-align: right;
+}
+.trinity-bulk-update-wrapper .trinity-bulk-posts-stage {
+  display: inline-block;
+  width: 90px;
+  text-align: left;
 }
 .trinity-bulk-update-wrapper .trinity-bulk-bar,
 .trinity-bulk-update-wrapper .trinity-bulk-bar-inner {
@@ -1134,13 +1306,20 @@
   background-color: white;
   width: 240px;
   max-width: 240px;
-  margin-left: 10px;
 }
 .trinity-bulk-update-wrapper .trinity-bulk-bar .trinity-bulk-bar-inner {
   background-color: #00CC66;
 }
 
-.components-tab-panel__tabs {
+.trinity-hide {
+  display: none !important;
+}
+
+.trinity-section-body .trinity-inner td {
+  padding: 5px 10px;
+}
+
+#trinity-metabox .components-tab-panel__tabs {
   background: #f3f4f5;
   display: flex;
   align-items: center;
@@ -1149,7 +1328,7 @@
   border-top: 1px solid #e2e4e7;
   border-bottom: 1px solid #e2e4e7;
 }
-.components-tab-panel__tabs .components-button {
+#trinity-metabox .components-tab-panel__tabs .components-button {
   height: 100%;
   outline: none !important;
   box-shadow: none !important;
@@ -1159,16 +1338,10 @@
   border-bottom: 3px solid transparent;
   padding: 0 15px;
 }
-.components-tab-panel__tabs .components-button.is-active {
+#trinity-metabox .components-tab-panel__tabs .components-button.is-active {
   border-bottom: 3px solid #007cba;
   font-weight: bold;
 }
-
-.trinity-hide,
-.trinity-phpinfo iframe {
-  display: none !important;
-}
-
 #trinity-metabox .components-tab-panel__tab-content select {
   min-width: 130px;
 }
@@ -1191,9 +1364,12 @@
   font-weight: 300;
   display: flex;
   align-items: center;
-  max-width: 500px;
+  max-width: 550px;
 }
 
+.trinity-status-wrapper {
+  margin: 0 0 0 20px;
+}
 .trinity-status-wrapper .status {
   display: none;
 }
@@ -1207,11 +1383,21 @@
 #trinity-admin .trinity-status-wrapper {
   margin: 0;
 }
-#trinity-admin .activate-plugin .message {
+
+.trinity-notice {
+  margin: 5px 25px 5px 25px !important;
+}
+
+.trinity-activate-plugin .message {
   color: red;
   font-size: 15px;
 }
 
+#trinity-admin-logs .h1 {
+  font-size: 24px;
+  margin: 20px 0;
+  font-weight: bold;
+}
 #trinity-admin-logs table,
 #trinity-admin-logs tr,
 #trinity-admin-logs td {
@@ -1244,7 +1430,7 @@
   width: 35%;
 }
 #trinity-admin-logs table tbody td:nth-child(3) {
-  word-break: break-all;
+  word-break: break-word;
   white-space: pre-line;
 }
 #trinity-admin-logs table tbody .info {
@@ -1268,41 +1454,6 @@
   margin-right: 15px;
 }
 
-.bold-text {
+.trinity-bold-text {
   font-weight: 700;
-}
-
-.loader-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.loader {
-  width: 36px;
-  height: 36px;
-  border: 5px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 5px solid #FF0066;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 2s linear infinite;
-}
-
-/* Safari */
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
-}
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
 }

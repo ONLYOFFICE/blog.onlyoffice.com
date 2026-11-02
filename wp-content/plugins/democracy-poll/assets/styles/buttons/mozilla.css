@@ -1,0 +1,36 @@
+/* button */
+.dem-button[class]{
+	font-family: arial,sans-serif;
+	font-size:90%;
+	color: var(--dem-button-color, #cdd8e4);
+	text-shadow: 0 -1px rgb(46,53,58);
+	padding:.5em  1.2em;
+	border: 1px solid var(--dem-button-border-color, rgb(33,43,52));
+	border-radius: 3px;
+	background: var(--dem-button-bg, rgb(81,92,102)) linear-gradient(rgb(81,92,102), rgb(69,78,87));
+	box-shadow:
+		inset 0 1px rgba(101,114,126,1),
+		inset 0 0 1px rgba(140,150,170,.8),
+		0 1px rgb(83,94,104),
+		0 0 1px rgb(86,96,106);
+}
+
+.dem-button[class]:active {
+	box-shadow:
+		inset 0 1px 3px rgba(0,10,20,.5),
+		0 1px rgb(83,94,104),
+		0 0 1px rgb(86,96,106);
+}
+
+.dem-button[class]:focus:not(:active) {
+	color: var(--dem-button-hover-color, var(--dem-button-color, #cdd8e4));
+	border-color: var(--dem-button-hover-border-color, rgb(22,32,43));
+	border-bottom-color: var(--dem-button-hover-border-color, rgb(25,34,45));
+	background: var(--dem-button-hover-bg, rgb(53,61,71));
+	pointer-events: none;
+	box-shadow:
+		inset 0 1px 3px rgba(0,10,20,.5),
+		0 1px rgb(83,94,104),
+		0 0 1px rgb(86,96,106);
+}
+.dem-button[class]:visited{ color:var(--dem-button-color, #cdd8e4); }

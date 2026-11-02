@@ -1,0 +1,373 @@
+<?php
+/**
+ * Algolia_Utils class file.
+ *
+ * @author  WebDevStudios <contact@webdevstudios.com>
+ * @since   1.0.0
+ *
+ * @package WebDevStudios\WPSWA
+ */
+
+/**
+ * Class Algolia_Utils
+ *
+ * @since 1.0.0
+ */
+class Algolia_Utils {
+
+	/**
+	 * Retrieve term parents with separator.
+	 *
+	 * @author  WebDevStudios <contact@webdevstudios.com>
+	 * @since   1.0.0
+	 *
+	 * @param int    $id        Term ID.
+	 * @param string $taxonomy  The taxonomy.
+	 * @param string $separator Optional, default is '/'. How to separate terms.
+	 * @param bool   $nicename  Optional, default is false. Whether to use nice name for display.
+	 * @param array  $visited   Optional. Already linked to terms to prevent duplicates.
+	 *
+	 * @return string|WP_Error A list of terms parents on success, WP_Error on failure.
+	 */
+	public static function get_term_parents( $id, $taxonomy, $separator = '/', $nicename = false, $visited = array() ) {
+		$chain  = '';
+		$parent = get_term( $id, $taxonomy );
+		if ( is_wp_error( $parent ) ) {
+			return $parent;
+		}
+
+		if ( $nicename ) {
+			$name = $parent->slug;
+		} else {
+			$name = $parent->name;
+		}
+
+		if ( $parent->parent && ( $parent->parent !== $parent->term_id ) && ! in_array( $parent->parent, $visited, true ) ) {
+			$visited[] = $parent->parent;
+			$chain    .= self::get_term_parents( $parent->parent, $taxonomy, $separator, $nicename, $visited );
+		}
+
+		$chain .= $name . $separator;
+
+		return $chain;
+	}
+
+	/**
+	 * Get taxonomy tree.
+	 *
+	 * This is useful when building hierarchical menus.
+	 *
+	 * Returns an array like:
+	 * array(
+	 *    'lvl0' => ['Sales', 'Marketing'],
+	 *    'lvl1' => ['Sales > Strategies', 'Marketing > Tips & Tricks']
+	 *    ...
+	 * );.
+	 *
+	 * @link    https://community.algolia.com/instantsearch.js/documentation/#hierarchicalmenu
+	 *
+	 * @author  WebDevStudios <contact@webdevstudios.com>
+	 * @since   1.0.0
+	 *
+	 * @param array  $terms     The terms.
+	 * @param string $taxonomy  The taxonomy.
+	 * @param string $separator The separator.
+	 *
+	 * @return array
+	 */
+	public static function get_taxonomy_tree( array $terms, $taxonomy, $separator = ' > ' ) {
+		$term_ids = wp_list_pluck( $terms, 'term_id' );
+
+		$parents = array();
+		foreach ( $term_ids as $term_id ) {
+			$path      = self::get_term_parents( $term_id, $taxonomy, $separator );
+			$parents[] = rtrim( $path, $separator );
+		}
+
+		$terms = array();
+		foreach ( $parents as $parent ) {
+			$levels = explode( $separator, $parent );
+
+			$previous_lvl = '';
+			foreach ( $levels as $index => $level ) {
+				$terms[ 'lvl' . $index ][] = $previous_lvl . $level;
+				$previous_lvl             .= $level . $separator;
+
+				// Make sure we have not duplicate.
+				// The call to `array_values` ensures that we do not end up with an object in JSON.
+				$terms[ 'lvl' . $index ] = array_values( array_unique( $terms[ 'lvl' . $index ] ) );
+			}
+		}
+
+		return $terms;
+	}
+
+	/**
+	 * Get post images.
+	 *
+	 * @author  WebDevStudios <contact@webdevstudios.com>
+	 * @since   1.0.0
+	 *
+	 * @param int $post_id The post ID.
+	 *
+	 * @return array
+	 */
+	public static function get_post_images( $post_id ) {
+		$images = array();
+
+		if ( get_post_type( $post_id ) === 'attachment' ) {
+			$post_thumbnail_id = (int) $post_id;
+		} else {
+			$post_thumbnail_id = get_post_thumbnail_id( (int) $post_id );
+		}
+
+		if ( $post_thumbnail_id ) {
+
+			/**
+			 * Filters the sizes to fetch image paths for.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param  array $value Array of image sizes to fetch. Default: thumbnail.
+			 * @return array $value Amended array of images sizes.
+			 */
+			$sizes = (array) apply_filters( 'algolia_post_images_sizes', array( 'thumbnail' ) );
+			foreach ( $sizes as $size ) {
+				$info = wp_get_attachment_image_src( $post_thumbnail_id, $size );
+				if ( ! $info ) {
+					continue;
+				}
+
+				$images[ $size ] = array(
+					'url'    => $info[0],
+					'width'  => $info[1],
+					'height' => $info[2],
+				);
+			}
+		}
+
+		/**
+		 * Filters the final array of images and image data.
+		 *
+		 * Parameter will be an array keyed by image size, and has
+		 * URL, width and height details for each image.
+		 *
+		 * @since 1.0.0
+		 * @since 2.8.0 Added `$post_id` as second parameter
+		 *
+		 * @param array  $images  Array of images data.
+		 * @param int    $post_id Current post ID being indexed.
+		 * @return array $images  Final array of images data.
+		 */
+		return (array) apply_filters( 'algolia_get_post_images', $images, $post_id );
+	}
+
+	/**
+	 * Prepare content.
+	 *
+	 * @author  WebDevStudios <contact@webdevstudios.com>
+	 * @since   1.0.0
+	 *
+	 * @param string $content The content to prepare.
+	 *
+	 * @return string
+	 */
+	public static function prepare_content( $content ) {
+		$content = self::remove_content_noise( $content );
+
+		return wp_strip_all_tags( $content );
+	}
+
+	/**
+	 * Remove noise from content.
+	 *
+	 * @author  WebDevStudios <contact@webdevstudios.com>
+	 * @since   1.0.0
+	 *
+	 * @param string $content The content to remove noise from.
+	 *
+	 * @return string
+	 */
+	public static function remove_content_noise( $content ) {
+		$noise_patterns = array(
+			// strip out comments.
+			"'<!--(.*?)-->'is",
+			// strip out cdata.
+			"'<!\[CDATA\[(.*?)\]\]>'is",
+			// Per sourceforge http://sourceforge.net/tracker/?func=detail&aid=2949097&group_id=218559&atid=1044037
+			// Script tags removal now preceeds style tag removal.
+			// strip out <script> tags.
+			"'<\s*script[^>]*[^/]>(.*?)<\s*/\s*script\s*>'is",
+			"'<\s*script\s*>(.*?)<\s*/\s*script\s*>'is",
+			// strip out <style> tags.
+			"'<\s*style[^>]*[^/]>(.*?)<\s*/\s*style\s*>'is",
+			"'<\s*style\s*>(.*?)<\s*/\s*style\s*>'is",
+			// strip out preformatted tags.
+			"'<\s*(?:code)[^>]*>(.*?)<\s*/\s*(?:code)\s*>'is",
+			// strip out <pre> tags.
+			"'<\s*pre[^>]*[^/]>(.*?)<\s*/\s*pre\s*>'is",
+			"'<\s*pre\s*>(.*?)<\s*/\s*pre\s*>'is",
+		);
+
+		// If there is ET builder (Divi), remove shortcodes.
+		if ( function_exists( 'et_pb_is_pagebuilder_used' ) ) {
+			$noise_patterns[] = '/\[\/?et_pb.*?\]/';
+		}
+
+		/**
+		 * Filters the "noise" patterns to run content through.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param  array $value Array of REGEX patterns to use.
+		 * @return array Amended array of patterns.
+		 */
+		$noise_patterns = (array) apply_filters( 'algolia_strip_patterns', $noise_patterns );
+
+		foreach ( $noise_patterns as $pattern ) {
+			$content = preg_replace( $pattern, '', $content );
+		}
+
+		$content = str_replace( '&nbsp;', ' ', $content );
+
+		// Prevent table content from being concatenated.
+		$content = str_replace( [ '</td>', '</th>' ], ' ', $content );
+
+		return html_entity_decode( $content );
+	}
+
+	/**
+	 * Explode content.
+	 *
+	 * @author  WebDevStudios <contact@webdevstudios.com>
+	 * @since   1.0.0
+	 *
+	 * @param string $content The content to explode.
+	 *
+	 * @return array
+	 */
+	public static function explode_content( $content ) {
+		$max_size = 2000;
+		if ( defined( 'ALGOLIA_CONTENT_MAX_SIZE' ) ) {
+			$max_size = (int) ALGOLIA_CONTENT_MAX_SIZE;
+		}
+
+		$parts  = array();
+		$prefix = '';
+		while ( true ) {
+			$content = trim( (string) $content );
+			if ( strlen( $content ) <= $max_size ) {
+				$parts[] = $prefix . $content;
+
+				break;
+			}
+
+			$offset          = -( strlen( $content ) - $max_size );
+			$cut_at_position = strrpos( $content, ' ', $offset );
+
+			if ( false === $cut_at_position ) {
+				$cut_at_position = $max_size;
+			}
+			$parts[] = $prefix . substr( $content, 0, $cut_at_position );
+			$content = substr( $content, $cut_at_position );
+
+			$prefix = '… ';
+		}
+
+		return $parts;
+	}
+
+	/**
+	 * Get the `$in_footer` argument for registering scripts.
+	 *
+	 * @author WebDevStudios <contact@webdevstudios.com>
+	 * @since  1.5.0
+	 *
+	 * @return bool
+	 */
+	public static function get_scripts_in_footer_argument() {
+
+		/**
+		 * Filters the `$in_footer` argument to `wp_register_script()` for Algolia Scripts.
+		 *
+		 * @since 1.3.0
+		 * @since 1.5.0 The default changed from 'false' to 'true'.
+		 *
+		 * @param bool $in_footer Whether to enqueue the script before </body> instead of in the <head>. Default 'true'.
+		 */
+		return (bool) apply_filters(
+			'algolia_load_scripts_in_footer',
+			true
+		);
+	}
+
+	/**
+	 * Return markup for WP Search with Algolia Pro Call To Action.
+	 *
+	 * @since 2.5.0
+	 * @return false|string
+	 */
+	public static function pro_cta_content() {
+		ob_start();
+		?>
+		<div class="algolia-pro-cta">
+			<h2 class="algolia-pro-title"><?php esc_html_e( 'WP Search with Algolia Pro', 'wp-search-with-algolia' ); ?></h2>
+			<h3 class="algolia-pro-desc">
+				<?php esc_html_e( 'A premium Algolia search plugin specifically designed for enterprise-grade WordPress websites, including eCommerce', 'wp-search-with-algolia' ); ?>
+			</h3>
+			<div class="algolia-pro-features">
+				<div>
+					<?php $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0077ff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'; ?>
+					<h4><?php esc_html_e( 'WooCommerce Support', 'wp-search-with-algolia' ); ?></h4>
+					<span class="algolia-pro-feature">
+						<?php echo $svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- This is a hardcoded SVG. ?>
+						<span><?php esc_html_e( 'Index product SKUs, prices, short descriptions and product dimensions/weight for display.', 'wp-search-with-algolia' ); ?></span>
+					</span>
+					<span class="algolia-pro-feature">
+						<?php echo $svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- This is a hardcoded SVG. ?>
+						<span><?php esc_html_e( 'Index product total sales ratings for relevance.', 'wp-search-with-algolia' ); ?></span>
+					</span>
+					<span class="algolia-pro-feature">
+						<?php echo $svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- This is a hardcoded SVG. ?>
+						<span><?php esc_html_e( 'Index product total and average ratings for relevance.', 'wp-search-with-algolia' ); ?></span>
+					</span>
+					<span class="algolia-pro-feature">
+						<?php echo $svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- This is a hardcoded SVG. ?>
+						<span><?php esc_html_e( 'Control whether or not sold out products are indexed', 'wp-search-with-algolia' ); ?></span>
+					</span>
+					<span class="algolia-pro-feature">
+						<?php echo $svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- This is a hardcoded SVG. ?>
+						<span><?php esc_html_e( 'Control whether or not "shop only" or "hidden" products are indexed.', 'wp-search-with-algolia' ); ?></span>
+					</span>
+					<span class="algolia-pro-feature">
+						<?php echo $svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- This is a hardcoded SVG. ?>
+						<span><?php esc_html_e( 'Amend indexing to only include WooCommerce products.', 'wp-search-with-algolia' ); ?></span>
+					</span>
+				</div>
+				<div>
+					<h4><?php esc_html_e( 'Additional Features', 'wp-search-with-algolia' ); ?></h4>
+					<span class="algolia-pro-feature">
+						<?php echo $svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- This is a hardcoded SVG. ?>
+						<span><?php esc_html_e( 'Multisite indexing into a single network index to provide a global Algolia-powered search experience.', 'wp-search-with-algolia' ); ?></span>
+					</span>
+					<span class="algolia-pro-feature">
+						<?php echo $svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- This is a hardcoded SVG. ?>
+						<span><?php esc_html_e( 'Fine tune indexing on selected pieces of content', 'wp-search-with-algolia' ); ?></span>
+					</span>
+					<span class="algolia-pro-feature">
+						<?php echo $svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- This is a hardcoded SVG. ?>
+						<span><?php esc_html_e( 'Yoast SEO, All in One SEO, Rank Math SEO, SEOPress, and The SEO Framework Support', 'wp-search-with-algolia' ); ?></span>
+					</span>
+				</div>
+			</div>
+			<div>
+				<a href="https://pluginize.com/plugins/wp-search-with-algolia-pro/" class="algolia-pro-button" target="_blank" rel="noopener"><?php esc_html_e( 'Upgrade Now and Go Pro', 'wp-search-with-algolia' ); ?></a>
+				<span class="algolia-pro-more">
+				<a href="https://pluginize.com/plugins/wp-search-with-algolia-pro/" target="_blank" rel="noopener"><?php esc_html_e( 'Learn more and see all the features', 'wp-search-with-algolia' ); ?></a>
+			</span>
+			</div>
+		</div>
+		<?php
+		return ob_get_clean();
+	}
+}

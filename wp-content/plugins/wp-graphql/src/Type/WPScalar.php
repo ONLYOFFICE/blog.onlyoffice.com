@@ -8,22 +8,77 @@ use WPGraphQL\Registry\TypeRegistry;
  * Class WPScalar
  *
  * @package WPGraphQL\Type
+ *
+ * phpcs:disable -- For phpstan type hinting.
+ * @phpstan-import-type CustomScalarConfig from \GraphQL\Type\Definition\CustomScalarType
+ *
+ * @phpstan-type InputWPScalarConfig array{
+ *   name: string,
+ *   description?: string|null,
+ *   serialize?: callable(mixed): mixed,
+ *   parseValue: callable(mixed): mixed,
+ *   parseLiteral: callable(\GraphQL\Language\AST\ValueNode&\GraphQL\Language\AST\Node, array<string, mixed>|null): mixed,
+ *   astNode?: \GraphQL\Language\AST\ScalarTypeDefinitionNode|null,
+ *   extensionASTNodes?: array<\GraphQL\Language\AST\ScalarTypeDefinitionNode>|null,
+ *   kind?:'scalar'|null,
+ * }
+ * @phpstan-type OutputWPScalarConfig array{
+ *   name: string,
+ *   description?: string|null,
+ *   serialize: callable(mixed): mixed,
+ *   parseValue?: callable(mixed): mixed,
+ *   parseLiteral?: callable(\GraphQL\Language\AST\ValueNode&\GraphQL\Language\AST\Node, array<string, mixed>|null): mixed,
+ *   astNode?: \GraphQL\Language\AST\ScalarTypeDefinitionNode|null,
+ *   extensionASTNodes?: array<\GraphQL\Language\AST\ScalarTypeDefinitionNode>|null,
+ *   kind?:'scalar'|null,
+ * }
+ * @phpstan-type WPScalarConfig InputWPScalarConfig|OutputWPScalarConfig
+ * phpcs:enable
  */
 class WPScalar extends CustomScalarType {
 
 	/**
 	 * WPScalar constructor.
 	 *
-	 * @param array        $config
+	 * @param array<string,mixed>              $config
 	 * @param \WPGraphQL\Registry\TypeRegistry $type_registry
+	 * @throws \InvalidArgumentException When scalar config is empty before or after filters.
+	 *
+	 * @phpstan-param WPScalarConfig $config
 	 */
 	public function __construct( array $config, TypeRegistry $type_registry ) {
+		if ( empty( $config ) ) {
+			throw new \InvalidArgumentException( 'WPScalar config cannot be empty.' );
+		}
 
-		$name           = $config['name'];
+		$name = $config['name'];
+		/**
+		 * Filters the GraphQL type name used during scalar type construction.
+		 *
+		 * @param string                      $type_name The scalar type name.
+		 * @param array<string,mixed>         $config    The scalar type configuration.
+		 * @param \WPGraphQL\Type\WPScalar    $wp_scalar The scalar type instance.
+		 *
+		 * @hookGroup schema-registration
+		 * @since 0.0.5
+		 */
 		$config['name'] = apply_filters( 'graphql_type_name', $name, $config, $this );
-		$config         = apply_filters( 'graphql_custom_scalar_config', $config, $type_registry );
+		/**
+		 * Filters scalar type configuration before the scalar is registered.
+		 *
+		 * @param array<string,mixed>              $config        The scalar type configuration.
+		 * @param \WPGraphQL\Registry\TypeRegistry $type_registry The type registry instance.
+		 *
+		 * @hookGroup schema-registration
+		 * @since 0.0.5
+		 */
+		$config = apply_filters( 'graphql_custom_scalar_config', $config, $type_registry );
 
+		if ( empty( $config ) ) {
+			throw new \InvalidArgumentException( 'Filtered WPScalar config cannot be empty.' );
+		}
+
+		/** @var non-empty-array<string,mixed> $config */
 		parent::__construct( $config );
 	}
-
 }

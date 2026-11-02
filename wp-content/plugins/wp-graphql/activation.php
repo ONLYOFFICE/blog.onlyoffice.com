@@ -1,12 +1,10 @@
 <?php
 /**
  * Runs when WPGraphQL is activated
- *
- * @return void
  */
-function graphql_activation_callback() {
+function graphql_activation_callback(): void {
 	do_action( 'graphql_activate' );
 
-	// store the current version of WPGraphQL
-	update_option( 'wp_graphql_version', WPGRAPHQL_VERSION );
+	// phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.flush_rewrite_rules_flush_rewrite_rules -- Expose the graphql endpoint.
+	flush_rewrite_rules( true );
 }

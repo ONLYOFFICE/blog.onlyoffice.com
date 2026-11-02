@@ -4,6 +4,8 @@ namespace FluentForm\App\Modules\Form;
 
 use FluentForm\App\Helpers\Helper;
 use FluentForm\App\Modules\Acl\Acl;
+use FluentForm\App\Modules\Payments\PaymentHelper;
+use FluentForm\App\Services\FormBuilder\RatingIcon;
 use FluentForm\Framework\Foundation\Application;
 use FluentForm\Framework\Helpers\ArrayHelper;
 
@@ -42,15 +44,15 @@ class Form
     protected $formType = 'form';
 
     protected $hasPayment = 0;
-
-    protected $model;
+    /**
+     * @var \FluentForm\Framework\Database\Query\Builder
+     */
+    protected $model = null;
 
     /**
      * Form constructor.
      *
      * @param \FluentForm\Framework\Foundation\Application $application
-     *
-     * @throws \Exception
      */
     public function __construct(Application $application)
     {
@@ -60,8 +62,6 @@ class Form
 
     /**
      * Get all forms from database
-     *
-     * @throws \Exception
      */
     public function index()
     {
@@ -110,7 +110,7 @@ class Form
             $insertData['has_payment'] = $this->hasPayment;
         }
 
-        $formId = $this->model->insert($insertData);
+        $formId = $this->model->insertGetId($insertData);
 
         // Rename the form name  here
         wpFluent()->table('fluentform_forms')->where('id', $formId)->update([
@@ -131,8 +131,18 @@ class Form
         } else {
             // add default form settings now
             $defaultSettings = $this->defaultSettings ?: $this->getFormsDefaultSettings($formId);
+    
+            $defaultSettings = apply_filters_deprecated(
+                'fluentform_create_default_settings',
+                [
+                    $defaultSettings
+                ],
+                FLUENTFORM_FRAMEWORK_UPGRADE,
+                'fluentform/create_default_settings',
+                'Use fluentform/create_default_settings instead of fluentform_create_default_settings.'
+            );
 
-            $defaultSettings = apply_filters('fluentform_create_default_settings', $defaultSettings);
+            $defaultSettings = apply_filters('fluentform/create_default_settings', $defaultSettings);
 
             wpFluent()->table('fluentform_form_meta')
                 ->insert([
@@ -151,7 +161,18 @@ class Form
             }
         }
 
-        do_action('fluentform_inserted_new_form', $formId, $insertData);
+        do_action_deprecated(
+            'fluentform_inserted_new_form',
+            [
+                $formId,
+                $insertData
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/inserted_new_form',
+            'Use fluentform/inserted_new_form instead of fluentform_inserted_new_form.'
+        );
+
+        do_action('fluentform/inserted_new_form', $formId, $insertData);
 
         $data = [
             'formId'       => $formId,
@@ -171,7 +192,7 @@ class Form
         $defaultSettings = [
             'confirmation' => [
                 'redirectTo'           => 'samePage',
-                'messageToShow'        => __('Thank you for your message. We will get in touch with you shortly', 'fluentform'),
+                'messageToShow'        => __('Thank you for your message. We will get in touch with you shortly.', 'fluentform'),
                 'customPage'           => null,
                 'samePageFormBehavior' => 'hide_form',
                 'customUrl'            => null,
@@ -285,7 +306,7 @@ class Form
                 ]);
         }
 
-        return wpFluent()->table('fluentform_form_meta')->insert([
+        return wpFluent()->table('fluentform_form_meta')->insertGetId([
             'form_id'  => $formId,
             'meta_key' => $metaKey,
             'value'    => $metaValue,
@@ -322,8 +343,6 @@ class Form
 
     /**
      * Save/update a form from backend/editor
-     *
-     * @throws \WpFluent\Exception
      */
     public function update()
     {
@@ -340,7 +359,17 @@ class Form
         ];
 
         if ($formFields = $this->request->get('formFields')) {
-            $formFields = apply_filters('fluentform_form_fields_update', $formFields, $formId);
+            $formFields = apply_filters_deprecated(
+                'fluentform_form_fields_update',
+                [
+                    $formFields,
+                    $formId
+                ],
+                FLUENTFORM_FRAMEWORK_UPGRADE,
+                'fluentform/form_fields_update',
+                'Use fluentform/form_fields_update instead of fluentform_form_fields_update.'
+            );
+            $formFields = apply_filters('fluentform/form_fields_update', $formFields, $formId);
             $formFields = $this->sanitizeFields($formFields);
             $data['form_fields'] = $formFields;
         }
@@ -415,9 +444,20 @@ class Form
             'admin_field_label'         => 'sanitize_text_field',
             'prefix_label'              => 'sanitize_text_field',
             'suffix_label'              => 'sanitize_text_field',
+            'icon_source'               => 'sanitize_key',
+            'icon_type'                 => 'sanitize_key',
+            'custom_icon_svg'           => [RatingIcon::class, 'sanitizeCustomSvg'],
+            'inactive_color'            => [RatingIcon::class, 'sanitizeColor'],
+            'active_color'              => [RatingIcon::class, 'sanitizeColor'],
             'unique_validation_message' => 'sanitize_text_field',
             'advanced_options'          => 'fluentform_options_sanitize',
             'html_codes'                => 'fluentform_sanitize_html',
+            'enable_crop'               => 'sanitize_text_field',
+            'crop_mode'                 => 'sanitize_text_field',
+            'crop_ratio'                => 'sanitize_text_field',
+            'crop_width'                => 'absint',
+            'crop_height'               => 'absint',
+            'enforce_image_dimensions'  => 'sanitize_text_field',
         ];
         $settingsKeys = array_keys($settingsMap);
         $stylePrefMap = [
@@ -473,8 +513,6 @@ class Form
 
     /**
      * Delete a from from database
-     *
-     * @throws \WpFluent\Exception
      */
     public function delete()
     {
@@ -519,26 +557,20 @@ class Form
             ->delete();
 
         ob_start();
-        if (defined('FLUENTFORMPRO')) {
+        if (PaymentHelper::hasPaymentSettings()) {
             try {
-                wpFluent()->table('fluentform_order_items')
-                    ->where('form_id', $formId)
-                    ->delete();
-
-                wpFluent()->table('fluentform_transactions')
-                    ->where('form_id', $formId)
-                    ->delete();
+                \FluentForm\App\Models\OrderItem::where('form_id', $formId)->delete();
+                \FluentForm\App\Models\Transaction::where('form_id', $formId)->delete();
             } catch (\Exception $exception) {
             }
         }
+
         $errors = ob_get_clean();
         return $errors;
     }
 
     /**
      * Duplicate a from
-     *
-     * @throws \WpFluent\Exception
      */
     public function duplicate()
     {
@@ -558,7 +590,7 @@ class Form
             'updated_at'          => current_time('mysql'),
         ];
 
-        $newFormId = $this->model->insert($data);
+        $newFormId = $this->model->insertGetId($data);
 
         // Rename the form name  here
         wpFluent()->table('fluentform_forms')
@@ -605,7 +637,17 @@ class Form
             }
         }
 
-        do_action('flentform_form_duplicated', $newFormId);
+        do_action_deprecated(
+            'flentform_form_duplicated',
+            [
+                $newFormId
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/form_duplicated',
+            'Use fluentform/form_duplicated instead of flentform_form_duplicated.'
+        );
+
+        do_action('fluentform/form_duplicated', $newFormId);
 
         wp_send_json([
             'message'  => __('Form has been successfully duplicated.', 'fluentform'),
@@ -626,6 +668,17 @@ class Form
                 $duplicateString = implode(', ', $duplicates);
                 wp_send_json([
                     'title' => sprintf('Name attribute %s has duplicate value.', $duplicateString),
+                ], 422);
+            }
+
+            $duplicateRankingFields = Helper::getRankingFieldsWithDuplicateOptionValues($fields);
+            if ($duplicateRankingFields) {
+                $duplicateRankingFields = implode(', ', array_unique($duplicateRankingFields));
+                wp_send_json([
+                    'title' => sprintf(
+                        __('Ranking field %s has duplicate option values. Please make each option value unique.', 'fluentform'),
+                        $duplicateRankingFields
+                    ),
                 ], 422);
             }
         }
@@ -680,21 +733,7 @@ class Form
         $baseUrl = admin_url('admin.php?page=fluent_forms');
         return $baseUrl . '&form_id=' . $form->id . '&route=settings&sub_route=form_settings#basic_settings';
     }
-
-    public function getAllForms()
-    {
-        $fields = $this->request->get('fields');
-
-        if ($fields) {
-            $forms = $this->model
-                ->select($fields)
-                ->orderBy('created_at', 'DESC')->get();
-        } else {
-            $forms = $this->model->orderBy('created_at', 'DESC')->get();
-        }
-
-        wp_send_json($forms, 200);
-    }
+    
 
     /**
      * Map pdf feed ID to replace with duplicated PDF feed ID when duplicating form
@@ -714,7 +753,7 @@ class Form
                     'value'    => $pdf_feed->value,
                     'form_id'  => $newFormId,
                 ];
-                $pdfFeedMap[$pdf_feed->id] = wpFluent()->table('fluentform_form_meta')->insert($pdfData);
+                $pdfFeedMap[$pdf_feed->id] = wpFluent()->table('fluentform_form_meta')->insertGetId($pdfData);
             }
         }
         return $pdfFeedMap;
@@ -766,7 +805,18 @@ class Form
             'posts_per_page' => -1
         );
     
-        $params = apply_filters('fluentform_find_shortcode_params', $params);
+        $params = apply_filters_deprecated(
+            'fluentform_find_shortcode_params',
+            [
+                $params
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/find_shortcode_params',
+            'Use fluentform/find_shortcode_params instead of fluentform_find_shortcode_params.'
+        );
+
+        $params = apply_filters('fluentform/find_shortcode_params', $params);
+
         $formLocations = [];
         $posts = get_posts($params);
         foreach($posts as $post) {

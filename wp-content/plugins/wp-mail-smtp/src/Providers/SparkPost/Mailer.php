@@ -131,10 +131,7 @@ class Mailer extends MailerAbstract {
 		}
 
 		$headers = isset( $this->body['content']['headers'] ) ? (array) $this->body['content']['headers'] : [];
-
-		if ( ! in_array( $name, [ 'Message-ID', 'CC' ], true ) ) {
-			$value = WP::sanitize_value( $value );
-		}
+		$value   = $this->sanitize_header_value( $name, $value );
 
 		$headers[ $name ] = $value;
 

@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<changefreq><?php aioseo()->sitemap->output->escapeAndEcho( $entry['changefreq'] ); ?></changefreq><?php
 	}
-	if ( ! empty( $entry['priority'] ) ) {
+	if ( isset( $entry['priority'] ) ) {
 			?>
 
 		<priority><?php aioseo()->sitemap->output->escapeAndEcho( $entry['priority'] ); ?></priority><?php
@@ -57,7 +57,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 			?>
 
 		<image:image>
-			<image:loc><?php aioseo()->sitemap->output->escapeAndEcho( $image['image:loc'] ); ?></image:loc>
+			<image:loc>
+				<?php
+				if ( aioseo()->helpers->isRelativeUrl( $image['image:loc'] ) ) {
+					$image['image:loc'] = aioseo()->helpers->makeUrlAbsolute( $image['image:loc'] );
+				}
+
+				aioseo()->sitemap->output->escapeAndEcho( $image['image:loc'] );
+				?>
+			</image:loc>
 		</image:image><?php
 		}
 	}

@@ -1,11 +1,19 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
 if ( ! class_exists( 'ACF_Location' ) ) :
-
 	abstract class ACF_Location extends ACF_Legacy_Location {
 
 		/**
@@ -38,7 +46,7 @@ if ( ! class_exists( 'ACF_Location' ) ) :
 		 * Whether or not the location rule is publicly accessible.
 		 *
 		 * @since 5.0.0
-		 * @var bool
+		 * @var boolean
 		 */
 		public $public = true;
 
@@ -152,10 +160,10 @@ if ( ! class_exists( 'ACF_Location' ) ) :
 		 * @date    9/4/20
 		 * @since   5.9.0
 		 *
-		 * @param   array $rule The location rule.
-		 * @param   array $screen The screen args.
+		 * @param   array $rule        The location rule.
+		 * @param   array $screen      The screen args.
 		 * @param   array $field_group The field group settings.
-		 * @return  bool
+		 * @return  boolean
 		 */
 		public function match( $rule, $screen, $field_group ) {
 			return false;
@@ -167,20 +175,21 @@ if ( ! class_exists( 'ACF_Location' ) ) :
 		 * @date    17/9/19
 		 * @since   5.8.1
 		 *
-		 * @param   array $rule The location rule data.
 		 * @param   mixed $value The value to compare against.
-		 * @return  bool
+		 * @param   array $rule  The location rule data.
+		 * @return  boolean
 		 */
 		public function compare_to_rule( $value, $rule ) {
-			$result = ( $value == $rule['value'] );
+			$rule_value = $rule['value'] ?? '';
+			$result     = ( $value == $rule_value );
 
 			// Allow "all" to match any value.
-			if ( $rule['value'] === 'all' ) {
+			if ( $rule_value === 'all' ) {
 				$result = true;
 			}
 
 			// Reverse result for "!=" operator.
-			if ( $rule['operator'] === '!=' ) {
+			if ( ( $rule['operator'] ?? '' ) === '!=' ) {
 				return ! $result;
 			}
 			return $result;

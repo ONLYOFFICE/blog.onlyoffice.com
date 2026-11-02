@@ -13,6 +13,74 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class SearchStatistics {
 	/**
+	 * Holds the instance of the API class.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @var Api\Api
+	 */
+	public $api;
+
+	/**
+	 * Holds the instance of the Site class.
+	 *
+	 * @since 4.6.2
+	 *
+	 * @var Site
+	 */
+	public $site;
+
+	/**
+	 * Holds the instance of the Sitemap class.
+	 *
+	 * @since 4.6.2
+	 *
+	 * @var Sitemap
+	 */
+	public $sitemap;
+
+	/**
+	 * Holds the instance of the Notices class.
+	 *
+	 * @since 4.6.2
+	 *
+	 * @var Notices
+	 */
+	public $notices;
+
+	/**
+	 * Holds the instance of the Keyword Rank Tracker class.
+	 *
+	 * @since 4.7.0
+	 *
+	 * @var KeywordRankTracker
+	 */
+	public $keywordRankTracker;
+
+	/**
+	 * Holds the instance of the Index Status class.
+	 *
+	 * @since 4.8.2
+	 *
+	 * @var IndexStatus
+	 */
+	public $indexStatus;
+
+	/**
+	 * Class constructor.
+	 *
+	 * @since 4.3.0
+	 */
+	public function __construct() {
+		$this->api                = new Api\Api();
+		$this->site               = new Site();
+		$this->sitemap            = new Sitemap();
+		$this->notices            = new Notices();
+		$this->keywordRankTracker = new KeywordRankTracker();
+		$this->indexStatus        = new IndexStatus();
+	}
+
+	/**
 	 * Returns the data for Vue.
 	 *
 	 * @since 4.3.0
@@ -21,11 +89,12 @@ class SearchStatistics {
 	 */
 	public function getVueData() {
 		$data = [
-			'isConnected'         => false,
+			'isConnected'         => aioseo()->searchStatistics->api->auth->isConnected(),
 			'latestAvailableDate' => null,
 			'range'               => [],
 			'rolling'             => aioseo()->internalOptions->internal->searchStatistics->rolling,
-			'authedSite'          => null,
+			'authedSite'          => aioseo()->searchStatistics->api->auth->getAuthedSite(),
+			'sitemapsWithErrors'  => aioseo()->searchStatistics->sitemap->getSitemapsWithErrors(),
 			'data'                => [
 				'seoStatistics'   => $this->getSeoOverviewData(),
 				'keywords'        => $this->getKeywordsData(),
@@ -37,21 +106,36 @@ class SearchStatistics {
 	}
 
 	/**
+	 * Resets the Search Statistics.
+	 *
+	 * @since 4.6.2
+	 *
+	 * @return void
+	 */
+	public function reset() {
+		aioseo()->internalOptions->searchStatistics->sitemap->reset();
+		aioseo()->internalOptions->searchStatistics->site->reset();
+
+		// Clear the cache for the Search Statistics.
+		aioseo()->searchStatistics->clearCache();
+	}
+
+	/**
 	 * Returns the data for the SEO Overview.
 	 *
 	 * @since 4.3.0
 	 *
-	 * @param  string $dateRange The date range.
-	 * @return array             The data for the SEO Overview.
+	 * @param  array $dateRange The date range.
+	 * @return array            The data for the SEO Overview.
 	 */
 	protected function getSeoOverviewData( $dateRange = [] ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$pageRows = [
 			'/'                       => [
-				'ctr'         => '1.25',
-				'page'        => '/',
-				'clicks'      => 15460,
-				'position'    => '74.01',
-				'difference'  => [
+				'ctr'              => '1.25',
+				'page'             => '/',
+				'clicks'           => 15460,
+				'position'         => '74.01',
+				'difference'       => [
 					'ctr'         => '-0.23',
 					'decay'       => 192211,
 					'clicks'      => -26,
@@ -60,18 +144,20 @@ class SearchStatistics {
 					'comparison'  => true,
 					'impressions' => 192237
 				],
-				'impressions' => 1235435,
-				'context'     => [],
-				'postId'      => 0,
-				'postTitle'   => '/',
-				'seoScore'    => 65
+				'impressions'      => 1235435,
+				'context'          => [],
+				'objectId'         => 0,
+				'objectTitle'      => '/',
+				'objectType'       => 'post',
+				'inspectionResult' => $this->getInspectionResult(),
+				'seoScore'         => 65
 			],
 			'/test-page/'             => [
-				'ctr'         => '0.30',
-				'page'        => '/test-page/',
-				'clicks'      => 5688,
-				'position'    => '35.28',
-				'difference'  => [
+				'ctr'              => '0.30',
+				'page'             => '/test-page/',
+				'clicks'           => 5688,
+				'position'         => '35.28',
+				'difference'       => [
 					'ctr'         => '0.05',
 					'decay'       => 378973,
 					'clicks'      => 1941,
@@ -80,18 +166,20 @@ class SearchStatistics {
 					'comparison'  => true,
 					'impressions' => 377032
 				],
-				'impressions' => 1881338,
-				'context'     => [],
-				'postId'      => 0,
-				'postTitle'   => '/test-page/',
-				'seoScore'    => 95
+				'impressions'      => 1881338,
+				'context'          => [],
+				'objectId'         => 0,
+				'objectTitle'      => '/test-page/',
+				'objectType'       => 'post',
+				'inspectionResult' => $this->getInspectionResult(),
+				'seoScore'         => 95
 			],
 			'/high-ranking-page/'     => [
-				'ctr'         => '6.03',
-				'page'        => '/high-ranking-page/',
-				'clicks'      => 3452,
-				'position'    => '22.85',
-				'difference'  => [
+				'ctr'              => '6.03',
+				'page'             => '/high-ranking-page/',
+				'clicks'           => 3452,
+				'position'         => '22.85',
+				'difference'       => [
 					'ctr'         => '-0.95',
 					'decay'       => -5986,
 					'clicks'      => -898,
@@ -100,18 +188,20 @@ class SearchStatistics {
 					'comparison'  => true,
 					'impressions' => -5088
 				],
-				'impressions' => 57248,
-				'context'     => [],
-				'postId'      => 0,
-				'postTitle'   => '/high-ranking-page/',
-				'seoScore'    => 100
+				'impressions'      => 57248,
+				'context'          => [],
+				'objectId'         => 0,
+				'objectTitle'      => '/high-ranking-page/',
+				'objectType'       => 'post',
+				'inspectionResult' => $this->getInspectionResult(),
+				'seoScore'         => 100
 			],
 			'/pricing/'               => [
-				'ctr'         => '1.35',
-				'page'        => '/pricing/',
-				'clicks'      => 2749,
-				'position'    => '40.40',
-				'difference'  => [
+				'ctr'              => '1.35',
+				'page'             => '/pricing/',
+				'clicks'           => 2749,
+				'position'         => '40.40',
+				'difference'       => [
 					'ctr'         => '-0.16',
 					'decay'       => 15991,
 					'clicks'      => -94,
@@ -120,18 +210,20 @@ class SearchStatistics {
 					'comparison'  => true,
 					'impressions' => 16085
 				],
-				'impressions' => 203794,
-				'context'     => [],
-				'postId'      => 0,
-				'postTitle'   => '/pricing/',
-				'seoScore'    => 100
+				'impressions'      => 203794,
+				'context'          => [],
+				'objectId'         => 0,
+				'objectTitle'      => '/pricing/',
+				'objectType'       => 'post',
+				'inspectionResult' => $this->getInspectionResult(),
+				'seoScore'         => 100
 			],
 			'/features-and-benefits/' => [
-				'ctr'         => '2.48',
-				'page'        => '/features-and-benefits/',
-				'clicks'      => 2600,
-				'position'    => '15.53',
-				'difference'  => [
+				'ctr'              => '2.48',
+				'page'             => '/features-and-benefits/',
+				'clicks'           => 2600,
+				'position'         => '15.53',
+				'difference'       => [
 					'ctr'         => '0.99',
 					'decay'       => 23466,
 					'clicks'      => 1367,
@@ -140,18 +232,20 @@ class SearchStatistics {
 					'comparison'  => true,
 					'impressions' => 22099
 				],
-				'impressions' => 104769,
-				'context'     => [],
-				'postId'      => 0,
-				'postTitle'   => '/features-and-benefits/',
-				'seoScore'    => 90
+				'impressions'      => 104769,
+				'context'          => [],
+				'objectId'         => 0,
+				'objectTitle'      => '/features-and-benefits/',
+				'objectType'       => 'post',
+				'inspectionResult' => $this->getInspectionResult(),
+				'seoScore'         => 90
 			],
 			'/documentation/'         => [
-				'ctr'         => '2.64',
-				'page'        => '/documentation/',
-				'clicks'      => 1716,
-				'position'    => '27.85',
-				'difference'  => [
+				'ctr'              => '2.64',
+				'page'             => '/documentation/',
+				'clicks'           => 1716,
+				'position'         => '27.85',
+				'difference'       => [
 					'ctr'         => '-0.04',
 					'decay'       => 7274,
 					'clicks'      => 167,
@@ -160,18 +254,20 @@ class SearchStatistics {
 					'comparison'  => true,
 					'impressions' => 7107
 				],
-				'impressions' => 64883,
-				'context'     => [],
-				'postId'      => 0,
-				'postTitle'   => '/documentation/',
-				'seoScore'    => 93
+				'impressions'      => 64883,
+				'context'          => [],
+				'objectId'         => 0,
+				'objectTitle'      => '/documentation/',
+				'objectType'       => 'post',
+				'inspectionResult' => $this->getInspectionResult(),
+				'seoScore'         => 93
 			],
 			'/blog/'                  => [
-				'ctr'         => '3.75',
-				'page'        => '/blog/',
-				'clicks'      => 1661,
-				'position'    => '36.60',
-				'difference'  => [
+				'ctr'              => '3.75',
+				'page'             => '/blog/',
+				'clicks'           => 1661,
+				'position'         => '36.60',
+				'difference'       => [
 					'ctr'         => '0.42',
 					'decay'       => -3145,
 					'clicks'      => 77,
@@ -180,18 +276,20 @@ class SearchStatistics {
 					'comparison'  => true,
 					'impressions' => -3222
 				],
-				'impressions' => 44296,
-				'context'     => [],
-				'postId'      => 0,
-				'postTitle'   => '/blog/',
-				'seoScore'    => 97
+				'impressions'      => 44296,
+				'context'          => [],
+				'objectId'         => 0,
+				'objectTitle'      => '/blog/',
+				'objectType'       => 'post',
+				'inspectionResult' => $this->getInspectionResult(),
+				'seoScore'         => 97
 			],
 			'/blog/my-best-content/'  => [
-				'ctr'         => '7.08',
-				'page'        => '/blog/my-best-content/',
-				'clicks'      => 1573,
-				'position'    => '9.61',
-				'difference'  => [
+				'ctr'              => '7.08',
+				'page'             => '/blog/my-best-content/',
+				'clicks'           => 1573,
+				'position'         => '9.61',
+				'difference'       => [
 					'ctr'         => '0.16',
 					'decay'       => -201,
 					'clicks'      => 22,
@@ -200,18 +298,20 @@ class SearchStatistics {
 					'comparison'  => true,
 					'impressions' => -223
 				],
-				'impressions' => 22203,
-				'context'     => [],
-				'postId'      => 0,
-				'postTitle'   => '/blog/my-best-content/',
-				'seoScore'    => 56
+				'impressions'      => 22203,
+				'context'          => [],
+				'objectId'         => 0,
+				'objectTitle'      => '/blog/my-best-content/',
+				'objectType'       => 'post',
+				'inspectionResult' => $this->getInspectionResult(),
+				'seoScore'         => 56
 			],
 			'/contact-us/'            => [
-				'ctr'         => '1.45',
-				'page'        => '/contact-us/',
-				'clicks'      => 1550,
-				'position'    => '32.05',
-				'difference'  => [
+				'ctr'              => '1.45',
+				'page'             => '/contact-us/',
+				'clicks'           => 1550,
+				'position'         => '32.05',
+				'difference'       => [
 					'ctr'         => '0.12',
 					'decay'       => 1079,
 					'clicks'      => 140,
@@ -220,18 +320,20 @@ class SearchStatistics {
 					'comparison'  => true,
 					'impressions' => 939
 				],
-				'impressions' => 106921,
-				'context'     => [],
-				'postId'      => 0,
-				'postTitle'   => '/contact-us/',
-				'seoScore'    => 78
+				'impressions'      => 106921,
+				'context'          => [],
+				'objectId'         => 0,
+				'objectTitle'      => '/contact-us/',
+				'objectType'       => 'post',
+				'inspectionResult' => $this->getInspectionResult(),
+				'seoScore'         => 78
 			],
 			'/support/'               => [
-				'ctr'         => '5.94',
-				'page'        => '/support/',
-				'clicks'      => 1549,
-				'position'    => '25.83',
-				'difference'  => [
+				'ctr'              => '5.94',
+				'page'             => '/support/',
+				'clicks'           => 1549,
+				'position'         => '25.83',
+				'difference'       => [
 					'ctr'         => '-0.74',
 					'decay'       => 3885,
 					'clicks'      => 62,
@@ -240,13 +342,58 @@ class SearchStatistics {
 					'comparison'  => true,
 					'impressions' => 3823
 				],
-				'impressions' => 26099,
-				'context'     => [],
-				'postId'      => 0,
-				'postTitle'   => '/support/',
-				'seoScore'    => 86
+				'impressions'      => 26099,
+				'context'          => [],
+				'objectId'         => 0,
+				'objectTitle'      => '/support/',
+				'objectType'       => 'post',
+				'inspectionResult' => $this->getInspectionResult(),
+				'seoScore'         => 86
 			]
 		];
+
+		// Get the 10 most recent posts.
+		$recentPosts = aioseo()->core->db->db->get_results(
+			sprintf(
+				'SELECT ID, post_title FROM %1$s WHERE post_status = "publish" AND post_type = "post" ORDER BY post_date DESC LIMIT 10',
+				aioseo()->core->db->db->posts
+			)
+		);
+
+		// Loop through the default page rows and update the key with the permalink from the most recent posts.
+		$i = 0;
+		foreach ( $pageRows as $key => $pageRow ) {
+			// Get the permalink of the recent post that matches the $i index.
+			$permalink = isset( $recentPosts[ $i ] ) ? get_permalink( $recentPosts[ $i ]->ID ) : '';
+
+			// If we don't have a permalink, continue to the next row.
+			if ( empty( $permalink ) ) {
+				continue;
+			}
+
+			// Remove the domain from the permalink by parsing the URL and getting the path.
+			$permalink = wp_parse_url( $permalink, PHP_URL_PATH );
+
+			// If the permalink already exists, continue to the next row.
+			if ( isset( $pageRows[ $permalink ] ) ) {
+				// Update the objectId and objectTitle with the recent post ID and title.
+				$pageRows[ $permalink ]['objectId']    = $recentPosts[ $i ]->ID;
+				$pageRows[ $permalink ]['objectTitle'] = $recentPosts[ $i ]->post_title;
+
+				continue;
+			}
+
+			$pageRows[ $permalink ] = $pageRows[ $key ];
+
+			// Remove the old key.
+			unset( $pageRows[ $key ] );
+
+			// Update the objectId and objectTitle with the recent post ID and title.
+			$pageRows[ $permalink ]['objectId']    = $recentPosts[ $i ]->ID;
+			$pageRows[ $permalink ]['objectTitle'] = $recentPosts[ $i ]->post_title;
+
+			$i++;
+		}
 
 		return [
 			'statistics' => [
@@ -364,8 +511,8 @@ class SearchStatistics {
 					'rows'              => $pageRows,
 					'totals'            => [
 						'page'  => 1,
-						'pages' => 292,
-						'total' => 2914
+						'pages' => 1,
+						'total' => 10
 					],
 					'filters'           => [
 						[
@@ -397,10 +544,10 @@ class SearchStatistics {
 					]
 				],
 				'topLosing'  => [
-					'rows' => []
+					'rows' => $pageRows
 				],
 				'topWinning' => [
-					'rows' => []
+					'rows' => $pageRows
 				]
 			]
 		];
@@ -411,10 +558,10 @@ class SearchStatistics {
 	 *
 	 * @since 4.3.0
 	 *
-	 * @param  string $dateRange The date range.
-	 * @return array             The data for the Keywords.
+	 * @param  array $args The arguments.
+	 * @return array       The data for the Keywords.
 	 */
-	protected function getKeywordsData( $dateRange = [] ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public function getKeywordsData( $args = [] ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		$keywordsRows = [
 			[
 				'ctr'         => '4.89',
@@ -563,8 +710,8 @@ class SearchStatistics {
 				'rows'    => $keywordsRows,
 				'totals'  => [
 					'page'  => 1,
-					'pages' => 2500,
-					'total' => 25000
+					'pages' => 1,
+					'total' => 10
 				],
 				'filters' => [
 					[
@@ -584,8 +731,8 @@ class SearchStatistics {
 					]
 				]
 			],
-			'topLosing'             => [],
-			'topWinning'            => [],
+			'topLosing'             => $keywordsRows,
+			'topWinning'            => $keywordsRows,
 			'topKeywords'           => $keywordsRows,
 			'distribution'          => [
 				'top3'       => '6.86',
@@ -696,19 +843,30 @@ class SearchStatistics {
 	}
 
 	/**
+	 * Returns the content performance data.
+	 *
+	 * @since 4.7.2
+	 *
+	 * @return array The content performance data.
+	 */
+	public function getSeoStatisticsData( $args = [] ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		return [];
+	}
+
+	/**
 	 * Returns the Content Rankings data.
 	 *
 	 * @since 4.3.6
 	 *
-	 * @param  array $dateRange The date range.
-	 * @return array            The Content Rankings data.
+	 * @param  array $args The arguments.
+	 * @return array       The Content Rankings data.
 	 */
-	protected function getContentRankingsData( $dateRange = [] ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+	public function getContentRankingsData( $args = [] ) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 		return [
 			'paginated' => [
 				'rows'              => [
 					'/'                       => [
-						'points'       => [
+						'points'           => [
 							'2022-04' => 13655,
 							'2022-05' => 12683,
 							'2022-06' => 13923,
@@ -722,19 +880,21 @@ class SearchStatistics {
 							'2023-02' => 4798,
 							'2023-03' => 5405
 						],
-						'page'         => '/',
-						'peak'         => 21813,
-						'decayPercent' => 75,
-						'decay'        => 16407,
-						'recovering'   => false,
-						'context'      => [
+						'page'             => '/',
+						'peak'             => 21813,
+						'decayPercent'     => 75,
+						'decay'            => 16407,
+						'recovering'       => false,
+						'context'          => [
 							'lastUpdated' => 'December 6, 2021'
 						],
-						'postTitle'    => 'Homepage',
-						'postId'       => 0
+						'objectTitle'      => 'Homepage',
+						'objectType'       => 'post',
+						'inspectionResult' => $this->getInspectionResult(),
+						'objectId'         => 0
 					],
 					'/high-ranking-page/'     => [
-						'points'       => [
+						'points'           => [
 							'2022-04' => 18426,
 							'2022-05' => 18435,
 							'2022-06' => 19764,
@@ -748,19 +908,21 @@ class SearchStatistics {
 							'2023-02' => 3799,
 							'2023-03' => 5440
 						],
-						'page'         => '/high-ranking-page/',
-						'peak'         => 19764,
-						'decayPercent' => 72,
-						'decay'        => 14323,
-						'recovering'   => false,
-						'context'      => [
+						'page'             => '/high-ranking-page/',
+						'peak'             => 19764,
+						'decayPercent'     => 72,
+						'decay'            => 14323,
+						'recovering'       => false,
+						'context'          => [
 							'lastUpdated' => 'November 17, 2022'
 						],
-						'postTitle'    => 'High Ranking Page',
-						'postId'       => 0
+						'objectTitle'      => 'High Ranking Page',
+						'objectType'       => 'post',
+						'inspectionResult' => $this->getInspectionResult(),
+						'objectId'         => 0
 					],
 					'/pricing/'               => [
-						'points'       => [
+						'points'           => [
 							'2022-04' => 5356,
 							'2022-05' => 5425,
 							'2022-06' => 5165,
@@ -774,19 +936,21 @@ class SearchStatistics {
 							'2023-02' => 1630,
 							'2023-03' => 2341
 						],
-						'page'         => '/pricing/',
-						'peak'         => 5479,
-						'decayPercent' => 57,
-						'decay'        => 3137,
-						'recovering'   => false,
-						'context'      => [
+						'page'             => '/pricing/',
+						'peak'             => 5479,
+						'decayPercent'     => 57,
+						'decay'            => 3137,
+						'recovering'       => false,
+						'context'          => [
 							'lastUpdated' => 'December 8, 2021'
 						],
-						'postTitle'    => 'Pricing',
-						'postId'       => 0
+						'objectTitle'      => 'Pricing',
+						'objectType'       => 'post',
+						'inspectionResult' => $this->getInspectionResult(),
+						'objectId'         => 0
 					],
 					'/features-and-benefits/' => [
-						'points'       => [
+						'points'           => [
 							'2022-04' => 1272,
 							'2022-05' => 4151,
 							'2022-06' => 6953,
@@ -800,19 +964,21 @@ class SearchStatistics {
 							'2023-02' => 1666,
 							'2023-03' => 4892
 						],
-						'page'         => '/features-and-benefits/',
-						'peak'         => 7785,
-						'decayPercent' => 37,
-						'decay'        => 2893,
-						'recovering'   => false,
-						'context'      => [
+						'page'             => '/features-and-benefits/',
+						'peak'             => 7785,
+						'decayPercent'     => 37,
+						'decay'            => 2893,
+						'recovering'       => false,
+						'context'          => [
 							'lastUpdated' => 'February 7, 2022'
 						],
-						'postTitle'    => 'Features and Benefits',
-						'postId'       => 0
+						'objectTitle'      => 'Features and Benefits',
+						'objectType'       => 'post',
+						'inspectionResult' => $this->getInspectionResult(),
+						'objectId'         => 0
 					],
 					'/documentation/'         => [
-						'points'       => [
+						'points'           => [
 							'2022-04' => 594,
 							'2022-05' => 385,
 							'2022-06' => 337,
@@ -826,19 +992,21 @@ class SearchStatistics {
 							'2023-02' => 226,
 							'2023-03' => 175
 						],
-						'page'         => '/documentation/',
-						'peak'         => 2907,
-						'decayPercent' => 93,
-						'decay'        => 2731,
-						'recovering'   => false,
-						'context'      => [
+						'page'             => '/documentation/',
+						'peak'             => 2907,
+						'decayPercent'     => 93,
+						'decay'            => 2731,
+						'recovering'       => false,
+						'context'          => [
 							'lastUpdated' => 'January 7, 2022'
 						],
-						'postTitle'    => 'Documentation',
-						'postId'       => 0
+						'objectTitle'      => 'Documentation',
+						'objectType'       => 'post',
+						'inspectionResult' => $this->getInspectionResult(),
+						'objectId'         => 0
 					],
 					'/blog/'                  => [
-						'points'       => [
+						'points'           => [
 							'2022-04' => 2956,
 							'2022-05' => 2363,
 							'2022-06' => 2347,
@@ -852,19 +1020,21 @@ class SearchStatistics {
 							'2023-02' => 629,
 							'2023-03' => 592
 						],
-						'page'         => '/blog/',
-						'peak'         => 2956,
-						'decayPercent' => 79,
-						'decay'        => 2363,
-						'recovering'   => false,
-						'context'      => [
+						'page'             => '/blog/',
+						'peak'             => 2956,
+						'decayPercent'     => 79,
+						'decay'            => 2363,
+						'recovering'       => false,
+						'context'          => [
 							'lastUpdated' => 'April 21, 2022'
 						],
-						'postTitle'    => 'Blog',
-						'postId'       => 0
+						'objectTitle'      => 'Blog',
+						'objectType'       => 'post',
+						'inspectionResult' => $this->getInspectionResult(),
+						'objectId'         => 0
 					],
 					'/blog/my-best-content/'  => [
-						'points'       => [
+						'points'           => [
 							'2022-04' => 1889,
 							'2022-05' => 1714,
 							'2022-06' => 2849,
@@ -878,19 +1048,21 @@ class SearchStatistics {
 							'2023-02' => 5211,
 							'2023-03' => 4683
 						],
-						'page'         => '/blog/my-best-content/',
-						'peak'         => 6955,
-						'decayPercent' => 32,
-						'decay'        => 2272,
-						'recovering'   => false,
-						'context'      => [
+						'page'             => '/blog/my-best-content/',
+						'peak'             => 6955,
+						'decayPercent'     => 32,
+						'decay'            => 2272,
+						'recovering'       => false,
+						'context'          => [
 							'lastUpdated' => 'April 22, 2022'
 						],
-						'postTitle'    => 'My Best Content',
-						'postId'       => 0
+						'objectTitle'      => 'My Best Content',
+						'objectType'       => 'post',
+						'inspectionResult' => $this->getInspectionResult(),
+						'objectId'         => 0
 					],
 					'/contact-us/'            => [
-						'points'       => [
+						'points'           => [
 							'2022-04' => 3668,
 							'2022-05' => 3699,
 							'2022-06' => 4934,
@@ -904,19 +1076,21 @@ class SearchStatistics {
 							'2023-02' => 4189,
 							'2023-03' => 4289
 						],
-						'page'         => '/contact-us/',
-						'peak'         => 5526,
-						'decayPercent' => 34,
-						'decay'        => 1907,
-						'recovering'   => true,
-						'context'      => [
+						'page'             => '/contact-us/',
+						'peak'             => 5526,
+						'decayPercent'     => 34,
+						'decay'            => 1907,
+						'recovering'       => true,
+						'context'          => [
 							'lastUpdated' => 'January 28, 2022'
 						],
-						'postTitle'    => 'Contact Us',
-						'postId'       => 0
+						'objectTitle'      => 'Contact Us',
+						'objectType'       => 'post',
+						'inspectionResult' => $this->getInspectionResult(),
+						'objectId'         => 0
 					],
 					'/support/'               => [
-						'points'       => [
+						'points'           => [
 							'2022-04' => 2715,
 							'2022-05' => 2909,
 							'2022-06' => 2981,
@@ -930,19 +1104,21 @@ class SearchStatistics {
 							'2023-02' => 1077,
 							'2023-03' => 1198
 						],
-						'page'         => '/support/',
-						'peak'         => 2988,
-						'decayPercent' => 59,
-						'decay'        => 1789,
-						'recovering'   => false,
-						'context'      => [
+						'page'             => '/support/',
+						'peak'             => 2988,
+						'decayPercent'     => 59,
+						'decay'            => 1789,
+						'recovering'       => false,
+						'context'          => [
 							'lastUpdated' => 'February 21, 2021'
 						],
-						'postTitle'    => 'Support',
-						'postId'       => 0
+						'objectTitle'      => 'Support',
+						'objectType'       => 'post',
+						'inspectionResult' => $this->getInspectionResult(),
+						'objectId'         => 0
 					],
 					'/blog/top-10-contents/'  => [
-						'points'       => [
+						'points'           => [
 							'2022-04' => 1889,
 							'2022-05' => 1714,
 							'2022-06' => 2849,
@@ -956,22 +1132,24 @@ class SearchStatistics {
 							'2023-02' => 5211,
 							'2023-03' => 4683
 						],
-						'page'         => '/blog/top-10-contents/',
-						'peak'         => 6955,
-						'decayPercent' => 32,
-						'decay'        => 2272,
-						'recovering'   => false,
-						'context'      => [
+						'page'             => '/blog/top-10-contents/',
+						'peak'             => 6955,
+						'decayPercent'     => 32,
+						'decay'            => 2272,
+						'recovering'       => false,
+						'context'          => [
 							'lastUpdated' => 'October 14, 2022'
 						],
-						'postTitle'    => 'Top 10 Contents',
-						'postId'       => 0
+						'objectTitle'      => 'Top 10 Contents',
+						'objectType'       => 'post',
+						'inspectionResult' => $this->getInspectionResult(),
+						'objectId'         => 0
 					],
 				],
 				'totals'            => [
 					'page'  => 1,
-					'pages' => 215,
-					'total' => 4296
+					'pages' => 1,
+					'total' => 10
 				],
 				'additionalFilters' => [
 					[
@@ -986,5 +1164,67 @@ class SearchStatistics {
 				]
 			]
 		];
+	}
+
+	/**
+	 * Get minimum required values for the inspection result.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @return array The inspection result.
+	 */
+	private function getInspectionResult() {
+		$verdicts = [
+			'PASS',
+			'FAIL',
+			'NEUTRAL'
+		];
+
+		return [
+			'indexStatusResult' => [
+				'verdict' => $verdicts[ array_rand( $verdicts ) ],
+			]
+		];
+	}
+
+	/**
+	 * Clears the Search Statistics cache.
+	 *
+	 * @since   4.5.0
+	 * @version 4.6.2 Moved from Pro to Common.
+	 *
+	 * @return void
+	 */
+	public function clearCache() {
+		aioseo()->core->cache->clearPrefix( 'aioseo_search_statistics_' );
+		aioseo()->core->cache->clearPrefix( 'search_statistics_' );
+	}
+
+	/**
+	 * Returns all scheduled Search Statistics related actions.
+	 *
+	 * @since 4.6.2
+	 *
+	 * @return array The Search Statistics actions.
+	 */
+	protected function getActionSchedulerActions() {
+		return [
+			$this->site->action,
+			$this->sitemap->action
+		];
+	}
+
+	/**
+	 * Cancels all scheduled Search Statistics related actions.
+	 *
+	 * @since   4.3.3
+	 * @version 4.6.2 Moved from Pro to Common.
+	 *
+	 * @return void
+	 */
+	public function cancelActions() {
+		foreach ( $this->getActionSchedulerActions() as $actionName ) {
+			as_unschedule_all_actions( $actionName );
+		}
 	}
 }

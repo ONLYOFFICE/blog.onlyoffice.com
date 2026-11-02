@@ -2,6 +2,7 @@
 namespace WPGraphQL\Type;
 
 use GraphQL\Type\Definition\EnumType;
+use WPGraphQL\Registry\TypeRegistry;
 
 /**
  * Class WPEnumType
@@ -9,39 +10,78 @@ use GraphQL\Type\Definition\EnumType;
  * EnumTypes should extend this class to have filters and sorting applied, etc.
  *
  * @package WPGraphQL\Type
+ *
+ * phpcs:disable -- For phpstan type hinting
+ * @phpstan-import-type PartialEnumValueConfig from \GraphQL\Type\Definition\EnumType
+ * @phpstan-import-type EnumValues from \GraphQL\Type\Definition\EnumType
+ *
+ * @phpstan-type PartialWPEnumValueConfig array{
+ *   name?: string,
+ *   value?: mixed,
+ *   deprecationReason?: string|callable():string|null,
+ *   description?: string|callable():string|null,
+ *   astNode?: \GraphQL\Language\AST\EnumValueDefinitionNode|null
+ * }
+ * @phpstan-type WPEnumTypeConfig array{
+ *  name: string,
+ *  description?: string|null,
+ *  values: array<string, PartialWPEnumValueConfig>,
+ *  astNode?: \GraphQL\Language\AST\EnumTypeDefinitionNode|null,
+ *  extensionASTNodes?: array<\GraphQL\Language\AST\EnumTypeExtensionNode>|null,
+ *  kind?:'enum'|null,
+ * }
+ * @phpstan-type RegisterEnumTypeConfig array{
+ *  name?: string,
+ *  description?: string|null,
+ *  values: array<string, PartialWPEnumValueConfig>,
+ *  astNode?: \GraphQL\Language\AST\EnumTypeDefinitionNode|null,
+ *  extensionASTNodes?: array<\GraphQL\Language\AST\EnumTypeExtensionNode>|null,
+ *  kind?:'enum'|null,
+ * }
+ * phpcs:enable
  */
 class WPEnumType extends EnumType {
 
 	/**
 	 * WPEnumType constructor.
 	 *
-	 * @param array $config
+	 * @param array<string,mixed> $config The enum type configuration.
+	 * @phpstan-param WPEnumTypeConfig $config
 	 */
 	public function __construct( $config ) {
-		$name             = ucfirst( $config['name'] );
+		$name = ucfirst( $config['name'] );
+		/**
+		 * Filters the GraphQL type name used during enum type construction.
+		 *
+		 * @param string                      $name   The type name.
+		 * @param array<string,mixed>         $config The enum type configuration.
+		 * @param \WPGraphQL\Type\WPEnumType  $type   The enum type instance.
+		 * @hookGroup schema-registration
+		 * @since 1.3.4
+		 */
 		$config['name']   = apply_filters( 'graphql_type_name', $name, $config, $this );
 		$config['values'] = self::prepare_values( $config['values'], $config['name'] );
 		parent::__construct( $config );
 	}
 
 	/**
-	 * Generate a safe / sanitized name from a menu location slug.
+	 * Generate a safe / sanitized Enum value from a string.
 	 *
 	 * @param  string $value Enum value.
 	 * @return string
 	 */
 	public static function get_safe_name( string $value ) {
+		$sanitized_enum_name = graphql_format_name( $value, '_' );
 
-		$replaced = preg_replace( '#[^A-z0-9]#', '_', $value );
-
-		if ( ! empty( $replaced ) ) {
-			$value = $replaced;
+		// If the sanitized name is empty, we want to return the original value so it displays in the error.
+		if ( ! empty( $sanitized_enum_name ) ) {
+			$value = $sanitized_enum_name;
 		}
 
 		$safe_name = strtoupper( $value );
 
 		// Enum names must start with a letter or underscore.
-		if ( ! preg_match( '#^[_a-zA-Z]#', $value ) ) {
+		if ( ! preg_match( '#^[_a-zA-Z]#', $safe_name ) ) {
 			return '_' . $safe_name;
 		}
 
@@ -52,21 +92,37 @@ class WPEnumType extends EnumType {
 	 * This function sorts the values and applies a filter to allow for easily
 	 * extending/modifying the shape of the Schema for the enum.
 	 *
-	 * @param array  $values
-	 * @param string $type_name
-	 * @return mixed
+	 * @param array<string,PartialWPEnumValueConfig> $values
+	 * @param string                                 $type_name
+	 *
+	 * @return EnumValues
 	 * @since 0.0.5
 	 */
 	private static function prepare_values( $values, $type_name ) {
+
+		// Map over the values and if the description is a callable, resolve it.
+		foreach ( $values as $key => $value ) {
+			$description = $value['description'] ?? null;
+
+			if ( is_callable( $description ) ) {
+				$description = $description();
+			}
+
+			$values[ $key ]['description'] = is_string( $description ) ? $description : '';
+		}
+
 		/**
 		 * Filter all object fields, passing the $typename as a param
 		 *
 		 * This is useful when several different types need to be easily filtered at once. . .for example,
 		 * if ALL types with a field of a certain name needed to be adjusted, or something to that tune
 		 *
-		 * @param array $values
+		 * @param EnumValues $values    The enum values.
+		 * @param string     $type_name The enum type name.
+		 * @hookGroup schema-registration
+		 * @since 0.0.5
 		 */
-		$values = apply_filters( 'graphql_enum_values', $values );
+		$values = apply_filters( 'graphql_enum_values', $values, $type_name );
 
 		/**
 		 * Pass the values through a filter
@@ -76,12 +132,37 @@ class WPEnumType extends EnumType {
 		 * This is useful for more targeted filtering, and is applied after the general filter, to allow for
 		 * more specific overrides
 		 *
-		 * @param array $values
+		 * @param EnumValues $values    The enum values.
+		 * @param string     $type_name The enum type name.
 		 *
+		 * @hookGroup schema-registration
 		 * @since 0.0.5
 		 */
-		$values = apply_filters( 'graphql_' . lcfirst( $type_name ) . '_values', $values );
-		$values = apply_filters( 'graphql_' . $type_name . '_values', $values );
+		$values = apply_filters( 'graphql_' . lcfirst( $type_name ) . '_values', $values, $type_name );
+		/**
+		 * Filters enum values for a specific type using the canonical type name.
+		 *
+		 * @param EnumValues $values    The enum values.
+		 * @param string     $type_name The enum type name.
+		 * @hookGroup schema-registration
+		 * @since 0.0.5
+		 */
+		$values = apply_filters( 'graphql_' . $type_name . '_values', $values, $type_name );
+
+		if ( ! is_array( $values ) ) {
+			$values = iterator_to_array( $values );
+		}
+
+		// map over the values and if the description is a callable, call it
+		$values = array_map(
+			static function ( $value ) {
+				if ( ! is_array( $value ) ) {
+					$value = [ 'value' => $value ];
+				}
+				return TypeRegistry::prepare_config_for_introspection( $value );
+			},
+			$values
+		);
 
 		/**
 		 * Sort the values alphabetically by key. This makes reading through docs much easier
@@ -90,13 +171,6 @@ class WPEnumType extends EnumType {
 		 */
 		ksort( $values );
 
-		/**
-		 * Return the filtered, sorted $fields
-		 *
-		 * @since 0.0.5
-		 */
 		return $values;
-
 	}
-
 }

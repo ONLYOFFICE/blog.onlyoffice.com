@@ -3,9 +3,12 @@
 namespace FluentForm\App\Modules\Form;
 
 use FluentForm\App\Helpers\Helper;
+use FluentForm\App\Services\Transfer\TransferService;
 use FluentForm\Framework\Foundation\Application;
 use FluentForm\Framework\Helpers\ArrayHelper;
-use FluentForm\Framework\Request\File;
+use FluentForm\Framework\Http\Request\File;
+
+/* @deprecated Current File FluentForm\App\Http\Controllers\TransferController */
 
 class Transfer
 {
@@ -65,7 +68,7 @@ class Transfer
      */
     public function import()
     {
-        $file = $this->request->get('file');
+        $file = $this->request->file('file');
 
         if ($file instanceof File) {
             $forms = \json_decode($file->getContents(), true);
@@ -102,7 +105,7 @@ class Transfer
                     }
 
                     // Insert the form to the DB.
-                    $formId = wpFluent()->table('fluentform_forms')->insert($form);
+                    $formId = wpFluent()->table('fluentform_forms')->insertGetId($form);
 
                     $insertedForms[$formId] = [
                         'title'    => $form['title'],
@@ -111,10 +114,14 @@ class Transfer
 
                     if (isset($formItem['metas'])) {
                         foreach ($formItem['metas'] as $metaData) {
+                            $metaKey = sanitize_text_field(ArrayHelper::get($metaData, 'meta_key'));
                             $settings = [
                                 'form_id'  => $formId,
-                                'meta_key' => $metaData['meta_key'],
-                                'value'    => $metaData['value'],
+                                'meta_key' => $metaKey,
+                                'value'    => TransferService::sanitizeImportedMetaValue(
+                                    $metaKey,
+                                    ArrayHelper::get($metaData, 'value')
+                                ),
                             ];
                             wpFluent()->table('fluentform_form_meta')->insert($settings);
                         }
@@ -137,7 +144,17 @@ class Transfer
                         }
                     }
 
-                    do_action('fluentform_form_imported', $formId);
+                    do_action_deprecated(
+                        'fluentform_form_imported',
+                        [
+                            $formId
+                        ],
+                        FLUENTFORM_FRAMEWORK_UPGRADE,
+                        'fluentform/form_imported',
+                        'Use fluentform/form_imported instead of fluentform_form_imported.'
+                    );
+
+                    do_action('fluentform/form_imported', $formId);
                 }
 
                 wp_send_json([
@@ -159,6 +176,7 @@ class Transfer
             ->select(['meta_key', 'value'])
             ->where('form_id', $formId)
             ->whereNotIn('meta_key', ['_total_views', '_ff_form_styler_css'])
-            ->get();
+            ->get()
+            ->toArray();
     }
 }

@@ -2,7 +2,6 @@
 
 namespace WPGraphQL\Type\InterfaceType;
 
-use Exception;
 use WPGraphQL\Registry\TypeRegistry;
 
 class OneToOneConnection {
@@ -11,21 +10,27 @@ class OneToOneConnection {
 	 *
 	 * @param \WPGraphQL\Registry\TypeRegistry $type_registry
 	 *
-	 * @return void
 	 * @throws \Exception
 	 */
 	public static function register_type( TypeRegistry $type_registry ): void {
-
-		register_graphql_interface_type( 'OneToOneConnection', [
-			'description' => __( 'A singular connection from one Node to another, with support for relational data on the "edge" of the connection.', 'wp-graphql' ),
-			'interfaces'  => [ 'Edge' ],
-			'fields'      => [
-				'node' => [
-					'type'        => [ 'non_null' => 'Node' ],
-					'description' => __( 'The connected node', 'wp-graphql' ),
-				],
-			],
-		] );
-
+		register_graphql_interface_type(
+			'OneToOneConnection',
+			[
+				'description' => static function () {
+					return __( 'A direct one-to-one relationship between objects. Unlike plural connections, this represents a single related object rather than a collection.', 'wp-graphql' );
+				},
+				'interfaces'  => [ 'Edge' ],
+				'fields'      => static function () {
+					return [
+						'node' => [
+							'type'        => [ 'non_null' => 'Node' ],
+							'description' => static function () {
+								return __( 'The connected node', 'wp-graphql' );
+							},
+						],
+					];
+				},
+			]
+		);
 	}
 }

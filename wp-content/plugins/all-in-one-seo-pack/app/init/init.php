@@ -4,20 +4,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! function_exists( 'aioseoPluginIsDisabled' ) ) {
+if ( ! function_exists( 'aioseoMaybePluginIsDisabled' ) ) {
 	/**
 	 * Disable the AIOSEO if triggered externally.
 	 *
-	 * @since 4.1.5
+	 * @since   4.1.5
+	 * @version 4.5.0 Added the $file parameter and Lite check.
 	 *
-	 * @return bool True if the plugin should be disabled.
+	 * @param  string $file The plugin file.
+	 * @return bool         True if the plugin should be disabled.
 	 */
-	function aioseoPluginIsDisabled() {
-		if ( ! defined( 'AIOSEO_DEV_VERSION' ) && ! isset( $_REQUEST['aioseo-dev'] ) ) { // phpcs:ignore HM.Security.NonceVerification.Recommended
+	function aioseoMaybePluginIsDisabled( $file ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		if (
+			'all-in-one-seo-pack/all_in_one_seo_pack.php' === plugin_basename( $file ) &&
+			is_plugin_active( 'all-in-one-seo-pack-pro/all_in_one_seo_pack.php' )
+		) {
+			return true;
+		}
+
+		if ( ! defined( 'AIOSEO_DEV_VERSION' ) && ! isset( $_REQUEST['aioseo-dev'] ) ) { // phpcs:ignore HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
 			return false;
 		}
 
-		if ( ! isset( $_REQUEST['aioseo-disable-plugin'] ) ) { // phpcs:ignore HM.Security.NonceVerification.Recommended
+		if ( ! isset( $_REQUEST['aioseo-disable-plugin'] ) ) { // phpcs:ignore HM.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Recommended
 			return false;
 		}
 

@@ -48,8 +48,8 @@ class Fonts
                 'fallback' => 'Helvetica, Verdana, sans-serif',
                 'weights'  => ['300', '400', '700', ],
             ],
-            'Times' => [
-                'fallback' => 'Georgia, serif',
+            'Times New Roman' => [
+                'fallback' => 'Times, "Times Roman", Georgia, serif',
                 'weights'  => [
                     '300',
                     '400',

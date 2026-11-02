@@ -114,17 +114,19 @@ trait Deprecated {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param  array         $args The connection args.
-	 * @return WP_Filesystem       The filesystem object.
+	 * @param  array                    $args The connection args.
+	 * @return \WP_Filesystem_Base|bool       The filesystem object.
 	 */
 	public function wpfs( $args = [] ) {
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		WP_Filesystem( $args );
 
+		// phpcs:disable Squiz.NamingConventions.ValidVariableName
 		global $wp_filesystem;
 		if ( is_object( $wp_filesystem ) ) {
 			return $wp_filesystem;
 		}
+		// phpcs:enable Squiz.NamingConventions.ValidVariableName
 
 		return false;
 	}

@@ -2,6 +2,8 @@
 
 namespace FluentForm\App\Api;
 
+use FluentForm\App\Models\Subscription;
+use FluentForm\App\Models\Transaction;
 use FluentForm\Framework\Helpers\ArrayHelper;
 
 class Submission
@@ -19,9 +21,8 @@ class Submission
         ]);
 
         $offset = $args['per_page'] * ($args['page'] - 1);
-
-        $entryQuery = wpFluent()->table('fluentform_submissions')
-            ->orderBy('id', \FluentForm\App\Helpers\Helper::sanitizeOrderValue($args['sort_type']))
+    
+        $entryQuery = \FluentForm\App\Models\Submission::orderBy('id', \FluentForm\App\Helpers\Helper::sanitizeOrderValue($args['sort_type']))
             ->limit($args['per_page'])
             ->offset($offset);
 
@@ -76,42 +77,24 @@ class Submission
 
     public function find($submissionId)
     {
-        $submission = wpFluent()->table('fluentform_submissions')->find($submissionId);
+        $submission = \FluentForm\App\Models\Submission::find($submissionId);
         $submission->response = json_decode($submission->response);
         return $submission;
     }
 
     public function transactions($columnValue, $column = 'submission_id')
     {
-        if (!defined('FLUENTFORMPRO')) {
-            return [];
-        }
-
-        return wpFluent()->table('fluentform_transactions')
-            ->where($column, $columnValue)
-            ->get();
+        return Transaction::where($column, $columnValue)->get();
     }
 
     public function transaction($columnValue, $column = 'id')
     {
-        if (!defined('FLUENTFORMPRO')) {
-            return [];
-        }
-
-        return wpFluent()->table('fluentform_transactions')
-            ->where($column, $columnValue)
-            ->first();
+        return Transaction::where($column, $columnValue)->first();
     }
 
     public function subscriptions($submissionId, $withTransactions = false)
     {
-        if (!defined('FLUENTFORMPRO')) {
-            return [];
-        }
-
-        $subscriptions = wpFluent()->table('fluentform_subscriptions')
-            ->where('submission_id', $submissionId)
-            ->get();
+        $subscriptions = Subscription::bySubmission($submissionId)->get();
 
         if ($withTransactions) {
             foreach ($subscriptions as $subscription) {
@@ -124,13 +107,7 @@ class Submission
 
     public function getSubscription($subscriptionId, $withTransactions = false)
     {
-        if (!defined('FLUENTFORMPRO')) {
-            return [];
-        }
-
-        $subscription = wpFluent()->table('fluentform_subscriptions')
-            ->where('id', $subscriptionId)
-            ->first();
+        $subscription = Subscription::find($subscriptionId);
 
         if (!$subscription) {
             return false;
@@ -145,9 +122,6 @@ class Submission
 
     public function transactionsByUserId($userId = false, $args = [])
     {
-        if (!defined('FLUENTFORMPRO')) {
-            return [];
-        }
 
         if (!$userId) {
             $userId = get_current_user_id();
@@ -168,8 +142,7 @@ class Submission
             'grouped'           => false,
         ]);
 
-        $query = wpFluent()->table('fluentform_transactions')
-            ->orderBy('id', 'DESC')
+        $query = Transaction::orderBy('id', 'DESC')
             ->where(function ($q) use ($user) {
                 $q->where('user_id', $user->ID)
                     ->orderBy('id', 'DESC')
@@ -193,33 +166,19 @@ class Submission
 
     public function transactionsBySubscriptionId($subscriptionId)
     {
-        if (!defined('FLUENTFORMPRO')) {
-            return [];
-        }
 
-        return wpFluent()->table('fluentform_transactions')
-            ->where('subscription_id', $subscriptionId)
+        return Transaction::where('subscription_id', $subscriptionId)
             ->orderBy('id', 'DESC')
             ->get();
     }
 
     public function transactionsBySubmissionId($submissionId)
     {
-        if (!defined('FLUENTFORMPRO')) {
-            return [];
-        }
-
-        return wpFluent()->table('fluentform_transactions')
-            ->where('submission_id', $submissionId)
-            ->get();
+        return Transaction::bySubmission($submissionId)->get();
     }
 
     public function subscriptionsByUserId($userId = false, $args = [])
     {
-        if (!defined('FLUENTFORMPRO')) {
-            return [];
-        }
-
         if (!$userId) {
             $userId = get_current_user_id();
         }
@@ -238,13 +197,12 @@ class Submission
             'form_title' => false,
         ]);
 
-        $submissions = wpFluent()->table('fluentform_submissions')
-            ->select(['id', 'currency'])
+        $submissions = \FluentForm\App\Models\Submission::select(['id', 'currency'])
             ->where('user_id', $userId)
             ->where('payment_type', 'subscription')
             ->get();
 
-        if (!$submissions) {
+        if (count($submissions) === 0) {
             return [];
         }
 
@@ -255,17 +213,16 @@ class Submission
             $currencyMaps[$submission->id] = $submission->currency;
         }
 
-        $query = wpFluent()->table('fluentform_subscriptions')
-            ->select(['fluentform_subscriptions.*'])
+        $query = Subscription::select(['fluentform_subscriptions.*'])
             ->orderBy('id', 'DESC')
             ->whereIn('submission_id', $submissionIds);
 
         if ($args['statuses']) {
-            $query->whereIn('status', $args['statuses']);
+            $query->whereIn('fluentform_subscriptions.status', $args['statuses']);
         }
 
         if ($args['form_title']) {
-            $query->select(['fluentform_forms.title'])
+            $query->addSelect(['fluentform_forms.title'])
                 ->leftJoin('fluentform_forms', 'fluentform_forms.id', '=', 'fluentform_subscriptions.form_id');
         }
 

@@ -1,68 +1,75 @@
 <?php
 /**
  * Plugin Name: Democracy Poll
- * Description: Allows to create democratic polls. Visitors can vote for more than one answer & add their own answers.
+ * Description: Allows creation of democratic polls. Visitors can vote for multiple answers and add their own answers.
  *
  * Author: Kama
- * Author URI: http://wp-kama.ru/
- * Plugin URI: http://wp-kama.ru/id_67/plagin-oprosa-dlya-wordpress-democracy-poll.html
+ * Author URI: https://wp-kama.com
+ * Plugin URI: https://wp-kama.ru/67
  *
  * Text Domain: democracy-poll
- * Domain Path: /languages/
+ * Domain Path: /languages/build
  *
- * Requires PHP: 5.6
+ * Requires at least: 5.8
+ * Requires PHP: 7.4
  *
- * Version: 5.6.0
+ * Version: 6.5.0
  */
 
+namespace DemocracyPoll;
 
-if( !defined('ABSPATH') ) exit; // no direct access
+defined( 'ABSPATH' ) || exit;
 
-__( 'Allows to create democratic polls. Visitors can vote for more than one answer & add their own answers.' );
-
-
-$data = get_file_data( __FILE__, [ 'Version' =>'Version', 'Domain Path' =>'Domain Path' ] );
-define( 'DEM_VER', $data['Version'] );
-define( 'DEM_DOMAIN_PATH', '/'. trim($data['Domain Path'],'/') .'/' ); // /languages/
-
-define( 'DEM_MAIN_FILE',  __FILE__ );
-define( 'DEMOC_URL',  plugin_dir_url(DEM_MAIN_FILE) );
-define( 'DEMOC_PATH', plugin_dir_path(DEM_MAIN_FILE) );
+require_once __DIR__ . '/autoload.php';
 
 
-## Set table names for MU
-function dem_set_dbtables(){
-	global $wpdb;
-	$wpdb->democracy_q   = $wpdb->prefix .'democracy_q';
-	$wpdb->democracy_a   = $wpdb->prefix .'democracy_a';
-	$wpdb->democracy_log = $wpdb->prefix .'democracy_log';
-}
-dem_set_dbtables();
+/// SETUP
+
+$container = container( new Libs\Container() ); // set the container globally
+$container->set( Plugin::class, [ 'main_file' => __FILE__ ] );
 
 
-//if( is_admin() )
-require_once DEMOC_PATH .'admin/upgrade-activate-funcs.php';
-require_once DEMOC_PATH .'theme-functions.php';
+/// UNIT
 
-require_once DEMOC_PATH .'class-DemPoll.php';
-require_once DEMOC_PATH .'class-Democracy_Poll.php';
-require_once DEMOC_PATH .'admin/class-Democracy_Poll_Admin.php';
+register_activation_hook( __FILE__, [ System\Activator::class, 'activate' ] );
 
-register_activation_hook( DEM_MAIN_FILE, 'democracy_activate' );
+/**
+ * NOTE: Init the plugin later on the 'after_setup_theme' hook to
+ * run current_user_can() later to avoid possible issues.
+ */
+add_action( 'after_setup_theme', '\DemocracyPoll\init_plugin' );
 
-add_action( 'plugins_loaded', 'democracy_poll_init' );
-function democracy_poll_init(){
-	// first init
-	democr();
 
-	// enable widget
-	if( democr()->opt('use_widget') )
-		require_once DEMOC_PATH . 'widget_democracy.php';
+/// FUNCTIONS
+
+function init_plugin(): void {
+	$initor = container()->get( System\Plugin_Initor::class ); /** @see System\Plugin_Initor::__construct() */
+    $initor->init_plugin();
 }
 
-function democr(){
-	return Democracy_Poll::init();
+/**
+ * Returns the container instance.
+ * Or sets the container instance globally if a container is provided.
+ */
+function container( Libs\Container $container = null ): Libs\Container {
+	static $c;
+	return $container ? ( $c = $container ) : $c;
 }
 
+/**
+ * Gives access to the plugin instance stored in the container.
+ *
+ * @deprecated Use {@see container()} instead.
+ */
+function plugin(): Plugin {
+	return container()->get( Plugin::class );
+}
 
-
+/**
+ * Helper function to conveniently get the plugin options.
+ *
+ * @deprecated Use {@see container()} instead.
+ */
+function options(): Options {
+	return container()->get( Options::class );
+}

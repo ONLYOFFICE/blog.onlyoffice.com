@@ -44,6 +44,8 @@
       $migrations = trinity_get_migration_scripts();
 
       foreach ($migrations as $migration) {
+        if (!str_ends_with($migration, '.php')) continue;
+
         $migration_version = str_replace('.php', '', $migration);
 
         if ($db_plugin_migration_version < $migration_version) {
@@ -75,7 +77,7 @@
       ]
     );
 
-    trinity_send_stat(TRINITY_AUDIO_UPDATE_PLUGIN_DETAILS_URL, 'upgrade');
+    trinity_update_details(TRINITY_AUDIO_UPDATE_PLUGIN_DETAILS_URL, 'upgrade', false);
 
     trinity_remove_transient_migration_in_progress();
     trinity_log("Latest plugin version is written into DB as: $plugin_version");

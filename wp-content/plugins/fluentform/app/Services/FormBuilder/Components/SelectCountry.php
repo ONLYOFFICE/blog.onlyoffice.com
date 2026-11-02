@@ -2,7 +2,6 @@
 
 namespace FluentForm\App\Services\FormBuilder\Components;
 
-use FluentForm\App;
 use FluentForm\App\Helpers\Helper;
 use FluentForm\Framework\Helpers\ArrayHelper;
 
@@ -19,11 +18,21 @@ class SelectCountry extends BaseComponent
     public function compile($data, $form)
     {
         $elementName = $data['element'];
-        $data = apply_filters('fluentform_rendering_field_data_' . $elementName, $data, $form);
+        $data = apply_filters_deprecated(
+            'fluentform_rendering_field_data_' . $elementName,
+            [
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_data_' . $elementName,
+            'Use fluentform/rendering_field_data_' . $elementName . ' instead of fluentform_rendering_field_data_' . $elementName
+        );
+        $data = apply_filters('fluentform/rendering_field_data_' . $elementName, $data, $form);
 
         $data = $this->loadCountries($data);
         $defaultValues = (array) $this->extractValueFromAttributes($data);
-        $data['attributes']['class'] = trim('ff-el-form-control ' . $data['attributes']['class']);
+        $data['attributes']['class'] = trim('ff-el-form-control ' . ArrayHelper::get($data, 'attributes.class', ''));
         $data['attributes']['id'] = $this->makeElementId($data, $form);
         $isSearchable = ArrayHelper::get($data, 'settings.enable_select_2');
         if ('yes' == $isSearchable) {
@@ -52,9 +61,11 @@ class SelectCountry extends BaseComponent
             $priorityCountries = $this->getSelectedCountries($selectCountries);
             $primaryListLabel = ArrayHelper::get($data, 'settings.primary_label');
             $otherListLabel = ArrayHelper::get($data, 'settings.other_label');
-            $elMarkup .= '<optgroup label="' . wp_strip_all_tags($primaryListLabel) . '">';
+            // SECURITY (FINDING-12): esc_attr (not just strip_all_tags, which leaves quotes) the
+            // optgroup labels before interpolating them into the double-quoted label attribute.
+            $elMarkup .= '<optgroup label="' . esc_attr($primaryListLabel) . '">';
             $elMarkup .= $this->buildOptions($priorityCountries, $defaultValues);
-            $elMarkup .= '</optgroup><optgroup label="' . wp_strip_all_tags($otherListLabel) . '">';
+            $elMarkup .= '</optgroup><optgroup label="' . esc_attr($otherListLabel) . '">';
             $elMarkup .= $this->buildOptions($data['options'], $defaultValues);
             $elMarkup .= '</optgroup>';
         } else {
@@ -65,9 +76,20 @@ class SelectCountry extends BaseComponent
 
         $html = $this->buildElementMarkup($elMarkup, $data, $form);
 
-        $this->printContent('fluentform_rendering_field_html_' . $elementName, $html, $data, $form);
-    }
+        $html = apply_filters_deprecated(
+            'fluentform_rendering_field_html_' . $elementName,
+            [
+                $html,
+                $data,
+                $form
+            ],
+            FLUENTFORM_FRAMEWORK_UPGRADE,
+            'fluentform/rendering_field_html_' . $elementName,
+            'Use fluentform/rendering_field_html_' . $elementName . ' instead of fluentform_rendering_field_html_' . $elementName
+        );
 
+        $this->printContent('fluentform/rendering_field_html_' . $elementName, $html, $data, $form);
+    }
     /**
      * Load countt list from file
      *
@@ -77,10 +99,10 @@ class SelectCountry extends BaseComponent
      */
     public function loadCountries($data)
     {
-        $app = App::make();
+        $app = wpFluentForm();
         $data['options'] = [];
         $activeList = ArrayHelper::get($data, 'settings.country_list.active_list');
-        $countries = $app->load($app->appPath('Services/FormBuilder/CountryNames.php'));
+        $countries = getFluentFormCountryList();
 
         if ('visible_list' == $activeList) {
             $selectCountries = ArrayHelper::get($data, 'settings.country_list.' . $activeList, []);
@@ -129,9 +151,8 @@ class SelectCountry extends BaseComponent
 
     public function getSelectedCountries($keys = [])
     {
-        $app = App::make();
         $options = [];
-        $countries = $app->load($app->appPath('Services/FormBuilder/CountryNames.php'));
+        $countries = getFluentFormCountryList();
         foreach ($keys as $value) {
             $options[$value] = $countries[$value];
         }

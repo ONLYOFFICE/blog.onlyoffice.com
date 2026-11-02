@@ -7,31 +7,24 @@ use GraphQLRelay\Relay;
 /**
  * Class Menu - Models data for Menus
  *
- * @property string $id
- * @property int    $count
- * @property int    $menuId
- * @property int    $databaseId
- * @property string $name
- * @property string $slug
+ * @property ?int          $count
+ * @property ?int          $databaseId
+ * @property ?string       $id
+ * @property string[]|null $locations
+ * @property ?string       $name
+ * @property ?string       $slug
  *
  * @package WPGraphQL\Model
+ *
+ * @extends \WPGraphQL\Model\Model<\WP_Term>
  */
 class Menu extends Model {
-
-	/**
-	 * Stores the incoming WP_Term object
-	 *
-	 * @var \WP_Term $data
-	 */
-	protected $data;
-
 	/**
 	 * Menu constructor.
 	 *
 	 * @param \WP_Term $term The incoming WP_Term object that needs modeling
 	 *
 	 * @return void
-	 * @throws \Exception
 	 */
 	public function __construct( \WP_Term $term ) {
 		$this->data = $term;
@@ -39,13 +32,10 @@ class Menu extends Model {
 	}
 
 	/**
-	 * Determines whether a Menu should be considered private.
+	 * {@inheritDoc}
 	 *
 	 * If a Menu is not connected to a menu that's assigned to a location
-	 * it's not considered a public node
-	 *
-	 * @return bool
-	 * @throws \Exception
+	 * it's not considered a public node.
 	 */
 	public function is_private() {
 
@@ -54,12 +44,12 @@ class Menu extends Model {
 			return false;
 		}
 
-		$locations = get_theme_mod( 'nav_menu_locations' );
+		$locations = get_nav_menu_locations();
 		if ( empty( $locations ) ) {
 			return true;
 		}
 		$location_ids = array_values( $locations );
-		if ( empty( $location_ids ) || ! in_array( $this->data->term_id, array_values( $location_ids ), true ) ) {
+		if ( empty( $location_ids ) || ! in_array( $this->data->term_id, $location_ids, true ) ) {
 			return true;
 		}
 
@@ -67,32 +57,19 @@ class Menu extends Model {
 	}
 
 	/**
-	 * Initializes the Menu object
-	 *
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	protected function init() {
-
 		if ( empty( $this->fields ) ) {
-
 			$this->fields = [
-				'id'         => function () {
-					return ! empty( $this->data->term_id ) ? Relay::toGlobalId( 'term', (string) $this->data->term_id ) : null;
-				},
 				'count'      => function () {
 					return ! empty( $this->data->count ) ? absint( $this->data->count ) : null;
-				},
-				'menuId'     => function () {
-					return ! empty( $this->data->term_id ) ? absint( $this->data->term_id ) : null;
 				},
 				'databaseId' => function () {
 					return ! empty( $this->data->term_id ) ? absint( $this->data->term_id ) : null;
 				},
-				'name'       => function () {
-					return ! empty( $this->data->name ) ? $this->data->name : null;
-				},
-				'slug'       => function () {
-					return ! empty( $this->data->slug ) ? $this->data->slug : null;
+				'id'         => function () {
+					return ! empty( $this->databaseId ) ? Relay::toGlobalId( 'term', (string) $this->databaseId ) : null;
 				},
 				'locations'  => function () {
 					$menu_locations = get_theme_mod( 'nav_menu_locations' );
@@ -109,12 +86,19 @@ class Menu extends Model {
 					}
 
 					return $locations;
+				},
+				'name'       => function () {
+					return ! empty( $this->data->name ) ? $this->data->name : null;
+				},
+				'slug'       => function () {
+					return ! empty( $this->data->slug ) ? urldecode( $this->data->slug ) : null;
+				},
 
+				// Deprecated.
+				'menuId'     => function () {
+					return $this->databaseId;
 				},
 			];
-
 		}
-
 	}
-
 }

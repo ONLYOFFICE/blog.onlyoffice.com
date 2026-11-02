@@ -1,18 +1,24 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
 if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
-
-	#[AllowDynamicProperties]
 	class ACF_Admin_Field_Groups extends ACF_Admin_Internal_Post_Type_List {
 
 		/**
 		 * The slug for the internal post type.
 		 *
-		 * @since 6.1
 		 * @var string
 		 */
 		public $post_type = 'acf-field-group';
@@ -20,7 +26,6 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 		/**
 		 * The admin body class used for the post type.
 		 *
-		 * @since 6.1
 		 * @var string
 		 */
 		public $admin_body_class = 'acf-admin-field-groups';
@@ -35,13 +40,13 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 		/**
 		 * Constructor.
 		 *
-		 * @date    5/03/2014
 		 * @since   5.0.0
-		 *
-		 * @return  void
 		 */
 		public function __construct() {
+			add_action( 'admin_menu', array( $this, 'admin_menu' ), 7 );
 			add_action( 'load-edit.php', array( $this, 'handle_redirection' ) );
+			add_action( 'post_class', array( $this, 'get_admin_table_post_classes' ), 10, 3 );
+
 			parent::__construct();
 		}
 
@@ -59,14 +64,11 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 		/**
 		 * Redirects users from ACF 4.0 admin page.
 		 *
-		 * @date    17/9/18
-		 * @since   5.7.6
-		 *
-		 * @return void
+		 * @since 5.7.6
 		 */
 		public function handle_redirection() {
 			if ( isset( $_GET['post_type'] ) && $_GET['post_type'] === 'acf' ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				wp_redirect( $this->get_admin_url() );
+				wp_safe_redirect( $this->get_admin_url() );
 				exit;
 			}
 		}
@@ -84,7 +86,6 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 			// Set the "no found" label to be our custom HTML for no results.
 			if ( empty( acf_request_arg( 's' ) ) ) {
 				global $wp_post_types;
-				$this->not_found_label                               = $wp_post_types['acf-field-group']->labels->not_found;
 				$wp_post_types['acf-field-group']->labels->not_found = $this->get_not_found_html();
 			}
 
@@ -125,7 +126,7 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 
 				// Description.
 				case 'acf-description':
-					if ( is_string( $post['description'] ) && ! empty( $post['description'] ) ) {
+					if ( ( is_string( $post['description'] ) || is_numeric( $post['description'] ) ) && ! empty( $post['description'] ) ) {
 						echo '<span class="acf-description">' . acf_esc_html( $post['description'] ) . '</span>';
 					} else {
 						echo '<span class="acf-emdash" aria-hidden="true">—</span>';
@@ -274,12 +275,31 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 		}
 
 		/**
+		 * Gets the class(es) to be used by field groups in the list table.
+		 *
+		 * @since 6.2.8
+		 *
+		 * @param array   $classes   An array of the classes used by the field group.
+		 * @param array   $css_class An array of additional classes added to the field group.
+		 * @param integer $post_id   The ID of the field group.
+		 * @return array
+		 */
+		public function get_admin_table_post_classes( $classes, $css_class, $post_id ) {
+			// Bail early if not in the field group list table.
+			if ( ! is_admin() || $this->post_type !== get_post_type( $post_id ) ) {
+				return $classes;
+			}
+
+			return apply_filters( 'acf/field_group/list_table_classes', $classes, $css_class, $post_id );
+		}
+
+		/**
 		 * Fires when trashing a field group.
 		 *
 		 * @date    8/01/2014
 		 * @since   5.0.0
 		 *
-		 * @param   int $post_id The post ID.
+		 * @param   integer $post_id The post ID.
 		 * @return  void
 		 */
 		public function trashed_post( $post_id ) {
@@ -294,7 +314,7 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 		 * @date    8/01/2014
 		 * @since   5.0.0
 		 *
-		 * @param   int $post_id The post ID.
+		 * @param   integer $post_id The post ID.
 		 * @return  void
 		 */
 		public function untrashed_post( $post_id ) {
@@ -309,7 +329,7 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 		 * @date    8/01/2014
 		 * @since   5.0.0
 		 *
-		 * @param   int $post_id The post ID.
+		 * @param   integer $post_id The post ID.
 		 * @return  void
 		 */
 		public function deleted_post( $post_id ) {
@@ -323,8 +343,8 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 		 *
 		 * @since 6.1
 		 *
-		 * @param string $action The action being performed.
-		 * @param int    $count  The number of items the action was performed on.
+		 * @param string  $action The action being performed.
+		 * @param integer $count  The number of items the action was performed on.
 		 * @return string
 		 */
 		public function get_action_notice_text( $action, $count = 1 ) {
@@ -364,10 +384,8 @@ if ( ! class_exists( 'ACF_Admin_Field_Groups' ) ) :
 
 			return $text;
 		}
-
 	}
 
 	// Instantiate.
 	acf_new_instance( 'ACF_Admin_Field_Groups' );
-
 endif; // Class exists check.

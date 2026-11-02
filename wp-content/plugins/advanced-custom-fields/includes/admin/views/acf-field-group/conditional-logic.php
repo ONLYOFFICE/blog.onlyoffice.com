@@ -1,11 +1,19 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 // vars
 $disabled = false;
 
 // empty
 if ( empty( $field['conditional_logic'] ) ) {
-
 	$disabled                   = true;
 	$field['conditional_logic'] = array(
 
@@ -23,7 +31,7 @@ if ( empty( $field['conditional_logic'] ) ) {
 	<div class="acf-conditional-toggle">
 		<div class="acf-label">
 			<?php $acf_label_for = acf_idify( $field['prefix'] . '[conditional_logic]' ); ?>
-			<label for="<?php echo esc_attr( $acf_label_for ); ?>"><?php _e( 'Conditional Logic', 'acf' ); ?></label>
+			<label for="<?php echo esc_attr( $acf_label_for ); ?>"><?php esc_html_e( 'Conditional Logic', 'acf' ); ?></label>
 		</div>
 		<div class="acf-input">
 			<?php
@@ -43,7 +51,13 @@ if ( empty( $field['conditional_logic'] ) ) {
 
 		</div>
 	</div>
-	<div class="rule-groups" <?php if ( $disabled ) echo ' style="display:none"'; ?>>
+	<div class="rule-groups" 
+	<?php
+	if ( $disabled ) {
+		echo ' style="display:none"';
+	}
+	?>
+	>
 		<?php
 		foreach ( $field['conditional_logic'] as $group_id => $group ) :
 
@@ -59,9 +73,9 @@ if ( empty( $field['conditional_logic'] ) ) {
 			$h4       = ( $group_id == 'group_0' ) ? __( 'Show this field if', 'acf' ) : __( 'or', 'acf' );
 
 			?>
-			<div class="rule-group" data-id="<?php echo $group_id; ?>">
+			<div class="rule-group" data-id="<?php echo esc_attr( $group_id ); ?>">
 
-				<h4><?php echo $h4; ?></h4>
+				<h4><?php echo esc_html( $h4 ); ?></h4>
 
 				<table class="acf-table -clear">
 					<tbody>
@@ -134,8 +148,19 @@ if ( empty( $field['conditional_logic'] ) ) {
 							</td>
 							<td class="value">
 								<?php
+								$conditional_field = get_field_object( $rule['field'] );
 
-								// create field
+								/**
+								 * Filters the choices available for a conditional logic rule.
+								 *
+								 * @since 6.3.0
+								 *
+								 * @param array $choices The available choices.
+								 * @param array $conditional_field The field object for the conditional field.
+								 * @param mixed $value The value of the rule.
+								 */
+								$choices = apply_filters( 'acf/conditional_logic/choices', array( $rule['value'] => $rule['value'] ), $conditional_field, $rule['value'] );
+
 								acf_render_field(
 									array(
 										'type'     => 'select',
@@ -144,16 +169,13 @@ if ( empty( $field['conditional_logic'] ) ) {
 										'class'    => 'condition-rule-value',
 										'disabled' => $disabled,
 										'value'    => $rule['value'],
-										'choices'  => array(
-											$rule['value'] => $rule['value'],
-										),
+										'choices'  => $choices,
 									)
 								);
-
 								?>
 							</td>
 							<td class="add">
-								<a href="#" class="button add-conditional-rule"><?php _e( 'and', 'acf' ); ?></a>
+								<a href="#" class="button add-conditional-rule"><?php esc_html_e( 'and', 'acf' ); ?></a>
 							</td>
 							<td class="remove">
 								<a href="#" class="acf-icon -minus remove-conditional-rule"></a>
@@ -166,8 +188,8 @@ if ( empty( $field['conditional_logic'] ) ) {
 			</div>
 		<?php endforeach; ?>
 
-		<h4><?php _e( 'or', 'acf' ); ?></h4>
+		<h4><?php esc_html_e( 'or', 'acf' ); ?></h4>
 
-		<a href="#" class="button add-conditional-group"><?php _e( 'Add rule group', 'acf' ); ?></a>
+		<a href="#" class="button add-conditional-group"><?php esc_html_e( 'Add rule group', 'acf' ); ?></a>
 	</div>							
 </div>

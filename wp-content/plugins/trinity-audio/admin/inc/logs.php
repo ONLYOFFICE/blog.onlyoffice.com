@@ -1,6 +1,6 @@
 <div class="wrap" id="trinity-admin-logs">
   <div class="header-wrapper">
-    <h1>Logs</h1>
+    <div class="h1">Logs</div>
     <a href="admin.php?page=trinity_audio_contact_us&from=logs">Send log file to Trinity Audio support
       team</a>
   </div>

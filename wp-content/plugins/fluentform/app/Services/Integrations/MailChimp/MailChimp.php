@@ -43,7 +43,7 @@ class MailChimp
 
         if (null === $api_endpoint) {
             if (false === strpos($this->api_key, '-')) {
-                throw new \Exception("Invalid Mailchimp API key `{$api_key}` supplied.");
+                throw new \Exception(sprintf('Invalid Mailchimp API key `%s` supplied.', esc_html($api_key)));
             }
             list(, $data_center) = explode('-', $this->api_key);
             $this->api_endpoint = str_replace('<dc>', $data_center, $this->api_endpoint);
@@ -201,69 +201,73 @@ class MailChimp
      */
     private function makeRequest($http_verb, $method, $args = [], $timeout = self::TIMEOUT)
     {
-        if (! function_exists('curl_init') || ! function_exists('curl_setopt')) {
-            throw new \Exception("cURL support is required, but can't be found.");
-        }
+        $timeout = apply_filters('fluentform/mailchimp_api_timeout', $timeout);
 
         $url = $this->api_endpoint . '/' . $method;
 
         $response = $this->prepareStateForRequest($http_verb, $method, $url, $timeout);
 
-        $httpHeader = [
-            'Accept: application/vnd.api+json',
-            'Content-Type: application/vnd.api+json',
-            'Authorization: apikey ' . $this->api_key,
+        $headers = [
+            'Accept'        => 'application/vnd.api+json',
+            'Content-Type'  => 'application/vnd.api+json',
+            'Authorization' => 'apikey ' . $this->api_key,
+            'User-Agent'    => 'DrewM/MailChimp-API/3.0 (github.com/drewm/mailchimp-api)',
         ];
 
         if (isset($args['language'])) {
-            $httpHeader[] = 'Accept-Language: ' . $args['language'];
+            $headers['Accept-Language'] = $args['language'];
+            unset($args['language']);
         }
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $httpHeader);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'DrewM/MailChimp-API/3.0 (github.com/drewm/mailchimp-api)');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_VERBOSE, true);
-        curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->verify_ssl);
-        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
-        curl_setopt($ch, CURLOPT_ENCODING, '');
-        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        $request_args = [
+            'method'      => strtoupper($http_verb),
+            'timeout'     => $timeout,
+            'headers'     => $headers,
+            'sslverify'   => $this->verify_ssl,
+            'httpversion' => '1.0',
+        ];
 
-        switch ($http_verb) {
-            case 'post':
-                curl_setopt($ch, CURLOPT_POST, true);
-                $this->attachRequestPayload($ch, $args);
-                break;
-
-            case 'get':
+        // Handle GET requests - append query string to URL
+        if ('get' === $http_verb) {
+            if (! empty($args)) {
                 $query = http_build_query($args, '', '&');
-                curl_setopt($ch, CURLOPT_URL, $url . '?' . $query);
-                break;
-
-            case 'delete':
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
-                break;
-
-            case 'patch':
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
-                $this->attachRequestPayload($ch, $args);
-                break;
-
-            case 'put':
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-                $this->attachRequestPayload($ch, $args);
-                break;
+                $url = $url . '?' . $query;
+            }
+        } else {
+            // For POST, PUT, PATCH, DELETE - encode body as JSON
+            $encoded = json_encode($args);
+            $this->last_request['body'] = $encoded;
+            $request_args['body'] = $encoded;
         }
 
-        $responseContent = curl_exec($ch);
-        $response['headers'] = curl_getinfo($ch);
-        $response = $this->setResponseState($response, $responseContent, $ch);
-        $formattedResponse = $this->formatResponse($response);
+        $wp_response = wp_remote_request($url, $request_args);
 
-        curl_close($ch);
+        if (is_wp_error($wp_response)) {
+            $this->last_error = $wp_response->get_error_message();
+            $response['headers'] = null;
+            $response['body'] = null;
+            $this->last_response = $response;
+            return false;
+        }
+
+        $response_code = wp_remote_retrieve_response_code($wp_response);
+        $response_body = wp_remote_retrieve_body($wp_response);
+        $response_headers = wp_remote_retrieve_headers($wp_response);
+
+        // Build response structure similar to cURL format for compatibility
+        $response['headers'] = [
+            'http_code'    => $response_code,
+            'content_type' => wp_remote_retrieve_header($wp_response, 'content-type'),
+            'total_time'   => isset($wp_response['headers']['total_time']) ? $wp_response['headers']['total_time'] : 0,
+        ];
+
+        $response['httpHeaders'] = $this->convertWpHeadersToArray($response_headers);
+        $response['body'] = $response_body;
+
+        // Store request headers for debugging
+        $this->last_request['headers'] = $headers;
+
+        $formattedResponse = $this->formatResponse($response);
 
         $this->determineSuccess($response, $formattedResponse, $timeout);
 
@@ -283,7 +287,7 @@ class MailChimp
         $this->request_successful = false;
 
         $this->last_response = [
-            'headers'     => null, // array of details from curl_getinfo()
+            'headers'     => null, // array of details from wp_remote_retrieve_response_code()
             'httpHeaders' => null, // array of HTTP headers
             'body'        => null, // content of the response
         ];
@@ -365,22 +369,44 @@ class MailChimp
     }
 
     /**
-     * Encode the data and attach it to the request
+     * Convert WordPress headers object to array format
      *
-     * @param resource $ch   cURL session handle, used by reference
-     * @param array    $data Assoc array of data to attach
+     * @param \WP_HTTP_Requests_Response|\Requests_Utility_CaseInsensitiveDictionary $wp_headers WordPress headers object
+     *
+     * @return array Associative array of headers
      */
-    private function attachRequestPayload(&$ch, $data)
+    private function convertWpHeadersToArray($wp_headers)
     {
-        $encoded = json_encode($data);
-        $this->last_request['body'] = $encoded;
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $encoded);
+        $headers = [];
+
+        if (is_object($wp_headers) && method_exists($wp_headers, 'getAll')) {
+            $wp_headers = $wp_headers->getAll();
+        }
+
+        if (is_array($wp_headers)) {
+            foreach ($wp_headers as $key => $value) {
+                if (is_array($value)) {
+                    $value = implode(', ', $value);
+                }
+                $headers[$key] = $value;
+
+                // Handle Link header parsing
+                if ('Link' === $key || 'link' === strtolower($key)) {
+                    $headers[$key] = array_merge(
+                        ['_raw' => $value],
+                        $this->getLinkHeaderAsArray($value)
+                    );
+                }
+            }
+        }
+
+        return $headers;
     }
 
     /**
      * Decode the response and format any error messages for debugging
      *
-     * @param array $response The response from the curl request
+     * @param array $response The response from the WordPress HTTP request
      *
      * @return array|false The JSON decoded into an array
      */
@@ -395,38 +421,13 @@ class MailChimp
         return false;
     }
 
-    /**
-     * Do post-request formatting and setting state from the response
-     *
-     * @param array  $response        The response from the curl request
-     * @param string $responseContent The body of the response from the curl request
-     *
-     * * @return array    The modified response
-     */
-    private function setResponseState($response, $responseContent, $ch)
-    {
-        if (false === $responseContent) {
-            $this->last_error = curl_error($ch);
-        } else {
-            $headerSize = $response['headers']['header_size'];
-
-            $response['httpHeaders'] = $this->getHeadersAsArray(substr($responseContent, 0, $headerSize));
-            $response['body'] = substr($responseContent, $headerSize);
-
-            if (isset($response['headers']['request_header'])) {
-                $this->last_request['headers'] = $response['headers']['request_header'];
-            }
-        }
-
-        return $response;
-    }
 
     /**
      * Check if the response was successful or a failure. If it failed, store the error.
      *
-     * @param array       $response          The response from the curl request
-     * @param array|false $formattedResponse The response body payload from the curl request
-     * @param int         $timeout           The timeout supplied to the curl request.
+     * @param array       $response          The response from the WordPress HTTP request
+     * @param array|false $formattedResponse The response body payload from the WordPress HTTP request
+     * @param int         $timeout           The timeout supplied to the WordPress HTTP request.
      *
      * @return bool If the request was successful
      */
@@ -444,7 +445,7 @@ class MailChimp
             return false;
         }
 
-        if ($timeout > 0 && $response['headers'] && $response['headers']['total_time'] >= $timeout) {
+        if ($timeout > 0 && $response['headers'] && isset($response['headers']['total_time']) && $response['headers']['total_time'] >= $timeout) {
             $this->last_error = sprintf('Request timed out after %f seconds.', $response['headers']['total_time']);
             return false;
         }
@@ -456,8 +457,8 @@ class MailChimp
     /**
      * Find the HTTP status code from the headers or API response body
      *
-     * @param array       $response          The response from the curl request
-     * @param array|false $formattedResponse The response body payload from the curl request
+     * @param array       $response          The response from the WordPress HTTP request
+     * @param array|false $formattedResponse The response body payload from the WordPress HTTP request
      *
      * @return int HTTP status code
      */

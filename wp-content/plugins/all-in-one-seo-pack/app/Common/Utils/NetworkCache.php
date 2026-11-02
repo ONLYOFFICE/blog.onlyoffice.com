@@ -17,16 +17,17 @@ class NetworkCache extends Cache {
 	 *
 	 * @since 4.2.5
 	 *
-	 * @param  string $key The cache key name. Use a '%' for a like query.
-	 * @return mixed       The value or null if the cache does not exist.
+	 * @param  string     $key            The cache key name. Use a '%' for a like query.
+	 * @param  bool|array $allowedClasses Whether to allow objects to be returned.
+	 * @return mixed                      The value or null if the cache does not exist.
 	 */
-	public function get( $key ) {
-		if ( ! is_multisite() ) {
-			return parent::get( $key );
+	public function get( $key, $allowedClasses = false ) {
+		if ( ! aioseo()->helpers->isPluginNetworkActivated() ) {
+			return parent::get( $key, $allowedClasses );
 		}
 
 		aioseo()->helpers->switchToBlog( aioseo()->helpers->getNetworkId() );
-		$value = parent::get( $key );
+		$value = parent::get( $key, $allowedClasses );
 		aioseo()->helpers->restoreCurrentBlog();
 
 		return $value;
@@ -43,7 +44,7 @@ class NetworkCache extends Cache {
 	 * @return void
 	 */
 	public function update( $key, $value, $expiration = DAY_IN_SECONDS ) {
-		if ( ! is_multisite() ) {
+		if ( ! aioseo()->helpers->isPluginNetworkActivated() ) {
 			parent::update( $key, $value, $expiration );
 
 			return;
@@ -63,7 +64,7 @@ class NetworkCache extends Cache {
 	 * @return void
 	 */
 	public function delete( $key ) {
-		if ( ! is_multisite() ) {
+		if ( ! aioseo()->helpers->isPluginNetworkActivated() ) {
 			parent::delete( $key );
 
 			return;
@@ -82,7 +83,7 @@ class NetworkCache extends Cache {
 	 * @return void
 	 */
 	public function clear() {
-		if ( ! is_multisite() ) {
+		if ( ! aioseo()->helpers->isPluginNetworkActivated() ) {
 			parent::clear();
 
 			return;
@@ -102,7 +103,7 @@ class NetworkCache extends Cache {
 	 * @return void
 	 */
 	public function clearPrefix( $prefix ) {
-		if ( ! is_multisite() ) {
+		if ( ! aioseo()->helpers->isPluginNetworkActivated() ) {
 			parent::clearPrefix( $prefix );
 
 			return;

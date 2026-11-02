@@ -15,12 +15,17 @@ class Included {
 	/**
 	 * Checks whether the queried object is included.
 	 *
-	 * @since 4.0.0
+	 * @since   4.0.0
+	 * @version 4.9.10 Exclude password-protected singular posts so their meta/schema is not disclosed.
 	 *
 	 * @return bool
 	 */
 	public function isIncluded() {
 		if ( is_admin() || is_feed() ) {
+			return false;
+		}
+
+		if ( is_singular() && post_password_required( get_queried_object_id() ) ) {
 			return false;
 		}
 
@@ -43,7 +48,7 @@ class Included {
 	 * @return bool Whether the queried object is public.
 	 */
 	protected function isQueriedObjectPublic() {
-		$queriedObject = get_queried_object();
+		$queriedObject = get_queried_object(); // Don't use the getTerm helper here.
 
 		if ( is_a( $queriedObject, 'WP_Post' ) ) {
 			return aioseo()->helpers->isPostTypePublic( $queriedObject->post_type );
@@ -55,6 +60,13 @@ class Included {
 		}
 
 		if ( is_a( $queriedObject, 'WP_Term' ) ) {
+			if ( aioseo()->helpers->isWooCommerceProductAttribute( $queriedObject->taxonomy ) ) {
+				// Check if the attribute has archives enabled.
+				$taxonomy = get_taxonomy( $queriedObject->taxonomy );
+
+				return $taxonomy->public;
+			}
+
 			return aioseo()->helpers->isTaxonomyPublic( $queriedObject->taxonomy );
 		}
 
@@ -130,7 +142,7 @@ class Included {
 			}
 		}
 
-		$term = get_queried_object();
+		$term = aioseo()->helpers->getTerm();
 		if ( in_array( (int) $term->term_id, $ids, true ) ) {
 			return true;
 		}

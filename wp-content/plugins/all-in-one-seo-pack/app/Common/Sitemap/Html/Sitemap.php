@@ -1,5 +1,4 @@
 <?php
-
 namespace AIOSEO\Plugin\Common\Sitemap\Html {
 	// Exit if accessed directly.
 	if ( ! defined( 'ABSPATH' ) ) {
@@ -58,6 +57,8 @@ namespace AIOSEO\Plugin\Common\Sitemap\Html {
 			$this->block     = new Block();
 
 			add_action( 'widgets_init', [ $this, 'registerWidget' ] );
+			add_filter( 'aioseo_canonical_url', [ $this, 'getCanonicalUrl' ] );
+			add_filter( 'pre_get_shortlink', [ $this, 'preGetShortlink' ] );
 
 			if ( ! is_admin() || wp_doing_ajax() || wp_doing_cron() ) {
 				add_action( 'template_redirect', [ $this, 'checkForDedicatedPage' ] );
@@ -72,7 +73,9 @@ namespace AIOSEO\Plugin\Common\Sitemap\Html {
 		 * @return void
 		 */
 		public function registerWidget() {
-			register_widget( 'AIOSEO\Plugin\Common\Sitemap\Html\Widget' );
+			if ( aioseo()->helpers->canRegisterLegacyWidget( 'aioseo-html-sitemap-widget' ) ) {
+				register_widget( 'AIOSEO\Plugin\Common\Sitemap\Html\Widget' );
+			}
 		}
 
 		/**
@@ -113,7 +116,7 @@ namespace AIOSEO\Plugin\Common\Sitemap\Html {
 		 * @return void
 		 */
 		private function generatePage() {
-			global $wp_query, $wp, $post;
+			global $wp_query, $wp, $post; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
 
 			$postId     = -1337; // Set a negative ID to prevent conflicts with existing posts.
 			$sitemapUrl = aioseo()->options->sitemap->html->pageUrl;
@@ -139,6 +142,7 @@ namespace AIOSEO\Plugin\Common\Sitemap\Html {
 			$post = $postObject;
 
 			// We'll set as much properties on the WP_Query object as we can to prevent conflicts with other plugins/themes.
+			// phpcs:disable Squiz.NamingConventions.ValidVariableName
 			$wp_query->is_404            = false;
 			$wp_query->is_page           = true;
 			$wp_query->is_singular       = true;
@@ -152,15 +156,65 @@ namespace AIOSEO\Plugin\Common\Sitemap\Html {
 
 			unset( $wp_query->query['error'] );
 			$wp_query->query_vars['error'] = '';
+			// phpcs:enable Squiz.NamingConventions.ValidVariableName
 
 			// We need to add the post object to the cache so that get_post() calls don't trigger database calls.
 			wp_cache_add( $postId, $postObject, 'posts' );
 
-			$GLOBALS['wp_query'] = $wp_query;
+			$GLOBALS['wp_query'] = $wp_query; // phpcs:ignore Squiz.NamingConventions.ValidVariableName
 			$wp->register_globals();
 
 			// Setting is_404 is not sufficient, so we still need to change the status code.
 			status_header( 200 );
+		}
+
+		/**
+		 * Get the canonical URL for the dedicated HTML sitemap page.
+		 *
+		 * @since 4.5.7
+		 *
+		 * @param  string $originalUrl The canonical URL.
+		 * @return string              The canonical URL.
+		 */
+		public function getCanonicalUrl( $originalUrl ) {
+			$sitemapOptions = aioseo()->options->sitemap->html;
+
+			if ( ! $sitemapOptions->enable || ! $this->isDedicatedPage ) {
+				return $originalUrl;
+			}
+
+			// If the user has set a custom URL for the sitemap page, use that.
+			if ( $sitemapOptions->pageUrl ) {
+				return $sitemapOptions->pageUrl;
+			}
+
+			// Return the current URL of WP.
+			global $wp;
+
+			return home_url( $wp->request );
+		}
+
+		/**
+		 * Pre-get shortlink filter.
+		 *
+		 * @since 4.9.5
+		 *
+		 * @param  string $shortlink The shortlink.
+		 * @return string            The shortlink.
+		 */
+		public function preGetShortlink( $shortlink ) {
+			if ( ! $this->isDedicatedPage ) {
+				return $shortlink;
+			}
+
+			$sitemapOptions = aioseo()->options->sitemap->html;
+			if ( $sitemapOptions->pageUrl ) {
+				return $sitemapOptions->pageUrl;
+			}
+
+			global $wp;
+
+			return home_url( $wp->request );
 		}
 	}
 }

@@ -6,6 +6,8 @@ use WPMailSMTP\Admin\DomainChecker;
 use WPMailSMTP\Admin\SetupWizard;
 use WPMailSMTP\Conflicts;
 use WPMailSMTP\Debug;
+use WPMailSMTP\Helpers\Helpers;
+use WPMailSMTP\OptimizedEmailSending;
 use WPMailSMTP\Options;
 use WPMailSMTP\WP;
 
@@ -91,7 +93,7 @@ class UsageTracking {
 	 */
 	public function get_user_agent() {
 
-		return 'WPMailSMTP/' . WPMS_PLUGIN_VER . '; ' . get_bloginfo( 'url' );
+		return Helpers::get_default_user_agent();
 	}
 
 	/**
@@ -143,6 +145,7 @@ class UsageTracking {
 				'wp_mail_smtp_setup_wizard_completed_time' => isset( $setup_wizard_stats['completed_time'] ) ? (int) $setup_wizard_stats['completed_time'] : 0,
 				'wp_mail_smtp_setup_wizard_completed_successfully' => ! empty( $setup_wizard_stats['was_successful'] ),
 				'wp_mail_smtp_source'                      => sanitize_title( get_option( 'wp_mail_smtp_source', '' ) ),
+				'wp_mail_smtp_optimize_email_sending'      => (bool) OptimizedEmailSending::is_enabled(),
 			]
 		);
 
@@ -155,7 +158,12 @@ class UsageTracking {
 		}
 
 		if ( is_multisite() ) {
-			$data['wp_mail_smtp_multisite_network_wide'] = WP::use_global_plugin_settings();
+			$use_global_settings                         = WP::use_global_plugin_settings();
+			$data['wp_mail_smtp_multisite_network_wide'] = $use_global_settings;
+
+			if ( ! $use_global_settings ) {
+				$data['wp_mail_smtp_multisite_is_subsite'] = ! is_main_site();
+			}
 		}
 
 		return apply_filters( 'wp_mail_smtp_usage_tracking_get_data', $data );

@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package ACF
+ * @author  WP Engine
+ *
+ * © 2026 Advanced Custom Fields (ACF®). All rights reserved.
+ * "ACF" is a trademark of WP Engine.
+ * Licensed under the GNU General Public License v2 or later.
+ * https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -8,22 +17,22 @@ if ( ! class_exists( 'ACF_Ajax_Query' ) ) :
 
 	class ACF_Ajax_Query extends ACF_Ajax {
 
-		/** @var bool Prevents access for non-logged in users. */
+		/** @var boolean Prevents access for non-logged in users. */
 		var $public = true;
 
-		/** @var int The page of results to return. */
+		/** @var integer The page of results to return. */
 		var $page = 1;
 
-		/** @var int The number of results per page. */
+		/** @var integer The number of results per page. */
 		var $per_page = 20;
 
-		/** @var bool Signifies whether or not this AJAX query has more pages to load. */
+		/** @var boolean Signifies whether or not this AJAX query has more pages to load. */
 		var $more = false;
 
 		/** @var string The searched term. */
 		var $search = '';
 
-		/** @var bool Signifies whether the current query is a search. */
+		/** @var boolean Signifies whether the current query is a search. */
 		var $is_search = false;
 
 		/** @var (int|string) The post_id being edited. */
@@ -93,40 +102,42 @@ if ( ! class_exists( 'ACF_Ajax_Query' ) ) :
 				$this->search    = sanitize_text_field( $request['search'] );
 				$this->is_search = true;
 			}
+
+			if ( isset( $request['s'] ) && acf_not_empty( $request['s'] ) ) {
+				$this->search    = sanitize_text_field( $request['s'] );
+				$this->is_search = true;
+			}
+
 			if ( isset( $request['post_id'] ) ) {
 				$this->post_id = $request['post_id'];
 			}
 		}
 
 		/**
-		 * get_args
-		 *
 		 * Returns an array of args for this query.
 		 *
-		 * @date    31/7/18
-		 * @since   5.7.2
+		 * @since 5.7.2
 		 *
-		 * @param   array $request The request args.
-		 * @return  array
+		 * @param array $request The request args.
+		 * @return array
 		 */
-		function get_args( $request ) {
-
-			// Allow for custom "query" arg.
-			if ( isset( $request['query'] ) ) {
-				return (array) $request['query'];
-			}
+		public function get_args( $request ) {
+			/**
+			 * We return an empty array here as subclasses should implement
+			 * their own allow list of parameters for security.
+			 */
 			return array();
 		}
 
 		/**
-		 * get_items
+		 * get_results
 		 *
 		 * Returns an array of results for the given args.
 		 *
 		 * @date    31/7/18
 		 * @since   5.7.2
 		 *
-		 * @param   array args The query args.
+		 * @param   array $args The query args.
 		 * @return  array
 		 */
 		function get_results( $args ) {
@@ -134,7 +145,7 @@ if ( ! class_exists( 'ACF_Ajax_Query' ) ) :
 		}
 
 		/**
-		 * get_item
+		 * get_result
 		 *
 		 * Returns a single result for the given item object.
 		 *

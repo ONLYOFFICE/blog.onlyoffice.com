@@ -1,0 +1,967 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Democracy\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: Democracy Poll contributors\n"
+"Language-Team: hi_IN <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-06-12 03:47+0500\n"
+"PO-Revision-Date: 2026-06-12 04:15+0500\n"
+"Language: hi_IN\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
+"X-Poedit-SearchPathExcluded-2: assets/build\n"
+"X-Poedit-KeywordsList: __;_e;esc_html__;esc_html_e;esc_attr__;esc_attr_e;_ex:1,2c;_x:1,2c;_n:1,2;_nx:1,2,3c;_n_noop:1,2;_nx_noop:1,2,3c\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: includes/theme-functions.php:150
+msgid "Poll results hidden for now..."
+msgstr "मतदान के नतीजे अभी छिपे हुए हैं..."
+
+#: includes/theme-functions.php:378
+msgid "From posts:"
+msgstr "पोस्ट से:"
+
+#: classes/Admin/Post_Metabox.php:30
+#: classes/Admin/Admin_Page.php:63
+msgid "Democracy Poll"
+msgstr "Democracy Poll"
+
+#: classes/Poll_Widget.php:14
+msgid "Democracy Poll Widget"
+msgstr "Democracy Poll विजेट"
+
+#: classes/Poll_Widget.php:68
+#: classes/Admin/List_Table_Logs.php:136
+msgid "Poll"
+msgstr "मतदान"
+
+#: classes/Poll_Widget.php:79
+msgid "Poll question = widget title?"
+msgstr "मतदान प्रश्न = विजेट शीर्षक?"
+
+#: classes/Poll_Widget.php:84
+msgid "Poll title:"
+msgstr "मतदान शीर्षक:"
+
+#: classes/Poll_Widget.php:93
+msgid "- Active (random all active)"
+msgstr "- सक्रिय (यादृच्छिक सभी सक्रिय)"
+
+#: classes/Poll_Widget.php:94
+msgid "- Last open poll"
+msgstr "- अंतिम खुला जनमत संग्रह"
+
+#: classes/Poll_Widget.php:109
+msgid "Which poll to show?"
+msgstr "कौन सा पोल दिखाना है?"
+
+#: classes/Poll_Renderer.php:117
+#: classes/Admin/List_Table_Logs.php:185
+#: classes/Admin/List_Table_Logs.php:285
+msgid "Edit poll"
+msgstr "जनमत संपादित करें"
+
+#: classes/Poll_Renderer.php:284
+msgctxt "front"
+msgid "Add your answer"
+msgstr "अपना उत्तर जोड़ें"
+
+#: classes/Poll_Renderer.php:305
+msgctxt "front"
+msgid "Already voted..."
+msgstr "पहले ही मतदान कर चुके हैं..."
+
+#: classes/Poll_Renderer.php:316
+#: classes/Poll_Renderer.php:559
+msgctxt "front"
+msgid "Vote"
+msgstr "वोट करें"
+
+#: classes/Poll_Renderer.php:343
+msgctxt "front"
+msgid "Results"
+msgstr "परिणाम"
+
+#: classes/Poll_Renderer.php:396
+msgctxt "front"
+msgid "This is your vote."
+msgstr "यह आपका वोट है."
+
+#: classes/Poll_Renderer.php:446
+msgctxt "front"
+msgid "The answer was added by a visitor"
+msgstr "उत्तर एक आगंतुक द्वारा जोड़ा गया था"
+
+#: classes/Poll_Renderer.php:421
+#: classes/Poll_Renderer.php:433
+msgctxt "front"
+msgid "vote,votes,votes"
+msgstr "वोट,वोट,वोट"
+
+#: classes/Poll_Renderer.php:479
+#, php-format,python-format
+msgctxt "front"
+msgid "Total Votes: %s"
+msgstr "कुल वोट: %s"
+
+#: classes/Poll_Renderer.php:480
+msgctxt "front"
+msgid "Begin"
+msgstr "शुरू करो"
+
+#: classes/Poll_Renderer.php:481
+msgctxt "front"
+msgid "End"
+msgstr "ख़त्म"
+
+#: classes/Poll_Renderer.php:487
+#, php-format,python-format
+msgctxt "front"
+msgid "Voters: %s"
+msgstr "मतदाता: %s"
+
+#: classes/Poll_Renderer.php:492
+msgctxt "front"
+msgid " - added by visitor"
+msgstr " - आगंतुक द्वारा जोड़ा गया"
+
+#: classes/Poll_Renderer.php:495
+msgctxt "front"
+msgid "Voting is closed"
+msgstr "वोटिंग बंद है"
+
+#: classes/Poll_Renderer.php:498
+msgctxt "front"
+msgid "Polls Archive"
+msgstr "जनमत संग्रह"
+
+#: classes/Poll_Renderer.php:594
+msgctxt "front"
+msgid "Revote"
+msgstr "दोबारा वोट करें"
+
+#: classes/Poll_Renderer.php:596
+msgctxt "front"
+msgid "Are you sure you want to cancel the votes?"
+msgstr "क्या आप वाकई वोट रद्द करना चाहते हैं?"
+
+#: classes/Poll_Renderer.php:630
+msgctxt "front"
+msgid "You or your IP have already voted."
+msgstr "आप या आपके आईपी ने पहले ही वोट कर दिया था।"
+
+#: classes/Poll_Renderer.php:620
+msgctxt "front"
+msgid "Only registered users can vote. <a>Log in</a> to vote."
+msgstr "केवल पंजीकृत उपयोगकर्ता ही मतदान कर सकते हैं। मतदान करने के लिए <a>लॉग इन करें</a>।"
+
+#: classes/System/Activator.php:51
+msgid "What is the capital city of France?"
+msgstr "फ़्रांस की राजधानी क्या है?"
+
+#: classes/System/Activator.php:63
+msgid "Paris"
+msgstr "पेरिस"
+
+#: classes/System/Activator.php:64
+msgid "Rome"
+msgstr "रोम"
+
+#: classes/System/Activator.php:65
+msgid "Madrid"
+msgstr "मैड्रिड"
+
+#: classes/System/Activator.php:66
+msgid "Berlin"
+msgstr "बर्लिन"
+
+#: classes/System/Activator.php:67
+msgid "London"
+msgstr "लंदन"
+
+#: classes/Admin/tpl/edit-poll.php:21
+#: classes/Admin/List_Table_Logs.php:287
+msgid "Poll logs"
+msgstr "पोल लॉग"
+
+#: classes/Admin/tpl/edit-poll.php:23
+msgid "shortcode for use in post content"
+msgstr "पोस्ट सामग्री में उपयोग के लिए शॉर्टकोड"
+
+#: classes/Admin/tpl/edit-poll.php:37
+msgid "Question:"
+msgstr "प्रश्न:"
+
+#: classes/Admin/tpl/edit-poll.php:42
+msgid "Answers:"
+msgstr "उत्तर:"
+
+#: classes/Admin/tpl/edit-poll.php:105
+msgid "reset order"
+msgstr "क्रम रीसेट करें"
+
+#: classes/Admin/tpl/edit-poll.php:119
+msgid "Sum of votes:"
+msgstr "वोटों का योग:"
+
+#: classes/Admin/tpl/edit-poll.php:122
+msgid "leave blank to update from logs"
+msgstr "लॉग से अद्यतन करने के लिए खाली छोड़ें"
+
+#: classes/Admin/tpl/edit-poll.php:123
+msgid "Votes"
+msgstr "मत"
+
+#: classes/Admin/tpl/edit-poll.php:124
+msgid "Users vote:"
+msgstr "उपयोगकर्ता वोट करते हैं:"
+
+#: classes/Admin/tpl/edit-poll.php:151
+msgid "Allow users to add answers (democracy)."
+msgstr "उपयोगकर्ताओं को उत्तर जोड़ने की अनुमति दें (लोकतंत्र)।"
+
+#: classes/Admin/tpl/edit-poll.php:140
+msgid "Activate this poll."
+msgstr "इस पोल को सक्रिय करें."
+
+#: classes/Admin/tpl/edit-poll.php:198
+msgid "Allow to choose multiple answers."
+msgstr "एकाधिक उत्तर चुनने की अनुमति दें."
+
+#: classes/Admin/tpl/edit-poll.php:219
+msgid "Date, when poll was/will be closed. Format: dd-mm-yyyy."
+msgstr "दिनांक, जब मतदान बंद था/बंद होगा। प्रारूप: dd-mm-yyyy."
+
+#: classes/Admin/tpl/edit-poll.php:162
+msgid "Allow to change mind (revote)."
+msgstr "मन बदलने की अनुमति दें (पुनः मत दें)।"
+
+#: classes/Admin/tpl/edit-poll.php:173
+msgid "Only registered users allowed to vote."
+msgstr "केवल पंजीकृत उपयोगकर्ताओं को ही मतदान करने की अनुमति है।"
+
+#: classes/Admin/tpl/edit-poll.php:185
+#: classes/Admin/List_Table_Polls.php:140
+msgid "Allow to watch the results of the poll."
+msgstr "मतदान के नतीजे देखने की अनुमति दें."
+
+#: classes/Admin/tpl/edit-poll.php:206
+msgid "as in settings"
+msgstr "जैसा कि सेटिंग्स में है"
+
+#: classes/Admin/tpl/edit-poll.php:211
+msgid "How to sort the answers during the vote?"
+msgstr "वोट के दौरान उत्तरों को कैसे क्रमबद्ध करें?"
+
+#: classes/Admin/tpl/edit-poll.php:238
+msgid "Note: This text will be added under poll."
+msgstr "नोट: यह पाठ पोल के अंतर्गत जोड़ा जाएगा।"
+
+#: classes/Admin/tpl/edit-poll.php:232
+msgid "Create date."
+msgstr "तिथि बनाएं."
+
+#: classes/Admin/tpl/edit-poll.php:247
+msgid "Save Changes"
+msgstr "परिवर्तन सहेजें"
+
+#: classes/Admin/tpl/edit-poll.php:247
+#: classes/System/Plugin_Initor.php:136
+msgid "Add Poll"
+msgstr "पोल जोड़ें"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:440
+#: classes/Admin/Admin_Page_Other_Migrations.php:89
+#: classes/Admin/Admin_Page_Logs.php:185
+#: classes/Admin/Admin_Page_Logs.php:192
+#: classes/Admin/List_Table_Polls.php:165
+msgid "Are you sure?"
+msgstr "क्या आप निश्चित हैं?"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:441
+#: classes/Admin/List_Table_Polls.php:165
+msgid "Delete"
+msgstr "हटाएँ"
+
+#: classes/Admin/tpl/edit-poll.php:266
+msgid "Posts where the poll shortcode used:"
+msgstr "वे पोस्ट जहां पोल शॉर्टकोड का उपयोग किया गया:"
+
+#: classes/Admin/Admin_Page_Polls.php:39
+msgid "Search"
+msgstr "खोजें"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:47
+msgid "New Poll Added"
+msgstr "नया पोल जोड़ा गया"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:272
+msgid "Poll Updated"
+msgstr "पोल अपडेट किया गया"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:400
+msgid "Deactivate"
+msgstr "निष्क्रिय करें"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:405
+msgid "Activate"
+msgstr "सक्रिय करें"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:421
+msgid "Close voting"
+msgstr "मतदान बंद करें"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:426
+msgid "Open voting"
+msgstr "खुला मतदान"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:457
+msgid "Poll Deleted"
+msgstr "मतदान हटा दिया गया"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:506
+#: classes/Admin/List_Table_Polls.php:76
+msgid "Poll Opened"
+msgstr "पोल खुल गई"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:507
+msgid "Poll Closed"
+msgstr "मतदान बंद"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:531
+msgid "You can not activate closed poll..."
+msgstr "आप बंद पोल को सक्रिय नहीं कर सकते..."
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:540
+msgid "Poll Activated"
+msgstr "मतदान सक्रिय"
+
+#: classes/Admin/Admin_Page_Edit_Poll.php:541
+msgid "Poll Deactivated"
+msgstr "मतदान निष्क्रिय कर दिया गया"
+
+#: classes/Admin/Tinymce_Button.php:40
+msgid "Insert Poll of Democracy"
+msgstr "लोकतंत्र का पोल डालें"
+
+#: classes/Admin/Tinymce_Button.php:41
+msgid "Insert Poll ID"
+msgstr "पोल आईडी डालें"
+
+#: classes/Admin/Admin_Page_Other_Migrations.php:38
+msgid "Data of migration deleted"
+msgstr "माइग्रेशन का डेटा हटा दिया गया"
+
+#: classes/Admin/Admin_Page_Other_Migrations.php:72
+msgid "Migration from WP Polls done"
+msgstr "WP Polls से माइग्रेशन पूरा हुआ"
+
+#: classes/Admin/Admin_Page_Other_Migrations.php:73
+#, php-format,python-format
+msgid "Polls copied: %d. Answers copied: %d. Logs copied: %d"
+msgstr "पोल कॉपी किए गए: %d। उत्तर कॉपी किए गए: %d। लॉग कॉपी किए गए: %d"
+
+#: classes/Admin/Admin_Page_Other_Migrations.php:78
+msgid "Replace WP Polls shortcodes in posts"
+msgstr "पोस्ट में WP Polls शॉर्टकोड बदलें"
+
+#: classes/Admin/Admin_Page_Other_Migrations.php:82
+msgid "Cancel the shortcode replace and reset changes"
+msgstr "शॉर्टकोड को रद्द करें, बदलें और परिवर्तनों को रीसेट करें"
+
+#: classes/Admin/Admin_Page_Other_Migrations.php:90
+msgid "Delete all data about WP Polls migration"
+msgstr "WP Polls माइग्रेशन का सारा डेटा हटाएं"
+
+#: classes/Admin/Admin_Page_Other_Migrations.php:132
+#, php-format,python-format
+msgid "Shortcodes replaced: %s"
+msgstr "शॉर्टकोड प्रतिस्थापित: %s"
+
+#: classes/Admin/Admin_Page_l10n.php:46
+#: classes/Admin/Admin_Page_Design.php:68
+#: classes/Admin/Admin_Page_Settings.php:46
+msgid "Updated"
+msgstr "अद्यतन किया गया"
+
+#: classes/Admin/Admin_Page_l10n.php:47
+#: classes/Admin/Admin_Page_Design.php:69
+#: classes/Admin/Admin_Page_Settings.php:47
+msgid "Nothing was updated"
+msgstr "कुछ भी अपडेट नहीं किया गया"
+
+#: classes/Admin/tpl/l10n.php:22
+msgid "Original"
+msgstr "मौलिक"
+
+#: classes/Admin/tpl/l10n.php:23
+msgid "Your variant"
+msgstr "आपका संस्करण"
+
+#: classes/Admin/tpl/l10n.php:52
+msgid "Save Text"
+msgstr "पाठ सहेजें"
+
+#: classes/Admin/tpl/design.php:385
+#: classes/Admin/tpl/settings.php:246
+#: classes/Admin/tpl/l10n.php:54
+msgid "Reset Options"
+msgstr "विकल्प रीसेट करें"
+
+#: classes/Admin/tpl/design.php:30
+msgid "Choose Theme"
+msgstr "थीम चुनें"
+
+#: classes/Admin/tpl/design.php:35
+msgid "No theme"
+msgstr "कोई थीम नहीं"
+
+#: classes/Admin/tpl/design.php:117
+msgid "Other settings"
+msgstr "अन्य सेटिंग्स"
+
+#: classes/Admin/tpl/design.php:124
+msgid "Animation speed (in milliseconds)."
+msgstr "एनिमेशन गति (मिलीसेकंड में)।"
+
+#: classes/Admin/tpl/design.php:130
+msgid "Progress line"
+msgstr "प्रगति रेखा"
+
+#: classes/Admin/tpl/design.php:132
+msgid "How to fill (paint) the progress of each answer:"
+msgstr "प्रत्येक उत्तर की प्रगति को कैसे भरें (पेंट करें):"
+
+#: classes/Admin/tpl/design.php:136
+#, python-format
+msgid "winner - 100%, others as % of the winner"
+msgstr "विजेता - 100%, अन्य विजेता के % के रूप में"
+
+#: classes/Admin/tpl/design.php:142
+msgid "as percent of all votes"
+msgstr "सभी वोटों के प्रतिशत के रूप में"
+
+#: classes/Admin/tpl/design.php:149
+msgid "Line Color"
+msgstr "रेखा का रंग"
+
+#: classes/Admin/tpl/design.php:155
+msgid "Line color (for voted user)"
+msgstr "लाइन का रंग (मतदान करने वाले उपयोगकर्ता के लिए)"
+
+#: classes/Admin/tpl/design.php:161
+msgid "Background color"
+msgstr "पृष्ठभूमि का रंग"
+
+#: classes/Admin/tpl/design.php:171
+msgid "Line height (in px if unit not set)"
+msgstr "लाइन की ऊंचाई (पीएक्स में यदि इकाई सेट नहीं है)"
+
+#: classes/Admin/tpl/design.php:178
+msgid "Progress line animation effect speed (default 1500). Set 0 to disable animation."
+msgstr "प्रगति रेखा एनीमेशन प्रभाव गति (डिफ़ॉल्ट 1500)। एनिमेशन अक्षम करने के लिए 0 सेट करें।"
+
+#: classes/Admin/tpl/design.php:62
+#: classes/Admin/tpl/design.php:192
+msgid "No (default)"
+msgstr "नहीं (डिफ़ॉल्ट)"
+
+#: classes/Admin/tpl/design.php:251
+msgid "Button colors"
+msgstr "बटन के रंग"
+
+#: classes/Admin/tpl/design.php:254
+#: classes/Admin/tpl/design.php:276
+#: classes/Admin/Admin_Page_Design.php:121
+msgid "Bg color"
+msgstr "बीजी रंग"
+
+#: classes/Admin/tpl/design.php:260
+#: classes/Admin/tpl/design.php:282
+msgid "Text Color"
+msgstr "पाठ का रंग"
+
+#: classes/Admin/tpl/design.php:266
+#: classes/Admin/tpl/design.php:288
+msgid "Border Color"
+msgstr "सीमा रंग"
+
+#: classes/Admin/tpl/design.php:273
+msgid "Hover button colors"
+msgstr "होवर बटन रंग"
+
+#: classes/Admin/tpl/design.php:298
+msgid "An additional css class for all buttons in the poll. When the template has a special class for buttons, for example:"
+msgstr "पोल में सभी बटनों के लिए एक अतिरिक्त सीएसएस क्लास। जब टेम्पलेट में बटनों के लिए एक विशेष वर्ग होता है, उदाहरण के लिए:"
+
+#: classes/Admin/tpl/design.php:316
+msgid "No (dots...)"
+msgstr "नहीं (बिंदु...)"
+
+#: classes/Admin/tpl/design.php:355
+msgid "AJAX Loader. If you choose \"NO\", loader is replaced by dots \"...\" which are appended to a link/button text. SVG images animations don't work in IE 11 or lower, other browsers are supported at 90% (according to caniuse.com statistics)."
+msgstr "AJAX लोडर. यदि \"नहीं\" चुनें, तो लोडर बिंदु \"...\" से बदल देता है जो एक लिंक/बटन टेक्स्ट में जुड़ जाता है। एसवीजी छवि एनीमेशन IE 11 या उससे कम में काम नहीं करता है, अन्य ब्राउज़र 90% पर समर्थित हैं (caniuse.com आंकड़ों के अनुसार)।"
+
+#: classes/Admin/tpl/design.php:366
+msgid "Custom/Additional CSS styles"
+msgstr "कस्टम/अतिरिक्त सीएसएस शैलियाँ"
+
+#: classes/Admin/tpl/design.php:370
+msgid "In this field you can add some additional css properties or completely replace current css theme. Write here css and it will be added at the bottom of current Democracy css. To completely replace styles, check \"No theme\" and describe all styles."
+msgstr "इस फ़ील्ड में आप कुछ अतिरिक्त सीएसएस गुण जोड़ सकते हैं या वर्तमान सीएसएस थीम को पूरी तरह से बदल सकते हैं। यहां सीएसएस लिखें और इसे वर्तमान डेमोक्रेसी सीएसएस के नीचे जोड़ा जाएगा। शैलियों को बदलने को पूरा करने के लिए, \"कोई थीम नहीं\" चेक करें और सभी शैलियों का वर्णन करें।"
+
+#: classes/Admin/tpl/design.php:371
+msgid "This field must be cleared manually, if you reset options of this page or change/set another theme, the field will not be touched."
+msgstr "यह फ़ील्ड मैन्युअल रूप से साफ़ की गई है, यदि आप इस पृष्ठ के विकल्पों को रीसेट करते हैं या कोई अन्य थीम बदलते/सेट करते हैं, तो फ़ील्ड को छुआ नहीं जाएगा।"
+
+#: classes/Admin/tpl/design.php:381
+msgid "Save All Changes"
+msgstr "सभी परिवर्तन सहेजें"
+
+#: classes/Admin/tpl/design.php:386
+msgid "are you sure?"
+msgstr "क्या आप निश्चित हैं?"
+
+#: classes/Admin/tpl/design.php:392
+msgid "All CSS styles currently in use"
+msgstr "सभी CSS शैलियाँ जो अभी उपयोग की जाती हैं"
+
+#: classes/Admin/tpl/design.php:401
+msgid "These are all collected CSS styles: theme, button, options. You can copy these styles to the \"Custom/Additional CSS styles:\" field, disable theme and edit them manually."
+msgstr "इसमें सभी सीएसएस शैलियाँ एकत्रित हैं: थीम, बटन, विकल्प। आप इस शैलियों को \"कस्टम/अतिरिक्त सीएसएस शैलियाँ:\" फ़ील्ड में कॉपी कर सकते हैं, थीम को अक्षम कर सकते हैं और कॉपी की गई शैलियों को स्वयं बदल सकते हैं।"
+
+#: classes/Admin/tpl/design.php:410
+msgid "Minified version (used to include it in HTML)"
+msgstr "लघुकृत संस्करण (इसे HTML में शामिल करने के लिए उपयोग किया जाता है)"
+
+#: classes/Admin/Admin_Page_Design.php:146
+msgid "Results view:"
+msgstr "परिणाम देखें:"
+
+#: classes/Admin/Admin_Page_Design.php:147
+msgid "Vote view:"
+msgstr "वोट दृश्य:"
+
+#: classes/Admin/Admin_Page_Design.php:148
+msgid "AJAX loader view:"
+msgstr "AJAX लोडर दृश्य:"
+
+#: classes/Admin/List_Table_Logs.php:62
+msgid "Nothing was selected."
+msgstr "कुछ भी नहीं चुना गया."
+
+#: classes/Admin/List_Table_Logs.php:135
+msgid "IP info"
+msgstr "आईपी जानकारी"
+
+#: classes/Admin/List_Table_Logs.php:137
+msgid "Answer"
+msgstr "उत्तर"
+
+#: classes/Admin/List_Table_Logs.php:138
+msgid "User"
+msgstr "उपयोगकर्ता"
+
+#: classes/Admin/List_Table_Logs.php:139
+msgid "Date"
+msgstr "दिनांक"
+
+#: classes/Admin/List_Table_Logs.php:140
+msgid "Expire"
+msgstr "समाप्ति"
+
+#: classes/Admin/List_Table_Logs.php:166
+msgid "Delete logs only"
+msgstr "केवल लॉग हटाएँ"
+
+#: classes/Admin/List_Table_Logs.php:167
+msgid "Delete logs and votes"
+msgstr "लॉग और वोट हटाएँ"
+
+#: classes/Admin/List_Table_Logs.php:182
+msgid "Poll's logs:"
+msgstr "पोल के लॉग:"
+
+#: classes/Admin/List_Table_Logs.php:200
+msgid "NEW answers logs"
+msgstr "नए उत्तर लॉग"
+
+#: classes/Admin/List_Table_Logs.php:264
+msgid "Search by IP"
+msgstr "आईपी द्वारा खोजें"
+
+#: classes/Admin/Admin_Page_Logs.php:177
+msgid "Delete all NEW marks"
+msgstr "सभी नए चिह्न हटाएँ"
+
+#: classes/Admin/Admin_Page_Logs.php:187
+#, php-format,python-format
+msgid "Delete logs of closed polls - %d"
+msgstr "बंद पोल के लॉग हटाएं - %d"
+
+#: classes/Admin/Admin_Page_Logs.php:194
+msgid "Delete all logs"
+msgstr "सभी लॉग हटाएँ"
+
+#: classes/Admin/Admin_Page_Logs.php:217
+#, php-format,python-format
+msgid "Lines deleted: %s"
+msgstr "पंक्तियाँ हटाई गईं: %s"
+
+#: classes/Admin/Admin_Page_Logs.php:218
+#: classes/Admin/Admin_Page_Logs.php:263
+msgid "Failed to delete"
+msgstr "हटाने में विफल"
+
+#: classes/Admin/Admin_Page_Logs.php:260
+#, php-format,python-format
+msgid "Removed logs: %d. Removed answers:%d. Removed users %d."
+msgstr "हटाए गए लॉग: %d। हटाए गए उत्तर:%d। उपयोगकर्ताओं को हटाया गया %d."
+
+#: classes/Admin/Admin.php:53
+#: classes/Admin/Admin_Page.php:210
+#: classes/System/Plugin_Initor.php:138
+msgid "Settings"
+msgstr "सेटिंग्स"
+
+#: classes/Admin/Admin_Page.php:191
+msgid "Back"
+msgstr "वापस"
+
+#: classes/Admin/Admin_Page.php:196
+#: classes/System/Plugin_Initor.php:135
+msgid "Polls List"
+msgstr "मतदान सूची"
+
+#: classes/Admin/Admin_Page.php:200
+msgid "Add new poll"
+msgstr "नया पोल जोड़ें"
+
+#: classes/Admin/Admin_Page.php:204
+#: classes/Admin/List_Table_Polls.php:160
+#: classes/System/Plugin_Initor.php:137
+msgid "Logs"
+msgstr "लॉग"
+
+#: classes/Admin/Admin_Page.php:215
+#: classes/System/Plugin_Initor.php:139
+msgid "Theme Settings"
+msgstr "थीम सेटिंग्स"
+
+#: classes/Admin/Admin_Page.php:220
+#: classes/System/Plugin_Initor.php:140
+msgid "Text changes"
+msgstr "पाठ बदल जाते हैं"
+
+#: classes/Admin/Admin_Page.php:264
+msgid "If you like this plugin, please <a>leave your review</a>"
+msgstr "यदि आपको यह प्लगइन पसंद है, तो कृपया <a> अपनी समीक्षा छोड़ें</a>"
+
+#: classes/Admin/List_Table_Logs.php:41
+#: classes/Admin/List_Table_Polls.php:33
+msgid "Show on page"
+msgstr "पृष्ठ पर दिखाएँ"
+
+#: classes/Admin/List_Table_Polls.php:74
+msgid "ID"
+msgstr "आईडी"
+
+#: classes/Admin/List_Table_Polls.php:75
+msgid "Question"
+msgstr "प्रश्न"
+
+#: classes/Admin/List_Table_Polls.php:77
+msgid "Active polls"
+msgstr "सक्रिय मतदान"
+
+#: classes/Admin/List_Table_Polls.php:78
+msgid "Users vote"
+msgstr "उपयोगकर्ता वोट करते हैं"
+
+#: classes/Admin/List_Table_Polls.php:79
+msgid "Answers"
+msgstr "उत्तर"
+
+#: classes/Admin/List_Table_Polls.php:80
+msgid "In posts"
+msgstr "पोस्ट में"
+
+#: classes/Admin/List_Table_Polls.php:81
+msgid "Added"
+msgstr "जोड़ा गया"
+
+#: classes/Admin/List_Table_Polls.php:136
+msgid "Users can add answers (democracy)."
+msgstr "उपयोगकर्ता उत्तर (लोकतंत्र) जोड़ सकते हैं।"
+
+#: classes/Admin/List_Table_Polls.php:137
+msgid "Users can revote"
+msgstr "उपयोगकर्ता दोबारा वोट कर सकते हैं"
+
+#: classes/Admin/List_Table_Polls.php:138
+msgid "Only for registered user."
+msgstr "केवल पंजीकृत उपयोगकर्ता के लिए."
+
+#: classes/Admin/List_Table_Polls.php:139
+msgid "Users can choose many answers (multiple)."
+msgstr "उपयोगकर्ता अनेक उत्तर (एकाधिक) चुन सकते हैं।"
+
+#: classes/Admin/List_Table_Polls.php:151
+msgid "Edit"
+msgstr "संपादित करें"
+
+#: classes/Admin/List_Table_Polls.php:177
+msgid "voters / votes"
+msgstr "मतदाता/वोट"
+
+#: classes/Admin/tpl/settings.php:35
+msgid "How many days to keep Cookies alive?"
+msgstr "कुकीज़ को कितने दिनों तक जीवित रखना है?"
+
+#: classes/Admin/tpl/settings.php:40
+msgid "To set hours use float number - 0.04 = 1 hour."
+msgstr "घंटे निर्धारित करने के लिए फ्लोट नंबर का उपयोग करें - 0.04 = 1 घंटा।"
+
+#: classes/Admin/tpl/settings.php:53
+msgid "Polls archive page ID."
+msgstr "जनमत संग्रह पृष्ठ आईडी."
+
+#: classes/Admin/tpl/settings.php:58
+msgid "Go to archive page"
+msgstr "संग्रह पृष्ठ पर जाएँ"
+
+#: classes/Admin/tpl/settings.php:64
+msgid "Create/find archive page"
+msgstr "संग्रह पृष्ठ बनाएं/ढूंढें"
+
+#: classes/Admin/tpl/settings.php:71
+msgid "Global Polls options"
+msgstr "वैश्विक मतदान विकल्प"
+
+#: classes/Admin/tpl/settings.php:93
+msgid "Only registered users allowed to vote (global option)"
+msgstr "केवल पंजीकृत उपयोगकर्ताओं को वोट देने की अनुमति है (वैश्विक विकल्प)"
+
+#: classes/Admin/tpl/settings.php:111
+msgid "Remove the Revote possibility (global option)."
+msgstr "पुनर्मतदान संभावना (वैश्विक विकल्प) को हटा दें।"
+
+#: classes/Admin/tpl/settings.php:120
+msgid "Don't show poll results (global option)."
+msgstr "मतदान परिणाम न दिखाएं (वैश्विक विकल्प)।"
+
+#: classes/Admin/tpl/settings.php:122
+msgid "If checked, user can't see poll results if voting is open."
+msgstr "यदि जाँच की जाए, तो मतदान खुला होने पर उपयोगकर्ता मतदान परिणाम नहीं देख सकता है।"
+
+#: classes/Admin/tpl/settings.php:129
+msgid "Don't show poll results link (global option)."
+msgstr "मतदान परिणाम लिंक (वैश्विक विकल्प) न दिखाएं।"
+
+#: classes/Admin/tpl/settings.php:131
+msgid "Users can see results after vote."
+msgstr "उपयोगकर्ता वोट के बाद परिणाम देख सकते हैं।"
+
+#: classes/Admin/tpl/settings.php:138
+msgid "Hide vote button."
+msgstr "वोट बटन छिपाएँ."
+
+#: classes/Admin/tpl/settings.php:140
+msgid "Users can vote with one click on an answer. Works only for non-multiple polls with the revote option enabled."
+msgstr "यदि वोट बटन पुनर्मतदान विकल्प के साथ एकाधिक मतदान नहीं है तो उसे छिपा दें। यूजर उत्तर पर क्लिक करके ही वोट करेगा।"
+
+#: classes/Admin/tpl/settings.php:147
+msgid "Disable post metabox."
+msgstr "पोस्ट मेटाबॉक्स अक्षम करें."
+
+#: classes/Admin/tpl/settings.php:149
+msgid "Check this to disable polls metabox functionality for posts where you can attach a poll to a post."
+msgstr "पोस्ट के लिए पोल मेटाबॉक्स कार्यक्षमता को अक्षम करने के लिए इसे जांचें जहां आप किसी पोस्ट में पोल संलग्न कर सकते हैं..."
+
+#: classes/Admin/tpl/settings.php:152
+#: classes/Admin/tpl/settings.php:251
+msgid "Others"
+msgstr "अन्य"
+
+#: classes/Admin/tpl/settings.php:159
+msgid "ON"
+msgstr "चालू"
+
+#: classes/Admin/tpl/settings.php:160
+msgid "OFF"
+msgstr "बंद"
+
+#: classes/Admin/tpl/settings.php:174
+msgid "Add plugin menu on the toolbar?"
+msgstr "टूलबार पर प्लगइन मेनू जोड़ें?"
+
+#: classes/Admin/tpl/settings.php:176
+msgid "Uncheck to remove the plugin menu from the toolbar."
+msgstr "टूलबार से प्लगइन मेनू को हटाने के लिए अनचेक करें।"
+
+#: classes/Admin/tpl/settings.php:182
+msgid "Add fast Poll insert button to WordPress visual editor (TinyMCE)?"
+msgstr "WordPress विज़ुअल एडिटर (TinyMCE) में पोल तुरंत जोड़ने वाला बटन जोड़ें?"
+
+#: classes/Admin/tpl/settings.php:184
+msgid "Uncheck to disable button in visual editor."
+msgstr "विज़ुअल संपादक में अक्षम करने के लिए बटन को अनचेक करें।"
+
+#: classes/Admin/tpl/settings.php:190
+msgid "Widget"
+msgstr "विजेट"
+
+#: classes/Admin/tpl/settings.php:192
+msgid "Check to activate the widget."
+msgstr "विजेट को सक्रिय करने के लिए जांचें."
+
+#: classes/Admin/tpl/settings.php:198
+msgid "Check if you see something like \"no_IP__123\" in IP column on logs page. (not recommended)"
+msgstr "जांचें कि क्या आपको लॉग पेज पर आईपी कॉलम में \"no_IP__123\" जैसा कुछ दिखाई देता है। (अनुशंसित नहीं)"
+
+#: classes/Admin/tpl/settings.php:199
+msgid "Or if IP detection is wrong. (for cloudflare)"
+msgstr "या यदि IP की पहचान गलत हो रही है। (Cloudflare के लिए)"
+
+#: classes/Admin/tpl/settings.php:201
+msgid "Use this if your server does not detect the visitor IP correctly from REMOTE_ADDR. Note: this option may make vote cheating easier."
+msgstr "अगर आपका सर्वर REMOTE_ADDR से विज़िटर का IP सही ढंग से नहीं पहचानता है, तो इसका उपयोग करें। ध्यान दें: यह विकल्प वोट में धोखाधड़ी को आसान बना सकता है।"
+
+#: classes/Admin/tpl/settings.php:223
+msgid "Role names, except 'administrator' which will have access to manage plugin."
+msgstr "भूमिका के नाम, 'प्रशासक' को छोड़कर जिनके पास प्लगइन प्रबंधित करने की पहुंच होगी।"
+
+#: classes/Admin/tpl/settings.php:228
+msgid "Migration"
+msgstr "प्रवास"
+
+#: classes/Admin/tpl/settings.php:234
+msgid "Migrate from WP Polls plugin"
+msgstr "WP Polls प्लगइन से माइग्रेट करें"
+
+#: classes/Admin/tpl/settings.php:236
+msgid "All polls, answers and logs of WP Polls will be added to Democracy Poll"
+msgstr "WP Polls के सभी पोल, उत्तर और लॉग Democracy Poll में जोड़ दिए जाएंगे"
+
+#: classes/Admin/tpl/settings.php:244
+msgid "Save Options"
+msgstr "विकल्प सहेजें"
+
+#: classes/Admin/tpl/settings.php:257
+msgid "Force plugin versions update (debug)"
+msgstr "फोर्स प्लगइन संस्करण अद्यतन (डीबग)"
+
+#: classes/Admin/Admin_Page_Settings.php:87
+msgid "Polls Archive"
+msgstr "जनमत संग्रह"
+
+#: classes/Poll_Voting.php:48
+msgid "ERROR: You selected more answers than allowed."
+msgstr "त्रुटि: आप अनुमति से अधिक उत्तरों का चयन करते हैं..."
+
+#: classes/Admin/tpl/settings.php:168
+msgid "Democracy Poll has a built-in mechanism for working with page cache plugins such as W3 Total Cache. It is enabled automatically when a supported plugin is active. If you use a different page cache plugin, you can force-enable this option."
+msgstr "Democracy में W3 Total Cache जैसे पेज कैश प्लगइन के साथ काम करने की अंतर्निहित व्यवस्था है। संगत प्लगइन सक्रिय होने पर यह अपने आप चालू हो जाती है। किसी अन्य पेज कैश प्लगइन के लिए आप इस विकल्प को बलपूर्वक सक्रिय कर सकते हैं।"
+
+#: classes/Admin/tpl/design.php:120
+msgid "Max poll height (in em, rem, px, ...). Leave empty to disable."
+msgstr "पोल की अधिकतम ऊँचाई (em, rem, px, ... में)। अक्षम करने के लिए खाली छोड़ें।"
+
+#: classes/Admin/tpl/settings.php:77
+msgid "Answer order on vote screen (global option)"
+msgstr "वोट स्क्रीन पर उत्तरों का क्रम (वैश्विक विकल्प)"
+
+#: classes/Admin/tpl/settings.php:79
+msgid "Option can be changed for each poll separately."
+msgstr "विकल्प प्रत्येक पोल के लिए अलग से बदला जा सकता है।"
+
+#: classes/Admin/tpl/settings.php:86
+msgid "Answer order on results screen (global option)"
+msgstr "परिणाम स्क्रीन पर उत्तरों का क्रम (वैश्विक विकल्प)"
+
+#: classes/Admin/Post_Metabox.php:46
+msgid "default"
+msgstr "डिफ़ॉल्ट"
+
+#: classes/Admin/Post_Metabox.php:47
+msgid "Random (default)"
+msgstr "यादृच्छिक (डिफ़ॉल्ट)"
+
+#: classes/Admin/Post_Metabox.php:48
+msgid "Last"
+msgstr "अंतिम"
+
+#: classes/Admin/Post_Metabox.php:60
+msgid "Use shortcode:"
+msgstr "शॉर्टकोड उपयोग करें:"
+
+#: classes/Admin/tpl/design.php:245
+msgid "These colors may not affect all button styles. You can fully customize button styles in the \"Additional CSS styles\" field below."
+msgstr "ये रंग सभी बटन स्टाइल पर लागू नहीं हो सकते। आप नीचे दिए गए \"अतिरिक्त CSS स्टाइल\" फ़ील्ड में बटन स्टाइल को पूरी तरह अनुकूलित कर सकते हैं।"
+
+#: classes/Admin/tpl/settings.php:95
+#: classes/Admin/tpl/settings.php:104
+#: classes/Admin/tpl/settings.php:113
+msgid "Can be changed for each poll separately."
+msgstr "हर पोल के लिए अलग से बदला जा सकता है।"
+
+#: classes/Admin/tpl/settings.php:102
+msgid "Prohibit users to add new answers (global option)."
+msgstr "उपयोगकर्ताओं को नए उत्तर जोड़ने से रोकें (वैश्विक विकल्प)।"
+
+#: classes/Admin/tpl/settings.php:163
+#, php-format
+msgid "Force-enable compatibility mode for page cache plugins. Current status: %s"
+msgstr "पेज कैश प्लगइन के लिए संगतता मोड को जबरन सक्षम करें। वर्तमान स्थिति: %s"
+
+#: classes/Support/Helpers.php:12
+msgid "By winner"
+msgstr "विजेता के अनुसार"
+
+#: classes/Support/Helpers.php:13
+msgid "Alphabetically (a-z)"
+msgstr "वर्णानुक्रम में (a-z)"
+
+#: classes/Support/Helpers.php:14
+msgid "By ID (added order)"
+msgstr "ID के अनुसार (जोड़े जाने का क्रम)"
+
+#: classes/Support/Helpers.php:15
+msgid "Mixed (shuffled)"
+msgstr "मिश्रित (शफ़ल)"
+
+#: classes/Poll_Renderer.php:419
+msgctxt "front"
+msgid "{votes} - {percent}% of all votes"
+msgstr "{votes} - सभी मतों का {percent}%"
+
+#: classes/Poll_Renderer.php:634
+msgctxt "front"
+msgid "Close"
+msgstr "बंद करें"
+
+#: classes/Admin/tpl/settings.php:45
+msgid "Poll title HTML template."
+msgstr ""
+
+#: classes/Admin/tpl/settings.php:47
+msgid "Use <code>{question}</code> where the poll question should appear. Default: <code>&lt;strong class=&quot;dem-poll-title&quot;&gt;{question}&lt;/strong&gt;</code>."
+msgstr ""
+
+#: classes/Admin/tpl/settings.php:26
+msgid "Allow multiple votes from the same IP address."
+msgstr ""
+
+#: classes/Admin/tpl/settings.php:28
+msgid "When enabled, guests sharing an IP address are distinguished by a browser fingerprint. Each browser can still vote only once. Logged-in users are always identified by their WordPress account."
+msgstr ""
+
+#: classes/Admin/tpl/settings.php:38
+msgid "How many days the browser and server remember votes. Default: 365."
+msgstr ""
